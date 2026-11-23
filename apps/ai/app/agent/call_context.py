@@ -55,10 +55,17 @@ class CallContext:
     context_entries: list[dict] = field(default_factory=list)  # [{kind, title, body}] from /api/context/for
     active_promos: list[dict] = field(default_factory=list)  # [{name, productIds?, categoryId?, discountPct?}] TODO
     loaded_ms: int | None = None
+    caller_contact: str | None = None  # who is on the phone (caller ID form), e.g. "Nadine Sarrailh"
+    caller_phone: str | None = None
 
     @property
     def blocked(self) -> bool:
         return self.status == "blocked"
+
+    @property
+    def is_new(self) -> bool:
+        """A caller who is not in the ERP yet (status "new")."""
+        return self.status == "new"
 
 
 async def load_call_context(erp: ErpClient, client_id: str) -> CallContext:
@@ -203,6 +210,70 @@ def clear_cache() -> None:
     _pending.clear()
 
 
+# ── Caller ID: who is calling, known BEFORE the call (form on the Voix page = the number on the screen) ──
+
+
+def _digits(phone: str | None) -> str:
+    d = re.sub(r"\D", "", phone or "")
+    return "0" + d[2:] if d.startswith("33") and len(d) == 11 else d  # +33 6… → 06…
+
+
+async def find_client_by_phone(erp: ErpClient, phone: str) -> tuple[str, str] | None:
+    """(client_id, contact name) whose contact has this phone number, or None."""
+    wanted = _digits(phone)
+    if len(wanted) < 9:
+        return None
+    clients = await erp.get("/api/clients", {"limit": 500})
+    clients = clients.get("items", clients) if isinstance(clients, dict) else clients
+    for c in clients:
+        for contact in c.get("contacts") or []:
+            if _digits(contact.get("phone")) == wanted:
+                return c["id"], contact.get("name") or ""
+    return None
+
+
+async def caller_context(
+    erp: ErpClient,
+    *,
+    client_id: str | None = None,
+    phone: str | None = None,
+    contact_name: str | None = None,
+    company_name: str | None = None,
+    is_new: bool = False,
+) -> CallContext | None:
+    """
+    The sheet of the caller announced before the call: an ERP client (by id, else by phone) loaded now (cache),
+    or a NEW client (not in the ERP: status "new"). None if nothing was given.
+    """
+    if not is_new and not client_id and phone:
+        if hit := await find_client_by_phone(erp, phone):
+            client_id, contact_name = hit[0], contact_name or hit[1]
+    if not is_new and client_id:
+        cc = _cached(client_id) or await _load_and_cache(erp, client_id)
+        cc.caller_contact = contact_name or cc.caller_contact
+        cc.caller_phone = phone or cc.caller_phone
+        return cc
+    if is_new or company_name or phone or contact_name:
+        # Not found in the ERP → a new client. Placeholder (to discuss with the team): the agent takes the details and
+        # the request but confirms nothing; the wholesaler approves the new account first.
+        return CallContext(
+            client_id="",
+            name=company_name or contact_name or "Nouveau client",
+            status="new",
+            caller_contact=contact_name,
+            caller_phone=phone,
+        )
+    return None
+
+
+NEW_CLIENT_RULES = (
+    "NOUVEAU CLIENT, pas encore dans l'ERP. Accueille-le chaleureusement, demande ou confirme le nom de l'établissement, "
+    "l'adresse de livraison et ce qu'il veut commander. Ne crée et ne confirme AUCUNE commande : explique que l'équipe "
+    "ouvre son compte et le rappelle très vite pour valider sa première commande. Tu peux lui dire si un produit est "
+    "disponible et son prix catalogue."
+)
+
+
 DAYS_FR = {"mon": "lundi", "tue": "mardi", "wed": "mercredi", "thu": "jeudi", "fri": "vendredi", "sat": "samedi", "sun": "dimanche"}  # fmt: skip
 
 
@@ -210,10 +281,15 @@ def render_for_prompt(cc: CallContext | None) -> str:
     """The sheet as the model reads it (French, compact). '' when nothing is loaded."""
     if cc is None:
         return ""
+    on_phone = f"- Au téléphone : {cc.caller_contact}" + (f" ({cc.caller_phone})" if cc.caller_phone else "") if cc.caller_contact or cc.caller_phone else ""
+    if cc.is_new:
+        return "\n".join(p for p in [f"# Appelant identifié avant l'appel : {cc.name}", on_phone, NEW_CLIENT_RULES] if p)
     lines = [
         f"# Client au téléphone : {cc.name} ({cc.client_id})",
-        "Sa fiche est déjà chargée ci-dessous (à jour) : n'appelle pas get_client ni get_context pour ce client, sers-toi"
-        " de cette fiche. Utilise toujours les outils pour le stock d'un autre produit, les prix et la commande.",
+        "Il est déjà identifié (numéro reconnu) et sa fiche est chargée ci-dessous (à jour) : ne le recherche pas (pas de"
+        " search, get_client ni get_context pour ce client), sers-toi de cette fiche et de son id. Utilise toujours les"
+        " outils pour le stock d'un autre produit, les prix et la commande.",
+        on_phone,
         f"- Statut : {cc.status}" + (" — COMPTE BLOQUÉ : ne rien promettre, prendre le message" if cc.blocked else ""),
         f"- Jours de livraison (ERP, ils font foi même si une note dit le contraire) : "
         f"{', '.join(DAYS_FR.get(d, d) for d in cc.delivery_days) or 'inconnus'}",
@@ -234,4 +310,4 @@ def render_for_prompt(cc: CallContext | None) -> str:
         lines.append(f"- Note : {n}")
     for e in cc.context_entries:
         lines.append(f"## {e['title']} ({e['kind']})\n{e['body']}")
-    return "\n".join(lines)
+    return "\n".join(line for line in lines if line)

@@ -59,7 +59,21 @@ export type VoiceClientMessage =
   | { type: "audio_start"; mime: string; hint?: string } // caller pressed space (hint: optional STT vocabulary; mock STT returns it)
   | { type: "audio_end" } // caller released space; binary frames sent in between (every 100–250 ms) are the utterance, streamed to the STT as they arrive
   | { type: "text"; text: string } // typed instead of spoken (debug)
-  | { type: "reset" };
+  | { type: "reset" }
+  // Team 12: who is calling (caller ID form, before the call): an ERP client (clientId or phone) or a new client
+  | { type: "caller"; clientId?: string; contactName?: string; phone?: string; companyName?: string; isNew?: boolean };
+
+/** Team 12: the caller is identified and their sheet loaded (usedByAgent=false while TEAM_PRELOAD is off). */
+export interface CallerReady {
+  type: "caller_ready";
+  clientId?: string | null;
+  name: string;
+  contactName?: string | null;
+  isNew: boolean;
+  status?: string | null;
+  loadedMs?: number | null;
+  usedByAgent: boolean;
+}
 
 export interface TurnTimings {
   sttMs?: number;
@@ -71,6 +85,7 @@ export interface TurnTimings {
 
 export type VoiceServerMessage =
   | { type: "ready"; sessionId: string; stt: string; tts: string; llm: string }
+  | CallerReady
   // While the caller speaks (streaming STT): final=false, the whole text heard so far, resent as words are recognised;
   // `stable` = its leading part made of final words (won't change). Then once final=true: what the agent answers.
   | { type: "transcript"; track: "caller"; text: string; final: boolean; stable?: string }
