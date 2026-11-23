@@ -44,3 +44,14 @@ Tout passe, mais en écoutant :
   Domaine d'Amine K. (jours de livraison).
 
 Résultats bruts : `scenarios/results/*-baseline.json` (ignoré par git).
+
+## Rejeu T1 (`TEAM_SALES_RULES=1`, SALES_RULES v1 + 1-2 phrases / pas de raisonnement / pas de nom deviné)
+
+| Scénario · tour | Résultat | Appels modèle | Premier mot | Total | Tokens (sortie · cache écrit · cache lu) |
+|---|---|---|---|---|---|
+| S04 · 1 | PASS | 3 | 6 591 ms | 6 586 ms | 408 · 31 618 · 53 353 |
+
+Réponse : « Nadine, je n'ai plus de tourage AOP en stock pour jeudi et je n'ai pas encore de date de retour. Voulez-vous
+que je note votre demande de 2 cartons ? » Mieux : 2 phrases, aucun remplaçant ni raisonnement, aucune cause
+interne, `get_client` bien appelé. Reste : il ne donne pas « fin novembre » (lu dans `01-entreprise.md` comme une
+fin de grève, pas comme une date de retour).

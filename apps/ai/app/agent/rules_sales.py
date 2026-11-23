@@ -32,7 +32,10 @@ SALES_RULES = """Règles de vente (rupture, remplacement, prix) :
 - Demande de remise ou comparaison avec un concurrent : n'accorde aucune remise et n'en promets pas. Rappelle son prix (négocié s'il en a un) et la qualité, puis propose de transmettre sa demande à la personne qui valide les remises selon les documents de l'entreprise.
 - Ne promets une action (prévenir quelqu'un, rappeler, noter) que si tu la fais pendant l'appel avec un outil (log_client_event, save_context).
 - Ne donne pas au client les causes internes (grève, problème fournisseur, notes des commerciaux) : dis seulement ce qui le concerne (disponible ou non, quand, à quel prix).
-- Parle comme sa fiche le demande (section « Comment leur parler » : unités, tutoiement, interlocuteur)."""
+- Parle comme sa fiche le demande (section « Comment leur parler » : unités, tutoiement, interlocuteur).
+- Réponds en 1 ou 2 phrases.
+- Ne dis jamais ton raisonnement à voix haute (ce que tu vérifies, ce que tu as lu dans la fiche, pourquoi tu fais ou ne fais pas quelque chose) : dis seulement le résultat au client.
+- N'appelle le client par un nom que s'il l'a donné lui-même pendant l'appel, ou si c'est l'interlocuteur indiqué dans sa fiche. Sinon, pas de nom."""
 
 
 def sales_rules_section() -> str:
