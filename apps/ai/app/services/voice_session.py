@@ -5,7 +5,7 @@ One turn:
     audio_start … binary frames … audio_end   (or a typed `text` message)
       → STT, live: each frame goes to the provider as it arrives (services/utterance.py);
         "transcript" final:false while the caller speaks, then "transcript" final:true soon after audio_end
-      → agent (voice mode) streaming "agent_text" / "agent_tool"
+      → agent (voice mode) streaming "agent_tool", then "agent_text" with the completed reply
       → each finished sentence goes to TTS right away (sentence by sentence = first audio sooner)
       → "agent_audio_start" {mime}, binary audio chunks…, "agent_audio_end"   (one audio segment per turn)
       → "agent_done" {text, timings}
@@ -43,6 +43,7 @@ from app.schemas import (
     AudioEndMessage,
     AudioStartMessage,
     ChatMessage,
+    DoneEvent,
     ErrorEvent,
     ReadyMessage,
     ResetMessage,
@@ -62,6 +63,7 @@ from app.tools import all_tools
 from . import fillers
 from .utterance import Utterance
 from .vocabulary import stt_hint
+from .voice_reply import spoken_reply
 
 client_message = TypeAdapter(VoiceClientMessage)
 
@@ -209,7 +211,7 @@ class VoiceConnection:
         t0 = time.perf_counter()  # end of caller speech
         timings = TurnTimings()
         heard, spoken = "", ""
-        step_text = ""  # what the model said since the last tool result (not yet in `working`)
+        history_size = len(conv.history)
         working: list[ChatMessage] | None = None
         committed = False
         speaker: Speaker | None = None
@@ -234,27 +236,27 @@ class VoiceConnection:
             extra = {"call_context": conv.call_context} if conv.call_context is not None else {}
             async for ev in agent(working, llm=get_llm_client(), tools=all_tools(), mode="voice", actor_name=conv.actor_name, **extra):
                 match ev:
-                    case TextEvent(delta=delta):
+                    case TextEvent(delta=delta) if delta.strip():
                         if timings.llm_first_token_ms is None:
                             timings.llm_first_token_ms = ms_since(llm_start)
-                        spoken += delta
-                        step_text += delta
-                        await self.send(AgentTextMessage(delta=delta))
-                        speaker.push(delta)
                     case ToolCallEvent(call=call):
                         await self.send(AgentToolMessage(name=call.name, args=call.arguments))
                         await fillers.on_tool_call(speaker, call.name)  # team 12 (Mohamed Amine)
                     case ToolResultEvent(name=name, ok=ok, ms=ms):
-                        step_text = ""
                         await self.send(AgentToolMessage(name=name, ok=ok, ms=ms))
+                    case DoneEvent(message=message):
+                        spoken = spoken_reply(message.content) or "Je n’ai pas de réponse à vous donner pour le moment."
                     case ErrorEvent(message=message):
                         await speaker.stop_waiting()
                         await self.send(VoiceErrorMessage(message=message))
             timings.llm_total_ms = ms_since(llm_start)
-            conv.history = trim(working)
+            conv.history = trim_voice_turn(working, history_size, spoken)
             committed = True
 
-            # 3. Speak the last sentence and wait until all the audio is sent
+            # Only the completed reply goes to the caller. Text emitted before a tool call may be internal notes.
+            if spoken:
+                await self.send(AgentTextMessage(delta=spoken))
+                speaker.push(spoken)
             await speaker.finish()
             timings.tts_first_byte_ms = speaker.tts_first_byte_ms
             if speaker.first_byte_at:
@@ -262,15 +264,10 @@ class VoiceConnection:
             await self.send(AgentDoneMessage(text=spoken.strip(), timings=timings))
 
         except asyncio.CancelledError:
-            # Interrupted: keep what was heard, the tool rounds already done (an order the agent created must stay
-            # known) and what the agent had started to say. Not when the turn was already committed (barge-in during
-            # the last sentence's audio): that would duplicate it. trim() closes a tool call cut mid-run.
+            # Keep completed ERP calls and their results. Unfinished model text was never played.
             if heard and not committed:
                 kept = working if working is not None else [*conv.history, ChatMessage(role="user", content=heard)]
-                last = kept[-1]
-                if step_text.strip() and not (last.role == "assistant" and last.tool_calls):
-                    kept = [*kept, ChatMessage(role="assistant", content=f"{step_text.strip()} …")]
-                conv.history = trim(kept)
+                conv.history = trim_voice_turn(kept, history_size, spoken)
             if speaker:
                 await speaker.stop()
             raise
@@ -384,6 +381,19 @@ class Speaker:
                         await self.play_audio(result.mime, chunk)
             except Exception as e:
                 await self.send(VoiceErrorMessage(message=f"TTS : {e}"))
+
+
+def trim_voice_turn(messages: list[ChatMessage], history_size: int, reply: str) -> list[ChatMessage]:
+    """Persist the user's turn, ERP calls and the same reply sent to audio."""
+    history = messages[:history_size]
+    for message in messages[history_size:]:
+        if message.role != "assistant":
+            history.append(message)
+        elif message.tool_calls:
+            history.append(message.model_copy(update={"content": ""}))
+    if reply:
+        history.append(ChatMessage(role="assistant", content=reply))
+    return trim(history)
 
 
 def trim(history: list[ChatMessage], max_messages: int = 40) -> list[ChatMessage]:

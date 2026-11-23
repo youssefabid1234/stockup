@@ -25,3 +25,15 @@ Le chantier voix se trouve sur `mohamed-amine/voice-latency`. `TEAM_FILLERS=1` a
 1. Charger le pack du Fournil en local et ouvrir la page Voix avec les fournisseurs de l'équipe. Avec les interrupteurs éteints, jouer S01 et S06. Relever par tour `sttMs`, `llmFirstTokenMs`, `ttsFirstByteMs`, `totalMs` et `perceivedMs`. Noter les fournisseurs et distinguer le premier tour des suivants.
 2. Activer `TEAM_FILLERS=1`, redémarrer le service IA et rejouer S01, S05 et S06 dans les mêmes conditions. Relever quel son arrive en premier et à quel moment commence la réponse utile. Reporter médiane et pire cas dans [DECISIONS.md](../../../DECISIONS.md).
 3. Sur S10, reprendre Espace **pendant** le premier son. Vérifier que l'ancien tour se coupe et que la nouvelle demande est transcrite. Sur S11, dire « C'est tout, merci. Au revoir. » et écouter la réponse directe. Le script rejoue les tours l'un après l'autre. Le test d'intégration exerce l'interruption et la fermeture du segment pendant un tour actif. [S10](../../../scenarios/S10.json) · [S11](../../../scenarios/S11.json) · [Tests voix](../../../apps/ai/tests/test_voice_fillers.py)
+
+
+## Réponse naturelle au téléphone
+
+Le modèle peut envoyer quelques lignes de texte avant d'appeler l'ERP. Le lecteur les recevait immédiatement, ce qui pouvait rendre audible une note interne avant la salutation.
+
+1. Attendre la réponse finale avant de l'envoyer au navigateur et à la synthèse. Les annonces et le clavier du service voix peuvent toujours jouer pendant la recherche.
+2. Filtrer les blocs d'analyse explicites et les amorces de raisonnement reconnaissables. Garder dans l'historique les appels ERP, leurs résultats et la réponse entendue.
+3. Donner au modèle vocal des consignes de français parlé avec des exemples. Saluer naturellement à l'ouverture, donner le résultat utile, poser une question à la fois et garder le raisonnement silencieux.
+4. Tester une note avant l'appel ERP et une autre avant « Bonjour » dans la réponse finale. Vérifier le texte affiché, les mots transmis à la synthèse et l'historique après une interruption.
+
+La synthèse de la réponse utile commence après la fin de la génération du modèle. La comparaison au micro devra vérifier l'effet sur le délai jusqu'à cette réponse.
