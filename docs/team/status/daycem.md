@@ -1,4 +1,4 @@
-# Daycem – « Le bon vendeur »  ·  mis à jour lun. 23/11, 21h40
+# Daycem – « Le bon vendeur »  ·  mis à jour lun. 23/11, 22h00
 
 - Fait depuis la dernière sync :
   - T0 : photo de départ de S04 et S05 (tous les `TEAM_*` éteints, ERP remis à zéro avant chaque scénario). Détail plus bas.
@@ -55,3 +55,28 @@ Réponse : « Nadine, je n'ai plus de tourage AOP en stock pour jeudi et je n'ai
 que je note votre demande de 2 cartons ? » Mieux : 2 phrases, aucun remplaçant ni raisonnement, aucune cause
 interne, `get_client` bien appelé. Reste : il ne donne pas « fin novembre » (lu dans `01-entreprise.md` comme une
 fin de grève, pas comme une date de retour).
+
+## Rejeu T1b (+ règle « date de fin de rupture dans les documents = date de retour »)
+
+| Scénario · tour | Résultat | Appels modèle | Premier mot | Total | Tokens (sortie · cache écrit · cache lu) |
+|---|---|---|---|---|---|
+| S04 · 1 | PASS | 3 | 4 751 ms | 4 743 ms | 407 · 31 680 · 53 477 |
+| S05 · 1 | PASS | 4 | 9 476 ms | 9 475 ms | 692 · 4 659 · 109 984 |
+| S05 · 2 | PASS | 3 | 2 160 ms | 6 158 ms | 501 · 2 425 · 79 891 |
+| S05 · 3 | PASS | 4 | 2 401 ms | 9 670 ms | 826 · 4 892 · 111 533 |
+| S05 · 4 | PASS | 4 | 8 747 ms | 8 747 ms | 668 · 1 773 · 109 363 |
+
+- S04 : « Nadine, le tourage AOP est en rupture pour l'instant. Le retour à la normale est estimé à fin novembre, sans
+  promesse. Je note votre demande de 2 cartons pour jeudi ? » → date donnée, mais « sans promesse » sonne mécanique.
+- S05 : argument d'usage présent (« sert aussi pour vos chocolatines »), plus de raisonnement ni de cause interne.
+- Problèmes :
+  - la date n'est pas stable : S05 tour 1 dit « pas encore de date de retour » avec le même document ;
+  - le tour 1 de S05 pose deux questions (jour + accord) et donne le prix avant qu'on le demande ;
+  - le premier mot arrive plus tard aux tours 1 et 4 (9,5 s et 8,7 s) : le modèle ne dit plus « Je regarde. » ;
+  - **commande en double** : au tour 4, l'agent recrée un brouillon puis le confirme ; CMD-2026-007543 reste en
+    brouillon orphelin à côté de CMD-2026-007544 confirmée. Cause probable : le runner ne rejoue que le texte, l'agent
+    perd l'id du brouillon. Non vérifié en vrai appel vocal. → Amine K. (commande) et Youssef (runner).
+
+Corrections écrites ensuite (pas encore rejouées) : date dite naturellement (« normalement en fin de mois »), sans
+« sans promesse » ; une seule question à la fois (d'abord l'accord sur le remplaçant) ; une courte phrase d'attente
+neutre (« Je regarde. ») est autorisée, seul l'explication de ce qu'on vérifie est interdite.
