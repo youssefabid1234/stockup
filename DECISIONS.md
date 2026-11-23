@@ -159,6 +159,17 @@ suite complète de l'équipe passe (147 tests au mar. 24/11 00h30), interrupteur
 
 ## 5. Données modifiées pour la démo
 
-(À remplir : ex. promo tourage 82 % créée par `scripts/setup_demo_data.py`.)
+**Promo de démo sur le tourage 82 % (Daycem, T4), assumée et fictive.** Créée par l'API de l'ERP avec
+`scripts/setup_demo_data.py`, parce que `data/seed/` n'est pas dans git :
+
+- règle de prix `Promo tourage 82 % : −8 % jusqu'au 30/11` : groupe « Boulangeries » × Beurre de tourage 82 %
+  (`prd_0026`), −8 % sur le prix catalogue, du jour de l'ERP (24/11) à la fin du mois ; la note de la règle dit que
+  ce sont des données de démo ;
+- effet : 9,20 € → **8,46 €/kg** pour les boulangeries sans prix négocié (ex. Le Pétrin de Colomiers). Un prix négocié
+  gagne toujours (La Gerbe d'Or reste à 8,82 €) ; les autres clients restent à 9,20 € ;
+- pourquoi : la scène de démo « rupture du tourage AOP → remplaçant **en promo**, argumenté, avec accord ». L'agent ne
+  cite la promo que parce que `get_price` la renvoie (règle « jamais de promo inventée ») ;
+- à relancer après chaque `make reset` (la remise à zéro l'efface). Le script ne crée rien si la règle existe déjà ;
+  `--check` vérifie sans rien écrire.
 
 ## 6. Ce qui n'a pas marché / abandonné
