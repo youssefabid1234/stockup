@@ -7,22 +7,26 @@ actually say ("loup" for bar), client names — read from the ERP and sent to th
 import asyncio
 import time
 
+from app import team_flags
 from app.tools.erp import ErpClient
 
 TTL_S = 300  # refresh every 5 min
 RETRY_S = 30  # ERP down: try again sooner
 MAX_TERMS = 500
+BAKERY_TERMS = ("tradi", "tourage", "chocolatine", "gruau", "T55")
 
-_cache: tuple[float, list[str]] = (0.0, [])  # (expires at, terms)
+_cache: tuple[float, bool, list[str]] = (0.0, False, [])  # expiry, TEAM_FILLERS state, terms
 _lock = asyncio.Lock()
 
 
 async def company_terms(erp: ErpClient | None = None) -> list[str]:
-    """Client names, then product names, then product aliases, deduplicated: the most misheard first, since the
-    STT keeps only the first ones (soniox.py MAX_TERMS_CHARS). [] when the ERP does not answer (never raises)."""
+    """Prioritize bakery vocabulary and contacts when enabled, then company and product names and aliases."""
     global _cache
     async with _lock:
-        expires, terms = _cache
+        expires, enriched, terms = _cache
+        enabled = team_flags.fillers()
+        if enabled != enriched:
+            expires, terms = 0.0, []
         if time.monotonic() < expires:
             return terms
         erp = erp or ErpClient("voice_agent")
@@ -32,12 +36,18 @@ async def company_terms(erp: ErpClient | None = None) -> list[str]:
             )
             names = [c.get("name") for c in clients] + [p.get("name") for p in products]
             names += [a for p in products for a in p.get("aliases") or []]
+            if enabled:
+                first_names = [
+                    parts[0] for client in clients for contact in client.get("contacts") or []
+                    if (parts := (contact.get("name") or "").split())
+                ]
+                names = [*BAKERY_TERMS, *first_names, *names]
             terms = dedupe(names)[:MAX_TERMS]
-            _cache = (time.monotonic() + TTL_S, terms)
-        except Exception as e:  # ERP unreachable, other shape…: transcribe without vocabulary
+            _cache = (time.monotonic() + TTL_S, enabled, terms)
+        except Exception as e:  # Keep cached terms or the core bakery terms when the ERP is unavailable.
             print(f"[ai] STT vocabulary unavailable ({type(e).__name__}: {e}), retry in {RETRY_S}s", flush=True)
-            _cache = (time.monotonic() + RETRY_S, terms)
-        return _cache[1]
+            _cache = (time.monotonic() + RETRY_S, enabled, terms or (list(BAKERY_TERMS) if enabled else []))
+        return _cache[2]
 
 
 def dedupe(names: list) -> list[str]:
@@ -61,4 +71,4 @@ async def stt_hint(stt_name: str, hint: str | None) -> str | None:
 
 def reset_cache() -> None:
     global _cache
-    _cache = (0.0, [])
+    _cache = (0.0, False, [])
