@@ -31,6 +31,21 @@ def test_ten_of_tradi_means_ten_sacks():
 # ── Daycem · rules_sales ───────────────────────────────────────────────────────────────────────────────────────
 
 
+def test_sales_rules_follow_their_switch(monkeypatch):
+    monkeypatch.delenv("TEAM_SALES_RULES", raising=False)
+    assert rules_sales.sales_rules_section() == ""
+    monkeypatch.setenv("TEAM_SALES_RULES", "1")
+    assert "remplaçant" in rules_sales.sales_rules_section()
+
+
+def test_sales_rules_stay_general():
+    """The jury plays other clients and products: the rules must not name any of ours (facts come from the ERP)."""
+    text = rules_sales.SALES_RULES.lower()
+    for specific in ["sarrailh", "colomiers", "escaich", "gerbe", "nadine", "guy", "bernard", "julien",
+                     "tourage", "82", "aop", "cli_", "prd_"]:
+        assert specific not in text, f"rule mentions {specific!r}"
+
+
 @TODO
 def test_refuses_substitution_from_preferences():
     prefs = "Tradition du Lauragais, tourage AOP exclusivement. Jamais de substitution sur le beurre."
