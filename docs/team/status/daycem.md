@@ -1,26 +1,26 @@
-# Daycem – « Le bon vendeur »  ·  mis à jour lun. 23/11, 22h30
+# Daycem – « Le bon vendeur »  ·  mis à jour mar. 24/11, 0h30
 
 - Fait depuis la dernière sync :
-  - T0 : photo de départ de S04 et S05 (tous les `TEAM_*` éteints, ERP remis à zéro avant chaque scénario). Détail plus bas.
-  - T1 : `SALES_RULES` écrit dans `agent/rules_sales.py`, rejoué 3 fois (T1, T1b, T1c). Les règles sont générales
-    (aucun nom de client, de produit ou de personne) ; un test le vérifie (`test_sales_rules_stay_general`).
-  - Dernière correction (pas encore rejouée) : la date de retour est donnée telle qu'elle est écrite dans les
-    documents, sans la transformer ni la déduire.
-- En cours : T2 (naturel).
+  - T1 : `SALES_RULES` complet (rupture, un seul remplaçant argumenté avec accord, date de retour telle qu'écrite,
+    pas de remise, pas de raisonnement à voix haute, 1-2 phrases, une seule question, notes internes privées ;
+    client qui refuse : solution sans autre produit + demande notée avec `log_client_event`). Règles générales,
+    vérifiées par `test_sales_rules_stay_general`. Les deux dernières règles ne sont pas encore rejouées.
+  - T3 (début) : `substitution_policy` (mots-clés : refuse / accepte / demander / inconnu) et `decide_substitution`
+    (Jev seulement si « inconnu », toute erreur → demander). 13 tests sur de vraies fiches ; les 104 fiches vérifiées
+    sans anomalie. `refuses_substitution` garde le contrat d'interfaces.md §5.
+  - Test Jev seul sur 10 fiches : 6/10 puis 5/10, ~150-170 ms → `docs/team/jev-substitution-test.md` (pour DECISIONS.md).
+- En cours : T3 `rank_alternatives` (substituts listés dans les documents d'abord), plan à valider.
 - Bloqué / j'attends : rien.
 - J'ai besoin de (qui, quoi) :
-  - **Amine K. : brouillon orphelin sur S05** (2 rejeux sur 2). Au tour 3 l'agent crée un brouillon, au tour 4 il en
-    recrée un et confirme le second : CMD-2026-007543 reste en brouillon à côté de CMD-2026-007544 confirmée. Cause
-    probable : le runner ne rejoue que le texte, l'id du brouillon est perdu. Non vérifié en vrai appel vocal.
-  - Youssef : `load_call_context` n'est appelé nulle part (ni `voice_session.py` ni `/chat`), donc la fiche n'est
-    jamais préchargée. Aujourd'hui l'agent relit la fiche avec `search` + `get_client` + `get_context` à chaque tour.
-  - Youssef (T3 / `product_insight`) : `GET /api/products/prd_0025/alternatives` classe par prix proche :
-    demi-sel, beurre doux AOP, puis seulement le tourage 82 %. `rank_alternatives` devra classer par usage.
-  - Mohamed Amine : « Je regarde. » n'est dit que si le modèle y pense (tour 1 seulement sur S05) ; aux autres tours,
-    5,8 à 8,3 s de silence. Les phrases d'attente automatiques sont nécessaires.
+  - **Youssef** : brancher `decide_substitution` / `rank_alternatives` dans `product_insight` (encore `NotImplementedError`).
+  - **Amine K. / Youssef** : brouillon orphelin vu 2 fois sur S05 (CMD-2026-007543 en brouillon à côté de la
+    commande confirmée). Le runner rejoue maintenant tout l'historique (PR #4) et `order_edit` existe (PR #3) :
+    **à revérifier** au prochain rejeu.
+  - **Mohamed Amine** : sa proposition « donne directement le résultat, le lecteur vocal fait patienter » (quand
+    `TEAM_FILLERS=1`) contredit ma règle « Je regarde. est autorisé » : à trancher ensemble avant d'allumer les deux.
 - Interrupteur(s) : TEAM_SALES_RULES = on sur ma branche · prêt à allumer sur main ? oui (S04 et S05 passent)
-- Mesure (scénarios, ms) : voir les tableaux ci-dessous.
-- Changement de contrat demandé (interfaces.md) : aucun.
+- Mesure (scénarios, ms) : voir les tableaux ci-dessous (T0 → T1c : S04 premier mot 7,5 s → 0,7 s).
+- Changement de contrat demandé (interfaces.md) : aucun ; ajout de `substitution_policy` et `decide_substitution`.
 
 ## Photo de départ T0 (kit seul, Sonnet, via `POST /chat`)
 
