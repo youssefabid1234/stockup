@@ -44,7 +44,6 @@ def test_sales_rules_stay_general():
         assert specific not in text, f"rule mentions {specific!r}"
 
 
-@TODO
 def test_refuses_substitution_from_preferences():
     prefs = "Tradition du Lauragais, tourage AOP exclusivement. Jamais de substitution sur le beurre."
     assert rules_sales.refuses_substitution(prefs, "Beurre de tourage AOP Charentes-Poitou 84 %")

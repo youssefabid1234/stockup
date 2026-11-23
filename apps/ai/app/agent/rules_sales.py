@@ -17,6 +17,10 @@ pas en accorder), price rules (GET /api/price-rules).
 
 from __future__ import annotations
 
+import re
+import unicodedata
+from typing import Literal
+
 from app import team_flags
 
 # v1 (T1). GENERAL on purpose: no client, product or person name. The jury plays other scenarios, and the facts
@@ -51,13 +55,114 @@ def sales_rules_section() -> str:
     return SALES_RULES.strip() if team_flags.sales_rules() else ""
 
 
+# ── T3 · does this client accept a substitute for this product? ──────────────────────────────────────────────────
+#
+# Keywords first: 92 of the 104 cards carry a ready-made sentence (« Refuse / Accepte les substitutions »), read here
+# without any model. Jev only when no sentence is found (measured: 5-6/10 alone, ~150 ms; see
+# docs/team/jev-substitution-test.md). Whatever the answer, "accepte" only means "you may PROPOSE one substitute":
+# the caller's explicit yes is still required before adding it (SALES_RULES, and substitute_for in add_order_line).
+
+Policy = Literal["refuse", "accepte", "demander", "inconnu"]
+
+# "refuse ... substitution(s)", "jamais de substitution", "aucune substitution", "ne jamais substituer"
+_REFUSAL = re.compile(
+    r"(refuse (?:les |toute |toutes les )?substitutions?|jamais de substitutions?|aucune substitution"
+    r"|ne (?:jamais )?substitue[rz]?|jamais substituer)(?P<rest>[^.;:]*)"
+)
+_ACCEPT = re.compile(r"accepte (?:les |des )?substitutions?")
+# "... sans être prévenu / sans accord / si on prévient" turns a refusal into "yes, if we ask first": on the phone we do.
+_WITH_NOTICE = re.compile(r"\b(sans (?:etre |l')?(?:prevenu|prevenir|accord|son accord)|si on (?:le )?previent)\b")
+_SCOPE = re.compile(r"^\s*(?:sur\s+)?(?:(?:le|la|les|un|une|des|du|de)\s+|l')([a-z]+)")
+# words that say nothing about which product it is
+_GENERIC = {
+    "de", "du", "des", "la", "le", "les", "et", "en", "au", "aux", "pour", "avec", "sans", "plaque", "plaques", "carton",
+    "cartons", "sac", "sacs", "kg", "brique", "motte", "piece", "pieces", "lot", "boite", "pot", "seau", "bidon",
+}  # fmt: skip
+
+
+def _norm(text: str) -> str:
+    """Lowercase, no accents, so « Être prévenu » and « etre prevenu » compare the same."""
+    text = unicodedata.normalize("NFKD", text or "").encode("ascii", "ignore").decode()
+    return re.sub(r"\s+", " ", text.lower())
+
+
+def _words(text: str) -> set[str]:
+    return {w for w in re.findall(r"[a-z]+", _norm(text)) if len(w) > 1 and w not in _GENERIC}
+
+
+def _applies_to(scope: str | None, product_words: set[str]) -> bool:
+    """A sentence scoped to « le beurre » applies to « Beurre de tourage … »; no scope = every product."""
+    return scope is None or scope in product_words or scope.rstrip("s") in product_words
+
+
+def _names_product(preferences: str, product_words: set[str]) -> bool:
+    """Do the preferences name THIS product as their choice (e.g. « Tourage AOP pour la viennoiserie »)?
+    Two distinctive words of the product in one clause."""
+    return any(len(_words(clause) & product_words) >= 2 for clause in re.split(r"[.;,]", preferences or ""))
+
+
+def substitution_policy(product_name: str, preferences: str, notes: list[str] | tuple[str, ...] = ()) -> Policy:
+    """
+    What the card says about substituting this product, from keywords only (no model, no network):
+      "refuse"   a refusal that applies to this product (preferences or notes): announce the shortage, no other product
+      "accepte"  substitutes accepted (at least if we tell them): propose ONE, then ask for a yes
+      "demander" accepted in general, but the preferences name this very product: ask before naming a substitute
+      "inconnu"  nothing usable: let Jev decide (decide_substitution), or ask
+    A refusal in the preferences wins over a softer note.
+    """
+    product_words = _words(product_name)
+    accepted = False
+    for text in [preferences, *notes]:
+        for m in _REFUSAL.finditer(_norm(text)):
+            rest = m.group("rest")
+            notice = _WITH_NOTICE.search(rest)
+            scope = _SCOPE.match(_WITH_NOTICE.sub("", rest))
+            if not _applies_to(scope.group(1) if scope else None, product_words):
+                continue
+            if notice:
+                accepted = True
+            else:
+                return "refuse"
+        if _ACCEPT.search(_norm(text)):
+            accepted = True
+    if not accepted:
+        return "inconnu"
+    return "demander" if _names_product(preferences, product_words) else "accepte"
+
+
 def refuses_substitution(preferences: str, product_name: str) -> bool:
-    """
-    True if the client's preferences forbid substituting this product (e.g. "Jamais de substitution sur le beurre").
-    TODO(Daycem): implement + tests (tests/test_rules_sales.py). Simple keyword rules first; Jev can decide yes/no
-    if text is ambiguous (clients/jev.py).
-    """
-    raise NotImplementedError
+    """True if the client's preferences forbid substituting this product (e.g. "Jamais de substitution sur le beurre").
+    Contract of interfaces.md §5 (product_insight). Keywords only; « demander » is not a refusal."""
+    return substitution_policy(product_name, preferences) == "refuse"
+
+
+JEV_YES, JEV_NO = 0.8, 0.2  # below / above: too unsure, ask the caller (thresholds of the measured test)
+
+
+async def decide_substitution(
+    product_name: str,
+    preferences: str,
+    notes: list[str] | tuple[str, ...] = (),
+    profile: str = "",
+    jev=None,  # clients.jev.JevClient, or None (no key): then "demander"
+) -> Literal["refuse", "accepte", "demander"]:
+    """Keywords first; Jev only when the card has no usable sentence; any doubt or error → "demander"."""
+    policy = substitution_policy(product_name, preferences, notes)
+    if policy != "inconnu":
+        return policy
+    if jev is None:
+        return "demander"
+    state = {"preferences": preferences, "notes": list(notes), **({"profil": profile} if profile else {})}
+    try:
+        p = await jev.yes_no(
+            state,
+            f"Ce client accepte-t-il un autre produit à la place de « {product_name} », quand celui-ci manque ?",
+            "La fiche dit qu'il accepte les remplacements pour ce produit, au moins s'il est prévenu.",
+            "La fiche dit qu'il refuse les remplacements (en général ou sur ce produit).",
+        )
+    except Exception:  # Jev down / slow: never block a voice turn on it
+        return "demander"
+    return "accepte" if p >= JEV_YES else "refuse" if p <= JEV_NO else "demander"
 
 
 def rank_alternatives(alternatives: list[dict], preferences: str) -> list[dict]:
