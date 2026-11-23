@@ -147,3 +147,44 @@ def test_unusual_quantity_is_asked_first():
     assert r["canConfirm"] is True  # asking is enough: the caller may really want it
     normal = {**order, "lines": [line("prd_0001", 20)]}
     assert ro.review(normal, PRODUCTS, usual)["askFirst"] == []
+
+
+# ── Garde-fou doublons (S05 / S31) ──
+
+
+def test_voice_drafts_left_behind_are_duplicates_other_channels_are_not():
+    me = {"id": "ord_new", "deliveryDate": "2026-11-25", "totalHt": 276, "warnings": [], "lines": [line("prd_0001", 10)]}
+    client_orders = [
+        {"id": "ord_new", "status": "draft", "source": "voice_agent", "deliveryDate": "2026-11-25"},  # itself
+        {"id": "ord_old", "number": "CMD-1", "status": "draft", "source": "voice_agent", "deliveryDate": "2026-11-25"},
+        {"id": "ord_wa", "number": "CMD-2", "status": "draft", "source": "whatsapp", "deliveryDate": "2026-11-25"},
+        {"id": "ord_other_day", "status": "confirmed", "source": "phone", "deliveryDate": "2026-11-28"},
+        {"id": "ord_gone", "status": "cancelled", "source": "voice_agent", "deliveryDate": "2026-11-25"},
+    ]
+    r = ro.review(me, PRODUCTS, [], client_orders)
+    assert [d["orderId"] for d in r["duplicateDrafts"]] == ["ord_old"]
+    assert [d["orderId"] for d in r["sameDayOrders"]] == ["ord_wa"]  # a WhatsApp draft is mentioned, never cancelled
+
+
+def test_no_other_orders_no_extra_keys():
+    me = {"id": "ord_new", "deliveryDate": "2026-11-25", "totalHt": 276, "warnings": [], "lines": [line("prd_0001", 10)]}
+    r = ro.review(me, PRODUCTS, [], [{"id": "ord_new", "status": "draft", "source": "voice_agent"}])
+    assert "duplicateDrafts" not in r and "sameDayOrders" not in r
+
+
+def test_rules_say_erp_days_win_over_closed_notes(monkeypatch):
+    monkeypatch.setenv("TEAM_ORDER_RULES", "1")
+    rules = ro.order_rules_section()
+    assert "Fermé le" in rules and "font foi" in rules
+    assert "duplicateDrafts" in rules and "cancel_draft_order" in rules
+
+
+def test_duplicate_draft_detail_says_if_it_is_the_same_order():
+    me = {"id": "ord_new", "deliveryDate": "2026-11-26", "totalHt": 189, "warnings": [], "lines": [line("prd_0001", 10)]}
+    same = {"id": "ord_a", "status": "draft", "source": "voice_agent", "deliveryDate": "2026-11-26", "lines": [line("prd_0001", 10)]}
+    other = {"id": "ord_b", "status": "draft", "source": "voice_agent", "deliveryDate": "2026-11-26",
+             "lines": [line("prd_0001", 200), line("prd_0011", 3)]}
+    dups = {d["orderId"]: d for d in ro.review(me, PRODUCTS, [], [same, other])["duplicateDrafts"]}
+    assert dups["ord_a"]["sameAsThis"] is True
+    assert dups["ord_b"]["sameAsThis"] is False
+    assert dups["ord_b"]["readback"] == "200 sacs de Farine de blé T55 tradition française, 3 pains de Levure fraîche boulangère"

@@ -33,12 +33,22 @@ async def review_order(ctx: ToolContext, order_id: str = Field(description="ex. 
     """
     À appeler après avoir créé ou modifié une commande, avant de la relire au client : phrase de relecture prête à dire
     (« readback »), alertes à dire au client (« alerts »), remarque franco 150 € (« franco »), quantités inhabituelles à faire
-    confirmer (« askFirst ») et « canConfirm » (false = ne pas confirmer). Read-back of an order before confirming it.
+    confirmer (« askFirst »), « canConfirm » (false = ne pas confirmer), brouillons en double de l'appel à abandonner
+    (« duplicateDrafts ») et autres commandes du client pour le même jour (« sameDayOrders »). Read-back before confirming.
     """
     from app.agent.rules_order import review  # here, not at the top: app.agent imports the tools package
 
     order = await ctx.erp.get(f"/api/orders/{enc(order_id)}")
-    products, usual = await asyncio.gather(
-        products_by_id(ctx), ctx.erp.get(f"/api/clients/{enc(order['clientId'])}/usual")
+    client_id = order["clientId"]
+    products, usual, open_orders = await asyncio.gather(
+        products_by_id(ctx),
+        ctx.erp.get(f"/api/clients/{enc(client_id)}/usual"),
+        ctx.erp.get("/api/orders", {"clientId": client_id, "status": "draft,confirmed,prepared", "limit": 50}),
     )
-    return review(order, products, usual or [])
+    open_orders = open_orders.get("items", open_orders) if isinstance(open_orders, dict) else open_orders or []
+    # Other drafts made by the agent (rare: 0 or 1): load their lines so they can be read back / compared
+    others = [o for o in open_orders if o["id"] != order_id and o.get("status") == "draft" and o.get("source") == "voice_agent"]
+    details = await asyncio.gather(*(ctx.erp.get(f"/api/orders/{enc(o['id'])}") for o in others))
+    by_id = {d["id"]: d for d in details}
+    open_orders = [{**o, "lines": by_id[o["id"]]["lines"]} if o["id"] in by_id else o for o in open_orders]
+    return review(order, products, usual or [], open_orders)

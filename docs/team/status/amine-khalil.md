@@ -1,4 +1,20 @@
-# Amine Khalil – 🧠 « La commande juste »  ·  mis à jour lun. 23/11 22h50
+# Amine Khalil – 🧠 « La commande juste »  ·  mis à jour lun. 23/11 23h30
+
+- Fait (23h30) – **garde-fous doublons + note « Fermé le mercredi »**, suite à l'audit de S05 (Daycem) :
+  - **S05 audité** (rupture AOP → 82 %, Pétrin de Colomiers) : aucun doublon. Mais **sans** `TEAM_ORDER_RULES` il
+    **échoue** (2/4) : l'agent croit la note « fermé le mercredi », déplace la livraison au lundi 30/11 et laisse un
+    brouillon jamais confirmé. **Avec** mes règles : 4/4, 1 commande confirmée mercredi 25/11.
+  - Règle : les notes « Fermé le … » sont ignorées (l'ERP fait foi), l'agent ne pose plus la question.
+  - `review_order` renvoie aussi **`duplicateDrafts`** (autres brouillons créés par l'agent pour ce client, avec leur
+    contenu relu et `sameAsThis`) et **`sameDayOrders`** (autres commandes du même jour, ex. un brouillon WhatsApp).
+    Règle : doublon identique → abandonné sans en parler ; brouillon différent → relu au client qui choisit annuler ou
+    fusionner ; jamais deux commandes ouvertes par l'agent. Les brouillons WhatsApp / e-mail ne sont **jamais** annulés.
+  - Test « brouillon oublié » (200 tradi + 3 seigle créé à la main, puis Nadine commande 10 tradi) : avant ce correctif
+    l'agent proposait « garder les deux séparées » et le brouillon restait (risque : l'ADV le confirme → double
+    livraison) ; maintenant il le relit, insiste, et l'**annule** à la demande → 1 commande confirmée, l'autre annulée.
+  - Tests : 112 passent. Rejoué en vocal : S05 4/4, S30 3/3, S31 3/3, S32 3/3 (1 commande juste à chaque fois).
+- Pour **Daycem** : S05 passe avec `TEAM_ORDER_RULES=1` ; sans, il échoue sur la fausse fermeture du mercredi.
+- Proposition à la sync : **allumer `TEAM_ORDER_RULES=1` par défaut sur main** (`.env.example`).
 
 - Fait (T3 / T4, 22h50) :
   - Outil **`review_order`** (`tools/order_review.py`, logique déterministe `rules_order.review`) : à appeler après
