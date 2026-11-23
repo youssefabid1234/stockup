@@ -64,6 +64,27 @@ Lecture : les répliques lentes (7-8 s) sont celles où le modèle enchaîne 5 o
 ≈ 0,15 s. Cibles : moins d'allers-retours (super-outil, fiche préchargée) et un premier son plus tôt (agent rapide,
 phrases d'attente de Mohamed Amine).
 
+**T2 · Fiche client préchargée (`TEAM_PRELOAD`, lun. 23/11 23h50).** Dès que le client est identifié (get_client, ou
+une recherche qui ne renvoie qu'un client), sa fiche (statut, jours de livraison ERP, préférences, panier habituel
+**avec le stock**, encours, notes) est chargée en arrière-plan, en parallèle, puis ajoutée à la fin du prompt des
+répliques suivantes (« n'appelle plus get_client ni get_context »). Les notes « Fermé le <jour> » sont retirées
+quand l'ERP livre ce jour (décision : l'ERP et l'historique font foi).
+
+Mesure via /chat, `--reset`, `TEAM_ORDER_RULES=1`, 9 répliques (S01, S02, S05) :
+
+| | Interrupteur éteint | Allumé |
+|---|---|---|
+| Répliques réussies | 9/9 | 9/9 |
+| 1re réplique de chaque appel | 7,6 · 5,7 · 4,7 s | 6,9 · 6,2 · 5,5 s (identique : fiche pas encore connue) |
+| Répliques suivantes (médiane) | 2,7 s | 4,4 s (bruit ±1-2 s, pas de gain mesurable) |
+| S02 « mettez-en 12 » | recrée un brouillon et relit **tout** l'habituel (11 lignes) | **modifie la ligne** et relit 1 ligne |
+| S05 (note « Fermé le mercredi ») | ne parle pas du mercredi | demande « vous êtes bien ouvert mercredi ? » (lu via get_context au 1er tour, avant la fiche) |
+
+Lecture : avec l'historique complet (outil de rejeu corrigé), l'agent **ne recherchait déjà plus le client** après le 1er
+tour : la fiche n'enlève donc pas d'appel aux tours suivants. **Le temps se perd au 1er tour** (4 à 6 appels d'outils
+avant que le client soit connu). La fiche reste **désactivée par défaut** ; prochaine étape : identifier le client
+dès le début du 1er tour (fiche en parallèle de la réflexion) et le super-outil produit.
+
 **Outil de rejeu corrigé** : en /chat il renvoie maintenant l'historique complet (outils appelés + résultats) comme la
 page Voix ; avant, l'agent oubliait son brouillon et recommençait (S01·2 : 6 outils, 9,4 s → 1 outil, 2,4 s).
 ### Commande juste (Amine Khalil)
