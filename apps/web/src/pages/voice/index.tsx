@@ -13,6 +13,7 @@ import { MicOff, Mic, RotateCcw, Send, VolumeX } from "lucide-react";
 import { cn } from "@/lib/cn";
 import { Button, Dot, IconButton, Input, Kbd, Page, PageHeader, Spinner, Tabs } from "@/ui";
 import { useVoiceSession, type Activity, type Conn } from "@/features/assistant/useVoiceSession";
+import { CallerBar, CallerForm } from "./caller";
 import { CommandMode } from "./command";
 import { LiveActivity } from "./live-activity";
 import { MetricsBar } from "./metrics";
@@ -85,7 +86,8 @@ function CallMode({ modeSwitch }: { modeSwitch: ReactNode }) {
     setText("");
   };
 
-  const ready = v.conn === "ready";
+  const connected = v.conn === "ready";
+  const ready = connected && !!v.caller; // team 12: no talking before the caller is identified
 
   return (
     <Page>
@@ -104,14 +106,23 @@ function CallMode({ modeSwitch }: { modeSwitch: ReactNode }) {
               </div>
             ) : null}
             {v.activity === "speaking" ? <Button size="sm" variant="ghost" icon={VolumeX} kbd="Échap" onClick={v.stopPlayback}>Couper</Button> : null}
-            <Button size="sm" icon={RotateCcw} onClick={v.reset} disabled={!ready}>Nouvelle session</Button>
+            <Button size="sm" icon={RotateCcw} onClick={v.reset} disabled={!ready}>Recommencer l'appel</Button>
           </>
         }
       />
       <div className="flex min-h-0 flex-1">
         <section className="flex min-w-0 flex-1 flex-col">
-          <MetricsBar turns={v.turns} />
-          <Timeline turns={v.turns} activity={v.activity} level={v.level} />
+          {v.caller ? (
+            <>
+              <CallerBar caller={v.caller} onHangUp={v.endCall} />
+              <MetricsBar turns={v.turns} />
+              <Timeline turns={v.turns} activity={v.activity} level={v.level} />
+            </>
+          ) : (
+            <div className="flex min-h-0 flex-1 overflow-y-auto px-5 py-6">
+              <CallerForm disabled={!connected} pending={v.callerPending} onStart={v.identifyCaller} />
+            </div>
+          )}
 
           {v.mic === "denied" || v.mic === "unsupported" ? (
             <div className="flex shrink-0 items-center gap-2 border-t border-border bg-warning/[.08] px-5 py-2 text-[12px]">
@@ -129,7 +140,7 @@ function CallMode({ modeSwitch }: { modeSwitch: ReactNode }) {
             <div className="flex shrink-0 flex-col gap-1 xl:w-[180px]">
               <span className={cn("flex items-center gap-1.5 text-[13px] font-medium", v.activity !== "idle" && "text-violet")}>
                 {v.activity === "thinking" ? <Spinner size={12} /> : v.activity !== "idle" ? <Dot tone="violet" pulse /> : null}
-                {ready ? STATE_LABEL[v.activity] : v.conn === "connecting" ? "Connexion…" : "Hors ligne"}
+                {ready ? STATE_LABEL[v.activity] : connected ? "Identifiez l'appelant" : v.conn === "connecting" ? "Connexion…" : "Hors ligne"}
               </span>
               {v.activity === "recording" ? (
                 <LevelBars level={v.level} />

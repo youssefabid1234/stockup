@@ -1,4 +1,35 @@
-# Amine Khalil – 🧠 « La commande juste »  ·  mis à jour lun. 23/11 22h50
+# Amine Khalil – 🧠 « La commande juste »  ·  mis à jour mar. 24/11 00h05
+
+- Fait (00h05) – **prix dits à l'oral calculés par le code** (outil `quote_line`) :
+  - Constat à l'écoute d'un enregistrement de S05 : l'agent calculait de tête et se trompait en direct (« 92 euros la
+    plaque de 2 kilos… pardon, 18 euros 40 la plaque »).
+  - `rules_order.py` : `packaging` (carton 5 plaques de 2 kg → carton = 10 kg, plaque = 2 kg ; carton 6 × 1 L…),
+    `to_selling_qty` (« 3 cartons » de tourage → 30 kg), `quote` / `fr_money` (« 9 euros 20 le kilo, soit 92 euros le
+    carton de 10 kilos » ; « 276 euros hors taxes pour 30 kilos, soit 3 cartons »). Prix client résolu par l'ERP
+    (`/api/prices/resolve`, prix négocié / règles de groupe) : rien n'est recodé.
+  - Outil **`quote_line`** (`tools/order_review.py`) + règle « pour un prix, appelle quote_line, ne calcule jamais ».
+  - Tests : +5 → 117 passent. S05 réenregistré : prix juste du premier coup, appel de 68 s → 56 s, 1 commande
+    confirmée mercredi 25/11.
+  - Pour **Daycem** : S05 tour 2 attend `get_price` ou `product_insight` ; ajouter `quote_line` à `tools_any`.
+- Pour **tous** : mettre `TEAM_ORDER_RULES=1` dans son `.env` après la fusion (`.env.example` est passé à 1).
+- Outil d'enregistrement : un appel complet en MP3 (client = 2e voix ElevenLabs, agent = vraie réponse via WS /voice)
+  dans `scenarios/results/audio/` (ignoré par git). Je peux le partager si l'équipe le veut pour la vidéo.
+
+- Fait (23h30) – **garde-fous doublons + note « Fermé le mercredi »**, suite à l'audit de S05 (Daycem) :
+  - **S05 audité** (rupture AOP → 82 %, Pétrin de Colomiers) : aucun doublon. Mais **sans** `TEAM_ORDER_RULES` il
+    **échoue** (2/4) : l'agent croit la note « fermé le mercredi », déplace la livraison au lundi 30/11 et laisse un
+    brouillon jamais confirmé. **Avec** mes règles : 4/4, 1 commande confirmée mercredi 25/11.
+  - Règle : les notes « Fermé le … » sont ignorées (l'ERP fait foi), l'agent ne pose plus la question.
+  - `review_order` renvoie aussi **`duplicateDrafts`** (autres brouillons créés par l'agent pour ce client, avec leur
+    contenu relu et `sameAsThis`) et **`sameDayOrders`** (autres commandes du même jour, ex. un brouillon WhatsApp).
+    Règle : doublon identique → abandonné sans en parler ; brouillon différent → relu au client qui choisit annuler ou
+    fusionner ; jamais deux commandes ouvertes par l'agent. Les brouillons WhatsApp / e-mail ne sont **jamais** annulés.
+  - Test « brouillon oublié » (200 tradi + 3 seigle créé à la main, puis Nadine commande 10 tradi) : avant ce correctif
+    l'agent proposait « garder les deux séparées » et le brouillon restait (risque : l'ADV le confirme → double
+    livraison) ; maintenant il le relit, insiste, et l'**annule** à la demande → 1 commande confirmée, l'autre annulée.
+  - Tests : 112 passent. Rejoué en vocal : S05 4/4, S30 3/3, S31 3/3, S32 3/3 (1 commande juste à chaque fois).
+- Pour **Daycem** : S05 passe avec `TEAM_ORDER_RULES=1` ; sans, il échoue sur la fausse fermeture du mercredi.
+- Proposition à la sync : **allumer `TEAM_ORDER_RULES=1` par défaut sur main** (`.env.example`).
 
 - Fait (T3 / T4, 22h50) :
   - Outil **`review_order`** (`tools/order_review.py`, logique déterministe `rules_order.review`) : à appeler après

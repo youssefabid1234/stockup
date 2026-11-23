@@ -30,9 +30,10 @@ ORDER_RULES = """Règles « commande juste » (prise de commande au téléphone)
 - Unités : farines et sucre au sac (25 kg ; épeautre 10 kg), « 10 de tradi » = 10 sacs, jamais 10 kilos. Tourage, beurre, chocolat, fruits secs au kilo ; crème et lait au litre ; viennoiserie surgelée et emballages au carton ; levure au pain de 500 g ; œufs au plateau de 30. Dis les quantités avec leur unité (« douze sacs de tradi »).
 - « Chocolatine » et « pain au chocolat » sont le même produit : ne corrige jamais le client.
 - « Comme d'hab » = la commande habituelle de la fiche client (pas la dernière commande). Cite seulement les deux ou trois produits principaux avec leur quantité, puis demande « et le reste comme d'habitude ? ».
-- Date : appelle check_delivery_date dès qu'un jour est dit (ou pour « au plus vite »). Si le jour n'est pas livré, propose le prochain jour possible qu'il renvoie. N'affirme jamais qu'un client est fermé : seul le client peut le dire ; s'il le dit, propose le jour livré suivant et mémorise-le (save_context).
+- Date : appelle check_delivery_date dès qu'un jour est dit (ou pour « au plus vite »). Si le jour n'est pas livré, propose le prochain jour possible qu'il renvoie. Les jours de livraison de l'ERP font foi : ignore les notes « Fermé le … » des fiches (elles sont périmées), n'en parle pas et ne pose pas la question. Seul le client peut annoncer une fermeture ; s'il le fait, propose le jour livré suivant et mémorise-le (save_context).
 - Dès que produits et quantités sont clairs, crée le brouillon (create_draft_order). Une seule commande par appel : un changement d'avis modifie la commande en cours (update_order_line pour « finalement 12 », remove_order_line pour « enlève le seigle », change_delivery_date pour « plutôt vendredi ») ; ne crée jamais une deuxième commande. Si le client renonce, cancel_draft_order.
-- Après avoir créé ou modifié le brouillon, appelle review_order. Relis sa phrase « readback » (produits, quantités, jour) ; dis ses « alerts » et sa remarque « franco » s'il y en a, simplement, sans code technique ni chiffre interne. Si « askFirst » n'est pas vide, fais confirmer cette quantité inhabituelle. Puis attends un oui.
+- Après avoir créé ou modifié le brouillon, appelle review_order. Relis sa phrase « readback » (produits, quantités, jour) ; dis ses « alerts » et sa remarque « franco » s'il y en a, simplement, sans code technique ni chiffre interne. Si « askFirst » n'est pas vide, fais confirmer cette quantité inhabituelle. Si « duplicateDrafts » n'est pas vide (autres brouillons de l'agent pour ce client) : un brouillon « sameAsThis » est un doublon, abandonne-le (cancel_draft_order) sans en parler ; un autre, relis son « readback » au client et demande s'il faut l'annuler ou l'ajouter à la commande en cours, puis fais-le. Ne laisse jamais deux commandes ouvertes par l'agent pour le même client. Si « sameDayOrders » n'est pas vide, le client a déjà une commande pour ce jour : dis-le et propose d'y ajouter les produits. Puis attends un oui.
+- Prix : pour dire un prix ou un total, appelle quote_line et répète ses phrases « say » et « total » ; ne calcule jamais toi-même un prix au carton, à la plaque ou un total.
 - Après « oui », « c'est bon », « validez », appelle confirm_order tout de suite, sans tout revérifier, sauf si review_order a dit canConfirm=false : alors ne confirme pas et dis pourquoi.
 - Compte bloqué : ne prends aucune commande et ne promets rien ; ne donne aucun détail comptable interne ; dis que la comptabilité (Sandrine) le rappelle, et enregistre la demande avec log_client_event (type call)."""
 
@@ -271,7 +272,7 @@ def unusual_lines(lines: list[dict], usual: list[dict], ratio: float = UNUSUAL_R
     return out
 
 
-def review(order: dict, products: dict[str, dict], usual: list[dict]) -> dict:
+def review(order: dict, products: dict[str, dict], usual: list[dict], client_orders: list[dict] | None = None) -> dict:
     """
     Everything to read back before confirm_order, deterministic:
       readback   : "12 sacs de Farine de blé T55 tradition française, … ; livraison jeudi 26 novembre"
@@ -279,6 +280,7 @@ def review(order: dict, products: dict[str, dict], usual: list[dict]) -> dict:
       franco     : the 12 € fee note when the order is below 150 € HT
       askFirst   : unusual quantities to have confirmed
       canConfirm : False when a warning blocks (client blocked, credit limit, no route, missing stock)
+      duplicateDrafts / sameDayOrders : see other_open_orders (`client_orders` = the client's order list)
     """
     parts = []
     for line in order["lines"]:
@@ -323,4 +325,146 @@ def review(order: dict, products: dict[str, dict], usual: list[dict]) -> dict:
         out["franco"] = note
     if blocking:
         out["blockedBy"] = sorted(set(blocking))
+    duplicates, same_day = other_open_orders(order, client_orders or [], products)
+    if duplicates:
+        out["duplicateDrafts"] = duplicates
+    if same_day:
+        out["sameDayOrders"] = same_day
     return out
+
+
+OPEN = ("draft", "confirmed", "prepared")
+
+
+def other_open_orders(order: dict, client_orders: list[dict], products: dict[str, dict] | None = None) -> tuple[list[dict], list[dict]]:
+    """
+    The client's other orders that matter before confirming `order`:
+      duplicates : other DRAFTS created by the voice agent (a draft left behind when the agent re-created the order
+                   instead of editing it: the very bug seen in S31 v1) → to cancel before confirm_order.
+      same_day   : other open orders for the same delivery day (e.g. a WhatsApp draft the client sent last night)
+                   → to mention: « vous avez déjà une commande pour mercredi, je l'ajoute dedans ? ».
+    Drafts from other channels (WhatsApp, e-mail, portal) are never duplicates: the team confirms those.
+    """
+    duplicates, same_day = [], []
+    for o in client_orders:
+        if o.get("id") == order.get("id") or o.get("status") not in OPEN:
+            continue
+        brief = {"orderId": o["id"], "number": o.get("number"), "status": o["status"], "deliveryDate": o.get("deliveryDate"),
+                 "source": o.get("source"), "totalHt": o.get("totalHt")}
+        if o["status"] == "draft" and o.get("source") == "voice_agent":
+            if o.get("lines") is not None:  # detail given by the tool: say what it holds, and whether it is the same order
+                brief["readback"] = ", ".join(_line_words(li, products or {}) for li in o["lines"])
+                brief["sameAsThis"] = _qty_by_product(o["lines"]) == _qty_by_product(order["lines"])
+            duplicates.append(brief)
+        elif o.get("deliveryDate") == order.get("deliveryDate"):
+            same_day.append(brief)
+    return duplicates, same_day
+
+
+def _qty_by_product(lines: list[dict]) -> dict[str, float]:
+    acc: dict[str, float] = {}
+    for li in lines:
+        acc[li["productId"]] = acc.get(li["productId"], 0) + li["qty"]
+    return acc
+
+
+def _line_words(line: dict, products: dict[str, dict]) -> str:
+    p = products.get(line["productId"]) or {}
+    return f"{say_quantity(line['qty'], line.get('unit') or p.get('unit'), p.get('caliber'))} de {short_name(line.get('productName') or p.get('name', ''))}"
+
+
+# ── Prices said out loud (S05 recording: « 92 euros la plaque de 2 kilos… pardon, 18 euros 40 ») ──
+# The model multiplied in its head and got it wrong on the phone. The arithmetic is done here, the model only says it.
+
+_FR_WORD_UNITS = {"kg": "kilo", "l": "litre"}
+
+
+def fr_money(x: float) -> str:
+    """9.2 → "9 euros 20", 92.0 → "92 euros", 0.5 → "50 centimes", 1.05 → "1 euro 05"."""
+    cents = round(x * 100)
+    e, c = divmod(cents, 100)
+    if e == 0:
+        return f"{c} centimes"
+    euros = f"{e} euro{'s' if e > 1 else ''}"
+    return f"{euros} {c:02d}" if c else euros
+
+
+def packaging(unit: str, caliber: str, product_name: str = "") -> list[tuple[str, float]]:
+    """
+    The packages a weighed / liquid product is handled in, biggest first, with their size in the selling unit:
+      kg, "carton 5 plaques de 2 kg"                       → [("carton", 10), ("plaque", 2)]
+      kg, "plaquette 1 kg" (name "… (carton 10 × 1 kg)")  → [("carton", 10), ("plaquette", 1)]
+      liter, "carton 6 × 1 L" (name "… (brique 1 L)")     → [("carton", 6), ("brique", 1)]
+      kg, "sac 5 kg"                                       → [("sac", 5)]
+    Products sold by the piece / box (sacs de farine, cartons de viennoiserie) return [] : the unit IS the package.
+    """
+    if unit not in ("kg", "liter", "l"):
+        return []
+    out: list[tuple[str, float]] = []
+
+    def num(s: str) -> float:
+        return float(s.replace(",", "."))
+
+    texts = [_norm(t.replace("×", "x")) for t in [caliber, *re.findall(r"\(([^)]*)\)", product_name)]]  # _norm drops "×"
+    for t in texts:
+        if m := re.match(r"^(\w+)\s+(\d+)\s+(\w+?)s?\s+de\s+(\d+(?:[.,]\d+)?)\s*(kg|l)\b", t):  # carton 5 plaques de 2 kg
+            out += [(m[1], int(m[2]) * num(m[4])), (m[3], num(m[4]))]
+        elif m := re.match(r"^(\w+)\s+(\d+)\s*[x×]\s*(\d+(?:[.,]\d+)?)\s*(kg|l)\b", t):  # carton 6 × 1 L
+            out.append((m[1], int(m[2]) * num(m[3])))
+        elif m := re.match(r"^(\w+)\s+(\d+(?:[.,]\d+)?)\s*(kg|l)\b", t):  # sac 5 kg, brique 1 L
+            out.append((m[1], num(m[2])))
+    seen, uniq = set(), []
+    for word, size in sorted(out, key=lambda p: -p[1]):
+        if word not in seen:
+            seen.add(word)
+            uniq.append((word, size))
+    return uniq
+
+
+def to_selling_qty(qty: float, said_unit: str | None, unit: str, caliber: str, product_name: str = "") -> float:
+    """What the caller said → quantity in the product's selling unit: 3 cartons of tourage → 30 (kg), 50 kg of flour → 2 sacks."""
+    said = _said(said_unit)
+    if unit in ("kg", "liter", "l"):
+        if said is None or said in ("kg", "l"):
+            return qty
+        word = said.rstrip("sx") if said.endswith(("s", "x")) and said not in ("colis",) else said
+        for w, size in packaging(unit, caliber, product_name):
+            if w == word or w == said:
+                return round(qty * size, 3)
+        return qty
+    return sacks_from_words(caliber, qty, said_unit)
+
+
+def quote(qty: float, unit: str, caliber: str, product_name: str, unit_price: float, said_unit: str | None = None) -> dict:
+    """
+    Price sentences ready to be said, computed (never by the model):
+      say       : "9 euros 20 le kilo, soit 92 euros le carton de 10 kilos (18 euros 40 la plaque de 2 kilos)"
+      total     : "276 euros hors taxes pour 30 kilos, soit 3 cartons"
+    """
+    q = to_selling_qty(qty, said_unit, unit, caliber, product_name)
+    word = _FR_WORD_UNITS.get("l" if unit == "liter" else unit)
+    packs = packaging(unit, caliber, product_name)
+    if word:
+        say = f"{fr_money(unit_price)} le {word}"
+        if packs:
+            big, size = packs[0]
+            say += f", soit {fr_money(unit_price * size)} le {big} de {fr_number(size)} {word}s"
+            if len(packs) > 1 and packs[1][1] != 1:  # « 4 euros 10 la brique de 1 litre » = the litre price again
+                small, s2 = packs[1]
+                say += f" ({fr_money(unit_price * s2)} {'la' if small.endswith('e') else 'le'} {small} de {fr_number(s2)} {word}{'s' if s2 > 1 else ''})"
+    else:
+        noun = (caliber or "").split()[0] if caliber else "pièce"
+        size = " ".join(caliber.split()[1:]) if caliber else ""
+        size = re.sub(r"(\d)\s*kg\b", r"\1 kilos", re.sub(r"(\d)\s*g\b", r"\1 grammes", re.sub(r"(\d)\s*L\b", r"\1 litres", size)))
+        say = f"{fr_money(unit_price)} {'la' if noun.endswith('e') else 'le'} {noun}" + (f" de {size}" if size else "")
+    total = unit_price * q
+    qty_words = say_quantity(q, unit, caliber)
+    if word and packs and (n := q / packs[0][1]) == int(n) and n >= 1:
+        qty_words += f", soit {fr_number(n)} {_plural(packs[0][0], n)}"
+    return {
+        "qty": q,
+        "unitPrice": unit_price,
+        "say": say,
+        "total": f"{fr_money(total)} hors taxes pour {qty_words}",
+        "totalHt": round(total, 2),
+    }
