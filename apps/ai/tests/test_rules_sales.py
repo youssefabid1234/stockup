@@ -115,3 +115,61 @@ async def test_without_jev_or_when_jev_fails_ask_the_client():
             raise TimeoutError
 
     assert await decide_substitution(TOURAGE_AOP, HOTEL_GARONNE, jev=BrokenJev()) == "demander"
+
+
+# ── T3 · rank_alternatives: substitutes named in the company docs first ──
+
+from app.agent.rules_sales import doc_substitutes, rank_alternatives  # noqa: E402
+
+GLOSSARY = """## Substitutions habituelles
+
+- Beurre de tourage AOP Charentes-Poitou 84 % (plaque 2 kg) (prd_0025) → Beurre de tourage 82 % (plaque 2 kg) (prd_0026)
+- Gousses de vanille Bourbon de Madagascar (paquet 100 g) (prd_0022) → Extrait de vanille liquide (bouteille 1 L) (prd_0023)
+"""
+
+# What GET /api/products/prd_0025/alternatives really returns (closest price first), trimmed
+ERP_ALTERNATIVES_FOR_TOURAGE_AOP = [
+    {"id": "prd_0029", "name": "Beurre demi-sel de baratte (motte 1 kg)", "category": "beurres", "available": 45.49, "price": 11.8},
+    {"id": "prd_0027", "name": "Beurre doux AOP Charentes-Poitou (carton 10 × 1 kg)", "category": "beurres", "available": 893.36, "price": 10.2},
+    {"id": "prd_0026", "name": "Beurre de tourage 82 % (plaque 2 kg)", "category": "beurres", "available": 1712.92, "price": 9.2},
+    {"id": "prd_0028", "name": "Beurre pâtissier 82 % (carton 10 kg)", "category": "beurres", "available": 933.71, "price": 7.6},
+    {"id": "prd_0030", "name": "Margarine de feuilletage (carton 10 kg)", "category": "beurres", "available": 151.27, "price": 3.9},
+]
+
+
+def test_doc_substitutes_are_read_from_the_docs_without_product_names_in_code(tmp_path):
+    (tmp_path / "03-glossaire.md").write_text(GLOSSARY, encoding="utf-8")
+    assert doc_substitutes(tmp_path) == {"prd_0025": ["prd_0026"], "prd_0022": ["prd_0023"]}
+
+
+def test_missing_docs_give_no_substitutes(tmp_path):
+    assert doc_substitutes(tmp_path / "nowhere") == {}
+
+
+def test_the_substitute_named_in_the_docs_comes_first_not_the_closest_price():
+    subs = {"prd_0025": ["prd_0026"]}
+    ranked = rank_alternatives(ERP_ALTERNATIVES_FOR_TOURAGE_AOP, "", for_product_id="prd_0025", substitutes=subs)
+    assert ranked[0]["id"] == "prd_0026"
+    assert [a["id"] for a in ranked[1:]] == ["prd_0029", "prd_0027", "prd_0028", "prd_0030"]  # then the ERP order
+
+
+def test_an_out_of_stock_doc_substitute_never_goes_before_an_available_product():
+    alts = [{**a, "available": 0} if a["id"] == "prd_0026" else a for a in ERP_ALTERNATIVES_FOR_TOURAGE_AOP]
+    ranked = rank_alternatives(alts, "", for_product_id="prd_0025", substitutes={"prd_0025": ["prd_0026"]})
+    assert ranked[-1]["id"] == "prd_0026"
+
+
+def test_same_category_before_other_uses_then_promo():
+    alts = [
+        {"id": "x", "name": "Margarine", "category": "matieres-grasses", "available": 10, "promo": "-10 %"},
+        {"id": "y", "name": "Beurre pâtissier", "category": "beurres", "available": 10},
+        {"id": "z", "name": "Beurre doux", "category": "beurres", "available": 10, "promo": "-5 %"},
+    ]
+    ranked = rank_alternatives(alts, "", for_product_id="prd_9999", for_category="beurres", substitutes={})
+    assert [a["id"] for a in ranked] == ["z", "y", "x"]
+
+
+def test_ranking_never_drops_or_changes_an_alternative():
+    ranked = rank_alternatives(ERP_ALTERNATIVES_FOR_TOURAGE_AOP, "", for_product_id="prd_0025", substitutes={})
+    assert sorted(map(str, ranked)) == sorted(map(str, ERP_ALTERNATIVES_FOR_TOURAGE_AOP))
+    assert rank_alternatives([], "") == []

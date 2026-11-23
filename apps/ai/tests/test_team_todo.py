@@ -50,7 +50,6 @@ def test_refuses_substitution_from_preferences():
     assert not rules_sales.refuses_substitution(prefs, "Chocolat de couverture noir 64 %")
 
 
-@TODO
 def test_rank_alternatives_in_stock_and_promo_first():
     alts = [
         {"id": "a", "name": "Margarine", "available": 50, "clientPrice": 3.9},

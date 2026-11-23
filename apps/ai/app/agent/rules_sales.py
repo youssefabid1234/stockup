@@ -19,9 +19,12 @@ from __future__ import annotations
 
 import re
 import unicodedata
+from functools import lru_cache
+from pathlib import Path
 from typing import Literal
 
 from app import team_flags
+from app.config import settings
 
 # v1 (T1). GENERAL on purpose: no client, product or person name. The jury plays other scenarios, and the facts
 # (who refuses substitutions, which product replaces which, who approves discounts) come from the ERP and the
@@ -165,10 +168,64 @@ async def decide_substitution(
     return "accepte" if p >= JEV_YES else "refuse" if p <= JEV_NO else "demander"
 
 
-def rank_alternatives(alternatives: list[dict], preferences: str) -> list[dict]:
+# ── T3 · rank_alternatives: the substitute the company itself names comes first ─────────────────────────────────
+#
+# The ERP's /alternatives sorts by closest price (for the AOP tourage: salted butter first, the 82 % tourage third).
+# The company docs say which product replaces which (« Substitutions habituelles », `Produit (prd_X) → Remplaçant
+# (prd_Y)`): read from DATA_DIR/context, so no product name lives in the code and any data pack works.
+
+def doc_substitutes(folder: Path | None = None) -> dict[str, list[str]]:
+    """{product id: [substitute ids, in the docs' order]} from every Markdown file of the context folder.
+    {} if the folder is missing. Cached per folder (the docs don't change during a call)."""
+    return dict(_read_substitutes(str(folder or settings.data_dir / "context")))
+
+
+@lru_cache(maxsize=4)
+def _read_substitutes(folder: str) -> tuple[tuple[str, list[str]], ...]:
+    found: dict[str, list[str]] = {}
+    try:
+        files = sorted(p for p in Path(folder).iterdir() if p.name.endswith(".md"))
+    except OSError:
+        return ()
+    for path in files:
+        for line in path.read_text(encoding="utf-8").splitlines():
+            if "→" not in line:
+                continue
+            ids = re.findall(r"\((prd_[\w-]+)\)", line)
+            if len(ids) >= 2 and line.index(f"({ids[0]})") < line.index("→") < line.index(f"({ids[-1]})"):
+                found.setdefault(ids[0], [])
+                if ids[-1] not in found[ids[0]]:
+                    found[ids[0]].append(ids[-1])
+    return tuple(found.items())
+
+
+def rank_alternatives(
+    alternatives: list[dict],
+    preferences: str,  # kept for the interfaces.md §5 contract; refusing is decide_substitution's job, not ranking's
+    *,
+    for_product_id: str | None = None,  # the missing product: to find its substitute in the docs
+    for_category: str | None = None,  # its category: "same use"
+    substitutes: dict[str, list[str]] | None = None,  # default: read from the docs (doc_substitutes)
+) -> list[dict]:
     """
-    Order substitutes from best to worst for this client: in stock first, then compatible with preferences, then
-    best price / active promo. Each dict: {id, name, unit, price, available, clientPrice?, promo?}.
-    TODO(Daycem): implement + tests.
+    Order substitutes from best to worst. Never drops or changes one (the agent proposes the first, with consent):
+      1. in stock (available > 0)        2. named as substitute in the company docs
+      3. same category (same use)        4. active promo            5. then the ERP's own order
+    Each dict: {id, name, unit, price, available, clientPrice?, promo?, category?} (product_insight / find_alternatives).
     """
-    raise NotImplementedError
+    if substitutes is None:
+        substitutes = doc_substitutes() if for_product_id else {}
+    named = substitutes.get(for_product_id or "", [])
+
+    def key(item: tuple[int, dict]) -> tuple:
+        position, alt = item
+        doc_rank = named.index(alt.get("id")) if alt.get("id") in named else len(named)
+        return (
+            not (alt.get("available") or 0) > 0,
+            doc_rank,
+            not (for_category and alt.get("category") == for_category),
+            not alt.get("promo"),
+            position,
+        )
+
+    return [alt for _, alt in sorted(enumerate(alternatives), key=key)]
