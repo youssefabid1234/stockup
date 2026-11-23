@@ -108,6 +108,53 @@ passe de 6,9 à 3,9 s. Les répliques suivantes ne changent pas (bruit ±1-2 s).
 **Outil de rejeu corrigé** : en /chat il renvoie maintenant l'historique complet (outils appelés + résultats) comme la
 page Voix ; avant, l'agent oubliait son brouillon et recommençait (S01·2 : 6 outils, 9,4 s → 1 outil, 2,4 s).
 ### Commande juste (Amine Khalil)
+
+**Mission** : ce qui finit dans l'ERP est exactement ce que le client voulait (bon produit, bonne quantité, bon jour,
+rien de validé sans son accord). Interrupteur `TEAM_ORDER_RULES` (allumé par défaut dans `.env.example`). Code :
+`agent/rules_order.py` (règles + fonctions déterministes), `tools/delivery.py`, `tools/order_review.py`,
+`tools/order_edit.py`. Principe directeur : **le modèle parle, le code calcule** (dates, unités, prix, alertes).
+
+**Point de départ (T0, kit seul, lun. 23/11 22h20, /chat)** : S01 PASS mais l'agent « pense tout haut » avant de
+saluer (« Jeudi est bien un jour de livraison… ») et revérifie 6 outils avant de confirmer (9,4 s) ; **S02 FAIL**
+(« comme d'hab » = la dernière commande lue en entière, aucun brouillon, ne confirme jamais) ; S03 PASS mais affirme
+« vous êtes fermé mercredi » (faux), cite une règle comptable interne et ne prend pas le message.
+
+**Décisions**
+
+| # | Décision | Pourquoi |
+|---|---|---|
+| D1 | **Les jours de livraison de l'ERP font foi** ; les notes « Fermé le mercredi » sont ignorées, seul le client peut annoncer une fermeture | 9 clients ont cette note alors que l'ERP les livre le mercredi, et l'historique le confirme (ex. Pétrin de Muret : 10 livraisons le mercredi après la note ; Au Fournil de Philippe n'est livré que le mercredi). L'agent d'origine refusait ou déplaçait à tort (S05 livré lundi 30/11). Youssef retire aussi ces notes de la fiche préchargée. |
+| D2 | **Dates calculées par le code** (`next_delivery_date`, outil `check_delivery_date`) | Jours du client, heure limite 17h, Lauragais-Tarn la veille avant 12h, tournée partie à 6h30 : un calendrier, pas une intuition. « mercredi » pour Sarrailh → « pas livré le mercredi, prochain jour : jeudi 26 novembre ». |
+| D3 | **Une seule commande par appel** : outils `update_order_line`, `remove_order_line`, `change_delivery_date`, `cancel_draft_order` | Le kit ne savait qu'ajouter des lignes : au « finalement vingt », l'agent créait une 2e commande et laissait le brouillon à 200 sacs dans l'ERP (vu sur S31). |
+| D4 | **Relecture calculée avant confirmation** (`review_order`) | Phrase de relecture prête à dire, alertes ERP traduites pour le client (bloqué, plafond, pas de tournée, « il n'en reste que… » ; jamais de chiffre comptable ni de marge), franco 150 € HT (12 € sinon), quantité ≥ 5× l'habitude à faire confirmer, `canConfirm`. L'ERP renvoie des alertes mais ne bloque rien. |
+| D5 | **Garde-fou doublons** dans `review_order` (`duplicateDrafts`, `sameDayOrders`) | Un brouillon oublié par l'agent à côté de la bonne commande peut être confirmé par l'ADV → double livraison. Doublon identique → abandonné ; brouillon différent → relu au client qui choisit ; brouillons WhatsApp / e-mail jamais annulés. |
+| D6 | **Prix calculés par le code** (outil `quote_line`) | À l'écoute d'un enregistrement de S05, l'agent calculait de tête et se corrigeait en direct (« 92 euros la plaque… pardon, 18 euros 40 »). Le prix client vient de l'ERP (`/api/prices/resolve`) ; le code fait conditionnements et multiplications (« 9 euros 20 le kilo, soit 92 euros le carton de 10 kilos ; 276 euros hors taxes pour 30 kilos »). |
+| D7 | **Règles courtes et impératives** (`ORDER_RULES`, ~12 lignes) plutôt qu'un long texte | Le prompt est relu à chaque étape : chaque règle répond à un défaut observé (ne pas penser tout haut, unités, « chocolatine », « comme d'hab » = panier habituel résumé, confirmer directement au « oui », compte bloqué = message enregistré avec `log_client_event`). |
+
+**Mesures** (scénarios rejoués avec les vraies clés ; `--voice` = vrai chemin vocal, temps = fin de la phrase → 1er octet audio)
+
+| Scénario | Kit seul | Avec `TEAM_ORDER_RULES=1` | Dans l'ERP après l'appel |
+|---|---|---|---|
+| S01 commande simple | PASS · 11,1 s / 9,4 s | PASS · 7,4 s / 2,6 s (`--voice`) | 1 commande confirmée |
+| S02 comme d'hab + « mettez-en 12 » | **FAIL** 2/3 | PASS 3/3 · confirmation 3,4 s | 1 commande, 12 tradi |
+| S03 client bloqué | PASS (affirmations fausses) | PASS · message enregistré, rien promis | aucune commande |
+| S05 rupture AOP → 82 % | **FAIL** 2/4 (livré lundi, brouillon non confirmé) | PASS 4/4 | 1 commande, mercredi 25/11 |
+| S30 sous le franco | – | PASS 3/3 (« 12 euros de livraison… il manque 147 euros ») | 1 commande, 153,90 € |
+| S31 « 200 sacs » au lieu de 20 | – | PASS 3/3 (« vous dites bien deux cents ? ») | 1 commande, 20 sacs |
+| S32 modifier + retirer une ligne | – | PASS 3/3 | 1 commande, 15 tradi, sans seigle |
+| Brouillon oublié simulé (200 tradi) | – | relu au client puis annulé à sa demande | 1 confirmée + 1 annulée |
+
+S05 enregistré en audio (client = 2e voix ElevenLabs, agent = vraie réponse) : 68 s → 56 s d'appel après D6, prix
+juste du premier coup. Tests : 24 tests sur la commande juste (`test_rules_order.py` + `test_team_todo.py`) ; la
+suite complète de l'équipe passe (147 tests au mar. 24/11 00h30), interrupteur allumé ou éteint.
+
+**Ce qui n'a pas marché / limites**
+- Le script de rejeu en mode `/chat` ne rejouait que le texte : l'agent perdait l'id du brouillon et en recréait un
+  (faux doublons sur S05 chez Daycem). Corrigé par Youssef (historique complet) ; nos garde-fous couvrent aussi ce cas.
+- La relecture d'un « comme d'hab » complet (9 produits) reste longue à l'oral.
+- Les temps restent de 2 à 9 s par réplique selon le nombre d'outils : le gros du gain vient des chantiers de
+  Mohamed Amine et Youssef (phrases d'attente, fiche préchargée, agent rapide).
+- Mes tests ne couvrent ni la transcription (texte envoyé directement) ni l'écoute de la voix : à valider au micro.
 ### Bon vendeur (Daycem)
 
 ## 5. Données modifiées pour la démo
