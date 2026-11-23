@@ -129,6 +129,7 @@ saluer (« Jeudi est bien un jour de livraison… ») et revérifie 6 outils ava
 | D4 | **Relecture calculée avant confirmation** (`review_order`) | Phrase de relecture prête à dire, alertes ERP traduites pour le client (bloqué, plafond, pas de tournée, « il n'en reste que… » ; jamais de chiffre comptable ni de marge), franco 150 € HT (12 € sinon), quantité ≥ 5× l'habitude à faire confirmer, `canConfirm`. L'ERP renvoie des alertes mais ne bloque rien. |
 | D5 | **Garde-fou doublons** dans `review_order` (`duplicateDrafts`, `sameDayOrders`) | Un brouillon oublié par l'agent à côté de la bonne commande peut être confirmé par l'ADV → double livraison. Doublon identique → abandonné ; brouillon différent → relu au client qui choisit ; brouillons WhatsApp / e-mail jamais annulés. |
 | D6 | **Prix calculés par le code** (outil `quote_line`) | À l'écoute d'un enregistrement de S05, l'agent calculait de tête et se corrigeait en direct (« 92 euros la plaque… pardon, 18 euros 40 »). Le prix client vient de l'ERP (`/api/prices/resolve`) ; le code fait conditionnements et multiplications (« 9 euros 20 le kilo, soit 92 euros le carton de 10 kilos ; 276 euros hors taxes pour 30 kilos »). |
+| D8 | **Jev décide les deux petites décisions risquées** (`tools/order_jev.py`) : « est-ce un vrai oui ? » avant `confirm_order` (qui garde son nom : les scénarios de l'équipe marchent tels quels) et « quel produit ? » pour un mot ambigu (`resolve_product`) | Recommandé par le CTO. Calibré sur 12 vraies réponses : « oui c'est bon », « bon d'accord » → accord 0,89–0,96 ; « oui mais mettez-en quatre », « et rajoutez du seigle », « attendez », « c'est combien ? » → accord ≤ 0,14. Seuils : ≥ 0,8 confirme, ≤ 0,3 ne confirme pas, entre les deux → redemander. 159–196 ms par décision en appel réel. Produits : nom exact du catalogue d'abord (sans modèle), sinon Jev avec les habitudes du client (« tourage » → AOP chez Sarrailh 0,82 ; demande AOP / 82 % / margarine au Pétrin de Colomiers 0,28) ; sous 0,6 l'agent demande. Sans clé Jev : comportement du kit. |
 | D7 | **Règles courtes et impératives** (`ORDER_RULES`, ~12 lignes) plutôt qu'un long texte | Le prompt est relu à chaque étape : chaque règle répond à un défaut observé (ne pas penser tout haut, unités, « chocolatine », « comme d'hab » = panier habituel résumé, confirmer directement au « oui », compte bloqué = message enregistré avec `log_client_event`). |
 
 **Mesures** (scénarios rejoués avec les vraies clés ; `--voice` = vrai chemin vocal, temps = fin de la phrase → 1er octet audio)
@@ -143,10 +144,15 @@ saluer (« Jeudi est bien un jour de livraison… ») et revérifie 6 outils ava
 | S31 « 200 sacs » au lieu de 20 | – | PASS 3/3 (« vous dites bien deux cents ? ») | 1 commande, 20 sacs |
 | S32 modifier + retirer une ligne | – | PASS 3/3 | 1 commande, 15 tradi, sans seigle |
 | Brouillon oublié simulé (200 tradi) | – | relu au client puis annulé à sa demande | 1 confirmée + 1 annulée |
+| S33 « oui mais mettez-en douze » (avec Jev) | – | PASS 3/3 · ligne modifiée, confirmation validée par Jev (accord 0,95) | 1 commande, 12 tradi |
+
+Avec Jev (mar. 24/11, 00h50, `--voice`, remise à zéro avant chaque scénario) : S02, S30, S31, S32, S33 PASS ; S05 3/4
+(tour 2 : l'agent donne le prix avec `quote_line`, le scénario attend `get_price`) ; 8 confirmations sur 8 validées par
+Jev en 159–196 ms ; une seule commande juste dans l'ERP à chaque appel.
 
 S05 enregistré en audio (client = 2e voix ElevenLabs, agent = vraie réponse) : 68 s → 56 s d'appel après D6, prix
-juste du premier coup. Tests : 24 tests sur la commande juste (`test_rules_order.py` + `test_team_todo.py`) ; la
-suite complète de l'équipe passe (147 tests au mar. 24/11 00h30), interrupteur allumé ou éteint.
+juste du premier coup. Tests : 28 tests sur la commande juste (`test_rules_order.py` + `test_team_todo.py`) ; la
+suite complète de l'équipe passe (151 tests au mar. 24/11 01h00), interrupteur allumé ou éteint.
 
 **Ce qui n'a pas marché / limites**
 - Le script de rejeu en mode `/chat` ne rejouait que le texte : l'agent perdait l'id du brouillon et en recréait un

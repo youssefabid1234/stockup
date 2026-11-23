@@ -29,12 +29,13 @@ ORDER_RULES = """Règles « commande juste » (prise de commande au téléphone)
 - Tout texte que tu écris est prononcé au client. N'écris donc rien avant ou entre tes appels d'outils : ni analyse, ni note pour toi (« quantité inhabituelle, je crée le brouillon… », « jeudi est bien un jour de livraison » sont interdits). Tu parles une fois, à la fin.
 - Unités : farines et sucre au sac (25 kg ; épeautre 10 kg), « 10 de tradi » = 10 sacs, jamais 10 kilos. Tourage, beurre, chocolat, fruits secs au kilo ; crème et lait au litre ; viennoiserie surgelée et emballages au carton ; levure au pain de 500 g ; œufs au plateau de 30. Dis les quantités avec leur unité (« douze sacs de tradi »).
 - « Chocolatine » et « pain au chocolat » sont le même produit : ne corrige jamais le client.
+- Mot de produit ambigu (« tourage », « poudre », « lait », « crème », « farine » sans précision) : appelle resolve_product ; s'il renvoie « ask », pose cette question au client au lieu de deviner ; s'il renvoie « sayName », nomme le produit choisi dans ta réponse (« du cacao en poudre, c'est bien ça ? »).
 - « Comme d'hab » = la commande habituelle de la fiche client (pas la dernière commande). Cite seulement les deux ou trois produits principaux avec leur quantité, puis demande « et le reste comme d'habitude ? ».
 - Date : appelle check_delivery_date dès qu'un jour est dit (ou pour « au plus vite »). Si le jour n'est pas livré, propose le prochain jour possible qu'il renvoie. Les jours de livraison de l'ERP font foi : ignore les notes « Fermé le … » des fiches (elles sont périmées), n'en parle pas et ne pose pas la question. Seul le client peut annoncer une fermeture ; s'il le fait, propose le jour livré suivant et mémorise-le (save_context).
 - Dès que produits et quantités sont clairs, crée le brouillon (create_draft_order). Une seule commande par appel : un changement d'avis modifie la commande en cours (update_order_line pour « finalement 12 », remove_order_line pour « enlève le seigle », change_delivery_date pour « plutôt vendredi ») ; ne crée jamais une deuxième commande. Si le client renonce, cancel_draft_order.
 - Après avoir créé ou modifié le brouillon, appelle review_order. Relis sa phrase « readback » (produits, quantités, jour) ; dis ses « alerts » et sa remarque « franco » s'il y en a, simplement, sans code technique ni chiffre interne. Si « askFirst » n'est pas vide, fais confirmer cette quantité inhabituelle. Si « duplicateDrafts » n'est pas vide (autres brouillons de l'agent pour ce client) : un brouillon « sameAsThis » est un doublon, abandonne-le (cancel_draft_order) sans en parler ; un autre, relis son « readback » au client et demande s'il faut l'annuler ou l'ajouter à la commande en cours, puis fais-le. Ne laisse jamais deux commandes ouvertes par l'agent pour le même client. Si « sameDayOrders » n'est pas vide, le client a déjà une commande pour ce jour : dis-le et propose d'y ajouter les produits. Puis attends un oui.
 - Prix : pour dire un prix ou un total, appelle quote_line et répète ses phrases « say » et « total » ; ne calcule jamais toi-même un prix au carton, à la plaque ou un total.
-- Après « oui », « c'est bon », « validez », appelle confirm_order tout de suite, sans tout revérifier, sauf si review_order a dit canConfirm=false : alors ne confirme pas et dis pourquoi.
+- Dès que le client répond à ta relecture, appelle confirm_order tout de suite (sans tout revérifier) avec client_answer = sa réponse mot pour mot et read_back = ta relecture : un vérificateur décide si c'est un vrai oui. Si confirmed=false, suis « next » (ne dis pas que c'est validé). Si review_order a dit canConfirm=false, ne confirme pas et dis pourquoi.
 - Compte bloqué : ne prends aucune commande et ne promets rien ; ne donne aucun détail comptable interne ; dis que la comptabilité (Sandrine) le rappelle, et enregistre la demande avec log_client_event (type call)."""
 
 
@@ -468,3 +469,61 @@ def quote(qty: float, unit: str, caliber: str, product_name: str, unit_price: fl
         "total": f"{fr_money(total)} hors taxes pour {qty_words}",
         "totalHt": round(total, 2),
     }
+
+
+# ── Jev (decision model): "is that a real yes?" and "which product?" (tools/order_jev.py) ──
+# Calibrated on 12 real caller answers (mar. 24/11, 113–229 ms each): plain yeses score 0.89–0.96 on « accord »;
+# « oui mais… », « et rajoutez… », « attendez », questions score ≤ 0.14, with « change » 0.59–0.93.
+
+YES_MIN = 0.8  # « accord » at or above: confirm
+NO_MAX = 0.3  # « accord » at or below: do not confirm
+CHANGE_MIN = 0.5  # « change » at or above (with no accord): the caller wants something modified
+PICK_MIN = 0.6  # Jev's confidence needed to pick a product without asking
+
+# Words the product glossary (03-glossaire-produits.md, « Alias ambigus ») says must be clarified: never settled by an
+# alias alone, always by the client's habits (Jev) or by asking.
+AMBIGUOUS_WORDS = {"tourage", "lait", "poudre", "farine", "chocolat", "creme"}
+_ARTICLES = re.compile(r"^(?:(?:du|de la|des|de|le|la|les|un|une)\s+|de l'|d'|l')")  # not the "de" of « demi-sel »
+
+
+def _singular(s: str) -> str:
+    return " ".join(w[:-1] if len(w) > 3 and w.endswith(("s", "x")) else w for w in s.split())
+
+
+def alias_match(said: str, products: dict[str, dict]) -> str | None:
+    """
+    « pains de levure » → prd_0011 when the words are exactly one product's catalogue alias (or name before the
+    parenthesis), singular/plural and accents ignored. None when no alias matches, when several products share it, or
+    when it is one of the glossary's ambiguous words (« tourage », « poudre »…): those need the client's habits.
+    """
+    core = _singular(_ARTICLES.sub("", _norm(said)))
+    if not core or core in AMBIGUOUS_WORDS:
+        return None
+    hits = {
+        pid
+        for pid, p in products.items()
+        if p.get("active", True)
+        and any(_singular(_ARTICLES.sub("", _norm(a))) == core for a in [*(p.get("aliases") or []), p.get("name", "").split(" (")[0]])
+    }
+    return next(iter(hits)) if len(hits) == 1 else None
+
+JEV_YES_QUESTIONS = {
+    "accord": {"type": "noul", "instructions": "Le client accepte la commande telle qu'elle a été relue, sans rien changer."},
+    "change": {"type": "noul", "instructions": "Le client demande une modification, un ajout ou pose une question avant de valider."},
+}
+
+
+def classify_answer(accord: float, change: float) -> str:
+    """Jev's two probabilities → "yes" | "change" | "no" | "unsure"."""
+    if accord >= YES_MIN and change < CHANGE_MIN:
+        return "yes"
+    if accord <= NO_MAX:
+        return "change" if change >= CHANGE_MIN else "no"
+    return "unsure"
+
+
+NEXT_STEP = {
+    "change": "Le client veut modifier ou demande quelque chose : réponds-lui, modifie la commande (update_order_line…), relis, puis redemande son accord.",
+    "no": "Le client ne valide pas : ne confirme pas, demande-lui ce qu'il souhaite (modifier, reporter ou abandonner : cancel_draft_order).",
+    "unsure": "Réponse ambiguë : ne confirme pas, redemande simplement « je vous la valide ? ».",
+}
