@@ -248,6 +248,7 @@ class VoiceConnection:
                         step_text = ""
                         await self.send(AgentToolMessage(name=name, ok=ok, ms=ms))
                     case ErrorEvent(message=message):
+                        await speaker.stop_waiting()
                         await self.send(VoiceErrorMessage(message=message))
             timings.llm_total_ms = ms_since(llm_start)
             conv.history = trim(working)
@@ -295,7 +296,9 @@ class Speaker:
         self.tts, self.send, self.send_bytes = tts, send, send_bytes
         self.bank = bank if bank is not None else fillers.FillerBank()
         self.acknowledged = False
-        self.has_text = False
+        self.restatement: str | None = None
+        self.waiting_task: asyncio.Task | None = None
+        self._audio_lock = asyncio.Lock()
         self.social_turn = False
         self.clicked = False
         self.first_phrase = True
@@ -307,7 +310,6 @@ class Speaker:
         self.tts_first_byte_ms: int | None = None
 
     def push(self, delta: str) -> None:
-        self.has_text = self.has_text or bool(delta.strip())
         self.buffer += delta
         if team_flags.fillers() and self.first_phrase:
             clause = re.match(r"^([^.!?…,]{20,}?,)\s+", self.buffer)
@@ -324,21 +326,33 @@ class Speaker:
         if not sentence.strip():
             return
         self.first_phrase = False
+        if self.waiting_task and not self.waiting_task.done():
+            self.waiting_task.cancel()
         if self.worker is None:
             self.worker = asyncio.create_task(self._speak_queued())
         self.sentences.put_nowait(sentence)
 
+    def start_waiting(self) -> None:
+        self.waiting_task = asyncio.create_task(fillers.keep_waiting(self))
+
+    async def stop_waiting(self) -> None:
+        if self.waiting_task:
+            self.waiting_task.cancel()
+            await asyncio.gather(self.waiting_task, return_exceptions=True)
+
     async def play_audio(self, mime: str, data: bytes) -> None:
         if not data:
             return
-        if not self.started:
-            self.started = True
-            await self.send(AgentAudioStartMessage(mime=mime))
-            self.first_byte_at = time.perf_counter()
-        await self.send_bytes(data)
+        async with self._audio_lock:
+            if not self.started:
+                self.started = True
+                await self.send(AgentAudioStartMessage(mime=mime))
+                self.first_byte_at = time.perf_counter()
+            await self.send_bytes(data)
 
     async def finish(self) -> None:
         """Speak what is left in the buffer, wait for all the audio, close the segment."""
+        await self.stop_waiting()
         self.speak(self.buffer)
         self.buffer = ""
         if self.worker:
@@ -349,6 +363,7 @@ class Speaker:
 
     async def stop(self) -> None:
         """Interrupted: drop the queued sentences, close the segment if audio was sent."""
+        await self.stop_waiting()
         if self.worker:
             self.worker.cancel()
             with suppress(asyncio.CancelledError):

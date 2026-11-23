@@ -49,7 +49,7 @@ async def call(monkeypatch):
     return conn, tts
 
 
-async def test_lookup_plays_one_ack_one_click_and_one_answer(call, monkeypatch):
+async def test_fast_lookup_plays_one_ack_and_one_answer(call, monkeypatch):
     conn, tts = call
 
     async def lookup(messages, **kwargs):
@@ -62,8 +62,8 @@ async def test_lookup_plays_one_ack_one_click_and_one_answer(call, monkeypatch):
     events = conn.ws.events
     clips = [msg for msg in events if isinstance(msg, bytes)]
     assert clips[0].decode() in fillers.PHRASES["thinking"]
-    assert clips[1:] == [fillers.keyboard_click(), "La levure est disponible.".encode()]
-    assert tts.phrases == [*fillers.PHRASES["thinking"], "La levure est disponible."]
+    assert clips[1:] == ["La levure est disponible.".encode()]
+    assert tts.phrases == [*fillers.PHRASES["thinking"], *fillers.PHRASES["follow_up"], "La levure est disponible."]
     assert sum(isinstance(m, dict) and m["type"] == "agent_audio_start" for m in events) == 1
     assert events[-2]["type"] == "agent_audio_end"
     assert events[-1]["timings"]["ttsFirstByteMs"] is not None
@@ -179,7 +179,7 @@ async def test_warm_up_retries_only_missing_clips():
     await bank.warm_up(tts)
     await bank.warm_up(tts)
     first, second = fillers.PHRASES["thinking"]
-    assert tts.phrases == [first, second, second]
+    assert tts.phrases == [first, second, second, *fillers.PHRASES["follow_up"]]
 
 
 async def test_bakery_terms_remain_available_when_erp_is_down(monkeypatch):
@@ -195,3 +195,56 @@ async def test_bakery_terms_remain_available_when_erp_is_down(monkeypatch):
         assert await vocabulary.company_terms(UnavailableERP()) == []
     finally:
         vocabulary.reset_cache()
+
+
+async def test_following_order_gets_waiting_audio_until_the_answer(call, monkeypatch):
+    conn, _ = call
+    monkeypatch.setattr(fillers, "FIRST_KEYBOARD_DELAY", 0)
+    monkeypatch.setattr(fillers, "FOLLOW_UP_DELAY", 0)
+    monkeypatch.setattr(fillers, "KEYBOARD_INTERVAL", 0.01)
+    restatement = "Pour 10 kg de farine t55.".encode()
+    restatement_played = asyncio.Event()
+    original_send = conn.ws.send_bytes
+
+    async def observe_audio(data):
+        await original_send(data)
+        if data == restatement:
+            restatement_played.set()
+
+    async def agent(messages, **kwargs):
+        if messages[-1].content.startswith("Ajoutez"):
+            yield TextEvent(delta="Je vais regarder.")
+            yield ToolCallEvent(call=ToolCall(id="search", name="search", arguments={}))
+            await asyncio.wait_for(restatement_played.wait(), timeout=2)
+            yield TextEvent(delta=" La farine est disponible pour jeudi.")
+        else:
+            yield TextEvent(delta="On a de la levure.")
+
+    monkeypatch.setattr(conn.ws, "send_bytes", observe_audio)
+    monkeypatch.setattr(voice_session, "run_agent", agent)
+    await conn.run_turn(conn.conversation, text="Vous avez de la levure en stock ?")
+    first_clips = [event for event in conn.ws.events if isinstance(event, bytes)]
+    assert first_clips[0].decode() in fillers.PHRASES["thinking"]
+    start = len(conn.ws.events)
+    await conn.run_turn(conn.conversation, text="Ajoutez 10kg de farine T55 pour jeudi.")
+    await asyncio.sleep(0.025)
+    clips = [event for event in conn.ws.events[start:] if isinstance(event, bytes)]
+    assert clips[0].decode() in fillers.PHRASES["thinking"]
+    assert clips[1:] == [fillers.keyboard_click(), restatement, "La farine est disponible pour jeudi.".encode()]
+    assert conn.ws.events[-2]["type"] == "agent_audio_end"
+
+
+@pytest.mark.parametrize(
+    ("heard", "expected"),
+    [
+        ("Je veux 10kg de farine", "Pour 10 kg de farine."),
+        ("Et deux sacs de farine pour jeudi ?", "Pour deux sacs de farine."),
+        ("10 kg de farine ou de sucre", None),
+        ("10 kg de farine, finalement 20 kg de sucre", None),
+        ("10 kg de farine et deux sacs de sucre", None),
+        ("Je ne veux pas 10 kg de farine", None),
+        ("C'est tout, merci.", None),
+    ],
+)
+def test_restatement_uses_only_an_unambiguous_quantity(heard, expected):
+    assert fillers.quantity_restatement(heard) == expected
