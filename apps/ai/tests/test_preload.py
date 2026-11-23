@@ -71,7 +71,7 @@ async def test_sheet_is_loaded_clean_with_usual_stock():
     assert "Fermé le mercredi" not in sheet.context_entries[0]["body"] and "LCR" in sheet.context_entries[0]["body"]
     assert sheet.usual[0].available == 0
     text = render_for_prompt(sheet)
-    assert "n'appelle pas get_client" in text and "font foi" in text and "lundi, mercredi" in text
+    assert "ne le recherche pas" in text and "font foi" in text and "lundi, mercredi" in text
     assert "Fermé le mercredi" not in text and "stock 0" in text
 
 

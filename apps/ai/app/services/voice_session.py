@@ -28,6 +28,7 @@ from fastapi import WebSocket, WebSocketDisconnect
 from pydantic import TypeAdapter, ValidationError
 
 from app import team_flags
+from app.agent import call_context as preload
 from app.agent import run_agent, sanitize_history
 from app.agent.call_context import CallContext
 from app.agent.loop import ms_since
@@ -42,6 +43,8 @@ from app.schemas import (
     AgentToolMessage,
     AudioEndMessage,
     AudioStartMessage,
+    CallerMessage,
+    CallerReadyMessage,
     ChatMessage,
     DoneEvent,
     ErrorEvent,
@@ -58,7 +61,7 @@ from app.schemas import (
     VoiceErrorMessage,
 )
 from app.schemas.base import WireModel
-from app.tools import all_tools
+from app.tools import ErpClient, all_tools
 
 from . import fillers
 from .utterance import Utterance
@@ -159,9 +162,42 @@ class VoiceConnection:
                 await self.interrupt()
                 self.conversation.history = []
                 await self.open(self.conversation.id)
+            case CallerMessage():  # team 12 (Youssef): caller ID form, before the call
+                await self.interrupt()
+                await self.set_caller(msg)
 
     async def send_partial(self, update: STTUpdate) -> None:
         await self.send(TranscriptMessage(text=update.text, final=False, stable=update.stable))
+
+    async def set_caller(self, msg: CallerMessage) -> None:
+        """Team 12 (Youssef): a new call from this caller: fresh history, their sheet loaded now (TEAM_PRELOAD)."""
+        conv = self.conversation
+        conv.history = []
+        try:
+            sheet = await preload.caller_context(
+                ErpClient("voice_agent"),
+                client_id=msg.client_id,
+                phone=msg.phone,
+                contact_name=msg.contact_name,
+                company_name=msg.company_name,
+                is_new=msg.is_new,
+            )
+        except Exception as e:  # ERP down…: the call still works, the agent will look the client up itself
+            await self.send(VoiceErrorMessage(message=f"Fiche client indisponible : {e}"))
+            sheet = None
+        used = sheet is not None and team_flags.preload()
+        conv.call_context = sheet if used else None
+        await self.send(
+            CallerReadyMessage(
+                client_id=sheet.client_id or None if sheet else None,
+                name=sheet.name if sheet else (msg.company_name or "Appelant inconnu"),
+                contact_name=(sheet.caller_contact if sheet else None) or msg.contact_name,
+                is_new=bool(sheet and sheet.is_new),
+                status=sheet.status if sheet else None,
+                loaded_ms=sheet.loaded_ms if sheet else None,
+                used_by_agent=used,
+            )
+        )
 
     async def open(self, session_id: str | None = None, actor_name: str | None = None) -> None:
         conv = conversations.get(session_id or "") or Conversation(id=session_id or str(uuid.uuid4()))

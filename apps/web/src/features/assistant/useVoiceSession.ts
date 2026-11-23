@@ -5,7 +5,10 @@
  * Agent audio: binary frames between agent_audio_start/end → one Blob → <audio>. Mock TTS → speechSynthesis (fr-FR).
  */
 import { useCallback, useEffect, useRef, useState } from "react";
-import { MOCK_TTS_MIME, type TurnTimings, type VoiceClientMessage, type VoiceServerMessage } from "@kit/shared";
+import { MOCK_TTS_MIME, type CallerReady, type TurnTimings, type VoiceClientMessage, type VoiceServerMessage } from "@kit/shared";
+
+/** Team 12: what the caller ID form sends (an ERP client, or a new client). */
+export type CallerInput = Omit<Extract<VoiceClientMessage, { type: "caller" }>, "type">;
 import { AI_BASE } from "@/lib/api";
 import { SegmentPlayer } from "./audio-player";
 import type { ToolRun } from "./tools";
@@ -37,6 +40,9 @@ export function useVoiceSession() {
   const [turns, setTurns] = useState<VoiceTurn[]>([]);
   const [level, setLevel] = useState(0);
   const [lastError, setLastError] = useState<string>();
+  // Team 12: the caller, identified before the call (caller ID form). No talking until it is set.
+  const [caller, setCaller] = useState<CallerReady>();
+  const [callerPending, setCallerPending] = useState(false);
 
   const ws = useRef<WebSocket>();
   const sessionId = useRef<string>();
@@ -125,6 +131,11 @@ export function useVoiceSession() {
         sessionId.current = m.sessionId;
         setProviders({ llm: m.llm, stt: m.stt, tts: m.tts, sessionId: m.sessionId });
         setConn("ready");
+        break;
+      case "caller_ready":
+        setCaller(m);
+        setCallerPending(false);
+        setTurns([]);
         break;
       case "transcript": {
         const turn = id;
@@ -262,7 +273,7 @@ export function useVoiceSession() {
   }, []);
 
   const startTalking = useCallback(async () => {
-    if (pressed.current || conn !== "ready") return;
+    if (pressed.current || conn !== "ready" || !caller) return;
     pressed.current = true;
     stopPlayback();
     const s = await ensureMic();
@@ -284,7 +295,7 @@ export function useVoiceSession() {
     setActivity("recording");
     setLastError(undefined);
     meter();
-  }, [conn, ensureMic, meter, newTurn, send, stopPlayback]);
+  }, [caller, conn, ensureMic, meter, newTurn, send, stopPlayback]);
 
   const stopTalking = useCallback(() => {
     if (!pressed.current) return;
@@ -302,14 +313,33 @@ export function useVoiceSession() {
 
   const sendText = useCallback((text: string) => {
     const v = text.trim();
-    if (!v || conn !== "ready") return;
+    if (!v || conn !== "ready" || !caller) return;
     stopPlayback();
     newTurn({ text: v, at: Date.now(), status: "final", typed: true });
     send({ type: "text", text: v });
     releasedAt.current = performance.now();
     setActivity("thinking");
     setLastError(undefined);
-  }, [conn, newTurn, send, stopPlayback]);
+  }, [caller, conn, newTurn, send, stopPlayback]);
+
+  /** Team 12: announce the caller (the server loads their sheet, then answers caller_ready). */
+  const identifyCaller = useCallback((input: CallerInput) => {
+    if (conn !== "ready") return;
+    stopPlayback();
+    setCallerPending(true);
+    setLastError(undefined);
+    send({ type: "caller", ...input });
+  }, [conn, send, stopPlayback]);
+
+  /** Team 12: hang up: back to the caller ID form, fresh conversation. */
+  const endCall = useCallback(() => {
+    stopPlayback();
+    send({ type: "reset" });
+    currentTurn.current = undefined;
+    setTurns([]);
+    setCaller(undefined);
+    setActivity("idle");
+  }, [send, stopPlayback]);
 
   const reset = useCallback(() => {
     stopPlayback();
@@ -323,5 +353,6 @@ export function useVoiceSession() {
   return {
     conn, activity, mic, providers, turns, level, lastError,
     startTalking, stopTalking, sendText, stopPlayback, reset, reconnect: connect,
+    caller, callerPending, identifyCaller, endCall,
   };
 }
