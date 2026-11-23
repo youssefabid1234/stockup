@@ -46,6 +46,7 @@ from app.schemas import (
     CallerMessage,
     CallerReadyMessage,
     ChatMessage,
+    DoneEvent,
     ErrorEvent,
     ReadyMessage,
     ResetMessage,
@@ -264,6 +265,8 @@ class VoiceConnection:
             working = [*conv.history, ChatMessage(role="user", content=heard)]
             speaker = Speaker(get_tts_client(), self.send, self.send_bytes, self.bank)
             await fillers.on_turn_start(speaker, heard)  # team 12 (Mohamed Amine): no-op while TEAM_FILLERS is off
+            # In mode 2, intermediate model text must not stop the separate waiting audio.
+            wait_for_reply = speaker.quick_transcript is not None
             llm_start = time.perf_counter()
             # team 12 (Youssef): the orchestrator when TEAM_ORCHESTRATOR is on, else the kit's agent loop
             agent = run_voice_turn if team_flags.orchestrator() else run_agent
@@ -273,10 +276,13 @@ class VoiceConnection:
                     case TextEvent(delta=delta):
                         if timings.llm_first_token_ms is None:
                             timings.llm_first_token_ms = ms_since(llm_start)
-                        spoken += delta
-                        step_text += delta
-                        await self.send(AgentTextMessage(delta=delta))
-                        speaker.push(delta)
+                        if not wait_for_reply:
+                            spoken += delta
+                            step_text += delta
+                            await self.send(AgentTextMessage(delta=delta))
+                            speaker.push(delta)
+                    case DoneEvent(message=message) if wait_for_reply:
+                        spoken = message.content
                     case ToolCallEvent(call=call):
                         await self.send(AgentToolMessage(name=call.name, args=call.arguments))
                         await fillers.on_tool_call(speaker, call.name)  # team 12 (Mohamed Amine)
@@ -290,7 +296,11 @@ class VoiceConnection:
             conv.history = trim(working)
             committed = True
 
-            # 3. Speak the last sentence and wait until all the audio is sent
+            # 3. Speak the completed reply (mode 2) or flush the current speech.
+            if wait_for_reply and spoken.strip():
+                await speaker.stop_waiting()
+                await self.send(AgentTextMessage(delta=spoken))
+                speaker.push(spoken)
             await speaker.finish()
             timings.tts_first_byte_ms = speaker.tts_first_byte_ms
             if speaker.first_byte_at:
@@ -333,6 +343,7 @@ class Speaker:
         self.bank = bank if bank is not None else fillers.FillerBank()
         self.acknowledged = False
         self.restatement: str | None = None
+        self.quick_transcript: str | None = None
         self.waiting_task: asyncio.Task | None = None
         self._audio_lock = asyncio.Lock()
         self.social_turn = False
