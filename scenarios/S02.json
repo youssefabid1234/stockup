@@ -24,7 +24,7 @@
       }
     },
     {
-      "say": "Ah non attendez, mettez 12 sacs de tradi au lieu de 10.",
+      "say": "Ah non attendez, pour la tradi mettez-en 12 sacs.",
       "expect": {
         "tools_none": [
           "confirm_order"
