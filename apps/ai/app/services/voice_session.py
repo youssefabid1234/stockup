@@ -16,6 +16,7 @@ cancellation); what was heard and said so far stays in the history.
 
 import asyncio
 import json
+import logging
 import re
 import time
 import uuid
@@ -86,6 +87,8 @@ class VoiceConnection:
         self.recording: Utterance | None = None  # while the key is down
         self.turn: asyncio.Task | None = None
         self.warm_up: asyncio.Task | None = None
+        self.bank = fillers.FillerBank()
+        self.audio_warm_up: asyncio.Task | None = None
         self._send_lock = asyncio.Lock()
 
     # ── sending ──
@@ -122,6 +125,10 @@ class VoiceConnection:
             pass
         finally:
             await self.interrupt()
+            if self.audio_warm_up:
+                self.audio_warm_up.cancel()
+                with suppress(asyncio.CancelledError):
+                    await self.audio_warm_up
 
     async def handle_text(self, raw: str) -> None:
         try:
@@ -166,6 +173,17 @@ class VoiceConnection:
         # Fetch the company vocabulary for the STT now, not when the caller first speaks.
         self.warm_up = self.warm_up or asyncio.create_task(stt_hint(get_stt_client().name, None))
 
+        if team_flags.fillers() and self.audio_warm_up is None:
+            self.audio_warm_up = asyncio.create_task(self.prepare_audio())
+
+    async def prepare_audio(self) -> None:
+        try:
+            await self.bank.warm_up(get_tts_client(), settings.tts.voice or None)
+        except Exception as exc:
+            # An optional clip must never prevent the customer from placing an order.
+            logging.getLogger(__name__).warning("Waiting audio unavailable (%s)", type(exc).__name__)
+            self.audio_warm_up = None
+
     def start_turn(self, **turn_input) -> None:
         self.turn = asyncio.create_task(self.run_turn(self.conversation, **turn_input))
 
@@ -208,7 +226,7 @@ class VoiceConnection:
 
             # 2. Agent, on a working copy of the history (committed at the end)
             working = [*conv.history, ChatMessage(role="user", content=heard)]
-            speaker = Speaker(get_tts_client(), self.send, self.send_bytes)
+            speaker = Speaker(get_tts_client(), self.send, self.send_bytes, self.bank)
             await fillers.on_turn_start(speaker, heard)  # team 12 (Mohamed Amine): no-op while TEAM_FILLERS is off
             llm_start = time.perf_counter()
             # team 12 (Youssef): the orchestrator when TEAM_ORCHESTRATOR is on, else the kit's agent loop
@@ -256,6 +274,8 @@ class VoiceConnection:
                 await speaker.stop()
             raise
         except Exception as e:
+            if speaker:
+                await speaker.stop()
             await self.send(VoiceErrorMessage(message=str(e) or type(e).__name__))
         finally:
             if utterance:
@@ -268,8 +288,17 @@ class Speaker:
     # a sentence ends with . ! ? … followed by a space ("18.50" is not a boundary)
     SENTENCE = re.compile(r"^([\s\S]*?[.!?…])\s+")
 
-    def __init__(self, tts: TTSClient, send: Callable[[WireModel], Awaitable], send_bytes: Callable[[bytes], Awaitable]):
+    def __init__(
+        self, tts: TTSClient, send: Callable[[WireModel], Awaitable],
+        send_bytes: Callable[[bytes], Awaitable], bank: fillers.FillerBank | None = None,
+    ):
         self.tts, self.send, self.send_bytes = tts, send, send_bytes
+        self.bank = bank if bank is not None else fillers.FillerBank()
+        self.acknowledged = False
+        self.has_text = False
+        self.social_turn = False
+        self.clicked = False
+        self.first_phrase = True
         self.buffer = ""
         self.sentences: asyncio.Queue[str | None] = asyncio.Queue()
         self.worker: asyncio.Task | None = None  # speaks the queued sentences one after the other
@@ -278,17 +307,35 @@ class Speaker:
         self.tts_first_byte_ms: int | None = None
 
     def push(self, delta: str) -> None:
+        self.has_text = self.has_text or bool(delta.strip())
         self.buffer += delta
+        if team_flags.fillers() and self.first_phrase:
+            clause = re.match(r"^([^.!?…,]{20,}?,)\s+", self.buffer)
+            if clause:
+                self.speak(clause[1])
+                self.buffer = self.buffer[clause.end():]
         while m := self.SENTENCE.match(self.buffer):
             self.speak(m[1])
             self.buffer = self.buffer[m.end() :]
 
     def speak(self, sentence: str) -> None:
+        if self.acknowledged and self.first_phrase:
+            sentence = fillers.WAITING_LINE.sub("", sentence, count=1)
         if not sentence.strip():
             return
+        self.first_phrase = False
         if self.worker is None:
             self.worker = asyncio.create_task(self._speak_queued())
         self.sentences.put_nowait(sentence)
+
+    async def play_audio(self, mime: str, data: bytes) -> None:
+        if not data:
+            return
+        if not self.started:
+            self.started = True
+            await self.send(AgentAudioStartMessage(mime=mime))
+            self.first_byte_at = time.perf_counter()
+        await self.send_bytes(data)
 
     async def finish(self) -> None:
         """Speak what is left in the buffer, wait for all the audio, close the segment."""
@@ -317,12 +364,9 @@ class Speaker:
                 # aclosing: on barge-in (cancellation) the provider's HTTP stream is closed right away
                 async with aclosing(result.chunks) as chunks:  # type: ignore[type-var]
                     async for chunk in chunks:
-                        if not self.started:
-                            self.started = True
-                            await self.send(AgentAudioStartMessage(mime=result.mime))
-                            self.first_byte_at = time.perf_counter()
+                        if chunk and self.tts_first_byte_ms is None:
                             self.tts_first_byte_ms = ms_since(tts_start)
-                        await self.send_bytes(chunk)
+                        await self.play_audio(result.mime, chunk)
             except Exception as e:
                 await self.send(VoiceErrorMessage(message=f"TTS : {e}"))
 
