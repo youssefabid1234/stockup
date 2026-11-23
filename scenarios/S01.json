@@ -11,7 +11,8 @@
         "tools_any": [
           "search",
           "get_client",
-          "product_insight"
+          "product_insight",
+          "create_draft_order"
         ],
         "tools_none": [
           "confirm_order"

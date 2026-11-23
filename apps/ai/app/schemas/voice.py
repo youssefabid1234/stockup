@@ -49,8 +49,21 @@ class ResetMessage(WireModel):
     type: Literal["reset"] = "reset"
 
 
+class CallerMessage(WireModel):
+    """Team 12 (Youssef): who is calling, sent before the call starts (like the caller ID / WhatsApp number shown
+    on the wholesaler's screen). Either an existing client (client_id, or a phone found in the ERP's contacts) or a
+    new client (is_new, with the details typed in the form). The server loads the client's sheet right away."""
+
+    type: Literal["caller"] = "caller"
+    client_id: str | None = None
+    contact_name: str | None = None  # who is on the phone (e.g. "Nadine Sarrailh")
+    phone: str | None = None
+    company_name: str | None = None  # for a new client
+    is_new: bool = False
+
+
 VoiceClientMessage = Annotated[
-    Union[StartMessage, AudioStartMessage, AudioEndMessage, TextMessage, ResetMessage],
+    Union[StartMessage, AudioStartMessage, AudioEndMessage, TextMessage, ResetMessage, CallerMessage],
     Field(discriminator="type"),
 ]
 
@@ -114,9 +127,23 @@ class VoiceErrorMessage(WireModel):
     message: str
 
 
+class CallerReadyMessage(WireModel):
+    """Team 12 (Youssef): the caller is identified and their sheet is loaded (or they are a new client)."""
+
+    type: Literal["caller_ready"] = "caller_ready"
+    client_id: str | None = None
+    name: str  # the business ("Maison Sarrailh") or the new client's name
+    contact_name: str | None = None
+    is_new: bool = False
+    status: str | None = None  # active | blocked | prospect | new…
+    loaded_ms: int | None = None
+    used_by_agent: bool = False  # False while TEAM_PRELOAD is off: identified, but the agent does not get the sheet
+
+
 VoiceServerMessage = Annotated[
     Union[
         ReadyMessage,
+        CallerReadyMessage,
         TranscriptMessage,
         AgentTextMessage,
         AgentToolMessage,
