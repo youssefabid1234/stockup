@@ -1,0 +1,31 @@
+{
+  "id": "S30",
+  "owner": "amine-khalil",
+  "title": "Petite commande sous le franco (150 € HT) : prévenir des 12 € de livraison",
+  "why": "Intelligent : règle de la maison (franco 150 € HT, sinon 12 €) dite au bon moment, puis commande juste",
+  "client": "cli_0001",
+  "turns": [
+    {
+      "say": "Bonjour, c'est Nadine de chez Sarrailh. Juste deux pains de levure pour jeudi s'il vous plaît.",
+      "expect": {
+        "tools_any": ["review_order"],
+        "tools_none": ["confirm_order"],
+        "says_any": ["12 euros", "douze euros", "frais de livraison", "franco", "150"]
+      }
+    },
+    {
+      "say": "Ah d'accord. Alors rajoutez huit sacs de tradi.",
+      "expect": {
+        "tools_none": ["confirm_order"],
+        "says_any": ["8", "huit"],
+        "says_none": ["12 euros de livraison", "douze euros de livraison"]
+      }
+    },
+    {
+      "say": "C'est bon, validez.",
+      "expect": {
+        "tools_any": ["confirm_order"]
+      }
+    }
+  ]
+}

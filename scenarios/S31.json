@@ -1,0 +1,29 @@
+{
+  "id": "S31",
+  "owner": "amine-khalil",
+  "title": "Quantité anormale (200 sacs au lieu d'une vingtaine) : faire confirmer avant de valider",
+  "why": "Intelligent : une erreur de dictée ou de transcription (« deux cents » pour « vingt ») ne part pas dans l'ERP",
+  "client": "cli_0001",
+  "turns": [
+    {
+      "say": "Bonjour, Nadine, Maison Sarrailh. Mettez-moi deux cents sacs de tradi pour jeudi.",
+      "expect": {
+        "tools_none": ["confirm_order"],
+        "says_any": ["habitude", "d'habitude", "sûre", "sûr", "confirm", "bien deux cents", "bien 200"]
+      }
+    },
+    {
+      "say": "Ah non pardon, vingt sacs.",
+      "expect": {
+        "tools_none": ["confirm_order"],
+        "says_any": ["20", "vingt"]
+      }
+    },
+    {
+      "say": "Oui c'est bon, validez.",
+      "expect": {
+        "tools_any": ["confirm_order"]
+      }
+    }
+  ]
+}

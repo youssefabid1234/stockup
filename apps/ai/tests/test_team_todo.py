@@ -14,7 +14,6 @@ TODO = pytest.mark.skip(reason="TODO: remove this mark when you implement the br
 # ── Amine Khalil · rules_order ─────────────────────────────────────────────────────────────────────────────────
 
 
-@TODO
 def test_next_delivery_date_uses_client_days_and_cutoff():
     today = date(2026, 11, 24)  # mardi, business date of the pack (06h30)
     assert rules_order.next_delivery_date(today, ["tue", "thu", "sat"], "jeudi") == date(2026, 11, 26)
@@ -22,7 +21,6 @@ def test_next_delivery_date_uses_client_days_and_cutoff():
     assert rules_order.next_delivery_date(today, ["tue", "thu", "sat"], "demain", now_hour=18) is None  # after 17h: J+2
 
 
-@TODO
 def test_ten_of_tradi_means_ten_sacks():
     assert rules_order.sacks_from_words("sac 25 kg", 10, None) == 10
     assert rules_order.sacks_from_words("sac 25 kg", 50, "kg") == 2

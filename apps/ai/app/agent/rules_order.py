@@ -10,28 +10,31 @@ Two parts:
   2. Deterministic helpers (quantities, units, dates): the brief says "du code déterministe pour ce qui n'a pas
      besoin d'un modèle". Faster and never wrong. Business rules that touch prices / stock / credit stay in the
      backend (AGENTS.md): read the ERP's order warnings (client_blocked, no_route…) instead of re-coding them.
+     The dates are exposed to the model by the tool check_delivery_date (tools/delivery.py).
 
-Sources to read first: data/context/01-entreprise.md (« Règles de la maison »), 02-journee-type.md (heures limites),
-03-glossaire-produits.md (« On dit »), 04-playbook-clients.md (« Prendre une commande »), ERP.md (order lifecycle).
+Decision (T0, see docs/team/status/amine-khalil.md): the ERP's delivery days are the truth. Some CRM notes say
+"Fermé le mercredi" for clients the ERP delivers on Wednesdays — and the order history shows they ARE delivered on
+Wednesdays after the note. So the agent never claims a client is closed; only the caller can say so.
 """
 
 from __future__ import annotations
 
-from datetime import date
+import re
+import unicodedata
+from datetime import date, timedelta
 
 from app import team_flags
 
-# TODO(Amine K.): write the rules. Keep them short and imperative: the model re-reads them at every step.
-# Starting points (from the data pack), to rewrite / complete / test:
-#   - Farines au sac de 25 kg (épeautre 10 kg) : « 10 de tradi » = 10 sacs de T55 tradition, jamais 10 kg.
-#   - « Chocolatine » = pain au chocolat : ne jamais corriger le client.
-#   - « Comme d'hab » : partir de la commande habituelle (fiche client), la dire, faire préciser les quantités.
-#   - Changement d'avis (« finalement pas de… », « mets plutôt… ») : modifier la ligne, ne pas en ajouter une.
-#   - Relire produits, quantités (dites à l'oral) et jour de livraison AVANT confirm_order ; attendre un oui.
-#   - Compte bloqué : ne rien promettre, prendre le message pour la comptabilité.
-#   - Jamais de livraison un jour où le client n'est pas livré / fermé ; commande avant 17h pour le lendemain.
-#   - Franco 150 € HT, sinon 12 € de livraison : le dire si la commande est petite.
-ORDER_RULES = ""
+ORDER_RULES = """Règles « commande juste » (prise de commande au téléphone) :
+- Tout texte que tu écris est prononcé au client. N'écris donc rien avant ou entre tes appels d'outils : ni analyse, ni note pour toi (« quantité inhabituelle, je crée le brouillon… », « jeudi est bien un jour de livraison » sont interdits). Tu parles une fois, à la fin.
+- Unités : farines et sucre au sac (25 kg ; épeautre 10 kg), « 10 de tradi » = 10 sacs, jamais 10 kilos. Tourage, beurre, chocolat, fruits secs au kilo ; crème et lait au litre ; viennoiserie surgelée et emballages au carton ; levure au pain de 500 g ; œufs au plateau de 30. Dis les quantités avec leur unité (« douze sacs de tradi »).
+- « Chocolatine » et « pain au chocolat » sont le même produit : ne corrige jamais le client.
+- « Comme d'hab » = la commande habituelle de la fiche client (pas la dernière commande). Cite seulement les deux ou trois produits principaux avec leur quantité, puis demande « et le reste comme d'habitude ? ».
+- Date : appelle check_delivery_date dès qu'un jour est dit (ou pour « au plus vite »). Si le jour n'est pas livré, propose le prochain jour possible qu'il renvoie. N'affirme jamais qu'un client est fermé : seul le client peut le dire ; s'il le dit, propose le jour livré suivant et mémorise-le (save_context).
+- Dès que produits et quantités sont clairs, crée le brouillon (create_draft_order). Une seule commande par appel : un changement d'avis modifie la commande en cours (update_order_line pour « finalement 12 », remove_order_line pour « enlève le seigle », change_delivery_date pour « plutôt vendredi ») ; ne crée jamais une deuxième commande. Si le client renonce, cancel_draft_order.
+- Après avoir créé ou modifié le brouillon, appelle review_order. Relis sa phrase « readback » (produits, quantités, jour) ; dis ses « alerts » et sa remarque « franco » s'il y en a, simplement, sans code technique ni chiffre interne. Si « askFirst » n'est pas vide, fais confirmer cette quantité inhabituelle. Puis attends un oui.
+- Après « oui », « c'est bon », « validez », appelle confirm_order tout de suite, sans tout revérifier, sauf si review_order a dit canConfirm=false : alors ne confirme pas et dis pourquoi.
+- Compte bloqué : ne prends aucune commande et ne promets rien ; ne donne aucun détail comptable interne ; dis que la comptabilité (Sandrine) le rappelle, et enregistre la demande avec log_client_event (type call)."""
 
 
 def order_rules_section() -> str:
@@ -39,22 +42,285 @@ def order_rules_section() -> str:
     return ORDER_RULES.strip() if team_flags.order_rules() else ""
 
 
-# ── Deterministic helpers (TODO(Amine K.)): pure functions, unit-tested in tests/test_rules_order.py ──
+# ── Deterministic helpers: pure functions, unit-tested in tests/test_rules_order.py ──
+
+WEEKDAYS = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]
+DAYS_FR = {"lundi": "mon", "mardi": "tue", "mercredi": "wed", "jeudi": "thu", "vendredi": "fri", "samedi": "sat", "dimanche": "sun"}  # fmt: skip
+DAY_LABEL = {v: k for k, v in DAYS_FR.items()}
+MONTHS_FR = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"]  # fmt: skip
+ASAP = ("au plus vite", "des que possible", "le plus tot", "prochaine livraison", "rapidement", "vite")
+CUTOFF_HOUR = 17  # order before 17h for next-morning delivery (02-journee-type.md)
+CUTOFF_HOUR_LAURAGAIS = 12  # Lauragais-Tarn route: order the day before, before noon
+LAURAGAIS_ZONE = "Lauragais & Tarn"
 
 
-def next_delivery_date(today: date, delivery_days: list[str], asked: str | None = None, now_hour: int = 6) -> date | None:
+def _norm(s: str) -> str:
+    """lower case, no accents, single spaces: "Après-Demain " → "apres-demain"."""
+    s = unicodedata.normalize("NFKD", s).encode("ascii", "ignore").decode()
+    return re.sub(r"\s+", " ", s.lower()).strip()
+
+
+def can_deliver(today: date, delivery_days: list[str], d: date, now_hour: float = 6, cutoff_hour: float = CUTOFF_HOUR) -> bool:
+    """True when `d` is a delivery day of the client, after today, and the order is still in time for it."""
+    if d <= today or WEEKDAYS[d.weekday()] not in delivery_days:
+        return False
+    return d - timedelta(days=1) > today or now_hour < cutoff_hour
+
+
+def first_possible(today: date, delivery_days: list[str], now_hour: float = 6, cutoff_hour: float = CUTOFF_HOUR) -> date | None:
+    """The first date the client can be delivered (None if the client has no delivery day)."""
+    return next(
+        (today + timedelta(days=i) for i in range(1, 15) if can_deliver(today, delivery_days, today + timedelta(days=i), now_hour, cutoff_hour)),
+        None,
+    )
+
+
+def parse_asked_day(today: date, asked: str | None) -> date | None | str:
+    """What the caller said → a date, "asap", or None when it is not understood / not a future day.
+    "demain", "après-demain", "jeudi", "jeudi prochain", "26/11", "le 26", "2026-11-26", "au plus vite"."""
+    if asked is None or not asked.strip():
+        return "asap"
+    a = _norm(asked)
+    if any(k in a for k in ASAP):
+        return "asap"
+    if "apres-demain" in a or "apres demain" in a:
+        return today + timedelta(days=2)
+    if "demain" in a:
+        return today + timedelta(days=1)
+    if "aujourd" in a or "ce matin" in a or "ce midi" in a:
+        return today
+    if m := re.search(r"(\d{4})-(\d{2})-(\d{2})", a):
+        return date(int(m[1]), int(m[2]), int(m[3]))
+    if m := re.search(r"\b(\d{1,2})\s*/\s*(\d{1,2})\b", a):
+        return _future(today, int(m[1]), int(m[2]))
+    for name, code in DAYS_FR.items():
+        if re.search(rf"\b{name}\b", a):
+            ahead = (WEEKDAYS.index(code) - today.weekday()) % 7 or 7  # "mardi" said on a Tuesday = next Tuesday
+            return today + timedelta(days=ahead)
+    if m := re.search(r"\b(?:le\s+)?(\d{1,2})\b", a):
+        return _future(today, int(m[1]), today.month)
+    return None
+
+
+def _future(today: date, day: int, month: int) -> date | None:
+    """Day/month without a year: the next occurrence from today."""
+    for year in (today.year, today.year + 1):
+        try:
+            d = date(year, month, day)
+        except ValueError:
+            return None
+        if d >= today:
+            return d
+    return None
+
+
+def next_delivery_date(
+    today: date, delivery_days: list[str], asked: str | None = None, now_hour: float = 6, cutoff_hour: float = CUTOFF_HOUR
+) -> date | None:
     """
-    The delivery date for "jeudi", "demain", "au plus vite"… given the client's delivery days and the 17h cut-off.
+    The delivery date for "jeudi", "demain", "au plus vite"… given the client's delivery days and the order cut-off
+    (17h for the next morning; 12h the day before for the Lauragais-Tarn route).
     Use the ERP's business date (GET /api/meta → today), never the real clock.
-    TODO(Amine K.): implement + tests. Return None if `asked` is a day the client is not delivered.
+    Returns None if the asked day is not delivered for this client, already gone, or too late to order for.
     """
-    raise NotImplementedError
+    wanted = parse_asked_day(today, asked)
+    if wanted == "asap":
+        return first_possible(today, delivery_days, now_hour, cutoff_hour)
+    if not isinstance(wanted, date):
+        return None
+    return wanted if can_deliver(today, delivery_days, wanted, now_hour, cutoff_hour) else None
+
+
+def french_day(d: date) -> str:
+    """date(2026, 11, 26) → "jeudi 26 novembre"."""
+    return f"{DAY_LABEL[WEEKDAYS[d.weekday()]]} {d.day} {MONTHS_FR[d.month - 1]}"
+
+
+def delivery_answer(
+    today: date, delivery_days: list[str], asked: str | None, now_hour: float = 6, zone: str | None = None
+) -> dict:
+    """Everything the agent needs to answer about a delivery day, as small JSON (used by check_delivery_date)."""
+    cutoff = CUTOFF_HOUR_LAURAGAIS if zone == LAURAGAIS_ZONE else CUTOFF_HOUR
+    days_fr = [DAY_LABEL[d] for d in WEEKDAYS if d in delivery_days]
+    nxt = first_possible(today, delivery_days, now_hour, cutoff)
+    wanted = parse_asked_day(today, asked)
+    out: dict = {"deliveryDays": days_fr}
+    if wanted == "asap" or (date_ok := next_delivery_date(today, delivery_days, asked, now_hour, cutoff)) is not None:
+        d = nxt if wanted == "asap" else date_ok
+        if d is None:
+            return {**out, "ok": False, "reason": "aucun jour de livraison connu pour ce client"}
+        return {**out, "ok": True, "date": d.isoformat(), "say": french_day(d)}
+    if not isinstance(wanted, date):
+        reason = f"jour non compris : « {asked} »"
+    elif wanted <= today:
+        reason = "les tournées du jour sont parties (dépannage possible au dépôt)"
+    elif WEEKDAYS[wanted.weekday()] not in delivery_days:
+        reason = f"le client n'est pas livré le {DAY_LABEL[WEEKDAYS[wanted.weekday()]]} (tournée : {', '.join(days_fr)})"
+    else:
+        limit = "la veille avant 12h" if cutoff == CUTOFF_HOUR_LAURAGAIS else "avant 17h la veille"
+        reason = f"trop tard pour ce jour : commande {limit}"
+    return {
+        **out,
+        "ok": False,
+        "asked": french_day(wanted) if isinstance(wanted, date) else asked,
+        "reason": reason,
+        **({"nextPossible": nxt.isoformat(), "sayNext": french_day(nxt)} if nxt else {}),
+    }
+
+
+UNIT_ALIASES = {
+    "kg": ("kg", "kilo", "kilos", "kilogramme", "kilogrammes"),
+    "l": ("l", "litre", "litres"),
+    "g": ("g", "gramme", "grammes"),
+}
+
+
+def _said(unit: str | None) -> str | None:
+    if not unit:
+        return None
+    u = _norm(unit).rstrip(".")
+    return next((k for k, aliases in UNIT_ALIASES.items() if u in aliases), u)
 
 
 def sacks_from_words(product_unit: str, qty: float, said_unit: str | None) -> float:
     """
-    Convert what was said into the product's selling unit (sacs, plaques, cartons…), e.g. "10 de tradi" → 10 sacks.
-    TODO(Amine K.): implement + tests, or decide it is better left to the model with good rules (write why in
-    DECISIONS.md).
+    Convert what was said into the product's selling unit, e.g. "10 de tradi" → 10 sacks, "50 kilos de tradi" → 2.
+    `product_unit` is the package the product is sold by ("sac 25 kg", "plaque 2 kg", "carton 140"…); a product sold
+    by weight or volume passes "kg" / "l" and the quantity stays as said.
+    No unit said ("10 de tradi") = packages. A weight said for a weighed package = weight / package weight
+    (may be fractional: the agent then asks, e.g. 40 kg of 25 kg sacks).
     """
-    raise NotImplementedError
+    said = _said(said_unit)
+    pu = _norm(product_unit)
+    if pu in ("kg", "l", "litre", "kilo"):
+        return qty
+    if said is None or said in ("sac", "sacs", "carton", "cartons", "plaque", "plaques", "piece", "pieces"):
+        return qty
+    m = re.search(r"(\d+(?:[.,]\d+)?)\s*(kg|l|g)\b", pu)
+    if not m:
+        return qty
+    size, size_unit = float(m[1].replace(",", ".")), m[2]
+    if said == "g" and size_unit == "kg":
+        qty, said = qty / 1000, "kg"
+    if said != size_unit:
+        return qty
+    return round(qty / size, 3)
+
+
+# ── T3 / T4: read the order back, the ERP's warnings, franco, unusual quantities (used by tools/order_review.py) ──
+
+FRANCO_HT = 150.0  # « Franco de port 150 € HT ; en dessous, 12 € de livraison » (01-entreprise.md)
+DELIVERY_FEE_HT = 12.0
+UNUSUAL_RATIO = 5  # a line at 5× (or more) the client's usual quantity is read back and confirmed first
+
+# What the caller may hear for each ERP warning code. None = internal, never said to the caller.
+# `blocks` = the order must not be confirmed while it is there.
+WARNINGS_FOR_CALLER: dict[str, tuple[str | None, bool]] = {
+    "client_blocked": ("votre compte est bloqué : je ne peux pas valider de commande, la comptabilité vous rappelle", True),
+    "credit_limit": ("cette commande dépasse votre plafond de crédit : la comptabilité doit la valider avant", True),
+    "no_route": ("aucune tournée ne passe chez vous ce jour-là", True),
+    "insufficient_stock": (None, True),  # said per product below, with what is left
+    "expiring_soon": (None, False),  # a FEFO lot close to its date: the warehouse's business
+    "price_below_cost": (None, False),  # margin: internal
+}
+
+
+def fr_number(x: float) -> str:
+    """12.0 → "12", 1.5 → "1,5"."""
+    return f"{x:g}".replace(".", ",")
+
+
+def _plural(word: str, n: float) -> str:
+    if n <= 1 or word.endswith(("s", "x")):
+        return word
+    return word + ("x" if word.endswith("eau") else "s")
+
+
+def say_quantity(qty: float, unit: str | None, caliber: str | None = None) -> str:
+    """How a quantity is said: (12, piece, "sac 25 kg") → "12 sacs", (40, kg) → "40 kilos", (4, box, "carton 140") → "4 cartons"."""
+    if unit == "kg":
+        return f"{fr_number(qty)} {'kilo' if qty <= 1 else 'kilos'}"
+    if unit in ("liter", "l"):
+        return f"{fr_number(qty)} {'litre' if qty <= 1 else 'litres'}"
+    word = (caliber or "").split()[0] if caliber else ("carton" if unit == "box" else "pièce")
+    return f"{fr_number(qty)} {_plural(word, qty)}"
+
+
+def short_name(product_name: str) -> str:
+    """"Farine de blé T55 tradition française (sac 25 kg)" → "Farine de blé T55 tradition française"."""
+    return product_name.split(" (")[0].strip()
+
+
+def franco_note(total_ht: float) -> str | None:
+    """Below 150 € HT there is a 12 € delivery fee: worth saying, with what is missing."""
+    if total_ht >= FRANCO_HT or total_ht <= 0:
+        return None
+    missing = FRANCO_HT - total_ht
+    return (f"la commande fait {fr_number(round(total_ht))} euros hors taxes : en dessous de 150 euros, il y a 12 euros de "
+            f"livraison ; il manque environ {fr_number(round(missing))} euros pour être livré gratuitement")
+
+
+def unusual_lines(lines: list[dict], usual: list[dict], ratio: float = UNUSUAL_RATIO) -> list[dict]:
+    """Lines at `ratio`× or more of the client's usual quantity for that product (a « 100 » heard for « 10 »…)."""
+    avg = {u["productId"]: u.get("avgQty") or 0 for u in usual}
+    out = []
+    for line in lines:
+        usual_qty = avg.get(line["productId"]) or 0
+        if usual_qty > 0 and line["qty"] >= ratio * usual_qty:
+            out.append({"productId": line["productId"], "qty": line["qty"], "usualQty": round(usual_qty, 1)})
+    return out
+
+
+def review(order: dict, products: dict[str, dict], usual: list[dict]) -> dict:
+    """
+    Everything to read back before confirm_order, deterministic:
+      readback   : "12 sacs de Farine de blé T55 tradition française, … ; livraison jeudi 26 novembre"
+      alerts     : what to tell the caller (ERP warnings translated, internal ones dropped)
+      franco     : the 12 € fee note when the order is below 150 € HT
+      askFirst   : unusual quantities to have confirmed
+      canConfirm : False when a warning blocks (client blocked, credit limit, no route, missing stock)
+    """
+    parts = []
+    for line in order["lines"]:
+        p = products.get(line["productId"]) or {}
+        parts.append(f"{say_quantity(line['qty'], line.get('unit') or p.get('unit'), p.get('caliber'))} de {short_name(line.get('productName') or p.get('name', ''))}")
+    when = french_day(date.fromisoformat(order["deliveryDate"][:10])) if order.get("deliveryDate") else None
+    readback = ", ".join(parts) + (f" ; livraison {when}" if when else "")
+
+    alerts: list[str] = []
+    blocking: list[str] = []
+    for w in order.get("warnings") or []:
+        said, blocks = WARNINGS_FOR_CALLER.get(w.get("code"), (None, False))
+        if w.get("code") == "insufficient_stock":
+            line = next((li for li in order["lines"] if li["productId"] == w.get("productId")), None)
+            if line:
+                p = products.get(line["productId"]) or {}
+                left = max(0.0, line.get("available") or 0)
+                said = (f"{short_name(line.get('productName', ''))} : il n'en reste que "
+                        f"{say_quantity(left, line.get('unit') or p.get('unit'), p.get('caliber'))}") if left > 0 else \
+                    f"{short_name(line.get('productName', ''))} : en rupture"
+        if said and said not in alerts:
+            alerts.append(said)
+        if blocks:
+            blocking.append(w.get("code"))
+
+    unusual = unusual_lines(order["lines"], usual)
+    ask_first = []
+    for u in unusual:
+        p = products.get(u["productId"]) or {}
+        name = short_name(p.get("name", u["productId"]))
+        ask_first.append(f"{say_quantity(u['qty'], p.get('unit'), p.get('caliber'))} de {name}, alors que d'habitude c'est "
+                         f"environ {say_quantity(u['usualQty'], p.get('unit'), p.get('caliber'))}")
+    out = {
+        "orderId": order.get("id"),
+        "readback": readback,
+        "totalHt": order.get("totalHt"),
+        "canConfirm": not blocking,
+        "alerts": alerts,
+        "askFirst": ask_first,
+    }
+    if note := franco_note(order.get("totalHt") or 0):
+        out["franco"] = note
+    if blocking:
+        out["blockedBy"] = sorted(set(blocking))
+    return out
