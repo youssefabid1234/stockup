@@ -39,6 +39,26 @@ noté : l'agent prononce son raisonnement (« Le compte est bloqué ; je ne pren
 
 ### Vitesse et voix (Mohamed Amine)
 ### Plusieurs agents, fiche préchargée, super-outil (Youssef)
+
+**Mesure de départ (T0, lun. 23/11 23h, `TEAM_ORDER_RULES=1`, autres briques éteintes).**
+`totalMs` = fin de parole du client → premier octet audio de l'agent (`--voice`, phrase tapée donc sans STT) ; c'est la
+métrique du jury. Via /chat (sans audio) on mesure le tour complet : le texte n'arrivant qu'à la fin, c'est presque
+la même chose (S01·1 : 7 286 ms /chat, 6 883 ms voix).
+
+| Scénario · réplique | Outils appelés (un par un) | /chat | `--voice` totalMs | Résultat |
+|---|---|---|---|---|
+| S01·1 « 10 sacs de tradi pour jeudi » | search, get_context, check_delivery_date, get_product_stock, create_draft_order | 7 286 ms | 6 883 ms (LLM 6 739 + TTS 144) | PASS |
+| S01·2 « oui, validez » | confirm_order | 2 377 ms | 3 340 ms | PASS |
+| S05·1 « 3 cartons de tourage AOP » | search, get_client, get_context, get_product_stock, check_delivery_date | 7 928 ms | – | PASS |
+| S05·2 « il est à combien, le 82 ? » | get_price | 4 856 ms | – | PASS |
+| S05·3 / S05·4 | aucun | 2 116 / 1 942 ms | – | FAIL (note « Fermé le mercredi ») |
+
+Lecture : les répliques lentes (7-8 s) sont celles où le modèle enchaîne 5 outils, un par un ; la voix (TTS) ne pèse que
+≈ 0,15 s. Cibles : moins d'allers-retours (super-outil, fiche préchargée) et un premier son plus tôt (agent rapide,
+phrases d'attente de Mohamed Amine).
+
+**Outil de rejeu corrigé** : en /chat il renvoie maintenant l'historique complet (outils appelés + résultats) comme la
+page Voix ; avant, l'agent oubliait son brouillon et recommençait (S01·2 : 6 outils, 9,4 s → 1 outil, 2,4 s).
 ### Commande juste (Amine Khalil)
 ### Bon vendeur (Daycem)
 
