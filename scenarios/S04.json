@@ -1,0 +1,34 @@
+{
+  "id": "S04",
+  "owner": "daycem",
+  "title": "Sarrailh veut du tourage AOP en rupture : NE PAS proposer de remplaçant",
+  "why": "Intelligent : la fiche dit « jamais de substitution sur le beurre » (Guy préfère manquer)",
+  "client": "cli_0001",
+  "turns": [
+    {
+      "say": "Bonjour c'est Nadine, Maison Sarrailh. Il me faut 2 cartons de tourage AOP pour jeudi.",
+      "expect": {
+        "tools_any": [
+          "get_product_stock",
+          "find_alternatives",
+          "search",
+          "product_insight"
+        ],
+        "tools_none": [
+          "confirm_order"
+        ],
+        "says_any": [
+          "rupture",
+          "plus de",
+          "manque",
+          "fin novembre",
+          "pas disponible",
+          "plus en stock"
+        ],
+        "says_none": [
+          "82"
+        ]
+      }
+    }
+  ]
+}

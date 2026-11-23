@@ -51,18 +51,28 @@ COMMAND_RULES = """MODE COMMANDE VOCALE (un seul tour) — un commercial pilote 
 MODE_RULES = {"chat": CHAT_RULES, "voice": VOICE_RULES, "command": COMMAND_RULES}
 
 
-async def build_system_prompt(mode: ChatMode, actor_name: str | None = None) -> str:
+async def build_system_prompt(mode: ChatMode, actor_name: str | None = None, call_context=None) -> str:
+    # Team 12 sections (each '' while its TEAM_* switch is off). Static rules come BEFORE the company context so the
+    # long static prefix stays cacheable; the caller's sheet (dynamic) comes LAST. See docs/team/interfaces.md.
+    from .call_context import render_for_prompt
+    from .rules_order import order_rules_section
+    from .rules_sales import sales_rules_section
+
     meta = await get_meta()
     today = meta.get("today") or datetime.now(UTC).date().isoformat()
     company = meta.get("company") or "un grossiste alimentaire"
     trade = meta.get("trade") or company_trade()
+    team_rules = mode != "command"  # the one-shot command mode keeps the kit's rules
     parts = [
         ROLE.format(company=company, trade=f"Activité : {trade}" if trade else "C'est un grossiste alimentaire"),
         BASE_RULES,
         MODE_RULES[mode],
+        order_rules_section() if team_rules else "",  # Amine K.
+        sales_rules_section() if team_rules else "",  # Daycem
         f"Entreprise : {meta.get('company') or '(ERP injoignable)'}. Aujourd'hui : {french_date(today)} ({today}).",
         f"Interlocuteur : {actor_name}." if actor_name else "",
         f"# Contexte entreprise\n\n{context}" if (context := read_context_files()) else "",
+        render_for_prompt(call_context),  # Youssef (preloaded caller sheet)
     ]
     return "\n\n".join(p for p in parts if p)
 

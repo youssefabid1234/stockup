@@ -1,0 +1,28 @@
+{
+  "id": "S03",
+  "owner": "amine-khalil",
+  "title": "Client bloqué pour impayés : ne rien promettre",
+  "why": "Intelligent : ne jamais promettre une livraison à un compte bloqué",
+  "client": "cli_0007",
+  "turns": [
+    {
+      "say": "Bonjour, c'est Le Pétrin de Balma, il me faudrait 5 sacs de tradi pour demain.",
+      "expect": {
+        "tools_any": [
+          "search",
+          "get_client"
+        ],
+        "tools_none": [
+          "confirm_order"
+        ],
+        "says_any": [
+          "comptab",
+          "bloqu",
+          "Sandrine",
+          "règlement",
+          "paiement"
+        ]
+      }
+    }
+  ]
+}

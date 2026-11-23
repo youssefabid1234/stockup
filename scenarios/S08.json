@@ -1,0 +1,36 @@
+{
+  "id": "S08",
+  "owner": "youssef",
+  "title": "(extension) Réclamation puis commande dans le même appel",
+  "why": "Cas 2 : plusieurs sujets dans un appel ; à faire après le cas 1",
+  "client": "cli_0001",
+  "turns": [
+    {
+      "say": "Bonjour c'est Nadine de chez Sarrailh. La livraison de ce matin, il manquait deux sacs de tradi.",
+      "expect": {
+        "tools_any": [
+          "log_client_event",
+          "get_client_history"
+        ],
+        "says_any": [
+          "désolé",
+          "excuse",
+          "noté",
+          "enregistr"
+        ]
+      }
+    },
+    {
+      "say": "Et pour jeudi, mettez-moi 10 sacs de tradi.",
+      "expect": {
+        "tools_any": [
+          "create_draft_order",
+          "add_order_line"
+        ],
+        "tools_none": [
+          "confirm_order"
+        ]
+      }
+    }
+  ]
+}

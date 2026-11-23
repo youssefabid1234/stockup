@@ -26,8 +26,11 @@ from dataclasses import dataclass, field
 from fastapi import WebSocket, WebSocketDisconnect
 from pydantic import TypeAdapter, ValidationError
 
+from app import team_flags
 from app.agent import run_agent, sanitize_history
+from app.agent.call_context import CallContext
 from app.agent.loop import ms_since
+from app.agent.orchestrator import run_voice_turn
 from app.clients import STTUpdate, TTSClient, get_llm_client, get_stt_client, get_tts_client
 from app.config import settings
 from app.schemas import (
@@ -55,6 +58,7 @@ from app.schemas import (
 from app.schemas.base import WireModel
 from app.tools import all_tools
 
+from . import fillers
 from .utterance import Utterance
 from .vocabulary import stt_hint
 
@@ -66,6 +70,7 @@ class Conversation:
     id: str
     actor_name: str | None = None
     history: list[ChatMessage] = field(default_factory=list)
+    call_context: CallContext | None = None  # team 12 (Youssef): the caller's sheet, once known (TEAM_PRELOAD)
 
 
 # In memory: a reconnect with the same sessionId continues the conversation.
@@ -204,8 +209,12 @@ class VoiceConnection:
             # 2. Agent, on a working copy of the history (committed at the end)
             working = [*conv.history, ChatMessage(role="user", content=heard)]
             speaker = Speaker(get_tts_client(), self.send, self.send_bytes)
+            await fillers.on_turn_start(speaker, heard)  # team 12 (Mohamed Amine): no-op while TEAM_FILLERS is off
             llm_start = time.perf_counter()
-            async for ev in run_agent(working, llm=get_llm_client(), tools=all_tools(), mode="voice", actor_name=conv.actor_name):
+            # team 12 (Youssef): the orchestrator when TEAM_ORCHESTRATOR is on, else the kit's agent loop
+            agent = run_voice_turn if team_flags.orchestrator() else run_agent
+            extra = {"call_context": conv.call_context} if conv.call_context is not None else {}
+            async for ev in agent(working, llm=get_llm_client(), tools=all_tools(), mode="voice", actor_name=conv.actor_name, **extra):
                 match ev:
                     case TextEvent(delta=delta):
                         if timings.llm_first_token_ms is None:
@@ -216,6 +225,7 @@ class VoiceConnection:
                         speaker.push(delta)
                     case ToolCallEvent(call=call):
                         await self.send(AgentToolMessage(name=call.name, args=call.arguments))
+                        await fillers.on_tool_call(speaker, call.name)  # team 12 (Mohamed Amine)
                     case ToolResultEvent(name=name, ok=ok, ms=ms):
                         step_text = ""
                         await self.send(AgentToolMessage(name=name, ok=ok, ms=ms))
