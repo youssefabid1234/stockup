@@ -1,0 +1,12 @@
+{
+  "id": "S11",
+  "owner": "mohamed-amine",
+  "title": "Fin d'appel sans phrase d'attente ni clavier",
+  "why": "Écouter le premier son sur la page Voix. On attend une salutation directe. Le rejeu contrôle le texte et les outils.",
+  "turns": [
+    {
+      "say": "C'est tout, merci. Au revoir.",
+      "expect": {"tools_none": ["search", "get_client", "get_product_stock", "get_price", "product_insight", "confirm_order"], "says_none": ["je regarde", "je vérifie"]}
+    }
+  ]
+}

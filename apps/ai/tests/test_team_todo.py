@@ -51,14 +51,14 @@ def test_rank_alternatives_in_stock_and_promo_first():
 # ── Mohamed Amine · fillers ────────────────────────────────────────────────────────────────────────────────────
 
 
-@TODO
 async def test_filler_bank_warms_up_every_phrase():
     from app.clients.mock_speech import MockTTS
     from app.services.fillers import PHRASES, FillerBank
 
     bank = FillerBank()
     await bank.warm_up(MockTTS())
-    assert all(bank.audio.get(situation) for situation in PHRASES)
+    assert {key: len(clips) for key, clips in bank.audio.items()} == {key: len(phrases) for key, phrases in PHRASES.items()}
+    assert all(clip.data for clips in bank.audio.values() for clip in clips)
 
 
 # ── Youssef · product_insight / call_context ───────────────────────────────────────────────────────────────────
