@@ -52,3 +52,30 @@ async def review_order(ctx: ToolContext, order_id: str = Field(description="ex. 
     by_id = {d["id"]: d for d in details}
     open_orders = [{**o, "lines": by_id[o["id"]]["lines"]} if o["id"] in by_id else o for o in open_orders]
     return review(order, products, usual or [], open_orders)
+
+
+@tool
+async def quote_line(
+    ctx: ToolContext,
+    client_id: str,
+    product_id: str,
+    qty: float | None = Field(None, description="Quantité telle que dite par le client (défaut 1)"),
+    said_unit: str | None = Field(None, description="L'unité dite : « cartons », « plaques », « kilos », « sacs »… (vide = unité de vente)"),
+) -> dict:
+    """
+    Prix à dire au client, calculé (jamais de tête) : prix client à l'unité de vente + par conditionnement (carton, plaque, sac…)
+    dans « say », et le total HT pour la quantité dans « total ». Ex. 3 cartons de tourage → « 9 euros 20 le kilo, soit 92 euros
+    le carton de 10 kilos » et « 276 euros hors taxes pour 30 kilos, soit 3 cartons ». Spoken price quote, computed.
+    """
+    from app.agent.rules_order import quote, to_selling_qty  # here, not at the top: app.agent imports the tools package
+
+    products = await products_by_id(ctx)
+    p = products.get(product_id)
+    if not p:
+        raise ValueError(f"produit {product_id} introuvable : cherche-le d'abord avec search")
+    q = to_selling_qty(qty or 1, said_unit, p["unit"], p.get("caliber") or "", p["name"])
+    r = await ctx.erp.get("/api/prices/resolve", {"clientId": client_id, "productId": product_id, "qty": q})
+    out = quote(qty or 1, p["unit"], p.get("caliber") or "", p["name"], r["price"], said_unit)
+    if r.get("source") != "list":
+        out["why"] = r.get("explanation")  # negotiated price / group rule: worth saying
+    return out

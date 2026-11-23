@@ -188,3 +188,46 @@ def test_duplicate_draft_detail_says_if_it_is_the_same_order():
     assert dups["ord_a"]["sameAsThis"] is True
     assert dups["ord_b"]["sameAsThis"] is False
     assert dups["ord_b"]["readback"] == "200 sacs de Farine de blé T55 tradition française, 3 pains de Levure fraîche boulangère"
+
+
+# ── Prix dits à l'oral (enregistrement S05 : « 92 euros la plaque… pardon, 18 euros 40 ») ──
+
+TOURAGE = ("kg", "carton 5 plaques de 2 kg", "Beurre de tourage 82 % (plaque 2 kg)")
+CREME = ("liter", "carton 6 × 1 L", "Crème liquide UHT 35 % (brique 1 L)")
+
+
+def test_fr_money():
+    assert ro.fr_money(9.2) == "9 euros 20"
+    assert ro.fr_money(92) == "92 euros"
+    assert ro.fr_money(1.05) == "1 euro 05"
+    assert ro.fr_money(0.5) == "50 centimes"
+
+
+def test_packaging_of_weighed_and_liquid_products():
+    assert ro.packaging(*TOURAGE) == [("carton", 10), ("plaque", 2)]
+    assert ro.packaging("kg", "plaquette 1 kg", "Beurre doux AOP (carton 10 × 1 kg)") == [("carton", 10), ("plaquette", 1)]
+    assert ro.packaging(*CREME) == [("carton", 6), ("brique", 1)]
+    assert ro.packaging("kg", "carton 12,5 kg", "Raisins secs sultanines (carton 12,5 kg)") == [("carton", 12.5)]
+    assert ro.packaging("piece", "sac 25 kg", "Farine (sac 25 kg)") == []
+
+
+def test_said_packages_become_selling_units():
+    assert ro.to_selling_qty(3, "cartons", *TOURAGE) == 30
+    assert ro.to_selling_qty(4, "plaques", *TOURAGE) == 8
+    assert ro.to_selling_qty(40, "kilos", *TOURAGE) == 40
+    assert ro.to_selling_qty(2, "cartons", *CREME) == 12
+    assert ro.to_selling_qty(50, "kg", "piece", "sac 25 kg", "Farine (sac 25 kg)") == 2
+
+
+def test_quote_the_s05_case():
+    q = ro.quote(3, *TOURAGE, unit_price=9.2, said_unit="cartons")
+    assert q["say"] == "9 euros 20 le kilo, soit 92 euros le carton de 10 kilos (18 euros 40 la plaque de 2 kilos)"
+    assert q["total"] == "276 euros hors taxes pour 30 kilos, soit 3 cartons"
+    assert q["totalHt"] == 276
+
+
+def test_quote_other_units():
+    assert ro.quote(20, *CREME, unit_price=4.1)["say"] == "4 euros 10 le litre, soit 24 euros 60 le carton de 6 litres"
+    flour = ro.quote(10, "piece", "sac 25 kg", "Farine (sac 25 kg)", 18.9)
+    assert flour["say"] == "18 euros 90 le sac de 25 kilos" and flour["total"] == "189 euros hors taxes pour 10 sacs"
+    assert ro.quote(2, "piece", "pain 500 g", "Levure (pain de 500 g)", 1.35)["say"] == "1 euro 35 le pain de 500 grammes"

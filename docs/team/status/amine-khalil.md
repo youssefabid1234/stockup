@@ -1,4 +1,19 @@
-# Amine Khalil – 🧠 « La commande juste »  ·  mis à jour lun. 23/11 23h30
+# Amine Khalil – 🧠 « La commande juste »  ·  mis à jour mar. 24/11 00h05
+
+- Fait (00h05) – **prix dits à l'oral calculés par le code** (outil `quote_line`) :
+  - Constat à l'écoute d'un enregistrement de S05 : l'agent calculait de tête et se trompait en direct (« 92 euros la
+    plaque de 2 kilos… pardon, 18 euros 40 la plaque »).
+  - `rules_order.py` : `packaging` (carton 5 plaques de 2 kg → carton = 10 kg, plaque = 2 kg ; carton 6 × 1 L…),
+    `to_selling_qty` (« 3 cartons » de tourage → 30 kg), `quote` / `fr_money` (« 9 euros 20 le kilo, soit 92 euros le
+    carton de 10 kilos » ; « 276 euros hors taxes pour 30 kilos, soit 3 cartons »). Prix client résolu par l'ERP
+    (`/api/prices/resolve`, prix négocié / règles de groupe) : rien n'est recodé.
+  - Outil **`quote_line`** (`tools/order_review.py`) + règle « pour un prix, appelle quote_line, ne calcule jamais ».
+  - Tests : +5 → 117 passent. S05 réenregistré : prix juste du premier coup, appel de 68 s → 56 s, 1 commande
+    confirmée mercredi 25/11.
+  - Pour **Daycem** : S05 tour 2 attend `get_price` ou `product_insight` ; ajouter `quote_line` à `tools_any`.
+- Pour **tous** : mettre `TEAM_ORDER_RULES=1` dans son `.env` après la fusion (`.env.example` est passé à 1).
+- Outil d'enregistrement : un appel complet en MP3 (client = 2e voix ElevenLabs, agent = vraie réponse via WS /voice)
+  dans `scenarios/results/audio/` (ignoré par git). Je peux le partager si l'équipe le veut pour la vidéo.
 
 - Fait (23h30) – **garde-fous doublons + note « Fermé le mercredi »**, suite à l'audit de S05 (Daycem) :
   - **S05 audité** (rupture AOP → 82 %, Pétrin de Colomiers) : aucun doublon. Mais **sans** `TEAM_ORDER_RULES` il
