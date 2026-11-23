@@ -78,3 +78,72 @@ def test_rules_only_when_switch_on(monkeypatch):
     assert ro.order_rules_section() == ""
     monkeypatch.setenv("TEAM_ORDER_RULES", "1")
     assert "10 de tradi" in ro.order_rules_section()
+
+
+# ── T3 / T4: review before confirm_order ──
+
+PRODUCTS = {
+    "prd_0001": {"id": "prd_0001", "name": "Farine de blé T55 tradition française (sac 25 kg)", "unit": "piece", "caliber": "sac 25 kg"},
+    "prd_0025": {"id": "prd_0025", "name": "Beurre de tourage AOP Charentes-Poitou 84 % (plaque 2 kg)", "unit": "kg", "caliber": "carton 5 plaques de 2 kg"},
+    "prd_0011": {"id": "prd_0011", "name": "Levure fraîche boulangère (pain de 500 g)", "unit": "piece", "caliber": "pain 500 g"},
+    "prd_0034": {"id": "prd_0034", "name": "Œufs plein air calibre M (plateau de 30)", "unit": "box", "caliber": "plateau 30"},
+}
+
+
+def line(pid, qty, available=100.0):
+    p = PRODUCTS[pid]
+    return {"productId": pid, "qty": qty, "unit": p["unit"], "productName": p["name"], "available": available}
+
+
+def test_say_quantity():
+    assert ro.say_quantity(12, "piece", "sac 25 kg") == "12 sacs"
+    assert ro.say_quantity(1, "piece", "sac 25 kg") == "1 sac"
+    assert ro.say_quantity(40, "kg") == "40 kilos"
+    assert ro.say_quantity(1.5, "liter", "brique 1 L") == "1,5 litres"
+    assert ro.say_quantity(4, "box", "plateau 30") == "4 plateaux"
+
+
+def test_review_readback_and_franco():
+    order = {"id": "ord_1", "deliveryDate": "2026-11-26", "totalHt": 41.4, "warnings": [],
+             "lines": [line("prd_0001", 2), line("prd_0011", 1)]}
+    r = ro.review(order, PRODUCTS, [])
+    assert r["readback"] == ("2 sacs de Farine de blé T55 tradition française, 1 pain de Levure fraîche boulangère ; "
+                             "livraison jeudi 26 novembre")
+    assert r["canConfirm"] is True and r["alerts"] == [] and r["askFirst"] == []
+    assert "12 euros" in r["franco"] and "109" in r["franco"]
+    big = {**order, "totalHt": 189.0}
+    assert "franco" not in ro.review(big, PRODUCTS, [])
+
+
+def test_review_translates_erp_warnings():
+    order = {"id": "ord_2", "deliveryDate": "2026-11-25", "totalHt": 495.6,
+             "lines": [line("prd_0025", 40, available=0), line("prd_0001", 2)],
+             "warnings": [
+                 {"code": "client_blocked", "message": "Le client Le Pétrin de Balma est bloqué"},
+                 {"code": "credit_limit", "message": "Plafond de crédit dépassé : encours 9 465,37 € …"},
+                 {"code": "insufficient_stock", "productId": "prd_0025", "message": "Stock insuffisant …"},
+                 {"code": "price_below_cost", "productId": "prd_0001", "message": "vendu sous le coût"},
+             ]}
+    r = ro.review(order, PRODUCTS, [])
+    assert r["canConfirm"] is False
+    assert r["blockedBy"] == ["client_blocked", "credit_limit", "insufficient_stock"]
+    said = " ".join(r["alerts"])
+    assert "bloqué" in said and "plafond" in said and "en rupture" in said
+    assert "9 465" not in said and "coût" not in said  # no internal figures, no margin talk
+
+
+def test_review_partial_stock_says_what_is_left():
+    order = {"id": "ord_3", "deliveryDate": "2026-11-26", "totalHt": 300, "lines": [line("prd_0034", 20, available=6)],
+             "warnings": [{"code": "insufficient_stock", "productId": "prd_0034"}]}
+    assert ro.review(order, PRODUCTS, [])["alerts"] == ["Œufs plein air calibre M : il n'en reste que 6 plateaux"]
+
+
+def test_unusual_quantity_is_asked_first():
+    usual = [{"productId": "prd_0001", "avgQty": 17.9}, {"productId": "prd_0011", "avgQty": 0}]
+    order = {"id": "ord_4", "deliveryDate": "2026-11-26", "totalHt": 3960, "warnings": [],
+             "lines": [line("prd_0001", 200), line("prd_0011", 30)]}
+    r = ro.review(order, PRODUCTS, usual)
+    assert r["askFirst"] == ["200 sacs de Farine de blé T55 tradition française, alors que d'habitude c'est environ 17,9 sacs"]
+    assert r["canConfirm"] is True  # asking is enough: the caller may really want it
+    normal = {**order, "lines": [line("prd_0001", 20)]}
+    assert ro.review(normal, PRODUCTS, usual)["askFirst"] == []

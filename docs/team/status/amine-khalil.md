@@ -1,6 +1,28 @@
-# Amine Khalil – 🧠 « La commande juste »  ·  mis à jour lun. 23/11 22h40
+# Amine Khalil – 🧠 « La commande juste »  ·  mis à jour lun. 23/11 22h50
 
-- Fait depuis la dernière sync :
+- Fait (T3 / T4, 22h50) :
+  - Outil **`review_order`** (`tools/order_review.py`, logique déterministe `rules_order.review`) : à appeler après
+    chaque création / modification de commande. Renvoie la phrase de relecture prête à dire, les **alertes ERP traduites**
+    pour le client (bloqué, plafond, pas de tournée, rupture / « il n'en reste que… » ; les alertes internes
+    `price_below_cost` / `expiring_soon` ne sont jamais dites, aucun chiffre comptable), la remarque **franco 150 € HT**
+    (12 € sinon, avec ce qui manque), les **quantités inhabituelles** (≥ 5× l'habitude) à faire confirmer, et `canConfirm`.
+  - Outils de **modification** (`tools/order_edit.py`) : `update_order_line`, `remove_order_line`,
+    `change_delivery_date`, `cancel_draft_order` (brouillon seulement). Le kit ne savait qu'**ajouter** des lignes :
+    au « finalement vingt » (S31 v1) l'agent créait une 2e commande et laissait le brouillon à 200 sacs dans l'ERP.
+  - Règle « ne pense pas tout haut » durcie (une fuite vue en S31 v1 : « Quantité inhabituelle probablement ; je crée… »).
+  - Mes scénarios **S30** (franco), **S31** (200 sacs au lieu de 20), **S32** (modifier + retirer une ligne après le brouillon).
+  - Tests : +5 (review, alertes, franco, quantité anormale) → 108 passent, interrupteur allumé ou éteint.
+  - Tout est derrière `TEAM_ORDER_RULES` (les 6 outils ne sont enregistrés que s'il est allumé).
+
+| Scénario (`--voice`, fin de parole → 1er son) | Résultat | Tours (ms) | Dans l'ERP |
+|---|---|---|---|
+| S30 franco | PASS 3/3 | 9 257 · 5 002 · 3 720 | 1 commande confirmée, 153,90 € HT ; « 12 euros de frais… il manque 147 euros », puis « vous passez le franco » |
+| S31 quantité anormale | PASS 3/3 | 5 162 · 2 984 · 1 879 | « Vous dites bien deux cents ? D'habitude c'est une vingtaine » → 1 commande à 20 sacs, aucun brouillon orphelin |
+| S32 changement d'avis | PASS 3/3 | 7 816 · 6 484 · 3 234 | `update_order_line` + `remove_order_line` → 1 commande, 15 tradi, plus de seigle |
+| S02 | PASS 3/3 | 8 609 · 7 955 · 3 368 | 1 commande confirmée |
+| S03 (/chat) | PASS 1/1 | 5 426 | message enregistré, rien promis |
+
+- Fait (T0–T2, 22h40) :
   - **T0** baseline (ci-dessous).
   - **T2** `next_delivery_date` + `sacks_from_words` (déterministes, `agent/rules_order.py`) + outil
     **`check_delivery_date`** (`tools/delivery.py`, enregistré seulement si `TEAM_ORDER_RULES=1`).

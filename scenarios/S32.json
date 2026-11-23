@@ -1,0 +1,32 @@
+{
+  "id": "S32",
+  "owner": "amine-khalil",
+  "title": "Changement d'avis après le brouillon : modifier une ligne et en retirer une, sans 2e commande",
+  "why": "Intelligent : « finalement 15 » et « enlevez le seigle » modifient la commande en cours (une seule commande dans l'ERP)",
+  "client": "cli_0001",
+  "turns": [
+    {
+      "say": "Bonjour, Nadine de chez Sarrailh. Dix sacs de tradi et trois sacs de seigle pour jeudi.",
+      "expect": {
+        "tools_any": ["create_draft_order"],
+        "tools_none": ["confirm_order"],
+        "says_any": ["10", "dix"]
+      }
+    },
+    {
+      "say": "Finalement mettez-en quinze de tradi, et enlevez le seigle.",
+      "expect": {
+        "tools_any": ["update_order_line", "remove_order_line"],
+        "tools_none": ["create_draft_order", "confirm_order"],
+        "says_any": ["15", "quinze"]
+      }
+    },
+    {
+      "say": "Oui, validez.",
+      "expect": {
+        "tools_any": ["confirm_order"],
+        "tools_none": ["create_draft_order"]
+      }
+    }
+  ]
+}
