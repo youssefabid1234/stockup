@@ -26,15 +26,15 @@ from datetime import date, timedelta
 from app import team_flags
 
 ORDER_RULES = """Règles « commande juste » (prise de commande au téléphone) :
-- Ne pense jamais tout haut : pas de phrase de vérification avant ou entre les outils (« jeudi est bien un jour de livraison » est interdit). Tu parles une fois, à la fin.
+- Tout texte que tu écris est prononcé au client. N'écris donc rien avant ou entre tes appels d'outils : ni analyse, ni note pour toi (« quantité inhabituelle, je crée le brouillon… », « jeudi est bien un jour de livraison » sont interdits). Tu parles une fois, à la fin.
 - Unités : farines et sucre au sac (25 kg ; épeautre 10 kg), « 10 de tradi » = 10 sacs, jamais 10 kilos. Tourage, beurre, chocolat, fruits secs au kilo ; crème et lait au litre ; viennoiserie surgelée et emballages au carton ; levure au pain de 500 g ; œufs au plateau de 30. Dis les quantités avec leur unité (« douze sacs de tradi »).
 - « Chocolatine » et « pain au chocolat » sont le même produit : ne corrige jamais le client.
 - « Comme d'hab » = la commande habituelle de la fiche client (pas la dernière commande). Cite seulement les deux ou trois produits principaux avec leur quantité, puis demande « et le reste comme d'habitude ? ».
 - Date : appelle check_delivery_date dès qu'un jour est dit (ou pour « au plus vite »). Si le jour n'est pas livré, propose le prochain jour possible qu'il renvoie. N'affirme jamais qu'un client est fermé : seul le client peut le dire ; s'il le dit, propose le jour livré suivant et mémorise-le (save_context).
-- Dès que produits et quantités sont clairs, crée le brouillon (create_draft_order). Un changement d'avis (« finalement 12 », « enlève le seigle ») modifie la ligne existante : ne l'ajoute pas une deuxième fois.
-- Avant confirm_order : relis produits, quantités et jour de livraison en une phrase, puis attends un oui. Après « oui », « c'est bon », « validez », appelle confirm_order tout de suite, sans tout revérifier.
-- Compte bloqué : ne prends aucune commande et ne promets rien ; ne donne aucun détail comptable interne ; dis que la comptabilité (Sandrine) le rappelle, et enregistre la demande avec log_client_event (type call).
-- Lis les alertes (warnings) de la commande : client bloqué, pas de tournée, stock insuffisant. S'il y en a, dis-les simplement au client, sans code technique ; s'il n'y en a pas, n'en parle pas."""
+- Dès que produits et quantités sont clairs, crée le brouillon (create_draft_order). Une seule commande par appel : un changement d'avis modifie la commande en cours (update_order_line pour « finalement 12 », remove_order_line pour « enlève le seigle », change_delivery_date pour « plutôt vendredi ») ; ne crée jamais une deuxième commande. Si le client renonce, cancel_draft_order.
+- Après avoir créé ou modifié le brouillon, appelle review_order. Relis sa phrase « readback » (produits, quantités, jour) ; dis ses « alerts » et sa remarque « franco » s'il y en a, simplement, sans code technique ni chiffre interne. Si « askFirst » n'est pas vide, fais confirmer cette quantité inhabituelle. Puis attends un oui.
+- Après « oui », « c'est bon », « validez », appelle confirm_order tout de suite, sans tout revérifier, sauf si review_order a dit canConfirm=false : alors ne confirme pas et dis pourquoi.
+- Compte bloqué : ne prends aucune commande et ne promets rien ; ne donne aucun détail comptable interne ; dis que la comptabilité (Sandrine) le rappelle, et enregistre la demande avec log_client_event (type call)."""
 
 
 def order_rules_section() -> str:
@@ -205,3 +205,122 @@ def sacks_from_words(product_unit: str, qty: float, said_unit: str | None) -> fl
     if said != size_unit:
         return qty
     return round(qty / size, 3)
+
+
+# ── T3 / T4: read the order back, the ERP's warnings, franco, unusual quantities (used by tools/order_review.py) ──
+
+FRANCO_HT = 150.0  # « Franco de port 150 € HT ; en dessous, 12 € de livraison » (01-entreprise.md)
+DELIVERY_FEE_HT = 12.0
+UNUSUAL_RATIO = 5  # a line at 5× (or more) the client's usual quantity is read back and confirmed first
+
+# What the caller may hear for each ERP warning code. None = internal, never said to the caller.
+# `blocks` = the order must not be confirmed while it is there.
+WARNINGS_FOR_CALLER: dict[str, tuple[str | None, bool]] = {
+    "client_blocked": ("votre compte est bloqué : je ne peux pas valider de commande, la comptabilité vous rappelle", True),
+    "credit_limit": ("cette commande dépasse votre plafond de crédit : la comptabilité doit la valider avant", True),
+    "no_route": ("aucune tournée ne passe chez vous ce jour-là", True),
+    "insufficient_stock": (None, True),  # said per product below, with what is left
+    "expiring_soon": (None, False),  # a FEFO lot close to its date: the warehouse's business
+    "price_below_cost": (None, False),  # margin: internal
+}
+
+
+def fr_number(x: float) -> str:
+    """12.0 → "12", 1.5 → "1,5"."""
+    return f"{x:g}".replace(".", ",")
+
+
+def _plural(word: str, n: float) -> str:
+    if n <= 1 or word.endswith(("s", "x")):
+        return word
+    return word + ("x" if word.endswith("eau") else "s")
+
+
+def say_quantity(qty: float, unit: str | None, caliber: str | None = None) -> str:
+    """How a quantity is said: (12, piece, "sac 25 kg") → "12 sacs", (40, kg) → "40 kilos", (4, box, "carton 140") → "4 cartons"."""
+    if unit == "kg":
+        return f"{fr_number(qty)} {'kilo' if qty <= 1 else 'kilos'}"
+    if unit in ("liter", "l"):
+        return f"{fr_number(qty)} {'litre' if qty <= 1 else 'litres'}"
+    word = (caliber or "").split()[0] if caliber else ("carton" if unit == "box" else "pièce")
+    return f"{fr_number(qty)} {_plural(word, qty)}"
+
+
+def short_name(product_name: str) -> str:
+    """"Farine de blé T55 tradition française (sac 25 kg)" → "Farine de blé T55 tradition française"."""
+    return product_name.split(" (")[0].strip()
+
+
+def franco_note(total_ht: float) -> str | None:
+    """Below 150 € HT there is a 12 € delivery fee: worth saying, with what is missing."""
+    if total_ht >= FRANCO_HT or total_ht <= 0:
+        return None
+    missing = FRANCO_HT - total_ht
+    return (f"la commande fait {fr_number(round(total_ht))} euros hors taxes : en dessous de 150 euros, il y a 12 euros de "
+            f"livraison ; il manque environ {fr_number(round(missing))} euros pour être livré gratuitement")
+
+
+def unusual_lines(lines: list[dict], usual: list[dict], ratio: float = UNUSUAL_RATIO) -> list[dict]:
+    """Lines at `ratio`× or more of the client's usual quantity for that product (a « 100 » heard for « 10 »…)."""
+    avg = {u["productId"]: u.get("avgQty") or 0 for u in usual}
+    out = []
+    for line in lines:
+        usual_qty = avg.get(line["productId"]) or 0
+        if usual_qty > 0 and line["qty"] >= ratio * usual_qty:
+            out.append({"productId": line["productId"], "qty": line["qty"], "usualQty": round(usual_qty, 1)})
+    return out
+
+
+def review(order: dict, products: dict[str, dict], usual: list[dict]) -> dict:
+    """
+    Everything to read back before confirm_order, deterministic:
+      readback   : "12 sacs de Farine de blé T55 tradition française, … ; livraison jeudi 26 novembre"
+      alerts     : what to tell the caller (ERP warnings translated, internal ones dropped)
+      franco     : the 12 € fee note when the order is below 150 € HT
+      askFirst   : unusual quantities to have confirmed
+      canConfirm : False when a warning blocks (client blocked, credit limit, no route, missing stock)
+    """
+    parts = []
+    for line in order["lines"]:
+        p = products.get(line["productId"]) or {}
+        parts.append(f"{say_quantity(line['qty'], line.get('unit') or p.get('unit'), p.get('caliber'))} de {short_name(line.get('productName') or p.get('name', ''))}")
+    when = french_day(date.fromisoformat(order["deliveryDate"][:10])) if order.get("deliveryDate") else None
+    readback = ", ".join(parts) + (f" ; livraison {when}" if when else "")
+
+    alerts: list[str] = []
+    blocking: list[str] = []
+    for w in order.get("warnings") or []:
+        said, blocks = WARNINGS_FOR_CALLER.get(w.get("code"), (None, False))
+        if w.get("code") == "insufficient_stock":
+            line = next((li for li in order["lines"] if li["productId"] == w.get("productId")), None)
+            if line:
+                p = products.get(line["productId"]) or {}
+                left = max(0.0, line.get("available") or 0)
+                said = (f"{short_name(line.get('productName', ''))} : il n'en reste que "
+                        f"{say_quantity(left, line.get('unit') or p.get('unit'), p.get('caliber'))}") if left > 0 else \
+                    f"{short_name(line.get('productName', ''))} : en rupture"
+        if said and said not in alerts:
+            alerts.append(said)
+        if blocks:
+            blocking.append(w.get("code"))
+
+    unusual = unusual_lines(order["lines"], usual)
+    ask_first = []
+    for u in unusual:
+        p = products.get(u["productId"]) or {}
+        name = short_name(p.get("name", u["productId"]))
+        ask_first.append(f"{say_quantity(u['qty'], p.get('unit'), p.get('caliber'))} de {name}, alors que d'habitude c'est "
+                         f"environ {say_quantity(u['usualQty'], p.get('unit'), p.get('caliber'))}")
+    out = {
+        "orderId": order.get("id"),
+        "readback": readback,
+        "totalHt": order.get("totalHt"),
+        "canConfirm": not blocking,
+        "alerts": alerts,
+        "askFirst": ask_first,
+    }
+    if note := franco_note(order.get("totalHt") or 0):
+        out["franco"] = note
+    if blocking:
+        out["blockedBy"] = sorted(set(blocking))
+    return out
