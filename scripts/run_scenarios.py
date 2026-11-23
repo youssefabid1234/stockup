@@ -60,6 +60,9 @@ async def turn_chat(client: httpx.AsyncClient, history: list[dict], said: str, a
     text, tools, ms, error, usage = "", [], None, None, None
     t0 = time.perf_counter()
     first_text_ms = None
+    # Rebuild the full history like the web app does, so the next turn sees the ids returned by the tools (draft
+    # order id…): per model step, one assistant message with its tool calls, then one "tool" message per result.
+    step_text, step_calls = "", []
     async with client.stream("POST", f"{AI}/chat", json=body, timeout=120) as res:
         async for line in res.aiter_lines():
             if not line.startswith("data:"):
@@ -70,13 +73,23 @@ async def turn_chat(client: httpx.AsyncClient, history: list[dict], said: str, a
                     if first_text_ms is None:
                         first_text_ms = int((time.perf_counter() - t0) * 1000)
                     text += ev.get("delta", "")
+                    step_text += ev.get("delta", "")
                 case "tool_call":
                     tools.append(ev["call"]["name"])
+                    step_calls.append(ev["call"])
+                case "tool_result":
+                    if step_calls:  # first result of this step: close the assistant message that asked for the tools
+                        history.append({"role": "assistant", "content": step_text, "toolCalls": step_calls})
+                        step_text, step_calls = "", []
+                    result = json.dumps(ev.get("result"), ensure_ascii=False, separators=(",", ":"))
+                    history.append({"role": "tool", "toolCallId": ev["callId"], "name": ev["name"], "content": result})
                 case "done":
                     ms, usage = ev.get("ms"), ev.get("usage")
+                    final = (ev.get("message") or {}).get("content")
+                    step_text = final if final is not None else step_text
                 case "error":
                     error = ev.get("message")
-    history.append({"role": "assistant", "content": text})  # text only: tool ids are not replayed (voice mode keeps them)
+    history.append({"role": "assistant", "content": step_text})
     return {"text": text.strip(), "tools": tools, "ms": ms, "firstTextMs": first_text_ms, "error": error, "usage": usage}
 
 
@@ -159,6 +172,12 @@ async def run(args) -> int:
             finally:
                 if ws:
                     await ws.close()
+    try:  # the TEAM_* switches of the local .env (what the AI service loaded at its last restart)
+        env = (REPO / ".env").read_text(encoding="utf-8").splitlines()
+        on = [line.split("=")[0] for line in env if line.startswith("TEAM_") and line.split("=", 1)[1].split("#")[0].strip() in ("1", "true", "on", "yes")]
+        print(f"\nswitches on (.env): {', '.join(on) or 'none'}")
+    except OSError:
+        pass
     out = SCENARIOS / "results" / f"{time.strftime('%Y%m%d-%H%M%S')}{'-voice' if args.voice else ''}.json"
     out.parent.mkdir(exist_ok=True)
     out.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
