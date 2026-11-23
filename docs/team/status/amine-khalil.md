@@ -1,4 +1,17 @@
-# Amine Khalil – 🧠 « La commande juste »  ·  mis à jour mar. 24/11 00h05
+# Amine Khalil – 🧠 « La commande juste »  ·  mis à jour mar. 24/11 01h00
+
+- Fait (01h00) – **Jev branché** (recommandation du CTO), `tools/order_jev.py`, derrière `TEAM_ORDER_RULES` :
+  - `confirm_order` **remplacé** par une version gardée par Jev (même nom → les scénarios de tous marchent tels quels ;
+    interrupteur éteint = l'outil du kit). L'agent passe la réponse exacte du client ; Jev dit « vrai oui » ou non.
+    Calibrage sur 12 réponses : vrais oui 0,89–0,96 ; « oui mais… », « attendez », questions ≤ 0,14. Bloque aussi sur
+    alerte ERP bloquante. Sans clé Jev → comportement du kit. Journal `[jev] …` dans les logs du service IA (pour la démo).
+  - `resolve_product` : nom exact du catalogue d'abord (« pains de levure », « la tradi », « du demi-sel » : sans
+    modèle), sinon Jev avec les habitudes du client (« tourage » → AOP chez Sarrailh, question chez Pétrin de Colomiers) ;
+    sous 0,6 l'agent demande ; mots ambigus du glossaire jamais réglés par un alias seul.
+  - Mesures (`--voice`, reset avant chaque) : S02 S30 S31 S32 S33 PASS, S05 3/4 (voir Daycem) ; 8/8 confirmations
+    validées par Jev en 159–196 ms ; 1 seule commande juste à chaque fois. Tests : 151 passent (ON et OFF).
+  - Nouveau scénario **S33** (« oui mais mettez-en douze »). DECISIONS.md : D8 + mesures.
+- Pour **Daycem** : S05 tour 2, ajouter `quote_line` à `tools_any` (l'agent donne le prix avec, c'est juste).
 
 - Fait (00h05) – **prix dits à l'oral calculés par le code** (outil `quote_line`) :
   - Constat à l'écoute d'un enregistrement de S05 : l'agent calculait de tête et se trompait en direct (« 92 euros la

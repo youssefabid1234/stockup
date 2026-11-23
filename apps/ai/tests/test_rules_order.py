@@ -231,3 +231,114 @@ def test_quote_other_units():
     flour = ro.quote(10, "piece", "sac 25 kg", "Farine (sac 25 kg)", 18.9)
     assert flour["say"] == "18 euros 90 le sac de 25 kilos" and flour["total"] == "189 euros hors taxes pour 10 sacs"
     assert ro.quote(2, "piece", "pain 500 g", "Levure (pain de 500 g)", 1.35)["say"] == "1 euro 35 le pain de 500 grammes"
+
+
+# ── Jev : « est-ce un vrai oui ? » (seuils calibrés sur 12 vraies réponses) ──
+
+
+def test_classify_answer_from_calibration():
+    assert ro.classify_answer(0.96, 0.14) == "yes"  # « Oui c'est bon. »
+    assert ro.classify_answer(0.89, 0.22) == "yes"  # « Bon d'accord. »
+    assert ro.classify_answer(0.03, 0.91) == "change"  # « Oui mais mettez-en quatre. »
+    assert ro.classify_answer(0.12, 0.93) == "change"  # « C'est combien déjà ? »
+    assert ro.classify_answer(0.02, 0.20) == "no"  # « Non, laissez tomber. »
+    assert ro.classify_answer(0.55, 0.40) == "unsure"
+    assert ro.classify_answer(0.85, 0.70) == "unsure"  # yes AND a change: ask again
+
+
+class FakeErp:
+    def __init__(self, order):
+        self.order, self.posted = order, []
+
+    async def get(self, path, query=None):
+        return self.order
+
+    async def post(self, path, body=None):
+        self.posted.append(path)
+        return {**self.order, "status": "confirmed"}
+
+
+class FakeJev:
+    def __init__(self, accord, change):
+        self.answers = {"accord": {"noul": accord}, "change": {"noul": change}}
+
+    async def ask(self, state, questions):
+        return {"answers": self.answers}
+
+
+def jev_confirm():
+    """The Jev-guarded confirm_order, without leaving the kit's tool replaced for the other tests."""
+    import importlib
+
+    from app.tools import registry
+
+    saved = dict(registry.TOOLS)
+    from app.tools import order_jev
+
+    registry.TOOLS.pop("resolve_product", None)  # the reload registers it again
+    importlib.reload(order_jev)  # pops whichever confirm_order is there and registers the Jev one
+    fn = registry.TOOLS["confirm_order"].fn
+    registry.TOOLS.clear()
+    registry.TOOLS.update(saved)
+    return fn
+
+
+ORDER = {"id": "ord_1", "number": "CMD-1", "status": "draft", "clientId": "cli_0001", "deliveryDate": "2026-11-26",
+         "totalHt": 189, "warnings": [], "lines": [{"id": "l1", "productId": "prd_0001", "qty": 10}]}
+
+
+def run(coro):
+    import asyncio
+
+    return asyncio.run(coro)
+
+
+def test_confirm_only_on_a_real_yes(monkeypatch):
+    import app.clients as clients
+    from app.tools.registry import ToolContext
+
+    confirm = jev_confirm()
+    for accord, change, confirmed in [(0.96, 0.14, True), (0.03, 0.91, False), (0.5, 0.4, False)]:
+        erp = FakeErp(ORDER)
+        monkeypatch.setattr(clients, "get_jev_client", lambda a=accord, c=change: FakeJev(a, c))
+        r = run(confirm(ToolContext(erp=erp, actor="voice_agent"), "ord_1", "réponse", "Je valide ?"))
+        assert r["confirmed"] is confirmed and r["decidedBy"] == "jev"
+        assert erp.posted == (["/api/orders/ord_1/confirm"] if confirmed else [])
+        if not confirmed:
+            assert r["next"]
+
+
+def test_confirm_blocked_by_erp_warning_and_fallback_without_jev(monkeypatch):
+    import app.clients as clients
+    from app.tools.registry import ToolContext
+
+    confirm = jev_confirm()
+    blocked = FakeErp({**ORDER, "warnings": [{"code": "client_blocked"}]})
+    r = run(confirm(ToolContext(erp=blocked, actor="voice_agent"), "ord_1", "oui", None))
+    assert r["confirmed"] is False and r["blockedBy"] == ["client_blocked"] and blocked.posted == []
+    monkeypatch.setattr(clients, "get_jev_client", lambda: None)  # no key: the kit's behaviour
+    erp = FakeErp(ORDER)
+    r = run(confirm(ToolContext(erp=erp, actor="voice_agent"), "ord_1", "oui", None))
+    assert r["confirmed"] is True and r["decidedBy"] == "agent"
+
+
+def test_alias_match_settles_exact_names_but_never_glossary_ambiguous_words():
+    cat = {
+        "prd_0011": {"name": "Levure fraîche boulangère (pain de 500 g)", "aliases": ["levure", "pain de levure", "levure fraîche"]},
+        "prd_0012": {"name": "Levure sèche instantanée (paquet 500 g)", "aliases": ["levure sèche", "sèche"]},
+        "prd_0001": {"name": "Farine de blé T55 tradition française (sac 25 kg)", "aliases": ["tradi", "la tradition"]},
+        "prd_0025": {"name": "Beurre de tourage AOP 84 % (plaque 2 kg)", "aliases": ["tourage AOP", "tourage"]},
+        "prd_0026": {"name": "Beurre de tourage 82 % (plaque 2 kg)", "aliases": ["tourage standard", "tourage"]},
+        "prd_0046": {"name": "Poudre d'amande blanche (sac 5 kg)", "aliases": ["poudre d'amande", "poudre"]},
+        "prd_0099": {"name": "Ancien produit", "aliases": ["vieux"], "active": False},
+    }
+    assert ro.alias_match("pains de levure", cat) == "prd_0011"
+    assert ro.alias_match("de la levure sèche", cat) == "prd_0012"
+    assert ro.alias_match("la tradition", cat) == "prd_0001"
+    assert ro.alias_match("du tourage AOP", cat) == "prd_0025"
+    assert ro.alias_match("tourage", cat) is None  # glossary: always clarify
+    assert ro.alias_match("de la poudre", cat) is None  # glossary: always clarify, even if one alias matches
+    assert ro.alias_match("vieux", cat) is None  # inactive
+    assert ro.alias_match("du pain", cat) is None  # no exact alias: search + Jev
+    salted = {"prd_0029": {"name": "Beurre demi-sel de baratte (motte 1 kg)", "aliases": ["demi-sel", "beurre salé"]}}
+    assert ro.alias_match("du demi-sel", salted) == "prd_0029"  # the article goes, not the "de" of « demi »
