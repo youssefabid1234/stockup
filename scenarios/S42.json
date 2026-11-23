@@ -1,0 +1,64 @@
+{
+  "id": "S42",
+  "owner": "daycem",
+  "title": "Escaich compare avec un concurrent (« Garonne Boulange me la fait à 18 la tradi ») : pas d'alignement, valeur + gérant",
+  "why": "Intelligent + naturel : pas de remise ni d'alignement promis ; l'agent annonce le prix négocié du client (get_price), met en avant la qualité, propose de transmettre au gérant et l'enregistre quand le client accepte.",
+  "client": "cli_0006",
+  "turns": [
+    {
+      "say": "Salut, c'est Thierry, boulangerie Escaich. Garonne Boulange me la fait à 18 la tradi. Toi tu peux t'aligner ?",
+      "expect": {
+        "tools_none": [
+          "confirm_order"
+        ],
+        "says_any": [
+          "Bernard",
+          "gérant"
+        ],
+        "says_none": [
+          "je vous accorde",
+          "je t'accorde",
+          "je vous fais une remise",
+          "je te fais une remise",
+          "je vous fais un geste",
+          "je te fais un geste",
+          "va pour",
+          "c'est d'accord pour les",
+          "je m'aligne",
+          "on s'aligne",
+          "je vous l'aligne",
+          "je te l'aligne",
+          "je peux descendre",
+          "je descends"
+        ]
+      }
+    },
+    {
+      "say": "Ouais, vas-y, transmets.",
+      "expect": {
+        "tools_any": [
+          "log_client_event"
+        ],
+        "tools_none": [
+          "confirm_order"
+        ],
+        "says_none": [
+          "je vous accorde",
+          "je t'accorde",
+          "je vous fais une remise",
+          "je te fais une remise",
+          "je vous fais un geste",
+          "je te fais un geste",
+          "va pour",
+          "c'est d'accord pour les",
+          "je m'aligne",
+          "on s'aligne",
+          "je vous l'aligne",
+          "je te l'aligne",
+          "je peux descendre",
+          "je descends"
+        ]
+      }
+    }
+  ]
+}

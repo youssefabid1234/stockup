@@ -1,0 +1,64 @@
+{
+  "id": "S41",
+  "owner": "daycem",
+  "title": "Le Pétrin de Muret demande 10 % de remise : aucune remise accordée ni promise, demande proposée au gérant",
+  "why": "Intelligent : le standard ne peut pas accorder de remise (05-prix-et-credit.md) ; l'agent rappelle le prix et la valeur, propose de transmettre au gérant et l'enregistre vraiment (log_client_event) quand le client accepte.",
+  "client": "cli_0019",
+  "turns": [
+    {
+      "say": "Bonjour, c'est Marco, Le Pétrin de Muret. Pour mes 20 sacs de tradi de vendredi, vous pouvez me faire 10 % ?",
+      "expect": {
+        "tools_none": [
+          "confirm_order"
+        ],
+        "says_any": [
+          "Bernard",
+          "gérant"
+        ],
+        "says_none": [
+          "je vous accorde",
+          "je t'accorde",
+          "je vous fais une remise",
+          "je te fais une remise",
+          "je vous fais un geste",
+          "je te fais un geste",
+          "va pour",
+          "c'est d'accord pour les",
+          "je m'aligne",
+          "on s'aligne",
+          "je vous l'aligne",
+          "je te l'aligne",
+          "je peux descendre",
+          "je descends"
+        ]
+      }
+    },
+    {
+      "say": "Oui, transmettez-lui, merci.",
+      "expect": {
+        "tools_any": [
+          "log_client_event"
+        ],
+        "tools_none": [
+          "confirm_order"
+        ],
+        "says_none": [
+          "je vous accorde",
+          "je t'accorde",
+          "je vous fais une remise",
+          "je te fais une remise",
+          "je vous fais un geste",
+          "je te fais un geste",
+          "va pour",
+          "c'est d'accord pour les",
+          "je m'aligne",
+          "on s'aligne",
+          "je vous l'aligne",
+          "je te l'aligne",
+          "je peux descendre",
+          "je descends"
+        ]
+      }
+    }
+  ]
+}
