@@ -2,6 +2,31 @@
 
 Read this first, then the files it points to. It applies to Claude Code, Cursor, Codex and any other coding agent.
 
+## Team 12 – règles d'équipe
+
+> These team rules come first. Then read the team plan [docs/team/README.md](docs/team/README.md), the contracts
+> [docs/team/interfaces.md](docs/team/interfaces.md) and **your human's task sheet** in [docs/team/tasks/](docs/team/tasks/)
+> (ask their first name if unknown: Mohamed Amine, Youssef, Amine Khalil or Daycem). The kit's own rules follow below.
+
+0. **The human decides, the assistant explains.** Before coding: say in plain words (French, simple, no jargon — see
+   GLOSSAIRE.md) what you plan and why, give options with pros/cons when there is a real choice, wait for an OK.
+   Before every commit/push: explain what changed and what could break; no push without the human's OK. After
+   coding: list the design choices you made and what you reused from teammates' code.
+1. **Only edit your human's files** (ownership table in docs/team/README.md §3 and each task sheet). Need a change
+   elsewhere? Tell the owner (team chat) — don't do it. `prompts.py`, `loop.py`, `voice_session.py` are shared kit files:
+   only the hook lines listed in interfaces.md, and say so in the team chat.
+2. **Every brick behind its switch** (`TEAM_*`, `apps/ai/app/team_flags.py`), off by default, so `main` always runs.
+3. **Contracts** (docs/team/interfaces.md) change only after telling the team.
+4. **Branches** `<prénom>/<sujet>` (e.g. `daycem/sales-rules`); never push to `main`, never force-push. Small PRs.
+5. **Hourly sync** (`/sync` in Claude Code, "sync" in Codex): tests green → update `docs/team/status/<prénom>.md` →
+   explain + OK → commit + push the branch + PR → merge into `main` if it runs → `git merge origin/main` into the branch
+   → read the others' status files and summarise in ≤ 10 lines what affects your human.
+6. **Measure, don't guess**: rerun your scenarios (`scripts/run_scenarios.py --owner <prénom>`) after each change;
+   numbers and choices go to `DECISIONS.md` (a deliverable the jury reads).
+7. **Never** commit `.env`, keys, `data/seed/`, audio files; never print keys. Credits are capped: replay your own
+   scenarios, the full set only at sync.
+8. **Never invent** (prices, stock, dates, promos) — in the agent's rules and in your explanations.
+
 ## What this repo is
 
 A hackathon kit: an ERP for a food wholesaler, an AI service with a voice agent, and a web UI. The team's goal is

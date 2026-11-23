@@ -21,3 +21,6 @@ apps/*/data/
 data/seed/
 
 .DS_Store
+
+# team 12: scenario run outputs
+scenarios/results/

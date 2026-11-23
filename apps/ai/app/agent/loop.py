@@ -47,6 +47,7 @@ async def run_agent(
     mode: ChatMode = "chat",  # command = single turn, act-first
     actor_name: str | None = None,
     max_steps: int | None = None,
+    call_context=None,  # team 12: agent/call_context.CallContext of the caller, added to the system prompt
 ) -> AsyncIterator[ChatStreamEvent]:
     started = time.perf_counter()
     actor = "ai_chat" if mode == "chat" else "voice_agent"
@@ -54,7 +55,8 @@ async def run_agent(
     usage = Usage(input_tokens=0, output_tokens=0)
 
     try:
-        system = await build_system_prompt(mode, actor_name)
+        extra = {"call_context": call_context} if call_context is not None else {}
+        system = await build_system_prompt(mode, actor_name, **extra)
         request = LLMRequest(system=system, messages=messages, tools=[t.info for t in tools])
         said_something = False
 

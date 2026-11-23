@@ -11,8 +11,13 @@ The tools the model can call, grouped by domain. Each one wraps ERP API endpoint
 A new file needs one more line: import it below so its @tool functions get registered.
 """
 
+from app import team_flags
+
 from . import catalog, context, history, orders  # noqa: F401  (importing registers the tools)
 from .erp import ErpClient
+
+if team_flags.product_insight():  # team 12 (Youssef): composite tool, registered only when its switch is on
+    from . import product_insight  # noqa: F401
 from .registry import TOOLS, Tool, ToolContext, tool
 
 

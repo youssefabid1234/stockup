@@ -1,0 +1,25 @@
+{
+  "id": "S07",
+  "owner": "mohamed-amine",
+  "title": "Phrase orale hésitante (euh, répétitions)",
+  "why": "Intelligent + naturel : comprendre « dix de tradi » malgré les hésitations",
+  "client": "cli_0001",
+  "turns": [
+    {
+      "say": "euh bonjour euh c'est Nadine de chez euh Sarrailh, je voudrais euh dix de tradi et deux euh deux levures pour jeudi",
+      "expect": {
+        "tools_none": [
+          "confirm_order"
+        ],
+        "says_any": [
+          "tradi",
+          "tradition"
+        ],
+        "says_none": [
+          "10 kilos",
+          "dix kilos"
+        ]
+      }
+    }
+  ]
+}

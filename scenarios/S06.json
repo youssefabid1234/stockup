@@ -1,0 +1,22 @@
+{
+  "id": "S06",
+  "owner": "mohamed-amine",
+  "title": "Question simple : réponse en moins de 1,5 s",
+  "why": "Rapide : cible du jury (premier son < 1,5 s) ; échoue aujourd'hui (≈ 9 s), c'est l'objectif",
+  "turns": [
+    {
+      "say": "Bonjour, vous avez de la levure fraîche ce matin ?",
+      "expect": {
+        "tools_any": [
+          "search",
+          "get_product_stock",
+          "product_insight"
+        ],
+        "says_any": [
+          "levure"
+        ],
+        "max_ms": 1500
+      }
+    }
+  ]
+}

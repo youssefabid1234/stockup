@@ -1,0 +1,39 @@
+{
+  "id": "S01",
+  "owner": "youssef",
+  "title": "Commande simple d'un client connu, puis validation",
+  "why": "Intelligent : bon client, bon produit, « sacs » et pas « kilos », relecture puis confirmation",
+  "client": "cli_0001",
+  "turns": [
+    {
+      "say": "Bonjour, c'est Nadine de la Maison Sarrailh. Je voudrais 10 sacs de tradi pour jeudi.",
+      "expect": {
+        "tools_any": [
+          "search",
+          "get_client",
+          "product_insight"
+        ],
+        "tools_none": [
+          "confirm_order"
+        ],
+        "says_any": [
+          "tradi",
+          "tradition",
+          "farine"
+        ],
+        "says_none": [
+          "10 kilos",
+          "dix kilos"
+        ]
+      }
+    },
+    {
+      "say": "Oui c'est bon, vous pouvez valider.",
+      "expect": {
+        "tools_any": [
+          "confirm_order"
+        ]
+      }
+    }
+  ]
+}
