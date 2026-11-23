@@ -54,9 +54,9 @@ def load(only: list[str] | None, owner: str | None) -> list[dict]:
 # ── one turn through POST /chat (mode voice, no audio) ──
 
 
-async def turn_chat(client: httpx.AsyncClient, history: list[dict], said: str, actor: str | None) -> dict:
+async def turn_chat(client: httpx.AsyncClient, history: list[dict], said: str, actor: str | None, caller: str | None = None) -> dict:
     history.append({"role": "user", "content": said})
-    body = {"messages": history, "mode": "voice", **({"actorName": actor} if actor else {})}
+    body = {"messages": history, "mode": "voice", **({"actorName": actor} if actor else {}), **({"callerClientId": caller} if caller else {})}
     text, tools, ms, error, usage = "", [], None, None, None
     t0 = time.perf_counter()
     first_text_ms = None
@@ -96,11 +96,17 @@ async def turn_chat(client: httpx.AsyncClient, history: list[dict], said: str, a
 # ── one turn through WS /voice (typed text, real TTS) ──
 
 
-async def voice_session(actor: str | None):
+async def voice_session(actor: str | None, caller: str | None):
     import websockets
 
-    ws = await websockets.connect(f"ws://localhost:4100/voice", max_size=None)
+    ws = await websockets.connect("ws://localhost:4100/voice", max_size=None)
     await ws.send(json.dumps({"type": "start", "sessionId": str(uuid.uuid4()), **({"actorName": actor} if actor else {})}))
+    if caller:  # caller ID form: who calls, before the first word (the server answers caller_ready)
+        await ws.send(json.dumps({"type": "caller", "clientId": caller}))
+        while True:
+            raw = await asyncio.wait_for(ws.recv(), timeout=30)
+            if isinstance(raw, str) and json.loads(raw).get("type") in ("caller_ready", "error"):
+                break
     return ws
 
 
@@ -156,10 +162,11 @@ async def run(args) -> int:
         for s in scenarios:
             print(f"\n=== {s['id']} · {s['title']}  (owner: {s.get('owner')})")
             history: list[dict] = []
-            ws = await voice_session(s.get("actor")) if args.voice else None
+            caller = None if args.no_caller else s.get("client")  # the scenario's client = the caller ID
+            ws = await voice_session(s.get("actor"), caller) if args.voice else None
             try:
                 for i, turn in enumerate(s["turns"], 1):
-                    got = await (turn_voice(ws, turn["say"]) if ws else turn_chat(client, history, turn["say"], s.get("actor")))
+                    got = await (turn_voice(ws, turn["say"]) if ws else turn_chat(client, history, turn["say"], s.get("actor"), caller))
                     problems = check(turn, got)
                     failed += bool(problems)
                     status = "PASS" if not problems else "FAIL"
@@ -195,6 +202,7 @@ def main() -> None:
     p.add_argument("--owner", help="only this owner's scenarios")
     p.add_argument("--voice", action="store_true", help="through WS /voice (real timings, uses TTS credits)")
     p.add_argument("--reset", action="store_true", help="reset the ERP data first")
+    p.add_argument("--no-caller", action="store_true", help="don't announce the scenario's client before the call (no caller ID)")
     sys.exit(asyncio.run(run(p.parse_args())))
 
 

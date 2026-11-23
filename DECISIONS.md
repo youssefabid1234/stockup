@@ -85,6 +85,26 @@ tour : la fiche n'enlève donc pas d'appel aux tours suivants. **Le temps se per
 avant que le client soit connu). La fiche reste **désactivée par défaut** ; prochaine étape : identifier le client
 dès le début du 1er tour (fiche en parallèle de la réflexion) et le super-outil produit.
 
+**Identification avant l'appel (« Qui appelle ? », mar. 24/11 0h20).** Vraie vie : le numéro WhatsApp / téléphone
+s'affiche, le standard connaît le client avant de décrocher. Démo : sur la page Voix, un formulaire obligatoire (client
+choisi dans la liste de l'ERP, recherche par nom / ville / téléphone, contact au téléphone ; ou « Nouveau client ») puis
+« Démarrer l'appel » : la fiche est chargée (≈ 0,5 s) **avant** le premier mot et donnée à l'agent dès la 1re réplique.
+Nouveau client (provisoire) : l'agent prend la demande sans rien confirmer, l'équipe valide le compte.
+
+Mesure via /chat, `--reset`, `TEAM_ORDER_RULES=1`, client du scénario annoncé avant l'appel :
+
+| 1re réplique | Sans (TEAM_PRELOAD=0) | Avec l'appelant annoncé |
+|---|---|---|
+| S01 « 10 sacs de tradi pour jeudi » | 6 outils, **7,7 s** | 3 outils (date, brouillon, relecture), **3,5 s** |
+| S01 en **voix** (fin de parole → 1er son) | **6,9 s** (T0) | **3,9 s** (LLM 3,75 + TTS 0,16) |
+| S02 « comme d'hab pour jeudi » | 4 outils, 5,6 s | 1 outil, **3,9 s** |
+| S05 « 3 cartons de tourage AOP » | 4 outils, 5,4 s | 2 outils, 4,7 s |
+| S05 réplique 3 (note « Fermé le mercredi ») | demande « mercredi vous convient ? » | ne parle plus du mercredi (note filtrée) |
+
+Lecture : la 1re réplique perd 2 à 4 s et 2 à 3 allers-retours (plus de recherche du client ni de sa fiche) ; la voix
+passe de 6,9 à 3,9 s. Les répliques suivantes ne changent pas (bruit ±1-2 s). `TEAM_PRELOAD` passe à 1 dans
+`.env.example`.
+
 **Outil de rejeu corrigé** : en /chat il renvoie maintenant l'historique complet (outils appelés + résultats) comme la
 page Voix ; avant, l'agent oubliait son brouillon et recommençait (S01·2 : 6 outils, 9,4 s → 1 outil, 2,4 s).
 ### Commande juste (Amine Khalil)

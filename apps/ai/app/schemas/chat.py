@@ -45,6 +45,9 @@ class ChatRequest(WireModel):
         None, description="voice → short spoken-style answers; command → single-turn, act-first, one line"
     )
     actor_name: str | None = None
+    caller_client_id: str | None = Field(
+        None, description="Team 12: the client who is calling (caller ID), e.g. cli_0001; their sheet is preloaded (TEAM_PRELOAD)"
+    )
 
 
 class Usage(WireModel):
