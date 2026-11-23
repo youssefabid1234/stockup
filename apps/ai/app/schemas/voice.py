@@ -60,6 +60,7 @@ class CallerMessage(WireModel):
     phone: str | None = None
     company_name: str | None = None  # for a new client
     is_new: bool = False
+    resume: bool = False  # sent again after a reconnect: restore the caller, keep the conversation
 
 
 VoiceClientMessage = Annotated[
@@ -137,7 +138,8 @@ class CallerReadyMessage(WireModel):
     is_new: bool = False
     status: str | None = None  # active | blocked | prospect | new…
     loaded_ms: int | None = None
-    used_by_agent: bool = False  # False while TEAM_PRELOAD is off: identified, but the agent does not get the sheet
+    used_by_agent: bool = False  # the agent gets the sheet (always, when the caller was found or is new)
+    resume: bool = False  # answer to a resumed caller (after a reconnect): the page keeps its turns
 
 
 VoiceServerMessage = Annotated[

@@ -61,7 +61,8 @@ export type VoiceClientMessage =
   | { type: "text"; text: string } // typed instead of spoken (debug)
   | { type: "reset" }
   // Team 12: who is calling (caller ID form, before the call): an ERP client (clientId or phone) or a new client
-  | { type: "caller"; clientId?: string; contactName?: string; phone?: string; companyName?: string; isNew?: boolean };
+  // resume: sent again after a reconnect (e.g. the AI service reloaded): restore the caller, keep the conversation
+  | { type: "caller"; clientId?: string; contactName?: string; phone?: string; companyName?: string; isNew?: boolean; resume?: boolean };
 
 /** Team 12: the caller is identified and their sheet loaded (usedByAgent=false while TEAM_PRELOAD is off). */
 export interface CallerReady {
@@ -73,6 +74,7 @@ export interface CallerReady {
   status?: string | null;
   loadedMs?: number | null;
   usedByAgent: boolean;
+  resume?: boolean; // answer to a resumed caller: keep the turns on screen
 }
 
 export interface TurnTimings {
