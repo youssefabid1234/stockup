@@ -1,0 +1,66 @@
+/* Design tokens — see DESIGN.md. HSL triplets, consumed as hsl(var(--token)). */
+:root {
+  --background: 150 25% 99%;
+  --foreground: 155 18% 12%;
+  --card: 0 0% 100%;
+  --surface-2: 0 0% 100%; /* raised selected segment / current page */
+  --muted: 150 16% 96%;
+  --muted-foreground: 155 8% 42%;
+  --secondary-foreground: 155 15% 24%;
+  --border: 150 14% 90%;
+  --border-hover: 150 14% 82%;
+  --input: 150 14% 88%;
+  --primary: 148 70% 28%;
+  --primary-hover: 148 70% 22%;
+  --primary-foreground: 150 30% 98%;
+  --ring: 148 70% 28%;
+  --row-selected: 148 35% 93%;
+  --success: 142 66% 36%;
+  --warning: 38 92% 50%;
+  --destructive: 0 74% 52%;
+  --info: 214 84% 49%;
+  --violet: 262 83% 58%;
+  --chart-1: 148 68% 38%;
+  --chart-2: 175 55% 40%;
+  --chart-3: 38 90% 52%;
+  --chart-4: 224 64% 56%;
+  --chart-5: 342 68% 56%;
+
+  --shadow-sm: 0 1px 3px 0 #24423317, 0 1px 2px -1px #24423314;
+  --shadow-panel: -8px 0 24px -8px #0000001f;
+  --shadow-pop: 0 12px 32px -8px #24423329, 0 2px 6px -2px #2442331a;
+  color-scheme: light;
+}
+
+.dark {
+  --background: 155 22% 7%;
+  --foreground: 150 12% 92%;
+  --card: 155 20% 9%;
+  --surface-2: 155 12% 25%;
+  --muted: 155 13% 17%;
+  --muted-foreground: 150 8% 63%;
+  --secondary-foreground: 150 12% 90%;
+  --border: 155 14% 18%;
+  --border-hover: 155 12% 34%;
+  --input: 155 14% 20%;
+  --primary: 150 58% 46%;
+  --primary-hover: 150 58% 40%;
+  --primary-foreground: 155 30% 8%;
+  --ring: 150 58% 46%;
+  --row-selected: 150 32% 20%;
+  --success: 150 55% 45%;
+  --warning: 40 90% 56%;
+  --destructive: 0 72% 60%;
+  --info: 213 82% 62%;
+  --violet: 258 90% 66%;
+  --chart-1: 150 58% 52%;
+  --chart-2: 175 50% 52%;
+  --chart-3: 40 88% 60%;
+  --chart-4: 224 62% 66%;
+  --chart-5: 342 66% 64%;
+
+  --shadow-sm: 0 1px 3px 0 #03070580, 0 1px 2px -1px #03070580;
+  --shadow-panel: -8px 0 24px -8px #03070580;
+  --shadow-pop: 0 12px 32px -8px #030705b3, 0 2px 6px -2px #03070580;
+  color-scheme: dark;
+}

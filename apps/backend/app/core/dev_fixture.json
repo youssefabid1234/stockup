@@ -1,0 +1,464 @@
+{
+ "meta": {
+  "company": "Marée & Primeurs (fixture)",
+  "today": "2026-11-23",
+  "currency": "EUR",
+  "generatedAt": "2026-11-23T06:00:00.000Z"
+ },
+ "products": [
+  {
+   "id": "prd_0001",
+   "sku": "BAR-LIG-12",
+   "name": "Bar de ligne 1-2 kg",
+   "aliases": [
+    "loup",
+    "bar",
+    "seabass"
+   ],
+   "category": "whole_fish",
+   "unit": "kg",
+   "price": 28.5,
+   "cost": 19.8,
+   "vatRate": 0.055,
+   "shelfLifeDays": 4,
+   "origin": "Bretagne",
+   "caliber": "1-2 kg",
+   "mainSupplierId": "sup_0001",
+   "active": true
+  },
+  {
+   "id": "prd_0002",
+   "sku": "DOR-ROY-46",
+   "name": "Dorade royale 400-600 g",
+   "aliases": [
+    "dorade",
+    "daurade"
+   ],
+   "category": "whole_fish",
+   "unit": "kg",
+   "price": 16.9,
+   "cost": 11.2,
+   "vatRate": 0.055,
+   "shelfLifeDays": 4,
+   "origin": "Méditerranée",
+   "caliber": "400-600 g",
+   "mainSupplierId": "sup_0001",
+   "active": true
+  },
+  {
+   "id": "prd_0003",
+   "sku": "SJQ-NOI-3",
+   "name": "Noix de Saint-Jacques",
+   "aliases": [
+    "saint jacques",
+    "st jacques",
+    "coquilles"
+   ],
+   "category": "shellfish",
+   "unit": "kg",
+   "price": 54,
+   "cost": 38,
+   "vatRate": 0.055,
+   "shelfLifeDays": 3,
+   "origin": "Normandie",
+   "mainSupplierId": "sup_0001",
+   "active": true
+  },
+  {
+   "id": "prd_0004",
+   "sku": "SAU-FIL-EC",
+   "name": "Filet de saumon Écosse",
+   "aliases": [
+    "saumon",
+    "pavé de saumon"
+   ],
+   "category": "fillet",
+   "unit": "kg",
+   "price": 24.9,
+   "cost": 16.5,
+   "vatRate": 0.055,
+   "shelfLifeDays": 5,
+   "origin": "Écosse",
+   "mainSupplierId": "sup_0001",
+   "active": true
+  },
+  {
+   "id": "prd_0005",
+   "sku": "CIT-JAU-5",
+   "name": "Citron jaune (colis 5 kg)",
+   "aliases": [
+    "citron",
+    "citrons"
+   ],
+   "category": "produce",
+   "unit": "box",
+   "price": 12.5,
+   "cost": 8,
+   "vatRate": 0.055,
+   "shelfLifeDays": 14,
+   "origin": "Espagne",
+   "mainSupplierId": "sup_0002",
+   "active": true
+  },
+  {
+   "id": "prd_0006",
+   "sku": "PER-PLA-BT",
+   "name": "Persil plat (botte)",
+   "aliases": [
+    "persil"
+   ],
+   "category": "produce",
+   "unit": "piece",
+   "price": 1.2,
+   "cost": 0.6,
+   "vatRate": 0.055,
+   "shelfLifeDays": 5,
+   "origin": "France",
+   "mainSupplierId": "sup_0002",
+   "active": true
+  }
+ ],
+ "clients": [
+  {
+   "id": "cli_0001",
+   "code": "C0001",
+   "name": "Le Bistrot du Port",
+   "type": "restaurant",
+   "contacts": [
+    {
+     "name": "Marc Lefèvre",
+     "role": "Chef",
+     "phone": "+33 6 12 34 56 78"
+    }
+   ],
+   "address": "12 quai de Seine",
+   "city": "Boulogne-Billancourt",
+   "zone": "Paris Ouest",
+   "deliveryDays": [
+    "mon",
+    "tue",
+    "wed",
+    "thu",
+    "fri"
+   ],
+   "paymentTermsDays": 30,
+   "creditLimit": 5000,
+   "status": "active",
+   "salesRep": "Sophie",
+   "preferences": "Bar et Saint-Jacques toutes les semaines",
+   "notes": [],
+   "createdAt": "2025-03-01T09:00:00.000Z"
+  },
+  {
+   "id": "cli_0002",
+   "code": "C0002",
+   "name": "Poissonnerie Ondine",
+   "type": "fishmonger",
+   "contacts": [
+    {
+     "name": "Claire Martin",
+     "role": "Gérante",
+     "phone": "+33 6 98 76 54 32"
+    }
+   ],
+   "address": "4 rue du Marché",
+   "city": "Neuilly-sur-Seine",
+   "zone": "Paris Ouest",
+   "deliveryDays": [
+    "tue",
+    "thu",
+    "sat"
+   ],
+   "paymentTermsDays": 15,
+   "creditLimit": 3000,
+   "status": "active",
+   "salesRep": "Sophie",
+   "preferences": "Gros volumes de dorade",
+   "notes": [],
+   "createdAt": "2025-05-10T09:00:00.000Z"
+  },
+  {
+   "id": "cli_0003",
+   "code": "C0003",
+   "name": "Brasserie Les Halles",
+   "type": "brasserie",
+   "contacts": [
+    {
+     "name": "Paul Garnier",
+     "role": "Acheteur",
+     "email": "paul@leshalles.fr"
+    }
+   ],
+   "address": "8 avenue Foch",
+   "city": "Rueil-Malmaison",
+   "zone": "Paris Ouest",
+   "deliveryDays": [
+    "mon",
+    "wed",
+    "fri"
+   ],
+   "paymentTermsDays": 0,
+   "creditLimit": 1000,
+   "status": "blocked",
+   "salesRep": "Karim",
+   "preferences": "Paie au comptant",
+   "notes": [],
+   "createdAt": "2025-09-01T09:00:00.000Z"
+  }
+ ],
+ "clientPrices": [
+  {
+   "clientId": "cli_0001",
+   "productId": "prd_0001",
+   "price": 26.9
+  }
+ ],
+ "suppliers": [
+  {
+   "id": "sup_0001",
+   "name": "Marée de Bretagne",
+   "contacts": [
+    {
+     "name": "Yann Le Goff",
+     "phone": "+33 2 98 00 00 00"
+    }
+   ],
+   "city": "Lorient",
+   "categories": [
+    "whole_fish",
+    "fillet",
+    "shellfish"
+   ],
+   "leadTimeDays": 1,
+   "paymentTermsDays": 30,
+   "minOrderAmount": 300,
+   "notes": ""
+  },
+  {
+   "id": "sup_0002",
+   "name": "Primeurs de Rungis",
+   "contacts": [
+    {
+     "name": "Ahmed Benali"
+    }
+   ],
+   "city": "Rungis",
+   "categories": [
+    "produce"
+   ],
+   "leadTimeDays": 1,
+   "paymentTermsDays": 30,
+   "minOrderAmount": 150,
+   "notes": ""
+  }
+ ],
+ "supplierPrices": [
+  {
+   "supplierId": "sup_0001",
+   "productId": "prd_0001",
+   "price": 19.5,
+   "updatedAt": "2026-11-20"
+  },
+  {
+   "supplierId": "sup_0001",
+   "productId": "prd_0002",
+   "price": 11,
+   "updatedAt": "2026-11-20"
+  },
+  {
+   "supplierId": "sup_0001",
+   "productId": "prd_0003",
+   "price": 37.5,
+   "updatedAt": "2026-11-20"
+  },
+  {
+   "supplierId": "sup_0001",
+   "productId": "prd_0004",
+   "price": 16.2,
+   "updatedAt": "2026-11-20"
+  },
+  {
+   "supplierId": "sup_0002",
+   "productId": "prd_0005",
+   "price": 7.8,
+   "updatedAt": "2026-11-20"
+  },
+  {
+   "supplierId": "sup_0002",
+   "productId": "prd_0006",
+   "price": 0.55,
+   "updatedAt": "2026-11-20"
+  }
+ ],
+ "lots": [
+  {
+   "id": "lot_000001",
+   "productId": "prd_0001",
+   "supplierId": "sup_0001",
+   "qtyReceived": 30,
+   "qtyRemaining": 22,
+   "receivedAt": "2026-11-21",
+   "expiresAt": "2026-11-25"
+  },
+  {
+   "id": "lot_000002",
+   "productId": "prd_0002",
+   "supplierId": "sup_0001",
+   "qtyReceived": 40,
+   "qtyRemaining": 40,
+   "receivedAt": "2026-11-22",
+   "expiresAt": "2026-11-26"
+  },
+  {
+   "id": "lot_000003",
+   "productId": "prd_0003",
+   "supplierId": "sup_0001",
+   "qtyReceived": 10,
+   "qtyRemaining": 4,
+   "receivedAt": "2026-11-21",
+   "expiresAt": "2026-11-24"
+  },
+  {
+   "id": "lot_000004",
+   "productId": "prd_0005",
+   "supplierId": "sup_0002",
+   "qtyReceived": 20,
+   "qtyRemaining": 15,
+   "receivedAt": "2026-11-18",
+   "expiresAt": "2026-12-02"
+  },
+  {
+   "id": "lot_000005",
+   "productId": "prd_0006",
+   "supplierId": "sup_0002",
+   "qtyReceived": 50,
+   "qtyRemaining": 30,
+   "receivedAt": "2026-11-22",
+   "expiresAt": "2026-11-27"
+  }
+ ],
+ "stockMovements": [],
+ "orders": [
+  {
+   "id": "ord_000001",
+   "number": "CMD-2026-000001",
+   "clientId": "cli_0001",
+   "status": "invoiced",
+   "source": "phone",
+   "deliveryDate": "2026-10-15",
+   "lines": [
+    {
+     "id": "lin_000001",
+     "productId": "prd_0001",
+     "qty": 8,
+     "unitPrice": 26.9,
+     "preparedQty": 8
+    },
+    {
+     "id": "lin_000002",
+     "productId": "prd_0003",
+     "qty": 3,
+     "unitPrice": 54,
+     "preparedQty": 3
+    }
+   ],
+   "totalHt": 377.2,
+   "createdAt": "2026-10-14T08:00:00.000Z",
+   "createdBy": "sophie",
+   "confirmedAt": "2026-10-14T08:05:00.000Z",
+   "deliveredAt": "2026-10-15T07:00:00.000Z",
+   "invoiceId": "inv_000001"
+  },
+  {
+   "id": "ord_000002",
+   "number": "CMD-2026-000002",
+   "clientId": "cli_0001",
+   "status": "delivered",
+   "source": "phone",
+   "deliveryDate": "2026-11-20",
+   "lines": [
+    {
+     "id": "lin_000003",
+     "productId": "prd_0001",
+     "qty": 10,
+     "unitPrice": 26.9,
+     "preparedQty": 10
+    },
+    {
+     "id": "lin_000004",
+     "productId": "prd_0005",
+     "qty": 1,
+     "unitPrice": 12.5,
+     "preparedQty": 1
+    }
+   ],
+   "totalHt": 281.5,
+   "createdAt": "2026-11-19T08:00:00.000Z",
+   "createdBy": "sophie",
+   "confirmedAt": "2026-11-19T08:05:00.000Z",
+   "deliveredAt": "2026-11-20T07:00:00.000Z"
+  }
+ ],
+ "purchaseOrders": [],
+ "invoices": [
+  {
+   "id": "inv_000001",
+   "number": "FAC-2026-000001",
+   "clientId": "cli_0001",
+   "orderIds": [
+    "ord_000001"
+   ],
+   "status": "issued",
+   "issuedAt": "2026-10-15",
+   "dueDate": "2026-11-14",
+   "lines": [
+    {
+     "productId": "prd_0001",
+     "label": "Bar de ligne 1-2 kg",
+     "qty": 8,
+     "unitPrice": 26.9,
+     "vatRate": 0.055,
+     "totalHt": 215.2
+    },
+    {
+     "productId": "prd_0003",
+     "label": "Noix de Saint-Jacques",
+     "qty": 3,
+     "unitPrice": 54,
+     "vatRate": 0.055,
+     "totalHt": 162
+    }
+   ],
+   "totalHt": 377.2,
+   "totalVat": 20.75,
+   "totalTtc": 397.95,
+   "amountPaid": 0
+  }
+ ],
+ "payments": [],
+ "routes": [
+  {
+   "id": "rte_0001",
+   "name": "Tournée Paris Ouest",
+   "zone": "Paris Ouest",
+   "driver": "Didier",
+   "vehicle": "Camion frigo 12 m³",
+   "capacityKg": 1200,
+   "days": [
+    "mon",
+    "tue",
+    "wed",
+    "thu",
+    "fri",
+    "sat"
+   ],
+   "departureTime": "05:30"
+  }
+ ],
+ "routeRuns": [],
+ "clientEvents": [],
+ "supplierEvents": [],
+ "tags": [],
+ "priceRules": [],
+ "contextEntries": []
+}

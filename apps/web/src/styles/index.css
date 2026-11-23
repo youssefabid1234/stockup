@@ -1,0 +1,28 @@
+@import "./tokens.css";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * { @apply border-border; }
+  html, body, #root { height: 100%; }
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+    font-size: 13px;
+    line-height: 18px;
+    font-feature-settings: "cv11", "ss01";
+  }
+  ::selection { background: hsl(var(--primary) / 0.18); }
+  :focus-visible { outline: 2px solid hsl(var(--ring) / 0.7); outline-offset: 1px; }
+  * { scrollbar-width: thin; scrollbar-color: hsl(var(--border-hover)) transparent; }
+}
+
+/* PageHeader squeezes the shell tools when its row runs out of room (see useHeaderFit in ui/page.tsx):
+   level 1 hides the shortcut hints, level 2 also the labels (icon-only buttons, names stay in title/aria-label). */
+header[data-compact] .shell-kbd { display: none; }
+header[data-compact="2"] .shell-label { display: none; }
+
+@layer utilities {
+  .num { font-variant-numeric: tabular-nums; }
+}

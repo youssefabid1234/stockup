@@ -1,0 +1,42 @@
+{
+  "slug": "fournil-occitan",
+  "name": "Le Fournil Occitan",
+  "trade": "fournitures boulangerie-pâtisserie",
+  "region": "Toulouse et Haute-Garonne",
+  "city": "Toulouse",
+  "employees": 25,
+  "clients": 104,
+  "products": 71,
+  "suppliers": 11,
+  "orders": 24769,
+  "stockoutPct": 1.4,
+  "worstStockouts": [
+    "FAR-EPE:670",
+    "FAR-T65B:503",
+    "FAR-T150B:319",
+    "FAR-T80:239",
+    "BLA-LIQ:1"
+  ],
+  "seedMB": 77.7,
+  "generationSeconds": 3.4,
+  "counts": {
+    "products": 71,
+    "clients": 104,
+    "clientPrices": 113,
+    "suppliers": 11,
+    "supplierPrices": 74,
+    "lots": 14433,
+    "stockMovements": 151632,
+    "orders": 24769,
+    "purchaseOrders": 4102,
+    "invoices": 8391,
+    "payments": 6663,
+    "routes": 5,
+    "routeRuns": 3857,
+    "clientEvents": 4166,
+    "supplierEvents": 699,
+    "tags": 35,
+    "priceRules": 8,
+    "contextEntries": 1190
+  }
+}
