@@ -110,7 +110,7 @@ export function CallerBar({ caller, onHangUp }: { caller: CallerReady; onHangUp:
           ? "· nouveau client (à valider par l'équipe)"
           : caller.usedByAgent
             ? `· fiche chargée${caller.loadedMs != null ? ` en ${caller.loadedMs} ms` : ""}`
-            : "· identifié (fiche non transmise : TEAM_PRELOAD éteint)"}
+            : "· identifié (fiche indisponible : l'agent cherchera le client)"}
       </span>
       <Button size="sm" variant="ghost" icon={PhoneOff} className="ml-auto" onClick={onHangUp}>Raccrocher</Button>
     </div>

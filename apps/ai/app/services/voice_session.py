@@ -168,9 +168,12 @@ class VoiceConnection:
         await self.send(TranscriptMessage(text=update.text, final=False, stable=update.stable))
 
     async def set_caller(self, msg: CallerMessage) -> None:
-        """Team 12 (Youssef): a new call from this caller: fresh history, their sheet loaded now (TEAM_PRELOAD)."""
+        """Team 12 (Youssef): who is calling, from the caller ID form. Their sheet is loaded now and ALWAYS given to the
+        agent (the caller was chosen explicitly). A new call starts a fresh history; `resume` (sent again by the page
+        after a reconnect, e.g. the AI service reloaded) only restores the caller and keeps the conversation."""
         conv = self.conversation
-        conv.history = []
+        if not msg.resume:
+            conv.history = []
         try:
             sheet = await preload.caller_context(
                 ErpClient("voice_agent"),
@@ -183,8 +186,8 @@ class VoiceConnection:
         except Exception as e:  # ERP down…: the call still works, the agent will look the client up itself
             await self.send(VoiceErrorMessage(message=f"Fiche client indisponible : {e}"))
             sheet = None
-        used = sheet is not None and team_flags.preload()
-        conv.call_context = sheet if used else None
+        used = sheet is not None
+        conv.call_context = sheet
         await self.send(
             CallerReadyMessage(
                 client_id=sheet.client_id or None if sheet else None,
@@ -194,6 +197,7 @@ class VoiceConnection:
                 status=sheet.status if sheet else None,
                 loaded_ms=sheet.loaded_ms if sheet else None,
                 used_by_agent=used,
+                resume=msg.resume,
             )
         )
 

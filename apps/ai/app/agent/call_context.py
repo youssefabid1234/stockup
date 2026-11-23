@@ -22,7 +22,7 @@ import asyncio
 import json
 import re
 import time
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 
 from app.tools.erp import ErpClient
 
@@ -249,10 +249,9 @@ async def caller_context(
         if hit := await find_client_by_phone(erp, phone):
             client_id, contact_name = hit[0], contact_name or hit[1]
     if not is_new and client_id:
-        cc = _cached(client_id) or await _load_and_cache(erp, client_id)
-        cc.caller_contact = contact_name or cc.caller_contact
-        cc.caller_phone = phone or cc.caller_phone
-        return cc
+        shared = _cached(client_id) or await _load_and_cache(erp, client_id)
+        # A copy per call: the cached sheet is shared (Guy then Nadine calling for the same bakery must not mix).
+        return replace(shared, caller_contact=contact_name, caller_phone=phone)
     if is_new or company_name or phone or contact_name:
         # Not found in the ERP → a new client. Placeholder (to discuss with the team): the agent takes the details and
         # the request but confirms nothing; the wholesaler approves the new account first.

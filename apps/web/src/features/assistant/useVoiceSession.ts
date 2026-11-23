@@ -43,6 +43,9 @@ export function useVoiceSession() {
   // Team 12: the caller, identified before the call (caller ID form). No talking until it is set.
   const [caller, setCaller] = useState<CallerReady>();
   const [callerPending, setCallerPending] = useState(false);
+  // What the form sent: re-sent (resume) after every reconnect, so the agent never forgets the caller even if the
+  // AI service restarted (its conversations live in memory).
+  const callerInput = useRef<CallerInput>();
 
   const ws = useRef<WebSocket>();
   const sessionId = useRef<string>();
@@ -131,11 +134,15 @@ export function useVoiceSession() {
         sessionId.current = m.sessionId;
         setProviders({ llm: m.llm, stt: m.stt, tts: m.tts, sessionId: m.sessionId });
         setConn("ready");
+        // Reconnected during a call: tell the server again who is calling (keeps the conversation).
+        if (callerInput.current && ws.current?.readyState === WebSocket.OPEN) {
+          ws.current.send(JSON.stringify({ type: "caller", ...callerInput.current, resume: true } satisfies VoiceClientMessage));
+        }
         break;
       case "caller_ready":
         setCaller(m);
         setCallerPending(false);
-        setTurns([]);
+        if (!m.resume) setTurns([]);
         break;
       case "transcript": {
         const turn = id;
@@ -328,6 +335,7 @@ export function useVoiceSession() {
     stopPlayback();
     setCallerPending(true);
     setLastError(undefined);
+    callerInput.current = input;
     send({ type: "caller", ...input });
   }, [conn, send, stopPlayback]);
 
@@ -338,6 +346,7 @@ export function useVoiceSession() {
     currentTurn.current = undefined;
     setTurns([]);
     setCaller(undefined);
+    callerInput.current = undefined;
     setActivity("idle");
   }, [send, stopPlayback]);
 
