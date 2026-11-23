@@ -34,6 +34,9 @@ from app.schemas import (
 )
 from app.tools import ErpClient, Tool, ToolContext
 
+from app import team_flags
+
+from . import call_context as preload
 from .prompts import build_system_prompt
 
 GIVE_UP = "Désolé, je n'ai pas réussi à aller au bout. Pouvez-vous reformuler ?"
@@ -55,6 +58,8 @@ async def run_agent(
     usage = Usage(input_tokens=0, output_tokens=0)
 
     try:
+        if call_context is None and team_flags.preload():  # team 12 (Youssef): the caller's sheet, if known
+            call_context = await preload.context_for(messages, ctx.erp)
         extra = {"call_context": call_context} if call_context is not None else {}
         system = await build_system_prompt(mode, actor_name, **extra)
         request = LLMRequest(system=system, messages=messages, tools=[t.info for t in tools])
@@ -96,6 +101,9 @@ async def run_agent(
             for r in results:
                 messages.append(ChatMessage(role="tool", tool_call_id=r.call_id, name=r.name, content=to_json(r.result)))
                 yield r
+            # team 12 (Youssef): caller just identified → load their sheet in the background for the next turns
+            if team_flags.preload() and call_context is None and (client_id := preload.identify_client(messages)):
+                preload.prefetch(ctx.erp, client_id)
 
         # Safety net: the model kept calling tools.
         message = ChatMessage(role="assistant", content=GIVE_UP)
