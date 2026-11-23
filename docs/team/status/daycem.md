@@ -1,19 +1,25 @@
-# Daycem – « Le bon vendeur »  ·  mis à jour lun. 23/11, 22h00
+# Daycem – « Le bon vendeur »  ·  mis à jour lun. 23/11, 22h30
 
 - Fait depuis la dernière sync :
   - T0 : photo de départ de S04 et S05 (tous les `TEAM_*` éteints, ERP remis à zéro avant chaque scénario). Détail plus bas.
-  - T1 : `SALES_RULES` v1 écrit dans `agent/rules_sales.py`. Les règles sont générales (aucun nom de client, de
-    produit ou de personne) ; un test le vérifie (`test_sales_rules_stay_general`).
-- En cours : T1, rejouer S04 et S05 avec `TEAM_SALES_RULES=1`.
+  - T1 : `SALES_RULES` écrit dans `agent/rules_sales.py`, rejoué 3 fois (T1, T1b, T1c). Les règles sont générales
+    (aucun nom de client, de produit ou de personne) ; un test le vérifie (`test_sales_rules_stay_general`).
+  - Dernière correction (pas encore rejouée) : la date de retour est donnée telle qu'elle est écrite dans les
+    documents, sans la transformer ni la déduire.
+- En cours : T2 (naturel).
 - Bloqué / j'attends : rien.
 - J'ai besoin de (qui, quoi) :
+  - **Amine K. : brouillon orphelin sur S05** (2 rejeux sur 2). Au tour 3 l'agent crée un brouillon, au tour 4 il en
+    recrée un et confirme le second : CMD-2026-007543 reste en brouillon à côté de CMD-2026-007544 confirmée. Cause
+    probable : le runner ne rejoue que le texte, l'id du brouillon est perdu. Non vérifié en vrai appel vocal.
   - Youssef : `load_call_context` n'est appelé nulle part (ni `voice_session.py` ni `/chat`), donc la fiche n'est
     jamais préchargée. Aujourd'hui l'agent relit la fiche avec `search` + `get_client` + `get_context` à chaque tour.
   - Youssef (T3 / `product_insight`) : `GET /api/products/prd_0025/alternatives` classe par prix proche :
     demi-sel, beurre doux AOP, puis seulement le tourage 82 %. `rank_alternatives` devra classer par usage.
-  - Mohamed Amine : 5,6 à 7,5 s de silence avant le premier mot au 1er tour (aucune phrase d'attente).
-- Interrupteur(s) : TEAM_SALES_RULES = off pour la photo de départ · prêt à allumer sur main ? pas encore (rejeu à faire)
-- Mesure (scénarios, ms) : voir le tableau ci-dessous.
+  - Mohamed Amine : « Je regarde. » n'est dit que si le modèle y pense (tour 1 seulement sur S05) ; aux autres tours,
+    5,8 à 8,3 s de silence. Les phrases d'attente automatiques sont nécessaires.
+- Interrupteur(s) : TEAM_SALES_RULES = on sur ma branche · prêt à allumer sur main ? oui (S04 et S05 passent)
+- Mesure (scénarios, ms) : voir les tableaux ci-dessous.
 - Changement de contrat demandé (interfaces.md) : aucun.
 
 ## Photo de départ T0 (kit seul, Sonnet, via `POST /chat`)
@@ -80,3 +86,26 @@ fin de grève, pas comme une date de retour).
 Corrections écrites ensuite (pas encore rejouées) : date dite naturellement (« normalement en fin de mois »), sans
 « sans promesse » ; une seule question à la fois (d'abord l'accord sur le remplaçant) ; une courte phrase d'attente
 neutre (« Je regarde. ») est autorisée, seul l'explication de ce qu'on vérifie est interdite.
+
+## Rejeu T1c (date dite naturellement, une seule question, « Je regarde. » autorisé)
+
+| Scénario · tour | Résultat | Appels modèle | Premier mot | Total | Tokens (sortie · cache écrit · cache lu) |
+|---|---|---|---|---|---|
+| S04 · 1 | PASS | 3 | 734 ms | 5 695 ms | 477 · 27 077 · 58 496 |
+| S05 · 1 | PASS | 4 | 1 015 ms | 8 311 ms | 738 · 4 751 · 110 534 |
+| S05 · 2 | PASS | 3 | 5 761 ms | 5 761 ms | 498 · 2 928 · 80 756 |
+| S05 · 3 | PASS | 4 | 8 297 ms | 8 302 ms | 701 · 4 569 · 111 404 |
+| S05 · 4 | PASS | 4 | 7 068 ms | 7 094 ms | 468 · 1 107 · 108 623 |
+
+- S04 : « Je regarde. Pour jeudi, je n'ai plus de tourage AOP en stock. Il devrait revenir normalement à partir de
+  début décembre. Voulez-vous que je note votre demande de 2 cartons ? » → premier mot à 0,7 s. Mais « début
+  décembre » n'est écrit nulle part (le document dit « jusqu'à fin novembre ») : date déduite.
+- S05 tour 1 : « Je regarde. Le tourage AOP est en rupture, il devrait revenir normalement en fin de mois. Je peux
+  vous proposer le beurre de tourage 82 %, en plaques de 2 kilos, qui convient bien pour vos chocolatines, à 9 euros
+  20 le kilo. Il est disponible, ça vous va ? » → une seule question, argument d'usage, date donnée.
+- Restes : « Je regarde. » seulement au tour 1 de S05 (5,8 à 8,3 s de silence ensuite) ; tour 2 en 3 phrases avec
+  un début d'explication (« je ne peux pas vous promettre de livraison ce jour-là ») ; date formulée différemment
+  entre S04 et S05 ; **brouillon orphelin toujours présent** (CMD-2026-007543).
+
+Correction écrite ensuite (pas encore rejouée) : la date de retour est donnée telle qu'elle est écrite dans les
+documents, sans la transformer ni en déduire une autre.
