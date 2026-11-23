@@ -274,6 +274,8 @@ class VoiceConnection:
                 await speaker.stop()
             raise
         except Exception as e:
+            if speaker:
+                await speaker.stop()
             await self.send(VoiceErrorMessage(message=str(e) or type(e).__name__))
         finally:
             if utterance:
@@ -318,10 +320,7 @@ class Speaker:
 
     def speak(self, sentence: str) -> None:
         if self.acknowledged and self.first_phrase:
-            sentence = re.sub(
-                r"^\s*(?:d[’']accord,?\s+)?(?:je regarde(?: ça)?|je vérifie(?: le stock)?)"
-                r"\s*[.!…,]+\s*", "", sentence, flags=re.I
-            )
+            sentence = fillers.WAITING_LINE.sub("", sentence, count=1)
         if not sentence.strip():
             return
         self.first_phrase = False

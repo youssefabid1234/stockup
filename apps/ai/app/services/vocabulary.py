@@ -13,6 +13,7 @@ from app.tools.erp import ErpClient
 TTL_S = 300  # refresh every 5 min
 RETRY_S = 30  # ERP down: try again sooner
 MAX_TERMS = 500
+BAKERY_TERMS = ("tradi", "tourage", "chocolatine", "gruau", "T55")
 
 _cache: tuple[float, bool, list[str]] = (0.0, False, [])  # expiry, TEAM_FILLERS state, terms
 _lock = asyncio.Lock()
@@ -40,12 +41,12 @@ async def company_terms(erp: ErpClient | None = None) -> list[str]:
                     parts[0] for client in clients for contact in client.get("contacts") or []
                     if (parts := (contact.get("name") or "").split())
                 ]
-                names = ["tradi", "tourage", "chocolatine", "gruau", "T55", *first_names, *names]
+                names = [*BAKERY_TERMS, *first_names, *names]
             terms = dedupe(names)[:MAX_TERMS]
             _cache = (time.monotonic() + TTL_S, enabled, terms)
-        except Exception as e:  # ERP unreachable, other shape…: transcribe without vocabulary
+        except Exception as e:  # Keep cached terms or the core bakery terms when the ERP is unavailable.
             print(f"[ai] STT vocabulary unavailable ({type(e).__name__}: {e}), retry in {RETRY_S}s", flush=True)
-            _cache = (time.monotonic() + RETRY_S, enabled, terms)
+            _cache = (time.monotonic() + RETRY_S, enabled, terms or (list(BAKERY_TERMS) if enabled else []))
         return _cache[2]
 
 

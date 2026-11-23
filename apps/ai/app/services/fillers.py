@@ -24,6 +24,12 @@ SOCIAL_TURN = re.compile(
     re.I,
 )
 SEARCH_TOOLS = {"search", "get_product_stock", "get_price", "product_insight", "get_client"}
+WAITING_LINE = re.compile(
+    r"^\s*(?:(?:d['’]accord|un instant),?\s+)?"
+    r"(?:je regarde(?: ça| ce qu['’]il nous reste)?|je vérifie(?: le stock)?)"
+    r"(?:\s*[.!…,]+\s*|\s*$)",
+    re.I,
+)
 
 
 @dataclass
@@ -45,7 +51,7 @@ class FillerBank:
                 async with aclosing(result.chunks) as chunks:
                     data = b"".join([chunk async for chunk in chunks])
                 if not data:
-                    return
+                    raise ValueError("Empty waiting audio from TTS")
                 clips.append(CachedAudio(result.mime, data))
 
     def pick(self, situation: str) -> CachedAudio | None:
@@ -77,10 +83,7 @@ async def on_turn_start(speaker, heard: str) -> None:
     speaker.social_turn = bool(SOCIAL_TURN.fullmatch(words))
     if speaker.social_turn or team_flags.orchestrator() or not LOOKUP.search(words):
         return
-    clip = speaker.bank.pick("thinking")
-    if clip and clip.mime == "audio/mpeg":
-        await speaker.play_audio(clip.mime, clip.data)
-        speaker.acknowledged = True
+    await play_waiting_line(speaker)
 
 
 async def on_tool_call(speaker, tool_name: str) -> None:
@@ -88,5 +91,18 @@ async def on_tool_call(speaker, tool_name: str) -> None:
         return
     if speaker.social_turn or speaker.tts.name == "mock" or speaker.has_text or speaker.clicked:
         return
+    # A confirmed lookup can catch requests missed by the transcript heuristic.
+    # Keep one sound at this point, so a short tool round trip adds no extra clip.
+    if not speaker.acknowledged and not team_flags.orchestrator() and await play_waiting_line(speaker):
+        return
     await speaker.play_audio("audio/mpeg", keyboard_click())
     speaker.clicked = True
+
+
+async def play_waiting_line(speaker) -> bool:
+    clip = speaker.bank.pick("thinking")
+    if clip is None or clip.mime != "audio/mpeg":
+        return False
+    await speaker.play_audio(clip.mime, clip.data)
+    speaker.acknowledged = True
+    return True

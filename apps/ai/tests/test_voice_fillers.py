@@ -55,7 +55,7 @@ async def test_lookup_plays_one_ack_one_click_and_one_answer(call, monkeypatch):
     async def lookup(messages, **kwargs):
         for name in ("search", "get_price"):
             yield ToolCallEvent(call=ToolCall(id=name, name=name, arguments={}))
-        yield TextEvent(delta="Je regarde. La levure est disponible.")
+        yield TextEvent(delta="Un instant, je vérifie. Je regarde ce qu’il nous reste. La levure est disponible.")
 
     monkeypatch.setattr(voice_session, "run_agent", lookup)
     await conn.run_turn(conn.conversation, text="Vous avez de la levure en stock ?")
@@ -94,12 +94,44 @@ async def test_interruption_closes_old_audio_before_thanks(call, monkeypatch):
     assert conn.ws.events[-1]["type"] == "agent_done"
 
 
+async def test_confirmed_lookup_with_no_early_match(call, monkeypatch):
+    conn, _ = call
+
+    async def lookup(messages, **kwargs):
+        assert not any(isinstance(event, bytes) for event in conn.ws.events)
+        yield ToolCallEvent(call=ToolCall(id="lookup", name="search", arguments={}))
+        yield TextEvent(delta="La levure est disponible.")
+
+    monkeypatch.setattr(voice_session, "run_agent", lookup)
+    await conn.run_turn(conn.conversation, text="Il vous en reste de la levure ?")
+    clips = [event for event in conn.ws.events if isinstance(event, bytes)]
+    assert clips[0].decode() in fillers.PHRASES["thinking"]
+    assert clips[1:] == ["La levure est disponible.".encode()]
+
+
+async def test_failed_turn_closes_waiting_audio(call, monkeypatch):
+    conn, _ = call
+
+    async def fail(messages, **kwargs):
+        yield ToolCallEvent(call=ToolCall(id="lookup", name="search", arguments={}))
+        raise RuntimeError("ERP unavailable")
+
+    monkeypatch.setattr(voice_session, "run_agent", fail)
+    await conn.run_turn(conn.conversation, text="Vous avez de la levure en stock ?")
+    assert conn.ws.events[-2]["type"] == "agent_audio_end"
+    assert conn.ws.events[-1]["type"] == "error"
+
+
 async def test_fast_agent_keeps_priority(call, monkeypatch):
     conn, tts = call
     monkeypatch.setenv("TEAM_ORCHESTRATOR", "1")
     speaker = voice_session.Speaker(tts, conn.send, conn.send_bytes, conn.bank)
     await fillers.on_turn_start(speaker, "Quel est le prix ?")
     assert not speaker.started
+    speaker.push("Je vous écoute. ")
+    await fillers.on_tool_call(speaker, "search")
+    await speaker.finish()
+    assert [event for event in conn.ws.events if isinstance(event, bytes)] == ["Je vous écoute.".encode()]
 
 
 async def test_first_clause_starts_before_answer_ends(call):
@@ -148,3 +180,18 @@ async def test_warm_up_retries_only_missing_clips():
     await bank.warm_up(tts)
     first, second = fillers.PHRASES["thinking"]
     assert tts.phrases == [first, second, second]
+
+
+async def test_bakery_terms_remain_available_when_erp_is_down(monkeypatch):
+    class UnavailableERP:
+        async def get(self, path, params):
+            raise TimeoutError
+
+    vocabulary.reset_cache()
+    try:
+        monkeypatch.setenv("TEAM_FILLERS", "1")
+        assert await vocabulary.company_terms(UnavailableERP()) == ["tradi", "tourage", "chocolatine", "gruau", "T55"]
+        monkeypatch.delenv("TEAM_FILLERS")
+        assert await vocabulary.company_terms(UnavailableERP()) == []
+    finally:
+        vocabulary.reset_cache()
