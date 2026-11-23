@@ -18,6 +18,8 @@ from .erp import ErpClient
 
 if team_flags.product_insight():  # team 12 (Youssef): composite tool, registered only when its switch is on
     from . import product_insight  # noqa: F401
+if team_flags.order_rules():  # team 12 (Amine K.): delivery-day tool, registered only when its switch is on
+    from . import delivery  # noqa: F401
 from .registry import TOOLS, Tool, ToolContext, tool
 
 
