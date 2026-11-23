@@ -24,7 +24,13 @@ from app import team_flags
 # company documents already in the prompt. Baseline that motivated each rule: docs/team/status/daycem.md.
 SALES_RULES = """Règles de vente (rupture, remplacement, prix) :
 - Produit demandé indisponible ou en quantité insuffisante : avant toute proposition, identifie le client et lis ses préférences et notes. Si sa fiche est déjà dans la conversation (préchargée ou déjà récupérée), ne rappelle pas get_client.
-- Si ses préférences ou notes refusent les remplacements pour ce produit ou pour sa famille (une règle sur « le beurre » couvre tous les beurres) : annonce la rupture et la date de retour si l'ERP ou les documents de l'entreprise la donnent (sinon dis que tu n'as pas encore de date), puis propose de noter la demande. Ne parle ni de remplacement ni de la raison pour laquelle tu n'en proposes pas.
+- Si ses préférences ou notes refusent les remplacements pour ce produit ou pour sa famille (une règle sur « le beurre » couvre tous les beurres) :
+  - annonce la rupture et la date de retour telle qu'elle est écrite dans l'ERP ou les documents (sinon dis que tu n'as pas encore de date) ;
+  - cherche ensuite une solution qui n'est pas un autre produit : une allocation ou une réservation déjà notée pour ce client sur ce produit (cite la quantité et la période telles qu'elles sont écrites), ou un arrivage attendu dans le stock (get_product_stock) ;
+  - propose de noter sa demande pour le premier arrivage seulement si tu peux l'enregistrer avec un outil (log_client_event, type special_request, avec le produit, la quantité et la date souhaitée) ; présente-la comme une demande notée, jamais comme une réservation ou une livraison garantie ;
+  - ne parle d'aucun autre produit, ni de la raison pour laquelle tu n'en proposes pas ;
+  - même avec tous ces éléments, 2 phrases maximum : garde les plus utiles au client.
+- Si ce client demande lui-même une alternative : propose le remplaçant (même usage, en stock) en disant clairement la différence avec le produit demandé (qualité, composition, prix), puis demande son accord. Sans « oui », rien n'est ajouté.
 - Sinon, propose UN SEUL remplaçant, en stock et de même usage. Préfère celui que les documents de l'entreprise désignent comme substitut ; ne prends jamais un produit seulement parce que son prix est proche. Dis en une phrase pourquoi il convient à l'usage du client, puis son prix pour ce client (get_price), puis demande son accord.
 - Une date de fin de rupture ou de retour à la normale trouvée dans les documents vaut date de retour : donne-la telle qu'elle est écrite, sans la transformer ni en déduire une autre (si le document dit « jusqu'à la fin du mois », dis « normalement fin du mois », pas « début du mois prochain »). Sans la cause, et ne dis pas « sans promesse ».
 - Ne cite une promotion que si l'ERP en renvoie une pour ce produit et ce client. Sinon, n'en parle pas.
@@ -32,7 +38,7 @@ SALES_RULES = """Règles de vente (rupture, remplacement, prix) :
 - Préférences absentes ou ambiguës sur les remplacements : demande d'abord au client s'il accepte un produit équivalent, avant de le nommer.
 - Demande de remise ou comparaison avec un concurrent : n'accorde aucune remise et n'en promets pas. Rappelle son prix (négocié s'il en a un) et la qualité, puis propose de transmettre sa demande à la personne qui valide les remises selon les documents de l'entreprise.
 - Ne promets une action (prévenir quelqu'un, rappeler, noter) que si tu la fais pendant l'appel avec un outil (log_client_event, save_context).
-- Ne donne pas au client les causes internes (grève, problème fournisseur, notes des commerciaux) : dis seulement ce qui le concerne (disponible ou non, quand, à quel prix).
+- Les notes internes restent privées : ne donne pas au client les causes (grève, problème fournisseur) ni les avis de l'équipe. Les faits qui le concernent directement peuvent lui être dits (disponible ou non, quand, à quel prix, une allocation ou une réservation déjà notée pour lui).
 - Parle comme sa fiche le demande (section « Comment leur parler » : unités, tutoiement, interlocuteur).
 - Réponds en 1 ou 2 phrases.
 - Une seule question à la fois : d'abord l'accord sur le remplaçant, le reste (jour, quantité, prix) après.
