@@ -1,0 +1,48 @@
+{
+  "id": "S47",
+  "owner": "daycem",
+  "title": "Hors cible : Le Pétrin de Colomiers (n'achète pas l'AOP), AOP en rupture → le 82 % au prix catalogue, aucune promo citée",
+  "why": "La promo de démo est ciblée (DECISIONS §5) : un client hors cible paie le prix catalogue (9,20 €/kg) et l'agent ne parle d'aucune promotion (« Ne cite une promotion que si l'ERP en renvoie une »). Le contrôle porte sur le texte, pas seulement sur les outils.",
+  "client": "cli_0021",
+  "turns": [
+    {
+      "say": "Bonjour, Le Pétrin de Colomiers. Il me faudrait 3 cartons de tourage AOP pour lundi.",
+      "expect": {
+        "tools_none": [
+          "confirm_order"
+        ],
+        "says_none": [
+          "promo",
+          "promotion",
+          "8,46",
+          "8.46",
+          "8 euros 46",
+          "huit euros quarante-six"
+        ]
+      }
+    },
+    {
+      "say": "Ah oui ? Il est à combien, le 82 ?",
+      "expect": {
+        "tools_none": [
+          "confirm_order"
+        ],
+        "says_any": [
+          "9,20",
+          "9.20",
+          "9 euros 20",
+          "neuf euros vingt",
+          "9 euros vingt"
+        ],
+        "says_none": [
+          "promo",
+          "promotion",
+          "8,46",
+          "8.46",
+          "8 euros 46",
+          "huit euros quarante-six"
+        ]
+      }
+    }
+  ]
+}

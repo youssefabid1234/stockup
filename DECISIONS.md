@@ -285,20 +285,43 @@ suite complète de l'équipe passe (151 tests au mar. 24/11 01h00), interrupteur
 
 ## 5. Données modifiées pour la démo
 
-**Promo de démo sur le tourage 82 % (Daycem, T4), assumée et fictive.** Créée par l'API de l'ERP avec
-`scripts/setup_demo_data.py`, parce que `data/seed/` n'est pas dans git :
+**Promo de démo sur le tourage 82 % (Daycem, T4), assumée et fictive, ciblée depuis le 24/11.**
 
-- règle de prix `Promo tourage 82 % : −8 % jusqu'au 30/11` : groupe « Boulangeries » × Beurre de tourage 82 %
-  (`prd_0026`), −8 % sur le prix catalogue, du jour de l'ERP (24/11) à la fin du mois ; la note de la règle dit que
-  ce sont des données de démo ;
-- effet : 9,20 € → **8,46 €/kg** pour les boulangeries sans prix négocié (ex. Le Pétrin de Colomiers). Un prix négocié
-  gagne toujours (La Gerbe d'Or reste à 8,82 €) ; les autres clients restent à 9,20 € ;
-- pourquoi : la scène de démo « rupture du tourage AOP → remplaçant **en promo**, argumenté, avec accord ». L'agent ne
-  cite la promo que parce que `get_price` la renvoie (règle « jamais de promo inventée ») ;
-- **automatique depuis le 24/11 (Youssef)** : l'ERP l'ajoute lui-même à chaque chargement des données (1er démarrage,
-  `make reset`, bouton de remise à zéro, `run_scenarios.py --reset`) : `apps/backend/app/core/team_demo.py`, même
-  règle, id `prl_0900`. Avant, chaque remise à zéro l'effaçait et la scène de démo tombait (vu pendant les mesures T1).
-  Le script de Daycem reste utilisable (il répond « déjà là »).
+- **règle** `Promo tourage 82 % : −8 % jusqu'au 30/11` (id `prl_0900`) : tag client **`promo-tourage`** × Beurre de
+  tourage 82 % (`prd_0026`), −8 % sur le prix catalogue, sans quantité minimale, du jour de l'ERP (24/11) à la fin du
+  mois. La note de la règle et le libellé du tag disent que ce sont des données de démo ;
+- **cible (B)** : boulangeries **actives**, avec **au moins 2 commandes de tourage AOP** (`prd_0025`, le produit en
+  rupture) sur les 12 derniers mois, dont la fiche **ne refuse pas** les remplacements (`substitution_policy` ; les
+  « demander » sont gardés : l'agent demande toujours l'accord). Soit **6 clients** :
+
+  | Client | AOP sur 12 mois | 82 % sur 12 mois | Politique |
+  |---|---|---|---|
+  | `cli_0020` Boulangerie-Pâtisserie Rémy | 27 commandes · 2 180 kg | 26 · 1 678 kg | accepte |
+  | `cli_0033` Au Fournil de Sandrine | 53 · 5 246 kg | 39 · 3 064 kg | demander |
+  | `cli_0060` La Mie de Saint-Michel | 68 · 1 691 kg | 56 · 2 270 kg | accepte |
+  | `cli_0070` Au Pain de Guilhem | 54 · 2 658 kg | 0 | accepte |
+  | `cli_0085` La Mie d'Arnaud-Bernard | 45 · 3 935 kg | 56 · 4 748 kg | demander |
+  | `cli_0102` Au Fournil de Guillaume | 49 · 3 683 kg | 0 | demander |
+
+- **pourquoi** : la promo sert à écouler le remplaçant **pendant la rupture de l'AOP** ; elle doit aller à ceux qui
+  achetaient l'AOP et peuvent changer. Avant, elle visait les 36 « boulangeries » : 33 en profitaient (les 3 autres ont un
+  prix négocié), dont **29 acheteurs habituels du 82 %** (effet d'aubaine) et **13 clients qui refusent tout
+  remplacement** (ex. Maison Sarrailh). Cibler « les acheteurs habituels du 82 % » aurait gardé l'aubaine ;
+- **liste figée** : calculée par `scripts/promo_target.py` (générique, aucun nom ni identifiant dans le code) et
+  recopiée dans `scripts/setup_demo_data.py` et `apps/backend/app/core/team_demo.py`. `tests/test_promo_target.py`
+  échoue si les données s'en écartent ; `tests/test_setup_demo_data.py` vérifie que les deux fichiers construisent
+  exactement le même tag, la même cible et la même règle ;
+- **effet mesuré après `make reset`** : 8,46 €/kg pour les 6 clients ciblés ; **9,20 €** (prix catalogue) pour les 27
+  autres boulangeries sans prix négocié (ex. Le Pétrin de Colomiers, scénario S47) ; les prix négociés ne bougent pas
+  (Au Pain d'Audrey 8,58 €, Boulangerie du Marché 8,78 €, La Gerbe d'Or 8,82 €) ;
+- l'agent ne cite la promo que parce que l'ERP la renvoie (« jamais de promo inventée ») ; ce n'est pas une remise
+  qu'il accorde (aucune en standard, ≤ 5 % pour un commercial, au-delà Bernard Castagné) ;
+- **automatique depuis le 24/11 (Youssef)** : l'ERP ajoute le tag, la cible et la règle à chaque chargement des
+  données (1er démarrage, `make reset`, bouton de remise à zéro, `run_scenarios.py --reset`) : `team_demo.py`. Le script
+  de Daycem reste utilisable sur un ERP qui n'a pas été remis à zéro : il crée ou corrige ce qui manque, sans rien
+  dupliquer (vérifié : deux passages de suite, aucune modification ; une ancienne règle « boulangeries » est corrigée) ;
+- scènes : **S40** (Au Pain de Guilhem, dans la cible : promo citée, 8,46 €) et **S47** (Le Pétrin de Colomiers, hors
+  cible : aucune promo, 9,20 €).
 
 **Prêt pour le jury (Youssef, 24/11).** Testé sur un clone neuf avec seulement `data/seed/` remis en place et une base
 vide : `make setup` échouait (« Permission denied » : les scripts `.sh` étaient enregistrés non exécutables depuis

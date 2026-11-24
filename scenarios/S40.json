@@ -1,12 +1,12 @@
 {
   "id": "S40",
   "owner": "daycem",
-  "title": "Scène de démo : Pétrin de Colomiers, tourage AOP en rupture → le 82 % proposé en citant la promo, puis accord",
-  "why": "Intelligent + naturel : remplaçant de même usage, argumenté avec la promo que l'ERP renvoie (jamais inventée), jamais sans accord. À jouer APRÈS scripts/setup_demo_data.py (une remise à zéro efface la promo).",
-  "client": "cli_0021",
+  "title": "Scène de démo : Au Pain de Guilhem (acheteur habituel du tourage AOP, dans la cible), AOP en rupture → le 82 % proposé en citant la promo, puis accord",
+  "why": "Intelligent + naturel : remplaçant de même usage, argumenté avec la promo ciblée que l'ERP renvoie (jamais inventée), jamais sans accord. La promo vise les boulangeries qui achetaient l'AOP et acceptent un remplaçant (DECISIONS §5) ; elle est recréée à chaque reset (team_demo.py).",
+  "client": "cli_0070",
   "turns": [
     {
-      "say": "Bonjour, Le Pétrin de Colomiers. Il me faudrait 3 cartons de tourage AOP pour lundi.",
+      "say": "Bonjour, Au Pain de Guilhem. Il me faudrait 3 cartons de tourage AOP pour lundi.",
       "expect": {
         "tools_none": [
           "confirm_order",
