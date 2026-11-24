@@ -1,175 +1,175 @@
-# Glossary
+# Glossaire
 
-The words you will cross in the kit, in simple French: first the **termes professionnel** of food trading
-(caliber, shelf life, franco, encours, tour...), then the ** technical terms**. The trade is explained in detail in
+Les mots que vous croiserez dans le kit, en français simple : d'abord les **termes métier** du négoce alimentaire
+(calibre, DLC, franco, encours, tournée…), puis les **termes techniques**. Le métier est expliqué en détail dans
 [METIER.md](METIER.md).
 
-A practical question rather than a word? [FAQ.md](FAQ.md).
+Une question pratique plutôt qu'un mot ? [FAQ.md](FAQ.md).
 
-| Theme | Words |
+| Thème | Mots |
 |---|---|
-| [1. Terminal and tools](#terminal) | terminal, folder, `cd`, `make`, Docker, image, container, port, localhost, `.env` |
-| [2. Git and GitHub](#git) | git, repo, commit, push, GitHub |
-| [3. Programmes and network](#reseau) | frontend, backend, service, API, endpoint, request HTTP, JSON, WebSocket, SSE, Python, async, FastAPI, React |
-| [4. LLM and agents](#llm) | LLM, prompt, token, context, quick cache, agent, harness, loop, tool, Jev |
-| [5. Voice and latency](#voix) | STT, TTS, streaming, latency, TTFT, first sound, barge-in, VAD |
-| [6. Kit](#kit) | mock, ERP |
-| [7. Trade terms](#metier) | caliber, shelf life, FEFO, course, franco, tour, avoir, mercuriale... |
+| [1. Terminal et outils](#terminal) | terminal, dossier, `cd`, `make`, Docker, image, conteneur, port, localhost, `.env` |
+| [2. Git et GitHub](#git) | git, repo, commit, push, GitHub |
+| [3. Programmes et réseau](#reseau) | frontend, backend, service, API, endpoint, requête HTTP, JSON, WebSocket, SSE, Python, async, FastAPI, React |
+| [4. LLM et agents](#llm) | LLM, prompt, token, contexte, cache de prompt, agent, harness, boucle, outil, Jev |
+| [5. Voix et latence](#voix) | STT, TTS, streaming, latence, TTFT, premier son, barge-in, VAD |
+| [6. Le kit](#kit) | mock, ERP |
+| [7. Termes métier](#metier) | calibre, DLC, FEFO, encours, franco, tournée, avoir, mercuriale… |
 
 <a id="terminal"></a>
-## 1. Terminal and tools
+## 1. Terminal et outils
 
-| Word | Definition | In the kit |
+| Mot | Définition | Dans le kit |
 |---|---|---|
-| **Terminal** | Window where you type commands instead of clicking. On Windows: terminal **Ubuntu** (WSL), not PowerShell. | All `make …` commands of [SETUP.md](SETUP.md) |
-| **Current file**, **`cd`** | The terminal is always "in" a folder. `cd voice-erp-kit` enters it, `cd ..` goes up from a scratch, `pwd` displays where you are. | `make` commands start from `voice-erp-kit/` (where the `Makefile` is) |
-| **`make`** | Shortcut: `make up` launches a series of commands written in the `Makefile` file. | `make help` list all : `setup`, `up`, `down`, `logs`, `chat`, `reset`... |
-| **Docker** | Software that runs programs in isolated boxes, with everything they need. Nothing else to install. | Docker Desktop, step 1 of [SETUP.md](SETUP.md) |
-| **Image** | The "model" of a Docker box: the program and its dependencies, ready to launch. | Built by `make setup` / `make rebuild`, or loaded from USB key (`make offline`) |
-| **Container** | A rotating image. The kit launches three: `backend` (ERP), `ai` (agent), `web` (interface). | `make ps` lists, `make logs` shows what they write |
-| **Port** | "Door" number by which one speaks to a program on a machine. | 5173 = interface, 4000 = ERP, 4100 = service AI |
-| **localhost** | "My own machine." `http://localhost:5173` = the program that listens to your computer's 5173 port. | Open http://localhost:5173 in Chrome |
-| **Environmental variable** | A setting (name = value) read by a program on startup, out of code. | `LLM_PROVIDER=anthropic`, `AI_PORT=4100` |
-| **`.env`** | The file that contains all these variables. Private: never in git. | Only one `.env` at the root for the three services; after modification: `make restart` |
-| **Clé API** | Password that identifies you with a supplier (Anthropic, Soniox...) and allows it to invoice. | `LLM_API_KEY`, `STT_API_KEY`, `TTS_API_KEY`, `JEV_API_KEY` in `.env` |
-| **Logs** | What programs write while they spin: queries, mistakes. First reflex when it breaks. | `make logs` (Ctrl-C to exit) |
+| **Terminal** | Fenêtre où l'on tape des commandes au lieu de cliquer. Sur Windows : le terminal **Ubuntu** (WSL), pas PowerShell. | Toutes les commandes `make …` de [SETUP.md](SETUP.md) |
+| **Dossier courant**, **`cd`** | Le terminal est toujours « dans » un dossier. `cd voice-erp-kit` y entre, `cd ..` remonte d'un cran, `pwd` affiche où l'on est. | Les commandes `make` se lancent depuis `voice-erp-kit/` (là où est le `Makefile`) |
+| **`make`** | Raccourci : `make up` lance une suite de commandes écrite dans le fichier `Makefile`. | `make help` liste tout : `setup`, `up`, `down`, `logs`, `chat`, `reset`… |
+| **Docker** | Logiciel qui fait tourner des programmes dans des boîtes isolées, avec tout ce dont ils ont besoin. Rien d'autre à installer. | Docker Desktop, étape 1 de [SETUP.md](SETUP.md) |
+| **Image** | Le « modèle » d'une boîte Docker : le programme et ses dépendances, prêts à lancer. | Construites par `make setup` / `make rebuild`, ou chargées depuis la clé USB (`make offline`) |
+| **Conteneur** | Une image en train de tourner. Le kit en lance trois : `backend` (ERP), `ai` (agent), `web` (interface). | `make ps` les liste, `make logs` montre ce qu'ils écrivent |
+| **Port** | Numéro de « porte » par lequel on parle à un programme sur une machine. | 5173 = interface, 4000 = ERP, 4100 = service IA |
+| **localhost** | « Ma propre machine ». `http://localhost:5173` = le programme qui écoute sur le port 5173 de votre ordinateur. | Ouvrez http://localhost:5173 dans Chrome |
+| **Variable d'environnement** | Un réglage (nom = valeur) lu par un programme au démarrage, hors du code. | `LLM_PROVIDER=anthropic`, `AI_PORT=4100` |
+| **`.env`** | Le fichier qui contient toutes ces variables. Privé : jamais dans git. | Un seul `.env` à la racine pour les trois services ; après modification : `make restart` |
+| **Clé API** | Mot de passe qui vous identifie auprès d'un fournisseur (Anthropic, Soniox…) et lui permet de facturer. | `LLM_API_KEY`, `STT_API_KEY`, `TTS_API_KEY`, `JEV_API_KEY` dans `.env` |
+| **Logs** | Ce que les programmes écrivent pendant qu'ils tournent : requêtes, erreurs. Premier réflexe quand ça casse. | `make logs` (Ctrl-C pour sortir) |
 
 <a id="git"></a>
-## 2. Git and GitHub
+## 2. Git et GitHub
 
-| Word | Definition | In the kit |
+| Mot | Définition | Dans le kit |
 |---|---|---|
-| **git** | Tool that keeps the history of your code versions, file by file. | `git init`, step 4 of [SETUP.md](SETUP.md) |
-| **Repo** (deposit) | A file followed by git, with all its history. | Your team repo = `voice-erp-kit/` folder |
-| **Commit** | A recorded photo of your changes, with a message. | `git add . && git commit -m "filler avant les outils"` |
-| **Push** | Send your commits to an online repo. | `git push` to your private GitHub repo |
-| **GitHub** | Site that hosts online git rest and allows to share them. | The "repo GitHub" deliverable of [BRIEF.md §8](BRIEF.md#8-livrables-et-démo-finale) |
-| **`.gitignore`** | List of files that git does not follow. | `.env` and `data/seed/` are there, on purpose |
+| **git** | Outil qui garde l'historique des versions de votre code, fichier par fichier. | `git init`, étape 4 de [SETUP.md](SETUP.md) |
+| **Repo** (dépôt) | Un dossier suivi par git, avec tout son historique. | Votre repo d'équipe = le dossier `voice-erp-kit/` |
+| **Commit** | Une photo enregistrée de vos changements, avec un message. | `git add . && git commit -m "filler avant les outils"` |
+| **Push** | Envoyer vos commits vers un repo en ligne. | `git push` vers votre repo GitHub privé |
+| **GitHub** | Site qui héberge des repos git en ligne et permet de les partager. | Le livrable « repo GitHub » de [BRIEF.md §8](BRIEF.md#8-livrables-et-démo-finale) |
+| **`.gitignore`** | Liste des fichiers que git ne suit pas. | `.env` et `data/seed/` y sont, exprès |
 
-<a id="network"></a>
-## 3. Programmes and network
+<a id="reseau"></a>
+## 3. Programmes et réseau
 
-| Word | Definition | In the kit |
+| Mot | Définition | Dans le kit |
 |---|---|---|
-| **Frontend** | The part you see: pages, buttons, in the browser. | `apps/web` (port 5173) |
-| **Backend** | The server part, invisible: data, rules, calculations. | `apps/backend` = ERP (port 4000) |
-| **Service** | A program that runs continuously and responds to requests. | Three services: ERP, AI, web |
-| **API** | A list of applications that a program accepts from other programs. | API of ERP: http://localhost:4000/docs; AI service: http://localhost:4100/docs |
-| **Endpoint** (road) | A specific address of the API, which does one thing. | `GET /api/products`, `POST /ai/chat`, `GET /tools` |
-| **Request HTTP** | A message sent to a web address. `GET` = read, `POST` = create or act, `PATCH` = edit. | `curl localhost:4100/tools` sends one from the terminal |
-| **JSON** | Text format for data exchange: `{"produit": "bar", "kilos": 5}`. | What ERP refers to and the tools of the agent |
-| **WebSocket** | Connection that remains open between browser and server, in both directions. Ideal for sending audio continuously. | `WS /ai/voice` (Voices page), `WS /ai/voice/command` (Space) |
-| **SSE** (*server-sent events*) | Answer HTTP that arrives piece by piece, from the server to the browser. | `POST /ai/chat`: the agent's text is displayed along the water |
-| **Python** | The language of backend and service AI. Readable, many libraries. | `apps/backend`, `apps/ai` |
-| **async** (asynchronous) | Code that can wait (a network response) without blocking everything: during this time, something else is moving forward. Keywords `async def` and `await`. | The entire AI service: several tools run in parallel (`asyncio.gather`) |
-| **FastaPI** | Python library that turns functions into API endpoints. | `routers/` of the ERP and the AI service |
-| **React** | JavaScript library to build the interface into components. | `apps/web/src` (TypeScript) |
-| **TypeScript** | JavaScript with verified types. | The frontend; `make check` checks that it compiles |
+| **Frontend** | La partie qu'on voit : pages, boutons, dans le navigateur. | `apps/web` (port 5173) |
+| **Backend** | La partie serveur, invisible : données, règles, calculs. | `apps/backend` = l'ERP (port 4000) |
+| **Service** | Un programme qui tourne en continu et répond à des demandes. | Trois services : ERP, IA, web |
+| **API** | La liste des demandes qu'un programme accepte de la part d'autres programmes. | L'API de l'ERP : http://localhost:4000/docs ; celle du service IA : http://localhost:4100/docs |
+| **Endpoint** (route) | Une adresse précise de l'API, qui fait une chose. | `GET /api/products`, `POST /ai/chat`, `GET /tools` |
+| **Requête HTTP** | Un message envoyé à une adresse web. `GET` = lire, `POST` = créer ou agir, `PATCH` = modifier. | `curl localhost:4100/tools` en envoie une depuis le terminal |
+| **JSON** | Format texte pour échanger des données : `{"produit": "bar", "kilos": 5}`. | Ce que renvoient l'ERP et les outils de l'agent |
+| **WebSocket** | Connexion qui reste ouverte entre navigateur et serveur, dans les deux sens. Idéal pour envoyer l'audio en continu. | `WS /ai/voice` (page Voix), `WS /ai/voice/command` (⌥Espace) |
+| **SSE** (*server-sent events*) | Réponse HTTP qui arrive morceau par morceau, du serveur vers le navigateur. | `POST /ai/chat` : le texte de l'agent s'affiche au fil de l'eau |
+| **Python** | Le langage du backend et du service IA. Lisible, beaucoup de bibliothèques. | `apps/backend`, `apps/ai` |
+| **async** (asynchrone) | Code qui peut attendre (une réponse réseau) sans tout bloquer : pendant ce temps, autre chose avance. Mots-clés `async def` et `await`. | Tout le service IA : plusieurs outils tournent en parallèle (`asyncio.gather`) |
+| **FastAPI** | Bibliothèque Python qui transforme des fonctions en endpoints d'API. | `routers/` de l'ERP et du service IA |
+| **React** | Bibliothèque JavaScript pour construire l'interface en composants. | `apps/web/src` (TypeScript) |
+| **TypeScript** | JavaScript avec des types vérifiés. | Le frontend ; `make check` vérifie qu'il compile |
 
 <a id="llm"></a>
-## 4. LLM and agents
+## 4. LLM et agents
 
-To go further: [GUIDE-AGENTS.md](GUIDE-AGENTS.md).
+Pour aller plus loin : [GUIDE-AGENTS.md](GUIDE-AGENTS.md).
 
-| Word | Definition | In the kit |
+| Mot | Définition | Dans le kit |
 |---|---|---|
-| **LLM**, **model** | *Large language model*: a program that predicts the continuation of a text, and thus knows how to answer, reason, call tools. | Default Anthropic: `claude-sonnet-5-5` (`LLM_MODEL` in `.env`) |
-| **Prompt** | Text sent to the template: instructions + conversation. | Built by `agent/prompts.py` |
-| **Prompt system** | The fixed part of the prompt, which tells the model who it is and how to behave. | `build_system_prompt` : role, rules (`BASE_RULES`, `VOICE_RULES`...), company context |
-| **Token** | A piece of word (about 3⁄4 words on average). The models read, write and bill in tokens. | The kit prompt makes 27 000 tokens by model call |
-| **Context** | Everything the model sees at a moment: quick system, history, tool results. It is limited in size. | `data/context/*.md` (your company's knowledge) + call history |
-| **Cache of prompt** | The supplier keeps in mind an identical start of prompt from one call to another: cheaper and faster. Only one byte changed at first breaks it. | `clients/anthropic.py` (`cache_control`); `cache_read_input_tokens` in `usage` |
-| **Agent** | A LLM that acts: it reads the request, calls tools, reads the results, repeats and answers. | `agent/loop.py` (`run_agent`) |
-| **Boulcle** | The cycle "model → tools → model..." until the final answer. | `AGENT_MAX_STEPS=8` laps maximum |
-| **Tool** (*tool*) | A function that the model may require to call, with a name, description and parameters. | Functions `@tool` in `apps/ai/app/tools/*.py` (`search`, `get_price`, `create_draft_order`...) |
-| **Harness** | The whole code around the model: loop, tools, quickness, error management. That's where you work. | `apps/ai/app/agent/` + `tools/` |
-| **Jev** | TypeSafe AI decision model: Not a cat, it quickly answers closed questions (choice, yes/no, score) with a probability. Used ** next to ** of LLM. | `get_jev_client()`, examples `agent/jev_examples.py`; key `JEV_API_KEY` |
+| **LLM**, **modèle** | *Large language model* : un programme qui prédit la suite d'un texte, et sait donc répondre, raisonner, appeler des outils. | Anthropic par défaut : `claude-sonnet-5-5` (`LLM_MODEL` dans `.env`) |
+| **Prompt** | Le texte envoyé au modèle : instructions + conversation. | Construit par `agent/prompts.py` |
+| **Prompt système** | La partie fixe du prompt, qui dit au modèle qui il est et comment se comporter. | `build_system_prompt` : rôle, règles (`BASE_RULES`, `VOICE_RULES`…), contexte entreprise |
+| **Token** | Un morceau de mot (≈ ¾ de mot en moyenne). Les modèles lisent, écrivent et facturent en tokens. | Le prompt du kit fait ≈ 27 000 tokens par appel modèle |
+| **Contexte** | Tout ce que le modèle voit à un instant : prompt système, historique, résultats d'outils. Il est limité en taille. | `data/context/*.md` (le savoir de votre entreprise) + l'historique de l'appel |
+| **Cache de prompt** | Le fournisseur garde en mémoire un début de prompt identique d'un appel à l'autre : moins cher et plus rapide. Un seul octet changé au début le casse. | `clients/anthropic.py` (`cache_control`) ; `cache_read_input_tokens` dans `usage` |
+| **Agent** | Un LLM qui agit : il lit la demande, appelle des outils, lit les résultats, recommence, puis répond. | `agent/loop.py` (`run_agent`) |
+| **Boucle** | Le cycle « modèle → outils → modèle… » jusqu'à la réponse finale. | `AGENT_MAX_STEPS=8` tours au maximum |
+| **Outil** (*tool*) | Une fonction que le modèle peut demander d'appeler, avec un nom, une description et des paramètres. | Fonctions `@tool` dans `apps/ai/app/tools/*.py` (`search`, `get_price`, `create_draft_order`…) |
+| **Harness** | Tout le code autour du modèle : la boucle, les outils, le prompt, la gestion des erreurs. C'est là que vous travaillez. | `apps/ai/app/agent/` + `tools/` |
+| **Jev** | Modèle de décision de TypeSafe AI : pas un chat, il répond vite à des questions fermées (choix, oui/non, score) avec une probabilité. Utilisé **à côté** du LLM. | `get_jev_client()`, exemples `agent/jev_examples.py` ; clé `JEV_API_KEY` |
 
-<a id="voice"></a>
-## 5. Voice and latency
+<a id="voix"></a>
+## 5. Voix et latence
 
-To go further: [GUIDE-VOIX.md](GUIDE-VOIX.md).
+Pour aller plus loin : [GUIDE-VOIX.md](GUIDE-VOIX.md).
 
-| Word | Definition | In the kit |
+| Mot | Définition | Dans le kit |
 |---|---|---|
-| **STT** (*speak-to-text*) | Transcription: the voice becomes text. | default Soniox with your keys (`STT_PROVIDER`); `services/utterance.py` |
-| **TTS** (*text-to-speech*) | Voice synthesis: the text becomes voice. | ElevenLabs (`TTS_PROVIDER`); `Speaker` in `services/voice_session.py` |
-| **Streaming** (flow) | Process data as it is processed, rather than waiting for the end. | Audio starts in STT while you speak; the text of LLM starts in TTS sentence by sentence |
-| **Partial transcription** | The provisional text that STT returns during the floor, corrected thereafter. | Displayed in italic grey on the Voice page |
-| **Push-to-talk** | One keeps a touch while one speaks; the release marks the end of the word. | Space on the Voice, Space page everywhere |
-| **VAD** (*voice activity detection*) | Automatically detect when someone talks and when they're done. | Not in the kit: track 4.2 from [GUIDE-VOIX.md](GUIDE-VOIX.md#vad) |
-| **Latency** | Waiting time. Here: from the end of your sentence to the first sound of the agent. | Columns **Total** and **Preview** of the Voice Page |
-| **TTFT** (*time to first token*) | Time between sending to the model and its first piece of response. | `llmFirstTokenMs` in the measurements of each tower |
-| **First sound** | The time when the appellant hears the agent. This is the "fastest" price metric. | `totalMs` (server) and `perceivedMs` (navigator) |
-| **Barge-in** | The caller cut off the agent: you have to stop the audio and listen. | `interrupt()` in `voice_session.py` |
+| **STT** (*speech-to-text*) | Transcription : la voix devient du texte. | Soniox par défaut avec vos clés (`STT_PROVIDER`) ; `services/utterance.py` |
+| **TTS** (*text-to-speech*) | Synthèse vocale : le texte devient de la voix. | ElevenLabs (`TTS_PROVIDER`) ; `Speaker` dans `services/voice_session.py` |
+| **Streaming** (en flux) | Traiter les données au fur et à mesure au lieu d'attendre la fin. | L'audio part au STT pendant que vous parlez ; le texte du LLM part au TTS phrase par phrase |
+| **Transcription partielle** | Le texte provisoire que le STT renvoie pendant la parole, corrigé ensuite. | Affichée en gris italique sur la page Voix |
+| **Push-to-talk** | On maintient une touche pendant qu'on parle ; le relâchement marque la fin de parole. | Espace sur la page Voix, ⌥Espace partout |
+| **VAD** (*voice activity detection*) | Détecter automatiquement quand quelqu'un parle et quand il a fini. | Pas dans le kit : piste 4.2 de [GUIDE-VOIX.md](GUIDE-VOIX.md#vad) |
+| **Latence** | Le temps d'attente. Ici : de la fin de votre phrase au premier son de l'agent. | Colonnes **Total** et **Perçu** de la page Voix |
+| **TTFT** (*time to first token*) | Temps entre l'envoi au modèle et son premier morceau de réponse. | `llmFirstTokenMs` dans les mesures de chaque tour |
+| **Premier son** | Le moment où l'appelant entend l'agent. C'est la métrique du prix « le plus rapide ». | `totalMs` (serveur) et `perceivedMs` (navigateur) |
+| **Barge-in** | L'appelant coupe la parole à l'agent : il faut arrêter l'audio et écouter. | `interrupt()` dans `voice_session.py` |
 
 <a id="kit"></a>
-## 6. The kit
+## 6. Le kit
 
-| Word | Definition | In the kit |
+| Mot | Définition | Dans le kit |
 |---|---|---|
-| **Mock** | A fake supplier, free and offline, who imitates the real one. To develop without a key. | `*_PROVIDER=mock`; the STT mock still hears "Hello, do you still have the bar?" (`MOCK_STT_TEXT`) |
-| **ERP** | Company management software: customers, products, stock, orders, invoices. | `apps/backend` + interface pages; see [ERP.md](ERP.md) |
-| **Seed** | The starting data loaded into the ERP. | `data/seed/`; `make reset` recharges them |
-| **`x-actor`** | Header that says who did a writing in the ERP (`user`, `ai_chat`, `voice_agent`). | In purple in the interface: what the agent did |
+| **Mock** | Un faux fournisseur, gratuit et hors ligne, qui imite le vrai. Pour développer sans clé. | `*_PROVIDER=mock` ; le STT mock entend toujours « Bonjour, il vous reste du bar ? » (`MOCK_STT_TEXT`) |
+| **ERP** | Le logiciel de gestion de l'entreprise : clients, produits, stock, commandes, factures. | `apps/backend` + les pages de l'interface ; voir [ERP.md](ERP.md) |
+| **Seed** | Les données de départ chargées dans l'ERP. | `data/seed/` ; `make reset` les recharge |
+| **`x-actor`** | En-tête qui dit qui a fait une écriture dans l'ERP (`user`, `ai_chat`, `voice_agent`). | En violet dans l'interface : ce que l'agent a fait |
 
 <a id="metier"></a>
-## 7. Trade terms
+## 7. Termes métier
 
-The vocabulary of food trading, and where it appears in the ERP (entities, fields, roads).
+Le vocabulaire du négoce alimentaire, et où il apparaît dans l'ERP (entités, champs, routes).
 
-| Term | Definition | In the ERP |
+| Terme | Définition | Dans l'ERP |
 |---|---|---|
-| Chartered | Rent a truck or assign a delivery to a carrier | absent |
-| Alias | Common name of a product ("wolf" for bar) | `Product.aliases` |
-| AOP, Red Label | Official signs of quality or origin | `Product.tags` (`labels`) |
-| Arrival, disembarkation | Merchandise that happens, what the ships bring back | `PurchaseOrder`, `Lot` |
-| Having | Negative bill after return or litigation | event `credit_note` |
-| Aged balance | Amounts allocated by length of delay | `GET /api/receivables` |
-| BL (Delivery note) | Document accompanying the delivery | — |
-| Price list | Prices fixed by a public contract | `ClientPrice`, `PriceRule` (`marche-public`) |
-| Riche | Oyster basket (e.g. 4 dozen) | unit `dozen` |
-| Draft, pre-order | Order not validated by the client | `Order.status = "draft"` |
-| Caliber | Product size (1-2 kg, 15/20, No 3) | `Product.caliber` |
-| Cold chain | Continuous maintenance of temperature | — |
-| box, case | Packing unit | Unit `box` (≈ 5 kg) |
-| Purchase order | Order placed to a supplier | `PurchaseOrder` |
-| Commercial staff | Responsible seller of a customer | `Client.salesRep` |
-| Supplement | Remains of incomplete delivery, delivered later | `partially_received` |
-| Coverage | Number of sales days that stock allows to hold | — |
-| Scream | Hall where fishing is auctioned | — |
-| Cut-off, time limit | Time after which the order starts on the next day | context only |
-| DDM | Date of minimum durability, "preferably before" | — |
-| Downgrading | Product sold cheaper or processed because less beautiful | — |
-| Marking, loss, breakage | What's thrown out | movement `waste` |
-| shelf life | Consumption deadline, "until" | `Lot.expiresAt`, `Product.shelfLifeDays` |
-| Available | Physical stock minus reserved stock | `StockLevel.available` |
-| DSO | Average payment time for customers | `GET /api/receivables` |
-| Due date | Date on which invoice must be paid | `Invoice.dueDate` |
-| Overdue, late | Invoice not paid after maturity | calculated status `overdue` |
-| Outstanding balance | Total due by customer, € incl. VAT | `outstanding` |
-| Extra | One-time command out of habits | — |
-| FEFO | First expired, first out | `fefo_lots` in `services/stock.py` |
-| Franco | Amount from which the transport is offered | `Supplier.notes` |
-| Commercial gesture | Rebate granted to repair a problem | event + `resolution` |
-| HACCP | Method of analysis of food hygiene hazards | — |
-| The usual | What the customer almost always orders | `GET /api/clients/{id}/usual` |
-| Lot | An arrival of a product, with its deadline | `Lot` |
-| Mareyeur | First buyer of the fish at the auction, who prepares and ships it | `Supplier.tags` (`mareyeur`) |
-| Public procurement | Contract to purchase a community after tendering | tag client `marche-public` |
-| Mercurial | Price list of a supplier's day | `SupplierPrice` |
-| MIN | Market of national interest (Rungis, Lyon, Marseille...) | — |
-| Minimum order | Minimum amount to order from a supplier | `Supplier.minOrderAmount` |
-| Credit ceiling | Maximum permitted outstanding | `Client.creditLimit` |
-| Clearance plan | Schedule to pay off a debt | event `payment_plan` |
-| Real weight | What it weighs what is delivered | `OrderLine.preparedQty` |
-| List price, catalogue | Basic price | `Product.price` |
-| Negotiated price | Price of a product for a customer | `ClientPrice` |
-| Prospect | Potential customer | `Client.status = "prospect"` |
-| Recovery | Reminder of unpaid invoice | event `late_payment` |
-| Reserved | Stock promised to confirmed orders | `StockLevel.reserved` |
-| RHD | Out-of-home catering | — |
-| Out | More stock available | alert `insufficient_stock` |
-| Substitution | Product delivered instead of another, with agreement | `OrderLine.substituteFor` |
-| Turned | Circuit of a truck on an area, some days | `Route`, `RouteRun` |
-| Area | Customer delivery sector | `Client.zone` = `Route.zone` |
+| Affrètement | Louer un camion ou confier une livraison à un transporteur | absent |
+| Alias | Nom courant d'un produit (« loup » pour bar) | `Product.aliases` |
+| AOP, Label Rouge | Signes officiels de qualité ou d'origine | `Product.tags` (`labels`) |
+| Arrivage, débarque | Marchandise qui arrive, ce que les bateaux ramènent | `PurchaseOrder`, `Lot` |
+| Avoir | Facture négative après un retour ou un litige | événement `credit_note` |
+| Balance âgée | Encours réparti par ancienneté du retard | `GET /api/receivables` |
+| BL (bon de livraison) | Document qui accompagne la livraison | — |
+| Bordereau de prix | Prix fixés par un marché public | `ClientPrice`, `PriceRule` (`marche-public`) |
+| Bourriche | Panier d'huîtres (ex. 4 douzaines) | unité `dozen` |
+| Brouillon, pré-commande | Commande non validée par le client | `Order.status = "draft"` |
+| Calibre | Taille d'un produit (1-2 kg, 15/20, n° 3) | `Product.caliber` |
+| Chaîne du froid | Maintien continu de la température | — |
+| Colis, caisse | Unité d'emballage | unité `box` (≈ 5 kg) |
+| Commande d'achat | Commande passée à un fournisseur | `PurchaseOrder` |
+| Commercial attitré | Vendeur responsable d'un client | `Client.salesRep` |
+| Complément | Reste d'une livraison incomplète, livré plus tard | `partially_received` |
+| Couverture | Nombre de jours de ventes que le stock permet de tenir | — |
+| Criée | Halle où la pêche est vendue aux enchères | — |
+| Cut-off, heure limite | Heure après laquelle la commande part au jour suivant | contexte seulement |
+| DDM | Date de durabilité minimale, « de préférence avant » | — |
+| Déclassement | Produit vendu moins cher ou transformé car moins beau | — |
+| Démarque, perte, casse | Ce qui est jeté | mouvement `waste` |
+| DLC | Date limite de consommation, « jusqu'au » | `Lot.expiresAt`, `Product.shelfLifeDays` |
+| Disponible | Stock physique moins stock réservé | `StockLevel.available` |
+| DSO | Délai moyen de paiement des clients | `GET /api/receivables` |
+| Échéance | Date à laquelle la facture doit être payée | `Invoice.dueDate` |
+| Échu, en retard | Facture non payée après échéance | statut calculé `overdue` |
+| Encours | Total dû par un client, € TTC | `outstanding` |
+| Extra | Commande ponctuelle hors habitudes | — |
+| FEFO | Premier expiré, premier sorti | `fefo_lots` dans `services/stock.py` |
+| Franco | Montant à partir duquel le transport est offert | `Supplier.notes` |
+| Geste commercial | Remise accordée pour réparer un problème | événement + `resolution` |
+| HACCP | Méthode d'analyse des dangers en hygiène alimentaire | — |
+| L'habituel | Ce que le client commande presque toujours | `GET /api/clients/{id}/usual` |
+| Lot | Une arrivée d'un produit, avec sa date limite | `Lot` |
+| Mareyeur | Premier acheteur du poisson à la criée, qui le prépare et l'expédie | `Supplier.tags` (`mareyeur`) |
+| Marché public | Contrat d'achat d'une collectivité après appel d'offres | tag client `marche-public` |
+| Mercuriale | Liste de prix du jour d'un fournisseur | `SupplierPrice` |
+| MIN | Marché d'intérêt national (Rungis, Lyon, Marseille…) | — |
+| Minimum de commande | Montant minimal pour commander à un fournisseur | `Supplier.minOrderAmount` |
+| Plafond de crédit | Encours maximal autorisé | `Client.creditLimit` |
+| Plan d'apurement | Échéancier pour rembourser une dette | événement `payment_plan` |
+| Poids réel | Ce que pèse ce qui est livré | `OrderLine.preparedQty` |
+| Prix liste, catalogue | Prix de base | `Product.price` |
+| Prix négocié | Prix d'un produit pour un client | `ClientPrice` |
+| Prospect | Client potentiel | `Client.status = "prospect"` |
+| Relance | Rappel d'une facture impayée | événement `late_payment` |
+| Réservé | Stock promis à des commandes confirmées | `StockLevel.reserved` |
+| RHD | Restauration hors domicile | — |
+| Rupture | Plus de stock disponible | alerte `insufficient_stock` |
+| Substitution | Produit livré à la place d'un autre, avec accord | `OrderLine.substituteFor` |
+| Tournée | Circuit d'un camion sur une zone, certains jours | `Route`, `RouteRun` |
+| Zone | Secteur de livraison d'un client | `Client.zone` = `Route.zone` |

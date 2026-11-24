@@ -97,7 +97,7 @@ export function MarkdownEditor({ label, hint, value, onChange, onCommit, placeho
         <Segmented
           value={mode}
           onChange={setMode}
-          options={[{ id: "preview", label: "Overview" }, { id: "raw", label: "Markdown" }]}
+          options={[{ id: "preview", label: "Aperçu" }, { id: "raw", label: "Markdown" }]}
           className="[&_button]:px-2 [&_button]:py-px [&_button]:text-[11.5px]"
         />
       </div>
@@ -116,7 +116,7 @@ export function MarkdownEditor({ label, hint, value, onChange, onCommit, placeho
         <div
           role="button"
           tabIndex={0}
-          title="Double-click to edit"
+          title="Double-cliquer pour modifier"
           onDoubleClick={() => setMode("raw")}
           onKeyDown={(e) => e.key === "Enter" && setMode("raw")}
           className="min-h-[64px] cursor-text rounded-[4px] border border-input bg-muted/30 px-3 py-2.5 hover:border-border-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/70"

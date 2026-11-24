@@ -3,7 +3,7 @@ Deepgram STT.
   transcribe()         pre-recorded: POST /v1/listen with the raw audio body (WebM/Opus, mp4, wav… detected from the bytes).
   transcribe_stream()  live: wss://api.deepgram.com/v1/listen, binary audio frames, {"type": "CloseStream"} to finish;
                        containerised audio (WebM/Opus from MediaRecorder) needs no `encoding` / `sample_rate`.
-Model nova-3 + language=en (English); keyterm prompting boosts client / product names.
+Model nova-3 + language=fr (monolingual French); keyterm prompting boosts client / product names.
 """
 
 import json
@@ -22,7 +22,7 @@ class DeepgramSTT(STTClient):
     streams = True
 
     def __init__(
-        self, api_key: str, model: str = "nova-3", language: str = "en", http: httpx.AsyncClient | None = None, connect: Callable = open_ws
+        self, api_key: str, model: str = "nova-3", language: str = "fr", http: httpx.AsyncClient | None = None, connect: Callable = open_ws
     ):
         self.api_key, self.model, self.language, self.http, self.connect = api_key, model, language, http, connect
 

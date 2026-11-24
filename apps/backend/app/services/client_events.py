@@ -24,29 +24,29 @@ ISSUE_TYPES = {"complaint", "quality_issue", "delivery_issue", "return", "disput
 COMPLAINT_TYPES = {"complaint", "quality_issue", "delivery_issue"}
 
 EVENT_TYPE_LABEL = {
-    "onboarding": "Relationship",
-    "call": "Call",
-    "visit": "Visit",
-    "complaint": "Claim",
-    "quality_issue": "Quality problem",
-    "delivery_issue": "Delivery problem",
-    "return": "Return goods",
-    "credit_note": "Having",
-    "dispute": "Dispute",
-    "late_payment": "Payment incident",
-    "payment_plan": "Timeline",
-    "price_negotiation": "Tariff negotiations",
-    "special_request": "Special request",
-    "menu_change": "Menu change",
-    "contact_change": "Change of contact",
+    "onboarding": "Entrée en relation",
+    "call": "Appel",
+    "visit": "Visite",
+    "complaint": "Réclamation",
+    "quality_issue": "Problème qualité",
+    "delivery_issue": "Problème de livraison",
+    "return": "Retour marchandise",
+    "credit_note": "Avoir",
+    "dispute": "Litige",
+    "late_payment": "Incident de paiement",
+    "payment_plan": "Échéancier",
+    "price_negotiation": "Négociation tarifaire",
+    "special_request": "Demande spéciale",
+    "menu_change": "Changement de carte",
+    "contact_change": "Changement de contact",
     "compliment": "Compliment",
-    "churn_risk": "Risk of loss",
-    "won_back": "Customer acknowledgement",
+    "churn_risk": "Risque de perte",
+    "won_back": "Client reconquis",
     "note": "Note",
 }
 
 # Default author of an event, by actor.
-ACTOR_AUTHOR = {"user": "Team", "ai_chat": "AI assistant", "voice_agent": "Voice agent", "system": "System"}
+ACTOR_AUTHOR = {"user": "Équipe", "ai_chat": "Assistant IA", "voice_agent": "Agent vocal", "system": "Système"}
 
 
 def newest_first(a: Doc, b: Doc) -> int:
@@ -186,11 +186,11 @@ def _check_links(client_id: str, input: Doc) -> None:
     if input.get("orderId"):
         o = crud.orders.require(input["orderId"])
         if o["clientId"] != client_id:
-            raise bad_request("order_mismatch", f"The order {o['number']} does not belong to this customer")
+            raise bad_request("order_mismatch", f"La commande {o['number']} n'appartient pas à ce client")
     if input.get("invoiceId"):
         i = crud.invoices.require(input["invoiceId"])
         if i["clientId"] != client_id:
-            raise bad_request("invoice_mismatch", f"The invoice {i['number']} does not belong to this customer")
+            raise bad_request("invoice_mismatch", f"La facture {i['number']} n'appartient pas à ce client")
     for pid in input.get("productIds") or []:
         crud.products.require(pid)
 
@@ -220,7 +220,7 @@ def create_client_event(ctx: Ctx, client_id: str, input: Doc) -> Doc:
     })  # fmt: skip
     crud.client_events.put(ev)
     log_event(ctx, "client_event.created", "client", client_id,
-              f"{EVENT_TYPE_LABEL[ev['type']]} registered for {client['name']} : « {ev['title']} »")  # fmt: skip
+              f"{EVENT_TYPE_LABEL[ev['type']]} enregistré(e) pour {client['name']} : « {ev['title']} »")  # fmt: skip
     return ev
 
 
@@ -232,8 +232,8 @@ def update_client_event(ctx: Ctx, id: str, patch: Doc) -> Doc:
     if resolving:
         how = f" — {updated['resolution'][:80]}" if updated.get("resolution") else ""
         log_event(ctx, "client_event.resolved", "client", ev["clientId"],
-                  f"{EVENT_TYPE_LABEL[updated['type']]} resolved for {client['name']} : « {updated['title']} »{how}")  # fmt: skip
+                  f"{EVENT_TYPE_LABEL[updated['type']]} résolu(e) pour {client['name']} : « {updated['title']} »{how}")  # fmt: skip
     else:
         log_event(ctx, "client_event.updated", "client", ev["clientId"],
-                  f"History of {client['name']} amended: \" {updated['title']} » ({', '.join(patch)})")  # fmt: skip
+                  f"Historique de {client['name']} modifié : « {updated['title']} » ({', '.join(patch)})")  # fmt: skip
     return updated

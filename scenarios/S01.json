@@ -1,12 +1,12 @@
 {
   "id": "S01",
   "owner": "youssef",
-  "title": "A known customer places and confirms an order",
-  "why": "Check the customer, product and selling unit, then read the order back before confirming.",
+  "title": "Commande simple d'un client connu, puis validation",
+  "why": "Intelligent : bon client, bon produit, « sacs » et pas « kilos », relecture puis confirmation",
   "client": "cli_0001",
   "turns": [
     {
-      "say": "Hi, this is Nadine from Maison Sarrailh. I'd like 10 sacks of traditional flour for Thursday.",
+      "say": "Bonjour, c'est Nadine de la Maison Sarrailh. Je voudrais 10 sacs de tradi pour jeudi.",
       "expect": {
         "tools_any": [
           "search",
@@ -20,17 +20,17 @@
         ],
         "says_any": [
           "tradi",
-          "traditional",
-          "flour"
+          "tradition",
+          "farine"
         ],
         "says_none": [
           "10 kilos",
-          "ten kilos"
+          "dix kilos"
         ]
       }
     },
     {
-      "say": "Yes, that's right. Please confirm.",
+      "say": "Oui c'est bon, vous pouvez valider.",
       "expect": {
         "tools_any": [
           "confirm_order"

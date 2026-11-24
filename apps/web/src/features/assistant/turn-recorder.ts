@@ -49,7 +49,7 @@ export class TurnRecorder {
     const last = this.messages[this.messages.length - 1];
     if (!last || last.role !== "assistant" || last.toolCalls?.length) {
       // calls announced but never run (this.calls) are dropped: only their text survives
-      this.messages.push({ role: "assistant", content: this.text.trim() || "(response interrupted)" });
+      this.messages.push({ role: "assistant", content: this.text.trim() || "(réponse interrompue)" });
     }
     this.text = "";
     this.calls = [];

@@ -8,7 +8,7 @@ Provider clients: LLM, speech-to-text, text-to-speech. Raw HTTP (httpx), no vend
     jev.py        Jev decision model (TypeSafe AI): choose / score / yes_no, next to the LLM
     deepgram.py   STT (+ live)  soniox.py  STT (+ live)  elevenlabs.py TTS  gradium.py  TTS + STT
     http.py / ws.py  shared HTTP / WebSocket helpers      audio.py  webm→ogg remux, PCM→mp3
-    mock_llm.py   offline English mock that calls real tools     mock_speech.py  offline STT / TTS
+    mock_llm.py   offline French fake that calls real tools     mock_speech.py  offline STT / TTS
 """
 
 from .base import LLMClient, LLMEvent, LLMRequest, LLMText, LLMToolCall, LLMUsage, STTClient, STTUpdate, TTSClient, TTSResult

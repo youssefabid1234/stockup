@@ -26,7 +26,7 @@ import { CandidatesList, Metric, ResolvedHeadline, ResolvedSkeleton } from "./re
 import { methodShort, RulePanel, ruleState, type RulePrefill } from "./rules";
 
 const MAX_CLIENTS = 8;
-const priceFmt = new Intl.NumberFormat("en-GB", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const priceFmt = new Intl.NumberFormat("fr-FR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 const norm = (s: string) => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
 
 type Mode = "groups" | "clients";
@@ -54,25 +54,25 @@ export function MatrixFilters() {
       <Segmented<Mode>
         value={mode as Mode}
         onChange={(v) => patch({ mmode: v === "groups" ? "" : v, cell: "" })}
-        options={[{ id: "groups", label: "Customer groups" }, { id: "clients", label: "Customers" }]}
+        options={[{ id: "groups", label: "Groupes de clients" }, { id: "clients", label: "Clients" }]}
       />
       {mode === "clients" ? (
         <MultiCombobox
           value={picked}
           onChange={(v) => patch({ mclients: v.join(","), cell: "" })}
           options={clientOptions}
-          placeholder="Choose Customers..."
+          placeholder="Choisir des clients…"
           unit={["client", "clients"]}
           max={MAX_CLIENTS}
           width={220}
         />
       ) : null}
       <span className="mx-1 h-4 w-px shrink-0 bg-border" />
-      <Combobox value={productTag} onChange={setProductTag} options={productTags} placeholder="All product groups" size="sm" width={210} clearable />
-      <Select size="sm" value={category} onChange={setCategory} placeholder="All categories" options={categoryOptions()} />
+      <Combobox value={productTag} onChange={setProductTag} options={productTags} placeholder="Tous les groupes de produits" size="sm" width={210} clearable />
+      <Select size="sm" value={category} onChange={setCategory} placeholder="Toutes les catégories" options={categoryOptions()} />
       <span className="ml-auto flex items-center gap-3 whitespace-nowrap pl-3 text-[11.5px] text-muted-foreground">
-        <span className="flex items-center gap-1.5"><Dot tone={SOURCE_META.client_price.tone} />Negotiated</span>
-        <span className="flex items-center gap-1.5"><Dot tone={SOURCE_META.rule.tone} />Policy</span>
+        <span className="flex items-center gap-1.5"><Dot tone={SOURCE_META.client_price.tone} />Négocié</span>
+        <span className="flex items-center gap-1.5"><Dot tone={SOURCE_META.rule.tone} />Règle</span>
         <span className="flex items-center gap-1.5"><span className="size-1.5 rounded-full bg-muted-foreground/25" />Catalogue</span>
         <span className="text-warning">marge &lt; 15 %</span>
       </span>
@@ -134,7 +134,7 @@ export function MatrixTab({ q }: { q: string }) {
     return products
       .filter((p) => p.active && (!category || p.category === category) && (!productTag || (p.tags ?? []).includes(productTag))
         && (!n || norm(`${p.name} ${p.sku} ${(p.aliases ?? []).join(" ")}`).includes(n)))
-      .sort((a, b) => categoryIds().indexOf(a.category) - categoryIds().indexOf(b.category) || a.name.localeCompare(b.name, "en"));
+      .sort((a, b) => categoryIds().indexOf(a.category) - categoryIds().indexOf(b.category) || a.name.localeCompare(b.name, "fr"));
   }, [products, q, category, productTag]);
   const catCount = useMemo(() => {
     const m = new Map<string, number>();
@@ -154,9 +154,9 @@ export function MatrixTab({ q }: { q: string }) {
     <div className="flex min-h-full flex-col">
 
       {!cols.length && mode === "clients" && !picked.length && clientOptions.length && !negLoading ? (
-        <EmptyState icon={Grid3x3} title="Choose Customers" description={`Until ${MAX_CLIENTS} customers side by side.`} />
+        <EmptyState icon={Grid3x3} title="Choisissez des clients" description={`Jusqu'à ${MAX_CLIENTS} clients côte à côte.`} />
       ) : rows && !rows.length ? (
-        <EmptyState icon={Grid3x3} title="No products" description="No active product matches the filters." />
+        <EmptyState icon={Grid3x3} title="Aucun produit" description="Aucun produit actif ne correspond aux filtres." />
       ) : (
         <div ref={pg.anchorRef} className="flex-1">
           <table className="min-w-full border-separate border-spacing-0 text-[13px]">
@@ -171,15 +171,15 @@ export function MatrixTab({ q }: { q: string }) {
             </colgroup>
             <thead className="sticky top-0 z-20 bg-background">
               <tr>
-                <Th className="sticky left-0 z-10 bg-background pl-5 text-left">Product</Th>
-                <Th>Unit</Th>
-                <Th className="text-right">Cost</Th>
+                <Th className="sticky left-0 z-10 bg-background pl-5 text-left">Produit</Th>
+                <Th>Unité</Th>
+                <Th className="text-right">Coût</Th>
                 <Th className="text-right">Catalogue</Th>
                 {single ? (
                   <>
                     <Th className="border-l text-right"><ColHead c={cols[0]} /></Th>
-                    <Th className="text-right">Difference</Th>
-                    <Th className="text-right">Margin</Th>
+                    <Th className="text-right">Écart</Th>
+                    <Th className="text-right">Marge</Th>
                     <Th className="pr-5">Source</Th>
                   </>
                 ) : cols.map((c, i) => (
@@ -253,7 +253,7 @@ export function MatrixTab({ q }: { q: string }) {
 
 function footerText(rows: ProductSummary[] | undefined, cols: Col[]) {
   if (!rows) return null;
-  return `${rows.length} produit${rows.length > 1 ? "s" : ""} × ${cols.length} ${cols[0]?.kind === "client" ? "client" : "groupe"}${cols.length > 1 ? "s" : ""} · prices HT  day for 1 unit`;
+  return `${rows.length} produit${rows.length > 1 ? "s" : ""} × ${cols.length} ${cols[0]?.kind === "client" ? "client" : "groupe"}${cols.length > 1 ? "s" : ""} · prix HT du jour pour 1 unité`;
 }
 
 function Th({ className, children }: { className?: string; children?: React.ReactNode }) {
@@ -331,7 +331,7 @@ function PriceCell({ r, loading, selected, onClick }: { r?: PriceGridRow; loadin
       type="button"
       onClick={onClick}
       aria-pressed={selected}
-      title={`${fmtMoney(r.price)} · ${src}${deltaTxt ? ` · ${deltaTxt} vs. catalogue` : ""} · margin ${fmtPercent(r.marginPct)}`}
+      title={`${fmtMoney(r.price)} · ${src}${deltaTxt ? ` · ${deltaTxt} vs catalogue` : ""} · marge ${fmtPercent(r.marginPct)}`}
       className={cn(
         "group/cell relative flex h-[33px] w-full items-center justify-end gap-1.5 px-3 outline-none transition-colors",
         "hover:bg-muted focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring/70",
@@ -388,13 +388,13 @@ function CellPanel({ product, col, row, onClose, onEditRule, onNewRule }: {
       onClose={onClose}
       actions={who ? (
         <Link to={`/prices?tab=sim&sclient=${who}&sproduct=${product.id}`}>
-          <Button size="sm" variant="ghost" icon={Calculator}>Simulate</Button>
+          <Button size="sm" variant="ghost" icon={Calculator}>Simuler</Button>
         </Link>
       ) : null}
     >
       <div className="flex flex-col gap-5">
         <div className="flex items-center gap-2 text-[12.5px] text-muted-foreground">
-          Price for
+          Prix pour
           {col.kind === "tag" ? <TagChip tag={{ id: col.id, label: col.label, color: col.color }} title={col.hint} />
             : <Link to={`/clients/${col.id}`} className="font-medium text-foreground hover:underline">{col.label}</Link>}
         </div>
@@ -405,20 +405,20 @@ function CellPanel({ product, col, row, onClose, onEditRule, onNewRule }: {
 
         <section className="flex flex-col gap-1.5">
           <div className="flex items-center justify-between gap-2">
-            <span className={SECTION_LABEL}>Candidate awards</span>
+            <span className={SECTION_LABEL}>Prix candidats</span>
             {col.kind === "tag" && memberOptions.length ? (
               <span className="flex items-center gap-1.5 text-[11.5px] text-muted-foreground">
-                calculation for
+                calcul pour
                 <Combobox value={member} onChange={setMember} options={memberOptions} size="sm" width={190} />
               </span>
             ) : null}
           </div>
           {col.kind === "tag" && members && !memberOptions.length ? (
-            <p className="text-[12.5px] text-muted-foreground">This group has no clients.</p>
+            <p className="text-[12.5px] text-muted-foreground">Ce groupe n'a aucun client.</p>
           ) : resolved ? (
             <>
               {col.kind === "tag" && row && Math.abs(resolved.price - row.price) > 0.004 ? (
-                <p className="text-[12px] text-muted-foreground">This customer pays {fmtMoney(resolved.price)} : {resolved.source === "client_price" ? "he has a negotiated price" : "a more precise rule applies"}.</p>
+                <p className="text-[12px] text-muted-foreground">Ce client paie {fmtMoney(resolved.price)} : {resolved.source === "client_price" ? "il a un prix négocié" : "une règle plus précise s'applique"}.</p>
               ) : null}
               <CandidatesList r={resolved} />
             </>
@@ -426,25 +426,25 @@ function CellPanel({ product, col, row, onClose, onEditRule, onNewRule }: {
         </section>
 
         <section className="flex flex-col gap-2 border-t border-border pt-4">
-          <span className={SECTION_LABEL}>Rules {col.kind === "tag" ? "Group" : "of the client"} on this product</span>
+          <span className={SECTION_LABEL}>Règles {col.kind === "tag" ? "du groupe" : "du client"} sur ce produit</span>
           {related.length ? (
             <ul className="flex flex-col">
               {related.map((x) => <RelatedRule key={x.id} r={x} applied={x.id === appliedRuleId} onEdit={() => onEditRule(x)} />)}
             </ul>
           ) : (
-            <p className="text-[12.5px] text-muted-foreground">No rules {col.kind === "tag" ? "for this group" : "for this customer"} does not cover this product.</p>
+            <p className="text-[12.5px] text-muted-foreground">Aucune règle {col.kind === "tag" ? "pour ce groupe" : "pour ce client"} ne couvre ce produit.</p>
           )}
           <div className="flex flex-wrap gap-2">
-            <Button size="sm" icon={Plus} onClick={() => onNewRule({ clientScope: scope, productScope: { kind: "product", productId: product.id } })}>Rule on this product</Button>
+            <Button size="sm" icon={Plus} onClick={() => onNewRule({ clientScope: scope, productScope: { kind: "product", productId: product.id } })}>Règle sur ce produit</Button>
             <Button size="sm" icon={Plus} onClick={() => onNewRule({ clientScope: scope, productScope: { kind: "category", category: product.category } })}>
-              Rule on {categoryLabel(product.category).toLowerCase()}
+              Règle sur {categoryLabel(product.category).toLowerCase()}
             </Button>
           </div>
         </section>
 
         {col.kind === "client" && resolved ? (
           <section className="flex flex-col gap-2 border-t border-border pt-4">
-            <span className={SECTION_LABEL}>Price negotiated for this customer</span>
+            <span className={SECTION_LABEL}>Prix négocié pour ce client</span>
             <NegotiatedPriceEditor clientId={col.id} productId={product.id} resolved={resolved} />
           </section>
         ) : null}
@@ -458,12 +458,12 @@ function GridHeadline({ row, ruleName }: { row: PriceGridRow; ruleName?: string 
   return (
     <div className="flex flex-wrap items-end gap-x-6 gap-y-2">
       <div>
-        <div className={SECTION_LABEL}>Unit price HT</div>
+        <div className={SECTION_LABEL}>Prix unitaire HT</div>
         <div className="num text-[22px] font-semibold leading-7 tabular-nums tracking-tight">{fmtMoney(row.price)}</div>
       </div>
       <Metric label="Catalogue" value={<Money value={row.listPrice} />} hint={Math.abs(delta) >= 0.0005 ? `${delta < 0 ? "−" : "+"}${fmtPercent(Math.abs(delta))}` : undefined} />
-      <Metric label="Cost" value={<Money value={row.cost} />} />
-      <Metric label="Margin" value={<MarginCell value={row.marginPct} />} hint={fmtMoney(row.price - row.cost)} />
+      <Metric label="Coût" value={<Money value={row.cost} />} />
+      <Metric label="Marge" value={<MarginCell value={row.marginPct} />} hint={fmtMoney(row.price - row.cost)} />
       <Metric label="Source" value={<SourceLabel source={row.source} ruleName={ruleName} />} />
     </div>
   );
@@ -481,7 +481,7 @@ function RelatedRule({ r, applied, onEdit }: { r: PriceRuleSummary; applied: boo
       >
         <Dot tone={st === "active" ? "success" : st === "scheduled" ? "info" : "muted"} />
         <span className={cn("min-w-0 flex-1 truncate", st === "active" ? "" : "text-muted-foreground")}>{r.name}</span>
-        {applied ? <span className="shrink-0 text-[11.5px] text-primary">Implemented</span> : null}
+        {applied ? <span className="shrink-0 text-[11.5px] text-primary">appliquée</span> : null}
         <span className="num shrink-0 text-[12.5px] tabular-nums text-secondary-foreground">{methodShort(r.method)}</span>
         <Pencil size={12} strokeWidth={1.75} className="shrink-0 text-muted-foreground opacity-0 group-hover:opacity-100" />
       </button>

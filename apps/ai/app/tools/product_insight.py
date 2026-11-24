@@ -30,12 +30,12 @@ async def product_insight(
     ctx: ToolContext,
     client_id: str = Field(description="ex. cli_0012"),
     product_id: str = Field(description="ex. prd_0025"),
-    qty: float | None = Field(None, description="Quantity requested in the unit of product"),
+    qty: float | None = Field(None, description="Quantité demandée dans l'unité du produit"),
 ) -> dict:
     """
-    Everything about a product for CE customer in one call: stock available, customer price, and if missing, substitutes in
-    stock already ranked (first is best) with their price and promotions, and if the customer accepts a
-    replacement. To be used as soon as a customer requests a product (instead of get_product_stock + get_price +
+    Tout sur un produit pour CE client en un seul appel : stock disponible, prix client, et s'il manque, remplaçants en
+    stock déjà classés (le premier est le meilleur) avec leur prix et leurs promotions, et si le client accepte un
+    remplacement. À utiliser dès qu'un client demande un produit (au lieu de get_product_stock + get_price +
     find_alternatives). Product + stock + client price + ranked substitutes in one call.
     """
     return await gather_insight(ctx.erp, client_id, product_id, qty)

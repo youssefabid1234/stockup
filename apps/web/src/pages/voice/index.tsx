@@ -25,12 +25,12 @@ const isTypingTarget = (t: EventTarget | null) => {
   return !!el && (el.isContentEditable || ["INPUT", "TEXTAREA", "SELECT"].includes(el.tagName));
 };
 
-const STATE_LABEL: Record<Activity, string> = { idle: "Ready", recording: "Registration", thinking: "Agent's thinking", speaking: "Agent's talking." };
+const STATE_LABEL: Record<Activity, string> = { idle: "Prêt", recording: "Enregistrement", thinking: "L'agent réfléchit", speaking: "L'agent parle" };
 
 type Mode = "call" | "command";
 const MODES: { id: Mode; label: string }[] = [
-  { id: "call", label: "Call" },
-  { id: "command", label: "Order" },
+  { id: "call", label: "Appel" },
+  { id: "command", label: "Commande" },
 ];
 
 export default function VoicePage() {
@@ -97,7 +97,7 @@ function CallMode({ modeSwitch }: { modeSwitch: ReactNode }) {
   return (
     <Page>
       <PageHeader
-        title="Voice"
+        title="Voix"
         meta={<ConnState conn={v.conn} />}
         tabs={modeSwitch}
         actions={
@@ -110,11 +110,11 @@ function CallMode({ modeSwitch }: { modeSwitch: ReactNode }) {
                 <Provider k="tts" v={v.providers.tts} />
               </div>
             ) : null}
-            {v.activity === "speaking" ? <Button size="sm" variant="ghost" icon={VolumeX} kbd="Esc" onClick={v.stopPlayback}>Cut</Button> : null}
+            {v.activity === "speaking" ? <Button size="sm" variant="ghost" icon={VolumeX} kbd="Échap" onClick={v.stopPlayback}>Couper</Button> : null}
             <Button size="sm" variant={handsFree ? "primary" : "default"} icon={Ear} onClick={toggleHandsFree} aria-pressed={handsFree}>
-              Hands-free
+              Mains libres
             </Button>
-            <Button size="sm" icon={RotateCcw} onClick={v.reset} disabled={!ready}>Restart call</Button>
+            <Button size="sm" icon={RotateCcw} onClick={v.reset} disabled={!ready}>Recommencer l'appel</Button>
           </>
         }
       />
@@ -137,8 +137,8 @@ function CallMode({ modeSwitch }: { modeSwitch: ReactNode }) {
               <MicOff size={14} strokeWidth={1.75} className="shrink-0 text-warning" />
               <span>
                 {v.mic === "denied"
-                  ? "Microphone access is blocked. Allow microphone access in your browser settings, or type what the caller says."
-                  : "The microphone needs localhost or HTTPS. Type the caller's words instead."}
+                  ? "Micro refusé : autorisez-le dans les réglages du site (icône à gauche de l'adresse), puis réessayez. En attendant, tapez les phrases de l'appelant."
+                  : "Micro indisponible dans ce navigateur (il faut localhost ou https). Tapez les phrases de l'appelant."}
               </span>
             </div>
           ) : null}
@@ -148,14 +148,14 @@ function CallMode({ modeSwitch }: { modeSwitch: ReactNode }) {
             <div className="flex shrink-0 flex-col gap-1 xl:w-[180px]">
               <span className={cn("flex items-center gap-1.5 text-[13px] font-medium", v.activity !== "idle" && "text-violet")}>
                 {v.activity === "thinking" ? <Spinner size={12} /> : v.activity !== "idle" ? <Dot tone="violet" pulse /> : null}
-                {ready ? (listening && v.activity === "idle" ? "Listening" : STATE_LABEL[v.activity]) : connected ? "Choose a caller" : v.conn === "connecting" ? "Connecting…" : "Offline"}
+                {ready ? (listening && v.activity === "idle" ? "À l'écoute, parlez" : STATE_LABEL[v.activity]) : connected ? "Identifiez l'appelant" : v.conn === "connecting" ? "Connexion…" : "Hors ligne"}
               </span>
               {v.activity === "recording" ? (
                 <LevelBars level={v.level} />
               ) : listening ? (
-                <span className="hidden items-center gap-1 text-[11.5px] text-muted-foreground xl:flex">Hands-free · speak to interrupt</span>
+                <span className="hidden items-center gap-1 text-[11.5px] text-muted-foreground xl:flex">Mains libres · parlez pour couper l'agent</span>
               ) : (
-                <span className="hidden items-center gap-1 text-[11.5px] text-muted-foreground xl:flex"><Kbd>Space</Kbd> Hold to talk</span>
+                <span className="hidden items-center gap-1 text-[11.5px] text-muted-foreground xl:flex"><Kbd>Espace</Kbd> maintenir pour parler</span>
               )}
             </div>
             <form onSubmit={submit} className="flex min-w-0 flex-1 items-center gap-2">
@@ -163,11 +163,11 @@ function CallMode({ modeSwitch }: { modeSwitch: ReactNode }) {
                 value={text}
                 onChange={(e) => setText(e.target.value)}
                 onKeyDown={(e) => { if (e.key === "Escape") (e.target as HTMLInputElement).blur(); }}
-                placeholder="Or type the caller's sentence..."
+                placeholder="Ou tapez la phrase de l'appelant…"
                 disabled={!ready}
                 className="min-w-0 flex-1"
               />
-              <IconButton type="submit" icon={Send} label="Send" variant="default" disabled={!ready || !text.trim()} />
+              <IconButton type="submit" icon={Send} label="Envoyer" variant="default" disabled={!ready || !text.trim()} />
             </form>
           </div>
         </section>
@@ -183,7 +183,7 @@ function ConnState({ conn }: { conn: Conn }) {
   return (
     <span className="flex items-center gap-1.5 text-[12px] text-muted-foreground">
       <Dot tone={conn === "ready" ? "success" : conn === "connecting" ? "warning" : "destructive"} pulse={conn === "connecting"} />
-      {conn === "ready" ? "Connected" : conn === "connecting" ? "Connecting…" : "AI service unavailable · reconnecting…"}
+      {conn === "ready" ? "Connecté" : conn === "connecting" ? "Connexion…" : "Service IA injoignable · nouvel essai…"}
     </span>
   );
 }
@@ -204,7 +204,7 @@ function TalkButton({ activity, disabled, onDown, onUp }: { activity: Activity; 
     <button
       type="button"
       disabled={disabled}
-      aria-label="Hold to talk"
+      aria-label="Maintenir pour parler"
       aria-pressed={rec}
       onPointerDown={(e) => {
         if (e.button !== 0) return;

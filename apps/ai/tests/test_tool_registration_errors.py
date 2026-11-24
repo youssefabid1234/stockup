@@ -38,7 +38,7 @@ def test_no_params_at_all():
 
 
 def test_untyped_param():
-    with pytest.raises(TypeError, match="`qty` must have a type"):
+    with pytest.raises(TypeError, match="`qty` doit avoir un type"):
 
         @tool(name="bad_untyped")
         async def bad_untyped(ctx: ToolContext, qty) -> dict:
@@ -56,7 +56,7 @@ def test_missing_docstring():
 
 def test_duplicate_name():
     existing = next(iter(TOOLS))
-    with pytest.raises(TypeError, match="a tool with this name already exists"):
+    with pytest.raises(TypeError, match="un outil porte déjà ce nom"):
 
         @tool(name=existing)
         async def dup(ctx: ToolContext) -> dict:

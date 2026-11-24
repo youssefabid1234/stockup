@@ -1,61 +1,57 @@
-# Mohamed Amine — Voice latency
+# Mohamed Amine – « Jamais de blanc »
 
-## English release
+## État de la branche
 
-The voice, chat and command modes use English. The optional greetings, acknowledgements and restatements use the same language. The ERP starts with the English seed pack in a separate SQLite file. Checked an English stock request against the full ERP in mock mode. A live microphone test with the team’s providers is still pending.
+Le chantier voix se trouve sur `mohamed-amine/voice-latency`. `TEAM_FILLERS=1` active les changements pour les essais. La prochaine étape est la comparaison au micro sur le pack du Fournil. [Fiche de tâches](../tasks/mohamed-amine.md) · [Décisions et résultats](../../../DECISIONS.md)
 
-## Earlier voice work
-
-The voice yard is located on `mohamed-amine/voice-latency`. `TEAM_FILLERS=1` activates the changes for the tests. The next step is the comparison to the microphone on the pack of the Fournil. [Tasksheet](../tasks/mohamed-amine.md) · [Decisions and results](../../../DECISIONS.md)
-
-| Step | Work on the industry | Remaining validation |
+| Étape | Travail sur la branche | Validation restante |
 |---|---|---|
-| T0 · Reference | Protocol below. The local kit runs with data and demonstration providers. | Raise S01 and S06 to the microphone on the crew station. |
-| T1 · Phrases ready | At the opening of the connection, two sentences are synthesized in the background with the configured voice and stored. The first turn can start during the preparation. An empty synthesis can be re-opened. The bank test is active. | Listen to the voice of the team on the first call. |
-| T2 · Time to talk | An explicit request for stock, price or order can trigger an already ready sentence. In-call additions and requests such as "I want 10 kg of flour" are also recognized. An effective ERP search can trigger the sentence if the formulation has escaped detection. Simple thanks and greetings remain silent until the answer. | Validate distribution with Youssef. Measure departure in less than 300 ms and first sound perceived in less than 1 s on S01/S05. |
-| T3 · Keyboard | A long search can play some spaced keyboard gusts and a single recovery of the quantity and product if the request is clear. The agent's response or an interruption cancels the remaining sounds to play. The S10 test interrupts an ongoing search. The segment also closes if the turn fails. | Check the level and stop in the ear during S10. |
-| T4 · Doubles | The reader discards repeated ads at the front of the answer, including "A moment, I'm checking" when an ad has already played. | With Daycem, validate the tone and set set below. |
-| T5 · First useful sentence | The preparation uses the shared HTTP connection from the supplier. A rather long first proposal can start at comma. The measurement of the first byte of the synthesis remains distinct from the first sound of the turn. | Check the prosody and aim for `ttsFirstByteMs < 300` in the first round. |
-| T6 · Transcript | The jargon and the first names ERP take precedence in the vocabulary transmitted to the voice recognition. The basic jargon remains available if the ERP does not respond. | Dicter "Ten de tradi", "laminating butter", "strong flour", "T55" and a first name of the pack at Soniox. |
-| T7 · Automatic end of speech (optional) | Decision to keep Space for demo. | Re-examine automatic detection after micro tests. |
+| T0 · Référence | Protocole ci-dessous. Le kit local tourne avec les données et les fournisseurs de démonstration. | Relever S01 et S06 au micro sur le poste de l'équipe. |
+| T1 · Phrases prêtes | À l'ouverture de la connexion, deux phrases sont synthétisées en arrière-plan avec la voix configurée et mises en mémoire. Le premier tour peut démarrer pendant la préparation. Une synthèse vide peut être retentée à la réouverture. Le test de la banque est actif. | Écouter la voix de l'équipe au premier appel. |
+| T2 · Moment de parler | Une demande explicite de stock, de prix ou de commande peut déclencher une phrase déjà prête. Les ajouts en cours d'appel et les demandes comme « je veux 10 kg de farine » sont aussi reconnus. Une recherche ERP effective peut déclencher la phrase si la formulation a échappé à la détection. Les remerciements et salutations simples restent silencieux jusqu'à la réponse. | Valider la répartition avec Youssef. Mesurer le départ en moins de 300 ms et le premier son perçu en moins de 1 s sur S01/S05. |
+| T3 · Clavier | Une recherche longue peut jouer quelques rafales de clavier espacées et une reprise unique de la quantité et du produit si la demande est claire. La réponse de l'agent ou une interruption annule les sons qui restent à jouer. Le test S10 interrompt une recherche en cours. Le segment se ferme aussi si le tour échoue. | Vérifier le niveau et l'arrêt à l'oreille pendant S10. |
+| T4 · Doublons | Le lecteur écarte les annonces répétées en tête de réponse, y compris « Un instant, je vérifie », lorsqu'une annonce a déjà joué. | Avec Daycem, valider le ton et la consigne proposée ci-dessous. |
+| T5 · Première phrase utile | La préparation utilise la connexion HTTP partagée du fournisseur. Une première proposition assez longue peut partir à la virgule. La mesure du premier octet de la synthèse reste distincte du premier son du tour. | Vérifier la prosodie et viser `ttsFirstByteMs < 300` dès le premier tour. |
+| T6 · Transcription | Le jargon et les prénoms ERP ont priorité dans le vocabulaire transmis à la reconnaissance vocale. Le jargon de base reste disponible si l'ERP ne répond pas. | Dicter « dix de tradi », « tourage », « gruau », « T55 » et un prénom du pack à Soniox. |
+| T7 · Fin de parole automatique (facultatif) | Décision de conserver Espace pour la démo. | Réexaminer la détection automatique après les essais au micro. |
 
-## Decisions to share
+## Décisions à partager
 
-- **Youssef.** The current orchestrator delegates to the agent ERP. `TEAM_FILLERS` controls the greeting and announcements, regardless of the state of `TEAM_ORCHESTRATOR`. The final answer interrupts the wait. [Contrat between the yards](../interfaces.md)
-- **Daycem.** Proposal for voice rules when `TEAM_FILLERS=1` and the voice layer manages the wait: "Give the result of your check directly. The voice player is responsible for making the client wait."
+- **Youssef.** L'orchestrateur actuel délègue à l'agent ERP. `TEAM_FILLERS` contrôle donc la salutation et les annonces, quel que soit l'état de `TEAM_ORCHESTRATOR`. La réponse finale interrompt l'attente. [Contrat entre les chantiers](../interfaces.md)
+- **Daycem.** Proposition pour les règles vocales lorsque `TEAM_FILLERS=1` et que la couche voix gère l'attente : « Donne directement le résultat de ta vérification. Le lecteur vocal se charge de faire patienter le client. »
 
-## Microbial test
+## Essai au micro
 
-1. Load the Fournil pack locally and open the Voice page with the team's suppliers. With the switches off, play S01 and S06. Pick up by turn `sttMs`, `llmFirstTokenMs`, `ttsFirstByteMs`, `totalMs` and `perceivedMs`. Write down the suppliers and distinguish the first round from the next.
-2. Activate `TEAM_FILLERS=1`, restart AI and replay S01, S05 and S06 under the same conditions. Take a look at what sound comes first and when the helpful answer begins. Media report and worst case in [DECISIONS.md](../../../DECISIONS.md).
-3. On S10, resume Space **dependant** the first sound. Verify that the old turn is cut and that the new request is transcribed. On S11, say "That's all, thank you. Goodbye." and listen to the direct answer. The script replays the tricks one after the other. The integration test exercises the interruption and closure of the segment during an active turn. [S10](../../../scenarios/S10.json) · [S11](../../../scenarios/S11.json) · [Voice tests](../../../apps/ai/tests/test_voice_fillers.py)
-
-
-## Natural telephone response
-
-The template can send a few lines of text before calling the ERP. The reader received them immediately, which could make an internal note audible before greeting.
-
-1. Wait for the final answer before sending it to the browser and synthesis. The ads and keyboard of the voice service can always play during the search.
-2. Filter explicit analysis blocks and recognizable reasoning primers. Keep ERP calls, their results and the answer heard in history.
-3. Give the vocal model instructions of spoken French with examples. Naturally greet at the opening, give the useful result, ask one question at a time and keep the reasoning silent.
-4. Test one note before calling ERP and another before "Hello" in the final answer. Check the displayed text, the words transmitted to the synthesis and the history after an interruption.
-
-Synthesis of the useful response begins after the end of the model generation. Comparison with the micro will have to check the effect on the delay until this response.
-
-## Variant with fast model
-
-With `TEAM_FILLERS=2`, "I'm going to see" opens the wait. The quick model selects a short passage from the transcript in parallel with Agent ERP. The resume uses the client's words. A short and ambiguous request is taken up in full to keep the options and denials. A long request that could change the meaning receives "One moment, I check". In all three modes, only the final answer of Agent ERP is read. The resumption in preparation is cancelled if the answer arrives or if the client resumes the word.
-
-To compare, keep the same suppliers and the same value of `TEAM_ORCHESTRATOR`. Re-launch the AI between `TEAM_FILLERS=1` and `TEAM_FILLERS=2`. Test "Ten kilos of flour or two bags?" during a fairly long check, then "Thank you" to verify the direct response. 2 mode uses the same supplier's `TEAM_FAST_MODEL` model as the main agent, without additional ERP call.
+1. Charger le pack du Fournil en local et ouvrir la page Voix avec les fournisseurs de l'équipe. Avec les interrupteurs éteints, jouer S01 et S06. Relever par tour `sttMs`, `llmFirstTokenMs`, `ttsFirstByteMs`, `totalMs` et `perceivedMs`. Noter les fournisseurs et distinguer le premier tour des suivants.
+2. Activer `TEAM_FILLERS=1`, redémarrer le service IA et rejouer S01, S05 et S06 dans les mêmes conditions. Relever quel son arrive en premier et à quel moment commence la réponse utile. Reporter médiane et pire cas dans [DECISIONS.md](../../../DECISIONS.md).
+3. Sur S10, reprendre Espace **pendant** le premier son. Vérifier que l'ancien tour se coupe et que la nouvelle demande est transcrite. Sur S11, dire « C'est tout, merci. Au revoir. » et écouter la réponse directe. Le script rejoue les tours l'un après l'autre. Le test d'intégration exerce l'interruption et la fermeture du segment pendant un tour actif. [S10](../../../scenarios/S10.json) · [S11](../../../scenarios/S11.json) · [Tests voix](../../../apps/ai/tests/test_voice_fillers.py)
 
 
-## Greeting from the first round
+## Réponse naturelle au téléphone
 
-The form "Who calls?" offers optional civility. With the modes `1`, `2` and `3`, the audio "Hello Madam", "Hello Sir" or "Hello" is prepared during the loading of the plug. The first release of the microphone triggers this greeting from the cache during the finalisation of the transcription. For a stock or order request, the announcement of the selected mode can follow. A reconnection does not replay the greeting already broadcast.
+Le modèle peut envoyer quelques lignes de texte avant d'appeler l'ERP. Le lecteur les recevait immédiatement, ce qui pouvait rendre audible une note interne avant la salutation.
 
-To compare `0`, `1`, `2` and `3`, start a new call after each restart of the AI, choose the same civility and play the same request. Watch "Perceived" after the release. Tests check that the greeting is sent before the final transcription. The 0,5 s lens remains to be measured in the browser.
+1. Attendre la réponse finale avant de l'envoyer au navigateur et à la synthèse. Les annonces et le clavier du service voix peuvent toujours jouer pendant la recherche.
+2. Filtrer les blocs d'analyse explicites et les amorces de raisonnement reconnaissables. Garder dans l'historique les appels ERP, leurs résultats et la réponse entendue.
+3. Donner au modèle vocal des consignes de français parlé avec des exemples. Saluer naturellement à l'ouverture, donner le résultat utile, poser une question à la fois et garder le raisonnement silencieux.
+4. Tester une note avant l'appel ERP et une autre avant « Bonjour » dans la réponse finale. Vérifier le texte affiché, les mots transmis à la synthèse et l'historique après une interruption.
+
+La synthèse de la réponse utile commence après la fin de la génération du modèle. La comparaison au micro devra vérifier l'effet sur le délai jusqu'à cette réponse.
+
+## Variante avec modèle rapide
+
+Avec `TEAM_FILLERS=2`, « Je vais voir » ouvre l'attente. Le modèle rapide sélectionne un court passage de la transcription en parallèle avec l'agent ERP. La reprise utilise les mots du client. Une demande courte et ambiguë est reprise en entier pour garder les options et les négations. Une demande longue dont on risquerait de changer le sens reçoit « Un instant, je vérifie ». Dans les trois modes, seule la réponse finale de l'agent ERP est lue. La reprise en préparation est annulée si la réponse arrive ou si le client reprend la parole.
+
+Pour comparer, garder les mêmes fournisseurs et la même valeur de `TEAM_ORCHESTRATOR`. Relancer l'IA entre `TEAM_FILLERS=1` et `TEAM_FILLERS=2`. Tester « Dix kilos de farine ou deux sacs ? » pendant une vérification assez longue, puis « Merci » pour vérifier la réponse directe. Le mode 2 utilise le modèle `TEAM_FAST_MODEL` du même fournisseur que l'agent principal, sans appel ERP supplémentaire.
 
 
-## Combined mode
+## Salutation du premier tour
 
-`TEAM_FILLERS=3` uses the 1 mode ads, plays a short keyboard gust if the search lasts and prepares the 2 mode to resume in parallel. If no faithful short recovery is available, the player uses the neutral restart. The sounds that remain in preparation are cancelled upon arrival of the answer or if the client resumes the speech. Thanks and greetings only keep a direct answer.
+Le formulaire « Qui appelle ? » offre une civilité facultative. Avec les modes `1`, `2` et `3`, l'audio « Bonjour Madame », « Bonjour Monsieur » ou « Bonjour » est préparé pendant le chargement de la fiche. Le premier relâchement du micro déclenche cette salutation depuis le cache pendant la finalisation de la transcription. Pour une demande de stock ou de commande, l'annonce du mode sélectionné peut suivre. Une reconnexion ne rejoue pas la salutation déjà diffusée.
+
+Pour comparer `0`, `1`, `2` et `3`, démarrer un nouvel appel après chaque redémarrage de l'IA, choisir la même civilité et jouer la même demande. Regarder « Perçu » après le relâchement. Les tests vérifient que la salutation est envoyée avant la transcription finale. L'objectif de 0,5 s reste à mesurer dans le navigateur.
+
+
+## Mode combiné
+
+`TEAM_FILLERS=3` utilise les annonces du mode 1, joue une courte rafale de clavier si la recherche dure et prépare la reprise du mode 2 en parallèle. Si aucune courte reprise fidèle n'est disponible, le lecteur utilise la relance neutre. Les sons qui restent en préparation sont annulés à l'arrivée de la réponse ou si le client reprend la parole. Les remerciements et salutations seuls gardent une réponse directe.

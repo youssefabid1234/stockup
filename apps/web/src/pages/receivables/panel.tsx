@@ -23,17 +23,17 @@ import { BUCKETS, CreditUse, MiniAging, RISK } from "./aging";
 const INVOICE_LIMIT = 12;
 type ReminderChannel = "phone" | "email" | "sms" | "whatsapp";
 const CHANNELS: { id: ReminderChannel; label: string }[] = [
-  { id: "phone", label: "Phone" }, { id: "email", label: "E-mail" }, { id: "sms", label: "SMS" }, { id: "whatsapp", label: "WhatsApp" },
+  { id: "phone", label: "Téléphone" }, { id: "email", label: "E-mail" }, { id: "sms", label: "SMS" }, { id: "whatsapp", label: "WhatsApp" },
 ];
 
 const INVOICE_COLUMNS: Column<InvoiceSummary>[] = [
-  { id: "number", header: "Invoice", cell: (i) => <Link to={`/invoices/${i.id}`} className="hover:underline" onClick={(e) => e.stopPropagation()}><Mono>{i.number}</Mono></Link> },
-  { id: "due", header: "Due date", width: 104, cell: (i) => <DateLabel date={i.dueDate} className={i.daysOverdue > 0 ? "text-destructive" : "text-secondary-foreground"} /> },
+  { id: "number", header: "Facture", cell: (i) => <Link to={`/invoices/${i.id}`} className="hover:underline" onClick={(e) => e.stopPropagation()}><Mono>{i.number}</Mono></Link> },
+  { id: "due", header: "Échéance", width: 104, cell: (i) => <DateLabel date={i.dueDate} className={i.daysOverdue > 0 ? "text-destructive" : "text-secondary-foreground"} /> },
   {
-    id: "late", header: "Overdue", width: 64, numeric: true,
+    id: "late", header: "Retard", width: 64, numeric: true,
     cell: (i) => i.daysOverdue > 0 ? <span className="text-destructive">+{i.daysOverdue} j</span> : <span className="text-muted-foreground/60">—</span>,
   },
-  { id: "balance", header: "Remains due", width: 96, numeric: true, cell: (i) => <Money value={i.balance} tone={i.daysOverdue > 0 ? "destructive" : undefined} /> },
+  { id: "balance", header: "Reste dû", width: 96, numeric: true, cell: (i) => <Money value={i.balance} tone={i.daysOverdue > 0 ? "destructive" : undefined} /> },
 ];
 
 export function ReceivablePanel({ clientId, row, onClose }: { clientId: Id; row?: ReceivableRow; onClose: () => void }) {
@@ -50,11 +50,11 @@ export function ReceivablePanel({ clientId, row, onClose }: { clientId: Id; row?
   const disputes = useMemo(() => (events ?? []).filter((e) => e.type === "dispute" && e.status !== "resolved"), [events]);
   const reminders = useMemo(() => (events ?? []).filter((e) => e.type === "late_payment").slice(0, 5), [events]);
 
-  const name = row?.clientName ?? client?.name ?? "Customer";
+  const name = row?.clientName ?? client?.name ?? "Client";
   const status = client?.status ?? row?.status;
   const blocked = status === "blocked";
   const setStatus = useApiMutation((s: "active" | "blocked") => api.clients.update(clientId, { status: s }), {
-    success: (c) => (c.status === "blocked" ? `${c.name} blocked` : `${c.name} unlocked`),
+    success: (c) => (c.status === "blocked" ? `${c.name} bloqué` : `${c.name} débloqué`),
     invalidate: [qk.clients.all],
   });
 
@@ -81,7 +81,7 @@ export function ReceivablePanel({ clientId, row, onClose }: { clientId: Id; row?
       onClose={onClose}
       footer={
         <>
-          <Button size="sm" variant="ghost" icon={ExternalLink} onClick={() => navigate(`/clients/${clientId}`)} className="mr-auto">Customer record</Button>
+          <Button size="sm" variant="ghost" icon={ExternalLink} onClick={() => navigate(`/clients/${clientId}`)} className="mr-auto">Fiche client</Button>
           <Button
             size="sm"
             variant={blocked ? "default" : "danger"}
@@ -90,9 +90,9 @@ export function ReceivablePanel({ clientId, row, onClose }: { clientId: Id; row?
             disabled={!status}
             onClick={() => setStatus.mutate(blocked ? "active" : "blocked")}
           >
-            {blocked ? "Unlock" : "Block"}
+            {blocked ? "Débloquer" : "Bloquer"}
           </Button>
-          <Button size="sm" variant="primary" icon={Wallet} onClick={() => setRecording(true)}>Save a payment</Button>
+          <Button size="sm" variant="primary" icon={Wallet} onClick={() => setRecording(true)}>Enregistrer un paiement</Button>
         </>
       }
     >
@@ -101,9 +101,9 @@ export function ReceivablePanel({ clientId, row, onClose }: { clientId: Id; row?
         {row ? (
           <div className="flex flex-col gap-3">
             <div className="grid grid-cols-3 divide-x divide-border rounded-[6px] border border-border">
-              <Figure label="Outstanding balance"><Money value={row.outstanding} /></Figure>
-              <Figure label="Overdue"><Money value={row.overdue} zeroMuted tone={row.overdue > 0 ? "destructive" : undefined} /></Figure>
-              <Figure label="Risk"><StatusDot tone={RISK[row.risk].tone} label={RISK[row.risk].label} /></Figure>
+              <Figure label="Encours"><Money value={row.outstanding} /></Figure>
+              <Figure label="Échu"><Money value={row.overdue} zeroMuted tone={row.overdue > 0 ? "destructive" : undefined} /></Figure>
+              <Figure label="Risque"><StatusDot tone={RISK[row.risk].tone} label={RISK[row.risk].label} /></Figure>
             </div>
             <div className="flex flex-col gap-1.5">
               <MiniAging buckets={row.buckets} className="h-2" />
@@ -118,12 +118,12 @@ export function ReceivablePanel({ clientId, row, onClose }: { clientId: Id; row?
             <KeyValue
               labelWidth={150}
               items={[
-                { label: "Status", value: status ? <StatusDot kind="client" value={status} /> : "—" },
-                { label: "Ceiling", value: row.creditLimit ? <span className="flex items-center gap-3"><Money value={row.creditLimit} compact /><CreditUse row={row} className="w-40" /></span> : "Without ceiling" },
-                { label: "Older maturity", value: row.oldestDueDate ? <span className={row.maxDaysOverdue > 0 ? "text-destructive" : undefined}><DateLabel date={row.oldestDueDate} />{row.maxDaysOverdue > 0 ? ` · +${row.maxDaysOverdue} j` : ""}</span> : "—" },
-                { label: "Average payment time", value: row.avgDaysToPay != null ? `${row.avgDaysToPay} days (terms ${row.paymentTermsDays} j)` : "—" },
-                { label: "Last payment", value: row.lastPaymentAt ? <span><DateLabel date={row.lastPaymentAt} /> · <Money value={row.lastPaymentAmount} /></span> : "—" },
-                { label: "Last recovery", value: row.lastReminderAt ? <DateLabel date={row.lastReminderAt} /> : "Never" },
+                { label: "Statut", value: status ? <StatusDot kind="client" value={status} /> : "—" },
+                { label: "Plafond", value: row.creditLimit ? <span className="flex items-center gap-3"><Money value={row.creditLimit} compact /><CreditUse row={row} className="w-40" /></span> : "Sans plafond" },
+                { label: "Plus vieille échéance", value: row.oldestDueDate ? <span className={row.maxDaysOverdue > 0 ? "text-destructive" : undefined}><DateLabel date={row.oldestDueDate} />{row.maxDaysOverdue > 0 ? ` · +${row.maxDaysOverdue} j` : ""}</span> : "—" },
+                { label: "Délai moyen de paiement", value: row.avgDaysToPay != null ? `${row.avgDaysToPay} j (conditions ${row.paymentTermsDays} j)` : "—" },
+                { label: "Dernier paiement", value: row.lastPaymentAt ? <span><DateLabel date={row.lastPaymentAt} /> · <Money value={row.lastPaymentAmount} /></span> : "—" },
+                { label: "Dernière relance", value: row.lastReminderAt ? <DateLabel date={row.lastReminderAt} /> : "Jamais" },
               ]}
             />
           </div>
@@ -134,9 +134,9 @@ export function ReceivablePanel({ clientId, row, onClose }: { clientId: Id; row?
 
         {/* Open invoices */}
         <Section
-          title="Open invoices"
+          title="Factures ouvertes"
           count={client ? openInvoices.length : undefined}
-          actions={openInvoices.length > INVOICE_LIMIT ? <Link to={`/clients/${clientId}`} className="text-[12px] text-primary hover:underline">See all</Link> : undefined}
+          actions={openInvoices.length > INVOICE_LIMIT ? <Link to={`/clients/${clientId}`} className="text-[12px] text-primary hover:underline">Tout voir</Link> : undefined}
         >
           <DataTable
             inset
@@ -146,15 +146,15 @@ export function ReceivablePanel({ clientId, row, onClose }: { clientId: Id; row?
             loading={isLoading}
             getRowId={(i) => i.id}
             onRowClick={(i) => navigate(`/invoices/${i.id}`)}
-            empty={<EmptyState compact title="No invoice opened" />}
-            footer={openInvoices.length > INVOICE_LIMIT ? `+ ${openInvoices.length - INVOICE_LIMIT} Other invoices · ${fmtMoney(openInvoices.slice(INVOICE_LIMIT).reduce((s, i) => s + i.balance, 0))}` : undefined}
+            empty={<EmptyState compact title="Aucune facture ouverte" />}
+            footer={openInvoices.length > INVOICE_LIMIT ? `+ ${openInvoices.length - INVOICE_LIMIT} autres factures · ${fmtMoney(openInvoices.slice(INVOICE_LIMIT).reduce((s, i) => s + i.balance, 0))}` : undefined}
           />
         </Section>
 
         {/* Recent payments */}
-        <Section title="Recent payments" count={client ? client.payments.length : undefined}>
+        <Section title="Paiements récents" count={client ? client.payments.length : undefined}>
           {!client ? <Skeleton className="h-16 w-full" /> : payments.length === 0 ? (
-            <p className="text-[12.5px] text-muted-foreground">No payments recorded.</p>
+            <p className="text-[12.5px] text-muted-foreground">Aucun paiement enregistré.</p>
           ) : (
             <ul className="divide-y divide-border rounded-[6px] border border-border">
               {payments.map((p) => (
@@ -169,16 +169,16 @@ export function ReceivablePanel({ clientId, row, onClose }: { clientId: Id; row?
         </Section>
 
         {/* Open disputes */}
-        <Section title="Open disputes" count={events ? disputes.length : undefined}>
+        <Section title="Litiges ouverts" count={events ? disputes.length : undefined}>
           {!events ? <Skeleton className="h-10 w-full" /> : disputes.length === 0 ? (
-            <p className="text-[12.5px] text-muted-foreground">No litigation opened.</p>
+            <p className="text-[12.5px] text-muted-foreground">Aucun litige ouvert.</p>
           ) : <EventList events={disputes} />}
         </Section>
 
         {/* Reminders */}
-        <Section title="Latest recovery" count={events ? reminders.length : undefined}>
+        <Section title="Dernières relances" count={events ? reminders.length : undefined}>
           {!events ? <Skeleton className="h-10 w-full" /> : reminders.length === 0 ? (
-            <p className="text-[12.5px] text-muted-foreground">No re-launch recorded.</p>
+            <p className="text-[12.5px] text-muted-foreground">Aucune relance enregistrée.</p>
           ) : <EventList events={reminders} />}
         </Section>
       </div>
@@ -208,7 +208,7 @@ function EventList({ events }: { events: ClientEvent[] }) {
             <DateLabel date={e.at} />
             {e.channel ? <><span>·</span><span>{CHANNEL_LABEL[e.channel] ?? e.channel}</span></> : null}
             {e.author ? <><span>·</span><span>{e.author}</span></> : null}
-            {e.type === "dispute" && e.severity ? <><span>·</span><span>{e.severity === "high" ? "High" : e.severity === "medium" ? "Average" : "Low"}</span></> : null}
+            {e.type === "dispute" && e.severity ? <><span>·</span><span>{e.severity === "high" ? "Haute" : e.severity === "medium" ? "Moyenne" : "Faible"}</span></> : null}
           </div>
           {e.description ? <p className="line-clamp-2 text-[12px] text-secondary-foreground">{e.description}</p> : null}
         </li>
@@ -224,17 +224,17 @@ function ReminderForm({ clientId, overdue, overdueCount }: { clientId: Id; overd
     () => api.clientEvents.create(clientId, {
       type: "late_payment",
       title: overdueCount > 0
-        ? `Relaunch: ${overdueCount} facture${overdueCount > 1 ? "s" : ""} mulch${overdueCount > 1 ? "s" : ""} (${fmtMoney(overdue)})`
-        : "Relaunch payment",
+        ? `Relance : ${overdueCount} facture${overdueCount > 1 ? "s" : ""} échue${overdueCount > 1 ? "s" : ""} (${fmtMoney(overdue)})`
+        : "Relance paiement",
       channel,
-      description: note.trim() || `Recovery ${CHANNEL_LABEL[channel].toLowerCase()} for payment of overdue invoices.`,
+      description: note.trim() || `Relance ${CHANNEL_LABEL[channel].toLowerCase()} pour le règlement des factures échues.`,
       amount: overdue > 0 ? Math.round(overdue * 100) / 100 : undefined,
-      author: "Me",
+      author: "Moi",
     }),
-    { success: "Relaunch recorded", invalidate: [qk.clients.all, qk.history.all], onSuccess: () => setNote("") },
+    { success: "Relance enregistrée", invalidate: [qk.clients.all, qk.history.all], onSuccess: () => setNote("") },
   );
   return (
-    <Section title="Relaunch">
+    <Section title="Relancer">
       <form
         className="flex flex-col gap-2"
         onSubmit={(e) => { e.preventDefault(); create.mutate(undefined); }}
@@ -244,12 +244,12 @@ function ReminderForm({ clientId, overdue, overdueCount }: { clientId: Id; overd
           rows={2}
           value={note}
           onChange={(e) => setNote(e.target.value)}
-          placeholder="What has been said, promise of payment..."
+          placeholder="Ce qui a été dit, promesse de paiement…"
           onKeyDown={(e) => { if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) { e.preventDefault(); create.mutate(undefined); } }}
         />
         <div className="flex items-center gap-2">
-          <span className="text-[11.5px] text-muted-foreground">Added to client history</span>
-          <Button size="sm" type="submit" icon={BellRing} loading={create.isPending} className="ml-auto">Save Recovery</Button>
+          <span className="text-[11.5px] text-muted-foreground">Ajouté à l'historique du client</span>
+          <Button size="sm" type="submit" icon={BellRing} loading={create.isPending} className="ml-auto">Enregistrer la relance</Button>
         </div>
       </form>
     </Section>

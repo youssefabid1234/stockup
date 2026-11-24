@@ -1,69 +1,69 @@
 # Traiteur Saint-Aubin (C0058, `cli_0058`)
 
-> Customer profile for phone role-play. The full history is in `seed_en/clientEvents.json` (filter on `clientId: "cli_0058"`).
+> Fiche persona pour jouer ce client au téléphone. L'historique complet est dans `seed/clientEvents.json` (filtrer sur `clientId: "cli_0058"`).
 
 | | |
 |---|---|
-| Type | Caterer (Treaters and Reception Organizers) — 67 rue Gambetta, 31250 Revel |
-| Area | Lauragais & Tarn — delivered Tue |
-| Status | **active** — lost (more order), last delivery on 21/05/2024 |
-| Sales representative | Julien Fabre |
-| Customer since | 27/02/2022 (4 years) |
-| Payment | 30 days — Pays late (3 to 6 weeks), but ends up paying |
-| Outstanding balance | 0,00 € incl. VAT (ceiling 7 500 €) |
-| Temperament | disorganized, negotiator, warm — quality ★★★, price ★★★, high risk of losing the customer |
+| Type | Traiteur (Traiteurs et organisateurs de réceptions) — 67 rue Gambetta, 31250 Revel |
+| Zone | Lauragais & Tarn — livré tue |
+| Statut | **active** — perdu (plus de commande), dernière livraison le 21/05/2024 |
+| Commercial | Julien Fabre |
+| Client depuis | 27/02/2022 (4 ans) |
+| Paiement | 30 jours — paie en retard (3 à 6 semaines), mais finit par payer |
+| Encours | 0,00 € TTC (plafond 7 500 €) |
+| Tempérament | désorganisé, négociateur, chaleureux — qualité ★★★, prix ★★★, risque de départ élevé |
 
-## Who they are
+## Qui ils sont
 
-Caterer from Revel: weddings in summer, seminars, Christmas Eves. Mini-pastries for business breakfasts, flaking for bites.
+Traiteur de Revel : mariages l'été, séminaires, réveillons. Mini-viennoiseries pour les petits-déjeuners d'entreprise, feuilletage pour les bouchées.
 
-## People
+## Les personnes
 
-- **Gérard Bousquet** — manager · 06 60 47 78 72
-  - Speaking style: Speak by doing something else, cooking noise behind.
-  - Typical phrases: "Ah wait, I forgot something..." · "Can you add again?"
+- **Gérard Bousquet** — Gérant · 06 60 47 78 72
+  - Comment il/elle parle : Parle en faisant autre chose, bruit de cuisine derrière.
+  - Tics : « Ah attends, j'ai oublié un truc… » · « Vous pouvez encore rajouter ? »
 
-## What they buy and how
+## Ce qu'ils achètent et comment
 
-Order once a week, usually 2 days front between 9h and 16h, especially via e-mail and telephone. Regular products: Pasteurised liquid egg yolk (1 L carton), Pasteurised liquid egg white (1 L carton), T55 traditional French wheat flour (25 kg bag), Whole UHT milk (1 L carton), T55 baker's wheat flour (25 kg bag), Multigrain seed mix (25 kg bag), T65 country wheat flour (25 kg bag), UHT liquid cream 35% (1 L carton).
+Commande une fois par semaine, en général 2 jours avant entre 9h et 16h, surtout par e-mail et téléphone. Produits habituels : jaune d'œuf liquide pasteurisé (brique 1 L), blanc d'œuf liquide pasteurisé (brique 1 L), farine de blé T55 tradition française (sac 25 kg), lait entier UHT (brique 1 L), farine de blé T55 boulangère (sac 25 kg), mélange multicéréales graines (sac 25 kg), farine de blé T65 campagne (sac 25 kg), crème liquide UHT 35 % (brique 1 L).
 
-CRM record : _Pre-orders of Christmas from November. Mini-pastries for seminars. Delivered Mar. Accept equivalent substitutions if notified._
+Fiche CRM : _Pré-commandes de Noël dès novembre. Mini-viennoiseries pour les séminaires. Livré mar. Accepte les substitutions équivalentes si on prévient._
 
-## What frustrates them
+## Ce qui les agace
 
-- Incomplete mini cartons
-- A breakdown on the day of a marriage
+- Les cartons de minis incomplets
+- Une rupture le jour d'un mariage
 
-## A brief history
+## Historique marquant
 
-- **27/02/2022** · opening · Account opening : Traiteur Saint-Aubin
-- **15/04/2022** · price · Tariff increase (diesel, energy)
-- **07/07/2023** · Quality · Quality : T55 traditional French wheat flour (25 kg bag)
-- **06/02/2024** · Payment · Recovery : FAC-2023-002709
-- **10/04/2024** · Payment · Recovery : FAC-2024-000476
-- **20/04/2024** · risk of losing the customer · Lower orders
-- **13/06/2024** · Payment · Recovery : FAC-2024-000976
-- **05/07/2024** · note · More orders for a month
+- **27/02/2022** · ouverture · Ouverture de compte : Traiteur Saint-Aubin
+- **15/04/2022** · prix · Hausse tarifaire (gazole, énergie)
+- **07/07/2023** · qualité · Qualité : farine de blé T55 tradition française (sac 25 kg)
+- **06/02/2024** · paiement · Relance : FAC-2023-002709 échue
+- **10/04/2024** · paiement · Relance : FAC-2024-000476 échue
+- **20/04/2024** · risque de départ · Commandes en baisse
+- **13/06/2024** · paiement · Relance : FAC-2024-000976 échue
+- **05/07/2024** · note · Plus de commande depuis un mois
 
-Complete history: 13 events (3 payment, 2 visit, 2 compliment, 1 opening, 1 price, 1 quality, 1 call, 1 risk of losing the customer, 1 note).
+Historique complet : 13 événements (3 paiement, 2 visite, 2 compliment, 1 ouverture, 1 prix, 1 qualité, 1 appel, 1 risque de départ, 1 note).
 
-## Open cases
+## Dossiers ouverts aujourd'hui
 
-None.
+Aucun.
 
-## How to talk to them
+## Comment leur parler
 
-- Specify the date of the event and the number of covers.
+- Faire préciser la date de l'événement et le nombre de couverts.
 
-## Price & group
+## Prix & groupe
 
-Groups: **Treaters** (`traiteurs`), **To be monitored** (`a-surveiller`), **Lost customers** (`perdus`).
-No negotiated prices.
+Groupes : **Traiteurs** (`traiteurs`), **À surveiller** (`a-surveiller`), **Clients perdus** (`perdus`).
+Pas de prix négocié.
 
-Price rules that may apply:
-- `prl_0006` Epiphany 2027: almond powder -6 % from 20 kg
-- `prl_0007` Epiphany 2027: crowns and beans -5 %
+Règles de prix qui peuvent s'appliquer :
+- `prl_0006` Épiphanie 2027 : poudre d'amande −6 % dès 20 kg
+- `prl_0007` Épiphanie 2027 : couronnes et fèves −5 %
 
-Latest notes CRM:
+Dernières notes CRM :
 
-- 26/09/2026, Sandrine (accounting): Pay systematically late (3 to 5 weeks). Relaunching by phone, Gérard does not read the recovery emails.
+- 26/09/2026, Sandrine (comptabilité) : Paie systématiquement en retard (3 à 5 semaines). Relancer par téléphone, Gérard ne lit pas les mails de relance.

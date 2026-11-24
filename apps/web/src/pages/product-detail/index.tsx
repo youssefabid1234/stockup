@@ -23,8 +23,8 @@ export default function ProductDetailPage() {
   if (isError || !p) {
     return (
       <Page>
-        <PageHeader breadcrumb={[{ label: "Products", to: "/products" }]} title={id} />
-        <PageBody><EmptyState icon={Package} title="Product not found" description={`No product matches the identifier ${id}.`} /></PageBody>
+        <PageHeader breadcrumb={[{ label: "Produits", to: "/products" }]} title={id} />
+        <PageBody><EmptyState icon={Package} title="Produit introuvable" description={`Aucun produit ne correspond à l'identifiant ${id}.`} /></PageBody>
       </Page>
     );
   }
@@ -45,62 +45,62 @@ function ProductView({ p }: { p: ProductDetail }) {
   return (
     <Page>
       <PageHeader
-        breadcrumb={[{ label: "Products", to: "/products" }]}
+        breadcrumb={[{ label: "Produits", to: "/products" }]}
         title={p.name}
         meta={
           <>
             <Mono className="text-muted-foreground">{p.sku}</Mono>
             <Badge>{categoryLabel(p.category)}</Badge>
-            {!p.active ? <Badge tone="destructive">Inactive</Badge> : null}
+            {!p.active ? <Badge tone="destructive">Inactif</Badge> : null}
           </>
         }
-        actions={<Button variant="primary" icon={SlidersHorizontal} onClick={() => setAdjusting(true)}>Adjust Stock</Button>}
+        actions={<Button variant="primary" icon={SlidersHorizontal} onClick={() => setAdjusting(true)}>Ajuster le stock</Button>}
       />
       <PageBody flush>
         <GroupsStrip><TagEditor scope="product" value={p.tags} entityId={p.id} /></GroupsStrip>
         <StatGrid className="md:grid-cols-5">
-          <Stat label="Available" value={<Qty value={p.stock.available} unit={p.unit} />} tone={p.stock.available <= 0 ? "destructive" : undefined}
-            hint={p.stock.available <= 0 ? "Out of stock" : "In stock - reserved"} />
+          <Stat label="Disponible" value={<Qty value={p.stock.available} unit={p.unit} />} tone={p.stock.available <= 0 ? "destructive" : undefined}
+            hint={p.stock.available <= 0 ? "Rupture" : "En stock − réservé"} />
           <Stat label="En stock" value={<Qty value={p.stock.onHand} unit={p.unit} />} hint={`${lots.length} lot${lots.length > 1 ? "s" : ""}`} />
-          <Stat label="Reserved" value={<Qty value={p.stock.reserved} unit={p.unit} />} hint="Orders confirmed" />
-          <Stat label="Entering" value={<Qty value={p.stock.incoming} unit={p.unit} />} tone={p.stock.incoming > 0 ? "info" : undefined} hint="Ongoing procurement" />
-          <Stat label="Sales in the last 30 days" value={<Qty value={p.sales30d.qty} unit={p.unit} />} hint={<Money value={p.sales30d.revenue} compact />} />
+          <Stat label="Réservé" value={<Qty value={p.stock.reserved} unit={p.unit} />} hint="Commandes confirmées" />
+          <Stat label="Entrant" value={<Qty value={p.stock.incoming} unit={p.unit} />} tone={p.stock.incoming > 0 ? "info" : undefined} hint="Achats en cours" />
+          <Stat label="Ventes 30 j" value={<Qty value={p.sales30d.qty} unit={p.unit} />} hint={<Money value={p.sales30d.revenue} compact />} />
         </StatGrid>
 
         <div className="grid grid-cols-1 gap-8 px-5 py-5 xl:grid-cols-[minmax(0,1fr)_340px]">
           <div className="flex min-w-0 flex-col gap-7">
             <Section title="Lots en stock · FEFO" count={lots.length}
-              actions={p.stock.nextExpiry ? <span className="text-[12px] text-muted-foreground">Next DLC <ExpiryLabel date={p.stock.nextExpiry} today={today} /></span> : null}>
+              actions={p.stock.nextExpiry ? <span className="text-[12px] text-muted-foreground">Prochaine DLC <ExpiryLabel date={p.stock.nextExpiry} today={today} /></span> : null}>
               <LotsTable lots={p.stock.lots} unit={p.unit} today={today} supplierName={supplierName}
-                empty={<EmptyFrame icon={Boxes} text="No batches of this product are in stock." />} />
+                empty={<EmptyFrame icon={Boxes} text="Aucun lot en stock pour ce produit." />} />
             </Section>
             <SupplierPrices p={p} />
             <EntityContext scope="product" id={p.id} label={p.name} />
             <Movements p={p} />
           </div>
           <aside className="flex min-w-0 flex-col gap-7">
-            <Section title="Names" count={p.aliases.length}>
+            <Section title="Appellations" count={p.aliases.length}>
               {p.aliases.length ? (
                 <div className="flex flex-wrap gap-1.5">{p.aliases.map((a) => <Badge key={a} tone="violet">{a}</Badge>)}</div>
               ) : (
-                <div className="text-[12.5px] text-muted-foreground">The voice agent only recognizes the exact name.</div>
+                <div className="text-[12.5px] text-muted-foreground">Aucune appellation. L'agent vocal ne reconnaît que le nom exact.</div>
               )}
             </Section>
-            <Section title="Information">
+            <Section title="Informations">
               <KeyValue
                 labelWidth={120}
                 items={[
                   { label: "SKU", value: p.sku, mono: true },
-                  { label: "Category", value: categoryLabel(p.category) },
-                  { label: "Unit", value: UNIT_LABEL[p.unit] ?? p.unit },
-                  { label: "Caliber", value: p.caliber || "—" },
-                  { label: "Origin", value: p.origin || "—" },
-                  { label: "Catalogue price", value: <Money value={p.price} /> },
-                  { label: "Reference cost", value: <Money value={p.cost} /> },
-                  { label: "Margin", value: <span className={margin < 0.15 ? "text-warning" : undefined}>{fmtPercent(margin)}</span> },
-                  { label: "VAT", value: `${(Math.round(p.vatRate * 1000) / 10).toLocaleString("en-GB")} %` },
-                  { label: "Conservation", value: `${p.shelfLifeDays} day${p.shelfLifeDays > 1 ? "s" : ""}` },
-                  { label: "Main supplier", value: p.mainSupplierId ? <Link className="hover:underline" to={`/suppliers/${p.mainSupplierId}`}>{supplierName(p.mainSupplierId) ?? p.mainSupplierId}</Link> : "—" },
+                  { label: "Catégorie", value: categoryLabel(p.category) },
+                  { label: "Unité", value: UNIT_LABEL[p.unit] ?? p.unit },
+                  { label: "Calibre", value: p.caliber || "—" },
+                  { label: "Origine", value: p.origin || "—" },
+                  { label: "Prix catalogue", value: <Money value={p.price} /> },
+                  { label: "Coût de référence", value: <Money value={p.cost} /> },
+                  { label: "Marge", value: <span className={margin < 0.15 ? "text-warning" : undefined}>{fmtPercent(margin)}</span> },
+                  { label: "TVA", value: `${(Math.round(p.vatRate * 1000) / 10).toLocaleString("fr-FR")} %` },
+                  { label: "Conservation", value: `${p.shelfLifeDays} jour${p.shelfLifeDays > 1 ? "s" : ""}` },
+                  { label: "Fournisseur principal", value: p.mainSupplierId ? <Link className="hover:underline" to={`/suppliers/${p.mainSupplierId}`}>{supplierName(p.mainSupplierId) ?? p.mainSupplierId}</Link> : "—" },
                 ]}
               />
             </Section>
@@ -120,34 +120,34 @@ function SupplierPrices({ p }: { p: ProductDetail }) {
   const best = p.supplierPrices.length ? Math.min(...p.supplierPrices.map((s) => s.price)) : undefined;
   const cols: Column<SupplierPriceRow>[] = [
     {
-      id: "supplier", header: "Supplier", sortValue: (s) => s.supplierName,
+      id: "supplier", header: "Fournisseur", sortValue: (s) => s.supplierName,
       cell: (s) => (
         <span className="flex items-center gap-2">
           <span className={s.price === best ? "font-medium" : undefined}>{s.supplierName}</span>
-          {s.supplierId === p.mainSupplierId ? <span className="text-[12px] text-muted-foreground">· main</span> : null}
-          {s.price === best && p.supplierPrices.length > 1 ? <Badge tone="success">Best price</Badge> : null}
+          {s.supplierId === p.mainSupplierId ? <span className="text-[12px] text-muted-foreground">· principal</span> : null}
+          {s.price === best && p.supplierPrices.length > 1 ? <Badge tone="success">Meilleur prix</Badge> : null}
         </span>
       ),
     },
-    { id: "updated", header: "Updated", width: 120, sortValue: (s) => s.updatedAt, cell: (s) => <DateLabel date={s.updatedAt} className="text-muted-foreground" /> },
+    { id: "updated", header: "Mis à jour", width: 120, sortValue: (s) => s.updatedAt, cell: (s) => <DateLabel date={s.updatedAt} className="text-muted-foreground" /> },
     {
-      id: "delta", header: "Difference", width: 90, numeric: true, sortValue: (s) => s.price - (best ?? 0),
+      id: "delta", header: "Écart", width: 90, numeric: true, sortValue: (s) => s.price - (best ?? 0),
       cell: (s) => (best === undefined || s.price === best ? <span className="text-muted-foreground">—</span> : <span className="text-muted-foreground">+{fmtPercent((s.price - best) / best)}</span>),
     },
     {
-      id: "margin", header: "Margin at this price", width: 120, numeric: true, sortValue: (s) => p.price - s.price,
+      id: "margin", header: "Marge à ce prix", width: 120, numeric: true, sortValue: (s) => p.price - s.price,
       cell: (s) => <span className="text-secondary-foreground">{p.price > 0 ? fmtPercent((p.price - s.price) / p.price) : "—"}</span>,
     },
     {
-      id: "price", header: `Purchase price / ${UNIT_LABEL[p.unit] ?? p.unit}`, width: 150, numeric: true, sortValue: (s) => s.price,
+      id: "price", header: `Prix d'achat / ${UNIT_LABEL[p.unit] ?? p.unit}`, width: 150, numeric: true, sortValue: (s) => s.price,
       cell: (s) => <Money value={s.price} tone={s.price === best ? "success" : undefined} className="font-medium" />,
     },
   ];
   return (
-    <Section title="Price suppliers" count={p.supplierPrices.length}>
+    <Section title="Prix fournisseurs" count={p.supplierPrices.length}>
       <DataTable inset paginate={false} columns={cols} rows={p.supplierPrices} getRowId={(s) => s.supplierId} defaultSort={{ id: "price", dir: "asc" }}
         onRowClick={(s) => navigate(`/suppliers/${s.supplierId}`)}
-        empty={<EmptyFrame icon={Truck} text="This product has no listed suppliers." />} />
+        empty={<EmptyFrame icon={Truck} text="Aucun fournisseur référencé pour ce produit." />} />
     </Section>
   );
 }
@@ -162,21 +162,21 @@ function Movements({ p }: { p: ProductDetail }) {
   const cols: Column<StockMovement>[] = [
     { id: "at", header: "Date", width: 170, sortKey: "at", cell: (m) => <DateLabel date={m.at} format="datetime" className="text-secondary-foreground" /> },
     {
-      id: "reason", header: "Movement", width: 120,
+      id: "reason", header: "Mouvement", width: 120,
       cell: (m) => <span className={m.reason === "waste" ? "text-destructive" : undefined}>{MOVEMENT_REASON_LABEL[m.reason] ?? m.reason}</span>,
     },
     {
-      id: "ref", header: "Reference",
+      id: "ref", header: "Référence",
       cell: (m) => (
         <span className="flex min-w-0 items-center gap-2">
-          {m.refType === "manual" ? <span className="text-muted-foreground">Manual</span> : m.refId ? <Mono>{m.refId}</Mono> : <span className="text-muted-foreground">—</span>}
+          {m.refType === "manual" ? <span className="text-muted-foreground">Manuel</span> : m.refId ? <Mono>{m.refId}</Mono> : <span className="text-muted-foreground">—</span>}
           {m.note ? <span className="truncate text-[12px] text-muted-foreground">{m.note}</span> : null}
         </span>
       ),
     },
     { id: "lot", header: "Lot", width: 120, cell: (m) => (m.lotId ? <Mono className="text-muted-foreground">{m.lotId}</Mono> : null) },
     {
-      id: "qty", header: "Quantity", width: 110, numeric: true,
+      id: "qty", header: "Quantité", width: 110, numeric: true,
       cell: (m) => <span className={m.qty > 0 ? "num text-success" : "num text-secondary-foreground"}>{m.qty > 0 ? "+" : "−"}{fmtQty(Math.abs(m.qty), p.unit)}</span>,
     },
   ];
@@ -185,9 +185,9 @@ function Movements({ p }: { p: ProductDetail }) {
     else if (m.refType === "purchase_order" && m.refId) navigate(`/purchase-orders/${m.refId}`);
   };
   return (
-    <Section title="Movements" count={history?.total}>
+    <Section title="Mouvements" count={history?.total}>
       <DataTable inset server={{ list, total: history?.total }} columns={cols} rows={rows} getRowId={(m) => m.id} onRowClick={go}
-        empty={<EmptyFrame icon={ArrowLeftRight} text="No recent stock movements." />} />
+        empty={<EmptyFrame icon={ArrowLeftRight} text="Aucun mouvement de stock récent." />} />
     </Section>
   );
 }
@@ -203,7 +203,7 @@ function EmptyFrame({ icon: Icon, text }: { icon: typeof Package; text: string }
 function DetailSkeleton() {
   return (
     <Page>
-      <PageHeader breadcrumb={[{ label: "Products", to: "/products" }]} title={<Skeleton className="h-4 w-48" />} />
+      <PageHeader breadcrumb={[{ label: "Produits", to: "/products" }]} title={<Skeleton className="h-4 w-48" />} />
       <PageBody flush>
         <StatGrid className="md:grid-cols-5">
           {Array.from({ length: 5 }).map((_, i) => <Stat key={i} label={<Skeleton className="h-3 w-20" />} value={<Skeleton className="mt-1 h-5 w-24" />} />)}

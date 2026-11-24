@@ -34,11 +34,11 @@ def provider_error(who: str, status: int | str, body: str, limit: int = 300) -> 
 def error_hint(status: int | str, body: str) -> str:
     low = body.lower()
     if status in (401, 403) or "api key" in low or "unauthori" in low:
-        return "API key rejected (check STT_API_KEY / TTS_API_KEY)"
+        return "clé API refusée (vérifiez STT_API_KEY / TTS_API_KEY)"
     if status in (402, 429) or "quota" in low or "rate limit" in low or "credit" in low:
-        return "rate limit or quota reached: try again shortly"
+        return "limite de débit ou quota atteint : réessayez dans un instant"
     if status == 415 or "decode" in low or "unsupported" in low or "format" in low:
-        return "unsupported audio format for this provider"
+        return "format audio non supporté par ce fournisseur"
     return ""
 
 

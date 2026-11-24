@@ -24,8 +24,8 @@ export function DocumentKpis({ doc, products, partnerHint, dateHint, dateTone, t
       <Stat label={k.partner} value={<Link to={`${k.partnerPath}/${doc.partnerId}`} className="block truncate text-[15px] font-semibold hover:underline">{doc.partnerName}</Link>} hint={partnerHint} />
       <Stat label={k.date} value={<DocumentDate doc={doc} />} tone={dateTone} hint={dateHint ?? (doc.headerEditable ? k.dateHint : undefined)} />
       <Stat label="Total HT" value={<Money value={totals.ht} />} hint={totalHint ?? `${n} ligne${n > 1 ? "s" : ""}`} />
-      <Stat label="Total TTC" value={<Money value={totals.ttc} />} hint={<>VAT <Money value={totals.vat} /></>} />
-      <Stat label="Created" value={<DateLabel date={doc.createdAt} className="text-[15px]" />} hint={createdHint} />
+      <Stat label="Total TTC" value={<Money value={totals.ttc} />} hint={<>TVA <Money value={totals.vat} /></>} />
+      <Stat label="Créée" value={<DateLabel date={doc.createdAt} className="text-[15px]" />} hint={createdHint} />
     </StatGrid>
   );
 }
@@ -36,7 +36,7 @@ export function DocumentDate({ doc }: { doc: DocModel }) {
   return (
     <DatePicker
       variant="inline"
-      aria-label={`Amend: ${KIND[doc.kind].date.toLowerCase()}`}
+      aria-label={`Modifier : ${KIND[doc.kind].date.toLowerCase()}`}
       value={doc.date}
       disabled={setDate.isPending}
       onChange={(v) => { if (v && v !== doc.date) setDate.mutate(v); }}
@@ -54,12 +54,12 @@ export function DocumentNote({ doc }: { doc: DocModel }) {
   if (!doc.headerEditable && !doc.note) return null;
   return (
     <div className="flex flex-col gap-1.5">
-      <span className={SECTION_LABEL}>Order note</span>
+      <span className={SECTION_LABEL}>Note de commande</span>
       {doc.headerEditable ? (
         <Textarea
           rows={2}
           value={text}
-          aria-label="Order note"
+          aria-label="Note de commande"
           placeholder={KIND[doc.kind].notePlaceholder}
           onFocus={() => setFocused(true)}
           onBlur={() => { setFocused(false); if (text.trim() !== (doc.note ?? "")) setNote.mutate(text.trim()); }}
@@ -76,21 +76,21 @@ export function DocumentNote({ doc }: { doc: DocModel }) {
 // ── Warnings ──
 const BLOCKING: Warning["code"][] = ["client_blocked", "credit_limit"];
 const WARNING_TITLE: Record<Warning["code"], string> = {
-  credit_limit: "Outstanding balance", client_blocked: "Client blocked", insufficient_stock: "Stock", expiring_soon: "Use-by date",
-  no_route: "Delivery route", price_below_cost: "Price",
-  below_min_order: "Minimum", price_above_usual: "Unusual price", not_in_supplier_catalog: "Outside catalogue",
+  credit_limit: "Encours", client_blocked: "Client bloqué", insufficient_stock: "Stock", expiring_soon: "DLC",
+  no_route: "Tournée", price_below_cost: "Prix",
+  below_min_order: "Minimum", price_above_usual: "Prix inhabituel", not_in_supplier_catalog: "Hors catalogue",
 };
 
 export function WarningList({ warnings, note, onDismiss }: { warnings: Warning[]; note?: string; onDismiss?: () => void }) {
   if (!warnings.length) return null;
   return (
-    <div className="overflow-hidden rounded-[6px] border border-warning/40 bg-warning/[.06]" role="status" aria-label="Attention points">
+    <div className="overflow-hidden rounded-[6px] border border-warning/40 bg-warning/[.06]" role="status" aria-label="Points d'attention">
       <div className="flex items-center gap-2 border-b border-warning/25 px-3 py-2">
         <AlertTriangle size={14} strokeWidth={1.75} className="text-warning" />
         <span className="text-[12.5px] font-medium">
-          {warnings.length} point{warnings.length > 1 ? "s" : ""} of attention{note ? ` · ${note}` : ""}
+          {warnings.length} point{warnings.length > 1 ? "s" : ""} d'attention{note ? ` · ${note}` : ""}
         </span>
-        {onDismiss ? <button type="button" onClick={onDismiss} className="ml-auto text-[12px] text-muted-foreground hover:text-foreground">Hide</button> : null}
+        {onDismiss ? <button type="button" onClick={onDismiss} className="ml-auto text-[12px] text-muted-foreground hover:text-foreground">Masquer</button> : null}
       </div>
       <ul className="flex flex-col">
         {warnings.map((w, i) => (
@@ -98,7 +98,7 @@ export function WarningList({ warnings, note, onDismiss }: { warnings: Warning[]
             <span className={cn("h-1.5 w-1.5 shrink-0 rounded-full", BLOCKING.includes(w.code) ? "bg-destructive" : "bg-warning")} />
             <span className="w-[96px] shrink-0 text-muted-foreground">{WARNING_TITLE[w.code] ?? w.code}</span>
             <span className="min-w-0 flex-1">{w.message}</span>
-            {w.productId ? <Link to={`/products/${w.productId}`} className="text-[12px] text-muted-foreground hover:text-foreground">Product</Link> : null}
+            {w.productId ? <Link to={`/products/${w.productId}`} className="text-[12px] text-muted-foreground hover:text-foreground">Produit</Link> : null}
           </li>
         ))}
       </ul>
@@ -121,9 +121,9 @@ export function UsualBasket({ doc }: { doc: DocModel }) {
 
   return (
     <Section
-      title={sale ? "Regular basket" : "Regular purchases"}
+      title={sale ? "Panier habituel" : "Achats habituels"}
       count={data?.length}
-      actions={doc.editable && missing.length > 1 ? <Button size="sm" variant="ghost" icon={Plus} loading={add.isPending} onClick={addAll}>Add all</Button> : null}
+      actions={doc.editable && missing.length > 1 ? <Button size="sm" variant="ghost" icon={Plus} loading={add.isPending} onClick={addAll}>Tout ajouter</Button> : null}
     >
       {isLoading ? (
         <div className="flex flex-col gap-2">{Array.from({ length: 4 }).map((_, i) => <Skeleton key={i} className="h-6 w-full" />)}</div>
@@ -132,7 +132,7 @@ export function UsualBasket({ doc }: { doc: DocModel }) {
           <ShoppingBasket size={14} strokeWidth={1.75} />{KIND[doc.kind].usualEmpty}
         </div>
       ) : (
-        <ul className="flex flex-col divide-y divide-border rounded-[6px] border border-border bg-card" aria-label={sale ? "Regular basket" : "Regular purchases"}>
+        <ul className="flex flex-col divide-y divide-border rounded-[6px] border border-border bg-card" aria-label={sale ? "Panier habituel" : "Achats habituels"}>
           {lines.map((l) => {
             const there = inDoc.has(l.productId);
             return (
@@ -140,15 +140,15 @@ export function UsualBasket({ doc }: { doc: DocModel }) {
                 <div className="min-w-0 flex-1">
                   <div className={cn("truncate text-[12.5px]", there ? "text-muted-foreground" : "font-medium")}>{l.productName}</div>
                 </div>
-                <span className="num text-[11.5px] text-muted-foreground" title={`Present in ${fmtPercent(l.frequency)} Commands`}>
+                <span className="num text-[11.5px] text-muted-foreground" title={`Présent dans ${fmtPercent(l.frequency)} des commandes`}>
                   ~{fmtQty(roundQty(l.avgQty, l.unit), l.unit)} · {fmtPercent(l.frequency)}
                 </span>
                 {doc.editable ? (
                   there ? (
-                    <span className="w-[60px] text-right text-[11.5px] text-muted-foreground">on the map</span>
+                    <span className="w-[60px] text-right text-[11.5px] text-muted-foreground">sur la cde</span>
                   ) : (
-                    <Button size="sm" variant="ghost" icon={Plus} className="w-[60px]" disabled={add.isPending} aria-label={`Add ${l.productName}`}
-                      onClick={() => addLine(l).catch(() => undefined)}>Add</Button>
+                    <Button size="sm" variant="ghost" icon={Plus} className="w-[60px]" disabled={add.isPending} aria-label={`Ajouter ${l.productName}`}
+                      onClick={() => addLine(l).catch(() => undefined)}>Ajouter</Button>
                   )
                 ) : null}
               </li>
@@ -195,7 +195,7 @@ export function DocumentNotFound({ kind, id, icon }: { kind: DocKind; id: string
   return (
     <Page>
       <PageHeader breadcrumb={[{ label: k.listLabel, to: k.list }]} title={id} />
-      <PageBody><EmptyState icon={icon} title={`${k.noun[0].toUpperCase()}${k.noun.slice(1)} introuvable`} description={`None ${k.noun} does not correspond to the identifier ${id}.`} /></PageBody>
+      <PageBody><EmptyState icon={icon} title={`${k.noun[0].toUpperCase()}${k.noun.slice(1)} introuvable`} description={`Aucune ${k.noun} ne correspond à l'identifiant ${id}.`} /></PageBody>
     </Page>
   );
 }

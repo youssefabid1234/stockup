@@ -1,143 +1,143 @@
 # FAQ
 
-Any unknown word? [GLOSSAIRE.md](GLOSSAIRE.md). Still blocked after
-20 minutes? Come and see Team Stockline.
+Les questions qu'on nous pose le plus. Un mot inconnu ? [GLOSSAIRE.md](GLOSSAIRE.md). Toujours bloqués après
+20 minutes ? Venez voir l'équipe Stockline.
 
 1. [Installation](#installation)
-2. [Understanding project ](#comprendre)
+2. [Comprendre le projet](#comprendre)
 3. [Coder](#coder)
-4. [Clears and costs](#cles)
-5. [Living and demo](#livrables)
+4. [Clés et coûts](#cles)
+5. [Livrables et démo](#livrables)
 
 <a id="installation"></a>
 ## Installation
 
-**I've never done Python/Docker, how do I do it?**
-No need to know how to install Python: Docker does everything. Follow [SETUP.md](SETUP.md) line, copy the
-commands as is. To encode, the Python of the kit is simple (functions, dictionaries): start from a
-existing tool in `apps/ai/app/tools/` and modify it. A code agent (Claude Code, Cursor...) with
-[AGENTS.md](AGENTS.md) will save you a lot of time.
+**Je n'ai jamais fait de Python / de Docker, je fais comment ?**
+Pas besoin de savoir installer Python : Docker fait tout. Suivez [SETUP.md](SETUP.md) ligne à ligne, copiez les
+commandes telles quelles. Pour coder, le Python du kit est simple (des fonctions, des dictionnaires) : partez d'un
+outil existant dans `apps/ai/app/tools/` et modifiez-le. Un agent de code (Claude Code, Cursor…) avec
+[AGENTS.md](AGENTS.md) vous fera gagner beaucoup de temps.
 
-**The terminal tells me `command not found` or `No such file or directory`.**
-You may not be in the right folder. `pwd` displays where you are; `cd voice-erp-kit` to enter it
-(the folder that contains the `Makefile`). On Windows, use the terminal **Ubuntu**, not PowerShell. Other
-common errors: [SETUP.md, "In case of problem"](SETUP.md#en-cas-de-problème).
+**Le terminal me dit `command not found` ou `No such file or directory`.**
+Vous n'êtes sans doute pas dans le bon dossier. `pwd` affiche où vous êtes ; `cd voice-erp-kit` pour y entrer
+(le dossier qui contient le `Makefile`). Sur Windows, utilisez le terminal **Ubuntu**, pas PowerShell. Les autres
+erreurs courantes : [SETUP.md, « En cas de problème »](SETUP.md#en-cas-de-problème).
 
-**I'm on Windows and .**
-Normal: Alt+Space is a shortcut to the Windows system (it opens the window menu). Go to the page
-**Voix**, tab **Order**: Hold Space (or the big microphone button), speak, release. It's the same
-Voice control.
+**Je suis sur Windows et ⌥Espace ne marche pas.**
+Normal : Alt+Espace est un raccourci du système Windows (il ouvre le menu de la fenêtre). Allez sur la page
+**Voix**, onglet **Commande** : maintenez Espace (ou le gros bouton micro), parlez, relâchez. C'est la même
+commande vocale.
 
-**How to start from scratch?**
-- The data of the ERP is damaged by your tests: `make reset` (reloads the starting data, services
-  must turn).
-- Everything is broken: `make clean` (removes the ** and ** containers the base), then `make up`.
-- Your code is broken: `git status` to see what changed, `git checkout -- <fichier>` to return to the last
-  commit a file.
+**Comment repartir de zéro ?**
+- Les données de l'ERP sont abîmées par vos tests : `make reset` (recharge les données de départ, les services
+  doivent tourner).
+- Tout est cassé : `make clean` (supprime les conteneurs **et** la base), puis `make up`.
+- Votre code est cassé : `git status` pour voir ce qui a changé, `git checkout -- <fichier>` pour revenir au dernier
+  commit d'un fichier.
 
-**I have changed `.env` and nothing changes.**
-`make restart` (without Docker: Ctrl-C then `make dev`). `curl localhost:4100/health` shows active suppliers.
+**J'ai modifié `.env` et rien ne change.**
+`make restart` (sans Docker : Ctrl-C puis `make dev`). `curl localhost:4100/health` montre les fournisseurs actifs.
 
-<a id="understand"></a>
-## Understanding the project
+<a id="comprendre"></a>
+## Comprendre le projet
 
-**What does the kit do, in one sentence?**
-A wholesaler ERP (port 4000), a AI service that drives it with tools (port 4100) and a web interface (port
-5173) with a chat, a Voice page and voice control. Detailed map: [README.md](README.md) and [TECH.md](TECH.md).
+**Que fait le kit, en une phrase ?**
+Un ERP de grossiste (port 4000), un service IA qui le pilote avec des outils (port 4100) et une interface web (port
+5173) avec un chat, une page Voix et une commande vocale. Plan détaillé : [README.md](README.md) et [TECH.md](TECH.md).
 
-**What document read first?**
-[BRIEF.md](BRIEF.md) (the challenge), then [METIER.md](METIER.md) if you don't know the job.
-[GUIDE-AGENTS.md](GUIDE-AGENTS.md) (agents LLM) or [GUIDE-VOIX.md](GUIDE-VOIX.md) (speed, natural) according to your
-angle of attack.
+**Quel document lire en premier ?**
+[BRIEF.md](BRIEF.md) (le défi), puis [METIER.md](METIER.md) si vous ne connaissez pas le métier. Ensuite
+[GUIDE-AGENTS.md](GUIDE-AGENTS.md) (agents LLM) ou [GUIDE-VOIX.md](GUIDE-VOIX.md) (vitesse, naturel) selon votre
+angle d'attaque.
 
-**What is `mock` mode?**
-Fake suppliers, free and offline. The Mock agent really calls the ERP, but it doesn't understand anything; the STT
-mock always hears the same sentence. Perfect for installing and encode the interface, useless for judging the agent.
+**Qu'est-ce que le mode `mock` ?**
+De faux fournisseurs, gratuits et hors ligne. L'agent mock appelle vraiment l'ERP, mais il ne comprend rien ; le STT
+mock entend toujours la même phrase. Parfait pour installer et coder l'interface, inutile pour juger l'agent.
 
-**What happens during a vocal tour?**
-Your voice goes to the STT while you speak (the text is displayed live), the final text goes to the agent, who
-calls tools of the ERP, then its answer is read by the TTS sentence by sentence.
-Detail: [GUIDE-VOIX.md §1](GUIDE-VOIX.md#anatomie).
+**Que se passe-t-il pendant un tour vocal ?**
+Votre voix part au STT pendant que vous parlez (le texte s'affiche en direct), le texte final part à l'agent, qui
+appelle des outils de l'ERP, puis sa réponse est lue par le TTS phrase par phrase.
+Détail : [GUIDE-VOIX.md §1](GUIDE-VOIX.md#anatomie).
 
 <a id="coder"></a>
-## Code
+## Coder
 
-**Where do I code?**
+**Où est-ce que je code ?**
 
-| Edit | For |
+| Modifiez | Pour |
 |---|---|
-| `apps/ai/app/agent/prompts.py` | what the agent knows and how he speaks (rules, tone, vocal mode) |
-| `apps/ai/app/tools/*.py` | what the agent can do in the ERP (new tools, faster tools) |
-| `data/context/*.md` | the knowledge of your business given to the agent |
-| `apps/ai/app/agent/loop.py` | the loop of the agent (order of steps, parallelism, limits) |
+| `apps/ai/app/agent/prompts.py` | ce que l'agent sait et comment il parle (règles, ton, mode vocal) |
+| `apps/ai/app/tools/*.py` | ce que l'agent peut faire dans l'ERP (nouveaux outils, outils plus rapides) |
+| `data/context/*.md` | le savoir de votre entreprise donné à l'agent |
+| `apps/ai/app/agent/loop.py` | la boucle de l'agent (ordre des étapes, parallélisme, limites) |
 
-| Leave it as it is (unless there is a specific reason) | Why? |
+| Laissez tel quel (sauf raison précise) | Pourquoi |
 |---|---|
-| `apps/ai/app/clients/` | connections to suppliers: already settled |
-| `apps/ai/app/services/utterance.py` | live transcription: fragile, already optimized |
-| `apps/ai/app/agent/sanitize.py` | clean the history so that the supplier accepts it |
-| `apps/ai/app/schemas/`, `apps/ai/app/routers/` | the contract with the interface: change it and the web breaks |
+| `apps/ai/app/clients/` | les connexions aux fournisseurs : déjà réglées |
+| `apps/ai/app/services/utterance.py` | la transcription en direct : fragile, déjà optimisée |
+| `apps/ai/app/agent/sanitize.py` | nettoie l'historique pour que le fournisseur l'accepte |
+| `apps/ai/app/schemas/`, `apps/ai/app/routers/` | le contrat avec l'interface : changez-le et le web casse |
 
-**How do I know that Mon has changed?**
-- `make chat`: Talk to the agent in the terminal, without a microphone. It displays the tools called, time and tokens.
-- Page **Voix** (http://localhost:5173): a real vocal tower, with latency measurements.
-- `make logs`: Python errors are displayed (Ctrl-C to exit).
-- `curl localhost:4100/tools`: the list of tools the agent sees. Yours must be there.
-The code recharges itself on recording (the history of the voice conversation is lost).
+**Comment savoir que mon changement a marché ?**
+- `make chat` : parlez à l'agent dans le terminal, sans micro. Il affiche les outils appelés, le temps et les tokens.
+- Page **Voix** (http://localhost:5173) : un vrai tour vocal, avec les mesures de latence.
+- `make logs` : les erreurs Python s'y affichent (Ctrl-C pour sortir).
+- `curl localhost:4100/tools` : la liste des outils que l'agent voit. Le vôtre doit y être.
+Le code se recharge tout seul à l'enregistrement (l'historique de la conversation vocale est alors perdu).
 
-**How to add a tool?**
-A `@tool` function in `apps/ai/app/tools/`, imported into `tools/__init__.py`. Step by step example:
-[TECH.md, "Tools"](TECH.md#outils) (section 5.3 for a simple tool, 5.4 for a composite tool).
+**Comment ajouter un outil ?**
+Une fonction `@tool` dans `apps/ai/app/tools/`, importée dans `tools/__init__.py`. Exemple pas à pas :
+[TECH.md, « Les outils »](TECH.md#outils) (section 5.3 pour un outil simple, 5.4 pour un outil composite).
 
-**I need an action that the ERP can't do.**
-First add the endpoint in the backend (`apps/backend/app/services/` + `routers/`), then the tool that calls it.
-End-to-end example: [TECH.md 2.6](TECH.md#ajouter-endpoint). Business rules remain in the backend.
+**J'ai besoin d'une action que l'ERP ne sait pas faire.**
+Ajoutez d'abord l'endpoint dans le backend (`apps/backend/app/services/` + `routers/`), puis l'outil qui l'appelle.
+Exemple de bout en bout : [TECH.md 2.6](TECH.md#ajouter-endpoint). Les règles métier restent dans le backend.
 
-**`git commit` refuses / `git push` asks me a password.**
-- Commit refused (Please tell me who you are): once and for all,
-  `git config --global user.name "Prénom Nom"` and `git config --global user.email "vous@exemple.fr"`.
-- Push: GitHub no longer accepts the account password. The simplest: `gh auth login` (GitHub CLI tool), or
-  Create a *personal access token* in GitHub (Settings → Developer settings) and paste it instead of the password.
+**`git commit` refuse / `git push` me demande un mot de passe.**
+- Commit refusé (« Please tell me who you are ») : une fois pour toutes,
+  `git config --global user.name "Prénom Nom"` et `git config --global user.email "vous@exemple.fr"`.
+- Push : GitHub n'accepte plus le mot de passe du compte. Le plus simple : `gh auth login` (outil GitHub CLI), ou
+  créez un *personal access token* dans GitHub (Settings → Developer settings) et collez-le à la place du mot de passe.
 
 <a id="cles"></a>
-## Keys and costs
+## Clés et coûts
 
-**How to see consumption / cost?**
-- Each response of the cat (`POST /ai/chat`) ends with an event `done` that contains `usage`: tokens
-  entry, output, and cache (`cache_read_input_tokens` read, `cache_creation_input_tokens` written).
-- `make chat` displays it after each answer.
-- The voice session does not return `usage`: log it if you need it.
-- The suppliers' dashboards are on the organizers' side: ask us if you want a global number.
+**Comment voir la consommation / le coût ?**
+- Chaque réponse du chat (`POST /ai/chat`) se termine par un événement `done` qui contient `usage` : tokens
+  d'entrée, de sortie, et de cache (`cache_read_input_tokens` lus, `cache_creation_input_tokens` écrits).
+- `make chat` l'affiche après chaque réponse.
+- La session vocale ne renvoie pas `usage` : loggez-le si vous en avez besoin.
+- Les tableaux de bord des fournisseurs sont côté organisateurs : demandez-nous si vous voulez un chiffre global.
 
-**I no longer have any credits / error 401 / 429.**
-- **401**: Refused key. Check it in `.env` (no space, no quotes), then `make restart`.
-- **429** or "quota": too many requests or ceiling reached. Wait a minute; if it persists, come see us.
-- In the meantime: go back to `mock` to code, and keep the real keys to test.
+**Je n'ai plus de crédits / erreur 401 / 429.**
+- **401** : clé refusée. Vérifiez-la dans `.env` (pas d'espace, pas de guillemets), puis `make restart`.
+- **429** ou « quota » : trop de requêtes ou plafond atteint. Attendez une minute ; si ça persiste, venez nous voir.
+- En attendant : repassez en `mock` pour coder, et gardez les vraies clés pour tester.
 
-**Can I change my model?**
-Yes, in `.env`: `LLM_MODEL=claude-sonnet-5-5` (default, balanced), `claude-haiku-5-5` (fastest and fastest)
-or `claude-opus-5-5` (the strongest, slower). Then `make restart`. Check your scenarios after:
-faster but fake doesn't win.
+**Puis-je changer de modèle ?**
+Oui, dans `.env` : `LLM_MODEL=claude-sonnet-5-5` (défaut, équilibré), `claude-haiku-5-5` (le plus rapide et le
+moins cher) ou `claude-opus-5-5` (le plus fort, plus lent). Puis `make restart`. Vérifiez vos scénarios après :
+plus rapide mais faux ne gagne pas.
 
-**Can I use another supplier?**
-The code supports others (OpenAI, Gemini, Deepgram, Gradium, any OpenAI compatible endpoint), but we do
-supply key only for **Anthropic** (LLM), **Soniox** (STT), **ElevenLabs** (TTS) and **Jev**. With your
-Your own key is allowed: say it in `DECISIONS.md`.
+**Puis-je utiliser un autre fournisseur ?**
+Le code en supporte d'autres (OpenAI, Gemini, Deepgram, Gradium, tout endpoint compatible OpenAI), mais nous ne
+fournissons de clés que pour **Anthropic** (LLM), **Soniox** (STT), **ElevenLabs** (TTS) et **Jev**. Avec votre
+propre clé, c'est permis : dites-le dans `DECISIONS.md`.
 
-<a id="deliverables"></a>
-## Deliverables and demo
+<a id="livrables"></a>
+## Livrables et démo
 
-**What should I do?**
-Repo GitHub, `DECISIONS.md`, slides (5 min), video (2 min) and live demo:
+**Que dois-je rendre ?**
+Le repo GitHub, `DECISIONS.md`, les slides (5 min), une vidéo (2 min) et la démo live :
 [BRIEF.md §8](BRIEF.md#8-livrables-et-démo-finale).
 
-**How to show that our agent is fast?**
-Page **Voix**: columns **Total** and **Perçu** of each round. Note median and worst case, before/after each round
-change in `DECISIONS.md`. Method: [GUIDE-VOIX.md §8](GUIDE-VOIX.md#plan).
+**Comment montrer que notre agent est rapide ?**
+Page **Voix** : colonnes **Total** et **Perçu** de chaque tour. Notez médiane et pire cas, avant/après chaque
+changement, dans `DECISIONS.md`. Méthode : [GUIDE-VOIX.md §8](GUIDE-VOIX.md#plan).
 
-**Can the jury launch our project?**
-Yes if it starts with `make setup` once the `data/` folder is in place. Test it on a fresh copy before
-Never put `.env` in the repo.
+**Le jury pourra-t-il lancer notre projet ?**
+Oui s'il démarre avec `make setup` une fois le dossier `data/` remis en place. Testez-le sur une copie fraîche avant
+de rendre. Ne mettez jamais `.env` dans le repo.
 
-**Mon tool crashes the boot (TypeError `@tool ...`).**
-Read the message: it says what to fix (`async def` missing, first parameter not `ctx`, parameter without type, docstring absent or name already taken).
+**Mon outil fait planter le démarrage (TypeError `@tool ...`).**
+Lisez le message : il dit quoi corriger (`async def` manquant, premier paramètre pas `ctx`, paramètre sans type, docstring absente ou nom déjà pris).

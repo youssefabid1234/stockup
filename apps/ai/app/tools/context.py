@@ -24,7 +24,7 @@ def compact(e: dict, body_max: int = 700) -> dict:
     source = e.get("source")
     return {
         "id": e["id"],
-        "about": e.get("entityLabel") if "entityLabel" in e else e.get("entityId") or "Company",
+        "about": e.get("entityLabel") if "entityLabel" in e else e.get("entityId") or "Entreprise",
         "kind": e.get("kind"),
         "title": e.get("title"),
         "body": clip(e.get("body") or "", body_max),
@@ -35,16 +35,16 @@ def compact(e: dict, body_max: int = 700) -> dict:
 @tool
 async def search_context(
     ctx: ToolContext,
-    query: str = Field(description="Keywords in English, e.g. \"substitution\", \"remission\", \"limit time\""),
-    entity_type: EntityType | None = Field(None, description="Optional: limit to one type of sheet"),
-    entity_id: str | None = Field(None, description="Optional: limit to an entity (cli_..., su_..., prd_... or a category)"),
-    kind: Kind | None = Field(None, description="Optional: limit to a type of sheet"),
-    limit: float | None = Field(None, description="Max number of cards (default 6)"),
+    query: str = Field(description="Mots-clés en français, ex. « substitution », « remise », « heure limite »"),
+    entity_type: EntityType | None = Field(None, description="Optionnel : limiter à un type de fiche"),
+    entity_id: str | None = Field(None, description="Optionnel : limiter à une entité (cli_…, sup_…, prd_… ou une catégorie)"),
+    kind: Kind | None = Field(None, description="Optionnel : limiter à un genre de fiche"),
+    limit: float | None = Field(None, description="Nombre max de fiches (défaut 6)"),
 ) -> list[dict]:
     """
-    Search in the company context sheets (rules, procedures, customer habits and preferences, people,
-    negotiation suppliers, alias products, deliveries, prices, risks). Full text search without accents, results by relevance.
-    To be used for a question of rule or know-how ("can we make a discount?", "Paris Sud time limit?").
+    Cherche dans les fiches de contexte de l'entreprise (règles, procédures, habitudes et préférences des clients, personnes,
+    négociation fournisseurs, alias produits, livraisons, prix, risques). Recherche plein texte sans accents, résultats par pertinence.
+    À utiliser pour une question de règle ou de savoir-faire (« peut-on faire une remise ? », « heure limite Paris Sud ? »).
     Search the company context facts.
     """
     query_params = {"q": query, "entityType": entity_type, "entityId": entity_id, "kind": kind, "limit": int(limit or 6)}
@@ -56,9 +56,13 @@ async def search_context(
 async def get_context(
     ctx: ToolContext,
     entity_type: Literal["client", "supplier", "product", "category"],
-    id: str = Field(description="cli_0012, sup_0003, prd_0005 or a category id (see GET /api/categories)"),
+    id: str = Field(description="cli_0012, sup_0003, prd_0005 ou un id de catégorie (voir GET /api/categories)"),
 ) -> dict:
-    """Load the profile, preferences, contacts, open cases and related company policies for one customer, supplier, product or category."""
+    """
+    Tout le contexte d'un client, fournisseur, produit ou rayon : profil, personnes et façon de parler, habitudes, ce qui les agace,
+    dossiers ouverts, comment leur parler, accords de prix (+ fiches liées : rayon du produit, règles d'entreprise qui le citent).
+    À charger avant de répondre à un client ou de parler d'un produit. Load everything known about one entity.
+    """
     r = await ctx.erp.get("/api/context/for", {"entityType": entity_type, "id": id})
     return {
         "about": r.get("label"),
@@ -72,15 +76,15 @@ async def save_context(
     ctx: ToolContext,
     entity_type: EntityType,
     kind: Kind,
-    title: str = Field(description="Short title, e.g. \"Delivery by service door\""),
-    body: str = Field(description="The fact, in English, 1 to 3 sentences (light markdown)"),
-    entity_id: str | None = Field(None, description="Required except for company: cli_..., sup_..., prd_... or a category"),
-    tags: list[str] | None = Field(None, description="Optional: keywords"),
+    title: str = Field(description="Titre court, ex. « Livraison par la porte de service »"),
+    body: str = Field(description="Le fait, en français, 1 à 3 phrases (markdown léger)"),
+    entity_id: str | None = Field(None, description="Requis sauf pour company : cli_…, sup_…, prd_… ou une catégorie"),
+    tags: list[str] | None = Field(None, description="Optionnel : mots-clés"),
 ) -> dict:
     """
-    Memorizes a lasting fact learned during the exchange (preference, habit, contact, delivery constraint...) in context sheets,
-    so that the team and future calls know. Not for a complaint or incident (uses log_client_event).
-    Formulate it in a clear sentence, without inventing. Remember has durable fact.
+    Mémorise un fait durable appris pendant l'échange (préférence, habitude, contact, contrainte de livraison…) dans les fiches de contexte,
+    pour que l'équipe et les prochains appels le sachent. Pas pour une réclamation ou un incident (utilise log_client_event).
+    Formule-le en une phrase claire, sans inventer. Remember a durable fact.
     """
     entry = {"entityType": entity_type, "entityId": entity_id, "kind": kind, "title": title, "body": body, "tags": tags}
     e = await ctx.erp.post("/api/context", without_none(entry))

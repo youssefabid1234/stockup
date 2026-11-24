@@ -1,58 +1,58 @@
 # Garonne Pack Emballages (`sup_0011`)
 
-> Full history in `seed_en/supplierEvents.json` (filter on `supplierId: "sup_0011"`).
+> Fiche persona fournisseur. Historique complet dans `seed/supplierEvents.json` (filtrer sur `supplierId: "sup_0011"`).
 
 | | |
 |---|---|
-| City | Saint Alban |
-| Conditions | J+4, payment 60 days, minimum 500 € excl. VAT, orders on Monday |
-| Supplier since | 26/08/2013 |
-| Groups | industrial, local |
-| Reliability | ★★★ — flexibility ★★☆ — discreet, economical |
+| Ville | Saint-Alban |
+| Conditions | J+4, paiement 60 jours, minimum 500 € HT, commandes le lundi |
+| Fournisseur depuis | 26/08/2013 |
+| Groupes | industriel, local |
+| Fiabilité | ★★★ — souplesse ★★☆ — discret, économe |
 
-## Who they are
+## Qui ils sont
 
-Reliable packaging supplier; Epiphany items are reserved as early as October.
+Fournisseur d'emballages fiable ; les articles de l'Épiphanie se réservent dès octobre.
 
-## People
+## Les personnes
 
 - **Hervé Pujol** — Commercial · 05 61 70 26 41 · h.pujol@garonnepack.fr
-  - Speaking style: Calm, methodical, speaks in catalogue references.
-  - Typical phrases: "This is the reference 4021, kraft 80 grams." · "For crowns, order before Toussaint."
+  - Comment il/elle parle : Calme, méthodique, parle en références catalogue.
+  - Tics : « C'est la référence 4021, kraft 80 grammes. » · « Pour les couronnes, commande avant la Toussaint. »
 
-## What they sell
+## Ce qu'ils vendent
 
-Manufacturer-distributor of food packaging: bread bags, pastry bags, pastry boxes, soles, baking paper, crowns and bean of kings.
+Fabricant-distributeur d'emballages alimentaires : sacs à pain, sachets viennoiserie, boîtes pâtissières, semelles, papier cuisson, couronnes et fèves des rois.
 
-Main supplier of: Printed kraft baguette bags (carton of 1000) (`prd_0065`), Paper viennoiserie bags (carton of 1000) (`prd_0066`), White pastry boxes 20 cm (pack of 50) (`prd_0067`), Gold cardboard king cake crowns (pack of 100) (`prd_0068`), Porcelain king cake charms (pack of 100) (`prd_0069`), Gold round cake boards 28 cm (pack of 100) (`prd_0070`), Silicone baking paper 40 × 60 (carton of 500 sheets) (`prd_0071`).
+Fournisseur principal de : Sacs à baguette kraft imprimés (carton 1000) (`prd_0065`), Sachets viennoiserie papier (carton 1000) (`prd_0066`), Boîtes pâtissières blanches 20 cm (lot de 50) (`prd_0067`), Couronnes des rois carton dorées (lot de 100) (`prd_0068`), Fèves des rois en porcelaine (sachet de 100) (`prd_0069`), Semelles dorées rondes 28 cm (lot de 100) (`prd_0070`), Papier cuisson siliconé 40 × 60 (carton 500 feuilles) (`prd_0071`).
 
-## Negotiation
+## Négociation
 
-- Discount of 5 % on reserved wreaths and beans before the 31 October.
+- Remise de 5 % sur les couronnes et fèves réservées avant le 31 octobre.
 
-## What frustrates them
+## Ce qui les agace
 
-- Small troubleshooting orders.
+- Les petites commandes de dépannage.
 
-## A brief history
+## Historique marquant
 
-- **28/05/2019** · Quality · Quality : Gold round cake boards 28 cm (pack of 100)
-- **28/01/2020** · price · annual negotiation 2020
-- **21/01/2021** · price · annual negotiation 2021
-- **20/01/2022** · price · annual negotiation 2022
-- **19/01/2023** · price · annual negotiation 2023
-- **09/01/2024** · price · annual negotiation 2024
-- **26/01/2025** · price · annual negotiation 2025
-- **07/11/2025** · Delivery · Incomplete delivery : ACH-2025-001154
-- **19/12/2025** · Delivery · Incomplete delivery : ACH-2025-001311
-- **08/01/2026** · price · annual negotiation 2026
+- **28/05/2019** · qualité · Qualité : semelles dorées rondes 28 cm (lot de 100)
+- **28/01/2020** · prix · Négociation annuelle 2020
+- **21/01/2021** · prix · Négociation annuelle 2021
+- **20/01/2022** · prix · Négociation annuelle 2022
+- **19/01/2023** · prix · Négociation annuelle 2023
+- **09/01/2024** · prix · Négociation annuelle 2024
+- **26/01/2025** · prix · Négociation annuelle 2025
+- **07/11/2025** · livraison · Livraison incomplète : ACH-2025-001154
+- **19/12/2025** · livraison · Livraison incomplète : ACH-2025-001311
+- **08/01/2026** · prix · Négociation annuelle 2026
 
-Full history: 27 events.
+Historique complet : 27 événements.
 
-## Open cases
+## Dossiers ouverts aujourd'hui
 
-None.
+Aucun.
 
-## How to talk to them
+## Comment leur parler
 
-- Order Mondays, delivery Fridays.
+- Commander le lundi, livraison le vendredi.

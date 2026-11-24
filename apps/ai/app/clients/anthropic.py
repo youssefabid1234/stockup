@@ -1,5 +1,5 @@
 """
-Anthropic Messages API adapt (POST /v1/messages, stream: true, tool_use blocks).
+Anthropic Messages API adapter (POST /v1/messages, stream: true, tool_use blocks).
 
 Differences with OpenAI:
   - the system prompt is a top-level field;

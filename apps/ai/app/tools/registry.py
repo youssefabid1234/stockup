@@ -11,7 +11,7 @@ sent to the model, and its docstring into the description:
 
   - first parameter: the ToolContext (ERP client tagged with the actor);
   - the other parameters are the tool's arguments. snake_case in Python, camelCase for the model
-    (`product_id` → `productId`) Use pydantic `Field(...)` to describe them, `Literal[...]` for enums,
+    (`product_id` → `productId`). Use pydantic `Field(...)` to describe them, `Literal[...]` for enums,
     `X | None = None` for optional ones, a pydantic model for nested objects;
   - the docstring is the description the model reads (lines are joined with spaces): say WHEN to use it;
   - return small JSON-able data (every byte is re-read by the model). Raise to report an error:
@@ -59,7 +59,7 @@ class Tool:
             args = self.args_model.model_validate(arguments)
         except ValidationError as e:
             problems = "; ".join(f"{'.'.join(map(str, err['loc']))}: {err['msg']}" for err in e.errors())
-            raise ValueError(f"Invalid arguments: {problems}") from None
+            raise ValueError(f"Arguments invalides : {problems}") from None
         return await self.fn(ctx, **{name: getattr(args, name) for name in type(args).model_fields})
 
 
@@ -73,19 +73,19 @@ def tool(fn: Callable[..., Awaitable[Any]] | None = None, *, name: str | None = 
         tool_name = name or fn.__name__
         # Fail fast, at import time, on the common mistakes (clear message instead of a silent misbehaviour).
         if not inspect.iscoroutinefunction(fn):
-            raise TypeError(f"@tool {tool_name} : the function must be `async def` (must be async)")
+            raise TypeError(f"@tool {tool_name} : la fonction doit être `async def` (must be async)")
         all_params = list(inspect.signature(fn).parameters.values())
         if not all_params or all_params[0].name != "ctx":
-            raise TypeError(f"@tool {tool_name} : the first parameter must be `ctx: ToolContext`")
+            raise TypeError(f"@tool {tool_name} : le premier paramètre doit être `ctx: ToolContext`")
         params = all_params[1:]  # skip ctx
         for p in params:
             if p.annotation is inspect.Parameter.empty:
-                raise TypeError(f"@tool {tool_name} : the parameter `{p.name}` must have a type, e.g. `{p.name}: str`")
+                raise TypeError(f"@tool {tool_name} : le paramètre `{p.name}` doit avoir un type, ex. `{p.name}: str`")
         description = " ".join(line.strip() for line in inspect.cleandoc(fn.__doc__ or "").splitlines() if line.strip())
         if not description:
-            raise TypeError(f"@tool {tool_name} : add a docstring (this is the description that the model reads)")
+            raise TypeError(f"@tool {tool_name} : ajoutez une docstring (c'est la description que lit le modèle)")
         if tool_name in TOOLS:
-            raise TypeError(f"@tool {tool_name} : a tool with this name already exists")
+            raise TypeError(f"@tool {tool_name} : un outil porte déjà ce nom")
         fields = {
             p.name: (p.annotation, ... if p.default is inspect.Parameter.empty else p.default) for p in params
         }

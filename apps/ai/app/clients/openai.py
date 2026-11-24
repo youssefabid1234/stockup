@@ -99,7 +99,7 @@ def compact_json(value) -> str:
 class OpenAISTT(STTClient):
     name = "openai"
 
-    def __init__(self, api_key: str, model: str = "gpt-4o-mini-transcribe", language: str = "en", http: httpx.AsyncClient | None = None):
+    def __init__(self, api_key: str, model: str = "gpt-4o-mini-transcribe", language: str = "fr", http: httpx.AsyncClient | None = None):
         self.api_key, self.model, self.language, self.http = api_key, model, language, http
 
     async def transcribe(self, audio: bytes, mime: str, hint: str | None = None) -> str:
@@ -112,7 +112,7 @@ class OpenAISTT(STTClient):
             files={"file": (f"audio.{extension_for(mime)}", audio, mime)},
             data=data,
         )
-        await check_ok(res, "openai sttt")
+        await check_ok(res, "openai stt")
         return (res.json().get("text") or "").strip()
 
 
@@ -126,7 +126,7 @@ class OpenAITTS(TTSClient):
         res = await post_stream(
             self.http or http_client(),
             f"{OPENAI_URL}/audio/speech",
-            who="Open",
+            who="openai tts",
             headers={"authorization": f"Bearer {self.api_key}"},
             json={"model": self.model, "voice": voice or self.voice, "input": text, "response_format": "mp3"},
         )

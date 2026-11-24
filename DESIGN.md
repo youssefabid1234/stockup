@@ -43,7 +43,7 @@ Font: Inter (Google Fonts), `font-feature-settings: "cv11","ss01"`; mono: JetBra
 | warning | 38 92% 50% | 40 90% 56% |
 | destructive | 0 74% 52% | 0 72% 60% |
 | info | 214 84% 49% | 213 82% 62% |
-| purple (AI/voice accent) | 262 83% 58% | 258 90% 66% |
+| violet (AI/voice accent) | 262 83% 58% | 258 90% 66% |
 | chart-1..5 | 148 68% 38% · 175 55% 40% · 38 90% 52% · 224 64% 56% · 342 68% 56% | 150 58% 52% · 175 50% 52% · 40 88% 60% · 224 62% 66% · 342 66% 64% |
 
 Shadows: `--shadow-sm: 0 1px 3px 0 #24423317, 0 1px 2px -1px #24423314`, side panel `-8px 0 24px -8px #0000001f` (dark: `#03070580`).

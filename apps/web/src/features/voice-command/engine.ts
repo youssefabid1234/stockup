@@ -159,8 +159,8 @@ function playSpeech(id: number, mime: string, base64: string, text: string) {
     const synth = window.speechSynthesis;
     if (!synth || !text.trim()) return markPerceived(id);
     const u = new SpeechSynthesisUtterance(text);
-    u.lang = "en-GB";
-    const fr = synth.getVoices().find((v) => v.lang?.toLowerCase().startsWith("en"));
+    u.lang = "fr-FR";
+    const fr = synth.getVoices().find((v) => v.lang?.toLowerCase().startsWith("fr"));
     if (fr) u.voice = fr;
     u.rate = 1.1;
     u.onstart = () => markPerceived(id);
@@ -187,15 +187,15 @@ async function run(id: number, text: string) {
     res = await fetch(`${AI_BASE}/command${speak ? "?speak=1" : ""}`, {
       method: "POST",
       headers: { "content-type": "application/json", accept: "text/event-stream" },
-      body: JSON.stringify({ text, actorName: "Voice control" }),
+      body: JSON.stringify({ text, actorName: "Commande vocale" }),
       signal: abort.signal,
     });
   } catch (e) {
     if ((e as Error).name === "AbortError") return;
-    return fail(id, "Service IA unreachable (localhost:4100)");
+    return fail(id, "Service IA injoignable (localhost:4100)");
   }
   if (!res.ok || !res.body) {
-    let msg = `Service IA : error ${res.status}`;
+    let msg = `Service IA : erreur ${res.status}`;
     try { const j = await res.json(); if (j?.error?.message) msg = j.error.message; } catch { /* not JSON */ }
     return fail(id, msg);
   }

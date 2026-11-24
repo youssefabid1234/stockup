@@ -1,6 +1,6 @@
-# Status (one file per person, updated at each sync)
+# Statuts (un fichier par personne, mis à jour à chaque sync)
 
-`docs/team/status/<prénom>.md` — each edits only its own.
+`docs/team/status/<prénom>.md` — chacun n'édite que le sien. Modèle :
 
 ```markdown
 # <prénom> – <chantier>  ·  mis à jour <heure>

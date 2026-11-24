@@ -1,6 +1,6 @@
 """Response shapes of the HTTP API (summaries, details, computed views).
 
-All routes return JSON under /api. Errors: {"error": {"code": str, "message": str}} with 4xx/5xx.
+All routes are JSON under /api. Errors: {"error": {"code": str, "message": str}} with 4xx/5xx.
 """
 
 from __future__ import annotations
@@ -337,7 +337,7 @@ class TagWithCount(TagDef):
 class PriceRuleSummary(PriceRule):
     client_scope_label: str  # "Tous les clients", "Groupe : Gastro", "Le Bistrot du Port"
     product_scope_label: str
-    method_label: str  # "-8 % on catalogue price", "fixed price €24.50", "cost +22 %"
+    method_label: str  # "-8 % sur prix catalogue", "Prix fixe 24,50 €", "Coût +22 %"
     affected_products: int
     affected_clients: int
 
@@ -366,7 +366,7 @@ class ResolvedPrice(Schema):
     margin_pct: float  # (price - cost) / price
     source: PriceSource
     rule_id: Id | None = None
-    explanation: str  # "Gastro -8% crustaceans rule" (Gastro × Crustacean category)..."
+    explanation: str  # "Règle « Gastro -8 % crustacés » (groupe Gastro × catégorie Crustacés)…"
     candidates: list[PriceCandidate]
 
 
@@ -443,7 +443,7 @@ class Receivables(Schema):
 
 
 class ContextEntrySummary(ContextEntry):
-    entity_label: str  # "The Aurélien Table", "Crustaceans"; "Company" for entityType company
+    entity_label: str  # "La Table d'Aurélien", "Crustacés"; "Entreprise" for entityType company
     score: float | None = None  # relevance (only with q)
 
 

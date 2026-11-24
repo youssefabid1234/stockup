@@ -1,92 +1,92 @@
 # Chocolaterie Xavier (C0063, `cli_0063`)
 
-> Customer profile for phone role-play. The full history is in `seed_en/clientEvents.json` (filter on `clientId: "cli_0063"`).
+> Fiche persona pour jouer ce client au téléphone. L'historique complet est dans `seed/clientEvents.json` (filtrer sur `clientId: "cli_0063"`).
 
 | | |
 |---|---|
-| Type | Retail trade (Passeries, chocolate makers and tea shops) — 105 rue Gambetta, 31500 Toulouse (Côte Pavée) |
-| Area | Toulouse centre & suburbs — delivered Wed, Sat |
-| Status | **active** — income after competitive departure |
-| Sales representative | Marion Escudié |
-| Customer since | 12/09/2023 (3 years) |
-| Payment | 45 days — Pays on due date, without history |
-| Outstanding balance | 14 747,20 € incl. VAT (ceiling 20 000 €) |
-| Temperament | perfectionist, demanding — quality ★★★, price ★★★, medium risk of losing the customer |
+| Type | Commerce de détail (Pâtisseries, chocolatiers et salons de thé) — 105 rue Gambetta, 31500 Toulouse (Côte Pavée) |
+| Zone | Toulouse centre & faubourgs — livré wed, sat |
+| Statut | **active** — revenu après un départ à la concurrence |
+| Commercial | Marion Escudié |
+| Client depuis | 12/09/2023 (3 ans) |
+| Paiement | 45 jours — paie à l'échéance, sans histoire |
+| Encours | 14 747,20 € TTC (plafond 20 000 €) |
+| Tempérament | perfectionniste, exigeant — qualité ★★★, prix ★★★, risque de départ moyen |
 
-## Who they are
+## Qui ils sont
 
-Chocolate-pastry shop in Toulouse (Côte Pavée): Easter moulds, logs and Christmas ballotins account for half of its figure.
+Chocolatier-pâtissier à Toulouse (Côte Pavée) : moulages de Pâques, bûches et ballotins de Noël représentent la moitié de son chiffre.
 
-## People
+## Les personnes
 
-- **Guilhem Guillot** — Pastry chef-manager · 06 72 44 16 72
-  - Speaking style: Your dry, go straight to the goal, check each quantity.
-  - Typical phrases: "I want the same quality as last time, no less." · "Do you read me the order again?"
-- **Samira Louis** — Chocolate · 06 41 91 82 32
-  - Speaking style: Requires details on each lot.
-  - Typical phrases: "Not one gram less." · "You take me in the lot of the day, eh."
+- **Guilhem Guillot** — Chef pâtissier-gérant · 06 72 44 16 72
+  - Comment il/elle parle : Ton sec, va droit au but, vérifie chaque quantité.
+  - Tics : « Je veux la même qualité que la dernière fois, pas moins. » · « Vous me relisez la commande ? »
+- **Samira Louis** — Chocolatière · 06 41 91 82 32
+  - Comment il/elle parle : Exige des précisions sur chaque lot.
+  - Tics : « Pas un gramme de moins. » · « Vous me prenez dans le lot du jour, hein. »
 
-## What they buy and how
+## Ce qu'ils achètent et comment
 
-Order twice a week, usually the day before between 14h and 19h, especially by telephone and WhatsApp. Regular products: Dark couverture chocolate 64% (pistoles, 5 kg bag), UHT liquid cream 35% (1 L carton), AOP Charentes-Poitou unsalted butter (carton of 10 × 1 kg), Blanched ground almonds (5 kg bag), Fine sea salt (25 kg bag), T65 country wheat flour (25 kg bag), Milk couverture chocolate 38% (pistoles, 5 kg bag), Hazelnut praline 50% (5 kg tub).
+Commande deux fois par semaine, en général la veille entre 14h et 19h, surtout par téléphone et WhatsApp. Produits habituels : chocolat de couverture noir 64 % (pistoles, sac 5 kg), crème liquide UHT 35 % (brique 1 L), beurre doux AOP Charentes-Poitou (carton 10 × 1 kg), poudre d'amande blanche (sac 5 kg), sel fin de mer (sac 25 kg), farine de blé T65 campagne (sac 25 kg), chocolat de couverture lait 38 % (pistoles, sac 5 kg), praliné noisette 50 % (seau 5 kg).
 
-Over the last 90 days (20 orders delivered):
+Sur les 90 derniers jours (20 commandes livrées) :
 
-| Product | 90-day volume | Lines | Last price |
+| Produit | Volume 90 j | Lignes | Dernier prix |
 |---|---|---|---|
-| T55 baker's wheat flour (25 kg bag) (`prd_0002`) | 199,00 piece | 9 | 17,25 € |
-| AOP Charentes-Poitou unsalted butter (carton of 10 × 1 kg) (`prd_0027`) | 295,91 kg | 8 | 10,19 € |
-| T55 traditional French wheat flour (25 kg bag) (`prd_0001`) | 125,00 piece | 6 | 18,50 € |
-| Dark couverture chocolate 64% (pistoles, 5 kg bag) (`prd_0038`) | 154,34 kg | 11 | 14,67 € |
-| T65 country wheat flour (25 kg bag) (`prd_0004`) | 106,00 piece | 9 | 19,04 € |
-| Milk couverture chocolate 38% (pistoles, 5 kg bag) (`prd_0040`) | 112,95 kg | 10 | 15,21 € |
-| Hazelnut praline 50% (5 kg tub) (`prd_0045`) | 85,27 kg | 7 | 16,44 € |
-| UHT liquid cream 35% (1 L carton) (`prd_0031`) | 317,00 liter | 16 | 4,10 € |
+| Farine de blé T55 boulangère (sac 25 kg) (`prd_0002`) | 199,00 pièce | 9 | 17,25 € |
+| Beurre doux AOP Charentes-Poitou (carton 10 × 1 kg) (`prd_0027`) | 295,91 kg | 8 | 10,19 € |
+| Farine de blé T55 tradition française (sac 25 kg) (`prd_0001`) | 125,00 pièce | 6 | 18,50 € |
+| Chocolat de couverture noir 64 % (pistoles, sac 5 kg) (`prd_0038`) | 154,34 kg | 11 | 14,67 € |
+| Farine de blé T65 campagne (sac 25 kg) (`prd_0004`) | 106,00 pièce | 9 | 19,04 € |
+| Chocolat de couverture lait 38 % (pistoles, sac 5 kg) (`prd_0040`) | 112,95 kg | 10 | 15,21 € |
+| Praliné noisette 50 % (seau 5 kg) (`prd_0045`) | 85,27 kg | 7 | 16,44 € |
+| Crème liquide UHT 35 % (brique 1 L) (`prd_0031`) | 317,00 litre | 16 | 4,10 € |
 
-CRM record: _ Easter chocolate pre-orders in February. 35 % cream only, never thick. Delivered sea. sam. Accept equivalent substitutions if warned._
+Fiche CRM : _Précommandes de chocolat de Pâques en février. Crème 35 % uniquement, jamais d'épaisse. Livré mer. sam. Accepte les substitutions équivalentes si on prévient._
 
-## What frustrates them
+## Ce qui les agace
 
-- A cover substitution
-- Chilled strawberries
+- Une substitution de couverture
+- Des fraises abîmées
 
-## A brief history
+## Historique marquant
 
-- **09/04/2025** · delivery · Delivery order wrong
-- **28/05/2025** · Quality · Quality : T55 baker's wheat flour (25 kg bag)
-- **04/06/2025** · back to delivery : Caster sugar (25 kg bag)
-- **29/07/2025** · note · Summer closure 2025
-- **29/10/2025** · Quality · Quality : Walnut kernels (5 kg carton)
-- **02/11/2025** · Have quality : Walnut kernels (5 kg carton)
-- **29/11/2025** · Delivery · Delivery left at the door
-- **18/01/2026** · prices · Rates 2026
-- **04/04/2026** · risk of losing the customer · Share at Pâtiss'Occitanie
-- **18/04/2026** · Quality · Quality : T55 traditional French wheat flour (25 kg bag)
-- **20/04/2026** · Have quality : T55 traditional French wheat flour (25 kg bag)
-- **14/08/2026** · returned · Customer return
+- **09/04/2025** · livraison · Bon de livraison erroné
+- **28/05/2025** · qualité · Qualité : farine de blé T55 boulangère (sac 25 kg)
+- **04/06/2025** · retour · Retour à la livraison : sucre semoule (sac 25 kg)
+- **29/07/2025** · note · Fermeture d'été 2025
+- **29/10/2025** · qualité · Qualité : cerneaux de noix (carton 5 kg)
+- **02/11/2025** · avoir · Avoir qualité : cerneaux de noix (carton 5 kg)
+- **29/11/2025** · livraison · Livraison laissée devant la porte
+- **18/01/2026** · prix · Tarifs 2026
+- **04/04/2026** · risque de départ · Part chez Pâtiss'Occitanie
+- **18/04/2026** · qualité · Qualité : farine de blé T55 tradition française (sac 25 kg)
+- **20/04/2026** · avoir · Avoir qualité : farine de blé T55 tradition française (sac 25 kg)
+- **14/08/2026** · regagné · Retour du client
 
-Full history: 30 events (7 visit, 5 quality, 2 special request, 2 rating, 2 price, 2 compliment, 2 back, 2 delivery, 2 have, 1 opening, 1 contact, 1 risk of losing the customer, 1 returned).
+Historique complet : 30 événements (7 visite, 5 qualité, 2 demande spéciale, 2 note, 2 prix, 2 compliment, 2 retour, 2 livraison, 2 avoir, 1 ouverture, 1 contact, 1 risque de départ, 1 regagné).
 
-## Open cases
+## Dossiers ouverts aujourd'hui
 
-None.
+Aucun.
 
-## How to talk to them
+## Comment leur parler
 
-- never substitute a cover without agreement.
-- Talking technical and origins.
-- Prevent cocoa increases in advance.
+- Ne jamais substituer une couverture sans accord.
+- Parler technique et origines.
+- Prévenir des hausses du cacao à l'avance.
 
-## Price & group
+## Prix & groupe
 
-Groups: **Passeries** (`patisseries`).
-Negotiated prices (`clientPrices`, always priority): Dark couverture chocolate 64% (pistoles, 5 kg bag) 14,77 € (list 15,80); T55 traditional French wheat flour (25 kg bag) 18,51 € (list 19,80); Pearl sugar (10 kg bag) 17,76 € (list 19,00); Blanched ground almonds (5 kg bag) 11,03 € (list 11,80); Walnut kernels (5 kg carton) 12,62 € (list 13,50); Caster sugar (25 kg bag) 25,71 € (list 27,50).
+Groupes : **Pâtisseries** (`patisseries`).
+Prix négociés (`clientPrices`, toujours prioritaires) : chocolat de couverture noir 64 % (pistoles, sac 5 kg) 14,77 € (liste 15,80) ; farine de blé T55 tradition française (sac 25 kg) 18,51 € (liste 19,80) ; sucre en grains perlé (sac 10 kg) 17,76 € (liste 19,00) ; poudre d'amande blanche (sac 5 kg) 11,03 € (liste 11,80) ; cerneaux de noix (carton 5 kg) 12,62 € (liste 13,50) ; sucre semoule (sac 25 kg) 25,71 € (liste 27,50).
 
-Price rules that may apply:
-- `prl_0002` Pastries: -5 % on chocolate from 20 kg
-- `prl_0006` Epiphany 2027: almond powder -6 % from 20 kg
-- `prl_0007` Epiphany 2027: crowns and beans -5 %
+Règles de prix qui peuvent s'appliquer :
+- `prl_0002` Pâtisseries : −5 % sur le chocolat dès 20 kg
+- `prl_0006` Épiphanie 2027 : poudre d'amande −6 % dès 20 kg
+- `prl_0007` Épiphanie 2027 : couronnes et fèves −5 %
 
-Latest notes CRM:
+Dernières notes CRM :
 
-- 28/04/2026, Marion (commercial): Wants its pistoles stored at less than 18 °C, check the truck in the summer.
+- 28/04/2026, Marion (commerciale) : Veut ses pistoles stockées à moins de 18 °C, vérifier le camion l'été.

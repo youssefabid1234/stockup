@@ -12,43 +12,43 @@ export interface NavItem { to: string; label: string; icon: LucideIcon; keywords
 export interface NavGroup { label?: string; items: NavItem[] }
 
 export const NAV: NavGroup[] = [
-  { items: [{ to: "/", label: "Home", icon: Home, keywords: "dashboard tableau de bord" }] },
+  { items: [{ to: "/", label: "Accueil", icon: Home, keywords: "dashboard tableau de bord" }] },
   {
-    label: "Sales",
+    label: "Ventes",
     items: [
-      { to: "/orders", label: "Orders", icon: ShoppingCart, keywords: "sales order" },
-      { to: "/clients", label: "Customers", icon: Users, keywords: "client restaurant" },
-      { to: "/prices", label: "Pricing", icon: BadgeEuro, keywords: "prices rules discount price negotiated grid simulator margin" },
-      { to: "/history", label: "Account history", icon: History, keywords: "historical claim dispute back to have relation events supplier" },
+      { to: "/orders", label: "Commandes", icon: ShoppingCart, keywords: "ventes commande" },
+      { to: "/clients", label: "Clients", icon: Users, keywords: "client restaurant" },
+      { to: "/prices", label: "Prix", icon: BadgeEuro, keywords: "tarifs règles remise prix négocié grille simulateur marge" },
+      { to: "/history", label: "Historique", icon: History, keywords: "historique réclamation litige retour avoir relation événements fournisseur" },
     ],
   },
   {
-    label: "Purchasing and stock",
+    label: "Achats & stock",
     items: [
-      { to: "/products", label: "Products", icon: Package, keywords: "catalogue article" },
-      { to: "/stock", label: "Stocks", icon: Warehouse, keywords: "inventory lots" },
-      { to: "/purchase-orders", label: "Purchases", icon: Boxes, keywords: "order supplier" },
-      { to: "/suppliers", label: "Suppliers", icon: Building2, keywords: "supplier" },
+      { to: "/products", label: "Produits", icon: Package, keywords: "catalogue article" },
+      { to: "/stock", label: "Stocks", icon: Warehouse, keywords: "lots inventaire" },
+      { to: "/purchase-orders", label: "Achats", icon: Boxes, keywords: "commande fournisseur" },
+      { to: "/suppliers", label: "Fournisseurs", icon: Building2, keywords: "fournisseur" },
     ],
   },
   {
     label: "Finance",
     items: [
-      { to: "/receivables", label: "Outstanding balance", icon: Scale, keywords: "outstanding old-age balance delay recovery unpaid debt" },
-      { to: "/invoices", label: "Invoices", icon: FileText, keywords: "unpaid invoice" },
-      { to: "/payments", label: "Payments", icon: Wallet, keywords: "settlement" },
+      { to: "/receivables", label: "Encours", icon: Scale, keywords: "encours balance âgée retard relance créances dso impayés" },
+      { to: "/invoices", label: "Factures", icon: FileText, keywords: "facture impayé" },
+      { to: "/payments", label: "Paiements", icon: Wallet, keywords: "règlement encaissement" },
     ],
   },
-  { label: "Logistics", items: [{ to: "/routes", label: "Delivery routes", icon: Truck, keywords: "Road delivery" }] },
+  { label: "Logistique", items: [{ to: "/routes", label: "Tournées", icon: Truck, keywords: "livraison route" }] },
   {
-    label: "AI",
+    label: "IA",
     items: [
       { to: "#assistant", label: "Assistant", icon: Sparkles, keywords: "chat ia" },
-      { to: "/voice", label: "Voice", icon: AudioLines, keywords: "Voice call agent" },
-      { to: "/context", label: "Context", icon: BookOpen, keywords: "context ia factsheets knowledge memory rules procedures preferences" },
+      { to: "/voice", label: "Voix", icon: AudioLines, keywords: "agent vocal appel" },
+      { to: "/context", label: "Contexte", icon: BookOpen, keywords: "contexte ia fiches connaissances mémoire règles procédures préférences" },
     ],
   },
-  { items: [{ to: "/activity", label: "Activity", icon: Activity, keywords: "Newspaper events" }, { to: "/groups", label: "Groups", icon: Tags, keywords: "groups tags labels segments customers products suppliers" }] },
+  { items: [{ to: "/activity", label: "Activité", icon: Activity, keywords: "journal événements" }, { to: "/groups", label: "Groupes", icon: Tags, keywords: "groupes tags étiquettes segments clients produits fournisseurs" }] },
 ];
 
 export const NAV_ITEMS: NavItem[] = NAV.flatMap((g) => g.items);

@@ -6,7 +6,7 @@ Jev (TypeSafe AI's decision model, recommended by Stockline's CTO) takes two sma
 
   confirm_order   REPLACES the kit's tool of the same name (same name: every scenario expecting confirm_order still
                   works). Before confirming, Jev checks the caller's exact answer is a real yes to the read-back:
-                  "Yes but put four," "yes... well wait," "how much?" are not. Blocking ERP
+                  « oui mais mettez-en quatre », « oui… enfin attendez », « c'est combien ? » are not. Blocking ERP
                   warnings (client blocked, credit limit, no route, missing stock) also stop it. No Jev key / Jev
                   down / no answer given → the model's judgement is kept (the kit's behaviour).
   resolve_product « tourage », « poudre », « du lait »… → the catalogue candidates, and Jev picks one using what the
@@ -29,13 +29,13 @@ TOOLS.pop("confirm_order", None)  # replaced below (this module is imported only
 async def confirm_order(
     ctx: ToolContext,
     order_id: str,
-    client_answer: str | None = Field(None, description="The answer EXACTE from the client to your review, word for word (e.g. \"yes it's good\")"),
-    read_back: str | None = Field(None, description="The rereading phrase you told her"),
+    client_answer: str | None = Field(None, description="La réponse EXACTE du client à ta relecture, mot pour mot (ex. « oui c'est bon »)"),
+    read_back: str | None = Field(None, description="La phrase de relecture que tu lui as dite"),
 ) -> dict:
     """
-    Confirm an order (reserves stock, affects tour) AFTER the rereading. Always give client_answer (its answer
-    a verifier ensures that it is a true yes. If confirmed=false, follow "next" and do not try again
-    without further response from the customer. Confirm an order after an explicit yes.
+    Confirme une commande (réserve le stock, affecte la tournée) APRÈS la relecture. Donne toujours client_answer (sa réponse
+    mot pour mot) : un vérificateur s'assure que c'est un vrai oui. Si confirmed=false, suis « next » et ne réessaie pas
+    sans nouvelle réponse du client. Confirm an order after an explicit yes.
     """
     from app.agent.rules_order import JEV_YES_QUESTIONS, NEXT_STEP, WARNINGS_FOR_CALLER, classify_answer
     from app.clients import get_jev_client
@@ -47,7 +47,7 @@ async def confirm_order(
             "confirmed": False,
             "decision": "blocked",
             "blockedBy": [w["code"] for w in blocking],
-            "next": "Don't confirm: review_order and tell the client his \"alerts\" simply.",
+            "next": "Ne confirme pas : appelle review_order et dis au client ses « alerts » simplement.",
         }
 
     check: dict = {"decidedBy": "agent"}
@@ -55,7 +55,7 @@ async def confirm_order(
     if jev and client_answer:
         started = time.perf_counter()
         try:
-            state = {"question_posee": read_back or "Do you want me to validate the order?", "reponse_du_client": client_answer}
+            state = {"question_posee": read_back or "Je vous valide la commande ?", "reponse_du_client": client_answer}
             r = await jev.ask(state, JEV_YES_QUESTIONS)
             accord, change = r["answers"]["accord"]["noul"], r["answers"]["change"]["noul"]
             decision = classify_answer(accord, change)
@@ -73,7 +73,7 @@ async def confirm_order(
         except Exception as e:  # Jev down / slow: keep the model's judgement (the kit's behaviour)
             check = {"decidedBy": "agent", "jevError": str(e)[:120]}
     if check["decidedBy"] == "agent":
-        print(f"[jev] confirm_order without Jev (response given: {client_answer!r})", flush=True)
+        print(f"[jev] confirm_order sans Jev (réponse donnée : {client_answer!r})", flush=True)
     return {"confirmed": True, **check, **summarize_order(await ctx.erp.post(f"/api/orders/{enc(order_id)}/confirm"))}
 
 
@@ -85,12 +85,12 @@ def _label(option: str) -> str:
 async def resolve_product(
     ctx: ToolContext,
     client_id: str,
-    said: str = Field(description="The product as the customer says: \"turning\", \"powder\", \"milk 38\"..."),
+    said: str = Field(description="Le produit tel que dit par le client : « tourage », « de la poudre », « du lait 38 »…"),
 ) -> dict:
     """
-    Find the product of the catalogue that the customer means, even with an ambiguous word ("turning", "powder", "milk",
-    "meal"): candidates from the catalogue + what the customer usually buys, and an auditor chooses. If "ask" is
-    Now, ask this question instead of guessing. Resolve a Spoken product name to one catalog product.
+    Trouve le produit du catalogue que le client veut dire, même avec un mot ambigu (« tourage », « poudre », « lait »,
+    « farine ») : candidats du catalogue + ce que le client achète d'habitude, et un vérificateur choisit. Si « ask » est
+    présent, pose cette question au lieu de deviner. Resolve a spoken product name to one catalogue product.
     """
     from app.agent.rules_order import PICK_MIN, alias_match, short_name
     from app.clients import get_jev_client
@@ -108,14 +108,14 @@ async def resolve_product(
     )
     candidates = [h for h in hits if h.get("type") == "product"][:6]
     if not candidates:
-        return {"found": False, "ask": f"I do not find \" {said} » in the catalogue: can you describe it differently?"}
+        return {"found": False, "ask": f"Je ne trouve pas « {said} » dans le catalogue : pouvez-vous me le décrire autrement ?"}
     if len(candidates) == 1:
         return {"found": True, "productId": candidates[0]["id"], "name": candidates[0]["label"], "decidedBy": "search"}
 
     usual_ids = {u["productId"] for u in usual or []}
     options = {
         c["id"]: " — ".join(
-            filter(None, (c.get("label"), c.get("sublabel"), "usually purchased by this customer" if c["id"] in usual_ids else None))
+            filter(None, (c.get("label"), c.get("sublabel"), "acheté d'habitude par ce client" if c["id"] in usual_ids else None))
         )
         for c in candidates
     }
@@ -129,17 +129,17 @@ async def resolve_product(
             "ce_que_dit_le_client": said,
             "ce_que_le_client_achete_d_habitude": [short_name(u["productName"]) for u in (usual or [])[:10]],
         }
-        d = await jev.choose(state, "What product does the customer ask for in the catalogue?", options)
+        d = await jev.choose(state, "Quel produit du catalogue le client demande-t-il ?", options)
     except Exception as e:  # Jev down: the agent asks with the candidates
         return {"found": False, "jevError": str(e)[:120], "candidates": listed}
     ms = int((time.perf_counter() - started) * 1000)
-    print(f"[jev] resolve_product « {said} » → {_label(options[d.choice])} (trust {d.confidence:.2f}, {ms} ms)", flush=True)
+    print(f"[jev] resolve_product « {said} » → {_label(options[d.choice])} (confiance {d.confidence:.2f}, {ms} ms)", flush=True)
     if d.confidence >= PICK_MIN:
         return {"found": True, "productId": d.choice, "name": _label(options[d.choice]), "decidedBy": "jev",
                 "confidence": round(d.confidence, 2), "jevMs": ms,
-                "sayName": "Choose according to his habits: name this product in your answer so that he can correct."}
+                "sayName": "Choisi d'après ses habitudes : nomme ce produit dans ta réponse pour qu'il puisse corriger."}
     top = [pid for pid, _ in sorted(d.probabilities.items(), key=lambda kv: -kv[1])[:3] if pid in options]
     names = [short_name(_label(options[pid])) for pid in top]
-    ask = f"You mean {', '.join(names[:-1])} ou {names[-1]} ?" if len(names) > 1 else None
+    ask = f"Vous voulez dire {', '.join(names[:-1])} ou {names[-1]} ?" if len(names) > 1 else None
     return {"found": False, "decidedBy": "jev", "confidence": round(d.confidence, 2), "jevMs": ms,
             "candidates": [{"productId": pid, "name": _label(options[pid])} for pid in top], **({"ask": ask} if ask else {})}

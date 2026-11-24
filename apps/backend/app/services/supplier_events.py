@@ -15,22 +15,22 @@ from app.services.client_events import ACTOR_AUTHOR, apply_patch, event_at, filt
 SUPPLIER_ISSUE_TYPES = {"quality_issue", "delivery_issue", "shortage", "return", "dispute", "invoice_issue"}
 
 SUPPLIER_EVENT_TYPE_LABEL = {
-    "onboarding": "Reference",
-    "call": "Call",
-    "visit": "Visit",
-    "quality_issue": "Quality problem",
-    "delivery_issue": "Delivery problem",
-    "shortage": "Supply cut",
-    "return": "Return supplier",
-    "credit_note": "Having",
-    "dispute": "Dispute",
-    "price_change": "Price change",
-    "price_negotiation": "Tariff negotiations",
-    "invoice_issue": "Invoice problem",
-    "payment": "Payment incident",
-    "contract": "Contract",
+    "onboarding": "Référencement",
+    "call": "Appel",
+    "visit": "Visite",
+    "quality_issue": "Problème qualité",
+    "delivery_issue": "Problème de livraison",
+    "shortage": "Rupture d'approvisionnement",
+    "return": "Retour fournisseur",
+    "credit_note": "Avoir",
+    "dispute": "Litige",
+    "price_change": "Changement de prix",
+    "price_negotiation": "Négociation tarifaire",
+    "invoice_issue": "Problème de facture",
+    "payment": "Incident de paiement",
+    "contract": "Contrat",
     "certification": "Certification",
-    "contact_change": "Change of contact",
+    "contact_change": "Changement de contact",
     "compliment": "Compliment",
     "note": "Note",
 }
@@ -69,7 +69,7 @@ def _check_links(supplier_id: str, input: Doc) -> None:
     if input.get("purchaseOrderId"):
         po = crud.purchase_orders.require(input["purchaseOrderId"])
         if po["supplierId"] != supplier_id:
-            raise bad_request("purchase_order_mismatch", f"The order {po['number']} does not belong to this supplier")
+            raise bad_request("purchase_order_mismatch", f"La commande {po['number']} n'appartient pas à ce fournisseur")
     for pid in input.get("productIds") or []:
         crud.products.require(pid)
 
@@ -98,7 +98,7 @@ def create_supplier_event(ctx: Ctx, supplier_id: str, input: Doc) -> Doc:
     })  # fmt: skip
     crud.supplier_events.put(ev)
     log_event(ctx, "supplier_event.created", "supplier", supplier_id,
-              f"{SUPPLIER_EVENT_TYPE_LABEL[ev['type']]} registered for supplier {supplier['name']} : « {ev['title']} »")  # fmt: skip
+              f"{SUPPLIER_EVENT_TYPE_LABEL[ev['type']]} enregistré(e) pour le fournisseur {supplier['name']} : « {ev['title']} »")  # fmt: skip
     return ev
 
 
@@ -111,8 +111,8 @@ def update_supplier_event(ctx: Ctx, id: str, patch: Doc) -> Doc:
     if resolving:
         how = f" — {updated['resolution'][:80]}" if updated.get("resolution") else ""
         log_event(ctx, "supplier_event.resolved", "supplier", ev["supplierId"],
-                  f"{label} resolved for supplier {supplier['name']} : « {updated['title']} »{how}")  # fmt: skip
+                  f"{label} résolu(e) pour le fournisseur {supplier['name']} : « {updated['title']} »{how}")  # fmt: skip
     else:
         log_event(ctx, "supplier_event.updated", "supplier", ev["supplierId"],
-                  f"Supplier history {supplier['name']} amended: \" {updated['title']} » ({', '.join(patch)})")  # fmt: skip
+                  f"Historique du fournisseur {supplier['name']} modifié : « {updated['title']} » ({', '.join(patch)})")  # fmt: skip
     return updated

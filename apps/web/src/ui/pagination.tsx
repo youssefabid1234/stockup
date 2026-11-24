@@ -167,7 +167,7 @@ export function pageItems(page: number, pageCount: number): (number | "…")[] {
   return out;
 }
 
-const nf = new Intl.NumberFormat("en-GB");
+const nf = new Intl.NumberFormat("fr-FR");
 
 /**
  * Footer bar: [children (summary / totals)] ……… 1–100 sur 2 192  ‹ 1 2 3 … 22 ›
@@ -193,7 +193,7 @@ export function Pagination<T>({ pagination: pg, children, inset, sticky, classNa
           {nf.format(pg.from)}–{nf.format(pg.to)} <span className="text-muted-foreground/80">sur</span> {nf.format(pg.total)}
         </span>
         <div className="flex items-center gap-0.5">
-          <IconButton icon={ChevronLeft} label="Previous page" size="sm" disabled={pg.page <= 1} onClick={() => pg.setPage(pg.page - 1)} />
+          <IconButton icon={ChevronLeft} label="Page précédente" size="sm" disabled={pg.page <= 1} onClick={() => pg.setPage(pg.page - 1)} />
           {pageItems(pg.page, pg.pageCount).map((p, i) =>
             p === "…" ? (
               <span key={`gap-${i}`} className="w-5 text-center text-[12px]" aria-hidden>…</span>
@@ -214,7 +214,7 @@ export function Pagination<T>({ pagination: pg, children, inset, sticky, classNa
               </button>
             ),
           )}
-          <IconButton icon={ChevronRight} label="Next page" size="sm" disabled={pg.page >= pg.pageCount} onClick={() => pg.setPage(pg.page + 1)} />
+          <IconButton icon={ChevronRight} label="Page suivante" size="sm" disabled={pg.page >= pg.pageCount} onClick={() => pg.setPage(pg.page + 1)} />
         </div>
       </nav>
     </div>

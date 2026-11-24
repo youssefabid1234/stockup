@@ -1,12 +1,12 @@
 # team-12 — Le Fournil Occitan
 
-Your business: **Le Fournil Occitan**. Its data is in `./data`.
-Your keys are in .env: private, do not share it and do not commit it.
+Votre entreprise : **Le Fournil Occitan**. Ses données sont dans `./data`.
+Vos clés sont dans .env : privé, ne le partagez pas et ne le committez pas.
 
-1. Follow **SETUP.md**: install Docker (-10 min), then `make setup` in this folder → http://localhost:5173
-2. Read **BRIEF.md** (the challenge), then METIER.md and ERP.md. Code Agent? Give him AGENTS.md.
-3. Create your private repo and add the jury (SETUP.md, step 4).
+1. Suivez **SETUP.md** : installer Docker (≈ 10 min), puis `make setup` dans ce dossier → http://localhost:5173
+2. Lisez **BRIEF.md** (le défi), puis METIER.md et ERP.md. Agent de code ? Donnez-lui AGENTS.md.
+3. Créez votre repo privé et ajoutez le jury (SETUP.md, étape 4).
 
-An unknown word? **GLOSSAIRE.md** · Any question? **FAQ.md**
+Un mot inconnu ? **GLOSSAIRE.md** · Une question ? **FAQ.md**
 
-Team Stockline is on site.
+Bloqués ? L'équipe Stockline est sur place.

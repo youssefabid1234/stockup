@@ -1,88 +1,88 @@
 # Pause Gourmande Toulouse (Saint-Cyprien) (C0092, `cli_0092`)
 
-> Customer profile for phone role-play. The full history is in `seed_en/clientEvents.json` (filter on `clientId: "cli_0092"`).
+> Fiche persona pour jouer ce client au téléphone. L'historique complet est dans `seed/clientEvents.json` (filtrer sur `clientId: "cli_0092"`).
 
 | | |
 |---|---|
-| Type | Brasserie (Sandwicheries and snacks) — 43 rue Gambetta, 31300 Toulouse (Saint-Cyprien) |
-| Area | Toulouse centre & suburbs — delivered Mon, Wed, Fri |
-| Status | **active** — regular customer |
-| Sales representative | Karim Belkacem |
-| Customer since | 10/10/2013 (13 years) |
-| Payment | 30 days — SEPA direct debit, no delay |
-| Outstanding balance | 5 293,33 € incl. VAT (ceiling 8 000 €) |
-| Temperament | economic — quality ★☆☆, price ★★★, medium risk of losing the customer |
+| Type | Brasserie (Sandwicheries et franchises de snacking) — 43 rue Gambetta, 31300 Toulouse (Saint-Cyprien) |
+| Zone | Toulouse centre & faubourgs — livré mon, wed, fri |
+| Statut | **active** — client régulier |
+| Commercial | Karim Belkacem |
+| Client depuis | 10/10/2013 (13 ans) |
+| Paiement | 30 jours — prélèvement SEPA, aucun retard |
+| Encours | 5 293,33 € TTC (plafond 8 000 €) |
+| Tempérament | économe — qualité ★☆☆, prix ★★★, risque de départ moyen |
 
-## Who they are
+## Qui ils sont
 
-Snacks point of sale in Toulouse (Saint-Cyprien), cooking raw pastries and sandwiches. Pascal Leroy orders pains au chocolat by carton from 140.
+Point de vente de snacking à Toulouse (Saint-Cyprien), cuisson de viennoiseries crues et sandwiches. Pascal Leroy commande les chocolatines par carton de 140.
 
-## People
+## Les personnes
 
-- **Pascal Leroy** — manager · 07 62 51 82 40 · pascal@pausegourmandetoulousesa.fr
-  - Speaking style: Command at the fairest, small quantities.
-  - Typical phrases: "How much is a kilo, brought back?" · "Do you have lot ends?"
+- **Pascal Leroy** — Gérant · 07 62 51 82 40 · pascal@pausegourmandetoulousesa.fr
+  - Comment il/elle parle : Commande au plus juste, petites quantités.
+  - Tics : « C'est combien au kilo, ramené ? » · « Vous avez des fins de lot ? »
 
-## What they buy and how
+## Ce qu'ils achètent et comment
 
-Order three times a week, usually the day before between 14h and 18h, mainly via web portal and telephone. Regular products: Frozen par-baked baguette 280 g (carton of 60), Paper viennoiserie bags (carton of 1000), Porcelain king cake charms (pack of 100), Raw frozen all-butter pain au chocolat 75 g (carton of 140), Assorted raw mini viennoiseries (carton of 210), Frozen raspberry purée (1 kg tray), Gold cardboard king cake crowns (pack of 100), White pastry boxes 20 cm (pack of 50).
+Commande trois fois par semaine, en général la veille entre 14h et 18h, surtout par portail web et téléphone. Produits habituels : baguette précuite surgelée 280 g (carton 60), sachets viennoiserie papier (carton 1000), fèves des rois en porcelaine (sachet de 100), chocolatine pur beurre crue surgelée 75 g (carton 140), assortiment mini-viennoiseries crues (carton 210), purée de framboise surgelée (barquette 1 kg), couronnes des rois carton dorées (lot de 100), boîtes pâtissières blanches 20 cm (lot de 50).
 
-Over the last 90 days (28 orders delivered):
+Sur les 90 derniers jours (28 commandes livrées) :
 
-| Product | 90-day volume | Lines | Last price |
+| Produit | Volume 90 j | Lignes | Dernier prix |
 |---|---|---|---|
-| Raw frozen all-butter pain au chocolat 75 g (carton of 140) (`prd_0054`) | 90,00 box | 13 | 49,80 € |
-| Frozen par-baked baguette 280 g (carton of 60) (`prd_0058`) | 96,00 box | 12 | 24,00 € |
-| UHT liquid cream 35% (1 L carton) (`prd_0031`) | 482,00 liter | 19 | 4,10 € |
-| Assorted raw mini viennoiseries (carton of 210) (`prd_0056`) | 37,00 box | 11 | 46,00 € |
-| White pastry boxes 20 cm (pack of 50) (`prd_0067`) | 114,00 box | 16 | 14,50 € |
-| Paper viennoiserie bags (carton of 1000) (`prd_0066`) | 32,00 box | 9 | 17,50 € |
-| Frozen raspberry purée (1 kg tray) (`prd_0059`) | 46,35 kg | 7 | 9,40 € |
+| Chocolatine pur beurre crue surgelée 75 g (carton 140) (`prd_0054`) | 90,00 colis | 13 | 49,80 € |
+| Baguette précuite surgelée 280 g (carton 60) (`prd_0058`) | 96,00 colis | 12 | 24,00 € |
+| Crème liquide UHT 35 % (brique 1 L) (`prd_0031`) | 482,00 litre | 19 | 4,10 € |
+| Assortiment mini-viennoiseries crues (carton 210) (`prd_0056`) | 37,00 colis | 11 | 46,00 € |
+| Boîtes pâtissières blanches 20 cm (lot de 50) (`prd_0067`) | 114,00 colis | 16 | 14,50 € |
+| Sachets viennoiserie papier (carton 1000) (`prd_0066`) | 32,00 colis | 9 | 17,50 € |
+| Purée de framboise surgelée (barquette 1 kg) (`prd_0059`) | 46,35 kg | 7 | 9,40 € |
 
-CRM record : _Order on the gate. Wants a fixed price card over the year. Delivered Mon. Fri. Sea. Refuses substitutions: call before any modification._
+Fiche CRM : _Commande sur le portail. Veut un prix au carton fixe sur l'année. Livré lun. mer. ven. Refuse les substitutions : appeler avant toute modification._
 
-## What frustrates them
+## Ce qui les agace
 
-- Increases during the year
-- Frozen Cardboard
-- Delivery after 7h
+- Les hausses en cours d'année
+- Un carton décongelé
+- Une livraison après 7h
 
-## A brief history
+## Historique marquant
 
-- **28/11/2023** · special request · Holidays 2023 : volume reservation
-- **16/01/2024** · prices · Rates 2024
-- **27/03/2024** · Quality · Quality : Paper viennoiserie bags (carton of 1000)
-- **03/06/2024** · Quality · Quality : UHT liquid cream 35% (1 L carton)
-- **07/06/2024** · Have quality : UHT liquid cream 35% (1 L carton)
-- **19/07/2024** · note · Summer closure 2024
-- **17/07/2025** · note · Summer closure 2025
-- **03/09/2025** · Delivery late
-- **23/01/2026** · prices · Rates 2026
-- **08/03/2026** · map · New spring map
-- **23/07/2026** · note · Summer closure 2026
-- **26/09/2026** · map · Autumn card
+- **28/11/2023** · demande spéciale · Fêtes 2023 : réservation de volumes
+- **16/01/2024** · prix · Tarifs 2024
+- **27/03/2024** · qualité · Qualité : sachets viennoiserie papier (carton 1000)
+- **03/06/2024** · qualité · Qualité : crème liquide UHT 35 % (brique 1 L)
+- **07/06/2024** · avoir · Avoir qualité : crème liquide UHT 35 % (brique 1 L)
+- **19/07/2024** · note · Fermeture d'été 2024
+- **17/07/2025** · note · Fermeture d'été 2025
+- **03/09/2025** · livraison · Livraison en retard
+- **23/01/2026** · prix · Tarifs 2026
+- **08/03/2026** · carte · Nouvelle carte de printemps
+- **23/07/2026** · note · Fermeture d'été 2026
+- **26/09/2026** · carte · Carte d'automne
 
-Full history: 42 events (10 visit, 7 call, 5 compliment, 5 note, 4 special request, 3 quality, 3 price, 2 card, 1 opening, 1 have, 1 delivery).
+Historique complet : 42 événements (10 visite, 7 appel, 5 compliment, 5 note, 4 demande spéciale, 3 qualité, 3 prix, 2 carte, 1 ouverture, 1 avoir, 1 livraison).
 
-## Open cases
+## Dossiers ouverts aujourd'hui
 
-None.
+Aucun.
 
-## How to talk to them
+## Comment leur parler
 
-- Talk about price to cardboard and rotation.
-- Confirm in writing.
+- Parler prix au carton et rotation.
+- Confirmer par écrit.
 
-## Price & group
+## Prix & groupe
 
-Groups: **Snacking** (`snacking`).
-Negotiated prices (`clientPrices`, always priority): Gold cardboard king cake crowns (pack of 100) 12,73 € (list 13,00); Porcelain king cake charms (pack of 100) 15,67 € (list 16,00).
+Groupes : **Snacking** (`snacking`).
+Prix négociés (`clientPrices`, toujours prioritaires) : couronnes des rois carton dorées (lot de 100) 12,73 € (liste 13,00) ; fèves des rois en porcelaine (sachet de 100) 15,67 € (liste 16,00).
 
-Price rules that may apply:
-- `prl_0005` Snacking: cost + 20 % on pains au chocolat
-- `prl_0006` Epiphany 2027: almond powder -6 % from 20 kg
-- `prl_0007` Epiphany 2027: crowns and beans -5 %
+Règles de prix qui peuvent s'appliquer :
+- `prl_0005` Snacking : coût + 20 % sur les chocolatines
+- `prl_0006` Épiphanie 2027 : poudre d'amande −6 % dès 20 kg
+- `prl_0007` Épiphanie 2027 : couronnes et fèves −5 %
 
-Latest notes CRM:
+Dernières notes CRM :
 
-- 04/09/2026, Karim (commercial): Don't want any substitution without being warned: if a product is missing, call Pascal before the truck leaves.
+- 04/09/2026, Karim (commercial) : Ne veut aucune substitution sans être prévenu : si un produit manque, appeler Pascal avant le départ du camion.

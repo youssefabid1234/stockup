@@ -1,98 +1,98 @@
 # Le Buffet Toulousain (C0046, `cli_0046`)
 
-> Customer profile for phone role-play. The full history is in `seed_en/clientEvents.json` (filter on `clientId: "cli_0046"`).
+> Fiche persona pour jouer ce client au téléphone. L'historique complet est dans `seed/clientEvents.json` (filtrer sur `clientId: "cli_0046"`).
 
 | | |
 |---|---|
-| Type | Caterer (Treaters and Reception Organizers) — 58 rue Gambetta, 31000 Toulouse (Capitole) |
-| Area | Toulouse centre & suburbs — delivered Wed, Sat |
-| Status | **blocked** — regular customer |
-| Sales representative | Karim Belkacem |
-| Customer since | 25/09/2022 (4 years) |
-| Payment | 30 days — Bad Payer, Risk Account |
-| Outstanding balance | 4 883,56 € incl. VAT (ceiling 3 500 €) — **3 overdue invoices: 4 883,56 €** |
-| Temperament | warm — quality ★★☆, price ★★☆, risk of losing the customer low |
+| Type | Traiteur (Traiteurs et organisateurs de réceptions) — 58 rue Gambetta, 31000 Toulouse (Capitole) |
+| Zone | Toulouse centre & faubourgs — livré wed, sat |
+| Statut | **blocked** — client régulier |
+| Commercial | Karim Belkacem |
+| Client depuis | 25/09/2022 (4 ans) |
+| Paiement | 30 jours — mauvais payeur, compte à risque |
+| Encours | 4 883,56 € TTC (plafond 3 500 €) — **3 facture échues : 4 883,56 €** |
+| Tempérament | chaleureux — qualité ★★☆, prix ★★☆, risque de départ faible |
 
-## Who they are
+## Qui ils sont
 
-Caterer from Toulouse (Capitol): weddings in summer, seminars, Christmas Eve. Mini-pastries for business breakfasts, leafing for bites.
+Traiteur de Toulouse (Capitole) : mariages l'été, séminaires, réveillons. Mini-viennoiseries pour les petits-déjeuners d'entreprise, feuilletage pour les bouchées.
 
-## People
+## Les personnes
 
-- **Frédéric Doumergue** — manager · 06 65 72 49 82 · frederic@buffettoulousain.fr
-  - Speaking style: Good mood, laughs easily, tells his/her week.
-  - Typical phrases: "Come and taste the new dish!" · "Bives to the team."
-- **Alice Fontaine** — Production manager · 06 41 96 50 06
-  - Speaking style: Very friendly, take news, quickly tutoe.
-  - Typical phrases: "You're lovers." · "Come and taste the new dish!"
+- **Frédéric Doumergue** — Gérant · 06 65 72 49 82 · frederic@buffettoulousain.fr
+  - Comment il/elle parle : Bonne humeur, rit facilement, raconte sa semaine.
+  - Tics : « Passez goûter le nouveau plat ! » · « Bisous à l'équipe. »
+- **Alice Fontaine** — Chef de production · 06 41 96 50 06
+  - Comment il/elle parle : Très sympathique, prend des nouvelles, tutoie vite.
+  - Tics : « Vous êtes des amours. » · « Passez goûter le nouveau plat ! »
 
-## What they buy and how
+## Ce qu'ils achètent et comment
 
-Controls irregularly (disturbances, events), usually 2 days front between 10h and 16h, especially via e-mail and telephone. Common products: Pasteurised liquid whole egg (1 L carton), White pastry boxes 20 cm (pack of 50), Lemon (5 kg case), Gold round cake boards 28 cm (pack of 100), UHT liquid cream 35% (1 L carton), Raw frozen all-butter pain au chocolat 75 g (carton of 140), Frozen raspberry purée (1 kg tray), Pasteurised liquid egg yolk (1 L carton).
+Commande de façon irrégulière (dépannages, événements), en général 2 jours avant entre 10h et 16h, surtout par e-mail et téléphone. Produits habituels : œuf entier liquide pasteurisé (brique 1 L), boîtes pâtissières blanches 20 cm (lot de 50), citron jaune (colis 5 kg), semelles dorées rondes 28 cm (lot de 100), crème liquide UHT 35 % (brique 1 L), chocolatine pur beurre crue surgelée 75 g (carton 140), purée de framboise surgelée (barquette 1 kg), jaune d'œuf liquide pasteurisé (brique 1 L).
 
-Over the last 90 days (4 orders delivered):
+Sur les 90 derniers jours (4 commandes livrées) :
 
-| Product | 90-day volume | Lines | Last price |
+| Produit | Volume 90 j | Lignes | Dernier prix |
 |---|---|---|---|
-| Raw frozen all-butter pain au chocolat 75 g (carton of 140) (`prd_0054`) | 23,00 box | 4 | 54,00 € |
-| UHT liquid cream 35% (1 L carton) (`prd_0031`) | 109,00 liter | 3 | 4,10 € |
-| Printed kraft baguette bags (carton of 1000) (`prd_0065`) | 20,00 box | 3 | 22,00 € |
-| Raw frozen pain aux raisins 110 g (carton of 80) (`prd_0055`) | 10,00 box | 2 | 41,00 € |
-| Pasteurised liquid egg yolk (1 L carton) (`prd_0036`) | 32,00 liter | 2 | 8,09 € |
-| Pasteurised liquid whole egg (1 L carton) (`prd_0035`) | 59,00 liter | 2 | 4,28 € |
-| White pastry boxes 20 cm (pack of 50) (`prd_0067`) | 13,00 box | 2 | 14,50 € |
-| Frozen raspberry purée (1 kg tray) (`prd_0059`) | 16,58 kg | 2 | 9,40 € |
+| Chocolatine pur beurre crue surgelée 75 g (carton 140) (`prd_0054`) | 23,00 colis | 4 | 54,00 € |
+| Crème liquide UHT 35 % (brique 1 L) (`prd_0031`) | 109,00 litre | 3 | 4,10 € |
+| Sacs à baguette kraft imprimés (carton 1000) (`prd_0065`) | 20,00 colis | 3 | 22,00 € |
+| Pain aux raisins cru surgelé 110 g (carton 80) (`prd_0055`) | 10,00 colis | 2 | 41,00 € |
+| Jaune d'œuf liquide pasteurisé (brique 1 L) (`prd_0036`) | 32,00 litre | 2 | 8,09 € |
+| Œuf entier liquide pasteurisé (brique 1 L) (`prd_0035`) | 59,00 litre | 2 | 4,28 € |
+| Boîtes pâtissières blanches 20 cm (lot de 50) (`prd_0067`) | 13,00 colis | 2 | 14,50 € |
+| Purée de framboise surgelée (barquette 1 kg) (`prd_0059`) | 16,58 kg | 2 | 9,40 € |
 
-CRM card: _Gross orders two days in advance for events. Mini-pastries for seminars. Delivered sea. sam. Refuses substitutions: call before any modification._
+Fiche CRM : _Grosses commandes à J-2 pour les événements. Mini-viennoiseries pour les séminaires. Livré mer. sam. Refuse les substitutions : appeler avant toute modification._
 
-## What frustrates them
+## Ce qui les agace
 
-- A breakdown on the day of a marriage
-- Incomplete mini cartons
+- Une rupture le jour d'un mariage
+- Les cartons de minis incomplets
 
-## A brief history
+## Historique marquant
 
-- **12/07/2025** · Payment · Recovery : FAC-2025-001188
-- **19/07/2025** · Quality · Quality : White pastry boxes 20 cm (pack of 50)
-- **12/09/2025** · Payment · Recovery : FAC-2025-001664
-- **10/11/2025** · Payment · Recovery : FAC-2025-002061
-- **13/02/2026** · Payment · Recovery : FAC-2026-000020
-- **07/03/2026** · map · New spring map
-- **20/06/2026** · Delivery late
-- **05/09/2026** · map · Autumn card
-- **16/10/2026** · Payment · Recovery : FAC-2026-001896
-- **05/11/2026** · Payment · Locked account for unpaid payments
-- **06/11/2026** · special request · Holidays 2026 : volume reservation
-- **08/11/2026** · Schedule · Proposed Schedule
+- **12/07/2025** · paiement · Relance : FAC-2025-001188 échue
+- **19/07/2025** · qualité · Qualité : boîtes pâtissières blanches 20 cm (lot de 50)
+- **12/09/2025** · paiement · Relance : FAC-2025-001664 échue
+- **10/11/2025** · paiement · Relance : FAC-2025-002061 échue
+- **13/02/2026** · paiement · Relance : FAC-2026-000020 échue
+- **07/03/2026** · carte · Nouvelle carte de printemps
+- **20/06/2026** · livraison · Livraison en retard
+- **05/09/2026** · carte · Carte d'automne
+- **16/10/2026** · paiement · Relance : FAC-2026-001896 échue
+- **05/11/2026** · paiement · Compte bloqué pour impayés
+- **06/11/2026** · demande spéciale · Fêtes 2026 : réservation de volumes
+- **08/11/2026** · échéancier · Proposition d'échéancier
 
-Full history: 44 events (11 payment, 8 call, 6 visit, 5 quality, 4 special request, 3 delivery, 2 price, 2 card, 1 opening, 1 schedule, 1 compliment).
+Historique complet : 44 événements (11 paiement, 8 appel, 6 visite, 5 qualité, 4 demande spéciale, 3 livraison, 2 prix, 2 carte, 1 ouverture, 1 échéancier, 1 compliment).
 
-## Open cases
+## Dossiers ouverts aujourd'hui
 
-- **16/10/2026 — Recovery: FAC-2026-001896 fallen** (`inv_007711`)
-  Invoice FAC-2026-001896 (386,72 € incl. VAT) expired the 01/10/2026. Relaunched by phone. Frédéric: "The Accountant takes care of it."
-- **05/11/2026 — Locked account for outstanding payments** (`inv_007522`)
-  3 outstanding due invoices for 4 883,56 € incl. VAT. Deliveries suspended until at least 50 % due and a validated schedule.
-- **06/11/2026 — Holidays 2026: volume reservation**
-  Frédéric wants to book for the parties: Frozen raspberry purée (1 kg tray) and Lemon (5 kg case) in volume for the 23-24 and 30-31/12. Frédéric: "Bives to the team."
-- **08/11/2026 — Proposed timeline**
-  Frédéric proposes to pay in 6 times and requests the resumption of deliveries. Pending validation by the management.
+- **16/10/2026 — Relance : FAC-2026-001896 échue** (`inv_007711`)
+  Facture FAC-2026-001896 (386,72 € TTC) échue le 01/10/2026. Relance par téléphone. Frédéric : « Le comptable s'en occupe. »
+- **05/11/2026 — Compte bloqué pour impayés** (`inv_007522`)
+  3 factures échues non réglées pour 4 883,56 € TTC. Livraisons suspendues jusqu'à règlement d'au moins 50 % de l'échu et un échéancier validé.
+- **06/11/2026 — Fêtes 2026 : réservation de volumes**
+  Frédéric veut réserver pour les fêtes : purée de framboise surgelée (barquette 1 kg) et citron jaune (colis 5 kg) en volume pour les 23-24 et 30-31/12. Frédéric : « Bisous à l'équipe. »
+- **08/11/2026 — Proposition d'échéancier**
+  Frédéric propose de payer en 6 fois et demande la reprise des livraisons. En attente de validation par la direction.
 
-## How to talk to them
+## Comment leur parler
 
-- Specify the date of the event and the number of covers.
+- Faire préciser la date de l'événement et le nombre de couverts.
 
-## Price & group
+## Prix & groupe
 
-Groups: **Treaters** (`traiteurs`), **To be monitored** (`a-surveiller`).
-No negotiated prices.
+Groupes : **Traiteurs** (`traiteurs`), **À surveiller** (`a-surveiller`).
+Pas de prix négocié.
 
-Price rules that may apply:
-- `prl_0006` Epiphany 2027: almond powder -6 % from 20 kg
-- `prl_0007` Epiphany 2027: crowns and beans -5 %
+Règles de prix qui peuvent s'appliquer :
+- `prl_0006` Épiphanie 2027 : poudre d'amande −6 % dès 20 kg
+- `prl_0007` Épiphanie 2027 : couronnes et fèves −5 %
 
-Latest notes CRM:
+Dernières notes CRM :
 
-- 01/06/2026, Karim (commercial): Order irregularly, especially in troubleshooting. Offer him the arrivals when he calls.
-- 05/11/2026, Sandrine (Accounting): BLOCKED account for unpaid invoices. 3 outstanding invoices, the oldest FAC-2026-001707 of the 01/08/2026. Outstanding 4 883,56 € incl. VAT for a ceiling of 3 500,00 €. Resumption of deliveries only after a settlement of at least 50 % of the due date and a schedule validated by management.
-- 22/11/2026, Karim (commercial): Frédéric called back to resume deliveries and promised a transfer. Do not deliver anything without the agreement of accounting.
+- 01/06/2026, Karim (commercial) : Commande irrégulièrement, surtout en dépannage. Lui proposer les arrivages quand il appelle.
+- 05/11/2026, Sandrine (comptabilité) : Compte BLOQUÉ pour impayés. 3 factures échues non réglées, la plus ancienne FAC-2026-001707 du 01/08/2026. Encours 4 883,56 € TTC pour un plafond de 3 500,00 €. Reprise des livraisons seulement après un règlement d'au moins 50 % de l'échu et un échéancier validé par la direction.
+- 22/11/2026, Karim (commercial) : Frédéric a rappelé pour reprendre les livraisons et promet un virement. Ne rien livrer sans l'accord de la comptabilité.

@@ -50,27 +50,27 @@ export function CallerForm({ disabled, pending, onStart }: { disabled: boolean; 
     <form onSubmit={submit} className="mx-auto my-auto flex w-full max-w-[520px] flex-col gap-4 rounded-[6px] border border-border bg-card p-5">
       <div className="flex items-center justify-between gap-3">
         <div>
-          <h2 className="text-[15px] font-semibold">Who's calling?</h2>
+          <h2 className="text-[15px] font-semibold">Qui appelle ?</h2>
           <p className="text-[12px] text-muted-foreground">
-            Choose the caller so the agent can open their record before answering.
+            Comme le numéro qui s'affiche sur le standard : l'agent connaîtra le client avant même de décrocher.
           </p>
         </div>
-        <Segmented<Kind> value={kind} onChange={(value) => { setKind(value); setContactTitle(undefined); }} options={[{ id: "known", label: "Customer" }, { id: "new", label: "New customer" }]} />
+        <Segmented<Kind> value={kind} onChange={(value) => { setKind(value); setContactTitle(undefined); }} options={[{ id: "known", label: "Client" }, { id: "new", label: "Nouveau client" }]} />
       </div>
 
       {kind === "known" ? (
         <>
-          <Field label="Customer" hint="Type a name, city or phone number">
+          <Field label="Client" hint="Tapez un nom, une ville ou un numéro de téléphone">
             <Select
               value={clientId}
               onChange={(v) => { setClientId(v); setContactIdx(""); setContactTitle(undefined); }}
               options={options}
-              placeholder={clients.isLoading ? "Loading customers..." : "Select the client who calls"}
+              placeholder={clients.isLoading ? "Chargement des clients…" : "Choisir le client qui appelle"}
               filterable
             />
           </Field>
           {contacts.length > 0 ? (
-            <Field label="On the phone">
+            <Field label="Au téléphone">
               <Select
                 value={contactIdx === "" ? "0" : contactIdx}
                 onChange={(value) => { setContactIdx(value); setContactTitle(undefined); }}
@@ -79,34 +79,34 @@ export function CallerForm({ disabled, pending, onStart }: { disabled: boolean; 
             </Field>
           ) : null}
           {selected?.status === "blocked" ? (
-            <p className="flex items-center gap-1.5 text-[12px] text-warning"><Dot tone="warning" /> This account is blocked.</p>
+            <p className="flex items-center gap-1.5 text-[12px] text-warning"><Dot tone="warning" /> Compte bloqué : l'agent ne promettra rien.</p>
           ) : null}
         </>
       ) : (
         <>
           <p className="flex items-center gap-1.5 text-[12px] text-muted-foreground">
-            <UserPlus size={14} strokeWidth={1.75} /> The agent records the request. The team reviews the new account.
+            <UserPlus size={14} strokeWidth={1.75} /> Pas encore dans l'ERP : l'agent prend la demande, l'équipe valide le compte.
           </p>
-          <Field label="Establishment"><Input value={company} onChange={(e) => setCompany(e.target.value)} placeholder="e.g. Canal Bakery" /></Field>
-          <Field label="Contact name"><Input value={name} onChange={(e) => setName(e.target.value)} placeholder="e.g. Camille Durand" /></Field>
-          <Field label="Phone"><Input value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="e.g. 06 12 34 56 78" /></Field>
+          <Field label="Établissement"><Input value={company} onChange={(e) => setCompany(e.target.value)} placeholder="ex. Boulangerie du Canal" /></Field>
+          <Field label="Nom du contact"><Input value={name} onChange={(e) => setName(e.target.value)} placeholder="ex. Camille Durand" /></Field>
+          <Field label="Téléphone"><Input value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="ex. 06 12 34 56 78" /></Field>
         </>
       )}
 
-      <Field label="Title (optional)">
+      <Field label="Civilité (facultatif)">
         <Select
           value={contactTitle ?? "neutral"}
           onChange={(value) => setContactTitle(value === "madame" || value === "monsieur" ? value : undefined)}
           options={[
-            { value: "neutral", label: "None" },
-            { value: "madame", label: "Ma'am" },
-            { value: "monsieur", label: "Sir" },
+            { value: "neutral", label: "Aucune" },
+            { value: "madame", label: "Madame" },
+            { value: "monsieur", label: "Monsieur" },
           ]}
         />
       </Field>
 
       <Button type="submit" variant="default" icon={pending ? undefined : PhoneCall} disabled={!canStart}>
-        {pending ? <><Spinner size={12} /> Loading customer record…</> : "Start call"}
+        {pending ? <><Spinner size={12} /> Chargement de la fiche…</> : "Démarrer l'appel"}
       </Button>
     </form>
   );
@@ -120,12 +120,12 @@ export function CallerBar({ caller, onHangUp }: { caller: CallerReady; onHangUp:
       {caller.contactName ? <span className="text-muted-foreground">· {caller.contactName}</span> : null}
       <span className="text-muted-foreground">
         {caller.isNew
-          ? "· new customer (to be validated by the team)"
+          ? "· nouveau client (à valider par l'équipe)"
           : caller.usedByAgent
-            ? `· record loaded${caller.loadedMs != null ? ` in ${caller.loadedMs} ms` : ""}`
-            : "· caller identified (the agent will look up the customer record)"}
+            ? `· fiche chargée${caller.loadedMs != null ? ` en ${caller.loadedMs} ms` : ""}`
+            : "· identifié (fiche indisponible : l'agent cherchera le client)"}
       </span>
-      <Button size="sm" variant="danger" icon={PhoneOff} className="ml-auto" onClick={onHangUp}>Hang up</Button>
+      <Button size="sm" variant="danger" icon={PhoneOff} className="ml-auto" onClick={onHangUp}>Raccrocher</Button>
     </div>
   );
 }

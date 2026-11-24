@@ -25,7 +25,7 @@ export function RunCard({ run, date }: { run: RouteRunDetail; date: IsoDate }) {
   useEffect(() => { setOrder(serverKey ? serverKey.split(",") : []); }, [serverKey]);
 
   const reorder = useApiMutation((ids: Id[]) => api.routeRuns.reorderStops(run.id, ids), {
-    success: "Updated order of judgments",
+    success: "Ordre des arrêts mis à jour",
     onSuccess: (updated) => {
       qc.setQueryData<RouteRunDetail[]>(qk.routeRuns.list({ date }), (old) => old?.map((r) => (r.id === updated.id ? updated : r)));
       qc.invalidateQueries({ queryKey: qk.routeRuns.all });
@@ -72,7 +72,7 @@ export function RunCard({ run, date }: { run: RouteRunDetail; date: IsoDate }) {
         <div className="mt-1.5 flex flex-wrap items-center gap-x-4 gap-y-1 text-[12px] text-secondary-foreground">
           <span className="inline-flex items-center gap-1"><UserRound size={12} strokeWidth={1.75} className="text-muted-foreground" />{run.route.driver || "—"}</span>
           <span className="truncate text-muted-foreground">{run.route.vehicle}</span>
-          <span className="inline-flex items-center gap-1"><Clock size={12} strokeWidth={1.75} className="text-muted-foreground" />Departure <Mono className="text-foreground">{run.route.departureTime}</Mono></span>
+          <span className="inline-flex items-center gap-1"><Clock size={12} strokeWidth={1.75} className="text-muted-foreground" />Départ <Mono className="text-foreground">{run.route.departureTime}</Mono></span>
         </div>
         <div className="mt-3">
           <div className="mb-1 flex items-center justify-between text-[12px]">
@@ -88,7 +88,7 @@ export function RunCard({ run, date }: { run: RouteRunDetail; date: IsoDate }) {
       </header>
 
       {stops.length === 0 ? (
-        <div className="px-4 py-6 text-center text-[12.5px] text-muted-foreground">No stop on this tour.</div>
+        <div className="px-4 py-6 text-center text-[12.5px] text-muted-foreground">Aucun arrêt sur cette tournée.</div>
       ) : (
         <ol className={cn("divide-y divide-border", reorder.isPending && "opacity-70")}>
           {stops.map((s, i) => (
@@ -122,8 +122,8 @@ export function RunCard({ run, date }: { run: RouteRunDetail; date: IsoDate }) {
               <span className="shrink-0"><StatusDot kind="stop" value={s.status} /></span>
               {editable ? (
                 <span className="flex shrink-0 flex-col">
-                  <IconButton icon={ArrowUp} size="sm" label="Mount" disabled={i === 0 || reorder.isPending} onClick={() => move(i, -1)} className="h-[18px] w-[22px]" />
-                  <IconButton icon={ArrowDown} size="sm" label="Get down" disabled={i === stops.length - 1 || reorder.isPending} onClick={() => move(i, 1)} className="h-[18px] w-[22px]" />
+                  <IconButton icon={ArrowUp} size="sm" label="Monter" disabled={i === 0 || reorder.isPending} onClick={() => move(i, -1)} className="h-[18px] w-[22px]" />
+                  <IconButton icon={ArrowDown} size="sm" label="Descendre" disabled={i === stops.length - 1 || reorder.isPending} onClick={() => move(i, 1)} className="h-[18px] w-[22px]" />
                 </span>
               ) : null}
             </li>
@@ -132,8 +132,8 @@ export function RunCard({ run, date }: { run: RouteRunDetail; date: IsoDate }) {
       )}
 
       <footer className="flex items-center justify-between border-t border-border px-4 py-2 text-[12px] text-muted-foreground">
-        <span>{stops.length} stop{stops.length > 1 ? "s" : ""}</span>
-        <span>{delivered}/{stops.length} delivered{delivered > 1 ? "s" : ""}</span>
+        <span>{stops.length} arrêt{stops.length > 1 ? "s" : ""}</span>
+        <span>{delivered}/{stops.length} livré{delivered > 1 ? "s" : ""}</span>
       </footer>
     </section>
   );

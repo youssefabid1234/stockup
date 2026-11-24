@@ -1,155 +1,155 @@
-# Glossary of products
+# Glossaire produits
 
-What customers call the products. Prices are the list prices of the day (€ excl. VAT); a negotiated price or a group rule may apply.
+Comment les clients appellent les produits. Les prix sont les prix liste du jour (€ HT) ; un prix négocié ou une règle de groupe peut s'appliquer.
 
-## Flours and milling
+## Farines et meunerie
 
-| id | Product | They say | Unit | Price | shelf life |
+| id | Produit | On dit | Unité | Prix | DLC |
 |---|---|---|---|---|---|
-| prd_0001 | T55 traditional French wheat flour (25 kg bag) | tradi, traditional flour, T55 traditional, traditional, traditional flour | piece (25 kg bag) | €19.80 | 180 days |
-| prd_0002 | T55 baker's wheat flour (25 kg bag) | T55, the 55, white flour, bread flour | piece (25 kg bag) | €17.20 | 180 days |
-| prd_0003 | T45 gruau pastry flour (25 kg bag) | gruau, T45, pastry flour, fine wheat flour, the 45 | piece (25 kg bag) | €23.50 | 180 days |
-| prd_0004 | T65 country wheat flour (25 kg bag) | T65, the 65, country-style flour, flour for country bread | piece (25 kg bag) | €19.00 | 180 days |
-| prd_0005 | T80 bise flour (25 kg bag) | bise, bise flour, T80, semi-wholemeal, the 80 | piece (25 kg bag) | €21.50 | 150 days |
-| prd_0006 | T130 rye flour (25 kg bag) | seigle, rye flour, T130 | piece (25 kg bag) | €24.50 | 150 days |
-| prd_0007 | T65 organic wheat flour (25 kg bag) | organic T65, organic flour, the organic one, organic from the Arrats | piece (25 kg bag) | €29.50 | 150 days |
-| prd_0008 | T150 organic wholemeal flour (25 kg bag) | wholemeal, T150, wholemeal flour, wholegrain | piece (25 kg bag) | €32.00 | 120 days |
-| prd_0009 | Organic einkorn flour (10 kg bag) | spelt, einkorn, spelt flour | piece (10 kg bag) | €38.00 | 120 days |
-| prd_0010 | Multigrain seed mix (25 kg bag) | multigrain, cereal mix, seed mix, seeded bread | piece (25 kg bag) | €34.00 | 150 days |
+| prd_0001 | Farine de blé T55 tradition française (sac 25 kg) | tradi, farine tradition, T55 tradi, la tradition, farine de tradition | pièce (sac 25 kg) | 19,80 € | 180 j |
+| prd_0002 | Farine de blé T55 boulangère (sac 25 kg) | T55, la 55, farine blanche, farine panifiable | pièce (sac 25 kg) | 17,20 € | 180 j |
+| prd_0003 | Farine de gruau T45 pâtissière (sac 25 kg) | gruau, T45, farine pâtissière, farine de gruau, la 45 | pièce (sac 25 kg) | 23,50 € | 180 j |
+| prd_0004 | Farine de blé T65 campagne (sac 25 kg) | T65, la 65, farine de campagne, farine pour le pain de campagne | pièce (sac 25 kg) | 19,00 € | 180 j |
+| prd_0005 | Farine bise T80 (sac 25 kg) | bise, farine bise, T80, semi-complète, la 80 | pièce (sac 25 kg) | 21,50 € | 150 j |
+| prd_0006 | Farine de seigle T130 (sac 25 kg) | seigle, farine de seigle, T130 | pièce (sac 25 kg) | 24,50 € | 150 j |
+| prd_0007 | Farine de blé T65 bio (sac 25 kg) | T65 bio, farine bio, la bio, bio de l'Arrats | pièce (sac 25 kg) | 29,50 € | 150 j |
+| prd_0008 | Farine complète T150 bio (sac 25 kg) | complète, T150, farine complète, intégrale | pièce (sac 25 kg) | 32,00 € | 120 j |
+| prd_0009 | Farine de petit épeautre bio (sac 10 kg) | épeautre, petit épeautre, farine d'épeautre | pièce (sac 10 kg) | 38,00 € | 120 j |
+| prd_0010 | Mélange multicéréales graines (sac 25 kg) | multicéréales, mix céréales, mélange graines, pain aux graines | pièce (sac 25 kg) | 34,00 € | 150 j |
 
-## Yeasts, leaven and improving
+## Levures, levains et améliorants
 
-| id | Product | They say | Unit | Price | shelf life |
+| id | Produit | On dit | Unité | Prix | DLC |
 |---|---|---|---|---|---|
-| prd_0011 | Fresh baker's yeast (500 g block) | levure, fresh yeast, yeast bread, the yeast, blue yeast | piece (500 g loaf) | €1.35 | 30 days |
-| prd_0012 | Instant dry yeast (500 g packet) | dry yeast, dehydrated yeast, dry, packet yeast | piece (500 g packet) | €4.90 | 365 days |
-| prd_0013 | Dehydrated rye sourdough (1 kg bag) | levain, dried sourdough, rye sourdough, powdered sourdough | piece (1 kg bag) | €8.90 | 365 days |
-| prd_0014 | Bread improver (10 kg bag) | improver, correcteur, the improver, adjuvant | piece (10 kg bag) | €28.00 | 365 days |
+| prd_0011 | Levure fraîche boulangère (pain de 500 g) | levure, levure fraîche, pain de levure, la levure, levure bleue | pièce (pain 500 g) | 1,35 € | 30 j |
+| prd_0012 | Levure sèche instantanée (paquet 500 g) | levure sèche, levure déshydratée, sèche, levure en paquet | pièce (paquet 500 g) | 4,90 € | 365 j |
+| prd_0013 | Levain de seigle déshydraté (sac 1 kg) | levain, levain sec, levain seigle, levain en poudre | pièce (sac 1 kg) | 8,90 € | 365 j |
+| prd_0014 | Améliorant de panification (sac 10 kg) | améliorant, correcteur, l'améliorant, adjuvant | pièce (sac 10 kg) | 28,00 € | 365 j |
 
-## Butter and fat
+## Beurres et matières grasses
 
-| id | Product | They say | Unit | Price | shelf life |
+| id | Produit | On dit | Unité | Prix | DLC |
 |---|---|---|---|---|---|
-| prd_0025 | AOP Charentes-Poitou 84% laminating butter (2 kg sheet) | AOP laminating butter, laminating butter, AOP sheets, dry butter, tourage | kg (carton of 5 sheets of 2 kg) | €11.40 | 90 days |
-| prd_0026 | 82% laminating butter (2 kg sheet) | standard laminating butter, plaques, sheet butter, tourage, puff pastry butter | kg (carton of 5 sheets of 2 kg) | €9.20 | 90 days |
-| prd_0027 | AOP Charentes-Poitou unsalted butter (carton of 10 × 1 kg) | AOP butter, Charentes butter, AOP unsalted butter, butter in small blocks | kg (1 kg block) | €10.20 | 90 days |
-| prd_0028 | 82% pastry butter (10 kg carton) | beurre, pastry butter, standard butter, cooking butter | kg (10 kg carton) | €7.60 | 90 days |
-| prd_0029 | Churned lightly salted butter (1 kg block) | demi-sel, salted butter, churned butter | kg (1 kg slab) | €11.80 | 60 days |
-| prd_0030 | Puff pastry margarine (10 kg carton) | margarine, marga, laminating margarine, puff pastry fat | kg (10 kg carton) | €3.90 | 180 days |
+| prd_0025 | Beurre de tourage AOP Charentes-Poitou 84 % (plaque 2 kg) | tourage AOP, beurre de tourage, plaques AOP, beurre sec, tourage | kg (carton 5 plaques de 2 kg) | 11,40 € | 90 j |
+| prd_0026 | Beurre de tourage 82 % (plaque 2 kg) | tourage standard, plaques, beurre plaque, tourage, beurre de feuilletage | kg (carton 5 plaques de 2 kg) | 9,20 € | 90 j |
+| prd_0027 | Beurre doux AOP Charentes-Poitou (carton 10 × 1 kg) | beurre AOP, beurre Charentes, beurre doux AOP, beurre en plaquettes | kg (plaquette 1 kg) | 10,20 € | 90 j |
+| prd_0028 | Beurre pâtissier 82 % (carton 10 kg) | beurre, beurre pâtissier, beurre standard, beurre cuisine | kg (carton 10 kg) | 7,60 € | 90 j |
+| prd_0029 | Beurre demi-sel de baratte (motte 1 kg) | demi-sel, beurre salé, beurre de baratte | kg (motte 1 kg) | 11,80 € | 60 j |
+| prd_0030 | Margarine de feuilletage (carton 10 kg) | margarine, marga, margarine de tourage, matière grasse feuilletage | kg (carton 10 kg) | 3,90 € | 180 j |
 
-## Creamery and egg products
+## Crèmerie et ovoproduits
 
-| id | Product | They say | Unit | Price | shelf life |
+| id | Produit | On dit | Unité | Prix | DLC |
 |---|---|---|---|---|---|
-| prd_0031 | UHT liquid cream 35% (1 L carton) | cream, liquid cream, cream 35, UHT cream, crème fleurette | liter (carton of 6 × 1 L) | €4.10 | 90 days |
-| prd_0032 | Thick crème fraîche 30% (5 L tub) | thick cream, crème fraîche, raw cream | liter (5 L tub) | €4.60 | 20 days |
-| prd_0033 | Whole UHT milk (1 L carton) | lait, whole milk, cartons of milk | liter (pack of 6 × 1 L) | €1.12 | 90 days |
-| prd_0034 | Free-range eggs, size M (tray of 30) | eggs, oeufs, plateau, egg tray, shell eggs | box (tray of 30) | €8.40 | 21 days |
-| prd_0035 | Pasteurised liquid whole egg (1 L carton) | liquid egg, ovo, eggs in cartons, whole egg | liter (1 L carton) | €4.30 | 21 days |
-| prd_0036 | Pasteurised liquid egg yolk (1 L carton) | jaunes, egg yolk, liquid yolks, dorure | liter (1 L carton) | €7.90 | 21 days |
-| prd_0037 | Pasteurised liquid egg white (1 L carton) | blancs, egg white, liquid whites | liter (1 L carton) | €3.20 | 21 days |
+| prd_0031 | Crème liquide UHT 35 % (brique 1 L) | crème, crème liquide, crème 35, crème UHT, crème fleurette | litre (carton 6 × 1 L) | 4,10 € | 90 j |
+| prd_0032 | Crème fraîche épaisse 30 % (seau 5 L) | crème épaisse, crème fraîche, crème crue | litre (seau 5 L) | 4,60 € | 20 j |
+| prd_0033 | Lait entier UHT (brique 1 L) | lait, lait entier, briques de lait | litre (pack 6 × 1 L) | 1,12 € | 90 j |
+| prd_0034 | Œufs plein air calibre M (plateau de 30) | œufs, oeufs, plateau, plateau d'œufs, œufs coquille | colis (plateau 30) | 8,40 € | 21 j |
+| prd_0035 | Œuf entier liquide pasteurisé (brique 1 L) | œuf liquide, ovo, œufs en brique, œuf entier | litre (brique 1 L) | 4,30 € | 21 j |
+| prd_0036 | Jaune d'œuf liquide pasteurisé (brique 1 L) | jaunes, jaune d'œuf, jaunes liquides, dorure | litre (brique 1 L) | 7,90 € | 21 j |
+| prd_0037 | Blanc d'œuf liquide pasteurisé (brique 1 L) | blancs, blanc d'œuf, blancs liquides | litre (brique 1 L) | 3,20 € | 21 j |
 
-## Sugars and pastry ingredients
+## Sucres et ingrédients pâtissiers
 
-| id | Product | They say | Unit | Price | shelf life |
+| id | Produit | On dit | Unité | Prix | DLC |
 |---|---|---|---|---|---|
-| prd_0015 | Caster sugar (25 kg bag) | sucre, semoule, caster sugar, white sugar | piece (25 kg bag) | €27.50 | 730 days |
-| prd_0016 | Icing sugar (10 kg bag) | icing sugar, royal icing, icing sugar | piece (10 kg bag) | €16.50 | 730 days |
-| prd_0017 | Pearl sugar (10 kg bag) | pearl sugar, sugar grains, grains, sugar lumps | piece (10 kg bag) | €19.00 | 730 days |
-| prd_0018 | Fine sea salt (25 kg bag) | sel, fine salt, bag of salt | piece (25 kg bag) | €9.80 | 1095 days |
-| prd_0019 | Neutral hot glaze (7 kg tub) | nappage, neutral glaze, mirror glaze | piece (7 kg tub) | €24.00 | 365 days |
-| prd_0020 | White pastry fondant (7 kg tub) | fondant, white fondant, éclair glaze | piece (7 kg tub) | €19.50 | 365 days |
-| prd_0021 | Cold-set crème pâtissière mix (10 kg bag) | pastry cream, custard powder, powdered pastry cream, flan powder | piece (10 kg bag) | €42.00 | 365 days |
-| prd_0022 | Bourbon vanilla pods from Madagascar (100 g packet) | vanille, gousses, Bourbon vanilla, vanilla pods | piece (100 g packet) | €34.00 | 365 days |
-| prd_0023 | Liquid vanilla extract (1 L bottle) | vanilla extract, liquid vanilla, vanilla flavouring | liter (1 L bottle) | €26.00 | 730 days |
-| prd_0024 | Orange blossom water (1 L container) | orange blossom, blossom water, orange blossom for the couronne | liter (1 L can) | €7.50 | 730 days |
+| prd_0015 | Sucre semoule (sac 25 kg) | sucre, semoule, sucre en poudre, sucre blanc | pièce (sac 25 kg) | 27,50 € | 730 j |
+| prd_0016 | Sucre glace (sac 10 kg) | sucre glace, glace royale, sucre impalpable | pièce (sac 10 kg) | 16,50 € | 730 j |
+| prd_0017 | Sucre en grains perlé (sac 10 kg) | sucre perlé, sucre en grains, grains, sucre casson | pièce (sac 10 kg) | 19,00 € | 730 j |
+| prd_0018 | Sel fin de mer (sac 25 kg) | sel, sel fin, sac de sel | pièce (sac 25 kg) | 9,80 € | 1095 j |
+| prd_0019 | Nappage neutre à chaud (seau 7 kg) | nappage, nappage neutre, glaçage miroir | pièce (seau 7 kg) | 24,00 € | 365 j |
+| prd_0020 | Fondant pâtissier blanc (seau 7 kg) | fondant, fondant blanc, glaçage éclairs | pièce (seau 7 kg) | 19,50 € | 365 j |
+| prd_0021 | Préparation pour crème pâtissière à froid (sac 10 kg) | crème pât, poudre à crème, crème pâtissière en poudre, poudre à flan | pièce (sac 10 kg) | 42,00 € | 365 j |
+| prd_0022 | Gousses de vanille Bourbon de Madagascar (paquet 100 g) | vanille, gousses, vanille Bourbon, gousses de vanille | pièce (paquet 100 g) | 34,00 € | 365 j |
+| prd_0023 | Extrait de vanille liquide (bouteille 1 L) | extrait de vanille, vanille liquide, arôme vanille | litre (bouteille 1 L) | 26,00 € | 730 j |
+| prd_0024 | Eau de fleur d'oranger (bidon 1 L) | fleur d'oranger, eau de fleur, fleur d'oranger pour la couronne | litre (bidon 1 L) | 7,50 € | 730 j |
 
-## Chocolate and cocoa
+## Chocolat et cacao
 
-| id | Product | They say | Unit | Price | shelf life |
+| id | Produit | On dit | Unité | Prix | DLC |
 |---|---|---|---|---|---|
-| prd_0038 | Dark couverture chocolate 64% (pistoles, 5 kg bag) | dark couverture, dark chocolate, dark pistoles, the 64, dark 64 | kg (5 kg bag) | €15.80 | 365 days |
-| prd_0039 | Dark couverture chocolate 70% (pistoles, 5 kg bag) | the 70, dark 70, 70 couverture, intense dark chocolate | kg (5 kg bag) | €17.40 | 365 days |
-| prd_0040 | Milk couverture chocolate 38% (pistoles, 5 kg bag) | milk chocolate, milk couverture, milk 38, milk pistoles | kg (5 kg bag) | €15.20 | 365 days |
-| prd_0041 | White couverture chocolate 33% (pistoles, 5 kg bag) | white chocolate, white couverture, ivoire, white pistoles | kg (5 kg bag) | €15.90 | 300 days |
-| prd_0042 | Baker's chocolate sticks 44% (1.6 kg carton, 300 sticks) | sticks, chocolate sticks, choc bars, small sticks, sticks for chocolatines | box (carton of 300 sticks) | €13.90 | 365 days |
-| prd_0043 | Cocoa powder 22-24% (1 kg bag) | cacao, cocoa powder, cocoa powder | kg (1 kg bag) | €11.50 | 540 days |
-| prd_0044 | Dark chocolate baking chips (5 kg bag) | chocolate chips, chocolate chips, chocolate drops | kg (5 kg bag) | €8.90 | 365 days |
-| prd_0045 | Hazelnut praline 50% (5 kg tub) | praline, hazelnut praline, praline paste | kg (5 kg tub) | €16.50 | 270 days |
+| prd_0038 | Chocolat de couverture noir 64 % (pistoles, sac 5 kg) | couverture noire, chocolat noir, pistoles noires, le 64, noir 64 | kg (sac 5 kg) | 15,80 € | 365 j |
+| prd_0039 | Chocolat de couverture noir 70 % (pistoles, sac 5 kg) | le 70, noir 70, couverture 70, chocolat noir corsé | kg (sac 5 kg) | 17,40 € | 365 j |
+| prd_0040 | Chocolat de couverture lait 38 % (pistoles, sac 5 kg) | chocolat au lait, couverture lait, lait 38, pistoles lait | kg (sac 5 kg) | 15,20 € | 365 j |
+| prd_0041 | Chocolat de couverture blanc 33 % (pistoles, sac 5 kg) | chocolat blanc, couverture blanche, ivoire, pistoles blanches | kg (sac 5 kg) | 15,90 € | 300 j |
+| prd_0042 | Bâtons de chocolat boulanger 44 % (carton 1,6 kg, 300 bâtons) | bâtons, bâtons de chocolat, barres choco, bâtonnets, bâtons pour chocolatines | colis (carton 300 bâtons) | 13,90 € | 365 j |
+| prd_0043 | Cacao en poudre 22-24 % (sac 1 kg) | cacao, poudre de cacao, cacao poudre | kg (sac 1 kg) | 11,50 € | 540 j |
+| prd_0044 | Pépites de chocolat noir cuisson (sac 5 kg) | pépites, pépites de chocolat, gouttes de chocolat | kg (sac 5 kg) | 8,90 € | 365 j |
+| prd_0045 | Praliné noisette 50 % (seau 5 kg) | praliné, praliné noisette, pâte de praliné | kg (seau 5 kg) | 16,50 € | 270 j |
 
-## Dried fruit and candied fruit
+## Fruits secs et fruits confits
 
-| id | Product | They say | Unit | Price | shelf life |
+| id | Produit | On dit | Unité | Prix | DLC |
 |---|---|---|---|---|---|
-| prd_0046 | Blanched ground almonds (5 kg bag) | ground almonds, ground almonds, ground almonds, blanched almonds, poudre | kg (5 kg bag) | €11.80 | 240 days |
-| prd_0047 | Flaked almonds (1 kg bag) | flaked almonds, flaked almonds, sliced almonds | kg (1 kg bag) | €12.90 | 240 days |
-| prd_0048 | Roasted hazelnut powder (1 kg bag) | ground hazelnuts, ground hazelnuts, ground hazelnuts | kg (1 kg bag) | €14.20 | 240 days |
-| prd_0049 | Peeled green pistachios (1 kg bag) | pistache, pistaches, blanched pistachios | kg (1 kg bag) | €38.00 | 240 days |
-| prd_0050 | Sultana raisins (12.5 kg carton) | raisins, raisins, sultanines, sultanas | kg (12.5 kg carton) | €4.60 | 365 days |
-| prd_0051 | Walnut kernels (5 kg carton) | noix, cerneaux, walnut halves | kg (5 kg carton) | €13.50 | 240 days |
-| prd_0052 | Diced candied fruit (5 kg bucket) | candied fruit, cubes, candied fruit for crowns, candied fruit mix, candied peel | kg (5 kg tub) | €9.80 | 365 days |
+| prd_0046 | Poudre d'amande blanche (sac 5 kg) | poudre d'amande, amande poudre, amandes en poudre, amande blanche, poudre | kg (sac 5 kg) | 11,80 € | 240 j |
+| prd_0047 | Amandes effilées (sac 1 kg) | effilées, amandes effilées, amandes en lamelles | kg (sac 1 kg) | 12,90 € | 240 j |
+| prd_0048 | Poudre de noisette torréfiée (sac 1 kg) | noisette poudre, poudre de noisette, noisettes en poudre | kg (sac 1 kg) | 14,20 € | 240 j |
+| prd_0049 | Pistaches vertes émondées (sac 1 kg) | pistache, pistaches, pistaches émondées | kg (sac 1 kg) | 38,00 € | 240 j |
+| prd_0050 | Raisins secs sultanines (carton 12,5 kg) | raisins, raisins secs, sultanines, sultanas | kg (carton 12,5 kg) | 4,60 € | 365 j |
+| prd_0051 | Cerneaux de noix (carton 5 kg) | noix, cerneaux, cerneaux de noix | kg (carton 5 kg) | 13,50 € | 240 j |
+| prd_0052 | Fruits confits en cubes (seau 5 kg) | fruits confits, cubes, fruits confits couronne, macédoine confite, écorces confites | kg (seau 5 kg) | 9,80 € | 365 j |
 
-## Unbaked pastries and frozen dough
+## Viennoiserie crue et pâtes surgelées
 
-| id | Product | They say | Unit | Price | shelf life |
+| id | Produit | On dit | Unité | Prix | DLC |
 |---|---|---|---|---|---|
-| prd_0053 | Raw frozen all-butter croissant 70 g (carton of 150) | raw croissants, frozen croissants, croissants to bake, croissants | box (carton of 150 pieces) | €52.00 | 270 days |
-| prd_0054 | Raw frozen all-butter pain au chocolat 75 g (carton of 140) | chocolatines, raw chocolatines, pains au chocolat, frozen pains au choc, choco | box (carton of 140 pieces) | €54.00 | 270 days |
-| prd_0055 | Raw frozen pain aux raisins 110 g (carton of 80) | pains aux raisins, escargots, frozen raisin pastries | box (carton of 80 pieces) | €41.00 | 270 days |
-| prd_0056 | Assorted raw mini viennoiseries (carton of 210) | minis, mini-viennoiseries, assorted minis, viennoiserie mignardises | box (carton of 210 pieces) | €46.00 | 270 days |
-| prd_0057 | All-butter puff pastry sheets (5 kg carton) | feuilletage, puff pastry, sheets of puff pastry, frozen puff pastry | box (carton of 10 sheets) | €39.00 | 270 days |
-| prd_0058 | Frozen par-baked baguette 280 g (carton of 60) | part-baked baguettes, part-baked, part-baked bread, frozen baguettes | box (carton of 60 pieces) | €24.00 | 180 days |
-| prd_0059 | Frozen raspberry purée (1 kg tray) | raspberry purée, raspberry coulis, raspberry pulp | kg (1 kg tray) | €9.40 | 540 days |
+| prd_0053 | Croissant pur beurre cru surgelé 70 g (carton 150) | croissants crus, croissants surgelés, croissants à cuire, croissants | colis (carton 150 pièces) | 52,00 € | 270 j |
+| prd_0054 | Chocolatine pur beurre crue surgelée 75 g (carton 140) | chocolatines, chocolatines crues, pains au chocolat, pains au choc surgelés, choco | colis (carton 140 pièces) | 54,00 € | 270 j |
+| prd_0055 | Pain aux raisins cru surgelé 110 g (carton 80) | pains aux raisins, escargots, raisins surgelés | colis (carton 80 pièces) | 41,00 € | 270 j |
+| prd_0056 | Assortiment mini-viennoiseries crues (carton 210) | minis, mini-viennoiseries, assortiment minis, mignardises viennoises | colis (carton 210 pièces) | 46,00 € | 270 j |
+| prd_0057 | Pâte feuilletée pur beurre en plaques (carton 5 kg) | feuilletage, pâte feuilletée, plaques de feuilletage, feuilletage surgelé | colis (carton 10 plaques) | 39,00 € | 270 j |
+| prd_0058 | Baguette précuite surgelée 280 g (carton 60) | baguettes précuites, précuites, pain précuit, baguettes surgelées | colis (carton 60 pièces) | 24,00 € | 180 j |
+| prd_0059 | Purée de framboise surgelée (barquette 1 kg) | purée de framboise, coulis framboise, pulpe framboise | kg (barquette 1 kg) | 9,40 € | 540 j |
 
-## Fresh fruit for pastry
+## Fruits frais pour la pâtisserie
 
-| id | Product | They say | Unit | Price | shelf life |
+| id | Produit | On dit | Unité | Prix | DLC |
 |---|---|---|---|---|---|
-| prd_0060 | Gariguette strawberry (500 g punnet) | fraises, gariguette, punnet of strawberries | piece (500 g tray) | €4.70 | 3 days |
-| prd_0061 | Raspberry (125 g punnet) | framboises, fresh raspberries | piece (125 g tray) | €2.70 | 3 days |
-| prd_0062 | Lemon (5 kg case) | citrons, citron, lemon | kg (5 kg parcel) | €2.60 | 21 days |
-| prd_0063 | Golden pastry apple (13 kg case) | pommes, golden, tart apples | kg (13 kg parcel) | €1.85 | 30 days |
-| prd_0064 | Williams pear (12 kg case) | poires, poire, williams | kg (12 kg parcel) | €2.60 | 12 days |
+| prd_0060 | Fraise Gariguette (barquette 500 g) _(hors saison)_ | fraises, gariguette, barquette de fraises | pièce (barquette 500 g) | 4,70 € | 3 j |
+| prd_0061 | Framboise (barquette 125 g) _(hors saison)_ | framboises, framboise fraîche | pièce (barquette 125 g) | 2,70 € | 3 j |
+| prd_0062 | Citron jaune (colis 5 kg) | citrons, citron, citron jaune | kg (colis 5 kg) | 2,60 € | 21 j |
+| prd_0063 | Pomme Golden pâtissière (colis 13 kg) | pommes, golden, pommes à tarte | kg (colis 13 kg) | 1,85 € | 30 j |
+| prd_0064 | Poire Williams (colis 12 kg) | poires, poire, williams | kg (colis 12 kg) | 2,60 € | 12 j |
 
-## Packaging and shop articles
+## Emballages et articles de boutique
 
-| id | Product | They say | Unit | Price | shelf life |
+| id | Produit | On dit | Unité | Prix | DLC |
 |---|---|---|---|---|---|
-| prd_0065 | Printed kraft baguette bags (carton of 1000) | bread bags, baguette bags, kraft bags, baguette sachets | box (carton of 1000) | €22.00 | 1095 days |
-| prd_0066 | Paper viennoiserie bags (carton of 1000) | sachets, croissant bags, viennoiserie bags, chocolatine bags | box (carton of 1000) | €17.50 | 1095 days |
-| prd_0067 | White pastry boxes 20 cm (pack of 50) | pastry boxes, cake boxes, boxes of 20, tart boxes | box (pack of 50) | €14.50 | 1095 days |
-| prd_0068 | Gold cardboard galette crowns (pack of 100) | couronnes, kings' crowns, cardboard crowns, gold crowns | box (pack of 100) | €13.00 | 1095 days |
-| prd_0069 | Porcelain galette des rois charms (bag of 100) | charms, galette des rois charms, bag of charms | box (pack of 100) | €16.00 | 1095 days |
-| prd_0070 | Gold round cake boards 28 cm (pack of 100) | semelles, gold discs, cardboard bases, galette boxes | box (pack of 100) | €9.80 | 1095 days |
-| prd_0071 | Silicone baking paper 40 × 60 (carton of 500 sheets) | baking paper, baking sheets, greaseproof paper, silicone paper | box (carton of 500 sheets) | €29.00 | 1095 days |
+| prd_0065 | Sacs à baguette kraft imprimés (carton 1000) | sacs à pain, sacs baguette, sacs kraft, sachets baguette | colis (carton 1000) | 22,00 € | 1095 j |
+| prd_0066 | Sachets viennoiserie papier (carton 1000) | sachets, sachets croissants, sachets viennoiserie, sachets chocolatines | colis (carton 1000) | 17,50 € | 1095 j |
+| prd_0067 | Boîtes pâtissières blanches 20 cm (lot de 50) | boîtes pâtissières, boîtes à gâteaux, boîtes de 20, boîtes tartes | colis (lot de 50) | 14,50 € | 1095 j |
+| prd_0068 | Couronnes des rois carton dorées (lot de 100) _(hors saison)_ | couronnes, couronnes des rois, couronnes en carton, couronnes dorées | colis (lot de 100) | 13,00 € | 1095 j |
+| prd_0069 | Fèves des rois en porcelaine (sachet de 100) _(hors saison)_ | fèves, fèves des rois, sachet de fèves | colis (sachet de 100) | 16,00 € | 1095 j |
+| prd_0070 | Semelles dorées rondes 28 cm (lot de 100) | semelles, disques or, semelles carton, cartons à galette | colis (lot de 100) | 9,80 € | 1095 j |
+| prd_0071 | Papier cuisson siliconé 40 × 60 (carton 500 feuilles) | papier cuisson, feuilles de cuisson, papier sulfurisé, papier silicone | colis (carton 500 feuilles) | 29,00 € | 1095 j |
 
-## Ambiguous terms: always clarify
+## Alias ambigus : toujours lever le doute
 
-- "laminating butter": Charentes-Poitou AOP laminating butter, 84% (2 kg slab) (prd_0025) or 82% laminating butter (2 kg slab) (prd_0026) or Laminating margarine (10 kg box) (prd_0030). Craftsmen "pure butter" want AOP laminating butter or 82 %; margarine only if the customer says "marga". Ask AOP or standard, the difference is more than 2 € per kilo.
-- "milk" means Whole UHT milk (1 L carton) (prd_0033) or 38% milk couverture chocolate (buttons, 5 kg bag) (prd_0040). "milk" means whole milk bricks; "milk 38" or "milk blanket" = chocolate. A pastry maker who talks about Easter talks about chocolate.
-- "powder" means Ground blanched almonds (5 kg bag) (prd_0046) or Ground roasted hazelnuts (1 kg bag) (prd_0048) or 22–24% cocoa powder (1 kg bag) (prd_0043) or Cold-process pastry cream mix (10 kg sack) (prd_0021). In January, "powder" is almost always the almond powder for cakes. Otherwise, it should be specified as almond, hazelnut, cocoa or cream powder.
-- "meal" means Traditional French T55 wheat flour (25 kg sack) (prd_0001) or T55 baker's wheat flour (25 kg sack) (prd_0002) or T45 strong pastry flour (25 kg sack) (prd_0003) or T65 country bread flour (25 kg sack) (prd_0004). A baker without precision = his usual flour (see his history); a pastry maker = T45 strong flour. Always confirm the number of bags of 25 kg.
-- "chocolate" means 64% dark couverture chocolate (buttons, 5 kg bag) (prd_0038) or 44% baker's chocolate sticks (1.6 kg box, 300 sticks) (prd_0042) or Heat-stable dark chocolate chips (5 kg bag) (prd_0044) or Frozen unbaked all-butter pains au chocolat, 75 g (box of 140) (prd_0054). "pains au chocolat" = frozen pastry SUR-PAC; "sticks" or "chocolate for pains au chocolat" = BAT-CHO; "cover" = pistoles.
-- "cream" means 35% UHT whipping cream (1 L carton) (prd_0031) or 30% thick crème fraîche (5 L bucket) (prd_0032) or Cold-process pastry cream mix (10 kg sack) (prd_0021). By default liquid cream 35 % in carton. "Pât cream" means the pastry cream powder, in sack of 10 kg.
+- « tourage » : Beurre de tourage AOP Charentes-Poitou 84 % (plaque 2 kg) (prd_0025) ou Beurre de tourage 82 % (plaque 2 kg) (prd_0026) ou Margarine de feuilletage (carton 10 kg) (prd_0030). Les artisans « pur beurre » veulent le tourage AOP ou le 82 % ; la margarine seulement si le client dit « marga ». Demander AOP ou standard, la différence fait plus de 2 € au kilo.
+- « lait » : Lait entier UHT (brique 1 L) (prd_0033) ou Chocolat de couverture lait 38 % (pistoles, sac 5 kg) (prd_0040). « Du lait » tout court = briques de lait entier ; « du lait 38 » ou « couverture lait » = chocolat. Un pâtissier qui parle de Pâques parle de chocolat.
+- « poudre » : Poudre d'amande blanche (sac 5 kg) (prd_0046) ou Poudre de noisette torréfiée (sac 1 kg) (prd_0048) ou Cacao en poudre 22-24 % (sac 1 kg) (prd_0043) ou Préparation pour crème pâtissière à froid (sac 10 kg) (prd_0021). En janvier, « de la poudre » c'est presque toujours la poudre d'amande pour les galettes. Sinon faire préciser amande, noisette, cacao ou poudre à crème.
+- « farine » : Farine de blé T55 tradition française (sac 25 kg) (prd_0001) ou Farine de blé T55 boulangère (sac 25 kg) (prd_0002) ou Farine de gruau T45 pâtissière (sac 25 kg) (prd_0003) ou Farine de blé T65 campagne (sac 25 kg) (prd_0004). Un boulanger sans précision = sa farine habituelle (voir son historique) ; un pâtissier = T45 gruau. Toujours confirmer le nombre de sacs de 25 kg.
+- « chocolat » : Chocolat de couverture noir 64 % (pistoles, sac 5 kg) (prd_0038) ou Bâtons de chocolat boulanger 44 % (carton 1,6 kg, 300 bâtons) (prd_0042) ou Pépites de chocolat noir cuisson (sac 5 kg) (prd_0044) ou Chocolatine pur beurre crue surgelée 75 g (carton 140) (prd_0054). « Des chocolatines » = viennoiserie surgelée SUR-PAC ; « des bâtons » ou « du chocolat pour les chocolatines » = BAT-CHO ; « de la couverture » = pistoles.
+- « crème » : Crème liquide UHT 35 % (brique 1 L) (prd_0031) ou Crème fraîche épaisse 30 % (seau 5 L) (prd_0032) ou Préparation pour crème pâtissière à froid (sac 10 kg) (prd_0021). Par défaut crème liquide 35 % en brique. « Crème pât » = la poudre à crème pâtissière, en sac de 10 kg.
 
-## Usual substitutions
+## Substitutions habituelles
 
-- AOP Charentes-Poitou 84% laminating butter (2 kg sheet) (prd_0025) → 82% laminating butter (2 kg sheet) (prd_0026)
-- Bourbon vanilla pods from Madagascar (100 g packet) (prd_0022) → Liquid vanilla extract (1 L bottle) (prd_0023)
-- Dark couverture chocolate 70% (pistoles, 5 kg bag) (prd_0039) → Dark couverture chocolate 64% (pistoles, 5 kg bag) (prd_0038)
-- T55 traditional French wheat flour (25 kg bag) (prd_0001) → T55 baker's wheat flour (25 kg bag) (prd_0002)
-- T65 organic wheat flour (25 kg bag) (prd_0007) → T65 country wheat flour (25 kg bag) (prd_0004)
-- Free-range eggs, size M (tray of 30) (prd_0034) → Pasteurised liquid whole egg (1 L carton) (prd_0035)
-- Flaked almonds (1 kg bag) (prd_0047) → Blanched ground almonds (5 kg bag) (prd_0046)
-- Fresh baker's yeast (500 g block) (prd_0011) → Instant dry yeast (500 g packet) (prd_0012)
-- AOP Charentes-Poitou unsalted butter (carton of 10 × 1 kg) (prd_0027) → 82% pastry butter (10 kg carton) (prd_0028)
+- Beurre de tourage AOP Charentes-Poitou 84 % (plaque 2 kg) (prd_0025) → Beurre de tourage 82 % (plaque 2 kg) (prd_0026)
+- Gousses de vanille Bourbon de Madagascar (paquet 100 g) (prd_0022) → Extrait de vanille liquide (bouteille 1 L) (prd_0023)
+- Chocolat de couverture noir 70 % (pistoles, sac 5 kg) (prd_0039) → Chocolat de couverture noir 64 % (pistoles, sac 5 kg) (prd_0038)
+- Farine de blé T55 tradition française (sac 25 kg) (prd_0001) → Farine de blé T55 boulangère (sac 25 kg) (prd_0002)
+- Farine de blé T65 bio (sac 25 kg) (prd_0007) → Farine de blé T65 campagne (sac 25 kg) (prd_0004)
+- Œufs plein air calibre M (plateau de 30) (prd_0034) → Œuf entier liquide pasteurisé (brique 1 L) (prd_0035)
+- Amandes effilées (sac 1 kg) (prd_0047) → Poudre d'amande blanche (sac 5 kg) (prd_0046)
+- Levure fraîche boulangère (pain de 500 g) (prd_0011) → Levure sèche instantanée (paquet 500 g) (prd_0012)
+- Beurre doux AOP Charentes-Poitou (carton 10 × 1 kg) (prd_0027) → Beurre pâtissier 82 % (carton 10 kg) (prd_0028)
 
-Never without the client's explicit consent.
+Jamais sans l'accord explicite du client.
 
-## Seasonality
+## Saisonnalité
 
-- Gariguette strawberry (500 g punnet) (prd_0060): from 15/03 to 30/06 — **Currently out of season**.
-- Raspberry (125 g punnet) (prd_0061): from 01/06 to 30/09 — **Currently out of season**.
-- Williams pear (12 kg case) (prd_0064): from 15/08 to 31/03.
-- Gold cardboard galette crowns (pack of 100) (prd_0068): from 01/12 to 31/01 — **Currently out of season**.
-- Porcelain galette des rois charms (bag of 100) (prd_0069): from 01/12 to 31/01 — **Currently out of season**.
+- Fraise Gariguette (barquette 500 g) (prd_0060) : du 15/03 au 30/06 — **hors saison aujourd'hui**.
+- Framboise (barquette 125 g) (prd_0061) : du 01/06 au 30/09 — **hors saison aujourd'hui**.
+- Poire Williams (colis 12 kg) (prd_0064) : du 15/08 au 31/03.
+- Couronnes des rois carton dorées (lot de 100) (prd_0068) : du 01/12 au 31/01 — **hors saison aujourd'hui**.
+- Fèves des rois en porcelaine (sachet de 100) (prd_0069) : du 01/12 au 31/01 — **hors saison aujourd'hui**.

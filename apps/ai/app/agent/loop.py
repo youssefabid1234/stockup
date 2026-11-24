@@ -39,7 +39,7 @@ from app import team_flags
 from . import call_context as preload
 from .prompts import build_system_prompt
 
-GIVE_UP = "Sorry, I couldn't get to the end."
+GIVE_UP = "Désolé, je n'ai pas réussi à aller au bout. Pouvez-vous reformuler ?"
 
 
 async def run_agent(
@@ -111,7 +111,7 @@ async def run_agent(
         yield TextEvent(delta=GIVE_UP)
         yield DoneEvent(message=message, usage=usage, ms=ms_since(started))
     except Exception as e:  # provider down, bad key… (a cancellation is not an Exception: it just stops us)
-        print("[agent] error during the round:", flush=True)
+        print("[agent] erreur pendant le tour :", flush=True)
         traceback.print_exc()
         yield ErrorEvent(message=str(e) or type(e).__name__)
 
@@ -122,15 +122,15 @@ async def execute_tool(call: ToolCall, tools: list[Tool], ctx: ToolContext) -> T
     tool = next((t for t in tools if t.name == call.name), None)
     try:
         if not tool:
-            raise LookupError(f"Unknown tool: {call.name}")
+            raise LookupError(f"Outil inconnu : {call.name}")
         result = await tool.run(call.arguments, ctx)
         try:  # a value the model can't read back (datetime, set, object…) is the tool's error, not the turn's
             to_json(result)
         except (TypeError, ValueError) as e:
-            raise TypeError(f"result of {call.name} not serializable in JSON : {e}") from e
+            raise TypeError(f"résultat de {call.name} non sérialisable en JSON : {e}") from e
         ok = True
     except Exception as e:
-        print(f"[tool {call.name}] error:", flush=True)
+        print(f"[tool {call.name}] erreur :", flush=True)
         traceback.print_exc()
         ok, result = False, {"error": str(e) or type(e).__name__}
     return ToolResultEvent(call_id=call.id, name=call.name, ok=ok, result=result, ms=ms_since(started))

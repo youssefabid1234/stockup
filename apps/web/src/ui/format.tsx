@@ -1,4 +1,4 @@
-/** Inline formatters. Always use these for money/qty/dates in JSX (tabular, English). */
+/** Inline formatters. Always use these for money/qty/dates in JSX (tabular, French). */
 import type { Unit } from "@kit/shared";
 import { cn } from "@/lib/cn";
 import { fmtDate, fmtDateLong, fmtDateTime, fmtMoney, fmtQty, fmtRelative, parseDate } from "@/lib/format";
@@ -41,7 +41,7 @@ export function DateLabel({ date, format = "short", className }: { date?: string
   if (!date) return <span className={cn("text-muted-foreground", className)}>—</span>;
   const txt = format === "long" ? fmtDateLong(date) : format === "datetime" ? fmtDateTime(date) : format === "relative" ? fmtRelative(date) : fmtDate(date);
   return (
-    <time dateTime={date} title={parseDate(date).toLocaleString("en-GB")} className={cn("num whitespace-nowrap", className)}>
+    <time dateTime={date} title={parseDate(date).toLocaleString("fr-FR")} className={cn("num whitespace-nowrap", className)}>
       {txt}
     </time>
   );

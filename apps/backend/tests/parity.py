@@ -205,15 +205,15 @@ def read_routes(ts: str) -> list[tuple[str, str] | str]:
     routes += [q("/api/client-events", type=t) for t in ["complaint", "dispute,late_payment", "call"]]
     routes += [q("/api/client-events", status=s) for s in ["open", "resolved"]]
     routes += [q("/api/client-events", clientId=c["id"]) for c in every(clients, 4)]
-    routes += [q("/api/client-events", q=x) for x in ["langoustine", "delay delivery", "avoir"]]
+    routes += [q("/api/client-events", q=x) for x in ["langoustine", "retard livraison", "avoir"]]
     routes += [q("/api/client-events", **{"from": "2026-01-01", "to": "2026-06-30"}), q("/api/client-events", **{"from": "bad"})]
     routes += [q("/api/supplier-events", type=t) for t in ["shortage", "quality_issue,price_change"]]
     routes += [q("/api/supplier-events", status="open"), q("/api/supplier-events", supplierId=suppliers[0]["id"], q="prix")]
     # Search
     searches = [
-        "bar", "lemoine", "Hello is Lemoine.", "loup", "Holy Jacques", "st jacques", "dorade", "daurade", "dorad",
-        "Port bistro", "poissonerie", "C0012", "c12", "CMD-2026-000123", "123", "000123", "the wolf for the bistro",
-        "I'd like 4 kg of bar", "huitres", "crevettes", "Scotch salmon", "", "   ", "zzzzzz", "rungis", "tidal",
+        "bar", "lemoine", "bonjour c'est Lemoine", "loup", "saint jacques", "st jacques", "dorade", "daurade", "dorad",
+        "bistrot du port", "poissonerie", "C0012", "c12", "CMD-2026-000123", "123", "000123", "le loup pour le bistrot",
+        "je voudrais 4 kg de bar", "huitres", "crevettes", "saumon ecosse", "", "   ", "zzzzzz", "rungis", "marée",
     ] + phones[:3]
     routes += [q("/api/search", q=s) for s in searches]
     routes += [q("/api/search", q="bar", types="product"), q("/api/search", q="lemoine", types="client,supplier"), q("/api/search", q="bar", limit=3)]
@@ -261,7 +261,7 @@ def read_routes(ts: str) -> list[tuple[str, str] | str]:
     for ts_key, py_key in [("scope", "entityType")]:
         for v in ["company", "client", "supplier,product", "category"]:
             ctx_routes.append((q("/api/context", **{ts_key: v}), q("/api/context", **{py_key: v})))
-    ctx_routes += [(q("/api/context", q=x), q("/api/context", q=x)) for x in ["substitution", "credit", "delivery in the morning", "lemoine", "zzz"]]
+    ctx_routes += [(q("/api/context", q=x), q("/api/context", q=x)) for x in ["substitution", "crédit", "livraison le matin", "lemoine", "zzz"]]
     ctx_routes += [(q("/api/context", kind=k), q("/api/context", kind=k)) for k in ["policy", "risk,pricing"]]
     ctx_routes += [(q("/api/context", source="seed", limit=5), q("/api/context", source="seed", limit=5))]
     ctx_routes += [(q("/api/context", entityId=c["id"]), q("/api/context", entityId=c["id"])) for c in clients[:3]]
@@ -312,7 +312,7 @@ def write_flow(rep: Report, ts: str, py: str) -> None:
         return rep.compare(f"{method} {py_path or ts_path}", a, b, write_time=today, context=context)
 
     print("[writes] orders")
-    order = both("POST", "/api/orders", {"clientId": client["id"], "lines": [{"productId": fish["id"], "qty": 3.5}, {"productId": shell["id"], "qty": 2, "note": "fresh"}]})
+    order = both("POST", "/api/orders", {"clientId": client["id"], "lines": [{"productId": fish["id"], "qty": 3.5}, {"productId": shell["id"], "qty": 2, "note": "bien frais"}]})
     oid = order["id"]
     line_ids = [l["id"] for l in order["lines"]]  # random: differ per API → fetch each side's own ids
     order_py = call(py, "GET", f"/api/orders/{oid}")[1]
@@ -323,7 +323,7 @@ def write_flow(rep: Report, ts: str, py: str) -> None:
     both("PATCH", f"/api/orders/{oid}/lines/{line_ids[0]}", {"qty": 4}, py_path=f"/api/orders/{oid}/lines/{py_line_ids[0]}")
     both("PATCH", f"/api/orders/{oid}/lines/{line_ids[1]}", {"productId": scarce["id"]}, py_path=f"/api/orders/{oid}/lines/{py_line_ids[1]}")
     both("DELETE", f"/api/orders/{oid}/lines/{added_ts}", py_path=f"/api/orders/{oid}/lines/{added_py}")
-    both("PATCH", f"/api/orders/{oid}", {"note": "Deliver before 7am"})
+    both("PATCH", f"/api/orders/{oid}", {"note": "Livrer avant 7h"})
     both("PATCH", f"/api/orders/{oid}/lines/nope", {"qty": 1})
     both("POST", f"/api/orders/{oid}/confirm")
     both("POST", f"/api/orders/{oid}/confirm")  # 409
@@ -360,7 +360,7 @@ def write_flow(rep: Report, ts: str, py: str) -> None:
     lt, lp = [l["id"] for l in po_ts["lines"]], [l["id"] for l in po_py["lines"]]
     both("PATCH", f"/api/purchase-orders/{pid}/lines/{lt[0]}", {"qty": 12}, py_path=f"/api/purchase-orders/{pid}/lines/{lp[0]}")
     both("DELETE", f"/api/purchase-orders/{pid}/lines/{lt[2]}", py_path=f"/api/purchase-orders/{pid}/lines/{lp[2]}")
-    both("PATCH", f"/api/purchase-orders/{pid}", {"note": "Call Before", "expectedDate": today})
+    both("PATCH", f"/api/purchase-orders/{pid}", {"note": "Appeler avant", "expectedDate": today})
     both("POST", f"/api/purchase-orders/{pid}/receive")  # 409 draft
     both("POST", f"/api/purchase-orders/{pid}/send")
     both("POST", f"/api/purchase-orders/{pid}/receive", {"lines": [{"lineId": lt[0], "receivedQty": 4}]}, py_body={"lines": [{"lineId": lp[0], "receivedQty": 4}]})
@@ -369,32 +369,32 @@ def write_flow(rep: Report, ts: str, py: str) -> None:
     empty = both("POST", "/api/purchase-orders", {"supplierId": sup["id"], "lines": []})
     both("POST", f"/api/purchase-orders/{empty['id']}/send")  # 409 empty
     both("POST", f"/api/purchase-orders/{empty['id']}/cancel")
-    both("POST", "/api/stock/adjust", {"productId": fish["id"], "qty": 2, "reason": "waste", "note": "damaged"})
+    both("POST", "/api/stock/adjust", {"productId": fish["id"], "qty": 2, "reason": "waste", "note": "abîmé"})
     both("POST", "/api/stock/adjust", {"productId": fish["id"], "qty": 1.5, "reason": "adjustment"})
     both("POST", "/api/stock/adjust", {"productId": fish["id"], "qty": -0.5, "reason": "adjustment"})
     both("POST", "/api/stock/adjust", {"productId": fish["id"], "qty": 0, "reason": "adjustment"})  # 400
 
     print("[writes] history, clients, tags, pricing")
-    ev = both("POST", f"/api/clients/{client['id']}/events", {"type": "complaint", "title": "Bar not fresh", "description": "Smell", "severity": "high", "orderId": oid})
-    both("PATCH", f"/api/client-events/{ev['id']}", {"status": "resolved", "resolution": "Have 20 €"})
+    ev = both("POST", f"/api/clients/{client['id']}/events", {"type": "complaint", "title": "Bar pas frais", "description": "Odeur", "severity": "high", "orderId": oid})
+    both("PATCH", f"/api/client-events/{ev['id']}", {"status": "resolved", "resolution": "Avoir de 20 €"})
     both("PATCH", f"/api/client-events/{ev['id']}", {"status": "open"})
-    both("POST", f"/api/clients/{client['id']}/events", {"type": "call", "title": "Call", "at": "2026-11-20"}, actor="user")
+    both("POST", f"/api/clients/{client['id']}/events", {"type": "call", "title": "Appel", "at": "2026-11-20"}, actor="user")
     both("POST", f"/api/clients/{client['id']}/events", {"type": "note", "title": "x", "orderId": o2["id"]})  # 400 mismatch
-    sev = both("POST", f"/api/suppliers/{sup['id']}/events", {"type": "shortage", "title": "No bar", "purchaseOrderId": pid})
+    sev = both("POST", f"/api/suppliers/{sup['id']}/events", {"type": "shortage", "title": "Pas de bar", "purchaseOrderId": pid})
     both("PATCH", f"/api/supplier-events/{sev['id']}", {"status": "resolved"})
-    both("PATCH", f"/api/supplier-events/{sev['id']}", {"title": "No bar (tempest)"})
-    new_client = both("POST", "/api/clients", {"name": "The New Bistrot", "type": "restaurant", "zone": client["zone"]})
+    both("PATCH", f"/api/supplier-events/{sev['id']}", {"title": "Pas de bar (tempête)"})
+    new_client = both("POST", "/api/clients", {"name": "Le Nouveau Bistrot", "type": "restaurant", "zone": client["zone"]})
     both("PATCH", f"/api/clients/{new_client['id']}", {"status": "blocked"})
-    both("PATCH", f"/api/clients/{new_client['id']}", {"preferences": "No frozen", "creditLimit": 1500})
-    both("POST", f"/api/clients/{new_client['id']}/notes", {"text": "Call back Monday"})
+    both("PATCH", f"/api/clients/{new_client['id']}", {"preferences": "Pas de surgelé", "creditLimit": 1500})
+    both("POST", f"/api/clients/{new_client['id']}/notes", {"text": "Rappeler lundi"})
     both("POST", "/api/clients", {"name": "", "type": "nope"})  # 400
     both("POST", "/api/tags", {"id": "vip", "scope": "client", "label": "VIP", "color": "amber"})
     both("POST", "/api/tags", {"id": "vip", "scope": "client", "label": "VIP"})  # 409
     both("POST", "/api/tags", {"id": "Bad Slug", "scope": "client", "label": "x"})  # 400
     both("PATCH", f"/api/clients/{client['id']}", {"tags": [*client.get("tags", []), "vip"]})
     both("PATCH", f"/api/clients/{client['id']}", {"tags": ["unknown-tag"]})  # 400
-    both("PATCH", "/api/tags/client/vip", {"label": "Customers VIP"})
-    rule = both("POST", "/api/price-rules", {"name": "VIP -10 % fish", "clientScope": {"kind": "tag", "tag": "vip"}, "productScope": {"kind": "category", "category": fish["category"]}, "method": {"kind": "discount_pct", "pct": 10}, "priority": 5})
+    both("PATCH", "/api/tags/client/vip", {"label": "Clients VIP"})
+    rule = both("POST", "/api/price-rules", {"name": "VIP -10 % poisson", "clientScope": {"kind": "tag", "tag": "vip"}, "productScope": {"kind": "category", "category": fish["category"]}, "method": {"kind": "discount_pct", "pct": 10}, "priority": 5})
     both("GET", q("/api/prices/resolve", clientId=client["id"], productId=fish["id"]))
     both("PATCH", f"/api/price-rules/{rule['id']}", {"active": False})
     both("PATCH", f"/api/price-rules/{rule['id']}", {"active": True})
@@ -423,9 +423,9 @@ def write_flow(rep: Report, ts: str, py: str) -> None:
     both("POST", "/api/route-runs/plan")
 
     print("[writes] context")
-    c1 = both("POST", "/api/context", {"scope": "client", "entityId": client["id"], "kind": "preference", "title": "  Love the bar  ", "body": "Still from the line bar.", "tags": ["bar", " bar ", ""]},
-              py_body={"entityType": "client", "entityId": client["id"], "kind": "preference", "title": "  Love the bar  ", "body": "Still from the line bar.", "tags": ["bar", " bar ", ""]}, context=True)
-    both("PATCH", f"/api/context/{c1['id']}", {"title": "Loves the line bar", "tags": []}, context=True)
+    c1 = both("POST", "/api/context", {"scope": "client", "entityId": client["id"], "kind": "preference", "title": "  Aime le bar  ", "body": "Toujours du bar de ligne.", "tags": ["bar", " bar ", ""]},
+              py_body={"entityType": "client", "entityId": client["id"], "kind": "preference", "title": "  Aime le bar  ", "body": "Toujours du bar de ligne.", "tags": ["bar", " bar ", ""]}, context=True)
+    both("PATCH", f"/api/context/{c1['id']}", {"title": "Aime le bar de ligne", "tags": []}, context=True)
     both("PATCH", f"/api/context/{c1['id']}", {"scope": "company"}, py_body={"entityType": "company"}, context=True)
     both("POST", "/api/context", {"scope": "company", "entityId": client["id"], "kind": "policy", "title": "x", "body": "y"},
          py_body={"entityType": "company", "entityId": client["id"], "kind": "policy", "title": "x", "body": "y"}, context=True)  # 400
@@ -456,7 +456,7 @@ def main() -> None:
         write_flow(rep, args.ts, args.py)
         for base in (args.ts, args.py):
             call(base, "POST", "/api/admin/reset")
-    print(f"\n{rep.checked} compare, {len(rep.failed)} with differences")
+    print(f"\n{rep.checked} comparisons, {len(rep.failed)} with differences")
     sys.exit(1 if rep.failed else 0)
 
 

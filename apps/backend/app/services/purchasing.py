@@ -1,4 +1,4 @@
-"""Purchase orders (orders supplier):
+"""Purchase orders (commandes fournisseur):
 
     draft ──send──▶ sent ──receive──▶ partially_received ──receive──▶ received
     draft | sent | partially_received ──cancel──▶ cancelled (lots already received stay in stock)
@@ -17,25 +17,25 @@ from app.core.activity import Ctx, log_event, now, today
 from app.core.db import Doc, per_data_version, transactional
 from app.core.listing import Key, ListQuery, apply_sort, count_by, respond, split_set, sum_of
 from app.core.errors import bad_request, conflict
-from app.core.utils import add_days, cmp, collate_key, fmt_eur, js_round, js_str, normalize, round2, round3, sort_by, total
+from app.core.utils import add_days, cmp, collate_key, de, fmt_eur, js_round, js_str, normalize, round2, round3, sort_by, total
 from app.services import clients
 from app.services.stock import add_lot
 
 STATUS_FR = {
-    "draft": "draft",
-    "sent": "sent",
-    "partially_received": "Partially received",
-    "received": "Received",
-    "cancelled": "Cancelled",
+    "draft": "brouillon",
+    "sent": "envoyée",
+    "partially_received": "partiellement reçue",
+    "received": "reçue",
+    "cancelled": "annulée",
 }
 
 
 def _guard(po: Doc, allowed: list[str], action: str) -> None:
     if po["status"] not in allowed:
-        expected = " or ".join(STATUS_FR[s] for s in allowed)
+        expected = " ou ".join(STATUS_FR[s] for s in allowed)
         raise conflict(
             "invalid_transition",
-            f"Cannot {action} {po['number']} : it is {STATUS_FR[po['status']]} (expected: {expected})",
+            f"Impossible {de(action)} {po['number']} : elle est {STATUS_FR[po['status']]} (attendu : {expected})",
         )
 
 
@@ -60,20 +60,20 @@ def po_warnings(po: Doc) -> list[Doc]:
     if po["lines"] and supplier["minOrderAmount"] > 0 and po_total < supplier["minOrderAmount"]:
         warnings.append({
             "code": "below_min_order",
-            "message": f"Order under the minimum of {supplier['name']} : {fmt_eur(po_total)} HT for a minimum of {fmt_eur(supplier['minOrderAmount'])}",
+            "message": f"Commande sous le minimum de {supplier['name']} : {fmt_eur(po_total)} HT pour un minimum de {fmt_eur(supplier['minOrderAmount'])}",
         })  # fmt: skip
     for l in po["lines"]:
         p = crud.products.get(l["productId"])
         name = p["name"] if p else l["productId"]
         sp = crud.supplier_prices.get(f"{supplier['id']}|{l['productId']}")
         if not sp:
-            warnings.append({"code": "not_in_supplier_catalog", "productId": l["productId"], "message": f"{name} is not in the catalogue of {supplier['name']}"})
+            warnings.append({"code": "not_in_supplier_catalog", "productId": l["productId"], "message": f"{name} n'est pas au catalogue de {supplier['name']}"})
         elif l["unitPrice"] > sp["price"] * 1.1:
             pct = js_round((l["unitPrice"] / sp["price"] - 1) * 100)
             warnings.append({
                 "code": "price_above_usual",
                 "productId": l["productId"],
-                "message": f"{name} purchased {fmt_eur(l['unitPrice'])}, i.e. +{pct} % above the usual price of {supplier['name']} ({fmt_eur(sp['price'])})",
+                "message": f"{name} acheté {fmt_eur(l['unitPrice'])}, soit +{pct} % au-dessus du prix habituel de {supplier['name']} ({fmt_eur(sp['price'])})",
             })  # fmt: skip
     return warnings
 
@@ -148,10 +148,10 @@ def purchase_price(supplier_id: str, product_id: str) -> float:
 def _build_line(supplier_id: str, input: Doc) -> Doc:
     crud.products.require(input["productId"])
     if not input["qty"] > 0:
-        raise bad_request("invalid_qty", "The quantity must be positive")
+        raise bad_request("invalid_qty", "La quantité doit être positive")
     unit_price = input.get("unitPrice")
     if unit_price is not None and unit_price < 0:
-        raise bad_request("invalid_price", "The price must be positive")
+        raise bad_request("invalid_price", "Le prix doit être positif")
     return {
         "id": f"pol_{uuid.uuid4().hex[:8]}",
         "productId": input["productId"],
@@ -180,9 +180,9 @@ def create_purchase_order(ctx: Ctx, input: Doc) -> Doc:
     }
     saved = _save(po)
     below = lines and saved["totalHt"] < supplier["minOrderAmount"]
-    min_note = f" (under minimum {fmt_eur(supplier['minOrderAmount'])})" if below else ""
+    min_note = f" (sous le minimum de {fmt_eur(supplier['minOrderAmount'])})" if below else ""
     log_event(ctx, "purchase_order.created", "purchase_order", po["id"],
-              f"Supplier order {po['number']} created in {supplier['name']} ({len(lines)} line(s), {fmt_eur(saved['totalHt'])} excl. VAT){min_note}")  # fmt: skip
+              f"Commande fournisseur {po['number']} créée chez {supplier['name']} ({len(lines)} ligne(s), {fmt_eur(saved['totalHt'])} HT){min_note}")  # fmt: skip
     return po_detail(po["id"])
 
 
@@ -193,33 +193,33 @@ def update_purchase_order(ctx: Ctx, id: str, patch: Doc) -> Doc:
     _save({**po, **patch})
     what = []
     if patch.get("expectedDate"):
-        what.append(f"delivery expected on {patch['expectedDate']}")
+        what.append(f"livraison attendue le {patch['expectedDate']}")
     if "note" in patch:
         what.append("note")
     log_event(ctx, "purchase_order.updated", "purchase_order", id,
-              f"Supplier order {po['number']} amended ({', '.join(what) or 'no change'})")  # fmt: skip
+              f"Commande fournisseur {po['number']} modifiée ({', '.join(what) or 'aucun changement'})")  # fmt: skip
     return po_detail(id)
 
 
 @transactional
 def add_purchase_line(ctx: Ctx, id: str, input: Doc) -> Doc:
     po = crud.purchase_orders.require(id)
-    _guard(po, ["draft"], "add a line to")
+    _guard(po, ["draft"], "ajouter une ligne à")
     line = _build_line(po["supplierId"], input)
     _save({**po, "lines": [*po["lines"], line]})
     p = crud.products.require(line["productId"])
     log_event(ctx, "purchase_order.line_added", "purchase_order", id,
-              f"{js_str(line['qty'])} {p['unit']} of {p['name']} added to {po['number']} ({fmt_eur(line['unitPrice'])})")  # fmt: skip
+              f"{js_str(line['qty'])} {p['unit']} de {p['name']} ajouté(s) à {po['number']} ({fmt_eur(line['unitPrice'])})")  # fmt: skip
     return po_detail(id)
 
 
 @transactional
 def update_purchase_line(ctx: Ctx, id: str, line_id: str, patch: Doc) -> Doc:
     po = crud.purchase_orders.require(id)
-    _guard(po, ["draft"], "modify a line of")
+    _guard(po, ["draft"], "modifier une ligne de")
     line = next((l for l in po["lines"] if l["id"] == line_id), None)
     if not line:
-        raise bad_request("unknown_line", f"Line {line_id} not found on {po['number']}")
+        raise bad_request("unknown_line", f"Ligne {line_id} introuvable sur {po['number']}")
     updated = {**line, **({"qty": patch["qty"]} if "qty" in patch else {})}
     if patch.get("productId") and patch["productId"] != line["productId"]:
         rebuilt = _build_line(po["supplierId"], {"productId": patch["productId"], "qty": updated["qty"], "unitPrice": patch.get("unitPrice")})
@@ -227,15 +227,15 @@ def update_purchase_line(ctx: Ctx, id: str, line_id: str, patch: Doc) -> Doc:
     elif "unitPrice" in patch:
         updated["unitPrice"] = patch["unitPrice"]
     if not updated["qty"] > 0:
-        raise bad_request("invalid_qty", "The quantity must be positive")
+        raise bad_request("invalid_qty", "La quantité doit être positive")
     if updated["unitPrice"] < 0:
-        raise bad_request("invalid_price", "The price must be positive")
+        raise bad_request("invalid_price", "Le prix doit être positif")
     updated["unitPrice"] = round2(updated["unitPrice"])
     _save({**po, "lines": [updated if l["id"] == line_id else l for l in po["lines"]]})
     p = crud.products.get(updated["productId"])
     log_event(ctx, "purchase_order.line_updated", "purchase_order", id,
-              f"Line {p['name'] if p else updated['productId']} amended on {po['number']} "
-              f"({js_str(updated['qty'])} {p['unit'] if p else ''} to {fmt_eur(updated['unitPrice'])})")  # fmt: skip
+              f"Ligne {p['name'] if p else updated['productId']} modifiée sur {po['number']} "
+              f"({js_str(updated['qty'])} {p['unit'] if p else ''} à {fmt_eur(updated['unitPrice'])})")  # fmt: skip
     return po_detail(id)
 
 
@@ -243,13 +243,13 @@ def update_purchase_line(ctx: Ctx, id: str, line_id: str, patch: Doc) -> Doc:
 def delete_purchase_line(ctx: Ctx, id: str, line_id: str) -> Doc:
     """Removing the last line is allowed: a draft may be empty."""
     po = crud.purchase_orders.require(id)
-    _guard(po, ["draft"], "remove a line from")
+    _guard(po, ["draft"], "retirer une ligne de")
     line = next((l for l in po["lines"] if l["id"] == line_id), None)
     if not line:
-        raise bad_request("unknown_line", f"Line {line_id} not found on {po['number']}")
+        raise bad_request("unknown_line", f"Ligne {line_id} introuvable sur {po['number']}")
     _save({**po, "lines": [l for l in po["lines"] if l["id"] != line_id]})
     p = crud.products.get(line["productId"])
-    log_event(ctx, "purchase_order.line_removed", "purchase_order", id, f"{p['name'] if p else line['productId']} withdrawn from {po['number']}")
+    log_event(ctx, "purchase_order.line_removed", "purchase_order", id, f"{p['name'] if p else line['productId']} retiré de {po['number']}")
     return po_detail(id)
 
 
@@ -270,10 +270,10 @@ def send_purchase_order(ctx: Ctx, id: str) -> Doc:
     po = crud.purchase_orders.require(id)
     _guard(po, ["draft"], "envoyer")
     if not po["lines"]:
-        raise conflict("empty_order", f"The supplier order {po['number']} has no line")
+        raise conflict("empty_order", f"La commande fournisseur {po['number']} n'a aucune ligne")
     crud.purchase_orders.put({**po, "status": "sent"})
     supplier = crud.suppliers.get(po["supplierId"])
-    log_event(ctx, "purchase_order.sent", "purchase_order", id, f"Order {po['number']} sent to {supplier['name'] if supplier else '?'}")
+    log_event(ctx, "purchase_order.sent", "purchase_order", id, f"Commande {po['number']} envoyée à {supplier['name'] if supplier else '?'}")
     return po_detail(id)
 
 
@@ -282,16 +282,16 @@ def receive_purchase_order(ctx: Ctx, id: str, received: list[Doc] | None = None)
     """Record a receipt. `receivedQty` is the quantity received NOW (added to what was already received).
     Without lines, everything still outstanding is received."""
     po = crud.purchase_orders.require(id)
-    _guard(po, ["sent", "partially_received"], "receive")
+    _guard(po, ["sent", "partially_received"], "réceptionner")
     if received:
         by_line = {r["lineId"]: r["receivedQty"] for r in received}
     else:
         by_line = {l["id"]: max(0, round3(l["qty"] - l["receivedQty"])) for l in po["lines"]}
     for line_id, qty in by_line.items():
         if not any(l["id"] == line_id for l in po["lines"]):
-            raise bad_request("unknown_line", f"Line {line_id} not found on {po['number']}")
+            raise bad_request("unknown_line", f"Ligne {line_id} introuvable sur {po['number']}")
         if qty < 0:
-            raise bad_request("invalid_qty", "Quantity received negative")
+            raise bad_request("invalid_qty", "Quantité reçue négative")
     lot_count = 0
     lines = []
     for l in po["lines"]:
@@ -304,12 +304,12 @@ def receive_purchase_order(ctx: Ctx, id: str, received: list[Doc] | None = None)
         lot_count += 1
         lines.append({**l, "receivedQty": round3(l["receivedQty"] + qty)})
     if not lot_count:
-        raise bad_request("nothing_received", "No quantity received")
+        raise bad_request("nothing_received", "Aucune quantité reçue")
     status = "received" if all(l["receivedQty"] >= l["qty"] for l in lines) else "partially_received"
     crud.purchase_orders.put({**po, "lines": lines, "status": status})
-    kind = "Complete" if status == "received" else "partial"
+    kind = "complète" if status == "received" else "partielle"
     log_event(ctx, "purchase_order.received", "purchase_order", id,
-              f"Receipt {kind} of {po['number']} : {lot_count} lot(s) entered into stock")  # fmt: skip
+              f"Réception {kind} de {po['number']} : {lot_count} lot(s) entré(s) en stock")  # fmt: skip
     return po_detail(id)
 
 
@@ -318,5 +318,5 @@ def cancel_purchase_order(ctx: Ctx, id: str) -> Doc:
     po = crud.purchase_orders.require(id)
     _guard(po, ["draft", "sent", "partially_received"], "annuler")
     crud.purchase_orders.put({**po, "status": "cancelled"})
-    log_event(ctx, "purchase_order.cancelled", "purchase_order", id, f"Supplier order {po['number']} Cancelled")
+    log_event(ctx, "purchase_order.cancelled", "purchase_order", id, f"Commande fournisseur {po['number']} annulée")
     return po_detail(id)

@@ -131,7 +131,7 @@ Provider notes: the Anthropic adapter keeps the model's `thinking` blocks and se
 
 ## Endpoints
 
-| Road | What |
+| Route | What |
 |---|---|
 | `GET /health` | `{ ok, llm: {provider, model}, stt: {provider}, tts: {provider}, erpApiUrl }` |
 | `GET /tools` | `ToolInfo[]` |
@@ -216,7 +216,7 @@ if jev:
 | `STT_PROVIDER` | mock | `deepgram` \| `soniox` \| `gradium` \| `openai` \| `mock` |
 | `STT_API_KEY` / `STT_MODEL` | per provider | deepgram `nova-3`, soniox `stt-rt-v6`, gradium `default`, openai `gpt-4o-mini-transcribe` |
 | `STT_LANGUAGE` | fr | language of the caller |
-| `MOCK_STT_TEXT` | "Hello, do you have any left of the bar?" | what the mock STT "hears" whatever is said (`POST /stt` and `/command` use the `x-mock-text` header instead when given, WS `/voice` the `hint` of `audio_start`) |
+| `MOCK_STT_TEXT` | "Bonjour, il vous reste du bar ?" | what the mock STT "hears" whatever is said (`POST /stt` and `/command` use the `x-mock-text` header instead when given, WS `/voice` the `hint` of `audio_start`) |
 | `TTS_PROVIDER` | mock | `elevenlabs` \| `gradium` \| `openai` \| `mock` |
 | `TTS_API_KEY` / `TTS_MODEL` / `TTS_VOICE` | per provider | elevenlabs `eleven_flash_v2_5` / `JBFqnCBsd6RMkjVDRZzb`; gradium `default` / `F7Iib4MAyHIRed0x` (Armand, fr-FR); openai `gpt-4o-mini-tts` / `alloy` |
 | `TTS_LANGUAGE` | fr | elevenlabs `language_code` (Gradium / OpenAI follow the voice) |

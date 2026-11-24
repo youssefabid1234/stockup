@@ -33,8 +33,8 @@ export default function ClientDetailPage() {
   if (isError || !c) {
     return (
       <Page>
-        <PageHeader breadcrumb={[{ label: "Customers", to: "/clients" }]} title={id} />
-        <PageBody><EmptyState icon={Users} title="Client not found" description={`No customer matches the ID ${id}.`} /></PageBody>
+        <PageHeader breadcrumb={[{ label: "Clients", to: "/clients" }]} title={id} />
+        <PageBody><EmptyState icon={Users} title="Client introuvable" description={`Aucun client ne correspond à l'identifiant ${id}.`} /></PageBody>
       </Page>
     );
   }
@@ -44,7 +44,7 @@ export default function ClientDetailPage() {
 function ClientView({ c }: { c: ClientDetail }) {
   const newOrder = useCreateDocument("sale");
   const setStatus = useApiMutation((status: ClientDetail["status"]) => api.clients.update(c.id, { status }), {
-    success: (u) => (u.status === "blocked" ? "Client blocked" : "Reactivated Client"),
+    success: (u) => (u.status === "blocked" ? "Client bloqué" : "Client réactivé"),
     invalidate: [qk.clients.all],
   });
   const creditUse = c.creditLimit > 0 ? c.outstanding / c.creditLimit : 0;
@@ -56,7 +56,7 @@ function ClientView({ c }: { c: ClientDetail }) {
   return (
     <Page>
       <PageHeader
-        breadcrumb={[{ label: "Customers", to: "/clients" }]}
+        breadcrumb={[{ label: "Clients", to: "/clients" }]}
         title={c.name}
         meta={
           <>
@@ -69,25 +69,25 @@ function ClientView({ c }: { c: ClientDetail }) {
             value={tab as "overview" | "history" | "context"}
             onChange={setTab}
             items={[
-              { id: "overview", label: "Overview" },
-              { id: "history", label: c.eventStats.open ? <>Background <Dot tone="warning" /></> : "Background", count: c.eventStats.total },
-              { id: "context", label: "Context", count: ctx?.entries.length },
+              { id: "overview", label: "Vue d'ensemble" },
+              { id: "history", label: c.eventStats.open ? <>Historique <Dot tone="warning" /></> : "Historique", count: c.eventStats.total },
+              { id: "context", label: "Contexte", count: ctx?.entries.length },
             ]}
           />
         }
         actions={
           tab === "history" ? (
-            <Button variant="primary" icon={History} onClick={() => setNewEvent("1")}>New event</Button>
+            <Button variant="primary" icon={History} onClick={() => setNewEvent("1")}>Nouvel événement</Button>
           ) : tab === "context" ? (
-            <Button variant="primary" icon={BookOpen} onClick={() => setNewCtx("1")}>New form</Button>
+            <Button variant="primary" icon={BookOpen} onClick={() => setNewCtx("1")}>Nouvelle fiche</Button>
           ) : <>
             {c.status === "blocked" ? (
-              <Button icon={CheckCircle2} loading={setStatus.isPending} onClick={() => setStatus.mutate("active")}>Unlock</Button>
+              <Button icon={CheckCircle2} loading={setStatus.isPending} onClick={() => setStatus.mutate("active")}>Débloquer</Button>
             ) : (
-              <Button variant="danger" icon={Ban} loading={setStatus.isPending} onClick={() => setStatus.mutate("blocked")}>Block</Button>
+              <Button variant="danger" icon={Ban} loading={setStatus.isPending} onClick={() => setStatus.mutate("blocked")}>Bloquer</Button>
             )}
             <Button variant="primary" icon={Plus} loading={newOrder.isPending} onClick={() => newOrder.mutate(c.id)}>
-              New order
+              Nouvelle commande
             </Button>
           </>
         }
@@ -98,11 +98,11 @@ function ClientView({ c }: { c: ClientDetail }) {
           <EntityContext scope="client" id={c.id} label={c.name} layout="tab" newOpen={!!newCtx} onNewClose={() => setNewCtx("")} />
         ) : <>
         <StatGrid className="md:grid-cols-5">
-          <Stat label="Outstanding balance" value={<Money value={c.outstanding} />} hint={c.creditLimit ? `${fmtPercent(creditUse)} ceiling` : "No ceiling"} tone={creditUse > 0.9 ? "warning" : undefined} />
-          <Stat label="Overdue" value={<Money value={c.overdue} />} tone={c.overdue > 0 ? "destructive" : undefined} hint={`${c.openInvoiceCount} facture${c.openInvoiceCount > 1 ? "s" : ""} ouverte${c.openInvoiceCount > 1 ? "s" : ""}`} />
-          <Stat label="CA 30 days" value={<Money value={c.revenue30d} compact />} />
-          <Stat label="Last order" value={<DateLabel date={c.lastOrderAt} />} hint={c.lastOrderAt ? <DateLabel date={c.lastOrderAt} format="relative" /> : undefined} />
-          <Stat label="Credit ceiling" value={<Money value={c.creditLimit} compact />} hint={c.paymentTermsDays ? `Payment to ${c.paymentTermsDays} j` : "Supplying"} />
+          <Stat label="Encours" value={<Money value={c.outstanding} />} hint={c.creditLimit ? `${fmtPercent(creditUse)} du plafond` : "Pas de plafond"} tone={creditUse > 0.9 ? "warning" : undefined} />
+          <Stat label="En retard" value={<Money value={c.overdue} />} tone={c.overdue > 0 ? "destructive" : undefined} hint={`${c.openInvoiceCount} facture${c.openInvoiceCount > 1 ? "s" : ""} ouverte${c.openInvoiceCount > 1 ? "s" : ""}`} />
+          <Stat label="CA 30 jours" value={<Money value={c.revenue30d} compact />} />
+          <Stat label="Dernière commande" value={<DateLabel date={c.lastOrderAt} />} hint={c.lastOrderAt ? <DateLabel date={c.lastOrderAt} format="relative" /> : undefined} />
+          <Stat label="Plafond de crédit" value={<Money value={c.creditLimit} compact />} hint={c.paymentTermsDays ? `Paiement à ${c.paymentTermsDays} j` : "Comptant à la livraison"} />
         </StatGrid>
 
         <div className="grid grid-cols-1 gap-8 px-5 py-5 xl:grid-cols-[minmax(0,1fr)_340px]">
@@ -113,17 +113,17 @@ function ClientView({ c }: { c: ClientDetail }) {
             <NegotiatedPrices prices={c.prices} />
           </div>
           <aside className="flex min-w-0 flex-col gap-7">
-            <Section title="Information">
+            <Section title="Informations">
               <KeyValue
                 labelWidth={120}
                 items={[
                   { label: "Type", value: CLIENT_TYPE_LABEL[c.type] },
-                  { label: "Address", value: c.address ? <>{c.address}<br />{c.city}</> : c.city || "—" },
-                  { label: "Area", value: c.zone || "—" },
-                  { label: "Delivery days", value: <DeliveryDays days={c.deliveryDays} /> },
-                  { label: "Conditions", value: c.paymentTermsDays ? `${c.paymentTermsDays} days` : "Cash" },
-                  { label: "Sales representative", value: c.salesRep || "—" },
-                  { label: "Customer since", value: <DateLabel date={c.createdAt} format="long" /> },
+                  { label: "Adresse", value: c.address ? <>{c.address}<br />{c.city}</> : c.city || "—" },
+                  { label: "Zone", value: c.zone || "—" },
+                  { label: "Jours de livraison", value: <DeliveryDays days={c.deliveryDays} /> },
+                  { label: "Conditions", value: c.paymentTermsDays ? `${c.paymentTermsDays} jours` : "Comptant" },
+                  { label: "Commercial", value: c.salesRep || "—" },
+                  { label: "Client depuis", value: <DateLabel date={c.createdAt} format="long" /> },
                 ]}
               />
               {c.preferences ? (
@@ -155,11 +155,11 @@ function DeliveryDays({ days }: { days: ClientDetail["deliveryDays"] }) {
 
 // ── Sections ──
 const USUAL_COLS: Column<UsualBasketLine>[] = [
-  { id: "product", header: "Product", cell: (l) => <span className="font-medium">{l.productName}</span> },
-  { id: "freq", header: "Frequency", width: 140, cell: (l) => <Frequency value={l.frequency} /> },
-  { id: "avg", header: "Average", width: 110, numeric: true, cell: (l) => <Qty value={l.avgQty} unit={l.unit} /> },
-  { id: "last", header: "Last qte", width: 110, numeric: true, cell: (l) => <Qty value={l.lastQty} unit={l.unit} /> },
-  { id: "when", header: "Last time", width: 120, cell: (l) => <DateLabel date={l.lastOrderedAt} className="text-muted-foreground" /> },
+  { id: "product", header: "Produit", cell: (l) => <span className="font-medium">{l.productName}</span> },
+  { id: "freq", header: "Fréquence", width: 140, cell: (l) => <Frequency value={l.frequency} /> },
+  { id: "avg", header: "Qté moyenne", width: 110, numeric: true, cell: (l) => <Qty value={l.avgQty} unit={l.unit} /> },
+  { id: "last", header: "Dernière qté", width: 110, numeric: true, cell: (l) => <Qty value={l.lastQty} unit={l.unit} /> },
+  { id: "when", header: "Dernière fois", width: 120, cell: (l) => <DateLabel date={l.lastOrderedAt} className="text-muted-foreground" /> },
 ];
 function Frequency({ value }: { value: number }) {
   return (
@@ -171,42 +171,42 @@ function Frequency({ value }: { value: number }) {
 }
 function UsualBasket({ lines }: { lines: UsualBasketLine[] }) {
   return (
-    <Section title="Regular basket" count={lines.length}>
+    <Section title="Panier habituel" count={lines.length}>
       <DataTable inset paginate={false} columns={USUAL_COLS} rows={lines} getRowId={(l) => l.productId}
-        empty={<EmptyFrame icon={ShoppingCart} text="There are too few orders to identify a usual basket." />} />
+        empty={<EmptyFrame icon={ShoppingCart} text="Pas encore assez d'historique pour un panier habituel." />} />
     </Section>
   );
 }
 
 const ORDER_COLS: Column<OrderSummary>[] = [
   { id: "number", header: "N°", width: 160, cell: (o) => <Mono>{o.number}</Mono> },
-  { id: "date", header: "Delivery", width: 120, cell: (o) => <DateLabel date={o.deliveryDate} /> },
+  { id: "date", header: "Livraison", width: 120, cell: (o) => <DateLabel date={o.deliveryDate} /> },
   { id: "source", header: "Canal", cell: (o) => (o.source === "voice_agent" ? <Badge tone="violet">{SOURCE_LABEL[o.source]}</Badge> : <span className="text-muted-foreground">{SOURCE_LABEL[o.source] ?? o.source}</span>) },
-  { id: "lines", header: "Lines", width: 70, numeric: true, muted: true, cell: (o) => o.lineCount },
+  { id: "lines", header: "Lignes", width: 70, numeric: true, muted: true, cell: (o) => o.lineCount },
   { id: "total", header: "Total HT", width: 110, numeric: true, cell: (o) => <Money value={o.totalHt} /> },
-  { id: "status", header: "Status", width: 110, cell: (o) => <StatusDot kind="order" value={o.status} /> },
+  { id: "status", header: "Statut", width: 110, cell: (o) => <StatusDot kind="order" value={o.status} /> },
 ];
 function RecentOrders({ orders }: { orders: OrderSummary[] }) {
   const navigate = useNavigate();
   return (
-    <Section title="Recent orders" count={orders.length}>
+    <Section title="Commandes récentes" count={orders.length}>
       <DataTable inset pageKey="ordersPage" columns={ORDER_COLS} rows={orders} getRowId={(o) => o.id} onRowClick={(o) => navigate(`/orders/${o.id}`)}
-        empty={<EmptyFrame icon={ShoppingCart} text="This customer has no orders." />} />
+        empty={<EmptyFrame icon={ShoppingCart} text="Aucune commande pour ce client." />} />
     </Section>
   );
 }
 
 const INVOICE_COLS: Column<InvoiceSummary>[] = [
   { id: "number", header: "N°", width: 160, cell: (i) => <Mono>{i.number}</Mono> },
-  { id: "issued", header: "Issued", width: 110, cell: (i) => <DateLabel date={i.issuedAt} /> },
-  { id: "due", header: "Due date", cell: (i) => (
+  { id: "issued", header: "Émise", width: 110, cell: (i) => <DateLabel date={i.issuedAt} /> },
+  { id: "due", header: "Échéance", cell: (i) => (
       <span className={i.daysOverdue > 0 ? "text-destructive" : undefined}>
         <DateLabel date={i.dueDate} />{i.daysOverdue > 0 ? <span className="ml-1.5 text-[12px]">+{i.daysOverdue} j</span> : null}
       </span>
     ) },
-  { id: "ttc", header: "incl. VAT", width: 110, numeric: true, cell: (i) => <Money value={i.totalTtc} /> },
-  { id: "balance", header: "Remains due", width: 110, numeric: true, cell: (i) => <Money value={i.balance} tone={i.daysOverdue > 0 ? "destructive" : undefined} /> },
-  { id: "status", header: "Status", width: 150, cell: (i) => <StatusDot kind="invoice" value={i.status} /> },
+  { id: "ttc", header: "TTC", width: 110, numeric: true, cell: (i) => <Money value={i.totalTtc} /> },
+  { id: "balance", header: "Reste dû", width: 110, numeric: true, cell: (i) => <Money value={i.balance} tone={i.daysOverdue > 0 ? "destructive" : undefined} /> },
+  { id: "status", header: "Statut", width: 150, cell: (i) => <StatusDot kind="invoice" value={i.status} /> },
 ];
 /** Every open invoice of the client, oldest due first, one server page at a time (the detail embeds at most 100). */
 function OpenInvoices({ c }: { c: ClientDetail }) {
@@ -216,7 +216,7 @@ function OpenInvoices({ c }: { c: ClientDetail }) {
   const count = data?.total ?? c.openInvoiceCount;
   const total = data?.sums?.balance ?? c.outstanding;
   return (
-    <Section title="Open invoices" count={count} actions={count ? <span className="text-[12px] text-muted-foreground">Total <Money value={total} className="font-medium text-foreground" /></span> : null}>
+    <Section title="Factures ouvertes" count={count} actions={count ? <span className="text-[12px] text-muted-foreground">Total <Money value={total} className="font-medium text-foreground" /></span> : null}>
       <DataTable inset server={{ list, total: data?.total }} columns={INVOICE_COLS} rows={data?.items ?? c.openInvoices.slice(0, 100)}
         getRowId={(i) => i.id} onRowClick={(i) => navigate(`/invoices/${i.id}`)}
         empty={<EmptyFrame icon={FileText} text="Aucune facture en attente de paiement." />} />
@@ -226,19 +226,19 @@ function OpenInvoices({ c }: { c: ClientDetail }) {
 
 type PriceRow = ClientDetail["prices"][number];
 const PRICE_COLS: Column<PriceRow>[] = [
-  { id: "product", header: "Product", cell: (p) => p.productName },
-  { id: "list", header: "Catalogue price", width: 120, numeric: true, muted: true, cell: (p) => <Money value={p.listPrice} /> },
-  { id: "price", header: "Negotiated price", width: 120, numeric: true, cell: (p) => <Money value={p.price} className="font-medium" /> },
-  { id: "disc", header: "Discount", width: 90, numeric: true, cell: (p) => {
+  { id: "product", header: "Produit", cell: (p) => p.productName },
+  { id: "list", header: "Prix catalogue", width: 120, numeric: true, muted: true, cell: (p) => <Money value={p.listPrice} /> },
+  { id: "price", header: "Prix négocié", width: 120, numeric: true, cell: (p) => <Money value={p.price} className="font-medium" /> },
+  { id: "disc", header: "Remise", width: 90, numeric: true, cell: (p) => {
       const d = p.listPrice ? 1 - p.price / p.listPrice : 0;
       return <span className={d > 0 ? "text-success" : "text-muted-foreground"}>{d > 0 ? `−${fmtPercent(d)}` : "—"}</span>;
     } },
 ];
 function NegotiatedPrices({ prices }: { prices: PriceRow[] }) {
   return (
-    <Section title="Negotiated prices" count={prices.length}>
+    <Section title="Prix négociés" count={prices.length}>
       <DataTable inset pageKey="pricesPage" columns={PRICE_COLS} rows={prices} getRowId={(p) => p.productId}
-        empty={<EmptyFrame icon={Tag} text="This customer pays the list price." />} />
+        empty={<EmptyFrame icon={Tag} text="Ce client paie le prix catalogue." />} />
     </Section>
   );
 }
@@ -247,7 +247,7 @@ function Contacts({ contacts }: { contacts: ClientDetail["contacts"] }) {
   return (
     <Section title="Contacts" count={contacts.length}>
       {contacts.length === 0 ? (
-        <div className="text-[12.5px] text-muted-foreground">No contact information.</div>
+        <div className="text-[12.5px] text-muted-foreground">Aucun contact renseigné.</div>
       ) : (
         <ul className="flex flex-col divide-y divide-border rounded-[6px] border border-border bg-card">
           {contacts.map((ct, i) => (
@@ -271,8 +271,8 @@ function Contacts({ contacts }: { contacts: ClientDetail["contacts"] }) {
 function Notes({ clientId, notes }: { clientId: string; notes: ClientDetail["notes"] }) {
   const [text, setText] = useState("");
   const [open, setOpen] = useState(false);
-  const add = useApiMutation((t: string) => api.clients.addNote(clientId, { text: t, author: "Me" }), {
-    success: "Note added",
+  const add = useApiMutation((t: string) => api.clients.addNote(clientId, { text: t, author: "Moi" }), {
+    success: "Note ajoutée",
     invalidate: [qk.clients.detail(clientId)],
     onSuccess: () => { setText(""); setOpen(false); },
   });
@@ -280,7 +280,7 @@ function Notes({ clientId, notes }: { clientId: string; notes: ClientDetail["not
   const submit = () => { if (text.trim()) add.mutate(text.trim()); };
 
   return (
-    <Section title="Notes CRM" count={notes.length} actions={!open ? <Button size="sm" variant="ghost" icon={MessageSquarePlus} onClick={() => setOpen(true)}>Add</Button> : null}>
+    <Section title="Notes CRM" count={notes.length} actions={!open ? <Button size="sm" variant="ghost" icon={MessageSquarePlus} onClick={() => setOpen(true)}>Ajouter</Button> : null}>
       {open ? (
         <div className="mb-3 flex flex-col gap-2">
           <Textarea
@@ -292,17 +292,17 @@ function Notes({ clientId, notes }: { clientId: string; notes: ClientDetail["not
               if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) submit();
               if (e.key === "Escape") { e.preventDefault(); setOpen(false); }
             }}
-            placeholder="Ex.: never wants a substitute on the bar"
+            placeholder="Ex. : ne veut jamais de substitution sur le bar"
           />
           <div className="flex items-center justify-end gap-2">
-            <span className="mr-auto text-[11.5px] text-muted-foreground">⌘↵ to save</span>
-            <Button size="sm" variant="ghost" onClick={() => setOpen(false)}>Cancel</Button>
-            <Button size="sm" variant="primary" loading={add.isPending} disabled={!text.trim()} onClick={submit}>Save</Button>
+            <span className="mr-auto text-[11.5px] text-muted-foreground">⌘↵ pour enregistrer</span>
+            <Button size="sm" variant="ghost" onClick={() => setOpen(false)}>Annuler</Button>
+            <Button size="sm" variant="primary" loading={add.isPending} disabled={!text.trim()} onClick={submit}>Enregistrer</Button>
           </div>
         </div>
       ) : null}
       {sorted.length === 0 && !open ? (
-        <div className="text-[12.5px] text-muted-foreground">Please note here the customer's habits and instructions.</div>
+        <div className="text-[12.5px] text-muted-foreground">Aucune note. Consignez ici les habitudes et consignes du client.</div>
       ) : (
         <ol className="flex flex-col gap-3">
           {sorted.map((n, i) => (
@@ -328,7 +328,7 @@ function EmptyFrame({ icon: Icon, text }: { icon: typeof Users; text: string }) 
 function DetailSkeleton() {
   return (
     <Page>
-      <PageHeader breadcrumb={[{ label: "Customers", to: "/clients" }]} title={<Skeleton className="h-4 w-48" />} />
+      <PageHeader breadcrumb={[{ label: "Clients", to: "/clients" }]} title={<Skeleton className="h-4 w-48" />} />
       <PageBody flush>
         <StatGrid className="md:grid-cols-5">
           {Array.from({ length: 5 }).map((_, i) => <Stat key={i} label={<Skeleton className="h-3 w-20" />} value={<Skeleton className="mt-1 h-5 w-24" />} />)}

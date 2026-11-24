@@ -15,9 +15,9 @@ import {
 import { LiveActivity } from "./live-activity";
 
 const EXAMPLES = [
-  "Create a pre-order for Lemoine, 4 kilos of bar for Thursday",
-  "Show me the turbot stock",
-  "Mark the invoice FAC-2026-011590  as paid by transfer",
+  "Crée une pré-commande pour Lemoine, 4 kilos de bar pour jeudi",
+  "Montre-moi le stock de turbot",
+  "Marque la facture FAC-2026-011590 comme payée par virement",
 ];
 
 const isTypingTarget = (t: EventTarget | null) => {
@@ -26,7 +26,7 @@ const isTypingTarget = (t: EventTarget | null) => {
 };
 
 const PHASE_LABEL: Record<CommandState["phase"], string> = {
-  idle: "Ready", recording: "I'm listening.", working: "I'm running...", done: "Ready", error: "Ready",
+  idle: "Prêt", recording: "J'écoute…", working: "J'exécute…", done: "Prêt", error: "Prêt",
 };
 
 export function CommandMode({ modeSwitch }: { modeSwitch: ReactNode }) {
@@ -78,11 +78,11 @@ export function CommandMode({ modeSwitch }: { modeSwitch: ReactNode }) {
   return (
     <Page>
       <PageHeader
-        title="Voice"
+        title="Voix"
         meta={
           <span className="flex items-center gap-1.5 text-[12px] text-muted-foreground">
             <Dot tone={online ? "success" : health.isLoading ? "warning" : "destructive"} pulse={health.isLoading} />
-            {online ? "Service IA  loan" : health.isLoading ? "Connection..." : "Service IA unreachable"}
+            {online ? "Service IA prêt" : health.isLoading ? "Connexion…" : "Service IA injoignable"}
           </span>
         }
         tabs={modeSwitch}
@@ -97,9 +97,9 @@ export function CommandMode({ modeSwitch }: { modeSwitch: ReactNode }) {
               </div>
             ) : null}
             <Button size="sm" variant="ghost" icon={s.speak ? Volume2 : VolumeX} onClick={() => setSpeak(!s.speak)} aria-pressed={s.speak}>
-              {s.speak ? "Voice response" : "Silent response"}
+              {s.speak ? "Réponse vocale" : "Réponse muette"}
             </Button>
-            <Button size="sm" icon={Trash2} onClick={clearCommandHistory} disabled={!s.runs.length}>Clear</Button>
+            <Button size="sm" icon={Trash2} onClick={clearCommandHistory} disabled={!s.runs.length}>Effacer</Button>
           </>
         }
       />
@@ -110,8 +110,8 @@ export function CommandMode({ modeSwitch }: { modeSwitch: ReactNode }) {
             {runs.length === 0 ? (
               <EmptyState
                 icon={AudioLines}
-                title="Pilot itERP  one command at a time"
-                description="Hold Space (or ⌥ Space on any page), speak your command, then release to hear the reply."
+                title="Pilotez l'ERP à la voix, une commande à la fois"
+                description="Maintenez Espace (ou ⌥ Espace sur n'importe quelle page), dites la commande, relâchez : l'agent l'exécute et répond en une ligne."
                 action={
                   <div className="flex flex-col items-center gap-1.5">
                     {EXAMPLES.map((ex) => (
@@ -137,8 +137,8 @@ export function CommandMode({ modeSwitch }: { modeSwitch: ReactNode }) {
               <MicOff size={14} strokeWidth={1.75} className="shrink-0 text-warning" />
               <span>
                 {s.mic === "denied"
-                  ? "Micro refused: allow it in the settings of the site (icon on the left of the address), then try again. Meanwhile, type the command."
-                  : "The microphone needs localhost or HTTPS. Type your command instead."}
+                  ? "Micro refusé : autorisez-le dans les réglages du site (icône à gauche de l'adresse), puis réessayez. En attendant, tapez la commande."
+                  : "Micro indisponible dans ce navigateur (il faut localhost ou https). Tapez la commande."}
               </span>
             </div>
           ) : null}
@@ -148,13 +148,13 @@ export function CommandMode({ modeSwitch }: { modeSwitch: ReactNode }) {
             <div className="flex w-[200px] shrink-0 flex-col gap-1">
               <span className={cn("flex items-center gap-1.5 text-[13px] font-medium", (s.phase === "recording" || s.phase === "working") && "text-violet")}>
                 {s.phase === "working" ? <Spinner size={12} /> : s.phase === "recording" ? <Dot tone="violet" pulse /> : null}
-                {online ? PHASE_LABEL[s.phase] : "Offline"}
+                {online ? PHASE_LABEL[s.phase] : "Hors ligne"}
               </span>
               {s.phase === "recording" ? (
                 <LevelMeter level={s.level} n={12} />
               ) : (
                 <span className="flex items-center gap-1 text-[11.5px] text-muted-foreground">
-                  <Kbd>Space</Kbd> Here · <Kbd>{VOICE_COMMAND_HINT}</Kbd> partout
+                  <Kbd>Espace</Kbd> ici · <Kbd>{VOICE_COMMAND_HINT}</Kbd> partout
                 </span>
               )}
             </div>
@@ -163,11 +163,11 @@ export function CommandMode({ modeSwitch }: { modeSwitch: ReactNode }) {
                 value={text}
                 onChange={(e) => setText(e.target.value)}
                 onKeyDown={(e) => { if (e.key === "Escape") (e.target as HTMLInputElement).blur(); }}
-                placeholder="Or type the command: &quot;Show me the turbot stock&quot;..."
+                placeholder="Ou tapez la commande : « montre-moi le stock de turbot »…"
                 disabled={!online}
                 className="min-w-0 flex-1"
               />
-              <IconButton type="submit" icon={Send} label="Run" variant="default" disabled={!online || !text.trim()} />
+              <IconButton type="submit" icon={Send} label="Exécuter" variant="default" disabled={!online || !text.trim()} />
             </form>
           </div>
         </section>
@@ -179,7 +179,7 @@ export function CommandMode({ modeSwitch }: { modeSwitch: ReactNode }) {
   );
 }
 
-const clock = (at: number) => new Date(at).toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+const clock = (at: number) => new Date(at).toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
 
 function HistoryRow({ r, live }: { r: CommandRun; live: boolean }) {
   return (
@@ -204,10 +204,10 @@ function AverageBar({ runs }: { runs: CommandRun[] }) {
     <div className="flex min-h-10 shrink-0 flex-wrap items-center gap-x-3 gap-y-1 border-b border-border px-5 py-1.5">
       <span className={cn(SECTION_LABEL, "flex items-center gap-1.5")}>
         <Gauge size={13} strokeWidth={1.75} />
-        Mean latency
+        Latence moyenne
       </span>
       <span className="num text-[11.5px] text-muted-foreground">
-        {measured.length ? `${measured.length} commande${measured.length > 1 ? "s" : ""}` : "no measured control"}
+        {measured.length ? `${measured.length} commande${measured.length > 1 ? "s" : ""}` : "aucune commande mesurée"}
       </span>
       <div className="flex min-w-0 flex-wrap items-center gap-1">
         {COMMAND_METRICS.map((m) => <MsChip key={m.key} k={m.key} label={m.label} ms={avg(m.key)} title={m.title} />)}
@@ -231,7 +231,7 @@ function HoldButton({ recording, disabled }: { recording: boolean; disabled: boo
     <button
       type="button"
       disabled={disabled}
-      aria-label="Keep to say an order"
+      aria-label="Maintenir pour dire une commande"
       aria-pressed={recording}
       onPointerDown={(e) => {
         if (e.button !== 0) return;

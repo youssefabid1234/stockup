@@ -1,52 +1,52 @@
-# Amine Khalil – "The Right Command" (Intelligence)
+# Amine Khalil – 🧠 « La commande juste » (intelligence)
 
-**Journal Criterion**: Intelligent — "the right order in the ERP, the right product, the right customer. It never invents."
-**Interruptor**: `TEAM_ORDER_RULES`. **Branche**: `amine-khalil/<sujet>`.
+**Critère du jury** : Intelligent — « la bonne commande dans l'ERP, le bon produit, le bon client. Il n'invente jamais. »
+**Interrupteur** : `TEAM_ORDER_RULES`. **Branche** : `amine-khalil/<sujet>`.
 
-## Real Life
-Nadine says "as usual, and put me 10 of tradi for Thursday." Lucie knows that "10 of tradi" = **10 bags of 25 kg**
-T55 tradition (not 10 kilos), that "as usual" = the usual bakery basket, that Sarrailh is delivered
-Tuesday / Thursday / Saturday, that after 17h is for the next day. If Nadine says "finally 12", Lucie ** modifies** the
-line. Before validating, it **relit** everything. At the Petrin of Balma (blocked account), it promises nothing.
+## La vraie vie
+Nadine dit « comme d'hab, et mets-moi 10 de tradi pour jeudi ». Lucie sait que « 10 de tradi » = **10 sacs de 25 kg**
+de T55 tradition (pas 10 kilos), que « comme d'hab » = le panier habituel de la boulangerie, que Sarrailh est livré
+mardi / jeudi / samedi, qu'après 17h c'est pour le surlendemain. Si Nadine dit « finalement 12 », Lucie **modifie** la
+ligne. Avant de valider, elle **relit** tout. Au Pétrin de Balma (compte bloqué), elle ne promet rien.
 
-## Your files
-| File | Role |
+## Tes fichiers
+| Fichier | Rôle |
 |---|---|
-| `apps/ai/app/agent/rules_order.py` | **to you** : `ORDER_RULES` (text of the prompt) + deterministic functions |
-| `apps/ai/tests/test_team_todo.py` | your "Amine Khalil" section: remove the `@TODO`s and pass through |
-| `apps/ai/app/tools/delivery.py` (to be created if needed) | **to you**: a "delivery date" tool if the rules are not enough (add import in `tools/__init__.py`, one line) |
-| `data/context/*.md` | reading; an addition is discussed (everything is read every turn: it costs in speed) |
+| `apps/ai/app/agent/rules_order.py` | **à toi** : `ORDER_RULES` (texte du prompt) + fonctions déterministes |
+| `apps/ai/tests/test_team_todo.py` | ta section « Amine Khalil » : enlève les `@TODO` et fais passer |
+| `apps/ai/app/tools/delivery.py` (à créer si besoin) | **à toi** : un outil « date de livraison » si les règles ne suffisent pas (ajouter l'import dans `tools/__init__.py`, une ligne) |
+| `data/context/*.md` | lecture ; un ajout se discute (tout est lu à chaque tour : ça coûte en vitesse) |
 
-Read first: `data/context/01-entreprise.md` ("House Rules"), `02-journee-type.md` (time limits),
-`03-glossaire-produits.md` ("It's said"), `04-playbook-clients.md` ("Take an order"), `ERP.md` (lifecycle)
-of a command, alerts), `METIER.md` (ordering), [interfaces.md](../interfaces.md) §4.
+Lis d'abord : `data/context/01-entreprise.md` (« Règles de la maison »), `02-journee-type.md` (heures limites),
+`03-glossaire-produits.md` (« On dit »), `04-playbook-clients.md` (« Prendre une commande »), `ERP.md` (cycle de vie
+d'une commande, alertes), `METIER.md` (prise de commande), [interfaces.md](../interfaces.md) §4.
 
-Your experience of our first repo applies directly: "as usual", corrections in the same message,
-units and conversions, "never invent".
+Ton expérience de notre premier repo s'applique directement : « comme d'hab », corrections dans le même message,
+unités et conversions, « ne jamais inventer ».
 
-## Your tasks, in order
-| # | Task | No more when |
+## Tes tâches, dans l'ordre
+| # | Tâche | Fini quand |
 |---|---|---|
-| T0 | `run_scenarios.py --owner amine-khalil` (S02, S03) + S01, S07: rate what fails and why | baseline noted in your status |
-| T1 | `ORDER_RULES` v1: units (bags, plates, cartons, bricks), "chocolaline", "as usual", change of opinion = **modify** line, oral revision **avant** `confirm_order`, spoken quantities; `TEAM_ORDER_RULES=1` | S01, S02, S07 green |
-| T2 | **Delivery dates**: Customer delivery days, time limit 17h (Lauragais-Tarn: the day before 12h), never a day undelivered; `next_delivery_date` determinist + tests (or a tool `delivery.py`) | green tests; "for Wednesday" to Sarrailh → the agent proposes Thursday |
-| T3 | **ERP** Alerts: after `create_draft_order`, read the `warnings` (client_blocked, no_route...) and say them simply; account blocked = take the message, nothing promises | S03 green without "internal" sentence |
-| T4 | Franco 150 € excl. VAT (other than delivery 12 €): say if the order is small; unusual quantities (10× habit): confirm | one S3x scenario of each |
-| T5 | (extension) claims: record with `log_client_event` + the order concerned | S08 green (with Youssef) |
+| T0 | `run_scenarios.py --owner amine-khalil` (S02, S03) + S01, S07 : noter ce qui échoue et pourquoi | baseline notée dans ton statut |
+| T1 | `ORDER_RULES` v1 : unités (sacs, plaques, cartons, briques), « chocolatine », « comme d'hab », changement d'avis = **modifier** la ligne, relecture orale **avant** `confirm_order`, quantités dites à l'oral ; `TEAM_ORDER_RULES=1` | S01, S02, S07 verts |
+| T2 | **Dates de livraison** : jours de livraison du client, heure limite 17h (Lauragais-Tarn : la veille avant 12h), jamais un jour non livré ; `next_delivery_date` déterministe + tests (ou un outil `delivery.py`) | tests verts ; « pour mercredi » à Sarrailh → l'agent propose jeudi |
+| T3 | **Alertes de l'ERP** : après `create_draft_order`, lire les `warnings` (client_blocked, no_route…) et les dire simplement ; compte bloqué = prendre le message, rien promettre | S03 vert sans phrase « interne » |
+| T4 | Franco 150 € HT (sinon 12 € de livraison) : le dire si la commande est petite ; quantités inhabituelles (10× l'habitude) : faire confirmer | un scénario S3x de chaque |
+| T5 | (extension) réclamations : enregistrer avec `log_client_event` + la commande concernée | S08 vert (avec Youssef) |
 
-**Tes scenarios** (S30–S39, at least 2): e.g. yeast troubleshooting on the same day (possible up to 9h if the
-tour is not party), an order under the franco, an abnormal quantity.
+**Tes scénarios** (S30–S39, au moins 2) : par exemple un dépannage de levure le jour même (possible jusqu'à 9h si la
+tournée n'est pas partie), une commande sous le franco, une quantité anormale.
 
-## Who to coordinate with
-- **Daycem**: both of you write prompt rules. You: **what is ordered** (product, quantity, date,
-  Daycem : **how we sell and how we talk** (alternatives, promotions, tone). If in doubt, ask yourself.
-- **Youssef**: what you want to find in the preloaded file (`CallContext`).
+## Avec qui te coordonner
+- **Daycem** : vous écrivez tous les deux des règles de prompt. Toi : **ce qui est commandé** (produit, quantité, date,
+  validation). Daycem : **comment on vend et comment on parle** (remplaçants, promos, ton). En cas de doute, demandez-vous.
+- **Youssef** : ce que tu veux trouver dans la fiche préchargée (`CallContext`).
 
-## Traps
-- The rules of price, stock and credit remain in the backend: on **lit** the ERP, they are not recoded.
-- The prompt is reread at each stage: short and clear rules, not a novel.
-- The reference date is that of the pack (Tuesday 24/11/2026, 6h30), never the actual clock.
+## Pièges
+- Les règles de prix, de stock et de crédit restent dans le backend : on **lit** l'ERP, on ne les recode pas.
+- Le prompt est relu à chaque étape : des règles courtes et claires, pas un roman.
+- La date de référence est celle du pack (mardi 24/11/2026, 6h30), jamais l'horloge réelle.
 
-## The first message to give to your AI code
-> Lis AGENTS.md, docs/team/README.md, docs/team/interfaces.md and docs/team/tasks/amine-khalil.md. I am Amine Khalil.
-> Explain to me T0 and T1 in simple words, propose a plan, and wait for Mon chord before coding.
+## Le premier message à donner à ton IA de code
+> Lis AGENTS.md, docs/team/README.md, docs/team/interfaces.md et docs/team/tasks/amine-khalil.md. Je suis Amine Khalil.
+> Explique-moi T0 et T1 en mots simples, propose un plan, et attends mon accord avant de coder.

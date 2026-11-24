@@ -112,8 +112,8 @@ export function useVoiceSession() {
     if (!synth || !text.trim()) { setActivity("idle"); return; }
     stopPlayback();
     const u = new SpeechSynthesisUtterance(text);
-    u.lang = "en-GB";
-    const fr = synth.getVoices().find((v) => v.lang?.toLowerCase().startsWith("en"));
+    u.lang = "fr-FR";
+    const fr = synth.getVoices().find((v) => v.lang?.toLowerCase().startsWith("fr"));
     if (fr) u.voice = fr;
     u.rate = 1.08;
     u.onstart = () => { setActivity("speaking"); markPerceived(id); };
@@ -203,7 +203,7 @@ export function useVoiceSession() {
         currentTurn.current = undefined;
         break;
       case "error":
-        if (quietEmpty.current && m.message.startsWith("Not heard.")) {
+        if (quietEmpty.current && m.message.startsWith("Rien entendu")) {
           // team 12: hands-free picked up a noise, not a sentence: forget it silently
           quietEmpty.current = false;
           if (id != null) setTurns((ts) => ts.filter((t) => t.id !== id));
@@ -227,7 +227,7 @@ export function useVoiceSession() {
     const sock = new WebSocket(wsUrl());
     sock.binaryType = "arraybuffer";
     ws.current = sock;
-    sock.onopen = () => sock.send(JSON.stringify({ type: "start", sessionId: sessionId.current, actorName: "Voice agent" } satisfies VoiceClientMessage));
+    sock.onopen = () => sock.send(JSON.stringify({ type: "start", sessionId: sessionId.current, actorName: "Agent vocal" } satisfies VoiceClientMessage));
     sock.onmessage = onMessage;
     sock.onclose = () => {
       if (ws.current !== sock) return;

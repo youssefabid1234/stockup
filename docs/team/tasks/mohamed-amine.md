@@ -1,50 +1,50 @@
-# Mohamed Amine – "Never white" (speed + voice)
+# Mohamed Amine – ⚡ « Jamais de blanc » (vitesse + voix)
 
-**Journal Criteria** : Fast (end of speech → first sound < 1,5 s) and Natural.
-**Interruptor**: `TEAM_FILLERS`. **Branche**: `mohamed-amine/<sujet>` (e.g. `mohamed-amine/fillers`).
+**Critères du jury** : Rapide (fin de parole → premier son < 1,5 s) et Naturel.
+**Interrupteur** : `TEAM_FILLERS`. **Branche** : `mohamed-amine/<sujet>` (ex. `mohamed-amine/fillers`).
 
-## Real Life
-Nadine asks "do you still have AOP laminating butter?" Lucie answers ** right away** "I'm looking at this...", we hear her
-then she gives the answer, never three seconds of silence on the phone.
-Today the agent puts **≈ 4 s before his first word** ( measured on S03 : 4,1 (s) and **≈ 9 s** in total in vocal.
+## La vraie vie
+Nadine demande « vous avez encore du tourage AOP ? ». Lucie répond **tout de suite** « Je regarde ça… », on entend son
+clavier, puis elle donne la réponse. Jamais trois secondes de silence au téléphone.
+Aujourd'hui l'agent met **≈ 4 s avant son premier mot** (mesuré sur S03 : 4,1 s) et **≈ 9 s** au total en vocal.
 
-## Your files
-| File | Role |
+## Tes fichiers
+| Fichier | Rôle |
 |---|---|
-| `apps/ai/app/services/fillers.py` | **to you**: bank of waiting sentences, keyboard noise, decisions |
-| `apps/ai/app/services/voice_session.py` | **to you** (kit file): `Speaker.play_audio`, hot TTS connection; `fillers.on_turn_start` / `on_tool_call` call points are already connected |
-| `apps/ai/app/services/vocabulary.py` | **to you** (kit file): vocabulary sent to transcription |
-| `apps/ai/app/assets/` | **to you**: keyboard sound (short, free of rights or generated mp3) |
-| `apps/ai/app/clients/elevenlabs.py`, `soniox.py` | read only, except for specific reason (FAQ: "already set") |
+| `apps/ai/app/services/fillers.py` | **à toi** : banque de phrases d'attente, bruit de clavier, décisions |
+| `apps/ai/app/services/voice_session.py` | **à toi** (fichier du kit) : `Speaker.play_audio`, connexion TTS chaude ; les points d'appel `fillers.on_turn_start` / `on_tool_call` sont déjà branchés |
+| `apps/ai/app/services/vocabulary.py` | **à toi** (fichier du kit) : vocabulaire envoyé à la transcription |
+| `apps/ai/app/assets/` | **à toi** : son de clavier (mp3 court, libre de droits ou généré) |
+| `apps/ai/app/clients/elevenlabs.py`, `soniox.py` | lecture seulement, sauf raison précise (FAQ : « déjà réglés ») |
 
-First read: `GUIDE-VOIX.md` §1 (one tower anatomy), §3 (kit measurements), §4.7 (girls), §4.8-4.9 (TTS), §5
-(natural), §8 (plan 24 h); [interfaces.md](../interfaces.md) §1.
+Lis d'abord : `GUIDE-VOIX.md` §1 (anatomie d'un tour), §3 (mesures du kit), §4.7 (fillers), §4.8-4.9 (TTS), §5
+(naturel), §8 (plan 24 h) ; [interfaces.md](../interfaces.md) §1.
 
-## Your tasks, in order
-| # | Task | No more when |
+## Tes tâches, dans l'ordre
+| # | Tâche | Fini quand |
 |---|---|---|
-| T0 | Kit launched on your PC; Voice page: play S01 and S06 aloud; rate `sttMs`, `llmFirstTokenMs`, `ttsFirstByteMs`, `totalMs`, `perceivedMs` (line "original kit" of DECISIONS.md) | the line is filled |
-| T1 | `Speaker.play_audio(mime, data)` in voice_session.py + `FillerBank.warm_up(tts)` (synthetize each ** sentence once** at session opening, with the voice of the team) | `test_filler_bank_warms_up_every_phrase` (remove skip) passes |
-| T2 | `on_turn_start`: Play a waiting sentence **< 300 ms** after release, **only** if the turn will call tools (anti-scaling rule, §1 interfaces, to decide with Youssef) | perceived < 1 s on S01/S05, no waiting phrase on "thank you" |
-| T3 | `on_tool_call`: keyboard noise during ERP searches, cut as soon as the real answer starts | listening: natural, not sound over voice |
-| T4 | Avoid duplicates: when `TEAM_FILLERS=1`, the agent should no longer say "I look." (VOICE_RULES allows it) → propose to Daycem the sentence to be added in its rules | more double "I look" |
-| T5 | TTS: Hot-maintained connection (GUIDE-VOIX §4.9), first sentence cut earlier (§4.8) | `ttsFirstByteMs` < 300 ms from the 1er round |
-| T6 | Vocabulary STT: add jargon ("tradi", "laminating butter", "chocolatine", "strong flour", "T55" ...) and contact names in `vocabulary.py` | dictated aloud, "ten of tradi" is well transcribed |
-| T7 | (if time) VAD / automatic speech end (§4.2), keeping Space for demo | decision noted in DECISIONS.md |
+| T0 | Kit lancé sur ton PC ; page Voix : jouer S01 et S06 à voix haute ; noter `sttMs`, `llmFirstTokenMs`, `ttsFirstByteMs`, `totalMs`, `perceivedMs` (ligne « kit d'origine » de DECISIONS.md) | la ligne est remplie |
+| T1 | `Speaker.play_audio(mime, data)` dans voice_session.py + `FillerBank.warm_up(tts)` (synthétiser chaque phrase **une fois** à l'ouverture de session, avec la voix de l'équipe) | `test_filler_bank_warms_up_every_phrase` (enlever le skip) passe |
+| T2 | `on_turn_start` : jouer une phrase d'attente **< 300 ms** après le relâchement, **seulement** si le tour va appeler des outils (règle anti-chevauchement, interfaces §1, à décider avec Youssef) | perçu < 1 s sur S01/S05, aucune phrase d'attente sur « merci » |
+| T3 | `on_tool_call` : bruit de clavier pendant les recherches ERP, coupé dès que la vraie réponse commence | à l'écoute : naturel, pas de son par-dessus la voix |
+| T4 | Éviter les doublons : quand `TEAM_FILLERS=1`, l'agent ne doit plus dire lui-même « Je regarde. » (VOICE_RULES l'y autorise) → proposer à Daycem la phrase à ajouter dans ses règles | plus de double « je regarde » |
+| T5 | TTS : connexion gardée chaude (GUIDE-VOIX §4.9), première phrase coupée plus tôt (§4.8) | `ttsFirstByteMs` < 300 ms dès le 1er tour |
+| T6 | Vocabulaire STT : ajouter le jargon (« tradi », « tourage », « chocolatine », « gruau », « T55 »…) et les prénoms des contacts dans `vocabulary.py` | dicté à voix haute, « dix de tradi » est bien transcrit |
+| T7 | (si le temps) VAD / fin de parole automatique (§4.2), en gardant Espace pour la démo | décision notée dans DECISIONS.md |
 
-**Tes scenarios** (S10–S19, at least 2): e.g. a client who shuts off the agent (barge-in), and a
-very short question ("that's all, thank you") that must not trigger any waiting phrase.
+**Tes scénarios** (S10–S19, au moins 2) : par exemple un client qui coupe la parole à l'agent (barge-in), et une
+question très courte (« c'est tout, merci ») qui ne doit déclencher aucune phrase d'attente.
 
-## Who to coordinate with
-- **Youssef**: who speaks first (waiting phrase or fast agent) → interfaces §1, to H+2.
-- **Daycem**: The tone of the waiting phrases and the instructions that prevent the agent from saying "I look" himself.
+## Avec qui te coordonner
+- **Youssef** : qui parle en premier (phrase d'attente ou agent rapide) → interfaces §1, à H+2.
+- **Daycem** : le ton des phrases d'attente et la consigne qui empêche l'agent de dire « je regarde » lui-même.
 
-## Traps
-- A waiting sentence on a tower that would have responded in 600 ms **ralentit** the agent: measurement before/after.
-- The waiting phrases do not contain **jamais** of number or promise.
-- After each change: replay S01, S05, S06 (`--voice` for real times) and record the numbers.
+## Pièges
+- Une phrase d'attente sur un tour qui aurait répondu en 600 ms **ralentit** l'agent : mesure avant/après.
+- Les phrases d'attente ne contiennent **jamais** de chiffre ni de promesse.
+- Après chaque changement : rejouer S01, S05, S06 (`--voice` pour les vrais temps) et noter les chiffres.
 
-## The first message to give to your AI code
-> Lis AGENTS.md, docs/team/README.md, docs/team/interfaces.md and docs/team/tasks/mohamed-amine.md. I am Mohamed
-> Amine. Explain to me T0 and T1 in simple words, propose a plan, and wait for Mon chord before encode.
-> My files.
+## Le premier message à donner à ton IA de code
+> Lis AGENTS.md, docs/team/README.md, docs/team/interfaces.md et docs/team/tasks/mohamed-amine.md. Je suis Mohamed
+> Amine. Explique-moi T0 et T1 en mots simples, propose un plan, et attends mon accord avant de coder. Ne touche qu'à
+> mes fichiers.

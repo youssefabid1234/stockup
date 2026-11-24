@@ -17,7 +17,7 @@ ACTORS = {"user", "ai_chat", "voice_agent", "system"}
 
 
 def get_ctx(
-    x_actor: Annotated[str | None, Header(description="user ai_chat | voice_agent (default user)")] = None,
+    x_actor: Annotated[str | None, Header(description="user | ai_chat | voice_agent (default user)")] = None,
     x_actor_name: Annotated[str | None, Header(description="Display name of the actor (URI-encoded)")] = None,
 ) -> Ctx:
     """Who is calling: `x-actor` header + optional `x-actor-name`. Recorded on every ActivityEvent."""

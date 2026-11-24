@@ -39,18 +39,18 @@ function record(events: ChatStreamEvent[]) {
 }
 
 test("two chained tool rounds without text: one assistant message per round", () => {
-  const r = record([call("a"), result("a"), call("b", "get_order"), result("b", "get_order"), text("There."), done("There.")]);
+  const r = record([call("a"), result("a"), call("b", "get_order"), result("b", "get_order"), text("Voilà."), done("Voilà.")]);
   assertPaired(r.messages);
   assert.deepEqual(r.messages.map((m) => m.role), ["assistant", "tool", "assistant", "tool", "assistant"]);
   assert.equal(r.messages[2].toolCalls?.[0].id, "b");
 });
 
 test("parallel calls then a second round, text + calls in the same step", () => {
-  const r = record([text("Let me check."), call("a"), call("b"), result("a"), result("b"), text("And "), call("c"), result("c"), done("Fait.")]);
+  const r = record([text("Je regarde."), call("a"), call("b"), result("a"), result("b"), text("Et "), call("c"), result("c"), done("Fait.")]);
   assertPaired(r.messages);
-  assert.equal(r.messages[0].content, "Let me check.");
+  assert.equal(r.messages[0].content, "Je regarde.");
   assert.deepEqual(r.messages[0].toolCalls?.map((c) => c.id), ["a", "b"]);
-  assert.equal(r.messages[3].content, "And ");
+  assert.equal(r.messages[3].content, "Et ");
   assert.deepEqual(r.messages[3].toolCalls?.map((c) => c.id), ["c"]);
   assert.equal(r.messages.at(-1)?.content, "Fait.");
 });
@@ -70,22 +70,22 @@ test("stop between two results of parallel calls: the missing result is synthesi
 });
 
 test("stop while tools run (calls announced, no result): calls dropped, text kept", () => {
-  const r = record([call("a"), result("a"), text("I create"), call("b", "create_order")]);
+  const r = record([call("a"), result("a"), text("Je crée"), call("b", "create_order")]);
   const msgs = r.finish();
   assertPaired(msgs);
   assert.deepEqual(msgs.map((m) => m.role), ["assistant", "tool", "assistant"]);
-  assert.equal(msgs.at(-1)?.content, "I create");
+  assert.equal(msgs.at(-1)?.content, "Je crée");
 });
 
 test("error event after tool results: history still closes on an assistant message", () => {
   const r = record([call("a"), result("a"), call("b"), result("b"), { type: "error", message: "provider down" }]);
   const msgs = r.finish();
   assertPaired(msgs);
-  assert.equal(msgs.at(-1)?.content, "(response interrupted)");
+  assert.equal(msgs.at(-1)?.content, "(réponse interrompue)");
 });
 
 test("max steps (give-up text after the last results)", () => {
-  const r = record([call("a"), result("a"), call("b"), result("b"), text("Sorry."), done("Sorry.")]);
+  const r = record([call("a"), result("a"), call("b"), result("b"), text("Désolé"), done("Désolé")]);
   assertPaired(r.finish());
   assert.equal(r.messages.length, 5);
 });

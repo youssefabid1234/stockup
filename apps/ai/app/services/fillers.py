@@ -19,20 +19,20 @@ from app.config import settings
 
 from .fast_restatement import fast_restatement
 
-PHRASES = {"thinking": ["Let me check.", "I'm checking."], "follow_up": ["One moment, I'm checking."]}
-# Mode 4 · "zero silence" (TEAM_FILLERS=4): the agent opens the call, says one of these at once after each request,
+PHRASES = {"thinking": ["Je regarde.", "Je vérifie."], "follow_up": ["Un instant, je vérifie."]}
+# Mode 4 · « zéro silence » (TEAM_FILLERS=4): the agent opens the call, says one of these at once after each request,
 # then types on the keyboard without a gap until the first word of the real answer.
-ACK_PHRASES = ["Sure, let me check.", "Okay, I'll take a look.", "Of course, I'll check."]
+ACK_PHRASES = ["D'accord, je regarde ça.", "Ok, je vois ça.", "Très bien, je vérifie."]
 OPENING_LINES = {
-    None: "Hello. How can I help you?",
-    "madame": "Hello, ma'am. How can I help you?",
-    "monsieur": "Hello, sir. How can I help you?",
+    None: "Bonjour, que puis-je faire pour vous ?",
+    "madame": "Bonjour Madame, que puis-je faire pour vous ?",
+    "monsieur": "Bonjour Monsieur, que puis-je faire pour vous ?",
 }
 TYPING_LEAD = 0.15  # send the next typing clip this long before the queued audio runs out (no stall, no backlog)
 TYPING_MAX = 30.0  # never type for longer than this (a turn that hangs)
 SOCIAL_TYPING_DELAY = 0.3  # « oui », « merci » : no phrase, typing only if the answer takes a moment
 TTS_KBPS = 128  # ElevenLabs mp3_44100_128: duration of a clip ≈ bytes × 8 / 128 000
-FAST_INTRO = "I'll take a look."
+FAST_INTRO = "Je vais voir."
 FAST_INTRO_DELAY = 0.75
 FAST_RESTATEMENT_DELAY = 1.05
 FAST_AUDIO_TIMEOUT = 2.4
@@ -40,32 +40,34 @@ FIRST_KEYBOARD_DELAY = 1.4
 FOLLOW_UP_DELAY = 1.8
 KEYBOARD_INTERVAL = 2.2
 LOOKUP = re.compile(
-    r"\b(?:stock|available|availability|in store|how (?:many|much)|price|cost|do you have|"
-    r"can I (?:have|get|order)|I(?:'d like| would like| want| need| will take|'ll take)|"
-    r"add|put me down for|my order|the usual|out of stock)\b", re.I
+    r"\b(stock|disponib\w*|combien|prix|tarif|rupture|(?:vous avez|vous reste) (?:du|de|des|encore)|"
+    r"je (?:veux|voudrais|commande|prends|souhaite)|(?:ajoutez|rajoutez|mettez)(?:-moi)?|"
+    r"ma commande|comme d'habitude)\b", re.I
 )
 SOCIAL_TURN = re.compile(
-    r"(?:[\s.,!?’'\-]*(?:that's all|that is all|thank you(?: very much)?|thanks|goodbye|bye|"
-    r"have a (?:nice|good) day|hello|hi|yes|no|okay|ok|all right))+[\s.,!?]*", re.I
+    r"(?:[\s.,!?’'\-]*(?:c'est tout|merci(?: beaucoup)?|au revoir|bonne journée|bonjour|salut|oui|non|d'accord))+[\s.,!?]*",
+    re.I,
 )
-
-
 SEARCH_TOOLS = {
     "search", "get_product_stock", "get_price", "product_insight", "get_client",
     "find_alternatives", "get_order", "check_delivery_date", "create_draft_order", "add_order_line",
 }
 QUANTITY = re.compile(
-    r"\b((?:\d+(?:[,.]\d+)?|one|two|three|four|five|six|seven|eight|nine|ten|twelve|twenty)"
-    r"\s*(?:kg|g|kilogram(?:me)?s?|kilos?|grams?|cartons?|boxes|box|bags?|sacks?|packs?|"
-    r"litres?|liters?|bottles?|blocks?|slabs?))"
-    r"\s+((?:of\s+)?[a-z][\w'’\-]*(?: +[a-z][\w'’\-]*){0,4})(?=$|[.,!?;:]|\s)", re.I
+    r"\b((?:\d+(?:[,.]\d+)?|un|une|deux|trois|quatre|cinq|six|sept|huit|neuf|dix|vingt)"
+    r"\s*(?:kg|g|kilos?|grammes?|cartons?|sacs?|paquets?|litres?|bouteilles?))"
+    r"\s+((?:de |d['’])[a-zà-ÿ][a-zà-ÿ0-9'’\-]*(?: +[a-zà-ÿ][a-zà-ÿ0-9'’\-]*){0,4})"
+    r"(?=$|[.,!?;:]|\s)", re.I
 )
-ITEM_END = re.compile(r"\s+(?:for|and|but|without|with|then|please|thanks|delivered)\b", re.I)
-AMBIGUOUS = re.compile(r"\b(?:or|actually|instead|rather|not|no|neither|without|cancel|remove|mistake)\b", re.I)
+ITEM_END = re.compile(r"\s+(?:pour|et|mais|sans|avec|puis|merci|s['’]il|livrés?|livrée?s?)\b", re.I)
+AMBIGUOUS = re.compile(
+    r"\b(?:ou|finalement|plutôt|à la place|au lieu|pas|ni|sans|annulez|retirez|enlevez|je me suis tromp[ée])\b",
+    re.I,
+)
 WAITING_LINE = re.compile(
-    r"^\s*(?:(?:okay|sure|of course|one moment|one second),?\s+)?"
-    r"(?:let me (?:check|look)|I(?:'ll| will) (?:check|take a look)|I'm checking)"
-    r"(?:\s*[.!…,]+\s*|\s*$)", re.I
+    r"^\s*(?:(?:d['’]accord|un instant|une seconde),?\s+)?"
+    r"(?:je (?:vais )?regard(?:e|er)(?: ça| ce qu['’]il nous reste)?|je vérifie(?: le stock)?)"
+    r"(?:\s*[.!…,]+\s*|\s*$)",
+    re.I,
 )
 
 
@@ -154,8 +156,10 @@ def typing_clip(variant: int) -> tuple[bytes, float]:
 
 
 LOOKUP_MORE = re.compile(
-    r"\b(?:need|deliver\w*|order\w*|usual|left|when|instead|actually|remove|cancel|change|"
-    r"\d+|one|two|three|four|five|six|seven|eight|nine|ten|twelve|twenty|hundred)\b", re.I,
+    r"\b(?:faudrait|faut|besoin|livr\w*|commande\w*|habitude|reste|dispo\w*|quand|combien|prix|tarif|"
+    r"finalement|plutôt|plutot|enlev\w*|retir\w*|annul\w*|rajout\w*|ajout\w*|change\w*|modifi\w*|"
+    r"\d+|un|une|deux|trois|quatre|cinq|six|sept|huit|neuf|dix|onze|douze|quinze|vingt|trente|quarante|cinquante|cent)\b",
+    re.I,
 )
 
 
@@ -195,14 +199,14 @@ def quantity_restatement(heard: str) -> str | None:
     if len(matches) != 1 or AMBIGUOUS.search(heard):
         return None
     match = matches[0]
-    if re.search(r"\band\b", heard[match.end(1):], re.I):
+    if re.search(r"\bet\b", heard[match.end(1):], re.I):
         return None
     amount, item = match.groups()
     item = ITEM_END.split(item, maxsplit=1)[0]
-    if re.fullmatch(r"of", item, re.I):
+    if re.fullmatch(r"de|d['’]", item, re.I):
         return None
     amount = re.sub(r"(?<=\d)(?=[a-z])", " ", amount, flags=re.I)
-    return f"For {amount.lower()} {item.lower()}."
+    return f"Pour {amount.lower()} {item.lower()}."
 
 
 async def keep_waiting(speaker) -> None:

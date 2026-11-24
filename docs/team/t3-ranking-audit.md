@@ -1,255 +1,256 @@
-# T3 · Classification of replacements: audit before / after (Daycem, 24/11)
+# T3 · Classement des remplaçants : audit avant / après (Daycem, 24/11)
 
-For DECISIONS.md. Without paying call: `rank_alternatives` on the real data of the ERP (71 products,
-`GET /api/products/{id}/alternatives`stock of 24/11 after `make reset`).
+Pour DECISIONS.md. Sans appel payant : `rank_alternatives` sur les vraies données de l'ERP (71 produits,
+`GET /api/products/{id}/alternatives`, stock du 24/11 après `make reset`).
 
-## The problem
-The ERP returns products of the same class in stock, **classified by nearest price**.
-The company only names a substitute for 9 products. For the other 62, the first choice was often absurd
-for the same use (about 29), e.g.: pre-cooked baguette → raspberry purée, semolina sugar → vanilla extract,
-liquid cream → liquid whole egg, black chocolate 64% → white chocolate, strawberry → lemon.
+## Le problème
+L'ERP renvoie les produits de la même catégorie en stock, **classés par prix le plus proche**. Les documents de
+l'entreprise ne nomment un substitut que pour 9 produits. Pour les 62 autres, le premier choix était souvent absurde
+pour le même usage (environ 29), par exemple : baguette précuite → purée de framboise, sucre semoule → extrait de vanille,
+crème liquide → œuf entier liquide, chocolat noir 64 % → chocolat blanc, fraise → citron.
 
-## What changes (general rule, no product name in code: `agent/rules_sales.py`)
-1. **Classification**: in stock → document substitute → same category → ** distinctive words shared with the name of the
-   Missing product** (`name_match` : without packaging in parentheses, no numbers or units; the first word counts
-   double; a word shared by most candidates does not separate) → same unit → promo → order of the ERP.
-2. ** "No substitutes of the same use"** (`has_same_use_substitute`) : no substitutes for the documents in stock and none
-   candidate who shares a word of the name (here the last word counts) → `product_insight` does not propose anything and the agent
-   asks the customer what he wants (rule added to SALES_RULES).
+## Ce qui change (règle générale, aucun nom de produit dans le code : `agent/rules_sales.py`)
+1. **Classement** : en stock → substitut des documents → même catégorie → **mots distinctifs partagés avec le nom du
+   produit manquant** (`name_match` : sans l'emballage entre parenthèses, ni nombres ni unités ; le premier mot compte
+   double ; un mot partagé par la plupart des candidats ne départage pas) → même unité → promo → ordre de l'ERP.
+2. **« Aucun remplaçant de même usage »** (`has_same_use_substitute`) : aucun substitut des documents en stock et aucun
+   candidat qui partage un mot du nom (ici le mot de famille compte) → `product_insight` ne propose rien et l'agent
+   demande au client ce qu'il souhaite (règle ajoutée à SALES_RULES).
 
-## Result
-- 9 document substitutes: **always first** (test).
-- **27 first choices change** (e.g. liquid cream → fresh cream ; black 64% → black 70% ; sour sugar → sugar
-  beaded ; egg white → whole egg ; T55 baker → T55 tradition ; grape bread → mini-veennoiseries).
-- **23 products without substitute for the same use** → the agent asks (fresh fruits, salt, vanilla, flower water)
-  orange, napping, praline, cocoa, packaging...).
-- Known limits: pre-cooked baguette and raspberry puree → laminated paste, laminated paste → croissant remain
-  proposed (nothing better in stock in the category, and a common word is enough for "same use"; some questionable "ask" (slipper margarine, walnut kernels,
-  The customer always keeps the last word: no replacement is added without its "yes".
+## Résultat
+- 9 substituts des documents : **toujours premiers** (test).
+- **27 premiers choix changent** (ex. crème liquide → crème fraîche ; noir 64 % → noir 70 % ; sucre semoule → sucre
+  perlé ; blanc d'œuf → œuf entier ; T55 boulangère → T55 tradition ; pain aux raisins → mini-viennoiseries).
+- **23 produits sans remplaçant de même usage** → l'agent demande (fruits frais, sel, vanille, eau de fleur
+  d'oranger, nappage, praliné, cacao, emballages…).
+- Limites connues : baguette précuite et purée de framboise → pâte feuilletée, pâte feuilletée → croissant restent
+  proposés (rien de mieux en stock dans la catégorie, et un mot commun suffit pour « même usage ») ; quelques « demander » discutables (margarine de feuilletage, cerneaux de noix,
+  raisins secs). Le client garde toujours le dernier mot : aucun remplaçant n'est ajouté sans son « oui ».
 
-## Connection (Youssef file, applied with its agreement; exclusions added then)
-`apps/ai/app/tools/insight.py` must pass `for_product_name` and `for_unit` à `rank_alternatives` (other than point 1 is
-no effect) and call `has_same_use_substitute` before the second price wave (point 2). Patch ready (311 green tests with
-the patch applied):
+## Branchement (fichier de Youssef, appliqué avec son accord ; exclusions ajoutées ensuite)
+`apps/ai/app/tools/insight.py` doit passer `for_product_name` et `for_unit` à `rank_alternatives` (sinon le point 1 est
+sans effet) et appeler `has_same_use_substitute` avant la 2e vague de prix (point 2). Patch prêt (311 tests verts avec
+le patch appliqué) :
 
 ```diff
 --- a/apps/ai/app/tools/insight.py
 +++ b/apps/ai/app/tools/insight.py
 @@ -98,7 +98,7 @@
-
- async def gets_insight(erp, client_id: str, product_id: str, qty: float | None = None) -> dict[str, Any]:
-     ""Everything about one product for one client, in one call. Shape: docs/team/interfaces.md §2.""
-- from app.agent.rules_sales import rank_alternatives, substitution_policy
-+ from app.agent.rules_sales import has_same_use_substitute, rank_alternatives, substitution_policy
-
+ 
+ async def gather_insight(erp, client_id: str, product_id: str, qty: float | None = None) -> dict[str, Any]:
+     """Everything about one product for one client, in one call. Shape: docs/team/interfaces.md §2."""
+-    from app.agent.rules_sales import rank_alternatives, substitution_policy
++    from app.agent.rules_sales import has_same_use_substitute, rank_alternatives, substitution_policy
+ 
      async def safe(coro):
          try:
 @@ -153,6 +153,15 @@
-         returned
-
+         return out
+ 
      candidates = [a for a in alternatives or [] if a.get("id") and a.get("id") != product_id]
-+ if not has_same_use_substitute(product_id, product.get("name") or "", candidates):
-+ # Daycem's T3: noting in stock has the same use (docs name none, no name in common): don't push lemons for
-+ # strawberries; no second wave of prices either
-+ out["alternatives"] = []
-+ out["note"] = (
-+ "No product in stock has the same use. Announces the rupture and asks the customer what he wants, "
-+ "without offering a product."
++    if not has_same_use_substitute(product_id, product.get("name") or "", candidates):
++        # Daycem's T3: nothing in stock has the same use (docs name none, no name in common): don't push lemons for
++        # strawberries; no second wave of prices either
++        out["alternatives"] = []
++        out["note"] = (
++            "Aucun produit en stock n'a le même usage. Annonce la rupture et demande au client ce qu'il souhaite, "
++            "sans proposer de produit."
 +        )
-+ return out
-     PRICES = await asyncio.gather(
++        return out
+     prices = await asyncio.gather(
          *(_resolve(erp, client_id, a["id"], qty if a.get("unit") == product.get("unit") else None) for a in candidates)
      )
 @@ -170,6 +179,9 @@
          if promo := promo_of(p, rules):
              row["promo"] = promo
          rows.append(row)
-- ranked = rank_alternatives(rows, card.get("preferences") or "", for_product_id=product_id, for_category=product.get("category"))
-+ ranked = rank_alternatives(
-+ rows, card.get("preferences") or "", for_product_id=product_id, for_category=product.get("category"),
-+ for_product_name=product.get("name"), for_unit=product.get("unit"),
+-    ranked = rank_alternatives(rows, card.get("preferences") or "", for_product_id=product_id, for_category=product.get("category"))
++    ranked = rank_alternatives(
++        rows, card.get("preferences") or "", for_product_id=product_id, for_category=product.get("category"),
++        for_product_name=product.get("name"), for_unit=product.get("unit"),
 +    )
-     out["alternatives"] = [{k: v for k, v in r.items() if k != "category"} for r in raised[:MAX_ALTERNATIVES]]
-     returned
+     out["alternatives"] = [{k: v for k, v in r.items() if k != "category"} for r in ranked[:MAX_ALTERNATIVES]]
+     return out
 ```
 
-## Product Detail by Product
-"1st before" = order of the ERP + documents; "1st after" = new classification (- = no replacement of the same use).
+## Détail produit par produit
+« 1er avant » = ordre de l'ERP + documents ; « 1er après » = nouveau classement (— = aucun remplaçant de même usage).
 
-| Product | Name | Doc | 1st front | 1st after | Effect |
+| Produit | Nom | Doc | 1er avant | 1er après | Effet |
 |---|---|---|---|---|---|
-| prd_0001 | Wheat flour T55 French tradition | yes | Wheat flour T55 baker | Wheat flour T55 baker |  |
-| prd_0002 | Wheat flour T55 baker |  | Wheat flour T65 year | Wheat flour T55 French tradition | changed |
-| prd_0003 | Groat flour T45 pastry |  | Rye flour T130 | Rye flour T130 |  |
-| prd_0004 | Wheat flour T65 year |  | Wheat flour T55 French tradition | Wheat flour T55 French tradition |  |
-| prd_0005 | Flour bise T80 |  | Wheat flour T55 French tradition | Wheat flour T55 French tradition |  |
-| prd_0006 | Rye flour T130 |  | Groat flour T45 pastry | Groat flour T45 pastry |  |
-| prd_0007 | Organic T65 wheat flour | yes | Wheat flour T65 year | Wheat flour T65 year |  |
-| prd_0008 | Complete flour T150 organic |  | Multicereal seed mixture | Multicereal seed mixture |  |
-| prd_0009 | Organic small spelt flour |  | Multicereal seed mixture | Multicereal seed mixture |  |
-| prd_0010 | Multicereal seed mixture |  | Rye flour T130 | — | no replacements of the same use → ask |
-| prd_0011 | Fresh baker's yeast | yes | Instant dry yeast | Instant dry yeast |  |
-| prd_0012 | Instant dry yeast |  | Fresh baker's yeast | Fresh baker's yeast |  |
-| prd_0013 | Dehydrated rye leaven |  | Instant dry yeast | — | no replacements of the same use → ask |
-| prd_0014 | Breading enhancer |  | Dehydrated rye leaven | — | no replacements of the same use → ask |
-| prd_0015 | Soft sugar |  | Liquid vanilla extract | Beaded sugar | changed |
-| prd_0016 | Ice sugar |  | Beaded sugar | Beaded sugar |  |
-| prd_0017 | Beaded sugar |  | White pastry fondant | Ice sugar | changed |
-| prd_0018 | End-of-sea salt |  | Orange blossom water | — | no replacements of the same use → ask |
-| prd_0019 | Hot neutral coating |  | Liquid vanilla extract | — | no replacements of the same use → ask |
-| prd_0020 | White pastry fondant |  | Beaded sugar | Preparation for cold pastry cream | changed |
-| prd_0021 | Preparation for cold pastry cream |  | Soft sugar | White pastry fondant | changed |
-| prd_0022 | Bourbon vanilla pods from Madagascar | yes | Liquid vanilla extract | Liquid vanilla extract |  |
-| prd_0023 | Liquid vanilla extract |  | Soft sugar | — | no replacements of the same use → ask |
-| prd_0024 | Orange blossom water |  | End-of-sea salt | — | no replacements of the same use → ask |
-| prd_0025 | Touring butter AOP Charentes-Poitou 84 % | yes | Touring butter 82 % | Touring butter 82 % |  |
-| prd_0026 | Touring butter 82 % |  | Sweet butter PDO Charentes-Poitou | Sweet butter PDO Charentes-Poitou |  |
-| prd_0027 | Sweet butter PDO Charentes-Poitou | yes | Pastry butter 82 % | Pastry butter 82 % |  |
-| prd_0028 | Pastry butter 82 % |  | Touring butter 82 % | Touring butter 82 % |  |
-| prd_0029 | Half-salt butter |  | Sweet butter PDO Charentes-Poitou | Sweet butter PDO Charentes-Poitou |  |
-| prd_0030 | Sheeting margarine |  | Pastry butter 82 % | — | no replacements of the same use → ask |
-| prd_0031 | Liquid cream UHT 35 % |  | Whole egg liquid pasteurized | Thick fresh cream 30% | changed |
-| prd_0032 | Thick fresh cream 30% |  | Whole egg liquid pasteurized | Liquid cream UHT 35 % | changed |
-| prd_0033 | Whole milk UHT |  | Pasteurized liquid egg white | Liquid cream UHT 35 % | changed |
-| prd_0034 | Outdoor eggs size M | yes | Whole egg liquid pasteurized | Whole egg liquid pasteurized |  |
-| prd_0035 | Whole egg liquid pasteurized |  | Liquid cream UHT 35 % | Pasteurized liquid egg white | changed |
-| prd_0036 | Pasteurized liquid egg yolk |  | Outdoor eggs size M | Whole egg liquid pasteurized | changed |
-| prd_0037 | Pasteurized liquid egg white |  | Liquid cream UHT 35 % | Whole egg liquid pasteurized | changed |
-| prd_0038 | Cover chocolate black 64% |  | White cover chocolate 33% | Black chocolate cover 70% | changed |
-| prd_0039 | Black chocolate cover 70% | yes | Cover chocolate black 64% | Cover chocolate black 64% |  |
-| prd_0040 | Milk cover chocolate 38% |  | Cover chocolate black 64% | Cover chocolate black 64% |  |
-| prd_0041 | White cover chocolate 33% |  | Cover chocolate black 64% | Cover chocolate black 64% |  |
-| prd_0042 | Chocolate baker's sticks 44% |  | Milk cover chocolate 38% | Milk cover chocolate 38% |  |
-| prd_0043 | Cocoa powder 22-24 % |  | Chocolate baker's sticks 44% | — | no replacements of the same use → ask |
-| prd_0044 | Black chocolate chips cooked |  | Cocoa powder 22-24 % | Cover chocolate black 64% | changed |
-| prd_0045 | Noise Praline 50 % |  | White cover chocolate 33% | — | no replacements of the same use → ask |
-| prd_0046 | White almond powder |  | Slashed almonds | Roasted hazelnut powder | changed |
-| prd_0047 | Slashed almonds | yes | White almond powder | White almond powder |  |
-| prd_0048 | Roasted hazelnut powder |  | Walnut kernels | White almond powder | changed |
-| prd_0049 | Green pistachios punctuated |  | Roasted hazelnut powder | — | no replacements of the same use → ask |
-| prd_0050 | Dried sultanine grapes |  | Candied fruit in cubes | — | no replacements of the same use → ask |
-| prd_0051 | Walnut kernels |  | Slashed almonds | — | no replacements of the same use → ask |
-| prd_0052 | Candied fruit in cubes |  | White almond powder | — | no replacements of the same use → ask |
-| prd_0053 | Frozen pure raw butter crescent 70 g |  | Chocolate pure raw frozen butter 75 g | Chocolate pure raw frozen butter 75 g |  |
-| prd_0054 | Chocolate pure raw frozen butter 75 g |  | Frozen pure raw butter crescent 70 g | Frozen pure raw butter crescent 70 g |  |
-| prd_0055 | Frozen raw grape bread 110 g |  | Pasta, pure butter in plates | Assortment of raw mini-veennoiseries | changed |
-| prd_0056 | Assortment of raw mini-veennoiseries |  | Frozen raw grape bread 110 g | Frozen raw grape bread 110 g |  |
-| prd_0057 | Pasta, pure butter in plates |  | Frozen raw grape bread 110 g | Frozen pure raw butter crescent 70 g | changed |
-| prd_0058 | Frozen pre-cooked fly 280 g |  | Frozen raspberry puree | Pasta, pure butter in plates | changed |
-| prd_0059 | Frozen raspberry puree |  | Frozen pre-cooked fly 280 g | Pasta, pure butter in plates | changed |
-| prd_0060 | Strawberry Gariguette |  | Yellow Lemon | — | no replacements of the same use → ask |
-| prd_0061 | Raspberry |  | Yellow Lemon | — | no replacements of the same use → ask |
-| prd_0062 | Yellow Lemon |  | Apple Golden pastry | — | no replacements of the same use → ask |
-| prd_0063 | Apple Golden pastry |  | Yellow Lemon | — | no replacements of the same use → ask |
-| prd_0064 | Pear Williams |  | Yellow Lemon | — | no replacements of the same use → ask |
-| prd_0065 | Printed kraft bag |  | Pastry paper bags | — | no replacements of the same use → ask |
-| prd_0066 | Pastry paper bags |  | White pastry boxes 20 cm | Silicone baking paper 40 × 60 | changed |
-| prd_0067 | White pastry boxes 20 cm |  | Pastry paper bags | — | no replacements of the same use → ask |
-| prd_0068 | Crowns of golden cardboard kings |  | White pastry boxes 20 cm | Round gold soles 28 cm | changed |
-| prd_0069 | King's beans in porcelain |  | Pastry paper bags | — | no replacements of the same use → ask |
-| prd_0070 | Round gold soles 28 cm |  | White pastry boxes 20 cm | — | no replacements of the same use → ask |
-| prd_0071 | Silicone baking paper 40 × 60 |  | Printed kraft bag | Pastry paper bags | changed |
+| prd_0001 | Farine de blé T55 tradition française | oui | Farine de blé T55 boulangère | Farine de blé T55 boulangère |  |
+| prd_0002 | Farine de blé T55 boulangère |  | Farine de blé T65 campagne | Farine de blé T55 tradition française | changé |
+| prd_0003 | Farine de gruau T45 pâtissière |  | Farine de seigle T130 | Farine de seigle T130 |  |
+| prd_0004 | Farine de blé T65 campagne |  | Farine de blé T55 tradition française | Farine de blé T55 tradition française |  |
+| prd_0005 | Farine bise T80 |  | Farine de blé T55 tradition française | Farine de blé T55 tradition française |  |
+| prd_0006 | Farine de seigle T130 |  | Farine de gruau T45 pâtissière | Farine de gruau T45 pâtissière |  |
+| prd_0007 | Farine de blé T65 bio | oui | Farine de blé T65 campagne | Farine de blé T65 campagne |  |
+| prd_0008 | Farine complète T150 bio |  | Mélange multicéréales graines | Mélange multicéréales graines |  |
+| prd_0009 | Farine de petit épeautre bio |  | Mélange multicéréales graines | Mélange multicéréales graines |  |
+| prd_0010 | Mélange multicéréales graines |  | Farine de seigle T130 | — | aucun remplaçant de même usage → demander |
+| prd_0011 | Levure fraîche boulangère | oui | Levure sèche instantanée | Levure sèche instantanée |  |
+| prd_0012 | Levure sèche instantanée |  | Levure fraîche boulangère | Levure fraîche boulangère |  |
+| prd_0013 | Levain de seigle déshydraté |  | Levure sèche instantanée | — | aucun remplaçant de même usage → demander |
+| prd_0014 | Améliorant de panification |  | Levain de seigle déshydraté | — | aucun remplaçant de même usage → demander |
+| prd_0015 | Sucre semoule |  | Extrait de vanille liquide | Sucre en grains perlé | changé |
+| prd_0016 | Sucre glace |  | Sucre en grains perlé | Sucre en grains perlé |  |
+| prd_0017 | Sucre en grains perlé |  | Fondant pâtissier blanc | Sucre glace | changé |
+| prd_0018 | Sel fin de mer |  | Eau de fleur d'oranger | — | aucun remplaçant de même usage → demander |
+| prd_0019 | Nappage neutre à chaud |  | Extrait de vanille liquide | — | aucun remplaçant de même usage → demander |
+| prd_0020 | Fondant pâtissier blanc |  | Sucre en grains perlé | Préparation pour crème pâtissière à froid | changé |
+| prd_0021 | Préparation pour crème pâtissière à froid |  | Sucre semoule | Fondant pâtissier blanc | changé |
+| prd_0022 | Gousses de vanille Bourbon de Madagascar | oui | Extrait de vanille liquide | Extrait de vanille liquide |  |
+| prd_0023 | Extrait de vanille liquide |  | Sucre semoule | — | aucun remplaçant de même usage → demander |
+| prd_0024 | Eau de fleur d'oranger |  | Sel fin de mer | — | aucun remplaçant de même usage → demander |
+| prd_0025 | Beurre de tourage AOP Charentes-Poitou 84 % | oui | Beurre de tourage 82 % | Beurre de tourage 82 % |  |
+| prd_0026 | Beurre de tourage 82 % |  | Beurre doux AOP Charentes-Poitou | Beurre doux AOP Charentes-Poitou |  |
+| prd_0027 | Beurre doux AOP Charentes-Poitou | oui | Beurre pâtissier 82 % | Beurre pâtissier 82 % |  |
+| prd_0028 | Beurre pâtissier 82 % |  | Beurre de tourage 82 % | Beurre de tourage 82 % |  |
+| prd_0029 | Beurre demi-sel de baratte |  | Beurre doux AOP Charentes-Poitou | Beurre doux AOP Charentes-Poitou |  |
+| prd_0030 | Margarine de feuilletage |  | Beurre pâtissier 82 % | — | aucun remplaçant de même usage → demander |
+| prd_0031 | Crème liquide UHT 35 % |  | Œuf entier liquide pasteurisé | Crème fraîche épaisse 30 % | changé |
+| prd_0032 | Crème fraîche épaisse 30 % |  | Œuf entier liquide pasteurisé | Crème liquide UHT 35 % | changé |
+| prd_0033 | Lait entier UHT |  | Blanc d'œuf liquide pasteurisé | Crème liquide UHT 35 % | changé |
+| prd_0034 | Œufs plein air calibre M | oui | Œuf entier liquide pasteurisé | Œuf entier liquide pasteurisé |  |
+| prd_0035 | Œuf entier liquide pasteurisé |  | Crème liquide UHT 35 % | Blanc d'œuf liquide pasteurisé | changé |
+| prd_0036 | Jaune d'œuf liquide pasteurisé |  | Œufs plein air calibre M | Œuf entier liquide pasteurisé | changé |
+| prd_0037 | Blanc d'œuf liquide pasteurisé |  | Crème liquide UHT 35 % | Œuf entier liquide pasteurisé | changé |
+| prd_0038 | Chocolat de couverture noir 64 % |  | Chocolat de couverture blanc 33 % | Chocolat de couverture noir 70 % | changé |
+| prd_0039 | Chocolat de couverture noir 70 % | oui | Chocolat de couverture noir 64 % | Chocolat de couverture noir 64 % |  |
+| prd_0040 | Chocolat de couverture lait 38 % |  | Chocolat de couverture noir 64 % | Chocolat de couverture noir 64 % |  |
+| prd_0041 | Chocolat de couverture blanc 33 % |  | Chocolat de couverture noir 64 % | Chocolat de couverture noir 64 % |  |
+| prd_0042 | Bâtons de chocolat boulanger 44 % |  | Chocolat de couverture lait 38 % | Chocolat de couverture lait 38 % |  |
+| prd_0043 | Cacao en poudre 22-24 % |  | Bâtons de chocolat boulanger 44 % | — | aucun remplaçant de même usage → demander |
+| prd_0044 | Pépites de chocolat noir cuisson |  | Cacao en poudre 22-24 % | Chocolat de couverture noir 64 % | changé |
+| prd_0045 | Praliné noisette 50 % |  | Chocolat de couverture blanc 33 % | — | aucun remplaçant de même usage → demander |
+| prd_0046 | Poudre d'amande blanche |  | Amandes effilées | Poudre de noisette torréfiée | changé |
+| prd_0047 | Amandes effilées | oui | Poudre d'amande blanche | Poudre d'amande blanche |  |
+| prd_0048 | Poudre de noisette torréfiée |  | Cerneaux de noix | Poudre d'amande blanche | changé |
+| prd_0049 | Pistaches vertes émondées |  | Poudre de noisette torréfiée | — | aucun remplaçant de même usage → demander |
+| prd_0050 | Raisins secs sultanines |  | Fruits confits en cubes | — | aucun remplaçant de même usage → demander |
+| prd_0051 | Cerneaux de noix |  | Amandes effilées | — | aucun remplaçant de même usage → demander |
+| prd_0052 | Fruits confits en cubes |  | Poudre d'amande blanche | — | aucun remplaçant de même usage → demander |
+| prd_0053 | Croissant pur beurre cru surgelé 70 g |  | Chocolatine pur beurre crue surgelée 75 g | Chocolatine pur beurre crue surgelée 75 g |  |
+| prd_0054 | Chocolatine pur beurre crue surgelée 75 g |  | Croissant pur beurre cru surgelé 70 g | Croissant pur beurre cru surgelé 70 g |  |
+| prd_0055 | Pain aux raisins cru surgelé 110 g |  | Pâte feuilletée pur beurre en plaques | Assortiment mini-viennoiseries crues | changé |
+| prd_0056 | Assortiment mini-viennoiseries crues |  | Pain aux raisins cru surgelé 110 g | Pain aux raisins cru surgelé 110 g |  |
+| prd_0057 | Pâte feuilletée pur beurre en plaques |  | Pain aux raisins cru surgelé 110 g | Croissant pur beurre cru surgelé 70 g | changé |
+| prd_0058 | Baguette précuite surgelée 280 g |  | Purée de framboise surgelée | Pâte feuilletée pur beurre en plaques | changé |
+| prd_0059 | Purée de framboise surgelée |  | Baguette précuite surgelée 280 g | Pâte feuilletée pur beurre en plaques | changé |
+| prd_0060 | Fraise Gariguette |  | Citron jaune | — | aucun remplaçant de même usage → demander |
+| prd_0061 | Framboise |  | Citron jaune | — | aucun remplaçant de même usage → demander |
+| prd_0062 | Citron jaune |  | Pomme Golden pâtissière | — | aucun remplaçant de même usage → demander |
+| prd_0063 | Pomme Golden pâtissière |  | Citron jaune | — | aucun remplaçant de même usage → demander |
+| prd_0064 | Poire Williams |  | Citron jaune | — | aucun remplaçant de même usage → demander |
+| prd_0065 | Sacs à baguette kraft imprimés |  | Sachets viennoiserie papier | — | aucun remplaçant de même usage → demander |
+| prd_0066 | Sachets viennoiserie papier |  | Boîtes pâtissières blanches 20 cm | Papier cuisson siliconé 40 × 60 | changé |
+| prd_0067 | Boîtes pâtissières blanches 20 cm |  | Sachets viennoiserie papier | — | aucun remplaçant de même usage → demander |
+| prd_0068 | Couronnes des rois carton dorées |  | Boîtes pâtissières blanches 20 cm | Semelles dorées rondes 28 cm | changé |
+| prd_0069 | Fèves des rois en porcelaine |  | Sachets viennoiserie papier | — | aucun remplaçant de même usage → demander |
+| prd_0070 | Semelles dorées rondes 28 cm |  | Boîtes pâtissières blanches 20 cm | — | aucun remplaçant de même usage → demander |
+| prd_0071 | Papier cuisson siliconé 40 × 60 |  | Sacs à baguette kraft imprimés | Sachets viennoiserie papier | changé |
 
-Diagnosis S45: `place_order` written before the customer's agreement (Amine K.)
+## Diagnostic S45 : `place_order` écrit avant l'accord du client (Amine K.)
 
-Replay of 24/11 (after `make reset`, all lit): S44, S04, S05, S40 pass; **S45 fails on `tools_none`** because
-that in the first turn the agent calls `place_order` together with `product_insight` (ORDER_RULES rule: "as soon as
-The answer itself is right ("... almond powder").
-White ... I'll put it in your place ?").
+Rejeu du 24/11 (après `make reset`, tout allumé) : S44, S04, S05, S40 passent ; **S45 échoue sur `tools_none`** parce
+qu'au premier tour l'agent appelle `place_order` en même temps que `product_insight` (règle d'ORDER_RULES : « dès que des
+produits et des quantités sont dits, appelle place_order »). La réponse elle-même est juste (« … poudre d'amande
+blanche … je vous la mets à la place ? »).
 
-Verified without model (direct tool call, ERP reset before and after): `place_order` **creates the draft itself
-when stock is missing**, with only one alert:
+Vérifié sans modèle (appel direct de l'outil, ERP remis à zéro avant et après) : `place_order` **crée le brouillon même
+quand le stock manque**, avec seulement une alerte :
 
-| Client | Request | `written` | Reading | Alert |
+| Client | Demande | `written` | Relecture | Alerte |
 |---|---|---|---|---|
-| cli_0021 | 3 AOP turning cartons, Wednesday | True | 30 kilos of AOP Touring Butter...; Wednesday, November 25 | in rupture |
-| cli_0053 | 10 kg hazelnut powder, Friday | True | 10 kilos of roasted hazelnut powder; Friday, 27 November | only 2.57 kilos left |
+| cli_0021 | 3 cartons de tourage AOP, mercredi | true | 30 kilos de Beurre de tourage AOP… ; mercredi 25 novembre | en rupture |
+| cli_0053 | 10 kg de poudre de noisette, vendredi | true | 10 kilos de Poudre de noisette torréfiée ; vendredi 27 novembre | il n'en reste que 2,57 kilos |
 
-Same call to the first round of S05 (which passes: its controls do not prohibit it). Proposal to Amine K.: if a
-line exceeds stock available, do not write anything and return `next` = "insufficient quantity of product: proposed
-first with product_insight".
+Même appel au premier tour de S05 (qui passe : ses contrôles ne l'interdisent pas). Proposition à Amine K. : si une
+ligne dépasse le stock disponible, ne rien écrire et renvoyer `next` = « produit en quantité insuffisante : propose
+d'abord avec product_insight ».
 
-## Exclusions written in the sheets ("never from...", "...only")
+## Exclusions écrites dans les fiches (« jamais de… », « … uniquement »)
 
-`card_rules` reads preferences and notes, sentence by sentence; `rank_alternatives` remove what the prohibited card
-and `has_same_use_substitute` does not count these products (if nothing remains → "no equivalent", the agent asks).
-General rule: a prohibition removes a product whose name contains all its words; an obligation does not apply
-that if the missing product contains its first word (its family), and only keeps the products that contain the
-a phrase whose words are not in any product name
-("Never deliver that day," "...does not read the recovery emails") has no effect.
+`card_rules` lit les préférences et les notes, phrase par phrase ; `rank_alternatives` retire ce que la fiche interdit
+et `has_same_use_substitute` ne compte pas ces produits (s'il ne reste rien → « rien d'équivalent », l'agent demande).
+Règle générale : une interdiction retire un produit dont le nom contient tous ses mots ; une obligation ne s'applique
+que si le produit manquant contient son premier mot (sa famille), et garde seulement les produits qui contiennent les
+mots qu'elle partage avec lui (pourcentages compris). Une phrase dont les mots ne sont dans aucun nom de produit
+(« jamais de livraison ce jour-là », « … ne lit pas les mails de relance ») n'a aucun effet.
 
-List verified by Daycem (24/11), 29 out of 104 sheets:
+Liste vérifiée par Daycem (24/11), 29 fiches sur 104 :
 
-| Phrase | Sheets | Effect |
+| Phrase | Fiches | Effet |
 |---|---|---|
-| "Don't want to freeze" | 10 | no frozen product (pre-cooked baguette, chocolate, croissant, grape bread, raspberry purée) |
-| "Never thick" | 7 | Never the thick fresh cream |
-| "35 % Cream Only" | 7 (the same) | if the liquid cream 35% is missing: nothing → the agent asks |
-| "Traditional flour of Lauragais only" | 8 | if the T55 tradition lacks: nothing (not even the document substitute) → the agent asks |
-| « Covers exclusively Cacaos Garonne » | 1 | if coverage is missing: only another coverage |
-| "AOP tour only" | 1 | if the AOP tour is missing: nothing (this customer already refuses the replacements) |
-| "Liquid products only" | 3 | ignored (see limits) |
-| "Never delivered that day" (notes) | 18 | no effect |
+| « Ne veut pas de surgelé » | 10 | aucun produit surgelé (baguette précuite, chocolatine, croissant, pain aux raisins, purée de framboise) |
+| « jamais d'épaisse » | 7 | jamais la crème fraîche épaisse |
+| « Crème 35 % uniquement » | 7 (les mêmes) | si la crème liquide 35 % manque : rien → l'agent demande |
+| « Farine de tradition du Lauragais uniquement » | 8 | si la T55 tradition manque : rien (même pas le substitut des documents) → l'agent demande |
+| « Couvertures exclusivement Cacaos Garonne » | 1 | si une couverture manque : seulement une autre couverture |
+| « tourage AOP exclusivement » | 1 | si le tourage AOP manque : rien (ce client refuse déjà les remplacements) |
+| « Ovoproduits liquides uniquement » | 3 | ignorée (voir limites) |
+| « jamais de livraison ce jour-là » (notes) | 18 | aucun effet |
 
-### Known limits (not coded)
-1. **Ovoproducts** (3 plugs: central kitchen, EHPAD, high school): "ovoproduct" does not appear in any product name,
-   So the rule is ignored; if a liquid egg is missing, the shell eggs can still be offered (the agent
-   read the form, but there is no guarantee of it). **Piste**: synonyms from the company glossary
-   (`DATA_DIR/context`, as `doc_substitutes`) : egg products = whole egg / yellow / white liquid egg.
-2. **Mark of blankets** (1 sheet: "Cacoos Garonne covers exclusively, Ecuadorian origin and Peru"):
-   the mark is not in the names, only the "cover" family is verified. **Site**: check the supplier
-   of product (`mainSupplierId` in the ERP) against the name of the supplier cited in the form.
+### Limites connues (non codées)
+1. **Ovoproduits** (3 fiches : cuisine centrale, EHPAD, lycée) : « ovoproduit » n'apparaît dans aucun nom de produit,
+   donc la règle est ignorée ; si un œuf liquide manque, les œufs en coquille peuvent encore être proposés (l'agent
+   lit la fiche, mais rien ne le garantit). **Piste** : des synonymes tirés du glossaire de l'entreprise
+   (`DATA_DIR/context`, comme `doc_substitutes`) : « ovoproduits » = œuf entier / jaune / blanc d'œuf liquides.
+2. **Marque des couvertures** (1 fiche : « Couvertures exclusivement Cacaos Garonne, origine Équateur et Pérou ») :
+   la marque n'est pas dans les noms, seule la famille « couverture » est vérifiée. **Piste** : vérifier le fournisseur
+   du produit (`mainSupplierId` dans l'ERP) contre le nom du fournisseur cité par la fiche.
 
-### Direct Test of `product_insight` (24/11, no model, after `make reset`)
-Same demand, 1,500 L of UHT 35% liquid cream (there are 1,320 L left, 180 missing), for two customers who
-accept replacements:
+### Test direct de `product_insight` (24/11, sans modèle, après `make reset`)
+Même demande, 1 500 L de crème liquide UHT 35 % (il en reste 1 320 L, il en manque 180), pour deux clients qui
+acceptent les remplacements :
 
-| Client | Form | Alternatives returned | Note |
+| Client | Fiche | Alternatives renvoyées | Note |
 |---|---|---|---|
-| Le Petit Four de Saint-Cyprien (cli_0053) | "Only 35% cream, never thick" | none | "No product in stock has the same use. Announces the break and asks the customer what he wants, without offering a product." |
-| Le Pétrin de Colomiers (cli_0021) | no exclusion | Thick fresh cream 30%, whole egg liquid, liquid egg white, whole milk, liquid egg yolk | — |
+| Le Petit Four de Saint-Cyprien (cli_0053) | « Crème 35 % uniquement, jamais d'épaisse » | aucune | « Aucun produit en stock n'a le même usage. Annonce la rupture et demande au client ce qu'il souhaite, sans proposer de produit. » |
+| Le Pétrin de Colomiers (cli_0021) | aucune exclusion | crème fraîche épaisse 30 %, œuf entier liquide, blanc d'œuf liquide, lait entier, jaune d'œuf liquide | — |
 
-Thick cream, the first choice for a customer without exclusion, is never offered to the customer who excluded it.
-(Cas built: in the EPR of 24/11, no really broken product touches an exclusion plug; the
-scenario S46 uses the nearest real case.)
+La crème épaisse, premier choix pour un client sans exclusion, n'est jamais proposée au client qui l'a exclue.
+(Cas construit : dans l'ERP du 24/11, aucun produit réellement en rupture ne touche une fiche à exclusion ; le
+scénario S46 utilise le cas réel le plus proche.)
 
-## Bilingual: English data (`SEED_DIR_NAME=seed_en`, 24/11)
+## Bilingue : données anglaises (`SEED_DIR_NAME=seed_en`, 24/11)
 
-The same functions read English and French **without setting** (a plug is in either language).
-Audit without model: French LES (port 4000) against a temporary English LES (port 4001, base-by-base), same code.
+Les mêmes fonctions lisent le français et l'anglais **sans réglage** (une fiche est dans l'une ou l'autre langue).
+Audit sans modèle : ERP français (port 4000) contre un ERP anglais temporaire (port 4001, base à part), même code.
 
-| Audit | French | English before | English after |
+| Audit | Français | Anglais avant | Anglais après |
 |---|---|---|---|
-| Replacement decision, AOP turning (104 plugs) | Refuses 37 · accepts 52 · ask 6 · unknown 9 | unknown 104 | Refuses 37 · accepts 51 · ask 7 · unknown 9 |
-| First choice of classification (71 products) | — | 61 / 71 Like French | **71 / 71** |
-| "No substitutes of the same use" | 23 | 25 | 23 (the same) |
-| Sheets where an exclusion is read | 39 | 0 | 41 |
+| Décision de remplacement, tourage AOP (104 fiches) | refuse 37 · accepte 52 · demander 6 · inconnu 9 | inconnu 104 | refuse 37 · accepte 51 · demander 7 · inconnu 9 |
+| Premiers choix du classement (71 produits) | — | 61 / 71 comme le français | **71 / 71** |
+| « Aucun remplaçant de même usage » | 23 | 25 | 23 (les mêmes) |
+| Fiches où une exclusion est lue | 39 | 0 | 41 |
 
-**French has not moved**: code of `main` against bilingual code, of the 104 sheets × 71 products (preferences and
-Notes): 7,384 / 7,384 identical decisions, 7,384 / 7,384 identical classifications (order and exclusions).
+**Le français n'a pas bougé** : code de `main` contre code bilingue, sur les 104 fiches × 71 produits (préférences et
+notes) : 7 384 / 7 384 décisions identiques, 7 384 / 7 384 classements identiques (ordre et exclusions).
 
-How:
-- `substitution_policy` : actual English turns ("Accepts equivalent substitutions if informed", "Equivalent
-  substitutions accepted if we are toold, "Refusals substitutes", "Substitutions refused", "Never any
-  substitution on the butter", "Does not want any substitution without being gold").
-- `card_rules` "never X", "does not want X", "no X", "X only", "only X", "exclusively X"; words
-  English generics ignored (goods, products, from, the...).
-- Product names: in English the product is **the last word** ("UHT liquid cream"), in French the first;
-  `name_match` compares English names **via their French original** (`data/seed_en/GLOSSARY.md`), hence the same
-  A non-glossary English name uses the last word.
-- `doc_substitutes` : read by ID, walk in both languages (tested with an English line).
+Comment :
+- `substitution_policy` : tournures anglaises réelles (« Accepts equivalent substitutions if informed », « Equivalent
+  substitutions accepted if we are told », « Refuses substitutions », « Substitutions refused », « Never any
+  substitution on the butter », « Does not want any substitution without being told »).
+- `card_rules` : « never X », « does not want X », « no X », « X only », « only X », « exclusively X » ; mots
+  génériques anglais ignorés (goods, products, from, the…).
+- Noms de produits : en anglais le produit est **le dernier mot** (« UHT liquid cream »), en français le premier ;
+  `name_match` compare les noms anglais **via leur original français** (`data/seed_en/GLOSSARY.md`), d'où les mêmes
+  premiers choix. Un nom anglais hors glossaire utilise le dernier mot.
+- `doc_substitutes` : lu par identifiant, marche dans les deux langues (testé avec une ligne anglaise).
 
-Remaining deviations (no refusal read as an agreement, or the other way around):
-1. **"request" instead of "accept"** on 39 couple sheet × produced on 7,384 (including cli_0007 for touring)
-   AOP: "standard laminating butter" shares two words with "AOP ... laminating butter", one in French
-   "standard tour"). On the conservative side: the agent asks before appointing a replacement.
-   11 French decisions: abandoned.
-2. **Exclusions** (32 couples, 11 sheets):
-   - "Liquid egg products only" (3 sheets) ** is read in English** (the word "egg" is in the names): if an egg
-     Liquid lacks, more eggs in shell or cream. In French, "ovoproducts" remains ignored (limit 1).
-   - "35 % cream only" (7 sheets) does not apply when the cream is thick fresh or the cream preparation
-     pastryman lacks: their English names keep "cream", not "cream". The French rule went further
-     (only cream products), no useful effect in practice.
-   - Sarrailh ("exclusively AOP butter for laminating") : the English rule also affects sweet butter AOP.
-     effect in practice: this customer refuses replacements, `product_insight` Don't propose anything.
-3. **English prompt.** At the time of the ranking audit the English rules were awaiting integration. They now run when `TEAM_SALES_RULES=1`.
+Écarts restants (aucun refus lu comme un accord, ni l'inverse) :
+1. **« demander » au lieu de « accepte »** sur 39 couples fiche × produit sur 7 384 (dont cli_0007 pour le tourage
+   AOP : « standard laminating butter » partage deux mots avec « AOP … laminating butter », un seul en français
+   « tourage standard »). Côté prudent : l'agent demande avant de nommer un remplaçant. Une correction (ne pas compter
+   le mot de famille) faisait bouger 11 décisions françaises : abandonnée.
+2. **Exclusions** (32 couples, 11 fiches) :
+   - « Liquid egg products only » (3 fiches) **est lue en anglais** (le mot « egg » est dans les noms) : si un œuf
+     liquide manque, plus d'œufs en coquille ni de crème. En français, « ovoproduits » reste ignoré (limite 1).
+   - « 35% cream only » (7 fiches) ne s'applique pas quand la crème fraîche épaisse ou la préparation pour crème
+     pâtissière manque : leurs noms anglais gardent « crème », pas « cream ». La règle française allait plus loin
+     (seulement des produits « crème »), sans effet utile en pratique.
+   - Sarrailh (« exclusively AOP butter for laminating ») : la règle anglaise touche aussi le beurre doux AOP. Sans
+     effet en pratique : ce client refuse les remplacements, `product_insight` ne propose rien.
+3. **Le prompt reste en français** : `SALES_RULES_EN` est prête (mêmes règles, exemples sans nom réel, test « stay
+   general » anglais) mais **pas branchée**, en attendant le réglage de langue commun à l'équipe.

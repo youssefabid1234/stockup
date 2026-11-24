@@ -2,7 +2,7 @@
 The three interfaces every provider implements. The rest of the service only knows these.
 
     LLMClient.stream(request)        → async iterator of LLMText / LLMToolCall / LLMUsage
-    STTClient.transcribe(audio, ...) → text (+ transcribe_stream: audio chunks → live STTUpdate)
+    STTClient.transcribe(audio, …)   → text          (+ transcribe_stream: audio chunks → live STTUpdate)
     TTSClient.synthesize(text, …)    → TTSResult(mime, async iterator of audio bytes)
 
 Interrupting (barge-in, client disconnected) is plain asyncio cancellation: no abort signal to pass around.

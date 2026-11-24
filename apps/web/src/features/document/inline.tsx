@@ -135,7 +135,7 @@ export function ProductPicker({ products, onPick, autoFocus, excludeIds, priceOf
         role="combobox"
         aria-expanded={showList}
         aria-autocomplete="list"
-        placeholder="Add a product (name, alias, SKU)…"
+        placeholder="Ajouter un produit (nom, alias, SKU)…"
         onChange={(e) => { setQ(e.target.value); setOpen(true); setActive(0); }}
         onFocus={() => setOpen(true)}
         onBlur={() => window.setTimeout(() => setOpen(false), 120)}
@@ -151,9 +151,9 @@ export function ProductPicker({ products, onPick, autoFocus, excludeIds, priceOf
         className="h-7 w-full rounded-[4px] border border-border bg-card pl-7 pr-7 text-[12.5px] text-foreground outline-none transition-colors placeholder:text-muted-foreground/70 hover:border-border-hover focus:border-ring focus:ring-2 focus:ring-ring/20"
       />
       {isFetching && dq ? <Spinner size={12} className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground" /> : null}
-      <AnchoredPopover anchorRef={anchorRef} open={showList} role="listbox" aria-label="Products" className="py-1">
+      <AnchoredPopover anchorRef={anchorRef} open={showList} role="listbox" aria-label="Produits" className="py-1">
         {results.length === 0 ? (
-          <div className="px-3 py-2 text-[12.5px] text-muted-foreground">{isFetching || q !== dq ? "Search..." : "No products"}</div>
+          <div className="px-3 py-2 text-[12.5px] text-muted-foreground">{isFetching || q !== dq ? "Recherche…" : "Aucun produit"}</div>
         ) : results.map(({ r, p }, i) => {
           const already = excludeIds?.has(r.id);
           return (
@@ -171,7 +171,7 @@ export function ProductPicker({ products, onPick, autoFocus, excludeIds, priceOf
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-2">
                   <span className="truncate text-[13px] font-medium">{p?.name ?? r.label}</span>
-                  {already ? <span className="text-[11px] text-muted-foreground">already on the order</span> : null}
+                  {already ? <span className="text-[11px] text-muted-foreground">déjà sur la commande</span> : null}
                   {p && priceOf?.(p).hint ? <span className="text-[11px] text-warning">{priceOf(p).hint}</span> : null}
                 </div>
                 <div className="truncate text-[11.5px] text-muted-foreground">

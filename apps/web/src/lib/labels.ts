@@ -1,26 +1,26 @@
-/** English labels for domain enums. Add new enum values here (and a tone in ui/status.ts if it's a status). */
+/** French labels for domain enums. Add new enum values here (and a tone in ui/status.ts if it's a status). */
 import type { Actor, ClientType, ContextKind, ContextScope, ContextSource, OrderSource, PaymentMethod, ProductCategory, StockMovementReason, Weekday } from "@kit/shared";
 
 export const CLIENT_TYPE_LABEL: Record<ClientType, string> = {
   restaurant: "Restaurant",
   brasserie: "Brasserie",
-  fishmonger: "Fishmonger",
-  canteen: "Institutional catering",
-  supermarket: "Supermarket",
-  caterer: "Caterer",
-  hotel: "Hotel",
+  fishmonger: "Poissonnerie",
+  canteen: "Restauration collective",
+  supermarket: "Grande surface",
+  caterer: "Traiteur",
+  hotel: "Hôtel",
 };
 
 /** Product category labels: per company, filled from meta.categories at boot (see clock.ts). Legacy ids as fallback. */
 export const CATEGORY_LABEL: Record<ProductCategory, string> = {
-  whole_fish: "Whole fish",
-  fillet: "Fillets",
-  shellfish: "Shellfish",
-  crustacean: "Crustaceans",
-  frozen: "Frozen goods",
-  produce: "Fruit & vegetables",
-  dairy: "Dairy",
-  dry: "Dry goods",
+  whole_fish: "Poisson entier",
+  fillet: "Filets",
+  shellfish: "Coquillages",
+  crustacean: "Crustacés",
+  frozen: "Surgelés",
+  produce: "Fruits & légumes",
+  dairy: "Crèmerie",
+  dry: "Épicerie",
 };
 let categoryOrder: ProductCategory[] = Object.keys(CATEGORY_LABEL);
 /** Replace the labels with the data pack's categories (id → label). */
@@ -38,63 +38,63 @@ export const categoryIds = (): ProductCategory[] => categoryOrder;
 export const categoryOptions = () => categoryOrder.map((value) => ({ value, label: categoryLabel(value) }));
 
 export const SOURCE_LABEL: Record<OrderSource, string> = {
-  phone: "Phone",
-  voice_agent: "Voice agent",
+  phone: "Téléphone",
+  voice_agent: "Agent vocal",
   email: "E-mail",
   whatsapp: "WhatsApp",
-  manual: "Manual entry",
+  manual: "Saisie",
   web: "Web",
 };
 
 export const PAYMENT_METHOD_LABEL: Record<PaymentMethod, string> = {
-  transfer: "Bank transfer",
-  card: "Card",
-  cheque: "Cheque",
-  cash: "Cash",
-  direct_debit: "Direct debit",
+  transfer: "Virement",
+  card: "Carte",
+  cheque: "Chèque",
+  cash: "Espèces",
+  direct_debit: "Prélèvement",
 };
 
 export const MOVEMENT_REASON_LABEL: Record<StockMovementReason, string> = {
-  receipt: "Receipt",
-  sale: "Sale",
-  adjustment: "Adjustment",
-  waste: "Waste",
-  return: "Return",
+  receipt: "Réception",
+  sale: "Vente",
+  adjustment: "Ajustement",
+  waste: "Perte",
+  return: "Retour",
 };
 
 export const WEEKDAY_LABEL: Record<Weekday, string> = {
-  mon: "Mon", tue: "Tue", wed: "Wed", thu: "Thu", fri: "Fri", sat: "Sat", sun: "Sun",
+  mon: "lun.", tue: "mar.", wed: "mer.", thu: "jeu.", fri: "ven.", sat: "sam.", sun: "dim.",
 };
 export const WEEKDAYS: Weekday[] = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"];
 
 export const ACTOR_LABEL: Record<Actor, string> = {
-  user: "User",
-  ai_chat: "AI assistant",
-  voice_agent: "Voice agent",
-  system: "System",
+  user: "Utilisateur",
+  ai_chat: "Assistant IA",
+  voice_agent: "Agent vocal",
+  system: "Système",
 };
 
 // ── Context table ──
 export const CONTEXT_SCOPE_LABEL: Record<ContextScope, string> = {
-  company: "Company",
-  client: "Customer",
-  supplier: "Supplier",
-  product: "Product",
-  category: "Department",
+  company: "Entreprise",
+  client: "Client",
+  supplier: "Fournisseur",
+  product: "Produit",
+  category: "Rayon",
 };
 export const CONTEXT_KIND_LABEL: Record<ContextKind, string> = {
-  policy: "Policy",
-  procedure: "Procedure",
-  preference: "Preference",
-  fact: "Fact",
-  relationship: "Relationship",
-  pricing: "Price",
-  logistics: "Logistics",
-  risk: "Risk",
+  policy: "Règle",
+  procedure: "Procédure",
+  preference: "Préférence",
+  fact: "Fait",
+  relationship: "Relation",
+  pricing: "Prix",
+  logistics: "Logistique",
+  risk: "Vigilance",
 };
 export const CONTEXT_SOURCE_LABEL: Record<ContextSource, string> = {
   seed: "Data pack",
-  user: "User",
-  ai_chat: "AI assistant",
-  voice_agent: "Voice agent",
+  user: "Utilisateur",
+  ai_chat: "Assistant IA",
+  voice_agent: "Agent vocal",
 };

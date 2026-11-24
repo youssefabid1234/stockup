@@ -31,7 +31,7 @@ export interface DocRow {
   late?: boolean;
 }
 
-const DATE_PRESETS = [{ label: "Yesterday", days: -1 }, { label: "Today", days: 0 }, { label: "Tomorrow", days: 1 }];
+const DATE_PRESETS = [{ label: "Hier", days: -1 }, { label: "Aujourd'hui", days: 0 }, { label: "Demain", days: 1 }];
 
 /** "YYYY-MM-DD" + n days, local. */
 export function addDaysIso(iso: string, n: number): string {
@@ -96,11 +96,11 @@ export function DocumentListPage({ kind, title, icon: Icon, tabs, filters: f, ro
     },
     {
       id: "date", header: k.date, width: 150, sortKey: "date",
-      cell: (r) => <span className={r.late ? "text-destructive" : undefined}><DateLabel date={r.date} />{r.late ? <span className="ml-1.5 text-[12px]">late</span> : null}</span>,
+      cell: (r) => <span className={r.late ? "text-destructive" : undefined}><DateLabel date={r.date} />{r.late ? <span className="ml-1.5 text-[12px]">en retard</span> : null}</span>,
     },
-    { id: "lines", header: "Lines", width: 80, numeric: true, muted: true, sortKey: "lines", cell: (r) => r.lineCount },
+    { id: "lines", header: "Lignes", width: 80, numeric: true, muted: true, sortKey: "lines", cell: (r) => r.lineCount },
     { id: "total", header: "Total HT", width: 130, numeric: true, sortKey: "total", cell: (r) => <Money value={r.totalHt} zeroMuted /> },
-    { id: "status", header: "Status", width: 150, sortKey: "status", cell: (r) => <StatusDot kind={sale ? "order" : "purchaseOrder"} value={r.status} /> },
+    { id: "status", header: "Statut", width: 150, sortKey: "status", cell: (r) => <StatusDot kind={sale ? "order" : "purchaseOrder"} value={r.status} /> },
   ], [k, sale]);
 
   const filtered = !!(f.dq || f.date || f.partner || f.status || extraActive);
@@ -119,17 +119,17 @@ export function DocumentListPage({ kind, title, icon: Icon, tabs, filters: f, ro
         actions={newButton()}
         filters={
           <>
-            <SearchInput value={f.q} onChange={f.setQ} placeholder={`No. or ${k.partner.toLowerCase()}…`} className="w-[200px]" />
-            <DatePicker size="sm" value={f.isoDate ?? ""} onChange={f.setDate} placeholder="All dates" presets={DATE_PRESETS} clearable
+            <SearchInput value={f.q} onChange={f.setQ} placeholder={`N° ou ${k.partner.toLowerCase()}…`} className="w-[200px]" />
+            <DatePicker size="sm" value={f.isoDate ?? ""} onChange={f.setDate} placeholder="Toutes dates" presets={DATE_PRESETS} clearable
               aria-label={k.date} className="w-[150px]" />
             {extraFilter}
-            {filtered ? <Button size="sm" variant="ghost" onClick={reset} className="ml-auto">Clear Filters</Button> : null}
+            {filtered ? <Button size="sm" variant="ghost" onClick={reset} className="ml-auto">Effacer les filtres</Button> : null}
           </>
         }
       />
       <PageBody flush>
         {error && !rows ? (
-          <EmptyState icon={Icon} title={`${title} indisponibles`} description="TheAPI Check that the server is running on port 4000." action={<Button size="sm" onClick={onRetry}>Retry</Button>} />
+          <EmptyState icon={Icon} title={`${title} indisponibles`} description="L'API ne répond pas. Vérifiez que le serveur tourne sur le port 4000." action={<Button size="sm" onClick={onRetry}>Réessayer</Button>} />
         ) : (
           <DataTable
             columns={columns}
@@ -138,12 +138,12 @@ export function DocumentListPage({ kind, title, icon: Icon, tabs, filters: f, ro
             loading={loading}
             getRowId={(r) => r.id}
             onRowClick={(r) => navigate(`${k.detailPath}/${r.id}`)}
-            footer={total !== undefined ? <>{total} commande{total > 1 ? "s" : ""}{filtered ? " · filtered" : ""} · <Money value={totalHt ?? 0} /> excl. VAT</> : undefined}
+            footer={total !== undefined ? <>{total} commande{total > 1 ? "s" : ""}{filtered ? " · filtrées" : ""} · <Money value={totalHt ?? 0} /> HT</> : undefined}
             empty={
               filtered ? (
-                <EmptyState icon={Icon} title="No command matches" description="Change the search or filters." action={<Button size="sm" onClick={reset}>Clear Filters</Button>} />
+                <EmptyState icon={Icon} title="Aucune commande ne correspond" description="Modifiez la recherche ou les filtres." action={<Button size="sm" onClick={reset}>Effacer les filtres</Button>} />
               ) : (
-                <EmptyState icon={Icon} title="No orders" description={emptyText} action={newButton("sm")} />
+                <EmptyState icon={Icon} title="Aucune commande" description={emptyText} action={newButton("sm")} />
               )
             }
           />

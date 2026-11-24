@@ -1,7 +1,7 @@
-# Call scenarios – our tests all night long
+# Scénarios d'appel – nos tests de toute la nuit
 
-Each `S*.json` file is ** a call** (several replicas of the client) with what is expected of the agent.
-Replay after every change: if a passing scenario starts to fail, we've broken something.
+Chaque fichier `S*.json` est **un appel** (plusieurs répliques du client) avec ce qu'on attend de l'agent. On les
+rejoue après chaque changement : si un scénario qui passait se met à échouer, on a cassé quelque chose.
 
 ```bash
 # services lancés, depuis la racine du repo (Windows : apps/ai/.venv/Scripts/python ; Mac/Linux : apps/ai/.venv/bin/python)
@@ -11,8 +11,8 @@ apps/ai/.venv/Scripts/python scripts/run_scenarios.py --only S05 --voice  # vrai
 apps/ai/.venv/Scripts/python scripts/run_scenarios.py --reset        # remet les données de l'ERP à zéro avant
 ```
 
-Each replica calls the true LLM (ceiling credits): replay **vos** scenarios (`--owner`), all of them only at
-Sync. The results go to `scenarios/results/` (ignored by git).
+⚠️ Chaque réplique appelle le vrai LLM (crédits plafonnés) : rejouez **vos** scénarios (`--owner`), tous seulement à
+la sync. Les résultats vont dans `scenarios/results/` (ignoré par git).
 
 ## Format
 
@@ -38,31 +38,31 @@ Sync. The results go to `scenarios/results/` (ignored by git).
 }
 ```
 
-| `expect` key | Sense |
+| Clé de `expect` | Sens |
 |---|---|
-| `tools_any` | at least one of these tools has been called |
-| `tools_none` | None of these tools were called (e.g. no `confirm_order` before the "yes") |
-| `says_any` | the answer contains at least one of these words (excluding capitals) |
-| `says_none` | the answer does not contain any of these words |
-| `max_ms` | max duration of the replica (via /chat: full turn; `--voice`: end of speech → first sound) |
+| `tools_any` | au moins un de ces outils a été appelé |
+| `tools_none` | aucun de ces outils n'a été appelé (ex. pas de `confirm_order` avant le « oui ») |
+| `says_any` | la réponse contient au moins un de ces mots (sans tenir compte des majuscules) |
+| `says_none` | la réponse ne contient aucun de ces mots |
+| `max_ms` | durée max de la réplique (via /chat : tour complet ; `--voice` : fin de parole → premier son) |
 
-Stay **tolerant** on the text (several formulations in `says_any`): the agent never says twice the same
-Please check what matters: the tools called, the numbers, the prohibitions.
+Restez **tolérants** sur le texte (plusieurs formulations dans `says_any`) : l'agent ne dit jamais deux fois la même
+phrase. Vérifiez surtout ce qui compte : les outils appelés, les chiffres, les interdits.
 
-## Who writes what
+## Qui écrit quoi
 
-Each person writes **2 scenarios** of his domain in addition to them (reserved numbers):
+Chacun écrit **2 scénarios** de son domaine en plus de ceux-ci (numéros réservés) :
 Mohamed Amine S10–S19 · Youssef S20–S29 · Amine Khalil S30–S39 · Daycem S40–S49.
 
-## Useful customers (real package data)
+## Les clients utiles (données réelles du pack)
 
-| Client | Id | Why? |
+| Client | Id | Pourquoi |
 |---|---|---|
-| Maison Sarrailh (Nadine on the phone) | cli_0001 | Demanding, wants to be read again; **Never substitute on butter**; delivered mar/game/sam |
-| Boulangerie Escaich | cli_0006 | Beware, ** price sensitive** ("Garonne Boulange me makes it to 18 the tradi"), delivered mar/ven |
-| Le Pétrin de Balma | cli_0007 | **Clocked account** (second LCR rejected) |
-| Le Pétrin de Colomiers | cli_0021 | Purchased from AOP laminating butter, ** accepts equivalent substitutions if ** is prevented; delivered on/off |
-| La Gerbe d'Or | cli_0013 | **Refuses ** substitutions: call before changes |
+| Maison Sarrailh (Nadine au téléphone) | cli_0001 | Exigeante, veut qu'on lui relise ; **jamais de substitution sur le beurre** ; livrée mar/jeu/sam |
+| Boulangerie Escaich | cli_0006 | Méfiant, **sensible au prix** (« Garonne Boulange me la fait à 18 la tradi ») ; livrée mar/ven |
+| Le Pétrin de Balma | cli_0007 | **Compte bloqué** (deuxième LCR rejetée) |
+| Le Pétrin de Colomiers | cli_0021 | Achète du tourage AOP, **accepte les substitutions équivalentes si on prévient** ; livré lun/mer |
+| La Gerbe d'Or | cli_0013 | **Refuse les substitutions** : appeler avant toute modification |
 
-Daybreaks (Tuesday 24/11): laminating butter AOP 84 % (`prd_0025`, replacing: laminating butter 82 % `prd_0026`),
-Bourbon vanilla (`prd_0022`, replacing: liquid extract).
+Ruptures du jour (mardi 24/11) : beurre de tourage AOP 84 % (`prd_0025`, remplaçant : tourage 82 % `prd_0026`),
+vanille Bourbon (`prd_0022`, remplaçant : extrait liquide).

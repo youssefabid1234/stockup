@@ -12,8 +12,8 @@ import {
 import { RunCard } from "./RunCard";
 
 const VIEWS = [
-  { id: "runs", label: "Day tours" },
-  { id: "routes", label: "Definitions" },
+  { id: "runs", label: "Tournées du jour" },
+  { id: "routes", label: "Définitions" },
 ] as const;
 type View = (typeof VIEWS)[number]["id"];
 
@@ -37,7 +37,7 @@ export default function RoutesPage() {
   const visibleRuns = date ? runs : undefined;
 
   const plan = useApiMutation(api.routeRuns.plan, {
-    success: (r) => (r.length ? `${r.length} delivery route${r.length > 1 ? "s" : ""} Planned${r.length > 1 ? "s" : ""}` : "No orders to plan"),
+    success: (r) => (r.length ? `${r.length} tournée${r.length > 1 ? "s" : ""} planifiée${r.length > 1 ? "s" : ""}` : "Aucune commande à planifier"),
     invalidate: [qk.routeRuns.all, qk.orders.all],
   });
 
@@ -47,7 +47,7 @@ export default function RoutesPage() {
   return (
     <Page>
       <PageHeader
-        title="Delivery routes"
+        title="Tournées"
         tabs={<Tabs<View> value={view as View} onChange={setView} items={VIEWS.map((v) => ({ ...v, count: v.id === "routes" ? routes?.length : visibleRuns?.length }))} />}
         filters={view === "runs" ? (
           <>
@@ -55,8 +55,8 @@ export default function RoutesPage() {
               value={quick}
               onChange={(v) => { if (v === "today") setDate(""); else if (v === "tomorrow") setDate(tomorrow); }}
               options={quick === "other"
-                ? [{ id: "today", label: "Today" }, { id: "tomorrow", label: "Tomorrow" }, { id: "other", label: "Other" }]
-                : [{ id: "today", label: "Today" }, { id: "tomorrow", label: "Tomorrow" }]}
+                ? [{ id: "today", label: "Aujourd'hui" }, { id: "tomorrow", label: "Demain" }, { id: "other", label: "Autre" }]
+                : [{ id: "today", label: "Aujourd'hui" }, { id: "tomorrow", label: "Demain" }]}
             />
             <DatePicker
               size="sm"
@@ -68,14 +68,14 @@ export default function RoutesPage() {
           </>
         ) : null}
         actions={view === "runs" ? (
-          <Button variant="primary" icon={Wand2} loading={plan.isPending} disabled={!date} onClick={() => plan.mutate(date)}>Plan</Button>
+          <Button variant="primary" icon={Wand2} loading={plan.isPending} disabled={!date} onClick={() => plan.mutate(date)}>Planifier</Button>
         ) : null}
       />
       <PageBody flush={view === "routes"}>
         {view === "routes" ? (
           <RouteDefinitions routes={routes} />
         ) : isError && !runs ? (
-          <EmptyState icon={Truck} title="Unavailable tours" description="TheAPI Check that the server is running on port 4000." action={<Button size="sm" onClick={() => refetch()}>Retry</Button>} />
+          <EmptyState icon={Truck} title="Tournées indisponibles" description="L'API ne répond pas. Vérifiez que le serveur tourne sur le port 4000." action={<Button size="sm" onClick={() => refetch()}>Réessayer</Button>} />
         ) : !visibleRuns ? (
           <div className="grid grid-cols-1 gap-5 lg:grid-cols-2 2xl:grid-cols-3">
             {Array.from({ length: 3 }).map((_, i) => <Skeleton key={i} className="h-[320px] w-full rounded-[6px]" />)}
@@ -83,14 +83,14 @@ export default function RoutesPage() {
         ) : visibleRuns.length === 0 ? (
           <EmptyState
             icon={CalendarDays}
-            title={`No delivery route on ${fmtDateLong(date)}`}
-            description="&quot;Plan&quot; includes orders confirmed and prepared from this date by delivery area."
-            action={<Button size="sm" icon={Wand2} loading={plan.isPending} onClick={() => plan.mutate(date)}>Plan</Button>}
+            title={`Aucune tournée le ${fmtDateLong(date)}`}
+            description="« Planifier » regroupe les commandes confirmées et préparées de cette date par zone de livraison."
+            action={<Button size="sm" icon={Wand2} loading={plan.isPending} onClick={() => plan.mutate(date)}>Planifier</Button>}
           />
         ) : (
           <>
             <div className="mb-4 text-[12.5px] text-muted-foreground">
-              <span className="first-letter:uppercase">{fmtDateLong(date)}</span> · {visibleRuns.length} delivery route{visibleRuns.length > 1 ? "s" : ""} · {stopCount} stop{stopCount > 1 ? "s" : ""}
+              <span className="first-letter:uppercase">{fmtDateLong(date)}</span> · {visibleRuns.length} tournée{visibleRuns.length > 1 ? "s" : ""} · {stopCount} arrêt{stopCount > 1 ? "s" : ""}
             </div>
             <div className="grid grid-cols-1 items-start gap-5 lg:grid-cols-2 2xl:grid-cols-3">
               {[...visibleRuns].sort((a, b) => a.route.departureTime.localeCompare(b.route.departureTime) || a.route.name.localeCompare(b.route.name)).map((run) => (
@@ -105,10 +105,10 @@ export default function RoutesPage() {
 }
 
 const ROUTE_COLS: Column<Route>[] = [
-  { id: "name", header: "Delivery route", sortValue: (r) => r.name, cell: (r) => <span className="font-medium">{r.name}</span> },
-  { id: "zone", header: "Area", width: 160, sortValue: (r) => r.zone, cell: (r) => r.zone },
+  { id: "name", header: "Tournée", sortValue: (r) => r.name, cell: (r) => <span className="font-medium">{r.name}</span> },
+  { id: "zone", header: "Zone", width: 160, sortValue: (r) => r.zone, cell: (r) => r.zone },
   {
-    id: "days", header: "Days", width: 210,
+    id: "days", header: "Jours", width: 210,
     cell: (r) => (
       <span className="inline-flex gap-1.5">
         {WEEKDAYS.slice(0, 6).map((d) => (
@@ -117,10 +117,10 @@ const ROUTE_COLS: Column<Route>[] = [
       </span>
     ),
   },
-  { id: "dep", header: "Departure", width: 90, sortValue: (r) => r.departureTime, cell: (r) => <Mono>{r.departureTime}</Mono> },
-  { id: "driver", header: "Driver", width: 160, sortValue: (r) => r.driver, cell: (r) => r.driver || "—" },
-  { id: "vehicle", header: "Vehicle", width: 200, muted: true, sortValue: (r) => r.vehicle, cell: (r) => r.vehicle || "—" },
-  { id: "cap", header: "Capacity", width: 110, numeric: true, sortValue: (r) => r.capacityKg, cell: (r) => <Qty value={r.capacityKg} unit="kg" /> },
+  { id: "dep", header: "Départ", width: 90, sortValue: (r) => r.departureTime, cell: (r) => <Mono>{r.departureTime}</Mono> },
+  { id: "driver", header: "Chauffeur", width: 160, sortValue: (r) => r.driver, cell: (r) => r.driver || "—" },
+  { id: "vehicle", header: "Véhicule", width: 200, muted: true, sortValue: (r) => r.vehicle, cell: (r) => r.vehicle || "—" },
+  { id: "cap", header: "Capacité", width: 110, numeric: true, sortValue: (r) => r.capacityKg, cell: (r) => <Qty value={r.capacityKg} unit="kg" /> },
 ];
 
 function RouteDefinitions({ routes }: { routes: Route[] | undefined }) {
@@ -131,8 +131,8 @@ function RouteDefinitions({ routes }: { routes: Route[] | undefined }) {
       loading={!routes}
       getRowId={(r) => r.id}
       defaultSort={{ id: "name", dir: "asc" }}
-      footer={routes ? `${routes.length} delivery route${routes.length > 1 ? "s" : ""} defined${routes.length > 1 ? "s" : ""}` : undefined}
-      empty={<EmptyState icon={Truck} title="No delivery route defined" description="The data pack tours will appear here." />}
+      footer={routes ? `${routes.length} tournée${routes.length > 1 ? "s" : ""} définie${routes.length > 1 ? "s" : ""}` : undefined}
+      empty={<EmptyState icon={Truck} title="Aucune tournée définie" description="Les tournées du data pack apparaîtront ici." />}
     />
   );
 }

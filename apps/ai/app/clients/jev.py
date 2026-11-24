@@ -82,7 +82,7 @@ class JevClient:
 
     async def ask(self, state: Content, questions: dict[str, dict]) -> dict:
         """The raw call: several named questions about one state, in one request.
-        Returns the response JSON: {"model", "answers": {name: {"type", …}}, "use": {"input_tokens", "output_tokens"}}."""
+        Returns the response JSON: {"model", "answers": {name: {"type", …}}, "usage": {"input_tokens", "output_tokens"}}."""
         if not questions:
             raise ValueError("Jev needs at least one question")
         res = await (self.http or http_client()).post(

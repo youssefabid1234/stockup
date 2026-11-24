@@ -37,7 +37,7 @@ class SonioxSTT(STTClient):
     name = "soniox"
     streams = True
 
-    def __init__(self, api_key: str, model: str = "stt-rt-v6", language: str = "en", connect: Callable = open_ws):
+    def __init__(self, api_key: str, model: str = "stt-rt-v6", language: str = "fr", connect: Callable = open_ws):
         self.api_key, self.model, self.language, self.connect = api_key, model, language, connect
 
     def start_request(self, hint: str | None) -> dict:

@@ -1,35 +1,40 @@
 {
   "id": "S42",
   "owner": "daycem",
-  "title": "Customer asks for a competitor price match",
-  "why": "Quote the actual customer price and pass the request to the authorised decision-maker.",
+  "title": "Escaich compare avec un concurrent (« Garonne Boulange me la fait à 18 la tradi ») : pas d'alignement, valeur + gérant",
+  "why": "Intelligent + naturel : pas de remise ni d'alignement promis ; l'agent annonce le prix négocié du client (get_price), met en avant la qualité, propose de transmettre au gérant et l'enregistre quand le client accepte.",
   "client": "cli_0006",
   "turns": [
     {
-      "say": "Hi, Thierry from Boulangerie Escaich. Garonne Boulange offers me the traditional flour at 18. Can you match that?",
+      "say": "Salut, c'est Thierry, boulangerie Escaich. Garonne Boulange me la fait à 18 la tradi. Toi tu peux t'aligner ?",
       "expect": {
         "tools_none": [
           "confirm_order"
         ],
         "says_any": [
           "Bernard",
-          "manager"
+          "gérant"
         ],
         "says_none": [
-          "I'll give you",
-          "I can give you",
-          "I'll grant",
-          "I'll match",
-          "we'll match",
-          "I can go down",
-          "I'll lower",
-          "I'll knock off",
-          "you've got a deal"
+          "je vous accorde",
+          "je t'accorde",
+          "je vous fais une remise",
+          "je te fais une remise",
+          "je vous fais un geste",
+          "je te fais un geste",
+          "va pour",
+          "c'est d'accord pour les",
+          "je m'aligne",
+          "on s'aligne",
+          "je vous l'aligne",
+          "je te l'aligne",
+          "je peux descendre",
+          "je descends"
         ]
       }
     },
     {
-      "say": "Yeah, go ahead and pass it on.",
+      "say": "Ouais, vas-y, transmets.",
       "expect": {
         "tools_any": [
           "log_client_event"
@@ -38,15 +43,20 @@
           "confirm_order"
         ],
         "says_none": [
-          "I'll give you",
-          "I can give you",
-          "I'll grant",
-          "I'll match",
-          "we'll match",
-          "I can go down",
-          "I'll lower",
-          "I'll knock off",
-          "you've got a deal"
+          "je vous accorde",
+          "je t'accorde",
+          "je vous fais une remise",
+          "je te fais une remise",
+          "je vous fais un geste",
+          "je te fais un geste",
+          "va pour",
+          "c'est d'accord pour les",
+          "je m'aligne",
+          "on s'aligne",
+          "je vous l'aligne",
+          "je te l'aligne",
+          "je peux descendre",
+          "je descends"
         ]
       }
     }

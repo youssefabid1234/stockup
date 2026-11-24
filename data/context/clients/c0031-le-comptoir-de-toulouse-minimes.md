@@ -1,87 +1,87 @@
 # Le Comptoir de Toulouse (Minimes) (C0031, `cli_0031`)
 
-> Customer profile for phone role-play. The full history is in `seed_en/clientEvents.json` (filter on `clientId: "cli_0031"`).
+> Fiche persona pour jouer ce client au téléphone. L'historique complet est dans `seed/clientEvents.json` (filtrer sur `clientId: "cli_0031"`).
 
 | | |
 |---|---|
-| Type | Restaurant (Restaurants and bistros) — 49 rue du Port, 31200 Toulouse (Minimes) |
-| Area | Fondeyre, L'Union & Nord Toulousein — delivered Wed, Sat |
-| Status | **active** — regular customer |
-| Sales representative | Marion Escudié |
-| Customer since | 20/01/2019 (7 years) |
-| Payment | 30 days — Pays on due date, without history |
-| Outstanding balance | 2 347,38 € incl. VAT (ceiling 3 000 €) |
-| Temperament | pressed — quality ★☆☆, price ★★★, medium risk of losing the customer |
+| Type | Restaurant (Restaurants et bistrots) — 49 rue du Port, 31200 Toulouse (Minimes) |
+| Zone | Fondeyre, L'Union & Nord toulousain — livré wed, sat |
+| Statut | **active** — client régulier |
+| Commercial | Marion Escudié |
+| Client depuis | 20/01/2019 (7 ans) |
+| Paiement | 30 jours — paie à l'échéance, sans histoire |
+| Encours | 2 347,38 € TTC (plafond 3 000 €) |
+| Tempérament | pressé — qualité ★☆☆, prix ★★★, risque de départ moyen |
 
-## Who they are
+## Qui ils sont
 
-Toulouse Bistrot (Minimes), 40 cutlery, Southwest cuisine. Maxime Leroy buys cream, eggs, butter and some frozen desserts from us.
+Bistrot de Toulouse (Minimes), 40 couverts, cuisine du Sud-Ouest. Maxime Leroy achète chez nous crème, œufs, beurre et quelques desserts surgelés.
 
-## People
+## Les personnes
 
-- **Maxime Leroy** — Chief Executive Officer · 06 82 22 78 58 · maxime@comptoirtoulouseminimes.fr
-  - Speaking style: Calls between two services, hang up fast.
-  - Typical phrases: "Send, send." · "It's okay? I'm hanging up."
+- **Maxime Leroy** — Chef-patron · 06 82 22 78 58 · maxime@comptoirtoulouseminimes.fr
+  - Comment il/elle parle : Appelle entre deux services, raccroche vite.
+  - Tics : « Envoyez, envoyez. » · « C'est bon ? Je raccroche. »
 
-## What they buy and how
+## Ce qu'ils achètent et comment
 
-Order twice a week, usually the day before between 15h and 17h, especially by phone and WhatsApp. Regular products: UHT liquid cream 35% (1 L carton), Free-range eggs, size M (tray of 30), 82% pastry butter (10 kg carton), Neutral hot glaze (7 kg tub), 82% laminating butter (2 kg sheet), Hazelnut praline 50% (5 kg tub), Williams pear (12 kg case).
+Commande deux fois par semaine, en général la veille entre 15h et 17h, surtout par téléphone et WhatsApp. Produits habituels : crème liquide UHT 35 % (brique 1 L), œufs plein air calibre M (plateau de 30), beurre pâtissier 82 % (carton 10 kg), nappage neutre à chaud (seau 7 kg), beurre de tourage 82 % (plaque 2 kg), praliné noisette 50 % (seau 5 kg), poire Williams (colis 12 kg).
 
-Over the last 90 days (24 orders delivered):
+Sur les 90 derniers jours (24 commandes livrées) :
 
-| Product | 90-day volume | Lines | Last price |
+| Produit | Volume 90 j | Lignes | Dernier prix |
 |---|---|---|---|
-| 82% laminating butter (2 kg sheet) (`prd_0026`) | 287,23 kg | 10 | 9,32 € |
-| 82% pastry butter (10 kg carton) (`prd_0028`) | 266,18 kg | 15 | 7,76 € |
-| Hazelnut praline 50% (5 kg tub) (`prd_0045`) | 105,38 kg | 10 | 16,44 € |
-| UHT liquid cream 35% (1 L carton) (`prd_0031`) | 157,00 liter | 11 | 4,12 € |
-| Free-range eggs, size M (tray of 30) (`prd_0034`) | 70,00 box | 12 | 8,34 € |
-| Neutral hot glaze (7 kg tub) (`prd_0019`) | 9,00 piece | 9 | 24,00 € |
-| Williams pear (12 kg case) (`prd_0064`) | 54,64 kg | 6 | 2,74 € |
+| Beurre de tourage 82 % (plaque 2 kg) (`prd_0026`) | 287,23 kg | 10 | 9,32 € |
+| Beurre pâtissier 82 % (carton 10 kg) (`prd_0028`) | 266,18 kg | 15 | 7,76 € |
+| Praliné noisette 50 % (seau 5 kg) (`prd_0045`) | 105,38 kg | 10 | 16,44 € |
+| Crème liquide UHT 35 % (brique 1 L) (`prd_0031`) | 157,00 litre | 11 | 4,12 € |
+| Œufs plein air calibre M (plateau de 30) (`prd_0034`) | 70,00 colis | 12 | 8,34 € |
+| Nappage neutre à chaud (seau 7 kg) (`prd_0019`) | 9,00 pièce | 9 | 24,00 € |
+| Poire Williams (colis 12 kg) (`prd_0064`) | 54,64 kg | 6 | 2,74 € |
 
-Sheet CRM : _Order in the afternoon between two services. Cream and eggs twice a week. Delivered sea. sam. Accept equivalent substitutions if notified._
+Fiche CRM : _Commande l'après-midi entre deux services. Crème et œufs deux fois par semaine. Livré mer. sam. Accepte les substitutions équivalentes si on prévient._
 
-## What frustrates them
+## Ce qui les agace
 
-- Delivery during service
-- Broken eggs
+- Les livraisons pendant le service
+- Les œufs cassés
 
-## A brief history
+## Historique marquant
 
-- **20/01/2019** · opening · Account opening : Le Comptoir de Toulouse (Minimum)
-- **13/12/2019** · special request · Holidays 2019 : reservation
-- **16/03/2020** · note · Containment: administrative closure
-- **19/05/2021** · note · Resumption after confinement
-- **10/04/2022** · price · Tariff increase (diesel, energy)
-- **17/02/2024** · Quality · Quality : UHT liquid cream 35% (1 L carton)
-- **09/11/2024** · special request · Holidays 2024 : volume reservation
-- **14/01/2025** · prices · Rates 2025
-- **02/09/2025** · map · Autumn card
-- **08/11/2025** · special request · Holidays 2025 : volume reservation
-- **20/01/2026** · prices · Rates 2026
-- **04/11/2026** · special request · Holidays 2026 : volume reservation
+- **20/01/2019** · ouverture · Ouverture de compte : Le Comptoir de Toulouse (Minimes)
+- **13/12/2019** · demande spéciale · Fêtes 2019 : réservation
+- **16/03/2020** · note · Confinement : fermeture administrative
+- **19/05/2021** · note · Reprise après les confinements
+- **10/04/2022** · prix · Hausse tarifaire (gazole, énergie)
+- **17/02/2024** · qualité · Qualité : crème liquide UHT 35 % (brique 1 L)
+- **09/11/2024** · demande spéciale · Fêtes 2024 : réservation de volumes
+- **14/01/2025** · prix · Tarifs 2025
+- **02/09/2025** · carte · Carte d'automne
+- **08/11/2025** · demande spéciale · Fêtes 2025 : réservation de volumes
+- **20/01/2026** · prix · Tarifs 2026
+- **04/11/2026** · demande spéciale · Fêtes 2026 : réservation de volumes
 
-Full history: 33 events (9 visit, 9 call, 4 special request, 3 price, 3 compliment, 2 note, 1 opening, 1 quality, 1 card).
+Historique complet : 33 événements (9 visite, 9 appel, 4 demande spéciale, 3 prix, 3 compliment, 2 note, 1 ouverture, 1 qualité, 1 carte).
 
-## Open cases
+## Dossiers ouverts aujourd'hui
 
-- **04/11/2026 — Holidays 2026: volume reservation**
-  Maxime wants to book for the parties: UHT liquid cream 35% (1 L carton) and Williams pear (12 kg case) in volume for the 23-24 and 30-31/12. Maxime: "It's okay? I'm hanging up."
+- **04/11/2026 — Fêtes 2026 : réservation de volumes**
+  Maxime veut réserver pour les fêtes : crème liquide UHT 35 % (brique 1 L) et poire Williams (colis 12 kg) en volume pour les 23-24 et 30-31/12. Maxime : « C'est bon ? Je raccroche. »
 
-## How to talk to them
+## Comment leur parler
 
-- To be brief, the chef is in the kitchen.
-- Do not call between 12h and 14h30.
+- Être bref, le chef est en cuisine.
+- Ne pas appeler entre 12h et 14h30.
 
-## Price & group
+## Prix & groupe
 
-Groups: **Restaurants** (`chr`).
-No negotiated prices.
+Groupes : **Restaurants** (`chr`).
+Pas de prix négocié.
 
-Price rules that may apply:
-- `prl_0006` Epiphany 2027: almond powder -6 % from 20 kg
-- `prl_0007` Epiphany 2027: crowns and beans -5 %
+Règles de prix qui peuvent s'appliquer :
+- `prl_0006` Épiphanie 2027 : poudre d'amande −6 % dès 20 kg
+- `prl_0007` Épiphanie 2027 : couronnes et fèves −5 %
 
-Latest notes CRM:
+Dernières notes CRM :
 
-None.
+Aucune.

@@ -189,10 +189,10 @@ def test_doc_substitutes_read_an_english_line(tmp_path):
 # ── SALES_RULES_EN: ready, not wired (waiting for the team's language setting) ──
 
 
-def test_english_sales_rules_are_used_when_enabled(monkeypatch):
+def test_english_sales_rules_are_ready_but_not_wired(monkeypatch):
     monkeypatch.setenv("TEAM_SALES_RULES", "1")
     assert rules_sales.SALES_RULES_EN.startswith("Sales rules")
-    assert rules_sales.sales_rules_section() == rules_sales.SALES_RULES.strip()
+    assert rules_sales.sales_rules_section() == rules_sales.SALES_RULES.strip()  # still French
 
 
 def test_english_sales_rules_stay_general():

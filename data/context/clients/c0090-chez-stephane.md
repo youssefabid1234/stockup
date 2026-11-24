@@ -1,90 +1,90 @@
 # Chez Stéphane (C0090, `cli_0090`)
 
-> Customer profile for phone role-play. The full history is in `seed_en/clientEvents.json` (filter on `clientId: "cli_0090"`).
+> Fiche persona pour jouer ce client au téléphone. L'historique complet est dans `seed/clientEvents.json` (filtrer sur `clientId: "cli_0090"`).
 
 | | |
 |---|---|
-| Type | Restaurant (Restaurants and bistros) — 45 rue des Remparts, 31320 Castanet-Tolosan |
-| Area | Balma, Labège & Sud Toulouse — delivered Tue, Fri |
-| Status | **active** — down |
-| Sales representative | Marion Escudié |
-| Customer since | 21/04/2019 (7 years) |
-| Payment | 30 days — Pays on due date, without history |
-| Outstanding balance | 4 477,63 € incl. VAT (ceiling 7 000 €) |
-| Temperament | warm, negotiator, disorganized — quality ★★☆, price ★★★, high risk of losing the customer |
+| Type | Restaurant (Restaurants et bistrots) — 45 rue des Remparts, 31320 Castanet-Tolosan |
+| Zone | Balma, Labège & Sud toulousain — livré tue, fri |
+| Statut | **active** — en baisse |
+| Commercial | Marion Escudié |
+| Client depuis | 21/04/2019 (7 ans) |
+| Paiement | 30 jours — paie à l'échéance, sans histoire |
+| Encours | 4 477,63 € TTC (plafond 7 000 €) |
+| Tempérament | chaleureux, négociateur, désorganisé — qualité ★★☆, prix ★★★, risque de départ élevé |
 
-## Who they are
+## Qui ils sont
 
-Traditional restaurant in Castanet-Tolosan, pancakes in Chandeleur and homemade desserts on weekends.
+Restaurant traditionnel de Castanet-Tolosan, crêpes à la Chandeleur et desserts maison le week-end.
 
-## People
+## Les personnes
 
-- **Olivier Roux** — Chief Executive Officer · 06 19 00 90 94
-  - Speaking style: Play surprise on each fare, end up ordering.
-  - Typical phrases: "At this price, I take somewhere else." · "You are more expensive than your neighbor there."
+- **Olivier Roux** — Chef-patron · 06 19 00 90 94
+  - Comment il/elle parle : Joue la surprise sur chaque tarif, finit par commander.
+  - Tics : « À ce prix-là, je prends ailleurs. » · « Vous êtes plus cher que votre voisin, là. »
 - **Jean-Marc Escaich** — Chef de cuisine · 06 87 35 17 03
-  - Speaking style: Play surprise on each fare, end up ordering.
-  - Typical phrases: "You're more expensive than your neighbor there." · "At this price, I'm taking somewhere else."
+  - Comment il/elle parle : Joue la surprise sur chaque tarif, finit par commander.
+  - Tics : « Vous êtes plus cher que votre voisin, là. » · « À ce prix-là, je prends ailleurs. »
 
-## What they buy and how
+## Ce qu'ils achètent et comment
 
-Order twice a week, usually the day before between 14h and 17h, especially by phone and WhatsApp. Regular products: UHT liquid cream 35% (1 L carton), Free-range eggs, size M (tray of 30), 82% pastry butter (10 kg carton), Whole UHT milk (1 L carton), Baker's chocolate sticks 44% (1.6 kg carton, 300 sticks), Dark couverture chocolate 64% (pistoles, 5 kg bag), Frozen par-baked baguette 280 g (carton of 60).
+Commande deux fois par semaine, en général la veille entre 14h et 17h, surtout par téléphone et WhatsApp. Produits habituels : crème liquide UHT 35 % (brique 1 L), œufs plein air calibre M (plateau de 30), beurre pâtissier 82 % (carton 10 kg), lait entier UHT (brique 1 L), bâtons de chocolat boulanger 44 % (carton 1,6 kg, 300 bâtons), chocolat de couverture noir 64 % (pistoles, sac 5 kg), baguette précuite surgelée 280 g (carton 60).
 
-Over the last 90 days (24 orders delivered):
+Sur les 90 derniers jours (24 commandes livrées) :
 
-| Product | 90-day volume | Lines | Last price |
+| Produit | Volume 90 j | Lignes | Dernier prix |
 |---|---|---|---|
-| Baker's chocolate sticks 44% (1.6 kg carton, 300 sticks) (`prd_0042`) | 186,00 box | 19 | 13,82 € |
-| Frozen par-baked baguette 280 g (carton of 60) (`prd_0058`) | 89,00 box | 10 | 24,00 € |
-| 82% pastry butter (10 kg carton) (`prd_0028`) | 246,67 kg | 12 | 7,68 € |
-| Dark couverture chocolate 64% (pistoles, 5 kg bag) (`prd_0038`) | 90,88 kg | 6 | 15,59 € |
-| UHT liquid cream 35% (1 L carton) (`prd_0031`) | 213,00 liter | 14 | 4,10 € |
-| Free-range eggs, size M (tray of 30) (`prd_0034`) | 87,00 box | 13 | 8,34 € |
-| Whole UHT milk (1 L carton) (`prd_0033`) | 360,00 liter | 9 | 1,12 € |
-| T65 country wheat flour (25 kg bag) (`prd_0004`) | 3,00 piece | 1 | 18,85 € |
+| Bâtons de chocolat boulanger 44 % (carton 1,6 kg, 300 bâtons) (`prd_0042`) | 186,00 colis | 19 | 13,82 € |
+| Baguette précuite surgelée 280 g (carton 60) (`prd_0058`) | 89,00 colis | 10 | 24,00 € |
+| Beurre pâtissier 82 % (carton 10 kg) (`prd_0028`) | 246,67 kg | 12 | 7,68 € |
+| Chocolat de couverture noir 64 % (pistoles, sac 5 kg) (`prd_0038`) | 90,88 kg | 6 | 15,59 € |
+| Crème liquide UHT 35 % (brique 1 L) (`prd_0031`) | 213,00 litre | 14 | 4,10 € |
+| Œufs plein air calibre M (plateau de 30) (`prd_0034`) | 87,00 colis | 13 | 8,34 € |
+| Lait entier UHT (brique 1 L) (`prd_0033`) | 360,00 litre | 9 | 1,12 € |
+| Farine de blé T65 campagne (sac 25 kg) (`prd_0004`) | 3,00 pièce | 1 | 18,85 € |
 
-CRM record : _Order in the afternoon between two services. Cream and eggs twice a week. Delivered Mar. Fri. Accept equivalent substitutions if notified._
+Fiche CRM : _Commande l'après-midi entre deux services. Crème et œufs deux fois par semaine. Livré mar. ven. Accepte les substitutions équivalentes si on prévient._
 
-## What frustrates them
+## Ce qui les agace
 
-- Delivery during service
-- Broken eggs
+- Les livraisons pendant le service
+- Les œufs cassés
 
-## A brief history
+## Historique marquant
 
-- **11/01/2024** · prices · Rates 2024
-- **16/01/2024** · Quality · Quality : Dark couverture chocolate 64% (pistoles, 5 kg bag)
-- **20/01/2024** · Have quality : Dark couverture chocolate 64% (pistoles, 5 kg bag)
-- **28/06/2024** · delivery · missing box
-- **12/07/2024** · Quality · Quality : 82% pastry butter (10 kg carton)
-- **14/07/2024** · Have quality : 82% pastry butter (10 kg carton)
-- **17/09/2024** · map · Autumn card
-- **24/01/2025** · prices · Rates 2025
-- **28/01/2025** · risk of losing the customer · Declining activity
-- **09/03/2025** · map · New spring map
-- **20/07/2025** · note · Summer closure 2025
-- **27/09/2026** · map · Autumn card
+- **11/01/2024** · prix · Tarifs 2024
+- **16/01/2024** · qualité · Qualité : chocolat de couverture noir 64 % (pistoles, sac 5 kg)
+- **20/01/2024** · avoir · Avoir qualité : chocolat de couverture noir 64 % (pistoles, sac 5 kg)
+- **28/06/2024** · livraison · Colis manquant
+- **12/07/2024** · qualité · Qualité : beurre pâtissier 82 % (carton 10 kg)
+- **14/07/2024** · avoir · Avoir qualité : beurre pâtissier 82 % (carton 10 kg)
+- **17/09/2024** · carte · Carte d'automne
+- **24/01/2025** · prix · Tarifs 2025
+- **28/01/2025** · risque de départ · Activité en baisse
+- **09/03/2025** · carte · Nouvelle carte de printemps
+- **20/07/2025** · note · Fermeture d'été 2025
+- **27/09/2026** · carte · Carte d'automne
 
-Full history: 49 events (17 visit, 10 call, 5 quality, 3 rating, 3 price, 3 card, 2 compliment, 2 having, 1 opening, 1 special request, 1 delivery, 1 risk of losing the customer).
+Historique complet : 49 événements (17 visite, 10 appel, 5 qualité, 3 note, 3 prix, 3 carte, 2 compliment, 2 avoir, 1 ouverture, 1 demande spéciale, 1 livraison, 1 risque de départ).
 
-## Open cases
+## Dossiers ouverts aujourd'hui
 
-None.
+Aucun.
 
-## How to talk to them
+## Comment leur parler
 
-- Do not call between 12h and 14h30.
-- To be brief, the chef is in the kitchen.
+- Ne pas appeler entre 12h et 14h30.
+- Être bref, le chef est en cuisine.
 
-## Price & group
+## Prix & groupe
 
-Groups: **Restaurants** (`chr`).
-No negotiated prices.
+Groupes : **Restaurants** (`chr`).
+Pas de prix négocié.
 
-Price rules that may apply:
-- `prl_0006` Epiphany 2027: almond powder -6 % from 20 kg
-- `prl_0007` Epiphany 2027: crowns and beans -5 %
+Règles de prix qui peuvent s'appliquer :
+- `prl_0006` Épiphanie 2027 : poudre d'amande −6 % dès 20 kg
+- `prl_0007` Épiphanie 2027 : couronnes et fèves −5 %
 
-Latest notes CRM:
+Dernières notes CRM :
 
-None.
+Aucune.

@@ -29,12 +29,12 @@ async def products_by_id(ctx: ToolContext) -> dict[str, dict]:
 
 
 @tool
-async def review_order(ctx: ToolContext, order_id: str = Field(description="ex. ord_024770 (resented by create_draft_order)")) -> dict:
+async def review_order(ctx: ToolContext, order_id: str = Field(description="ex. ord_024770 (renvoyé par create_draft_order)")) -> dict:
     """
-    Calling after creating or modifying an order, before rereading it to the customer: read-back sentence ready to say
-    (readback), alerts to tell the customer ("alerts"), remark franco 150 € ("franco"), unusual quantities to make
-    confirm (" askFirst »), « canConfirm (false = do not confirm), drafts duplicated the call to abandon
-    (« duplicateDrafts ) and other orders from the customer for the same day (" sameDayOrders »). Read-back before confirming.
+    À appeler après avoir créé ou modifié une commande, avant de la relire au client : phrase de relecture prête à dire
+    (« readback »), alertes à dire au client (« alerts »), remarque franco 150 € (« franco »), quantités inhabituelles à faire
+    confirmer (« askFirst »), « canConfirm » (false = ne pas confirmer), brouillons en double de l'appel à abandonner
+    (« duplicateDrafts ») et autres commandes du client pour le même jour (« sameDayOrders »). Read-back before confirming.
     """
     return await review_for(ctx, order_id)
 
@@ -64,16 +64,20 @@ async def quote_line(
     ctx: ToolContext,
     client_id: str,
     product_id: str,
-    qty: float | None = Field(None, description="Quantity as stated by the customer (default 1)"),
-    said_unit: str | None = Field(None, description="The unit called \"cardboards\", \"plates\", \"kilos\", \"bags\"... (empty = sales unit)"),
+    qty: float | None = Field(None, description="Quantité telle que dite par le client (défaut 1)"),
+    said_unit: str | None = Field(None, description="L'unité dite : « cartons », « plaques », « kilos », « sacs »… (vide = unité de vente)"),
 ) -> dict:
-    """Get the customer price per selling unit and per package, and the total excluding VAT for the requested quantity."""
+    """
+    Prix à dire au client, calculé (jamais de tête) : prix client à l'unité de vente + par conditionnement (carton, plaque, sac…)
+    dans « say », et le total HT pour la quantité dans « total ». Ex. 3 cartons de tourage → « 9 euros 20 le kilo, soit 92 euros
+    le carton de 10 kilos » et « 276 euros hors taxes pour 30 kilos, soit 3 cartons ». Spoken price quote, computed.
+    """
     from app.agent.rules_order import quote, to_selling_qty  # here, not at the top: app.agent imports the tools package
 
     products = await products_by_id(ctx)
     p = products.get(product_id)
     if not p:
-        raise ValueError(f"Product {product_id} was not found. Use search to find its ID.")
+        raise ValueError(f"produit {product_id} introuvable : cherche-le d'abord avec search")
     q = to_selling_qty(qty or 1, said_unit, p["unit"], p.get("caliber") or "", p["name"])
     r = await ctx.erp.get("/api/prices/resolve", {"clientId": client_id, "productId": product_id, "qty": q})
     out = quote(qty or 1, p["unit"], p.get("caliber") or "", p["name"], r["price"], said_unit)

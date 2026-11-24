@@ -1,5 +1,5 @@
 """
-Thin HTTP client for the ERP API (roads: apps/api, contract: packages/shared/src/api.ts).
+Thin HTTP client for the ERP API (routes: apps/api, contract: packages/shared/src/api.ts).
 Every request carries `x-actor` so the ERP's activity feed shows what the AI did, and `x-actor-name`
 percent-encoded (headers are ASCII: "Hélène" → "H%C3%A9l%C3%A8ne"; the ERP decodes it, apps/backend/app/dependencies.py).
 All clients share one connection pool (`erp_http`), closed on app shutdown (app/main.py).
@@ -17,7 +17,7 @@ Actor = Literal["ai_chat", "voice_agent"]
 
 
 class ErpError(Exception):
-    """The ERP refused the request (its English message is given to the model) or is unreachable."""
+    """The ERP refused the request (its French message is given to the model) or is unreachable."""
 
 
 _http: httpx.AsyncClient | None = None
@@ -71,7 +71,7 @@ class ErpClient:
         try:
             res = await (self.http or erp_http()).request(method, f"{self.base_url}{path}", headers=self.headers, **kwargs)
         except httpx.HTTPError as e:
-            raise ErpError(f"ERP unreachable ({self.base_url}) : {e or type(e).__name__}") from e
+            raise ErpError(f"ERP injoignable ({self.base_url}) : {e or type(e).__name__}") from e
         try:
             data = res.json()
         except ValueError:
