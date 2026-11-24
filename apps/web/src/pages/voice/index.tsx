@@ -134,7 +134,7 @@ function CallMode({ modeSwitch }: { modeSwitch: ReactNode }) {
                   <div className="text-[18px] font-semibold text-[#111b21] dark:text-[#e9edef]">Le Fournil Occitan</div>
                   <div className="text-[13px] text-[#667781] dark:text-[#8696a0]">Standard téléphonique · Lucie, assistante vocale</div>
                 </div>
-                <div className="w-full rounded-[12px] bg-white/95 p-1 shadow-[0_1px_3px_rgba(11,20,26,.15)] dark:bg-[#111b21]/95">
+                <div className="w-full">
                   <CallerForm disabled={!connected} pending={v.callerPending} onStart={v.identifyCaller} />
                 </div>
               </div>

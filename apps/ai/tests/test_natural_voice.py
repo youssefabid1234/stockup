@@ -68,3 +68,29 @@ async def test_nudge_is_varied_spoken_and_kept_out_of_the_history(monkeypatch):
     n = len(conn.ws.events)
     await conn.nudge()
     assert len(conn.ws.events) == n
+
+
+# ── 24/11, second pass: one question per reply, varied validation question ──
+
+from app.services.voice_reply import one_question, vary_closing  # noqa: E402
+
+
+def test_only_the_last_question_stays_a_question():
+    raw = "Bonjour. Je vous mets de la crème liquide, celle à trente-cinq pour cent ? Vous en voulez combien de litres ?"
+    assert one_question(raw) == "Bonjour. Je vous mets de la crème liquide, celle à trente-cinq pour cent. Vous en voulez combien de litres ?"
+    assert one_question("Vous en voulez combien ?") == "Vous en voulez combien ?"
+    assert one_question("C'est noté. Le total fait 95 euros.") == "C'est noté. Le total fait 95 euros."
+
+
+def test_a_validation_question_is_never_asked_twice_in_a_call():
+    used: list[str] = []
+    first = vary_closing("Cinq sacs de T65 pour mercredi. On part là-dessus ?", used)
+    second = vary_closing("C'est ajouté, dix pains de levure. On part là-dessus ?", used)
+    third = vary_closing("Le total fait 157 euros. On part là-dessus ?", used)
+    closings = [s.rsplit(". ", 1)[-1] for s in (first, second, third)]
+    assert closings[0] == "On part là-dessus ?" and len(set(closings)) == 3
+    assert vary_closing("Vous en voulez combien ?", used) == "Vous en voulez combien ?"  # not a validation question
+
+
+def test_the_doubtful_word_rule_asks_explicitly():
+    assert "ne le devine pas" in STYLE_RULES and "quelle farine" in STYLE_RULES
