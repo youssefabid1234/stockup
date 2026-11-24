@@ -29,6 +29,7 @@ from pydantic import TypeAdapter, ValidationError
 
 from app import team_flags
 from app.agent import call_context as preload
+from app.agent import listening
 from app.agent import run_agent, sanitize_history
 from app.agent.call_context import CallContext
 from app.agent.loop import ms_since
@@ -81,6 +82,9 @@ class Conversation:
     history: list[ChatMessage] = field(default_factory=list)
     call_context: CallContext | None = None  # team 12 (Youssef): the caller's sheet, once known (TEAM_PRELOAD)
     opening_greeting: str | None = None
+    # team 12 (Youssef): what the caller said that the agent has not answered yet (pieces, oldest first): merged
+    # into one message so a new piece never makes the agent forget the previous ones (agent/listening.py)
+    pending: list[str] = field(default_factory=list)
 
 
 # In memory: a reconnect with the same sessionId continues the conversation.
@@ -166,6 +170,7 @@ class VoiceConnection:
             case ResetMessage():
                 await self.interrupt()
                 self.conversation.history = []
+                self.conversation.pending = []
                 self.conversation.opening_greeting = None
                 await self.open(self.conversation.id)
             case CallerMessage():  # team 12 (Youssef): caller ID form, before the call
@@ -183,6 +188,7 @@ class VoiceConnection:
         opening_enabled = team_flags.fillers()
         if not msg.resume:
             conv.history = []
+            conv.pending = []  # team 12: a new call starts with nothing pending
             conv.opening_greeting = CALL_GREETINGS[msg.contact_title] if opening_enabled else None
         async with asyncio.TaskGroup() as preparation:
             if opening_enabled and (greeting := conv.opening_greeting) and greeting not in self.greetings:
@@ -291,7 +297,13 @@ class VoiceConnection:
 
             # 1. Speech → text: with a streaming STT only the last words are left to finalize
             if utterance is not None:
-                text = await utterance.text()
+                try:
+                    text = await utterance.text()
+                except asyncio.CancelledError:
+                    # team 12 (Youssef): the caller spoke again before this piece was final: keep what was heard
+                    if partial := (getattr(utterance, "partial", "") or "").strip():
+                        conv.pending.append(partial)
+                    raise
                 timings.stt_ms = ms_since(t0)  # end of speech → final transcript
             heard = (text or "").strip()
             if not heard:
@@ -303,7 +315,9 @@ class VoiceConnection:
             await self.send(TranscriptMessage(text=heard, final=True))
 
             # 2. Agent, on a working copy of the history (committed at the end)
-            working = [*conv.history, ChatMessage(role="user", content=heard)]
+            # team 12 (Youssef): every piece not answered yet + this one, as ONE message (marks: listening.py)
+            conv.pending = [*conv.pending, getattr(utterance, "annotated", None) or heard]
+            working = [*conv.history, ChatMessage(role="user", content=listening.merge_parts(conv.pending))]
             speaker = speaker or Speaker(get_tts_client(), self.send, self.send_bytes, self.bank)
             await fillers.on_turn_start(speaker, heard)  # team 12 (Mohamed Amine): no-op while TEAM_FILLERS is off
             llm_start = time.perf_counter()
@@ -331,6 +345,7 @@ class VoiceConnection:
             timings.llm_total_ms = ms_since(llm_start)
             conv.history = trim_voice_turn(working, history_size, spoken)
             committed = True
+            conv.pending = []  # team 12: answered
 
             # Only the completed reply goes to the caller. Text emitted before a tool call may be internal notes.
             if spoken:
@@ -345,9 +360,11 @@ class VoiceConnection:
 
         except asyncio.CancelledError:
             # Keep completed ERP calls and their results. Unfinished model text was never played.
-            if heard and not committed:
-                kept = working if working is not None else [*conv.history, ChatMessage(role="user", content=heard)]
-                conv.history = trim_voice_turn(kept, history_size, spoken)
+            # team 12 (Youssef): interrupted before any ERP call → the pieces stay in conv.pending and are merged
+            # into the next turn (nothing forgotten, no half-question in the history). After ERP calls: keep them.
+            if heard and not committed and working is not None and len(working) > history_size + 1:
+                conv.history = trim_voice_turn(working, history_size, spoken)
+                conv.pending = []
             if speaker:
                 await speaker.stop()
             raise

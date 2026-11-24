@@ -22,6 +22,8 @@ detection — the hook for hands-free mode, see GUIDE-VOIX.md 4.2). Neither is s
 import json
 from collections.abc import AsyncIterator, Callable
 
+from app.agent.listening import annotate
+
 from .base import STTClient, STTUpdate
 from .http import provider_error
 from .ws import chunked, once, open_ws, sending
@@ -44,6 +46,7 @@ class SonioxSTT(STTClient):
             "audio_format": "auto",
             "language_hints": [self.language],
             "enable_endpoint_detection": True,  # final words at each pause, not only at the end
+            "enable_speaker_diarization": True,  # team 12 (Youssef): who said what (caller vs. background voice)
         }
         terms, size = [], 0
         for t in (t.strip() for t in (hint or "").split(",")):
@@ -65,6 +68,7 @@ class SonioxSTT(STTClient):
             await ws.send(json.dumps(self.start_request(hint)))
             async with sending(ws, audio, end=FINALIZE):
                 final = ""  # final tokens, accumulated (each arrives once)
+                final_tokens: list[dict] = []  # team 12 (Youssef): with speaker + confidence, for annotate()
                 async for raw in ws:
                     msg = json.loads(raw)
                     if msg.get("error_code"):
@@ -80,10 +84,11 @@ class SonioxSTT(STTClient):
                             continue
                         elif tok.get("is_final"):
                             final += text
+                            final_tokens.append(tok)
                         else:
                             provisional += text
                     if finalized or msg.get("finished"):
-                        yield STTUpdate(final.strip(), final=True, stable=final.strip())
+                        yield STTUpdate(final.strip(), final=True, stable=final.strip(), annotated=annotate(final_tokens))
                         return  # leaving the blocks closes the socket
                     yield STTUpdate((final + provisional).strip(), stable=final.strip())
         raise provider_error("soniox stt", "closed", "connection closed before the final words")

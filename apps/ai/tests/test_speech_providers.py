@@ -154,6 +154,7 @@ async def test_soniox_start_request_tokens_and_end_frame():
     assert seen["url"] == "wss://stt-rt.soniox.com/transcribe-websocket" and seen["headers"] == {"Authorization": "Bearer sx"}
     assert json.loads(ws.sent[0]) == {
         "model": "stt-rt-v6", "audio_format": "auto", "language_hints": ["fr"], "enable_endpoint_detection": True,
+        "enable_speaker_diarization": True,
         "context": {"terms": ["Lemoine", "bar de ligne"]},
     }  # fmt: skip
     assert ws.sent[1:] == [b"WEBM" * 10, FINALIZE] and ws.closed  # audio as binary frames, then finalize

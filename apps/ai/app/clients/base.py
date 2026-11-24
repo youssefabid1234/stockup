@@ -71,6 +71,9 @@ class STTUpdate:
     text: str
     final: bool = False
     stable: str = ""
+    # team 12 (Youssef): final update only: the transcript for the MODEL with [autre voix] / « mot(?) » marks
+    # (agent/listening.py), None when there is nothing to mark. `text` stays plain (shown, read back aloud).
+    annotated: str | None = None
 
 
 class STTClient(ABC):
