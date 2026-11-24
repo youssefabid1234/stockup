@@ -1,6 +1,6 @@
 # Le Comptoir de Toulouse (Capitole) (C0037, `cli_0037`)
 
-> Personal data sheet to play this customer over the phone. The full history is in `seed/clientEvents.json` (filter on `clientId: "cli_0037"`).
+> Customer profile for phone role-play. The full history is in `seed_en/clientEvents.json` (filter on `clientId: "cli_0037"`).
 
 | | |
 |---|---|
@@ -20,15 +20,15 @@ Toulouse Bistrot (Capitol), 30 cutlery, Southwest cuisine. Guillaume Cassagne bu
 ## People
 
 - **Guillaume Cassagne** — Chief Executive Officer · 06 32 50 64 39 · guillaume@comptoirtoulousecapitole.fr
-  - How he/she speaks: Calls between two services, hang up fast.
-  - Tics: "Quickly, I don't have time." · "Same as usual, go."
+  - Speaking style: Calls between two services, hang up fast.
+  - Typical phrases: "Quickly, I don't have time." · "Same as usual, go."
 - **Benoît Perez** — Chef de cuisine · 06 70 43 76 27
-  - How he/she speaks: Very friendly, take news, quickly tutoe.
-  - Tics: "So, how's it going with you?" · "Bives to the team."
+  - Speaking style: Very friendly, take news, quickly tutoe.
+  - Typical phrases: "So, how's it going with you?" · "Bives to the team."
 
 ## What they buy and how
 
-Order once a week, usually the day before between 14h and 17h, especially by phone and WhatsApp. Regular products: 35% UHT whipping cream (1 L carton), 82% pastry butter (10 kg box), Whole UHT milk (1 L carton), Caster sugar (25 kg sack), Frozen raspberry purée (1 kg tub), Medium free-range eggs (tray of 30).
+Order once a week, usually the day before between 14h and 17h, especially by phone and WhatsApp. Regular products: UHT liquid cream 35% (1 L carton), 82% pastry butter (10 kg carton), Whole UHT milk (1 L carton), Caster sugar (25 kg bag), Frozen raspberry purée (1 kg tray), Free-range eggs, size M (tray of 30).
 
 Sheet CRM: _Cream and eggs twice a week. Order the afternoon between two services. Delivered Mon. Accept equivalent substitutions if notified._
 
@@ -46,15 +46,15 @@ Sheet CRM: _Cream and eggs twice a week. Order the afternoon between two service
 - **30/03/2025** · map · New spring map
 - **12/04/2025** · Payment · Recovery : FAC-2025-000512
 - **18/04/2025** · risk of losing the customer · Lower orders
-- **28/04/2025** · Quality · Quality : Medium free-range eggs (tray of 30)
-- **03/05/2025** · Have quality : Medium free-range eggs (tray of 30)
+- **28/04/2025** · Quality · Quality : Free-range eggs, size M (tray of 30)
+- **03/05/2025** · Have quality : Free-range eggs, size M (tray of 30)
 - **05/05/2025** · delivery · Cold chain
 - **07/06/2025** · Payment · Recovery : FAC-2025-000915
 - **14/07/2025** · note · More orders for a month
 
 Full history: 31 events (10 payment, 5 visit, 3 price, 3 call, 2 card, 1 opening, 1 special request, 1 compliment, 1 risk of losing the customer, 1 quality, 1 have, 1 delivery, 1 note).
 
-## Files opened today
+## Open cases
 
 None.
 

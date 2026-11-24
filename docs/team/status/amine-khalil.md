@@ -1,4 +1,4 @@
-# Amine Khalil – 的 "The right command" + 的 voice and T3/T4 (taken from Mohamed Amine and Youssef) · Tue. 24/11 03h00
+# Amine Khalil – "The right command" + voice and T3/T4 (taken from Mohamed Amine and Youssef) · Tue. 24/11 03h00
 
 - Done (03h00) – **prompt lightened** (`agent/context_digest.py`, default `TEAM_SLIM_PROMPT=1`): context -64 %, tokens
   34 400 → 21 600 (−37 %), sum of the 4 replicas 19,3 → 17,1 s, control just 3/3. S03 and S02:

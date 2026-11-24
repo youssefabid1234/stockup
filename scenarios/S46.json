@@ -1,0 +1,44 @@
+{
+  "id": "S46",
+  "owner": "daycem",
+  "title": "Lacombe-Viguier accepts only couverture chocolate",
+  "why": "Respect the customer's restrictions and ask permission before changing the order.",
+  "client": "cli_0002",
+  "turns": [
+    {
+      "say": "Hello, Pâtisserie Lacombe-Viguier here. I need 150 kilos of white couverture for Saturday.",
+      "expect": {
+        "tools_none": [
+          "confirm_order"
+        ],
+        "says_none": [
+          "praline",
+          "chips",
+          "cocoa",
+          "sticks",
+          "unknown",
+          "substitution"
+        ]
+      }
+    },
+    {
+      "say": "Yes, what do you have instead?",
+      "expect": {
+        "tools_none": [
+          "confirm_order"
+        ],
+        "says_any": [
+          "couverture",
+          "dark",
+          "milk"
+        ],
+        "says_none": [
+          "praline",
+          "chips",
+          "cocoa",
+          "sticks"
+        ]
+      }
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 # Rouquette Snack (C0065, `cli_0065`)
 
-> Personal data sheet to play this customer over the phone. The full history is in `seed/clientEvents.json` (filter on `clientId: "cli_0065"`).
+> Customer profile for phone role-play. The full history is in `seed_en/clientEvents.json` (filter on `clientId: "cli_0065"`).
 
 | | |
 |---|---|
@@ -20,26 +20,26 @@ Snacks at Tournefeuille, raw pastries cooking and sandwiches. Christian Guyot or
 ## People
 
 - **Christian Guyot** — manager · 06 27 01 87 34 · christian@rouquettesnack.fr
-  - How he/she speaks: Calculate everything, ask for promos and lot ends.
-  - Tics: "Do you have any lot ends?" · "Just what you need, no more."
+  - Speaking style: Calculate everything, ask for promos and lot ends.
+  - Typical phrases: "Do you have any lot ends?" · "Just what you need, no more."
 - **Guillaume Kaci** — Point of sale manager · 06 88 58 24 84
-  - How he/she speaks: Calculate everything, ask for promos and lot ends.
-  - Tics: "Just what you need, no more." · "How much is by kilo, brought back?"
+  - Speaking style: Calculate everything, ask for promos and lot ends.
+  - Typical phrases: "Just what you need, no more." · "How much is by kilo, brought back?"
 
 ## What they buy and how
 
-Order twice a week, usually the day before between 14h and 18h, mainly via web portal and telephone. Usual products: Frozen unbaked all-butter croissants, 70 g (box of 150), Frozen part-baked baguettes, 280 g (box of 60), Paper pastry bags (box of 1,000), 50% hazelnut praline (5 kg bucket), Gold cardboard king cake crowns (pack of 100).
+Order twice a week, usually the day before between 14h and 18h, mainly via web portal and telephone. Usual products: Raw frozen all-butter croissant 70 g (carton of 150), Frozen par-baked baguette 280 g (carton of 60), Paper viennoiserie bags (carton of 1000), Hazelnut praline 50% (5 kg tub), Gold cardboard king cake crowns (pack of 100).
 
-On the last 90 days (19 orders delivered):
+Over the last 90 days (19 orders delivered):
 
-| Product | Volume 90 | Lines | Last price |
+| Product | 90-day volume | Lines | Last price |
 |---|---|---|---|
-| 50% hazelnut praline (5 kg bucket) (`prd_0045`) | 241,53 kg | 11 | 16,44 € |
-| Frozen unbaked all-butter croissants, 70 g (box of 150) (`prd_0053`) | 66,00 box | 9 | 52,00 € |
-| Frozen part-baked baguettes, 280 g (box of 60) (`prd_0058`) | 53,00 box | 5 | 22,75 € |
-| Paper pastry bags (box of 1,000) (`prd_0066`) | 24,00 box | 6 | 17,50 € |
+| Hazelnut praline 50% (5 kg tub) (`prd_0045`) | 241,53 kg | 11 | 16,44 € |
+| Raw frozen all-butter croissant 70 g (carton of 150) (`prd_0053`) | 66,00 box | 9 | 52,00 € |
+| Frozen par-baked baguette 280 g (carton of 60) (`prd_0058`) | 53,00 box | 5 | 22,75 € |
+| Paper viennoiserie bags (carton of 1000) (`prd_0066`) | 24,00 box | 6 | 17,50 € |
 
-Fiche CRM : _Vests a fixed carton price on the year. Delivery before 7h for cooking. Delivered on. game. Accept equivalent substitutions if we warn._
+CRM record : _Vests a fixed carton price on the year. Delivery before 7h for cooking. Delivered on. game. Accept equivalent substitutions if we warn._
 
 ## What frustrates them
 
@@ -48,7 +48,7 @@ Fiche CRM : _Vests a fixed carton price on the year. Delivery before 7h for cook
 
 ## A brief history
 
-- **05/02/2021** · Quality · Quality : Frozen unbaked all-butter croissants, 70 g (box of 150)
+- **05/02/2021** · Quality · Quality : Raw frozen all-butter croissant 70 g (carton of 150)
 - **09/06/2021** · note · Resumption after confinement
 - **14/12/2021** · special request · Holidays 2021 : reservation
 - **06/04/2022** · price · Tariff increase (diesel, energy)
@@ -63,7 +63,7 @@ Fiche CRM : _Vests a fixed carton price on the year. Delivery before 7h for cook
 
 Full history: 34 events (8 visit, 5 special request, 4 quality, 4 rating, 4 call, 3 compliment, 3 price, 1 opening, 1 contact, 1 map).
 
-## Files opened today
+## Open cases
 
 None.
 
@@ -75,7 +75,7 @@ None.
 ## Price & group
 
 Groups: **Snacking** (`snacking`).
-Negotiated prices (`clientPrices`, always priority): Frozen part-baked baguettes, 280 g (box of 60) 22,75 € (list 24,00); Gold cardboard king cake crowns (pack of 100) 12,32 € (list 13,00).
+Negotiated prices (`clientPrices`, always priority): Frozen par-baked baguette 280 g (carton of 60) 22,75 € (list 24,00); Gold cardboard king cake crowns (pack of 100) 12,32 € (list 13,00).
 
 Price rules that may apply:
 - `prl_0005` Snacking: cost + 20 % on pains au chocolat

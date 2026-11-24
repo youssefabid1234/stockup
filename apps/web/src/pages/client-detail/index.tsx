@@ -173,7 +173,7 @@ function UsualBasket({ lines }: { lines: UsualBasketLine[] }) {
   return (
     <Section title="Regular basket" count={lines.length}>
       <DataTable inset paginate={false} columns={USUAL_COLS} rows={lines} getRowId={(l) => l.productId}
-        empty={<EmptyFrame icon={ShoppingCart} text="Pas encore assez d'historique pour un panier habituel." />} />
+        empty={<EmptyFrame icon={ShoppingCart} text="There are too few orders to identify a usual basket." />} />
     </Section>
   );
 }
@@ -191,7 +191,7 @@ function RecentOrders({ orders }: { orders: OrderSummary[] }) {
   return (
     <Section title="Recent orders" count={orders.length}>
       <DataTable inset pageKey="ordersPage" columns={ORDER_COLS} rows={orders} getRowId={(o) => o.id} onRowClick={(o) => navigate(`/orders/${o.id}`)}
-        empty={<EmptyFrame icon={ShoppingCart} text="Aucune commande pour ce client." />} />
+        empty={<EmptyFrame icon={ShoppingCart} text="This customer has no orders." />} />
     </Section>
   );
 }
@@ -238,7 +238,7 @@ function NegotiatedPrices({ prices }: { prices: PriceRow[] }) {
   return (
     <Section title="Negotiated prices" count={prices.length}>
       <DataTable inset pageKey="pricesPage" columns={PRICE_COLS} rows={prices} getRowId={(p) => p.productId}
-        empty={<EmptyFrame icon={Tag} text="Ce client paie le prix catalogue." />} />
+        empty={<EmptyFrame icon={Tag} text="This customer pays the list price." />} />
     </Section>
   );
 }
@@ -295,7 +295,7 @@ function Notes({ clientId, notes }: { clientId: string; notes: ClientDetail["not
             placeholder="Ex.: never wants a substitute on the bar"
           />
           <div className="flex items-center justify-end gap-2">
-            <span className="mr-auto text-[11.5px] text-muted-foreground">⌘↵ pour enregistrer</span>
+            <span className="mr-auto text-[11.5px] text-muted-foreground">⌘↵ to save</span>
             <Button size="sm" variant="ghost" onClick={() => setOpen(false)}>Cancel</Button>
             <Button size="sm" variant="primary" loading={add.isPending} disabled={!text.trim()} onClick={submit}>Save</Button>
           </div>

@@ -44,7 +44,7 @@ export default function PurchaseOrdersPage() {
       onRetry={() => refetch()}
       extraFilter={<Select size="sm" value={f.partner} onChange={f.setPartner} placeholder="All suppliers" options={supplierOptions}
         aria-label="Supplier" className="w-[200px]" />}
-      emptyText="Commandez auprès d'un fournisseur pour réapprovisionner le stock."
+      emptyText="Place a purchase order to replenish stock."
     />
   );
 }

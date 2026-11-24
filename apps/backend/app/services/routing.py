@@ -174,5 +174,5 @@ def reorder_stops(ctx: Ctx, run_id: str, order_ids: list[str]) -> Doc:
     listed = [by_order[oid] for oid in order_ids]
     rest = [s for s in run["stops"] if s["orderId"] not in order_ids]
     updated = crud.route_runs.put({**run, "stops": _resequence([*listed, *rest], route)})
-    log_event(ctx, "route_run.reordered", "route_run", run["id"], f"Order of judgments modified on {route['name']} du {run['date']}")
+    log_event(ctx, "route_run.reordered", "route_run", run["id"], f"Delivery stop order changed on {route['name']} for {run['date']}")
     return route_run_detail(updated)

@@ -146,7 +146,7 @@ function NewClientPanel({ zones, onClose }: { zones: string[]; onClose: () => vo
   return (
     <SidePanel
       title="New customer"
-      subtitle="Créé en statut prospect"
+      subtitle="Created as a prospect"
       onClose={onClose}
       footer={
         <>

@@ -762,7 +762,7 @@ In the pack: six tours from Rungis between 5 h and 6 h.
 **How it works.** Each customer belongs to an area, served by a tour some days.
 Only the dayss where the tour runs ** and ** are available in its delivery dayss. A tour brings together
 the orders confirmed of the day in a specific order. The driver leaves, delivers, reports returns and
-sometimes the money (payment to the driver for Ph的 Saigon 13 or Le Festin Nomade).
+sometimes the money (payment to the driver for Phở Saigon 13 or Le Festin Nomade).
 
 **Challenges.**
 

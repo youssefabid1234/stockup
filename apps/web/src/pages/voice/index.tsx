@@ -110,11 +110,11 @@ function CallMode({ modeSwitch }: { modeSwitch: ReactNode }) {
                 <Provider k="tts" v={v.providers.tts} />
               </div>
             ) : null}
-            {v.activity === "speaking" ? <Button size="sm" variant="ghost" icon={VolumeX} kbd="Échap" onClick={v.stopPlayback}>Cut</Button> : null}
+            {v.activity === "speaking" ? <Button size="sm" variant="ghost" icon={VolumeX} kbd="Esc" onClick={v.stopPlayback}>Cut</Button> : null}
             <Button size="sm" variant={handsFree ? "primary" : "default"} icon={Ear} onClick={toggleHandsFree} aria-pressed={handsFree}>
               Hands-free
             </Button>
-            <Button size="sm" icon={RotateCcw} onClick={v.reset} disabled={!ready}>Restarting the call</Button>
+            <Button size="sm" icon={RotateCcw} onClick={v.reset} disabled={!ready}>Restart call</Button>
           </>
         }
       />
@@ -137,8 +137,8 @@ function CallMode({ modeSwitch }: { modeSwitch: ReactNode }) {
               <MicOff size={14} strokeWidth={1.75} className="shrink-0 text-warning" />
               <span>
                 {v.mic === "denied"
-                  ? "Micro refused: allow it in the settings of the site (i.e. icon on the left of the address), then try again. Meanwhile, type the caller's sentences."
-                  : "Micro indisponible dans ce navigateur (il faut localhost ou https). Tapez les phrases de l'appelant."}
+                  ? "Microphone access is blocked. Allow microphone access in your browser settings, or type what the caller says."
+                  : "The microphone needs localhost or HTTPS. Type the caller's words instead."}
               </span>
             </div>
           ) : null}
@@ -148,14 +148,14 @@ function CallMode({ modeSwitch }: { modeSwitch: ReactNode }) {
             <div className="flex shrink-0 flex-col gap-1 xl:w-[180px]">
               <span className={cn("flex items-center gap-1.5 text-[13px] font-medium", v.activity !== "idle" && "text-violet")}>
                 {v.activity === "thinking" ? <Spinner size={12} /> : v.activity !== "idle" ? <Dot tone="violet" pulse /> : null}
-                {ready ? (listening && v.activity === "idle" ? "Listening, talk" : STATE_LABEL[v.activity]) : connected ? "Identify the appellant" : v.conn === "connecting" ? "Connection..." : "Offline"}
+                {ready ? (listening && v.activity === "idle" ? "Listening" : STATE_LABEL[v.activity]) : connected ? "Choose a caller" : v.conn === "connecting" ? "Connecting…" : "Offline"}
               </span>
               {v.activity === "recording" ? (
                 <LevelBars level={v.level} />
               ) : listening ? (
-                <span className="hidden items-center gap-1 text-[11.5px] text-muted-foreground xl:flex">Free hands · speak to cut off the agent</span>
+                <span className="hidden items-center gap-1 text-[11.5px] text-muted-foreground xl:flex">Hands-free · speak to interrupt</span>
               ) : (
-                <span className="hidden items-center gap-1 text-[11.5px] text-muted-foreground xl:flex"><Kbd>Space</Kbd> Keep to speak</span>
+                <span className="hidden items-center gap-1 text-[11.5px] text-muted-foreground xl:flex"><Kbd>Space</Kbd> Hold to talk</span>
               )}
             </div>
             <form onSubmit={submit} className="flex min-w-0 flex-1 items-center gap-2">
@@ -183,7 +183,7 @@ function ConnState({ conn }: { conn: Conn }) {
   return (
     <span className="flex items-center gap-1.5 text-[12px] text-muted-foreground">
       <Dot tone={conn === "ready" ? "success" : conn === "connecting" ? "warning" : "destructive"} pulse={conn === "connecting"} />
-      {conn === "ready" ? "Connected" : conn === "connecting" ? "Connection..." : "Service IA unreachable · new test..."}
+      {conn === "ready" ? "Connected" : conn === "connecting" ? "Connecting…" : "AI service unavailable · reconnecting…"}
     </span>
   );
 }
@@ -204,7 +204,7 @@ function TalkButton({ activity, disabled, onDown, onUp }: { activity: Activity; 
     <button
       type="button"
       disabled={disabled}
-      aria-label="Keep to talk"
+      aria-label="Hold to talk"
       aria-pressed={rec}
       onPointerDown={(e) => {
         if (e.button !== 0) return;

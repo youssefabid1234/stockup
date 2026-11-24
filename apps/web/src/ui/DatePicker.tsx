@@ -40,7 +40,7 @@ const addMonthsIso = (iso: string, n: number) => {
 const clampIso = (iso: string, min?: string, max?: string) => (min && iso < min ? min : max && iso > max ? max : iso);
 const inRange = (iso: string, min?: string, max?: string) => !(min && iso < min) && !(max && iso > max);
 
-/* ── fr-FR labels ─────────────────────────────────────────────────────────────────────────────────────────────── */
+/* ── en-GB labels ─────────────────────────────────────────────────────────────────────────────────────────────── */
 const fMonth = new Intl.DateTimeFormat("en-GB", { month: "long", year: "numeric", timeZone: "UTC" });
 const fShort = new Intl.DateTimeFormat("en-GB", { weekday: "short", day: "numeric", month: "short", timeZone: "UTC" });
 const fShortY = new Intl.DateTimeFormat("en-GB", { weekday: "short", day: "numeric", month: "short", year: "numeric", timeZone: "UTC" });
@@ -86,7 +86,7 @@ export type DatePreset = { label: string; days: number } | { label: string; valu
 export const DEFAULT_DATE_PRESETS: DatePreset[] = [
   { label: "Today", days: 0 },
   { label: "Tomorrow", days: 1 },
-  { label: "+7 j", days: 7 },
+  { label: "+7 days", days: 7 },
 ];
 const presetIso = (p: DatePreset, today: string) => ("value" in p ? p.value : addDaysIso(today, p.days));
 

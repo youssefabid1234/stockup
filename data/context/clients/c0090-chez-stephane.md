@@ -1,6 +1,6 @@
 # Chez Stéphane (C0090, `cli_0090`)
 
-> Personal data sheet to play this customer over the phone. The full history is in `seed/clientEvents.json` (filter on `clientId: "cli_0090"`).
+> Customer profile for phone role-play. The full history is in `seed_en/clientEvents.json` (filter on `clientId: "cli_0090"`).
 
 | | |
 |---|---|
@@ -20,30 +20,30 @@ Traditional restaurant in Castanet-Tolosan, pancakes in Chandeleur and homemade 
 ## People
 
 - **Olivier Roux** — Chief Executive Officer · 06 19 00 90 94
-  - How he/she speaks: Play surprise on each fare, end up ordering.
-  - Tics: "At this price, I take somewhere else." · "You are more expensive than your neighbor there."
+  - Speaking style: Play surprise on each fare, end up ordering.
+  - Typical phrases: "At this price, I take somewhere else." · "You are more expensive than your neighbor there."
 - **Jean-Marc Escaich** — Chef de cuisine · 06 87 35 17 03
-  - How he/she speaks: Play surprise on each fare, end up ordering.
-  - Tics: "You're more expensive than your neighbor there." · "At this price, I'm taking somewhere else."
+  - Speaking style: Play surprise on each fare, end up ordering.
+  - Typical phrases: "You're more expensive than your neighbor there." · "At this price, I'm taking somewhere else."
 
 ## What they buy and how
 
-Order twice a week, usually the day before between 14h and 17h, especially by phone and WhatsApp. Regular products: 35% UHT whipping cream (1 L carton), Medium free-range eggs (tray of 30), 82% pastry butter (10 kg box), Whole UHT milk (1 L carton), 44% baker's chocolate sticks (1.6 kg box, 300 sticks), 64% dark couverture chocolate (buttons, 5 kg bag), Frozen part-baked baguettes, 280 g (box of 60).
+Order twice a week, usually the day before between 14h and 17h, especially by phone and WhatsApp. Regular products: UHT liquid cream 35% (1 L carton), Free-range eggs, size M (tray of 30), 82% pastry butter (10 kg carton), Whole UHT milk (1 L carton), Baker's chocolate sticks 44% (1.6 kg carton, 300 sticks), Dark couverture chocolate 64% (pistoles, 5 kg bag), Frozen par-baked baguette 280 g (carton of 60).
 
-On the last 90 days (24 orders delivered):
+Over the last 90 days (24 orders delivered):
 
-| Product | Volume 90 | Lines | Last price |
+| Product | 90-day volume | Lines | Last price |
 |---|---|---|---|
-| 44% baker's chocolate sticks (1.6 kg box, 300 sticks) (`prd_0042`) | 186,00 box | 19 | 13,82 € |
-| Frozen part-baked baguettes, 280 g (box of 60) (`prd_0058`) | 89,00 box | 10 | 24,00 € |
-| 82% pastry butter (10 kg box) (`prd_0028`) | 246,67 kg | 12 | 7,68 € |
-| 64% dark couverture chocolate (buttons, 5 kg bag) (`prd_0038`) | 90,88 kg | 6 | 15,59 € |
-| 35% UHT whipping cream (1 L carton) (`prd_0031`) | 213,00 liter | 14 | 4,10 € |
-| Medium free-range eggs (tray of 30) (`prd_0034`) | 87,00 box | 13 | 8,34 € |
+| Baker's chocolate sticks 44% (1.6 kg carton, 300 sticks) (`prd_0042`) | 186,00 box | 19 | 13,82 € |
+| Frozen par-baked baguette 280 g (carton of 60) (`prd_0058`) | 89,00 box | 10 | 24,00 € |
+| 82% pastry butter (10 kg carton) (`prd_0028`) | 246,67 kg | 12 | 7,68 € |
+| Dark couverture chocolate 64% (pistoles, 5 kg bag) (`prd_0038`) | 90,88 kg | 6 | 15,59 € |
+| UHT liquid cream 35% (1 L carton) (`prd_0031`) | 213,00 liter | 14 | 4,10 € |
+| Free-range eggs, size M (tray of 30) (`prd_0034`) | 87,00 box | 13 | 8,34 € |
 | Whole UHT milk (1 L carton) (`prd_0033`) | 360,00 liter | 9 | 1,12 € |
-| T65 country bread flour (25 kg sack) (`prd_0004`) | 3,00 piece | 1 | 18,85 € |
+| T65 country wheat flour (25 kg bag) (`prd_0004`) | 3,00 piece | 1 | 18,85 € |
 
-Fiche CRM : _Order in the afternoon between two services. Cream and eggs twice a week. Delivered Mar. Fri. Accept equivalent substitutions if notified._
+CRM record : _Order in the afternoon between two services. Cream and eggs twice a week. Delivered Mar. Fri. Accept equivalent substitutions if notified._
 
 ## What frustrates them
 
@@ -53,11 +53,11 @@ Fiche CRM : _Order in the afternoon between two services. Cream and eggs twice a
 ## A brief history
 
 - **11/01/2024** · prices · Rates 2024
-- **16/01/2024** · Quality · Quality : 64% dark couverture chocolate (buttons, 5 kg bag)
-- **20/01/2024** · Have quality : 64% dark couverture chocolate (buttons, 5 kg bag)
+- **16/01/2024** · Quality · Quality : Dark couverture chocolate 64% (pistoles, 5 kg bag)
+- **20/01/2024** · Have quality : Dark couverture chocolate 64% (pistoles, 5 kg bag)
 - **28/06/2024** · delivery · missing box
-- **12/07/2024** · Quality · Quality : 82% pastry butter (10 kg box)
-- **14/07/2024** · Have quality : 82% pastry butter (10 kg box)
+- **12/07/2024** · Quality · Quality : 82% pastry butter (10 kg carton)
+- **14/07/2024** · Have quality : 82% pastry butter (10 kg carton)
 - **17/09/2024** · map · Autumn card
 - **24/01/2025** · prices · Rates 2025
 - **28/01/2025** · risk of losing the customer · Declining activity
@@ -67,7 +67,7 @@ Fiche CRM : _Order in the afternoon between two services. Cream and eggs twice a
 
 Full history: 49 events (17 visit, 10 call, 5 quality, 3 rating, 3 price, 3 card, 2 compliment, 2 having, 1 opening, 1 special request, 1 delivery, 1 risk of losing the customer).
 
-## Files opened today
+## Open cases
 
 None.
 

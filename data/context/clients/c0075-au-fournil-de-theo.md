@@ -1,6 +1,6 @@
 # Au Fournil de Théo (C0075, `cli_0075`)
 
-> Personal data sheet to play this customer over the phone. The full history is in `seed/clientEvents.json` (filter on `clientId: "cli_0075"`).
+> Customer profile for phone role-play. The full history is in `seed_en/clientEvents.json` (filter on `clientId: "cli_0075"`).
 
 | | |
 |---|---|
@@ -10,7 +10,7 @@
 | Sales representative | Julien Fabre |
 | Customer since | 19/03/2026 (0 year) |
 | Payment | 30 days — Pays late (3 to 6 weeks), but ends up paying |
-| Outstanding balance | 20 501,96 € incl. VAT (ceiling 30 000 €) — **9 invoice due: 10 193,05 €** |
+| Outstanding balance | 20 501,96 € incl. VAT (ceiling 30 000 €) — **9 overdue invoices: 10 193,05 €** |
 | Temperament | Faithful, scolding, pressed — ★★☆ quality, ★☆☆ price, risk of losing the customer low |
 
 ## Who they are
@@ -20,33 +20,33 @@ Bakery-Paisserie de quartier in Toulouse (Côte Pavée), four employees. Nicolas
 ## People
 
 - **Nicolas Carpentier** — bakery owner · 07 28 66 99 31 · nicolas@fourniltheo.fr
-  - How he/she speaks: Calls between two services, hang up fast.
-  - Tics: "Quickly, I don't have time." · "Send, send."
+  - Speaking style: Calls between two services, hang up fast.
+  - Typical phrases: "Quickly, I don't have time." · "Send, send."
 - **Minh Meyer** — Bakery (shop and orders) · 07 16 54 80 87
-  - How he/she speaks: Starts with a complaint, ends up ordering.
-  - Tics: "Again an increase?" · "The last delivery, let's not talk about it."
+  - Speaking style: Starts with a complaint, ends up ordering.
+  - Typical phrases: "Again an increase?" · "The last delivery, let's not talk about it."
 - **Damien Perrot** — Bakery worker · 06 70 16 13 08
-  - How he/she speaks: Voice posed, tutoe the commercial for years, always orders the same thing.
-  - Tics: "As usual." · "You put me the same thing as Tuesday."
+  - Speaking style: Voice posed, tutoe the commercial for years, always orders the same thing.
+  - Typical phrases: "As usual." · "You put me the same thing as Tuesday."
 
 ## What they buy and how
 
-Order twice a week, usually the day before between 12h and 18h, especially by telephone and WhatsApp. Regular products: Traditional French T55 wheat flour (25 kg sack), Fresh baker's yeast (500 g block), 82% laminating butter (2 kg slab), 44% baker's chocolate sticks (1.6 kg box, 300 sticks), Printed kraft baguette bags (box of 1,000), T55 baker's wheat flour (25 kg sack), T80 semi-wholemeal flour (25 kg sack), 30% thick crème fraîche (5 L bucket).
+Order twice a week, usually the day before between 12h and 18h, especially by telephone and WhatsApp. Regular products: T55 traditional French wheat flour (25 kg bag), Fresh baker's yeast (500 g block), 82% laminating butter (2 kg sheet), Baker's chocolate sticks 44% (1.6 kg carton, 300 sticks), Printed kraft baguette bags (carton of 1000), T55 baker's wheat flour (25 kg bag), T80 bise flour (25 kg bag), Thick crème fraîche 30% (5 L tub).
 
-On the last 90 days (23 orders delivered):
+Over the last 90 days (23 orders delivered):
 
-| Product | Volume 90 | Lines | Last price |
+| Product | 90-day volume | Lines | Last price |
 |---|---|---|---|
-| Traditional French T55 wheat flour (25 kg sack) (`prd_0001`) | 277,00 piece | 14 | 19,01 € |
-| 82% laminating butter (2 kg slab) (`prd_0026`) | 515,62 kg | 15 | 9,20 € |
-| T55 baker's wheat flour (25 kg sack) (`prd_0002`) | 233,00 piece | 15 | 16,56 € |
-| Charentes-Poitou AOP unsalted butter (10 × 1 kg box) (`prd_0027`) | 288,05 kg | 9 | 10,19 € |
-| T80 semi-wholemeal flour (25 kg sack) (`prd_0005`) | 93,00 piece | 13 | 21,50 € |
-| 44% baker's chocolate sticks (1.6 kg box, 300 sticks) (`prd_0042`) | 143,00 box | 11 | 13,82 € |
-| Printed kraft baguette bags (box of 1,000) (`prd_0065`) | 69,00 box | 19 | 22,00 € |
+| T55 traditional French wheat flour (25 kg bag) (`prd_0001`) | 277,00 piece | 14 | 19,01 € |
+| 82% laminating butter (2 kg sheet) (`prd_0026`) | 515,62 kg | 15 | 9,20 € |
+| T55 baker's wheat flour (25 kg bag) (`prd_0002`) | 233,00 piece | 15 | 16,56 € |
+| AOP Charentes-Poitou unsalted butter (carton of 10 × 1 kg) (`prd_0027`) | 288,05 kg | 9 | 10,19 € |
+| T80 bise flour (25 kg bag) (`prd_0005`) | 93,00 piece | 13 | 21,50 € |
+| Baker's chocolate sticks 44% (1.6 kg carton, 300 sticks) (`prd_0042`) | 143,00 box | 11 | 13,82 € |
+| Printed kraft baguette bags (carton of 1000) (`prd_0065`) | 69,00 box | 19 | 22,00 € |
 | Fresh baker's yeast (500 g block) (`prd_0011`) | 704,00 piece | 20 | 1,35 € |
 
-Fiche CRM: _Traditional Lauragais only. Delivery before 11h, after morning rush. Delivered Mon. Game. Accept equivalent substitutions if notified._
+CRM record: _Traditional Lauragais only. Delivery before 11h, after morning rush. Delivered Mon. Game. Accept equivalent substitutions if notified._
 
 ## What frustrates them
 
@@ -64,7 +64,7 @@ Fiche CRM: _Traditional Lauragais only. Delivery before 11h, after morning rush.
 
 Full history: 9 events (4 payment, 1 opening, 1 call, 1 visit, 1 note, 1 compliment).
 
-## Files opened today
+## Open cases
 
 None.
 

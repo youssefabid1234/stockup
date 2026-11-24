@@ -1,6 +1,6 @@
 # Au Fournil de Didier (C0066, `cli_0066`)
 
-> Personal data sheet to play this customer over the phone. The full history is in `seed/clientEvents.json` (filter on `clientId: "cli_0066"`).
+> Customer profile for phone role-play. The full history is in `seed_en/clientEvents.json` (filter on `clientId: "cli_0066"`).
 
 | | |
 |---|---|
@@ -20,24 +20,24 @@ Bakery-pastry district in Castanet-Tolosan, four employees. Arnaud orders after 
 ## People
 
 - **Arnaud Dubois** — bakery owner · 06 25 36 23 44
-  - How he/she speaks: Starts with a complaint, ends up ordering.
-  - Tics: "The last delivery, let's not talk about it." · "It's always the same with you."
+  - Speaking style: Starts with a complaint, ends up ordering.
+  - Typical phrases: "The last delivery, let's not talk about it." · "It's always the same with you."
 
 ## What they buy and how
 
-Order twice a week, usually the day before between 12h and 18h, especially by telephone and WhatsApp. Regular products: Traditional French T55 wheat flour (25 kg sack), Fresh baker's yeast (500 g block), 82% laminating butter (2 kg slab), 44% baker's chocolate sticks (1.6 kg box, 300 sticks), Printed kraft baguette bags (box of 1,000), T80 semi-wholemeal flour (25 kg sack), Charentes-Poitou AOP unsalted butter (10 × 1 kg box), Round gold cake boards, 28 cm (pack of 100).
+Order twice a week, usually the day before between 12h and 18h, especially by telephone and WhatsApp. Regular products: T55 traditional French wheat flour (25 kg bag), Fresh baker's yeast (500 g block), 82% laminating butter (2 kg sheet), Baker's chocolate sticks 44% (1.6 kg carton, 300 sticks), Printed kraft baguette bags (carton of 1000), T80 bise flour (25 kg bag), AOP Charentes-Poitou unsalted butter (carton of 10 × 1 kg), Gold round cake boards 28 cm (pack of 100).
 
-On the last 90 days (21 orders delivered):
+Over the last 90 days (21 orders delivered):
 
-| Product | Volume 90 | Lines | Last price |
+| Product | 90-day volume | Lines | Last price |
 |---|---|---|---|
-| Traditional French T55 wheat flour (25 kg sack) (`prd_0001`) | 333,00 piece | 13 | 19,00 € |
-| 82% laminating butter (2 kg slab) (`prd_0026`) | 485,65 kg | 7 | 9,32 € |
-| Charentes-Poitou AOP unsalted butter (10 × 1 kg box) (`prd_0027`) | 194,28 kg | 10 | 10,16 € |
-| T45 strong pastry flour (25 kg sack) (`prd_0003`) | 76,00 piece | 7 | 23,37 € |
-| 44% baker's chocolate sticks (1.6 kg box, 300 sticks) (`prd_0042`) | 116,00 box | 11 | 13,82 € |
-| Printed kraft baguette bags (box of 1,000) (`prd_0065`) | 64,00 box | 8 | 22,00 € |
-| T80 semi-wholemeal flour (25 kg sack) (`prd_0005`) | 27,00 piece | 7 | 20,71 € |
+| T55 traditional French wheat flour (25 kg bag) (`prd_0001`) | 333,00 piece | 13 | 19,00 € |
+| 82% laminating butter (2 kg sheet) (`prd_0026`) | 485,65 kg | 7 | 9,32 € |
+| AOP Charentes-Poitou unsalted butter (carton of 10 × 1 kg) (`prd_0027`) | 194,28 kg | 10 | 10,16 € |
+| T45 gruau pastry flour (25 kg bag) (`prd_0003`) | 76,00 piece | 7 | 23,37 € |
+| Baker's chocolate sticks 44% (1.6 kg carton, 300 sticks) (`prd_0042`) | 116,00 box | 11 | 13,82 € |
+| Printed kraft baguette bags (carton of 1000) (`prd_0065`) | 64,00 box | 8 | 22,00 € |
+| T80 bise flour (25 kg bag) (`prd_0005`) | 27,00 piece | 7 | 20,71 € |
 | Fresh baker's yeast (500 g block) (`prd_0011`) | 400,00 piece | 14 | 1,35 € |
 
 Form CRM : _Paye in LCR to 30 end of month days. Reserves its crowns and beans as early as November. Delivered sea. sam. Accept equivalent substitutions if notified._
@@ -52,11 +52,11 @@ Form CRM : _Paye in LCR to 30 end of month days. Reserves its crowns and beans a
 ## A brief history
 
 - **16/08/2023** · opening · Account opening : Au Fournil de Didier
-- **09/12/2023** · Quality · Quality : Fine sea salt (25 kg sack)
+- **09/12/2023** · Quality · Quality : Fine sea salt (25 kg bag)
 - **20/01/2024** · prices · Rates 2024
 - **28/07/2025** · note · Summer closure 2025
-- **10/09/2025** · Quality · Quality : Printed kraft baguette bags (box of 1,000)
-- **13/09/2025** · Have quality : Printed kraft baguette bags (box of 1,000)
+- **10/09/2025** · Quality · Quality : Printed kraft baguette bags (carton of 1000)
+- **13/09/2025** · Have quality : Printed kraft baguette bags (carton of 1000)
 - **28/12/2025** · special request · Holidays 2025 : volume reservation
 - **24/01/2026** · Quality · Quality : Fresh baker's yeast (500 g block)
 - **28/01/2026** · Have quality : Fresh baker's yeast (500 g block)
@@ -64,7 +64,7 @@ Form CRM : _Paye in LCR to 30 end of month days. Reserves its crowns and beans a
 
 Full history: 23 events (6 visit, 6 call, 3 quality, 2 rating, 2 have, 1 opening, 1 price, 1 compliment, 1 special request).
 
-## Files opened today
+## Open cases
 
 None.
 

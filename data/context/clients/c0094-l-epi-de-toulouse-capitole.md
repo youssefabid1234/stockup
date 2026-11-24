@@ -1,6 +1,6 @@
 # L'Épi de Toulouse (Capitole) (C0094, `cli_0094`)
 
-> Personal data sheet to play this customer over the phone. The full history is in `seed/clientEvents.json` (filter on `clientId: "cli_0094"`).
+> Customer profile for phone role-play. The full history is in `seed_en/clientEvents.json` (filter on `clientId: "cli_0094"`).
 
 | | |
 |---|---|
@@ -20,30 +20,30 @@ Bakery-quartier pastry in Toulouse (Capitol), four employees. Nicolas placed ord
 ## People
 
 - **Nicolas Klein** — bakery owner · 06 11 34 59 27 · nicolas@epitoulousecapitole.fr
-  - How he/she speaks: Short phrases, not time, wants a summary in ten seconds.
-  - Tics: "Same as usual, go." · "Quickly, I don't have time."
+  - Speaking style: Short phrases, not time, wants a summary in ten seconds.
+  - Typical phrases: "Same as usual, go." · "Quickly, I don't have time."
 - **Alexandre Tran** — Bakery (shop and orders) · 06 70 94 69 33
   - How he/she talks: Never change supplier, defend home when things go wrong.
-  - Tics: "Do you find me a solution?" · "Thank you for the troubleshooting."
+  - Typical phrases: "Do you find me a solution?" · "Thank you for the troubleshooting."
 
 ## What they buy and how
 
-Order three times a week, usually the day before between 13h and 17h, especially by phone and WhatsApp. Regular products: Fresh baker's yeast (500 g block), 82% laminating butter (2 kg slab), Printed kraft baguette bags (box of 1,000), Fine sea salt (25 kg sack), Porcelain king cake charms (pack of 100), T45 strong pastry flour (25 kg sack), Frozen part-baked baguettes, 280 g (box of 60), T65 country bread flour (25 kg sack).
+Order three times a week, usually the day before between 13h and 17h, especially by phone and WhatsApp. Regular products: Fresh baker's yeast (500 g block), 82% laminating butter (2 kg sheet), Printed kraft baguette bags (carton of 1000), Fine sea salt (25 kg bag), Porcelain king cake charms (pack of 100), T45 gruau pastry flour (25 kg bag), Frozen par-baked baguette 280 g (carton of 60), T65 country wheat flour (25 kg bag).
 
-On the last 90 days (37 orders delivered):
+Over the last 90 days (37 orders delivered):
 
-| Product | Volume 90 | Lines | Last price |
+| Product | 90-day volume | Lines | Last price |
 |---|---|---|---|
-| 82% laminating butter (2 kg slab) (`prd_0026`) | 333,79 kg | 10 | 9,32 € |
-| T45 strong pastry flour (25 kg sack) (`prd_0003`) | 112,00 piece | 20 | 23,37 € |
-| T65 country bread flour (25 kg sack) (`prd_0004`) | 99,00 piece | 15 | 18,95 € |
-| T55 baker's wheat flour (25 kg sack) (`prd_0002`) | 84,00 piece | 17 | 17,25 € |
-| Printed kraft baguette bags (box of 1,000) (`prd_0065`) | 41,00 box | 17 | 22,00 € |
-| T80 semi-wholemeal flour (25 kg sack) (`prd_0005`) | 39,00 piece | 13 | 21,49 € |
-| Frozen part-baked baguettes, 280 g (box of 60) (`prd_0058`) | 27,00 box | 9 | 24,00 € |
+| 82% laminating butter (2 kg sheet) (`prd_0026`) | 333,79 kg | 10 | 9,32 € |
+| T45 gruau pastry flour (25 kg bag) (`prd_0003`) | 112,00 piece | 20 | 23,37 € |
+| T65 country wheat flour (25 kg bag) (`prd_0004`) | 99,00 piece | 15 | 18,95 € |
+| T55 baker's wheat flour (25 kg bag) (`prd_0002`) | 84,00 piece | 17 | 17,25 € |
+| Printed kraft baguette bags (carton of 1000) (`prd_0065`) | 41,00 box | 17 | 22,00 € |
+| T80 bise flour (25 kg bag) (`prd_0005`) | 39,00 piece | 13 | 21,49 € |
+| Frozen par-baked baguette 280 g (carton of 60) (`prd_0058`) | 27,00 box | 9 | 24,00 € |
 | Fresh baker's yeast (500 g block) (`prd_0011`) | 424,00 piece | 28 | 1,35 € |
 
-Fiche CRM : _Tourage AOP for pastry, pastry butter for the rest. Don't want frozen: everything is homemade. Delivered Mon. Fri. Fri. Refuses substitutions: call before any modification. _
+CRM record : _Tourage AOP for pastry, pastry butter for the rest. Don't want frozen: everything is homemade. Delivered Mon. Fri. Fri. Refuses substitutions: call before any modification. _
 
 ## What frustrates them
 
@@ -58,18 +58,18 @@ Fiche CRM : _Tourage AOP for pastry, pastry butter for the rest. Don't want froz
 - **11/01/2024** · prices · Rates 2024
 - **28/06/2024** · Delivery late
 - **20/12/2024** · delivery · missing box
-- **24/03/2025** · claim · Outturn: T80 semi-wholemeal flour (25 kg sack) not delivered
+- **24/03/2025** · claim · Outturn: T80 bise flour (25 kg bag) not delivered
 - **18/07/2025** · note · Summer closure 2025
-- **01/10/2025** · claim · Outturn: T80 semi-wholemeal flour (25 kg sack) not delivered
+- **01/10/2025** · claim · Outturn: T80 bise flour (25 kg bag) not delivered
 - **25/11/2025** · special request · Holidays 2025 : volume reservation
 - **24/01/2026** · prices · Rates 2026
 - **13/02/2026** · risk of losing the customer · Declining activity
-- **14/09/2026** · claim · Outturn: T80 semi-wholemeal flour (25 kg sack) not delivered
-- **16/09/2026** · claim · Outturn: T80 semi-wholemeal flour (25 kg sack) not delivered
+- **14/09/2026** · claim · Outturn: T80 bise flour (25 kg bag) not delivered
+- **16/09/2026** · claim · Outturn: T80 bise flour (25 kg bag) not delivered
 
 Full history: 45 events (16 visit, 5 special request, 5 compliment, 4 call, 4 claim, 3 quality, 3 price, 2 delivery, 1 opening, 1 note, 1 risk of losing the customer).
 
-## Files opened today
+## Open cases
 
 None.
 

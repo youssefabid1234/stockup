@@ -81,7 +81,10 @@ def make_stt_client(cfg: STTSettings) -> STTClient:
 
 def make_tts_client(cfg: TTSSettings) -> TTSClient:
     model, voice = DEFAULT_TTS.get(cfg.provider, ("", ""))
-    model, voice = cfg.model or model, cfg.voice or voice
+    model = cfg.model or model
+    # The former Gradium default is a French-only voice stored in older .env files.
+    if cfg.voice and (cfg.provider != "gradium" or cfg.voice != "F7Iib4MAyHIRed0x"):
+        voice = cfg.voice
     match cfg.provider:
         case "mock":
             return MockTTS()

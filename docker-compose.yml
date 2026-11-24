@@ -15,10 +15,10 @@ services:
     environment:
       API_PORT: "4000"
       DATA_DIR: /data
-      DB_PATH: /db/erp.db
+      DB_PATH: /db/erp-en.db
     volumes:
       - ./apps/backend/app:/app/apps/backend/app
-      - ${DATA_DIR:-../hackathon-data}:/data:ro
+      - ${DATA_DIR:-./data}:/data:ro
       - erp-db:/db
     ports: ["${API_PORT:-4000}:4000"]
     healthcheck:
@@ -38,7 +38,7 @@ services:
       ERP_API_URL: http://backend:4000
     volumes:
       - ./apps/ai/app:/app/apps/ai/app
-      - ${DATA_DIR:-../hackathon-data}:/data:ro
+      - ${DATA_DIR:-./data}:/data:ro
     ports: ["${AI_PORT:-4100}:4100"]
     depends_on:
       backend: { condition: service_healthy }

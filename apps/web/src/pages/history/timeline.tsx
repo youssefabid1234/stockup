@@ -125,7 +125,7 @@ const ICON_TONE: Record<Tone, string> = {
 };
 
 export const CHANNEL_LABEL: Record<NonNullable<ClientEvent["channel"]>, string> = {
-  phone: "Phone", email: "E-mail", whatsapp: "WhatsApp", visit: "Visit", voice_agent: "Agent vocal", sms: "SMS", other: "Other",
+  phone: "Phone", email: "E-mail", whatsapp: "WhatsApp", visit: "Visit", voice_agent: "Voice agent", sms: "SMS", other: "Other",
 };
 const SEVERITY: Record<NonNullable<ClientEvent["severity"]>, { label: string; tone: Tone }> = {
   low: { label: "Low", tone: "muted" },
@@ -588,7 +588,7 @@ export function NewEventPanel({ kind, subtitle, onClose, onSubmit, pending, link
       onClose={onClose}
       footer={
         <>
-          <span className="mr-auto text-[11.5px] text-muted-foreground">{issue ? "Will be created \"Open\"" : "⌘↵ pour enregistrer"}</span>
+          <span className="mr-auto text-[11.5px] text-muted-foreground">{issue ? "Will be created \"Open\"" : "⌘↵ to save"}</span>
           <Button variant="ghost" onClick={onClose}>Cancel</Button>
           <Button variant="primary" loading={pending} disabled={!title.trim()} onClick={submit} kbd="⌘↵">Save</Button>
         </>
@@ -602,14 +602,14 @@ export function NewEventPanel({ kind, subtitle, onClose, onSubmit, pending, link
           <Select value={type} onChange={(v) => setType(v as AnyEventType)} options={typeOptions} className="w-full" />
         </Field>
         <Field label="Title">
-          <Input autoFocus value={title} onChange={(e) => setTitle(e.target.value)} placeholder={kind === "client" ? "Ex.: lobsters who have arrived dead" : "Ex. : camion arrivé à 7 h au lieu de 4 h"} />
+          <Input autoFocus value={title} onChange={(e) => setTitle(e.target.value)} placeholder={kind === "client" ? "Ex.: lobsters who have arrived dead" : "Example: the truck arrived at 7 am instead of 4 am"} />
         </Field>
         <Field label="Description">
           <Textarea rows={4} value={description} onChange={(e) => setDescription(e.target.value)} placeholder="What happened, with the client's words if possible." />
         </Field>
         <div className="grid grid-cols-2 gap-3">
           <Field label="Date">
-            <DatePicker value={date} onChange={(v) => setDate(v || todayIso())} max={todayIso()} presets={[{ label: "Today", days: 0 }, { label: "Yesterday", days: -1 }, { label: "−7 j", days: -7 }]} />
+            <DatePicker value={date} onChange={(v) => setDate(v || todayIso())} max={todayIso()} presets={[{ label: "Today", days: 0 }, { label: "Yesterday", days: -1 }, { label: "−7 days", days: -7 }]} />
           </Field>
           <Field label="Canal">
             <Select className="w-full" value={channel} onChange={setChannel} placeholder="—" options={Object.entries(CHANNEL_LABEL).map(([value, label]) => ({ value, label }))} />

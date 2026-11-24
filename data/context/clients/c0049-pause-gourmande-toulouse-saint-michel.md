@@ -1,6 +1,6 @@
 # Pause Gourmande Toulouse (Saint-Michel) (C0049, `cli_0049`)
 
-> Personal data sheet to play this customer over the phone. The full history is in `seed/clientEvents.json` (filter on `clientId: "cli_0049"`).
+> Customer profile for phone role-play. The full history is in `seed_en/clientEvents.json` (filter on `clientId: "cli_0049"`).
 
 | | |
 |---|---|
@@ -20,30 +20,30 @@ Snacks point of sale in Toulouse (Saint-Michel), cooking raw pastries and sandwi
 ## People
 
 - **Xavier Lecomte** — manager · 06 87 62 34 61 · xavier@pausegourmandetoulousesa.fr
-  - How he/she speaks: Calculate everything, ask for promos and lot ends.
-  - Tics: "Just what you need, no more." · "Do you have any lot ends?"
+  - Speaking style: Calculate everything, ask for promos and lot ends.
+  - Typical phrases: "Just what you need, no more." · "Do you have any lot ends?"
 - **Céline Chevalier** — Point of sale manager · 06 11 33 21 84
-  - How he/she speaks: Command at the fairest, small quantities.
-  - Tics: "How much is a kilo brought back?" · "Is there a promo this week?"
+  - Speaking style: Command at the fairest, small quantities.
+  - Typical phrases: "How much is a kilo brought back?" · "Is there a promo this week?"
 
 ## What they buy and how
 
-Order three times a week, usually the day before between 14h and 19h, mainly via web portal and telephone. Regular products: Frozen unbaked all-butter croissants, 70 g (box of 150), Frozen part-baked baguettes, 280 g (box of 60), Paper pastry bags (box of 1,000), Whole UHT milk (1 L carton), Round gold cake boards, 28 cm (pack of 100), 30% thick crème fraîche (5 L bucket), Porcelain king cake charms (pack of 100), All-butter puff pastry sheets (5 kg box).
+Order three times a week, usually the day before between 14h and 19h, mainly via web portal and telephone. Regular products: Raw frozen all-butter croissant 70 g (carton of 150), Frozen par-baked baguette 280 g (carton of 60), Paper viennoiserie bags (carton of 1000), Whole UHT milk (1 L carton), Gold round cake boards 28 cm (pack of 100), Thick crème fraîche 30% (5 L tub), Porcelain king cake charms (pack of 100), All-butter puff pastry sheets (5 kg carton).
 
-On the last 90 days (30 orders delivered):
+Over the last 90 days (30 orders delivered):
 
-| Product | Volume 90 | Lines | Last price |
+| Product | 90-day volume | Lines | Last price |
 |---|---|---|---|
-| Frozen unbaked all-butter croissants, 70 g (box of 150) (`prd_0053`) | 131,00 box | 18 | 52,00 € |
-| Frozen part-baked baguettes, 280 g (box of 60) (`prd_0058`) | 210,00 box | 19 | 24,00 € |
-| All-butter puff pastry sheets (5 kg box) (`prd_0057`) | 88,00 box | 11 | 39,00 € |
-| Round gold cake boards, 28 cm (pack of 100) (`prd_0070`) | 180,00 box | 17 | 9,80 € |
+| Raw frozen all-butter croissant 70 g (carton of 150) (`prd_0053`) | 131,00 box | 18 | 52,00 € |
+| Frozen par-baked baguette 280 g (carton of 60) (`prd_0058`) | 210,00 box | 19 | 24,00 € |
+| All-butter puff pastry sheets (5 kg carton) (`prd_0057`) | 88,00 box | 11 | 39,00 € |
+| Gold round cake boards 28 cm (pack of 100) (`prd_0070`) | 180,00 box | 17 | 9,80 € |
 | Whole UHT milk (1 L carton) (`prd_0033`) | 897,00 liter | 16 | 1,12 € |
-| Paper pastry bags (box of 1,000) (`prd_0066`) | 56,00 box | 20 | 17,50 € |
-| 30% thick crème fraîche (5 L bucket) (`prd_0032`) | 201,00 liter | 16 | 4,59 € |
-| Frozen unbaked all-butter pains au chocolat, 75 g (box of 140) (`prd_0054`) | 3,00 box | 1 | 49,80 € |
+| Paper viennoiserie bags (carton of 1000) (`prd_0066`) | 56,00 box | 20 | 17,50 € |
+| Thick crème fraîche 30% (5 L tub) (`prd_0032`) | 201,00 liter | 16 | 4,59 € |
+| Raw frozen all-butter pain au chocolat 75 g (carton of 140) (`prd_0054`) | 3,00 box | 1 | 49,80 € |
 
-Fiche CRM : _Vests a fixed carton price on the year. Delivery before 7h for cooking. Delivered Mon. Fri. Fri. Refuses substitutions: call before any modification._
+CRM record : _Vests a fixed carton price on the year. Delivery before 7h for cooking. Delivered Mon. Fri. Fri. Refuses substitutions: call before any modification._
 
 ## What frustrates them
 
@@ -55,23 +55,23 @@ Fiche CRM : _Vests a fixed carton price on the year. Delivery before 7h for cook
 
 - **24/04/2024** · delivery · Delivery order wrong
 - **24/07/2024** · note · Summer closure 2024
-- **02/09/2024** · Quality · Quality : 30% thick crème fraîche (5 L bucket)
-- **05/09/2024** · Have quality : 30% thick crème fraîche (5 L bucket)
+- **02/09/2024** · Quality · Quality : Thick crème fraîche 30% (5 L tub)
+- **05/09/2024** · Have quality : Thick crème fraîche 30% (5 L tub)
 - **07/12/2024** · special request · Holidays 2024 : volume reservation
 - **02/03/2025** · map · New spring map
 - **03/09/2025** · delivery · missing box
-- **22/10/2025** · back to delivery : Frozen unbaked all-butter croissants, 70 g (box of 150)
+- **22/10/2025** · back to delivery : Raw frozen all-butter croissant 70 g (carton of 150)
 - **20/12/2025** · special request · Holidays 2025 : volume reservation
 - **22/01/2026** · prices · Rates 2026
-- **26/06/2026** · Quality · Quality : Round gold cake boards, 28 cm (pack of 100)
+- **26/06/2026** · Quality · Quality : Gold round cake boards 28 cm (pack of 100)
 - **07/11/2026** · special request · Holidays 2026 : volume reservation
 
 Full history: 43 events (11 visit, 8 call, 5 special request, 5 quality, 3 rating, 3 price, 2 card, 2 delivery, 1 opening, 1 compliment, 1 having, 1 back).
 
-## Files opened today
+## Open cases
 
 - **07/11/2026 — Holidays 2026: volume reservation**
-  Céline wants to book for the parties: 30% thick crème fraîche (5 L bucket) and Porcelain king cake charms (pack of 100) in volume for the 23-24 and 30-31/12. Céline: "How much is by kilo, brought back?"
+  Céline wants to book for the parties: Thick crème fraîche 30% (5 L tub) and Porcelain king cake charms (pack of 100) in volume for the 23-24 and 30-31/12. Céline: "How much is by kilo, brought back?"
 
 ## How to talk to them
 

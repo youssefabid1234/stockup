@@ -1,6 +1,6 @@
 # Pause Gourmande Toulouse (Saint-Cyprien) (C0092, `cli_0092`)
 
-> Personal data sheet to play this customer over the phone. The full history is in `seed/clientEvents.json` (filter on `clientId: "cli_0092"`).
+> Customer profile for phone role-play. The full history is in `seed_en/clientEvents.json` (filter on `clientId: "cli_0092"`).
 
 | | |
 |---|---|
@@ -20,26 +20,26 @@ Snacks point of sale in Toulouse (Saint-Cyprien), cooking raw pastries and sandw
 ## People
 
 - **Pascal Leroy** — manager · 07 62 51 82 40 · pascal@pausegourmandetoulousesa.fr
-  - How he/she speaks: Command at the fairest, small quantities.
-  - Tics: "How much is a kilo, brought back?" · "Do you have lot ends?"
+  - Speaking style: Command at the fairest, small quantities.
+  - Typical phrases: "How much is a kilo, brought back?" · "Do you have lot ends?"
 
 ## What they buy and how
 
-Order three times a week, usually the day before between 14h and 18h, mainly via web portal and telephone. Regular products: Frozen part-baked baguettes, 280 g (box of 60), Paper pastry bags (box of 1,000), Porcelain king cake charms (pack of 100), Frozen unbaked all-butter pains au chocolat, 75 g (box of 140), Assorted unbaked mini pastries (box of 210), Frozen raspberry purée (1 kg tub), Gold cardboard king cake crowns (pack of 100), White cake boxes, 20 cm (pack of 50).
+Order three times a week, usually the day before between 14h and 18h, mainly via web portal and telephone. Regular products: Frozen par-baked baguette 280 g (carton of 60), Paper viennoiserie bags (carton of 1000), Porcelain king cake charms (pack of 100), Raw frozen all-butter pain au chocolat 75 g (carton of 140), Assorted raw mini viennoiseries (carton of 210), Frozen raspberry purée (1 kg tray), Gold cardboard king cake crowns (pack of 100), White pastry boxes 20 cm (pack of 50).
 
-On the last 90 days (28 orders delivered):
+Over the last 90 days (28 orders delivered):
 
-| Product | Volume 90 | Lines | Last price |
+| Product | 90-day volume | Lines | Last price |
 |---|---|---|---|
-| Frozen unbaked all-butter pains au chocolat, 75 g (box of 140) (`prd_0054`) | 90,00 box | 13 | 49,80 € |
-| Frozen part-baked baguettes, 280 g (box of 60) (`prd_0058`) | 96,00 box | 12 | 24,00 € |
-| 35% UHT whipping cream (1 L carton) (`prd_0031`) | 482,00 liter | 19 | 4,10 € |
-| Assorted unbaked mini pastries (box of 210) (`prd_0056`) | 37,00 box | 11 | 46,00 € |
-| White cake boxes, 20 cm (pack of 50) (`prd_0067`) | 114,00 box | 16 | 14,50 € |
-| Paper pastry bags (box of 1,000) (`prd_0066`) | 32,00 box | 9 | 17,50 € |
-| Frozen raspberry purée (1 kg tub) (`prd_0059`) | 46,35 kg | 7 | 9,40 € |
+| Raw frozen all-butter pain au chocolat 75 g (carton of 140) (`prd_0054`) | 90,00 box | 13 | 49,80 € |
+| Frozen par-baked baguette 280 g (carton of 60) (`prd_0058`) | 96,00 box | 12 | 24,00 € |
+| UHT liquid cream 35% (1 L carton) (`prd_0031`) | 482,00 liter | 19 | 4,10 € |
+| Assorted raw mini viennoiseries (carton of 210) (`prd_0056`) | 37,00 box | 11 | 46,00 € |
+| White pastry boxes 20 cm (pack of 50) (`prd_0067`) | 114,00 box | 16 | 14,50 € |
+| Paper viennoiserie bags (carton of 1000) (`prd_0066`) | 32,00 box | 9 | 17,50 € |
+| Frozen raspberry purée (1 kg tray) (`prd_0059`) | 46,35 kg | 7 | 9,40 € |
 
-Fiche CRM : _Order on the gate. Wants a fixed price card over the year. Delivered Mon. Fri. Sea. Refuses substitutions: call before any modification._
+CRM record : _Order on the gate. Wants a fixed price card over the year. Delivered Mon. Fri. Sea. Refuses substitutions: call before any modification._
 
 ## What frustrates them
 
@@ -51,9 +51,9 @@ Fiche CRM : _Order on the gate. Wants a fixed price card over the year. Delivere
 
 - **28/11/2023** · special request · Holidays 2023 : volume reservation
 - **16/01/2024** · prices · Rates 2024
-- **27/03/2024** · Quality · Quality : Paper pastry bags (box of 1,000)
-- **03/06/2024** · Quality · Quality : 35% UHT whipping cream (1 L carton)
-- **07/06/2024** · Have quality : 35% UHT whipping cream (1 L carton)
+- **27/03/2024** · Quality · Quality : Paper viennoiserie bags (carton of 1000)
+- **03/06/2024** · Quality · Quality : UHT liquid cream 35% (1 L carton)
+- **07/06/2024** · Have quality : UHT liquid cream 35% (1 L carton)
 - **19/07/2024** · note · Summer closure 2024
 - **17/07/2025** · note · Summer closure 2025
 - **03/09/2025** · Delivery late
@@ -64,7 +64,7 @@ Fiche CRM : _Order on the gate. Wants a fixed price card over the year. Delivere
 
 Full history: 42 events (10 visit, 7 call, 5 compliment, 5 note, 4 special request, 3 quality, 3 price, 2 card, 1 opening, 1 have, 1 delivery).
 
-## Files opened today
+## Open cases
 
 None.
 

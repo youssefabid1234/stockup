@@ -164,7 +164,7 @@ export function VoiceCommandHud() {
               <MicOff size={14} strokeWidth={1.75} className="mt-px shrink-0 text-warning" />
               {s.mic === "denied"
                 ? "Micro-rejection: allow it in the settings of the site (icon to the left of the address). Meanwhile, type the command."
-                : "Micro indisponible ici (il faut localhost ou https). Tapez la commande."}
+                : "The microphone needs localhost or HTTPS. Type your command instead."}
             </div>
           ) : !run && s.phase === "idle" ? (
             <div className="text-[12px] text-muted-foreground">

@@ -1,6 +1,6 @@
 # Le Buffet Toulousain (C0046, `cli_0046`)
 
-> Personal data sheet to play this customer over the phone. The full history is in `seed/clientEvents.json` (filter on `clientId: "cli_0046"`).
+> Customer profile for phone role-play. The full history is in `seed_en/clientEvents.json` (filter on `clientId: "cli_0046"`).
 
 | | |
 |---|---|
@@ -10,7 +10,7 @@
 | Sales representative | Karim Belkacem |
 | Customer since | 25/09/2022 (4 years) |
 | Payment | 30 days — Bad Payer, Risk Account |
-| Outstanding balance | 4 883,56 € incl. VAT (ceiling 3 500 €) — **3 invoice due: 4 883,56 €** |
+| Outstanding balance | 4 883,56 € incl. VAT (ceiling 3 500 €) — **3 overdue invoices: 4 883,56 €** |
 | Temperament | warm — quality ★★☆, price ★★☆, risk of losing the customer low |
 
 ## Who they are
@@ -20,30 +20,30 @@ Caterer from Toulouse (Capitol): weddings in summer, seminars, Christmas Eve. Mi
 ## People
 
 - **Frédéric Doumergue** — manager · 06 65 72 49 82 · frederic@buffettoulousain.fr
-  - How he/she speaks: Good mood, laughs easily, tells his/her week.
-  - Tics: "Come and taste the new dish!" · "Bives to the team."
+  - Speaking style: Good mood, laughs easily, tells his/her week.
+  - Typical phrases: "Come and taste the new dish!" · "Bives to the team."
 - **Alice Fontaine** — Production manager · 06 41 96 50 06
-  - How he/she speaks: Very friendly, take news, quickly tutoe.
-  - Tics: "You're lovers." · "Come and taste the new dish!"
+  - Speaking style: Very friendly, take news, quickly tutoe.
+  - Typical phrases: "You're lovers." · "Come and taste the new dish!"
 
 ## What they buy and how
 
-Controls irregularly (disturbances, events), usually 2 days front between 10h and 16h, especially via e-mail and telephone. Common products: Pasteurised liquid whole egg (1 L carton), White cake boxes, 20 cm (pack of 50), Lemons (5 kg box), Round gold cake boards, 28 cm (pack of 100), 35% UHT whipping cream (1 L carton), Frozen unbaked all-butter pains au chocolat, 75 g (box of 140), Frozen raspberry purée (1 kg tub), Pasteurised liquid egg yolk (1 L carton).
+Controls irregularly (disturbances, events), usually 2 days front between 10h and 16h, especially via e-mail and telephone. Common products: Pasteurised liquid whole egg (1 L carton), White pastry boxes 20 cm (pack of 50), Lemon (5 kg case), Gold round cake boards 28 cm (pack of 100), UHT liquid cream 35% (1 L carton), Raw frozen all-butter pain au chocolat 75 g (carton of 140), Frozen raspberry purée (1 kg tray), Pasteurised liquid egg yolk (1 L carton).
 
-On the last 90 days (4 orders delivered):
+Over the last 90 days (4 orders delivered):
 
-| Product | Volume 90 | Lines | Last price |
+| Product | 90-day volume | Lines | Last price |
 |---|---|---|---|
-| Frozen unbaked all-butter pains au chocolat, 75 g (box of 140) (`prd_0054`) | 23,00 box | 4 | 54,00 € |
-| 35% UHT whipping cream (1 L carton) (`prd_0031`) | 109,00 liter | 3 | 4,10 € |
-| Printed kraft baguette bags (box of 1,000) (`prd_0065`) | 20,00 box | 3 | 22,00 € |
-| Frozen unbaked raisin pastries, 110 g (box of 80) (`prd_0055`) | 10,00 box | 2 | 41,00 € |
+| Raw frozen all-butter pain au chocolat 75 g (carton of 140) (`prd_0054`) | 23,00 box | 4 | 54,00 € |
+| UHT liquid cream 35% (1 L carton) (`prd_0031`) | 109,00 liter | 3 | 4,10 € |
+| Printed kraft baguette bags (carton of 1000) (`prd_0065`) | 20,00 box | 3 | 22,00 € |
+| Raw frozen pain aux raisins 110 g (carton of 80) (`prd_0055`) | 10,00 box | 2 | 41,00 € |
 | Pasteurised liquid egg yolk (1 L carton) (`prd_0036`) | 32,00 liter | 2 | 8,09 € |
 | Pasteurised liquid whole egg (1 L carton) (`prd_0035`) | 59,00 liter | 2 | 4,28 € |
-| White cake boxes, 20 cm (pack of 50) (`prd_0067`) | 13,00 box | 2 | 14,50 € |
-| Frozen raspberry purée (1 kg tub) (`prd_0059`) | 16,58 kg | 2 | 9,40 € |
+| White pastry boxes 20 cm (pack of 50) (`prd_0067`) | 13,00 box | 2 | 14,50 € |
+| Frozen raspberry purée (1 kg tray) (`prd_0059`) | 16,58 kg | 2 | 9,40 € |
 
-CRM card: _Gross orders to J-2 for events. Mini-pastries for seminars. Delivered sea. sam. Refuses substitutions: call before any modification._
+CRM card: _Gross orders two days in advance for events. Mini-pastries for seminars. Delivered sea. sam. Refuses substitutions: call before any modification._
 
 ## What frustrates them
 
@@ -53,7 +53,7 @@ CRM card: _Gross orders to J-2 for events. Mini-pastries for seminars. Delivered
 ## A brief history
 
 - **12/07/2025** · Payment · Recovery : FAC-2025-001188
-- **19/07/2025** · Quality · Quality : White cake boxes, 20 cm (pack of 50)
+- **19/07/2025** · Quality · Quality : White pastry boxes 20 cm (pack of 50)
 - **12/09/2025** · Payment · Recovery : FAC-2025-001664
 - **10/11/2025** · Payment · Recovery : FAC-2025-002061
 - **13/02/2026** · Payment · Recovery : FAC-2026-000020
@@ -67,14 +67,14 @@ CRM card: _Gross orders to J-2 for events. Mini-pastries for seminars. Delivered
 
 Full history: 44 events (11 payment, 8 call, 6 visit, 5 quality, 4 special request, 3 delivery, 2 price, 2 card, 1 opening, 1 schedule, 1 compliment).
 
-## Files opened today
+## Open cases
 
 - **16/10/2026 — Recovery: FAC-2026-001896 fallen** (`inv_007711`)
   Invoice FAC-2026-001896 (386,72 € incl. VAT) expired the 01/10/2026. Relaunched by phone. Frédéric: "The Accountant takes care of it."
 - **05/11/2026 — Locked account for outstanding payments** (`inv_007522`)
   3 outstanding due invoices for 4 883,56 € incl. VAT. Deliveries suspended until at least 50 % due and a validated schedule.
 - **06/11/2026 — Holidays 2026: volume reservation**
-  Frédéric wants to book for the parties: Frozen raspberry purée (1 kg tub) and Lemons (5 kg box) in volume for the 23-24 and 30-31/12. Frédéric: "Bives to the team."
+  Frédéric wants to book for the parties: Frozen raspberry purée (1 kg tray) and Lemon (5 kg case) in volume for the 23-24 and 30-31/12. Frédéric: "Bives to the team."
 - **08/11/2026 — Proposed timeline**
   Frédéric proposes to pay in 6 times and requests the resumption of deliveries. Pending validation by the management.
 

@@ -1,6 +1,6 @@
 # Aux Délices de Florian (C0067, `cli_0067`)
 
-> Personal data sheet to play this customer over the phone. The full history is in `seed/clientEvents.json` (filter on `clientId: "cli_0067"`).
+> Customer profile for phone role-play. The full history is in `seed_en/clientEvents.json` (filter on `clientId: "cli_0067"`).
 
 | | |
 |---|---|
@@ -10,7 +10,7 @@
 | Sales representative | Julien Fabre |
 | Customer since | 07/03/2016 (10 years) |
 | Payment | 45 days — Pays late (3 to 6 weeks), but ends up paying |
-| Outstanding balance | 16 645,36 € incl. VAT (ceiling 25 000 €) — **1 invoice due: 6 884,34 €** |
+| Outstanding balance | 16 645,36 € incl. VAT (ceiling 25 000 €) — **1 overdue invoices: 6 884,34 €** |
 | Temperament | chatter, scolding, economical — quality ★☆☆, price ★★★, medium risk of losing the customer |
 
 ## Who they are
@@ -20,27 +20,27 @@ Village bakery in Albi with bread deposit in two nearby communes. Large consumer
 ## People
 
 - **Pascal Blanchard** — bakery owner · 06 16 70 19 26
-  - How he/she speaks: Tells his/her life, talks about customers, time, football.
-  - Tics: "What am I saying?" · "You don't know what happened to me..."
+  - Speaking style: Tells his/her life, talks about customers, time, football.
+  - Typical phrases: "What am I saying?" · "You don't know what happened to me..."
 
 ## What they buy and how
 
-Order once a week, usually the day before between 13h and 18h, especially by phone and WhatsApp. Regular products: Traditional French T55 wheat flour (25 kg sack), 82% laminating butter (2 kg slab), 44% baker's chocolate sticks (1.6 kg box, 300 sticks), Printed kraft baguette bags (box of 1,000), Fine sea salt (25 kg sack), Ground blanched almonds (5 kg bag), T130 rye flour (25 kg sack), Fresh baker's yeast (500 g block).
+Order once a week, usually the day before between 13h and 18h, especially by phone and WhatsApp. Regular products: T55 traditional French wheat flour (25 kg bag), 82% laminating butter (2 kg sheet), Baker's chocolate sticks 44% (1.6 kg carton, 300 sticks), Printed kraft baguette bags (carton of 1000), Fine sea salt (25 kg bag), Blanched ground almonds (5 kg bag), T130 rye flour (25 kg bag), Fresh baker's yeast (500 g block).
 
-On the last 90 days (12 orders delivered):
+Over the last 90 days (12 orders delivered):
 
-| Product | Volume 90 | Lines | Last price |
+| Product | 90-day volume | Lines | Last price |
 |---|---|---|---|
-| T55 baker's wheat flour (25 kg sack) (`prd_0002`) | 196,00 piece | 7 | 16,56 € |
-| Traditional French T55 wheat flour (25 kg sack) (`prd_0001`) | 159,00 piece | 4 | 19,11 € |
-| 82% laminating butter (2 kg slab) (`prd_0026`) | 266,59 kg | 6 | 9,38 € |
-| Printed kraft baguette bags (box of 1,000) (`prd_0065`) | 66,00 box | 9 | 22,00 € |
-| 44% baker's chocolate sticks (1.6 kg box, 300 sticks) (`prd_0042`) | 88,00 box | 7 | 13,82 € |
-| 50% hazelnut praline (5 kg bucket) (`prd_0045`) | 69,60 kg | 3 | 16,42 € |
-| T130 rye flour (25 kg sack) (`prd_0006`) | 47,00 piece | 5 | 23,65 € |
-| Frozen unbaked raisin pastries, 110 g (box of 80) (`prd_0055`) | 25,00 box | 7 | 41,00 € |
+| T55 baker's wheat flour (25 kg bag) (`prd_0002`) | 196,00 piece | 7 | 16,56 € |
+| T55 traditional French wheat flour (25 kg bag) (`prd_0001`) | 159,00 piece | 4 | 19,11 € |
+| 82% laminating butter (2 kg sheet) (`prd_0026`) | 266,59 kg | 6 | 9,38 € |
+| Printed kraft baguette bags (carton of 1000) (`prd_0065`) | 66,00 box | 9 | 22,00 € |
+| Baker's chocolate sticks 44% (1.6 kg carton, 300 sticks) (`prd_0042`) | 88,00 box | 7 | 13,82 € |
+| Hazelnut praline 50% (5 kg tub) (`prd_0045`) | 69,60 kg | 3 | 16,42 € |
+| T130 rye flour (25 kg bag) (`prd_0006`) | 47,00 piece | 5 | 23,65 € |
+| Raw frozen pain aux raisins 110 g (carton of 80) (`prd_0055`) | 25,00 box | 7 | 41,00 € |
 
-Fiche CRM : _Delivery before 11h, after the morning rush. Do not want to freeze: everything is homemade. Delivered Fri. Accept equivalent substitutions if you warn._
+CRM record : _Delivery before 11h, after the morning rush. Do not want to freeze: everything is homemade. Delivered Fri. Accept equivalent substitutions if you warn._
 
 ## What frustrates them
 
@@ -66,7 +66,7 @@ Fiche CRM : _Delivery before 11h, after the morning rush. Do not want to freeze:
 
 Full history: 42 events (10 visit, 9 payment, 5 special request, 5 compliment, 5 call, 4 price, 1 opening, 1 quality, 1 delivery, 1 note).
 
-## Files opened today
+## Open cases
 
 None.
 

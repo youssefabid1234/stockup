@@ -1,6 +1,6 @@
 # Le Pétrin de Balma (C0007, `cli_0007`)
 
-> Personal data sheet to play this customer over the phone. The full history is in `seed/clientEvents.json` (filter on `clientId: "cli_0007"`).
+> Customer profile for phone role-play. The full history is in `seed_en/clientEvents.json` (filter on `clientId: "cli_0007"`).
 
 | | |
 |---|---|
@@ -10,7 +10,7 @@
 | Sales representative | Julien Fabre |
 | Customer since | 07/09/2020 (6 years) |
 | Payment | 30 days — Bad Payer, Risk Account |
-| Outstanding balance | 9 465,37 € incl. VAT (ceiling 5 500 €) — **6 invoice due: 7 244,72 €** |
+| Outstanding balance | 9 465,37 € incl. VAT (ceiling 5 500 €) — **6 overdue invoices: 7 244,72 €** |
 | Temperament | disorganized, chatty — quality ★★☆, price ★★☆, risk of losing the customer low |
 
 ## Who they are
@@ -20,27 +20,27 @@ Balma Bakery resumed in 2020, in difficulty since the opening of a cooking termi
 ## People
 
 - **Romain Gaillard** — Baker-manager · 06 28 91 47 33
-  - How he/she speaks: Sympathic but fleeing as soon as we talk about money, always overwhelmed.
-  - Tics: "The LCR is ironed, I swear." · "Just deliver me the flour of the week."
+  - Speaking style: Sympathic but fleeing as soon as we talk about money, always overwhelmed.
+  - Typical phrases: "The LCR is ironed, I swear." · "Just deliver me the flour of the week."
 
 ## What they buy and how
 
-Order twice a week, usually the day before between 13h and 18h, especially by telephone and WhatsApp. Regular products: Traditional French T55 wheat flour (25 kg sack), 82% laminating butter (2 kg slab), 44% baker's chocolate sticks (1.6 kg box, 300 sticks), Printed kraft baguette bags (box of 1,000), Fine sea salt (25 kg sack), Dried rye sourdough starter (1 kg bag), Porcelain king cake charms (pack of 100), Organic T150 wholemeal flour (25 kg sack).
+Order twice a week, usually the day before between 13h and 18h, especially by telephone and WhatsApp. Regular products: T55 traditional French wheat flour (25 kg bag), 82% laminating butter (2 kg sheet), Baker's chocolate sticks 44% (1.6 kg carton, 300 sticks), Printed kraft baguette bags (carton of 1000), Fine sea salt (25 kg bag), Dehydrated rye sourdough (1 kg bag), Porcelain king cake charms (pack of 100), T150 organic wholemeal flour (25 kg bag).
 
-On the last 90 days (13 orders delivered):
+Over the last 90 days (13 orders delivered):
 
-| Product | Volume 90 | Lines | Last price |
+| Product | 90-day volume | Lines | Last price |
 |---|---|---|---|
-| Traditional French T55 wheat flour (25 kg sack) (`prd_0001`) | 151,00 piece | 7 | 19,11 € |
-| 82% laminating butter (2 kg slab) (`prd_0026`) | 171,07 kg | 6 | 9,16 € |
-| 44% baker's chocolate sticks (1.6 kg box, 300 sticks) (`prd_0042`) | 68,00 box | 9 | 13,88 € |
-| Printed kraft baguette bags (box of 1,000) (`prd_0065`) | 42,00 box | 11 | 22,00 € |
-| T55 baker's wheat flour (25 kg sack) (`prd_0002`) | 47,00 piece | 5 | 17,20 € |
-| T130 rye flour (25 kg sack) (`prd_0006`) | 23,00 piece | 7 | 24,56 € |
+| T55 traditional French wheat flour (25 kg bag) (`prd_0001`) | 151,00 piece | 7 | 19,11 € |
+| 82% laminating butter (2 kg sheet) (`prd_0026`) | 171,07 kg | 6 | 9,16 € |
+| Baker's chocolate sticks 44% (1.6 kg carton, 300 sticks) (`prd_0042`) | 68,00 box | 9 | 13,88 € |
+| Printed kraft baguette bags (carton of 1000) (`prd_0065`) | 42,00 box | 11 | 22,00 € |
+| T55 baker's wheat flour (25 kg bag) (`prd_0002`) | 47,00 piece | 5 | 17,20 € |
+| T130 rye flour (25 kg bag) (`prd_0006`) | 23,00 piece | 7 | 24,56 € |
 | Pasteurised liquid whole egg (1 L carton) (`prd_0035`) | 98,00 liter | 6 | 4,31 € |
-| Ground blanched almonds (5 kg bag) (`prd_0046`) | 32,18 kg | 4 | 11,83 € |
+| Blanched ground almonds (5 kg bag) (`prd_0046`) | 32,18 kg | 4 | 11,83 € |
 
-Fiche CRM : _Commanded twice a week: tradition, yeast, standard laminating butter._
+CRM record : _Commanded twice a week: tradition, yeast, standard laminating butter._
 
 ## What frustrates them
 
@@ -49,14 +49,14 @@ Fiche CRM : _Commanded twice a week: tradition, yeast, standard laminating butte
 
 ## A brief history
 
-- **24/04/2026** · Have quality : T130 rye flour (25 kg sack)
+- **24/04/2026** · Have quality : T130 rye flour (25 kg bag)
 - **30/04/2026** · Payment · Recovery : FAC-2026-000601
-- **02/05/2026** · claim · Outturn: Organic T150 wholemeal flour (25 kg sack) not delivered
-- **16/05/2026** · claim · Outturn: Organic T150 wholemeal flour (25 kg sack) not delivered
+- **02/05/2026** · claim · Outturn: T150 organic wholemeal flour (25 kg bag) not delivered
+- **16/05/2026** · claim · Outturn: T150 organic wholemeal flour (25 kg bag) not delivered
 - **15/07/2026** · Payment · Recovery : FAC-2026-001192
 - **21/07/2026** · note · Summer closure 2026
 - **09/09/2026** · Payment · Recovery : FAC-2026-001645
-- **03/10/2026** · claim · Outturn: Organic T150 wholemeal flour (25 kg sack) not delivered
+- **03/10/2026** · claim · Outturn: T150 organic wholemeal flour (25 kg bag) not delivered
 - **31/10/2026** · payment · Second LCR rejected
 - **02/11/2026** · Payment · Locked account for unpaid payments
 - **05/11/2026** · Schedule · Proposed Schedule
@@ -64,7 +64,7 @@ Fiche CRM : _Commanded twice a week: tradition, yeast, standard laminating butte
 
 Full history: 72 events (19 claim, 19 payment, 7 call, 6 quality, 6 visit, 4 price, 3 note, 2 delivery, 2 special request, 2 have, 1 opening, 1 schedule).
 
-## Files opened today
+## Open cases
 
 - **31/10/2026 — Second LCR rejected**
   LCR of 2 380 € rejected for insufficient provision, after September.

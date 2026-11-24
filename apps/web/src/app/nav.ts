@@ -18,17 +18,17 @@ export const NAV: NavGroup[] = [
     items: [
       { to: "/orders", label: "Orders", icon: ShoppingCart, keywords: "sales order" },
       { to: "/clients", label: "Customers", icon: Users, keywords: "client restaurant" },
-      { to: "/prices", label: "Price", icon: BadgeEuro, keywords: "prices rules discount price negotiated grid simulator margin" },
-      { to: "/history", label: "Background", icon: History, keywords: "historical claim dispute back to have relation events supplier" },
+      { to: "/prices", label: "Pricing", icon: BadgeEuro, keywords: "prices rules discount price negotiated grid simulator margin" },
+      { to: "/history", label: "Account history", icon: History, keywords: "historical claim dispute back to have relation events supplier" },
     ],
   },
   {
-    label: "Achats & stock",
+    label: "Purchasing and stock",
     items: [
       { to: "/products", label: "Products", icon: Package, keywords: "catalogue article" },
       { to: "/stock", label: "Stocks", icon: Warehouse, keywords: "inventory lots" },
       { to: "/purchase-orders", label: "Purchases", icon: Boxes, keywords: "order supplier" },
-      { to: "/suppliers", label: "Suppliers", icon: Building2, keywords: "fournisseur" },
+      { to: "/suppliers", label: "Suppliers", icon: Building2, keywords: "supplier" },
     ],
   },
   {
@@ -41,7 +41,7 @@ export const NAV: NavGroup[] = [
   },
   { label: "Logistics", items: [{ to: "/routes", label: "Delivery routes", icon: Truck, keywords: "Road delivery" }] },
   {
-    label: "IA",
+    label: "AI",
     items: [
       { to: "#assistant", label: "Assistant", icon: Sparkles, keywords: "chat ia" },
       { to: "/voice", label: "Voice", icon: AudioLines, keywords: "Voice call agent" },

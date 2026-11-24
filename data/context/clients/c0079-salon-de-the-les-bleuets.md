@@ -1,6 +1,6 @@
 # Salon de thé Les Bleuets (C0079, `cli_0079`)
 
-> Personal data sheet to play this customer over the phone. The full history is in `seed/clientEvents.json` (filter on `clientId: "cli_0079"`).
+> Customer profile for phone role-play. The full history is in `seed_en/clientEvents.json` (filter on `clientId: "cli_0079"`).
 
 | | |
 |---|---|
@@ -20,30 +20,30 @@ Chocolate-pastry in Colomiers: Easter mouldings, logs and Christmas ballotins ac
 ## People
 
 - **Arnaud Le Gall** — Pastry chef-manager · 06 54 12 11 16
-  - How he/she speaks: Prudent, ask prices twice, wants everything in writing.
-  - Tics: "Where exactly did it come from?" · "The last time, it wasn't what was planned."
+  - Speaking style: Prudent, ask prices twice, wants everything in writing.
+  - Typical phrases: "Where exactly did it come from?" · "The last time, it wasn't what was planned."
 - **Anaïs Renard** — Chocolate · 06 22 74 23 26
-  - How he/she speaks: Asks a lot of questions about origin and dates.
-  - Tics: "The last time, it wasn't what was planned." · "Where exactly did it come from?"
+  - Speaking style: Asks a lot of questions about origin and dates.
+  - Typical phrases: "The last time, it wasn't what was planned." · "Where exactly did it come from?"
 
 ## What they buy and how
 
-Order once a week, usually the day before between 13h and 18h, especially by phone and WhatsApp. Regular products: 64% dark couverture chocolate (buttons, 5 kg bag), 35% UHT whipping cream (1 L carton), Charentes-Poitou AOP unsalted butter (10 × 1 kg box), White cake boxes, 20 cm (pack of 50), Whole UHT milk (1 L carton), Gold cardboard king cake crowns (pack of 100), Raspberries (125 g punnet), Ground blanched almonds (5 kg bag).
+Order once a week, usually the day before between 13h and 18h, especially by phone and WhatsApp. Regular products: Dark couverture chocolate 64% (pistoles, 5 kg bag), UHT liquid cream 35% (1 L carton), AOP Charentes-Poitou unsalted butter (carton of 10 × 1 kg), White pastry boxes 20 cm (pack of 50), Whole UHT milk (1 L carton), Gold cardboard king cake crowns (pack of 100), Raspberries (125 g punnet), Blanched ground almonds (5 kg bag).
 
-On the last 90 days (12 orders delivered):
+Over the last 90 days (12 orders delivered):
 
-| Product | Volume 90 | Lines | Last price |
+| Product | 90-day volume | Lines | Last price |
 |---|---|---|---|
-| Charentes-Poitou AOP unsalted butter (10 × 1 kg box) (`prd_0027`) | 205,07 kg | 7 | 10,20 € |
-| 35% UHT whipping cream (1 L carton) (`prd_0031`) | 328,00 liter | 8 | 4,10 € |
-| Ground blanched almonds (5 kg bag) (`prd_0046`) | 76,47 kg | 6 | 11,80 € |
-| 64% dark couverture chocolate (buttons, 5 kg bag) (`prd_0038`) | 55,91 kg | 4 | 15,68 € |
-| 33% white couverture chocolate (buttons, 5 kg bag) (`prd_0041`) | 53,82 kg | 6 | 15,88 € |
-| Heat-stable dark chocolate chips (5 kg bag) (`prd_0044`) | 45,63 kg | 5 | 9,01 € |
-| White cake boxes, 20 cm (pack of 50) (`prd_0067`) | 22,00 box | 5 | 14,50 € |
-| Round gold cake boards, 28 cm (pack of 100) (`prd_0070`) | 25,00 box | 5 | 9,80 € |
+| AOP Charentes-Poitou unsalted butter (carton of 10 × 1 kg) (`prd_0027`) | 205,07 kg | 7 | 10,20 € |
+| UHT liquid cream 35% (1 L carton) (`prd_0031`) | 328,00 liter | 8 | 4,10 € |
+| Blanched ground almonds (5 kg bag) (`prd_0046`) | 76,47 kg | 6 | 11,80 € |
+| Dark couverture chocolate 64% (pistoles, 5 kg bag) (`prd_0038`) | 55,91 kg | 4 | 15,68 € |
+| White couverture chocolate 33% (pistoles, 5 kg bag) (`prd_0041`) | 53,82 kg | 6 | 15,88 € |
+| Dark chocolate baking chips (5 kg bag) (`prd_0044`) | 45,63 kg | 5 | 9,01 € |
+| White pastry boxes 20 cm (pack of 50) (`prd_0067`) | 22,00 box | 5 | 14,50 € |
+| Gold round cake boards 28 cm (pack of 100) (`prd_0070`) | 25,00 box | 5 | 9,80 € |
 
-Fiche CRM : _Red fruits of Lot-et-Garonne in season. Easter chocolate pre-orders in February. Delivered Mon. Refuses substitutions: call before any modification._
+CRM record : _Red fruits of Lot-et-Garonne in season. Easter chocolate pre-orders in February. Delivered Mon. Refuses substitutions: call before any modification._
 
 ## What frustrates them
 
@@ -57,7 +57,7 @@ Fiche CRM : _Red fruits of Lot-et-Garonne in season. Easter chocolate pre-orders
 - **14/11/2025** · special request · Holidays 2025 : volume reservation
 - **16/12/2025** · Payment · Recovery : FAC-2025-002311
 - **08/01/2026** · prices · Rates 2026
-- **12/01/2026** · Quality · Quality : Heat-stable dark chocolate chips (5 kg bag)
+- **12/01/2026** · Quality · Quality : Dark chocolate baking chips (5 kg bag)
 - **12/02/2026** · Payment · Recovery : FAC-2026-000037
 - **11/04/2026** · Payment · Recovery : FAC-2026-000498
 - **13/07/2026** · Payment · Recovery : FAC-2026-001240
@@ -67,7 +67,7 @@ Fiche CRM : _Red fruits of Lot-et-Garonne in season. Easter chocolate pre-orders
 
 Full history: 32 events (11 payment, 5 call, 3 compliment, 3 visit, 2 price, 2 quality, 2 rating, 1 opening, 1 having, 1 delivery, 1 special request).
 
-## Files opened today
+## Open cases
 
 None.
 

@@ -129,7 +129,7 @@ function PriceList({ prices }: { prices: PriceRow[] }) {
     <Section title="Price list" count={prices.length}>
       <DataTable inset pageKey="pricesPage" columns={PRICE_COLS} rows={prices} getRowId={(p) => p.productId} defaultSort={{ id: "product", dir: "asc" }}
         onRowClick={(p) => navigate(`/products/${p.productId}`)}
-        empty={<EmptyFrame icon={Tag} text="Aucun prix référencé chez ce fournisseur." />} />
+        empty={<EmptyFrame icon={Tag} text="There are no listed prices for this supplier." />} />
     </Section>
   );
 }

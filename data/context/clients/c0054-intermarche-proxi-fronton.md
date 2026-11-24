@@ -1,6 +1,6 @@
 # Intermarché-Proxi Fronton (C0054, `cli_0054`)
 
-> Personal data sheet to play this customer over the phone. The full history is in `seed/clientEvents.json` (filter on `clientId: "cli_0054"`).
+> Customer profile for phone role-play. The full history is in `seed_en/clientEvents.json` (filter on `clientId: "cli_0054"`).
 
 | | |
 |---|---|
@@ -20,34 +20,34 @@ Fronton Supermarket with cooking terminal: pre-cooked chopsticks and pastries ra
 ## People
 
 - **Paolo Fournier** — Head of bakery department · 06 87 43 56 77 · paolo@intermarcheproxifronton.fr
-  - How he/she speaks: Play surprise on each fare, end up ordering.
-  - Tics: "Do you make a move?" · "What if I take twice?"
+  - Speaking style: Play surprise on each fare, end up ordering.
+  - Typical phrases: "Do you make a move?" · "What if I take twice?"
 - **Damien Lafforgue** — Store manager · 06 80 29 91 13
-  - How he/she speaks: Play surprise on each fare, end up ordering.
-  - Tics: "At this price, I take somewhere else." · "You are more expensive than your neighbor there."
+  - Speaking style: Play surprise on each fare, end up ordering.
+  - Typical phrases: "At this price, I take somewhere else." · "You are more expensive than your neighbor there."
 - **Khadija Paris** — Head of Reception · 06 70 44 53 63
-  - How he/she speaks: Always starts with the price, compares with the competition.
-  - Tics: "You're more expensive than your neighbor there." · "At this price, I'm taking somewhere else."
+  - Speaking style: Always starts with the price, compares with the competition.
+  - Typical phrases: "You're more expensive than your neighbor there." · "At this price, I'm taking somewhere else."
 - **Service comptabilité** — Bills · factures@intermarcheproxifronton.fr
 
 ## What they buy and how
 
-Order three times a week, usually the day before between 10h and 15h, especially via e-mail and web portal. Regular products: Frozen part-baked baguettes, 280 g (box of 60), Frozen unbaked all-butter croissants, 70 g (box of 150), Frozen unbaked all-butter pains au chocolat, 75 g (box of 140), T45 strong pastry flour (25 kg sack), Paper pastry bags (box of 1,000), Frozen unbaked raisin pastries, 110 g (box of 80), Traditional French T55 wheat flour (25 kg sack), Round gold cake boards, 28 cm (pack of 100).
+Order three times a week, usually the day before between 10h and 15h, especially via e-mail and web portal. Regular products: Frozen par-baked baguette 280 g (carton of 60), Raw frozen all-butter croissant 70 g (carton of 150), Raw frozen all-butter pain au chocolat 75 g (carton of 140), T45 gruau pastry flour (25 kg bag), Paper viennoiserie bags (carton of 1000), Raw frozen pain aux raisins 110 g (carton of 80), T55 traditional French wheat flour (25 kg bag), Gold round cake boards 28 cm (pack of 100).
 
-On the last 90 days (34 orders delivered):
+Over the last 90 days (34 orders delivered):
 
-| Product | Volume 90 | Lines | Last price |
+| Product | 90-day volume | Lines | Last price |
 |---|---|---|---|
-| Traditional French T55 wheat flour (25 kg sack) (`prd_0001`) | 784,00 piece | 21 | 19,80 € |
-| T45 strong pastry flour (25 kg sack) (`prd_0003`) | 398,00 piece | 21 | 23,50 € |
-| Frozen unbaked all-butter pains au chocolat, 75 g (box of 140) (`prd_0054`) | 136,00 box | 15 | 51,30 € |
-| Frozen unbaked all-butter croissants, 70 g (box of 150) (`prd_0053`) | 106,00 box | 16 | 48,56 € |
-| Frozen unbaked raisin pastries, 110 g (box of 80) (`prd_0055`) | 126,00 box | 24 | 38,28 € |
-| Frozen part-baked baguettes, 280 g (box of 60) (`prd_0058`) | 166,00 box | 14 | 22,41 € |
-| 35% UHT whipping cream (1 L carton) (`prd_0031`) | 528,00 liter | 18 | 3,82 € |
-| Paper pastry bags (box of 1,000) (`prd_0066`) | 90,00 box | 20 | 17,50 € |
+| T55 traditional French wheat flour (25 kg bag) (`prd_0001`) | 784,00 piece | 21 | 19,80 € |
+| T45 gruau pastry flour (25 kg bag) (`prd_0003`) | 398,00 piece | 21 | 23,50 € |
+| Raw frozen all-butter pain au chocolat 75 g (carton of 140) (`prd_0054`) | 136,00 box | 15 | 51,30 € |
+| Raw frozen all-butter croissant 70 g (carton of 150) (`prd_0053`) | 106,00 box | 16 | 48,56 € |
+| Raw frozen pain aux raisins 110 g (carton of 80) (`prd_0055`) | 126,00 box | 24 | 38,28 € |
+| Frozen par-baked baguette 280 g (carton of 60) (`prd_0058`) | 166,00 box | 14 | 22,41 € |
+| UHT liquid cream 35% (1 L carton) (`prd_0031`) | 528,00 liter | 18 | 3,82 € |
+| Paper viennoiserie bags (carton of 1000) (`prd_0066`) | 90,00 box | 20 | 17,50 € |
 
-Fiche CRM : _Delivery at the dock before 8h. Order by mail with the store order number. Delivered Mon. Fri. Fri. Refuses substitutions: call before any modification._
+CRM record : _Delivery at the dock before 8h. Order by mail with the store order number. Delivered Mon. Fri. Fri. Refuses substitutions: call before any modification._
 
 ## What frustrates them
 
@@ -64,7 +64,7 @@ Fiche CRM : _Delivery at the dock before 8h. Order by mail with the store order 
 
 Full history: 9 events (2 call, 2 contact, 2 visit, 1 opening, 1 price, 1 delivery).
 
-## Files opened today
+## Open cases
 
 None.
 
@@ -76,7 +76,7 @@ None.
 ## Price & group
 
 Groups: **GMS** (`gms`), **Grand accounts** (`grands-comptes`).
-Negotiated prices (`clientPrices`, always priority): Frozen unbaked raisin pastries, 110 g (box of 80) 38,28 € (list 41,00); Frozen unbaked all-butter croissants, 70 g (box of 150) 48,56 € (list 52,00); Frozen part-baked baguettes, 280 g (box of 60) 22,41 € (list 24,00); 35% UHT whipping cream (1 L carton) 3,83 € (list 4,10); Round gold cake boards, 28 cm (pack of 100) 9,15 € (list 9,80).
+Negotiated prices (`clientPrices`, always priority): Raw frozen pain aux raisins 110 g (carton of 80) 38,28 € (list 41,00); Raw frozen all-butter croissant 70 g (carton of 150) 48,56 € (list 52,00); Frozen par-baked baguette 280 g (carton of 60) 22,41 € (list 24,00); UHT liquid cream 35% (1 L carton) 3,83 € (list 4,10); Gold round cake boards 28 cm (pack of 100) 9,15 € (list 9,80).
 
 Price rules that may apply:
 - `prl_0003` GMS: -5 % on raw pastry

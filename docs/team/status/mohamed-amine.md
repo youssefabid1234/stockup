@@ -1,6 +1,10 @@
-# Mohamed Amine – "Never white"
+# Mohamed Amine — Voice latency
 
-## State of the branch
+## English release
+
+The voice, chat and command modes use English. The optional greetings, acknowledgements and restatements use the same language. The ERP starts with the English seed pack in a separate SQLite file. Checked an English stock request against the full ERP in mock mode. A live microphone test with the team’s providers is still pending.
+
+## Earlier voice work
 
 The voice yard is located on `mohamed-amine/voice-latency`. `TEAM_FILLERS=1` activates the changes for the tests. The next step is the comparison to the microphone on the pack of the Fournil. [Tasksheet](../tasks/mohamed-amine.md) · [Decisions and results](../../../DECISIONS.md)
 

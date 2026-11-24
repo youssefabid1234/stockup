@@ -1,7 +1,7 @@
 """
 Mock LLM — deterministic, no key, no network. Lets the whole stack demo offline.
 
-It understands a handful of French intents and drives real tool calls against the ERP:
+It understands a handful of English intents and drives real tool calls against the ERP:
   "Hello, it's the Poissonnerie Lemoine" → search → the client is now "the caller"
   "il reste du bar ?"                        → search(product) → get_product_stock
   "infos about the Bistrot du Port" → search(client) → get_client
@@ -191,7 +191,7 @@ def call(name: str, args: dict) -> ToolCall:
 
 
 def decide(messages: list[ChatMessage]) -> ToolCall | str:
-    """The next step: either a tool call or the final French answer."""
+    """The next step: either a tool call or the final English answer."""
     last_user = last_user_index(messages)
     user_text = messages[last_user].content if last_user >= 0 else ""
     before = messages[:last_user]  # the conversation so far (who is calling, which order is open)

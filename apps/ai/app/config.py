@@ -77,7 +77,7 @@ class Settings:
 settings = Settings(
     port=int(env("AI_PORT", "4100")),
     erp_api_url=env("ERP_API_URL", "http://localhost:4000").rstrip("/"),
-    data_dir=(REPO_ROOT / env("DATA_DIR", "../hackathon-data")).resolve(),
+    data_dir=(REPO_ROOT / env("DATA_DIR", "./data")).resolve(),
     max_steps=int(env("AGENT_MAX_STEPS", "8")),
     llm=LLMSettings(
         provider=env("LLM_PROVIDER", "mock").lower(),

@@ -148,7 +148,7 @@ export function Sidebar() {
             <>
               <span
                 className="flex items-center gap-1.5 whitespace-nowrap text-[11.5px] text-muted-foreground"
-                title="Flux d'activité temps réel (/api/events/stream)"
+                title="Live activity stream (/api/events/stream)"
               >
                 <Dot tone={status === "live" ? "success" : status === "connecting" ? "warning" : "destructive"} pulse={status === "live"} />
                 {status === "live" ? "Live" : status === "connecting" ? "Connection..." : "Offline"}

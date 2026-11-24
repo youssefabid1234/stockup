@@ -64,7 +64,7 @@ function ProductView({ p }: { p: ProductDetail }) {
           <Stat label="En stock" value={<Qty value={p.stock.onHand} unit={p.unit} />} hint={`${lots.length} lot${lots.length > 1 ? "s" : ""}`} />
           <Stat label="Reserved" value={<Qty value={p.stock.reserved} unit={p.unit} />} hint="Orders confirmed" />
           <Stat label="Entering" value={<Qty value={p.stock.incoming} unit={p.unit} />} tone={p.stock.incoming > 0 ? "info" : undefined} hint="Ongoing procurement" />
-          <Stat label="Sales 30 j" value={<Qty value={p.sales30d.qty} unit={p.unit} />} hint={<Money value={p.sales30d.revenue} compact />} />
+          <Stat label="Sales in the last 30 days" value={<Qty value={p.sales30d.qty} unit={p.unit} />} hint={<Money value={p.sales30d.revenue} compact />} />
         </StatGrid>
 
         <div className="grid grid-cols-1 gap-8 px-5 py-5 xl:grid-cols-[minmax(0,1fr)_340px]">
@@ -72,7 +72,7 @@ function ProductView({ p }: { p: ProductDetail }) {
             <Section title="Lots en stock · FEFO" count={lots.length}
               actions={p.stock.nextExpiry ? <span className="text-[12px] text-muted-foreground">Next DLC <ExpiryLabel date={p.stock.nextExpiry} today={today} /></span> : null}>
               <LotsTable lots={p.stock.lots} unit={p.unit} today={today} supplierName={supplierName}
-                empty={<EmptyFrame icon={Boxes} text="Aucun lot en stock pour ce produit." />} />
+                empty={<EmptyFrame icon={Boxes} text="No batches of this product are in stock." />} />
             </Section>
             <SupplierPrices p={p} />
             <EntityContext scope="product" id={p.id} label={p.name} />
@@ -147,7 +147,7 @@ function SupplierPrices({ p }: { p: ProductDetail }) {
     <Section title="Price suppliers" count={p.supplierPrices.length}>
       <DataTable inset paginate={false} columns={cols} rows={p.supplierPrices} getRowId={(s) => s.supplierId} defaultSort={{ id: "price", dir: "asc" }}
         onRowClick={(s) => navigate(`/suppliers/${s.supplierId}`)}
-        empty={<EmptyFrame icon={Truck} text="Aucun fournisseur référencé pour ce produit." />} />
+        empty={<EmptyFrame icon={Truck} text="This product has no listed suppliers." />} />
     </Section>
   );
 }
@@ -187,7 +187,7 @@ function Movements({ p }: { p: ProductDetail }) {
   return (
     <Section title="Movements" count={history?.total}>
       <DataTable inset server={{ list, total: history?.total }} columns={cols} rows={rows} getRowId={(m) => m.id} onRowClick={go}
-        empty={<EmptyFrame icon={ArrowLeftRight} text="Aucun mouvement de stock récent." />} />
+        empty={<EmptyFrame icon={ArrowLeftRight} text="No recent stock movements." />} />
     </Section>
   );
 }

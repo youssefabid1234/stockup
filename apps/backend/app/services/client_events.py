@@ -41,12 +41,12 @@ EVENT_TYPE_LABEL = {
     "contact_change": "Change of contact",
     "compliment": "Compliment",
     "churn_risk": "Risk of loss",
-    "won_back": "Reconnaissed Client",
+    "won_back": "Customer acknowledgement",
     "note": "Note",
 }
 
 # Default author of an event, by actor.
-ACTOR_AUTHOR = {"user": "Team", "ai_chat": "Assistant IA", "voice_agent": "Agent vocal", "system": "System"}
+ACTOR_AUTHOR = {"user": "Team", "ai_chat": "AI assistant", "voice_agent": "Voice agent", "system": "System"}
 
 
 def newest_first(a: Doc, b: Doc) -> int:

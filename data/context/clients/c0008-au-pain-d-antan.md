@@ -1,6 +1,6 @@
 # Au Pain d'Antan (C0008, `cli_0008`)
 
-> Personal data sheet to play this customer over the phone. The full history is in `seed/clientEvents.json` (filter on `clientId: "cli_0008"`).
+> Customer profile for phone role-play. The full history is in `seed_en/clientEvents.json` (filter on `clientId: "cli_0008"`).
 
 | | |
 |---|---|
@@ -10,7 +10,7 @@
 | Sales representative | Julien Fabre |
 | Customer since | 13/02/2017 (9 years) |
 | Payment | 30 days — Bad Payer, Risk Account |
-| Outstanding balance | 24 735,69 € incl. VAT (ceiling 14 000 €) — **4 invoice due: 19 076,03 €** |
+| Outstanding balance | 24 735,69 € incl. VAT (ceiling 14 000 €) — **4 overdue invoices: 19 076,03 €** |
 | Temperament | discreet — quality ★★☆, price ★★☆, risk of losing the customer low |
 
 ## Who they are
@@ -20,25 +20,25 @@ Fronton Bakery placed in safeguard procedure in October 2026; debt reported to t
 ## People
 
 - **Marie-Hélène Cassagne** — Manager · 05 61 82 40 66
-  - How he/she speaks: Polie, tired, speaks of a safeguard procedure.
-  - Tics: "The administrator will write to you."
+  - Speaking style: Polie, tired, speaks of a safeguard procedure.
+  - Typical phrases: "The administrator will write to you."
 
 ## What they buy and how
 
-Order once a week, usually the day before between 12h and 18h, especially by phone and WhatsApp. Regular products: Traditional French T55 wheat flour (25 kg sack), 82% laminating butter (2 kg slab), Printed kraft baguette bags (box of 1,000), Fine sea salt (25 kg sack), Walnut halves (5 kg box), Charentes-Poitou AOP laminating butter, 84% (2 kg slab), Sultanas (12.5 kg box), T55 baker's wheat flour (25 kg sack).
+Order once a week, usually the day before between 12h and 18h, especially by phone and WhatsApp. Regular products: T55 traditional French wheat flour (25 kg bag), 82% laminating butter (2 kg sheet), Printed kraft baguette bags (carton of 1000), Fine sea salt (25 kg bag), Walnut kernels (5 kg carton), AOP Charentes-Poitou 84% laminating butter (2 kg sheet), Sultana raisins (12.5 kg carton), T55 baker's wheat flour (25 kg bag).
 
-On the last 90 days (7 orders delivered):
+Over the last 90 days (7 orders delivered):
 
-| Product | Volume 90 | Lines | Last price |
+| Product | 90-day volume | Lines | Last price |
 |---|---|---|---|
-| Traditional French T55 wheat flour (25 kg sack) (`prd_0001`) | 142,00 piece | 5 | 18,92 € |
-| T55 baker's wheat flour (25 kg sack) (`prd_0002`) | 111,00 piece | 5 | 16,48 € |
-| 82% laminating butter (2 kg slab) (`prd_0026`) | 155,92 kg | 3 | 9,06 € |
-| Charentes-Poitou AOP laminating butter, 84% (2 kg slab) (`prd_0025`) | 110,23 kg | 2 | 10,99 € |
-| T45 strong pastry flour (25 kg sack) (`prd_0003`) | 41,00 piece | 3 | 22,88 € |
-| White cake boxes, 20 cm (pack of 50) (`prd_0067`) | 34,00 box | 5 | 14,50 € |
-| Printed kraft baguette bags (box of 1,000) (`prd_0065`) | 22,00 box | 3 | 22,00 € |
-| Walnut halves (5 kg box) (`prd_0051`) | 16,92 kg | 2 | 13,52 € |
+| T55 traditional French wheat flour (25 kg bag) (`prd_0001`) | 142,00 piece | 5 | 18,92 € |
+| T55 baker's wheat flour (25 kg bag) (`prd_0002`) | 111,00 piece | 5 | 16,48 € |
+| 82% laminating butter (2 kg sheet) (`prd_0026`) | 155,92 kg | 3 | 9,06 € |
+| AOP Charentes-Poitou 84% laminating butter (2 kg sheet) (`prd_0025`) | 110,23 kg | 2 | 10,99 € |
+| T45 gruau pastry flour (25 kg bag) (`prd_0003`) | 41,00 piece | 3 | 22,88 € |
+| White pastry boxes 20 cm (pack of 50) (`prd_0067`) | 34,00 box | 5 | 14,50 € |
+| Printed kraft baguette bags (carton of 1000) (`prd_0065`) | 22,00 box | 3 | 22,00 € |
+| Walnut kernels (5 kg carton) (`prd_0051`) | 16,92 kg | 2 | 13,52 € |
 
 Sheet CRM : _Ordered flour and yeast every week._
 
@@ -64,7 +64,7 @@ Sheet CRM : _Ordered flour and yeast every week._
 
 Full history: 39 events (14 payment, 6 visit, 6 call, 4 quality, 4 price, 1 opening, 1 special request, 1 compliment, 1 note, 1 schedule).
 
-## Files opened today
+## Open cases
 
 - **10/08/2026 — Recovery: FAC-2026-001452 fallen** (`inv_007267`)
   Invoice FAC-2026-001452 (4 021,75 € incl. VAT) expired the 31/07/2026. Re-launch by email and then telephone. Marie-Hélène: "I didn't receive it, send it back."

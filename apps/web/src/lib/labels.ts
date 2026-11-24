@@ -1,11 +1,11 @@
-/** French labels for domain enums. Add new enum values here (and a tone in ui/status.ts if it's a status). */
+/** English labels for domain enums. Add new enum values here (and a tone in ui/status.ts if it's a status). */
 import type { Actor, ClientType, ContextKind, ContextScope, ContextSource, OrderSource, PaymentMethod, ProductCategory, StockMovementReason, Weekday } from "@kit/shared";
 
 export const CLIENT_TYPE_LABEL: Record<ClientType, string> = {
   restaurant: "Restaurant",
-  brasserie: "Brewery",
+  brasserie: "Brasserie",
   fishmonger: "Fishmonger",
-  canteen: "Collective restoration",
+  canteen: "Institutional catering",
   supermarket: "Supermarket",
   caterer: "Caterer",
   hotel: "Hotel",
@@ -14,7 +14,7 @@ export const CLIENT_TYPE_LABEL: Record<ClientType, string> = {
 /** Product category labels: per company, filled from meta.categories at boot (see clock.ts). Legacy ids as fallback. */
 export const CATEGORY_LABEL: Record<ProductCategory, string> = {
   whole_fish: "Whole fish",
-  fillet: "Nets",
+  fillet: "Fillets",
   shellfish: "Shellfish",
   crustacean: "Crustaceans",
   frozen: "Frozen goods",
@@ -39,7 +39,7 @@ export const categoryOptions = () => categoryOrder.map((value) => ({ value, labe
 
 export const SOURCE_LABEL: Record<OrderSource, string> = {
   phone: "Phone",
-  voice_agent: "Agent vocal",
+  voice_agent: "Voice agent",
   email: "E-mail",
   whatsapp: "WhatsApp",
   manual: "Manual entry",
@@ -59,7 +59,7 @@ export const MOVEMENT_REASON_LABEL: Record<StockMovementReason, string> = {
   sale: "Sale",
   adjustment: "Adjustment",
   waste: "Waste",
-  return: "Back",
+  return: "Return",
 };
 
 export const WEEKDAY_LABEL: Record<Weekday, string> = {
@@ -69,8 +69,8 @@ export const WEEKDAYS: Weekday[] = ["mon", "tue", "wed", "thu", "fri", "sat", "s
 
 export const ACTOR_LABEL: Record<Actor, string> = {
   user: "User",
-  ai_chat: "Assistant IA",
-  voice_agent: "Agent vocal",
+  ai_chat: "AI assistant",
+  voice_agent: "Voice agent",
   system: "System",
 };
 
@@ -86,7 +86,7 @@ export const CONTEXT_KIND_LABEL: Record<ContextKind, string> = {
   policy: "Policy",
   procedure: "Procedure",
   preference: "Preference",
-  fact: "Done",
+  fact: "Fact",
   relationship: "Relationship",
   pricing: "Price",
   logistics: "Logistics",
@@ -95,6 +95,6 @@ export const CONTEXT_KIND_LABEL: Record<ContextKind, string> = {
 export const CONTEXT_SOURCE_LABEL: Record<ContextSource, string> = {
   seed: "Data pack",
   user: "User",
-  ai_chat: "Assistant IA",
-  voice_agent: "Agent vocal",
+  ai_chat: "AI assistant",
+  voice_agent: "Voice agent",
 };

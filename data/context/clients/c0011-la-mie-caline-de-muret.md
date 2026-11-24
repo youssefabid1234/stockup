@@ -1,11 +1,11 @@
 # La Mie Câline de Muret (C0011, `cli_0011`)
 
-> Personal data sheet to play this customer over the phone. The full history is in `seed/clientEvents.json` (filter on `clientId: "cli_0011"`).
+> Customer profile for phone role-play. The full history is in `seed_en/clientEvents.json` (filter on `clientId: "cli_0011"`).
 
 | | |
 |---|---|
 | Type | Retail trade (Artisan bakeries) — 28 allées Niel, 31600 Muret |
-| Area | Balma, Labège & Sud Toulousein — delivered Mon |
+| Area | Balma, Labège & south Toulouse — delivered Mon |
 | Status | **prospect** — new customer |
 | Sales representative | Julien Fabre |
 | Customer since | 23/09/2026 (0 year) |
@@ -20,14 +20,14 @@ Young baker who takes over a closed bakery in Muret, opening scheduled for Janua
 ## People
 
 - **Sébastien Rigal** — Boulanger (opened in January) · 06 47 12 90 54
-  - How he/she speaks: Young baker who settles, many questions, prudent on cash.
-  - Tics: "You don't know what happened to me..." · "How's your family doing?"
+  - Speaking style: Young baker who settles, many questions, prudent on cash.
+  - Typical phrases: "You don't know what happened to me..." · "How's your family doing?"
 
 ## What they buy and how
 
-Order once a week, usually the day before between 12h and 18h, especially by phone and WhatsApp. Regular products: Traditional French T55 wheat flour (25 kg sack), Fresh baker's yeast (500 g block), 82% laminating butter (2 kg slab), Printed kraft baguette bags (box of 1,000).
+Order once a week, usually the day before between 12h and 18h, especially by phone and WhatsApp. Regular products: T55 traditional French wheat flour (25 kg bag), Fresh baker's yeast (500 g block), 82% laminating butter (2 kg sheet), Printed kraft baguette bags (carton of 1000).
 
-Fiche CRM : _Gets a complete quote flour + butter + packaging and a cash start._
+CRM record : _Gets a complete quote flour + butter + packaging and a cash start._
 
 ## What frustrates them
 
@@ -42,10 +42,10 @@ Fiche CRM : _Gets a complete quote flour + butter + packaging and a cash start._
 
 Full history: 2 events (1 note, 1 visit).
 
-## Files opened today
+## Open cases
 
 - **27/09/2026 — Presentation appointment**
-  Julien presents the house and leaves the mercurial. Sébastien compares with Les Moulins Réunions du Midi, his current supplier. Sébastien : "You don't know what happened to me..."
+  Julien presents the house and leaves the mercurial. Sébastien compares with Les Moulins Réunis du Midi, his current supplier. Sébastien : "You don't know what happened to me..."
 
 ## How to talk to them
 

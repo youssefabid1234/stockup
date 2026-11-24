@@ -1,0 +1,34 @@
+{
+  "id": "S44",
+  "owner": "daycem",
+  "title": "Les Glycines asks for unavailable strawberries",
+  "why": "When no equivalent is available, explain the shortage and ask what the customer would like.",
+  "client": "cli_0088",
+  "turns": [
+    {
+      "say": "Hello, Salon de thé Les Glycines here. I need ten punnets of Gariguette strawberries for Monday.",
+      "expect": {
+        "tools_none": [
+          "create_draft_order",
+          "add_order_line",
+          "place_order",
+          "confirm_order"
+        ],
+        "says_any": [
+          "would you",
+          "prefer",
+          "anything else",
+          "what can I"
+        ],
+        "says_none": [
+          "lemon",
+          "apple",
+          "pear",
+          "raspberry",
+          "unknown",
+          "substitution"
+        ]
+      }
+    }
+  ]
+}

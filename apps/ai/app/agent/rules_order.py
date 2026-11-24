@@ -92,13 +92,13 @@ def parse_asked_day(today: date, asked: str | None) -> date | None | str:
         return today
     if m := re.search(r"(\d{4})-(\d{2})-(\d{2})", a):
         return date(int(m[1]), int(m[2]), int(m[3]))
-    if m := re.search(r"\b(\d{1,2})\s*/\s*(\d{1,2})\b", a):
+    if m := re.search(r"\b(\d{1,2})\s*/\s*(\d{1,2})(?:st|nd|rd|th)?\b", a):
         return _future(today, int(m[1]), int(m[2]))
     for name, code in DAYS_FR.items():
         if re.search(rf"\b{name}\b", a):
             ahead = (WEEKDAYS.index(code) - today.weekday()) % 7 or 7  # "mardi" said on a Tuesday = next Tuesday
             return today + timedelta(days=ahead)
-    if m := re.search(r"\b(?:le\s+)?(\d{1,2})\b", a):
+    if m := re.search(r"\b(?:le\s+)?(\d{1,2})(?:st|nd|rd|th)?\b", a):
         return _future(today, int(m[1]), today.month)
     return None
 
@@ -232,6 +232,8 @@ def fr_number(x: float) -> str:
 
 
 def _plural(word: str, n: float) -> str:
+    if word == "loaf" and n != 1:
+        return "loaves"
     if word == "box" and n != 1:
         return "boxes"
     if n == 1 or word.endswith("s"):
@@ -264,7 +266,7 @@ def franco_note(total_ht: float) -> str | None:
         return None
     missing = FRANCO_HT - total_ht
     return (f"Delivery costs 12 euros for orders below 150 euros excluding VAT. "
-            f"Another {fr_number(round(missing, 2))} euros would qualify for free delivery.")
+            f"About {fr_number(round(missing))} more euros would qualify for free delivery.")
 
 
 def unusual_lines(lines: list[dict], usual: list[dict], ratio: float = UNUSUAL_RATIO) -> list[dict]:

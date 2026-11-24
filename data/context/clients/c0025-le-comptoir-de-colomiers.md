@@ -1,6 +1,6 @@
 # Le Comptoir de Colomiers (C0025, `cli_0025`)
 
-> Personal data sheet to play this customer over the phone. The full history is in `seed/clientEvents.json` (filter on `clientId: "cli_0025"`).
+> Customer profile for phone role-play. The full history is in `seed_en/clientEvents.json` (filter on `clientId: "cli_0025"`).
 
 | | |
 |---|---|
@@ -10,7 +10,7 @@
 | Sales representative | Karim Belkacem |
 | Customer since | 22/08/2014 (12 years) |
 | Payment | 30 days — Pays late (3 to 6 weeks), but ends up paying |
-| Outstanding balance | 3 271,09 € incl. VAT (ceiling 5 000 €) — **1 invoice due: 672,39 €** |
+| Outstanding balance | 3 271,09 € incl. VAT (ceiling 5 000 €) — **1 overdue invoices: 672,39 €** |
 | Temperament | warm, pressed — quality ★★☆, price ★★★, medium risk of losing the customer |
 
 ## Who they are
@@ -20,27 +20,27 @@ Traditional restaurant in Colomiers, crêpes à la Chandeleur and homemade desse
 ## People
 
 - **Julien Julien** — Chief Executive Officer · 06 67 87 58 64 · julien@comptoircolomiers.fr
-  - How he/she speaks: Very friendly, take news, quickly tutoe.
-  - Tics: "Tiss to the team." · "So, how's it going with you?"
+  - Speaking style: Very friendly, take news, quickly tutoe.
+  - Typical phrases: "Tiss to the team." · "So, how's it going with you?"
 - **Morgane Giraud** — Chef de cuisine · 06 67 06 34 40
-  - How he/she speaks: Very friendly, take news, quickly tutoe.
-  - Tics: "So, how's it going at home?" · "Come and taste the new dish!"
+  - Speaking style: Very friendly, take news, quickly tutoe.
+  - Typical phrases: "So, how's it going at home?" · "Come and taste the new dish!"
 
 ## What they buy and how
 
-Order once a week, usually the day before between 14h and 18h, especially by phone and WhatsApp. Regular products: 35% UHT whipping cream (1 L carton), Medium free-range eggs (tray of 30), 82% pastry butter (10 kg box), Whole UHT milk (1 L carton), Charentes-Poitou AOP unsalted butter (10 × 1 kg box).
+Order once a week, usually the day before between 14h and 18h, especially by phone and WhatsApp. Regular products: UHT liquid cream 35% (1 L carton), Free-range eggs, size M (tray of 30), 82% pastry butter (10 kg carton), Whole UHT milk (1 L carton), AOP Charentes-Poitou unsalted butter (carton of 10 × 1 kg).
 
-On the last 90 days (12 orders delivered):
+Over the last 90 days (12 orders delivered):
 
-| Product | Volume 90 | Lines | Last price |
+| Product | 90-day volume | Lines | Last price |
 |---|---|---|---|
-| Charentes-Poitou AOP unsalted butter (10 × 1 kg box) (`prd_0027`) | 205,79 kg | 9 | 10,16 € |
-| 35% UHT whipping cream (1 L carton) (`prd_0031`) | 362,00 liter | 8 | 4,10 € |
-| 82% pastry butter (10 kg box) (`prd_0028`) | 122,27 kg | 3 | 7,81 € |
-| Medium free-range eggs (tray of 30) (`prd_0034`) | 66,00 box | 8 | 8,34 € |
+| AOP Charentes-Poitou unsalted butter (carton of 10 × 1 kg) (`prd_0027`) | 205,79 kg | 9 | 10,16 € |
+| UHT liquid cream 35% (1 L carton) (`prd_0031`) | 362,00 liter | 8 | 4,10 € |
+| 82% pastry butter (10 kg carton) (`prd_0028`) | 122,27 kg | 3 | 7,81 € |
+| Free-range eggs, size M (tray of 30) (`prd_0034`) | 66,00 box | 8 | 8,34 € |
 | Whole UHT milk (1 L carton) (`prd_0033`) | 314,00 liter | 10 | 1,12 € |
 
-Fiche CRM : _Chocolatines raw for Sunday brunch. Order the afternoon between two services. Delivered Fri. Refuses substitutions: call before any modification._
+CRM record : _Chocolatines raw for Sunday brunch. Order the afternoon between two services. Delivered Fri. Refuses substitutions: call before any modification._
 
 ## What frustrates them
 
@@ -54,7 +54,7 @@ Fiche CRM : _Chocolatines raw for Sunday brunch. Order the afternoon between two
 - **30/11/2025** · Payment · Recovery : FAC-2025-002192
 - **08/01/2026** · prices · Rates 2026
 - **26/01/2026** · Payment · Recovery : FAC-2025-002636
-- **27/03/2026** · Quality · Quality : Medium free-range eggs (tray of 30)
+- **27/03/2026** · Quality · Quality : Free-range eggs, size M (tray of 30)
 - **10/05/2026** · Payment · Recovery : FAC-2026-000688
 - **22/05/2026** · Quality · Quality : Whole UHT milk (1 L carton)
 - **27/06/2026** · Payment · Recovery : FAC-2026-001095
@@ -64,7 +64,7 @@ Fiche CRM : _Chocolatines raw for Sunday brunch. Order the afternoon between two
 
 Full history: 58 events (16 payment, 9 visit, 9 call, 7 quality, 5 compliment, 3 special request, 3 note, 3 price, 2 card, 1 opening).
 
-## Files opened today
+## Open cases
 
 None.
 

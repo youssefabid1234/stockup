@@ -227,7 +227,7 @@ export function useVoiceSession() {
     const sock = new WebSocket(wsUrl());
     sock.binaryType = "arraybuffer";
     ws.current = sock;
-    sock.onopen = () => sock.send(JSON.stringify({ type: "start", sessionId: sessionId.current, actorName: "Agent vocal" } satisfies VoiceClientMessage));
+    sock.onopen = () => sock.send(JSON.stringify({ type: "start", sessionId: sessionId.current, actorName: "Voice agent" } satisfies VoiceClientMessage));
     sock.onmessage = onMessage;
     sock.onclose = () => {
       if (ws.current !== sock) return;

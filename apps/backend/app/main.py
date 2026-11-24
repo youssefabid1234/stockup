@@ -38,7 +38,7 @@ from app.routers import (
     system,
 )
 
-logging.basicConfig(level=logging.INFO, format="[ap] %(message)")
+logging.basicConfig(level=logging.INFO, format="[api] %(message)s")
 log = logging.getLogger("api")
 
 

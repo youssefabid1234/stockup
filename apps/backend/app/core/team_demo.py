@@ -37,7 +37,7 @@ def demo_price_rule(today: date) -> Doc:
         "method": {"kind": "discount_pct", "pct": DISCOUNT_PCT},
         "validFrom": today.isoformat(),
         "validTo": end.isoformat(),
-        "note": "Hackathon promotion on standard laminating butter while AOP butter is out of stock.",
+        "note": "Hackathon demo promotion on standard laminating butter while AOP butter is out of stock.",
         "createdAt": f"{today.isoformat()}T06:00:00.000Z",
     }
 

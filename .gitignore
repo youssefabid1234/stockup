@@ -24,3 +24,6 @@ data/seed/
 
 # team 12: scenario run outputs
 scenarios/results/
+
+# team 12: translation cache of scripts/translate_seed.py (regenerable)
+data/seed_en.cache.json

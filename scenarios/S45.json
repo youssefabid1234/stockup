@@ -1,0 +1,28 @@
+{
+  "id": "S45",
+  "owner": "daycem",
+  "title": "Le Petit Four needs a replacement for ground hazelnuts",
+  "why": "Prefer a product with the same use over the nearest price. Obtain consent first.",
+  "client": "cli_0053",
+  "turns": [
+    {
+      "say": "Hello, Le Petit Four de Saint-Cyprien here. I need ten kilos of ground hazelnuts for Friday.",
+      "expect": {
+        "tools_none": [
+          "create_draft_order",
+          "add_order_line",
+          "place_order",
+          "confirm_order"
+        ],
+        "says_any": [
+          "almond"
+        ],
+        "says_none": [
+          "walnut",
+          "unknown",
+          "substitution"
+        ]
+      }
+    }
+  ]
+}

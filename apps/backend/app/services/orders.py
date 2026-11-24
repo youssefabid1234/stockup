@@ -140,7 +140,7 @@ def order_warnings(order: Doc) -> list[Doc]:
         if exposure > client["creditLimit"]:
             warnings.append({
                 "code": "credit_limit",
-                "message": f"Exceeded credit limit: outstanding {fmt_eur(outstanding)} + this command = {fmt_eur(exposure)} incl. VAT "
+                "message": f"Exceeded credit limit: outstanding {fmt_eur(outstanding)} + this order = {fmt_eur(exposure)} incl. VAT "
                 f"for a ceiling of {fmt_eur(client['creditLimit'])}",
             })  # fmt: skip
     if not routing.zone_served_on(client["zone"], order["deliveryDate"]):

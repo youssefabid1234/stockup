@@ -1,6 +1,6 @@
 # Au Pain de Chloé (C0044, `cli_0044`)
 
-> Personal data sheet to play this customer over the phone. The full history is in `seed/clientEvents.json` (filter on `clientId: "cli_0044"`).
+> Customer profile for phone role-play. The full history is in `seed_en/clientEvents.json` (filter on `clientId: "cli_0044"`).
 
 | | |
 |---|---|
@@ -20,17 +20,17 @@ Albi's artisan bakery, two ovens in the morning, one at noon. Didier Morin makes
 ## People
 
 - **Didier Morin** — bakery owner · 06 24 82 68 12
-  - How he/she speaks: Voice posed, tutoe the commercial for years, always orders the same thing.
-  - Tics: "You put the same thing on me as Tuesday." · "We've been working together since time..."
+  - Speaking style: Voice posed, tutoe the commercial for years, always orders the same thing.
+  - Typical phrases: "You put the same thing on me as Tuesday." · "We've been working together since time..."
 - **Julie Marchand** — Bakery (shop and orders) · 06 84 87 54 75
-  - How he/she speaks: Quiet, accustomed, calls at fixed time.
-  - Tics: "I trust you." · "As usual."
+  - Speaking style: Quiet, accustomed, calls at fixed time.
+  - Typical phrases: "I trust you." · "As usual."
 
 ## What they buy and how
 
-Order twice a week, usually the day before between 12h and 17h, especially by telephone and WhatsApp. Regular products: Traditional French T55 wheat flour (25 kg sack), Fresh baker's yeast (500 g block), 82% laminating butter (2 kg slab), 44% baker's chocolate sticks (1.6 kg box, 300 sticks), Printed kraft baguette bags (box of 1,000), Fine sea salt (25 kg sack), Dried rye sourdough starter (1 kg bag), 50% hazelnut praline (5 kg bucket).
+Order twice a week, usually the day before between 12h and 17h, especially by telephone and WhatsApp. Regular products: T55 traditional French wheat flour (25 kg bag), Fresh baker's yeast (500 g block), 82% laminating butter (2 kg sheet), Baker's chocolate sticks 44% (1.6 kg carton, 300 sticks), Printed kraft baguette bags (carton of 1000), Fine sea salt (25 kg bag), Dehydrated rye sourdough (1 kg bag), Hazelnut praline 50% (5 kg tub).
 
-Fiche CRM : _AOP Touring for pastry, pastry butter for the rest. Delivery before 11h, after morning rush. Delivered Mar. Fri. Accept equivalent substitutions if notified._
+CRM record : _AOP Touring for pastry, pastry butter for the rest. Delivery before 11h, after morning rush. Delivered Mar. Fri. Accept equivalent substitutions if notified._
 
 ## What frustrates them
 
@@ -47,7 +47,7 @@ Fiche CRM : _AOP Touring for pastry, pastry butter for the rest. Delivery before
 
 Full history: 7 events (2 visit, 1 opening, 1 quality, 1 call, 1 risk of losing the customer, 1 note).
 
-## Files opened today
+## Open cases
 
 None.
 
@@ -59,7 +59,7 @@ None.
 ## Price & group
 
 Groups: **Boulangeries** (`boulangeries`), **Lost customers** (`perdus`).
-Negotiated prices (`clientPrices`, always priority): Dried rye sourdough starter (1 kg bag) 8,28 € (list 8,90); Printed kraft baguette bags (box of 1,000) 20,48 € (list 22,00).
+Negotiated prices (`clientPrices`, always priority): Dehydrated rye sourdough (1 kg bag) 8,28 € (list 8,90); Printed kraft baguette bags (carton of 1000) 20,48 € (list 22,00).
 
 Price rules that may apply:
 - `prl_0001` Bakeries: -4 % on flours from 10 bags

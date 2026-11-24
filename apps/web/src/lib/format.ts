@@ -1,4 +1,4 @@
-/** French formatters (Intl fr-FR). Use the <Money/Qty/DateLabel> components in JSX; these for strings. */
+/** English formatters (Intl en-GB). Use the <Money/Qty/DateLabel> components in JSX; these for strings. */
 import type { Unit } from "@kit/shared";
 import { businessNow, businessToday } from "./clock";
 

@@ -340,7 +340,7 @@ tool, on the prompt system and on the last block of the conversation (`mark_last
 turn (after a tool) and the next turn therefore reread the whole prefix from the cache. Other suppliers manage
 hide them in their own way (or not): look at their documentation.
 
-**Why does it matter here?** 的 27 000 tokens per call, the essentials of which are the same prefix; a turn of
+**Why does it matter here?** ≈ 27 000 tokens per call, the essentials of which are the same prefix; a turn of
 117 000 relit command. Without cache, you pay this full price prefix at each step. With cache, the 2e step
 of a tower and the subsequent towers of the same call reread it almost for free, and the first token arrives earlier.
 

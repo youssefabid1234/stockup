@@ -273,7 +273,7 @@ DAYS_FR = {code: name.title() for name, code in _DAY_CODES.items()}
 
 
 def render_for_prompt(cc: CallContext | None) -> str:
-    """The sheet as the model reads it (French, compact). '' when nothing is loaded."""
+    """The sheet as the model reads it (English, compact). '' when nothing is loaded."""
     if cc is None:
         return ""
     on_phone = f"- On the phone: {cc.caller_contact}" + (f" ({cc.caller_phone})" if cc.caller_phone else "") if cc.caller_contact or cc.caller_phone else ""

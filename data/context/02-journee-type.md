@@ -2,7 +2,7 @@
 
 ## "Now" package convention
 
-The pack is frozen at **mardi 24/11/2026 in 06h30** (Paris time). Orders of the day are prepared, confirmed or in draft; trucks have not left. Orders of tomorrow are still coming. The history covers three years.
+The pack is frozen at **Tuesday 24 November 2026 at 06:30** (Paris time). Orders of the day are prepared, confirmed or in draft; trucks have not left. Orders of tomorrow are still coming. The history covers three years.
 
 ## The 24 hours cycle
 
@@ -18,15 +18,16 @@ The pack is frozen at **mardi 24/11/2026 in 06h30** (Paris time). Orders of the 
 
 ## Order cutoffs
 
-- Order before 17h for delivery the next morning (turns of Toulouse and the periphery).
-- Turn Lauragais-Tarn (Tuesday and Friday): Order the day before 12h.
-- Troubleshooting of yeast and flour on the same day: possible up to 9h if the tour is not gone, otherwise withdrawal at the depot.
-- Epiphany: pre-order almond powder, leafing, crowns and beans before the 15 December.
-- Communities: order form to J-3 before 12h.
+- For Toulouse and the surrounding area, order before 5 pm for delivery the following morning.
+- For the Lauragais–Tarn route (Tuesday and Friday), order before noon the previous day.
+- Emergency yeast and flour deliveries may be possible until 9 am if the truck has not left. After departure, offer collection at the depot.
+- For Epiphany, pre-order ground almonds, puff pastry, paper crowns and porcelain charms before 15 December.
+- Institutional customers must send a purchase order before noon three days before delivery.
+
 
 ## Who calls when
 
-- Commercials (Julien, Marion, Karim) take orders from their portfolio during the day.
+- Sales representatives (Julien, Marion, Karim) take orders from their portfolio during the day.
 - No night standard: messages left in the evening are processed at the opening.
 - Orders by e-mail and WhatsApp arrive in draft and are confirmed by the ADV or the commercial.
 

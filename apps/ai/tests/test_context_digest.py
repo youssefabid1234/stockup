@@ -53,5 +53,5 @@ def test_real_pack_is_at_least_halved():
     if not full:  # no data pack mounted
         return
     assert len(slim) < len(full) / 2
-    for must in ("House rules", "Current situation on", "Ambiguous Alias", "Limit times", "Credit and collections"):
+    for must in ("House rules", "Current situation on", "Ambiguous terms", "Order cutoffs", "Credit and collections"):
         assert must in slim

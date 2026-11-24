@@ -1,6 +1,6 @@
 # La Chocolatine de Toulouse (Saint-Cyprien) (C0028, `cli_0028`)
 
-> Personal data sheet to play this customer over the phone. The full history is in `seed/clientEvents.json` (filter on `clientId: "cli_0028"`).
+> Customer profile for phone role-play. The full history is in `seed_en/clientEvents.json` (filter on `clientId: "cli_0028"`).
 
 | | |
 |---|---|
@@ -20,25 +20,25 @@ Snacks point of sale in Toulouse (Saint-Cyprien), cooking raw pastries and sandw
 ## People
 
 - **Olivier Dupuis** — manager · 06 29 50 77 38 · olivier@chocolatinetoulousesaint.fr
-  - How he/she speaks: Command at the fairest, small quantities.
-  - Tics: "Do you have any lot ends?" · "Just what you need, no more."
+  - Speaking style: Command at the fairest, small quantities.
+  - Typical phrases: "Do you have any lot ends?" · "Just what you need, no more."
 
 ## What they buy and how
 
-Order all delivery dayss, usually the day before between 14h and 19h, especially via web portal and phone. Regular products: Frozen unbaked all-butter pains au chocolat, 75 g (box of 140), Frozen unbaked all-butter croissants, 70 g (box of 150), Frozen part-baked baguettes, 280 g (box of 60), Paper pastry bags (box of 1,000), Frozen unbaked raisin pastries, 110 g (box of 80), Porcelain king cake charms (pack of 100).
+Order all delivery dayss, usually the day before between 14h and 19h, especially via web portal and phone. Regular products: Raw frozen all-butter pain au chocolat 75 g (carton of 140), Raw frozen all-butter croissant 70 g (carton of 150), Frozen par-baked baguette 280 g (carton of 60), Paper viennoiserie bags (carton of 1000), Raw frozen pain aux raisins 110 g (carton of 80), Porcelain king cake charms (pack of 100).
 
-On the last 90 days (52 orders delivered):
+Over the last 90 days (52 orders delivered):
 
-| Product | Volume 90 | Lines | Last price |
+| Product | 90-day volume | Lines | Last price |
 |---|---|---|---|
-| Frozen unbaked all-butter croissants, 70 g (box of 150) (`prd_0053`) | 80,00 box | 22 | 52,00 € |
-| Frozen unbaked all-butter pains au chocolat, 75 g (box of 140) (`prd_0054`) | 83,00 box | 24 | 49,80 € |
-| Frozen part-baked baguettes, 280 g (box of 60) (`prd_0058`) | 62,00 box | 10 | 24,00 € |
-| Frozen unbaked raisin pastries, 110 g (box of 80) (`prd_0055`) | 25,00 box | 18 | 41,00 € |
-| Paper pastry bags (box of 1,000) (`prd_0066`) | 39,00 box | 19 | 17,50 € |
-| 70% dark couverture chocolate (buttons, 5 kg bag) (`prd_0039`) | 6,27 kg | 1 | 17,23 € |
+| Raw frozen all-butter croissant 70 g (carton of 150) (`prd_0053`) | 80,00 box | 22 | 52,00 € |
+| Raw frozen all-butter pain au chocolat 75 g (carton of 140) (`prd_0054`) | 83,00 box | 24 | 49,80 € |
+| Frozen par-baked baguette 280 g (carton of 60) (`prd_0058`) | 62,00 box | 10 | 24,00 € |
+| Raw frozen pain aux raisins 110 g (carton of 80) (`prd_0055`) | 25,00 box | 18 | 41,00 € |
+| Paper viennoiserie bags (carton of 1000) (`prd_0066`) | 39,00 box | 19 | 17,50 € |
+| Dark couverture chocolate 70% (pistoles, 5 kg bag) (`prd_0039`) | 6,27 kg | 1 | 17,23 € |
 
-Fiche CRM : _Delivery before 7h for cooking. Order on the portal. Delivered Mon. Tue. Sea. Game. Fri. Accept equivalent substitutions if notified._
+CRM record : _Delivery before 7h for cooking. Order on the portal. Delivered Mon. Tue. Sea. Game. Fri. Accept equivalent substitutions if notified._
 
 ## What frustrates them
 
@@ -57,12 +57,12 @@ Fiche CRM : _Delivery before 7h for cooking. Order on the portal. Delivered Mon.
 - **03/09/2025** · map · Autumn card
 - **27/11/2025** · special request · Holidays 2025 : volume reservation
 - **04/07/2026** · note · Summer closure 2026
-- **13/07/2026** · Quality · Quality : Frozen unbaked raisin pastries, 110 g (box of 80)
-- **14/07/2026** · Have quality : Frozen unbaked raisin pastries, 110 g (box of 80)
+- **13/07/2026** · Quality · Quality : Raw frozen pain aux raisins 110 g (carton of 80)
+- **14/07/2026** · Have quality : Raw frozen pain aux raisins 110 g (carton of 80)
 
 Full history: 41 events (9 visit, 7 call, 6 special request, 4 compliment, 4 note, 3 quality, 3 price, 2 delivery, 1 opening, 1 card, 1 have).
 
-## Files opened today
+## Open cases
 
 None.
 

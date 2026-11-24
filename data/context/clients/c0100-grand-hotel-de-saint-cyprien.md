@@ -1,6 +1,6 @@
 # Grand Hôtel de Saint-Cyprien (C0100, `cli_0100`)
 
-> Personal data sheet to play this customer over the phone. The full history is in `seed/clientEvents.json` (filter on `clientId: "cli_0100"`).
+> Customer profile for phone role-play. The full history is in `seed_en/clientEvents.json` (filter on `clientId: "cli_0100"`).
 
 | | |
 |---|---|
@@ -20,15 +20,15 @@ Hôtel de Toulouse (Côte Pavée), buffet breakfast with mini-pastries cooked on
 ## People
 
 - **Laëtitia Hubert** — Chef de cuisine · 06 68 64 06 17
-  - How he/she speaks: Everything goes by order form and market number, very formal.
-  - Tics: "Thank you for mentioning the voucher number." · "I'll send you back to the prize voucher."
+  - Speaking style: Everything goes by order form and market number, very formal.
+  - Typical phrases: "Thank you for mentioning the voucher number." · "I'll send you back to the prize voucher."
 - **Service comptabilité** — Bills · factures@grandhotelsaintcyprien.fr
 
 ## What they buy and how
 
-Order twice a week, usually the day before between 11h and 15h, especially via e-mail and telephone. Regular products: Lightly salted churned butter (1 kg block), Whole UHT milk (1 L carton), 35% UHT whipping cream (1 L carton), Frozen unbaked all-butter croissants, 70 g (box of 150), Frozen raspberry purée (1 kg tub), Pasteurised liquid whole egg (1 L carton), 82% pastry butter (10 kg box), Frozen unbaked raisin pastries, 110 g (box of 80).
+Order twice a week, usually the day before between 11h and 15h, especially via e-mail and telephone. Regular products: Churned lightly salted butter (1 kg block), Whole UHT milk (1 L carton), UHT liquid cream 35% (1 L carton), Raw frozen all-butter croissant 70 g (carton of 150), Frozen raspberry purée (1 kg tray), Pasteurised liquid whole egg (1 L carton), 82% pastry butter (10 kg carton), Raw frozen pain aux raisins 110 g (carton of 80).
 
-Fiche CRM: _Monthly measurements with internal voucher number. Mini-pastries and half-salt butter serving for buffet. Delivered sea. sam. Accept equivalent substitutions if notified._
+CRM record: _Monthly measurements with internal voucher number. Mini-pastries and half-salt butter serving for buffet. Delivered sea. sam. Accept equivalent substitutions if notified._
 
 ## What frustrates them
 
@@ -37,8 +37,8 @@ Fiche CRM: _Monthly measurements with internal voucher number. Mini-pastries and
 
 ## A brief history
 
-- **23/03/2024** · Quality · Quality : Medium free-range eggs (tray of 30)
-- **28/03/2024** · Have quality : Medium free-range eggs (tray of 30)
+- **23/03/2024** · Quality · Quality : Free-range eggs, size M (tray of 30)
+- **28/03/2024** · Have quality : Free-range eggs, size M (tray of 30)
 - **26/12/2024** · special request · Holidays 2024 : volume reservation
 - **21/01/2025** · prices · Rates 2025
 - **15/03/2025** · Quality · Quality : Pasteurised liquid whole egg (1 L carton)
@@ -52,7 +52,7 @@ Fiche CRM: _Monthly measurements with internal voucher number. Mini-pastries and
 
 Full history: 41 events (9 visit, 6 quality, 6 special request, 5 compliment, 4 price, 3 rating, 2 have, 2 call, 2 card, 1 opening, 1 risk of losing the customer).
 
-## Files opened today
+## Open cases
 
 None.
 

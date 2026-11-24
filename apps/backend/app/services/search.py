@@ -25,14 +25,19 @@ MIN_SCORE = 35
 # Fillers and stopwords never used to match (spoken French: greetings, articles, order verbs, units, days).
 STOPWORDS = set(
     (
-        "a to the with these this d of from in and is it she I l l it theirs m me me me my "
-        "n n n n n us or by not so that who his se is his son on t t t t you t t t you one you y "
-        "This is here here is yes no good well so also please please thank you good evening hi allo "
-        "would want to want to want would have to have put add add add "
-        "order order take take take have ai as can may please "
-        "kg kg kg kg kg kg g gr gram grams pce pce pce ccds douz dozen dozen liters "
-        "tomorrow today tonight morning after noon"
+        "a au aux avec c ce ces cet cette d de des du en et est etes il elle j je l la le les leur m ma me mes moi mon "
+        "n ne nous on ou par pas pour qu que qui s sa se ses son sur t ta te tes toi ton tu un une vous y "
+        "c est cest ici voila oui non bon ben euh alors donc aussi encore svp stp merci bonjour bonsoir salut allo "
+        "voudrais voudrait veux veut vouloir aimerais faudrait faut faire mettre mets mettez ajouter ajoute ajoutez "
+        "commander commande prendre prends prenez avoir ai as avez peux pouvez pourriez please "
+        "kg kilo kilos kilogramme kilogrammes g gr gramme grammes pce pces piece pieces douz douzaine douzaines litre litres "
+        "demain aujourd hui ce soir matin apres midi"
     ).split(" ")
+)
+STOPWORDS.update(
+    "the these this that some my your from for with and of in on to it is are please hello hi thanks "
+    "would could like want need order add have can get me today tomorrow morning evening "
+    "kilo kilos kilogram kilograms gram grams litre litres liter liters pieces units dozens".split()
 )
 # Spoken/written abbreviations expanded before matching.
 ABBREV = {"st": "saint", "ste": "sainte", "sts": "saints", "bd": "boulevard", "av": "avenue"}

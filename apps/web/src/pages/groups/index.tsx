@@ -22,7 +22,7 @@ import { InlineConfirmDelete } from "../prices/rules";
 const SCOPES: { scope: TagScope; label: string; icon: LucideIcon; path: string; noun: string }[] = [
   { scope: "client", label: "Customers", icon: Users, path: "/clients", noun: "client" },
   { scope: "product", label: "Products", icon: Package, path: "/products", noun: "produit" },
-  { scope: "supplier", label: "Suppliers", icon: Building2, path: "/suppliers", noun: "fournisseur" },
+  { scope: "supplier", label: "Suppliers", icon: Building2, path: "/suppliers", noun: "supplier" },
 ];
 
 export default function GroupsPage() {

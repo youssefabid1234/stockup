@@ -53,5 +53,5 @@ def read_context_digest() -> str:
     for p in files:
         text = p.read_text(encoding="utf-8")
         headings = _keep_for(p.name)
-        out.append(f"<!-- {p.name} (extrait) -->\n{digest(text, headings)}" if headings else f"<!-- {p.name} -->\n{text.strip()}")
+        out.append(f"<!-- {p.name} (excerpt) -->\n{digest(text, headings)}" if headings else f"<!-- {p.name} -->\n{text.strip()}")
     return "\n\n".join(out)

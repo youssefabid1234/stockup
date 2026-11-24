@@ -1,6 +1,6 @@
 # Aux Délices de Pascale (C0029, `cli_0029`)
 
-> Personal data sheet to play this customer over the phone. The full history is in `seed/clientEvents.json` (filter on `clientId: "cli_0029"`).
+> Customer profile for phone role-play. The full history is in `seed_en/clientEvents.json` (filter on `clientId: "cli_0029"`).
 
 | | |
 |---|---|
@@ -20,15 +20,15 @@ Toulouse (Minimes) artisan bakery, two ovens in the morning, one at noon. Guilla
 ## People
 
 - **Guillaume Fontaine** — bakery owner · 06 45 55 76 42
-  - How he/she speaks: Calls between two services, hang up fast.
-  - Tics: "Send, send." · "Quickly, I don't have time."
+  - Speaking style: Calls between two services, hang up fast.
+  - Typical phrases: "Send, send." · "Quickly, I don't have time."
 - **Vincent Roux** — Bakery (shop and orders) · 06 12 73 24 86
-  - How he/she speaks: Quiet, accustomed, calls at fixed time.
-  - Tics: "As usual." · "I trust you."
+  - Speaking style: Quiet, accustomed, calls at fixed time.
+  - Typical phrases: "As usual." · "I trust you."
 
 ## What they buy and how
 
-Order twice a week, usually the day before between 12h and 17h, especially by telephone and WhatsApp. Regular products: Traditional French T55 wheat flour (25 kg sack), 82% laminating butter (2 kg slab), 44% baker's chocolate sticks (1.6 kg box, 300 sticks), Printed kraft baguette bags (box of 1,000), Neutral hot glaze (7 kg bucket), Frozen unbaked raisin pastries, 110 g (box of 80), Ground roasted hazelnuts (1 kg bag), T65 country bread flour (25 kg sack).
+Order twice a week, usually the day before between 12h and 17h, especially by telephone and WhatsApp. Regular products: T55 traditional French wheat flour (25 kg bag), 82% laminating butter (2 kg sheet), Baker's chocolate sticks 44% (1.6 kg carton, 300 sticks), Printed kraft baguette bags (carton of 1000), Neutral hot glaze (7 kg tub), Raw frozen pain aux raisins 110 g (carton of 80), Roasted hazelnut powder (1 kg bag), T65 country wheat flour (25 kg bag).
 
 Form CRM : _Ne No frozen food: everything is homemade. LCR to 30 end of month days. Delivered Mon. game. Refuses substitutions: call before any modification._
 
@@ -44,7 +44,7 @@ Form CRM : _Ne No frozen food: everything is homemade. LCR to 30 end of month da
 
 Full history: 2 events (1 note, 1 visit).
 
-## Files opened today
+## Open cases
 
 - **13/11/2026 — Presentation appointment**
   Julien presents the house and leaves the mercurial. Guillaume compares with Comptoir Toulosain du Fournil, his current supplier. Vincent: "As usual."

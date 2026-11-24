@@ -1,6 +1,6 @@
 # Hyper Garonne Aucamville (C0038, `cli_0038`)
 
-> Personal data sheet to play this customer over the phone. The full history is in `seed/clientEvents.json` (filter on `clientId: "cli_0038"`).
+> Customer profile for phone role-play. The full history is in `seed_en/clientEvents.json` (filter on `clientId: "cli_0038"`).
 
 | | |
 |---|---|
@@ -20,15 +20,15 @@ Aucamville Supermarket with cooking terminal: pre-cooked chopsticks and pastries
 ## People
 
 - **Jordan Renard** — Head of bakery department · 06 13 89 82 38 · jordan@hypergaronneaucamville.fr
-  - How he/she speaks: Play surprise on each fare, end up ordering.
-  - Tics: "At this price, I take elsewhere." · "What if I take twice?"
+  - Speaking style: Play surprise on each fare, end up ordering.
+  - Typical phrases: "At this price, I take elsewhere." · "What if I take twice?"
 - **Service comptabilité** — Bills · factures@hypergaronneaucamville.fr
 
 ## What they buy and how
 
-Order three times a week, usually the day before between 11h and 15h, especially via e-mail and web portal. Regular products: Frozen unbaked all-butter croissants, 70 g (box of 150), Frozen unbaked all-butter pains au chocolat, 75 g (box of 140), Frozen part-baked baguettes, 280 g (box of 60), Gold cardboard king cake crowns (pack of 100), Porcelain king cake charms (pack of 100), Frozen raspberry purée (1 kg tub), Multigrain seed mix (25 kg sack), Printed kraft baguette bags (box of 1,000).
+Order three times a week, usually the day before between 11h and 15h, especially via e-mail and web portal. Regular products: Raw frozen all-butter croissant 70 g (carton of 150), Raw frozen all-butter pain au chocolat 75 g (carton of 140), Frozen par-baked baguette 280 g (carton of 60), Gold cardboard king cake crowns (pack of 100), Porcelain king cake charms (pack of 100), Frozen raspberry purée (1 kg tray), Multigrain seed mix (25 kg bag), Printed kraft baguette bags (carton of 1000).
 
-Fiche CRM : _Order by mail with the order number of the store. Delivery to the dock before 8h. Delivered Tue. Sat. Sat. Accept equivalent substitutions if notified._
+CRM record : _Order by mail with the order number of the store. Delivery to the dock before 8h. Delivered Tue. Sat. Sat. Accept equivalent substitutions if notified._
 
 ## What frustrates them
 
@@ -38,9 +38,9 @@ Fiche CRM : _Order by mail with the order number of the store. Delivery to the d
 ## A brief history
 
 - **01/04/2022** · opening · Account opening : Hyper Garonne Aucamville
-- **14/10/2022** · Quality · Quality : Assorted unbaked mini pastries (box of 210)
+- **14/10/2022** · Quality · Quality : Assorted raw mini viennoiseries (carton of 210)
 - **13/12/2022** · special request · Holidays 2022 : reservation
-- **23/06/2023** · Quality · Quality : Silicone-coated baking paper, 40 × 60 (box of 500 sheets)
+- **23/06/2023** · Quality · Quality : Silicone baking paper 40 × 60 (carton of 500 sheets)
 - **18/12/2023** · special request · Holidays 2023 : volume reservation
 - **08/01/2024** · prices · Rates 2024
 - **07/03/2024** · risk of losing the customer · Lower orders
@@ -49,7 +49,7 @@ Fiche CRM : _Order by mail with the order number of the store. Delivery to the d
 
 Full history: 12 events (2 quality, 2 special request, 1 opening, 1 compliment, 1 price, 1 risk of losing the customer, 1 visit, 1 call, 1 contact, 1 note).
 
-## Files opened today
+## Open cases
 
 None.
 
@@ -61,7 +61,7 @@ None.
 ## Price & group
 
 Groups: **GMS** (`gms`), **Lost customers** (`perdus`).
-Negotiated prices (`clientPrices`, always high priority): Silicone-coated baking paper, 40 × 60 (box of 500 sheets) 27,69 € (list 29,00); Frozen raspberry purée (1 kg tub) 8,97 € (list 9,40); Porcelain king cake charms (pack of 100) 15,28 € (list 16,00).
+Negotiated prices (`clientPrices`, always high priority): Silicone baking paper 40 × 60 (carton of 500 sheets) 27,69 € (list 29,00); Frozen raspberry purée (1 kg tray) 8,97 € (list 9,40); Porcelain king cake charms (pack of 100) 15,28 € (list 16,00).
 
 Price rules that may apply:
 - `prl_0003` GMS: -5 % on raw pastry

@@ -1,6 +1,6 @@
 # Le Petit Four de Saint-Cyprien (C0053, `cli_0053`)
 
-> Personal data sheet to play this customer over the phone. The full history is in `seed/clientEvents.json` (filter on `clientId: "cli_0053"`).
+> Customer profile for phone role-play. The full history is in `seed_en/clientEvents.json` (filter on `clientId: "cli_0053"`).
 
 | | |
 |---|---|
@@ -10,7 +10,7 @@
 | Sales representative | Marion Escudié |
 | Customer since | 06/10/2018 (8 years) |
 | Payment | 30 days — late on summer invoices, regularised in autumn |
-| Outstanding balance | 7 530,77 € incl. VAT (ceiling 11 500 €) — **3 invoice due: 2 999,87 €** |
+| Outstanding balance | 7 530,77 € incl. VAT (ceiling 11 500 €) — **3 overdue invoices: 2 999,87 €** |
 | Temperament | perfectionist, wary — quality ★★★, price ★★☆, high risk of losing the customer |
 
 ## Who they are
@@ -20,30 +20,30 @@ Fine pastry of Toulouse (Côte Pavée), showcase of entremets and homemade choco
 ## People
 
 - **Loïc Gautier** — Pastry chef-manager · 06 77 99 12 02 · loic@petitfoursaintcyprien.fr
-  - How he/she speaks: Requires details on each lot.
-  - Tics: "I want to see the label." · "I need exactly that caliber."
+  - Speaking style: Requires details on each lot.
+  - Typical phrases: "I want to see the label." · "I need exactly that caliber."
 - **Alice Simon** — Chocolate · 06 72 12 83 89
-  - How he/she speaks: Requires details on each lot.
-  - Tics: "I want to see the label." · "You take me in the lot of the day, eh."
+  - Speaking style: Requires details on each lot.
+  - Typical phrases: "I want to see the label." · "You take me in the lot of the day, eh."
 
 ## What they buy and how
 
-Order twice a week, usually the day before between 13h and 19h, especially by telephone and WhatsApp. Regular products: 64% dark couverture chocolate (buttons, 5 kg bag), 35% UHT whipping cream (1 L carton), Ground blanched almonds (5 kg bag), White cake boxes, 20 cm (pack of 50), Gariguette strawberries (500 g punnet), Cold-process pastry cream mix (10 kg sack), Pasteurised liquid egg yolk (1 L carton), Frozen unbaked raisin pastries, 110 g (box of 80).
+Order twice a week, usually the day before between 13h and 19h, especially by telephone and WhatsApp. Regular products: Dark couverture chocolate 64% (pistoles, 5 kg bag), UHT liquid cream 35% (1 L carton), Blanched ground almonds (5 kg bag), White pastry boxes 20 cm (pack of 50), Gariguette strawberries (500 g punnet), Cold-set crème pâtissière mix (10 kg bag), Pasteurised liquid egg yolk (1 L carton), Raw frozen pain aux raisins 110 g (carton of 80).
 
-On the last 90 days (22 orders delivered):
+Over the last 90 days (22 orders delivered):
 
-| Product | Volume 90 | Lines | Last price |
+| Product | 90-day volume | Lines | Last price |
 |---|---|---|---|
-| Charentes-Poitou AOP unsalted butter (10 × 1 kg box) (`prd_0027`) | 356,88 kg | 13 | 10,19 € |
-| 35% UHT whipping cream (1 L carton) (`prd_0031`) | 419,00 liter | 13 | 4,10 € |
-| 64% dark couverture chocolate (buttons, 5 kg bag) (`prd_0038`) | 96,44 kg | 9 | 15,70 € |
-| Frozen unbaked raisin pastries, 110 g (box of 80) (`prd_0055`) | 27,00 box | 12 | 41,00 € |
-| Ground blanched almonds (5 kg bag) (`prd_0046`) | 90,81 kg | 14 | 11,81 € |
-| Cold-process pastry cream mix (10 kg sack) (`prd_0021`) | 25,00 piece | 10 | 42,00 € |
-| White cake boxes, 20 cm (pack of 50) (`prd_0067`) | 57,00 box | 10 | 14,50 € |
+| AOP Charentes-Poitou unsalted butter (carton of 10 × 1 kg) (`prd_0027`) | 356,88 kg | 13 | 10,19 € |
+| UHT liquid cream 35% (1 L carton) (`prd_0031`) | 419,00 liter | 13 | 4,10 € |
+| Dark couverture chocolate 64% (pistoles, 5 kg bag) (`prd_0038`) | 96,44 kg | 9 | 15,70 € |
+| Raw frozen pain aux raisins 110 g (carton of 80) (`prd_0055`) | 27,00 box | 12 | 41,00 € |
+| Blanched ground almonds (5 kg bag) (`prd_0046`) | 90,81 kg | 14 | 11,81 € |
+| Cold-set crème pâtissière mix (10 kg bag) (`prd_0021`) | 25,00 piece | 10 | 42,00 € |
+| White pastry boxes 20 cm (pack of 50) (`prd_0067`) | 57,00 box | 10 | 14,50 € |
 | Pasteurised liquid egg yolk (1 L carton) (`prd_0036`) | 62,00 liter | 8 | 7,98 € |
 
-Fiche CRM : _Preorders of Easter chocolate in February. 35 % cream only, never thick. Delivered Mar. Fri. Accept equivalent substitutions if we warn._
+CRM record : _Preorders of Easter chocolate in February. 35 % cream only, never thick. Delivered Mar. Fri. Accept equivalent substitutions if we warn._
 
 ## What frustrates them
 
@@ -53,25 +53,25 @@ Fiche CRM : _Preorders of Easter chocolate in February. 35 % cream only, never t
 
 ## A brief history
 
-- **28/08/2025** · Have quality : Ground blanched almonds (5 kg bag)
+- **28/08/2025** · Have quality : Blanched ground almonds (5 kg bag)
 - **08/11/2025** · Payment · Recovery : FAC-2025-002023
-- **25/11/2025** · Quality · Quality : 35% UHT whipping cream (1 L carton)
+- **25/11/2025** · Quality · Quality : UHT liquid cream 35% (1 L carton)
 - **15/12/2025** · special request · Holidays 2025 : volume reservation
 - **06/01/2026** · prices · Rates 2026
-- **03/04/2026** · Quality · Quality : Ground blanched almonds (5 kg bag)
-- **06/04/2026** · Have quality : Ground blanched almonds (5 kg bag)
+- **03/04/2026** · Quality · Quality : Blanched ground almonds (5 kg bag)
+- **06/04/2026** · Have quality : Blanched ground almonds (5 kg bag)
 - **15/07/2026** · Payment · Recovery : FAC-2026-001219
-- **17/07/2026** · Quality · Quality : White cake boxes, 20 cm (pack of 50)
+- **17/07/2026** · Quality · Quality : White pastry boxes 20 cm (pack of 50)
 - **19/07/2026** · note · Summer closure 2026
 - **15/10/2026** · Payment · Recovery : FAC-2026-001860
 - **13/11/2026** · special request · Holidays 2026 : volume reservation
 
 Complete history: 48 events (11 quality, 6 special request, 6 payment, 5 visit, 4 price, 4 have, 4 call, 3 compliment, 1 opening, 1 return, 1 risk of losing the customer, 1 delivery, 1 note).
 
-## Files opened today
+## Open cases
 
 - **13/11/2026 — Holidays 2026: volume reservation**
-  Loïc wants to book for the holidays: Charentes-Poitou AOP unsalted butter (10 × 1 kg box) and Ground blanched almonds (5 kg bag) in volume for the 23-24 and 30-31/12. Alice: "You take me in the lot of the day, eh."
+  Loïc wants to book for the holidays: AOP Charentes-Poitou unsalted butter (carton of 10 × 1 kg) and Blanched ground almonds (5 kg bag) in volume for the 23-24 and 30-31/12. Alice: "You take me in the lot of the day, eh."
 
 ## How to talk to them
 

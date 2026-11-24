@@ -1,11 +1,11 @@
 # Hyper Garonne Ramonville-Saint-Agne (C0104, `cli_0104`)
 
-> Personal data sheet to play this customer over the phone. The full history is in `seed/clientEvents.json` (filter on `clientId: "cli_0104"`).
+> Customer profile for phone role-play. The full history is in `seed_en/clientEvents.json` (filter on `clientId: "cli_0104"`).
 
 | | |
 |---|---|
 | Type | Large area (Bread Rays and Supermarket Cooking Terminals) — 80 bis rue Paul-Bert, 31520 Ramonville-Saint-Agne |
-| Area | Balma, Labège & Sud Toulousein — delivered Tue, Thu, Sat |
+| Area | Balma, Labège & south Toulouse — delivered Tue, Thu, Sat |
 | Status | **active** — income after competitive departure |
 | Sales representative | Karim Belkacem |
 | Customer since | 28/05/2016 (10 years) |
@@ -20,30 +20,30 @@ Ramonville-Saint-Agne Supermarket with cooking terminal: pre-cooked chopsticks a
 ## People
 
 - **Adrien Mercier** — Head of bakery department · 06 53 48 22 42
-  - How he/she speaks: Short phrases, not time, wants a summary in ten seconds.
-  - Tics: "Send, send." · "Same as usual, go."
+  - Speaking style: Short phrases, not time, wants a summary in ten seconds.
+  - Typical phrases: "Send, send." · "Same as usual, go."
 - **Christophe Guyot** — Store manager · 06 77 36 17 51
-  - How he/she speaks: Calls between two services, hang up fast.
-  - Tics: "Quickly, I don't have time." · "Same as usual, go."
+  - Speaking style: Calls between two services, hang up fast.
+  - Typical phrases: "Quickly, I don't have time." · "Same as usual, go."
 
 ## What they buy and how
 
-Order three times a week, usually the day before between 11h and 16h, especially via e-mail and web portal. Regular products: Frozen part-baked baguettes, 280 g (box of 60), Frozen unbaked all-butter pains au chocolat, 75 g (box of 140), Printed kraft baguette bags (box of 1,000), T45 strong pastry flour (25 kg sack), White cake boxes, 20 cm (pack of 50), Medium free-range eggs (tray of 30), All-butter puff pastry sheets (5 kg box), Porcelain king cake charms (pack of 100).
+Order three times a week, usually the day before between 11h and 16h, especially via e-mail and web portal. Regular products: Frozen par-baked baguette 280 g (carton of 60), Raw frozen all-butter pain au chocolat 75 g (carton of 140), Printed kraft baguette bags (carton of 1000), T45 gruau pastry flour (25 kg bag), White pastry boxes 20 cm (pack of 50), Free-range eggs, size M (tray of 30), All-butter puff pastry sheets (5 kg carton), Porcelain king cake charms (pack of 100).
 
-On the last 90 days (35 orders delivered):
+Over the last 90 days (35 orders delivered):
 
-| Product | Volume 90 | Lines | Last price |
+| Product | 90-day volume | Lines | Last price |
 |---|---|---|---|
-| T45 strong pastry flour (25 kg sack) (`prd_0003`) | 548,00 piece | 19 | 23,57 € |
-| Frozen unbaked all-butter pains au chocolat, 75 g (box of 140) (`prd_0054`) | 211,00 box | 14 | 51,30 € |
-| Printed kraft baguette bags (box of 1,000) (`prd_0065`) | 241,00 box | 16 | 22,00 € |
-| Frozen part-baked baguettes, 280 g (box of 60) (`prd_0058`) | 185,00 box | 13 | 22,80 € |
-| All-butter puff pastry sheets (5 kg box) (`prd_0057`) | 108,00 box | 11 | 37,05 € |
-| Medium free-range eggs (tray of 30) (`prd_0034`) | 472,00 box | 21 | 8,34 € |
-| White cake boxes, 20 cm (pack of 50) (`prd_0067`) | 239,00 box | 17 | 14,50 € |
-| Frozen unbaked raisin pastries, 110 g (box of 80) (`prd_0055`) | 75,00 box | 15 | 38,95 € |
+| T45 gruau pastry flour (25 kg bag) (`prd_0003`) | 548,00 piece | 19 | 23,57 € |
+| Raw frozen all-butter pain au chocolat 75 g (carton of 140) (`prd_0054`) | 211,00 box | 14 | 51,30 € |
+| Printed kraft baguette bags (carton of 1000) (`prd_0065`) | 241,00 box | 16 | 22,00 € |
+| Frozen par-baked baguette 280 g (carton of 60) (`prd_0058`) | 185,00 box | 13 | 22,80 € |
+| All-butter puff pastry sheets (5 kg carton) (`prd_0057`) | 108,00 box | 11 | 37,05 € |
+| Free-range eggs, size M (tray of 30) (`prd_0034`) | 472,00 box | 21 | 8,34 € |
+| White pastry boxes 20 cm (pack of 50) (`prd_0067`) | 239,00 box | 17 | 14,50 € |
+| Raw frozen pain aux raisins 110 g (carton of 80) (`prd_0055`) | 75,00 box | 15 | 38,95 € |
 
-Fiche CRM : _Promo price for Epiphany operations. Order by mail with the store order number. Delivered Tue. game. Sat. Accept equivalent substitutions if notified._
+CRM record : _Promo price for Epiphany operations. Order by mail with the store order number. Delivered Tue. game. Sat. Accept equivalent substitutions if notified._
 
 ## What frustrates them
 
@@ -54,12 +54,12 @@ Fiche CRM : _Promo price for Epiphany operations. Order by mail with the store o
 
 - **10/12/2023** · special request · Holidays 2023 : volume reservation
 - **08/01/2024** · prices · Rates 2024
-- **07/05/2024** · Quality · Quality : Round gold cake boards, 28 cm (pack of 100)
-- **08/05/2024** · Have quality : Round gold cake boards, 28 cm (pack of 100)
-- **24/11/2024** · risk of losing the customer · Share at Les Moulins Réunions du Midi
+- **07/05/2024** · Quality · Quality : Gold round cake boards 28 cm (pack of 100)
+- **08/05/2024** · Have quality : Gold round cake boards 28 cm (pack of 100)
+- **24/11/2024** · risk of losing the customer · Share at Les Moulins Réunis du Midi
 - **29/05/2025** · returned · Customer return
-- **09/10/2025** · Quality · Quality : Frozen part-baked baguettes, 280 g (box of 60)
-- **12/10/2025** · Have quality : Frozen part-baked baguettes, 280 g (box of 60)
+- **09/10/2025** · Quality · Quality : Frozen par-baked baguette 280 g (carton of 60)
+- **12/10/2025** · Have quality : Frozen par-baked baguette 280 g (carton of 60)
 - **08/01/2026** · prices · Rates 2026
 - **17/07/2026** · contact · New contact : Christophe Guyot
 - **15/09/2026** · contact · New contact : Christophe Guyot
@@ -67,10 +67,10 @@ Fiche CRM : _Promo price for Epiphany operations. Order by mail with the store o
 
 Full history: 37 events (10 visit, 6 compliment, 4 special request, 4 call, 3 price, 2 quality, 2 have, 2 contact, 1 opening, 1 delivery, 1 risk of losing the customer, 1 returned).
 
-## Files opened today
+## Open cases
 
 - **21/11/2026 — Holidays 2026: volume reservation**
-  Christophe wants to book for the parties: Porcelain king cake charms (pack of 100) and Medium free-range eggs (tray of 30) in volume for the 23-24 and 30-31/12. Christophe: "Same as usual, go."
+  Christophe wants to book for the parties: Porcelain king cake charms (pack of 100) and Free-range eggs, size M (tray of 30) in volume for the 23-24 and 30-31/12. Christophe: "Same as usual, go."
 
 ## How to talk to them
 

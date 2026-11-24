@@ -67,17 +67,13 @@ async def quote_line(
     qty: float | None = Field(None, description="Quantity as stated by the customer (default 1)"),
     said_unit: str | None = Field(None, description="The unit called \"cardboards\", \"plates\", \"kilos\", \"bags\"... (empty = sales unit)"),
 ) -> dict:
-    """
-    Price to be told to the customer, calculated (never in the lead): customer price per sales unit + per packaging (card, plate, bag...)
-    in "say", and total HT for the quantity in "total". Ex. 3 turning cartons → "9 euros 20 per kilo, i.e. 92 euros
-    le carton de 10 kilos » et « 276 euros hors taxes pour 30 kilos, soit 3 cartons ». Spoken price quote, computed.
-    """
+    """Get the customer price per selling unit and per package, and the total excluding VAT for the requested quantity."""
     from app.agent.rules_order import quote, to_selling_qty  # here, not at the top: app.agent imports the tools package
 
     products = await products_by_id(ctx)
     p = products.get(product_id)
     if not p:
-        raise ValueError(f"produit {product_id} Not found: first search it with search")
+        raise ValueError(f"Product {product_id} was not found. Use search to find its ID.")
     q = to_selling_qty(qty or 1, said_unit, p["unit"], p.get("caliber") or "", p["name"])
     r = await ctx.erp.get("/api/prices/resolve", {"clientId": client_id, "productId": product_id, "qty": q})
     out = quote(qty or 1, p["unit"], p.get("caliber") or "", p["name"], r["price"], said_unit)

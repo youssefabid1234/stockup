@@ -111,7 +111,7 @@ export function CommandMode({ modeSwitch }: { modeSwitch: ReactNode }) {
               <EmptyState
                 icon={AudioLines}
                 title="Pilot itERP  one command at a time"
-                description="Maintenez Space (ou ⌥ Space sur n'importe quelle page), dites la commande, relâchez : l'agent l'exécute et répond en une ligne."
+                description="Hold Space (or ⌥ Space on any page), speak your command, then release to hear the reply."
                 action={
                   <div className="flex flex-col items-center gap-1.5">
                     {EXAMPLES.map((ex) => (
@@ -138,7 +138,7 @@ export function CommandMode({ modeSwitch }: { modeSwitch: ReactNode }) {
               <span>
                 {s.mic === "denied"
                   ? "Micro refused: allow it in the settings of the site (icon on the left of the address), then try again. Meanwhile, type the command."
-                  : "Micro indisponible dans ce navigateur (il faut localhost ou https). Tapez la commande."}
+                  : "The microphone needs localhost or HTTPS. Type your command instead."}
               </span>
             </div>
           ) : null}

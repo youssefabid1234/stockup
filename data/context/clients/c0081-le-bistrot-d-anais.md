@@ -1,6 +1,6 @@
 # Le Bistrot d'Anaïs (C0081, `cli_0081`)
 
-> Personal data sheet to play this customer over the phone. The full history is in `seed/clientEvents.json` (filter on `clientId: "cli_0081"`).
+> Customer profile for phone role-play. The full history is in `seed_en/clientEvents.json` (filter on `clientId: "cli_0081"`).
 
 | | |
 |---|---|
@@ -10,7 +10,7 @@
 | Sales representative | Marion Escudié |
 | Customer since | 18/09/2009 (17 years) |
 | Payment | 30 days — Pays late (3 to 6 weeks), but ends up paying |
-| Outstanding balance | 7 357,65 € incl. VAT (ceiling 11 000 €) — **5 invoice due: 3 217,97 €** |
+| Outstanding balance | 7 357,65 € incl. VAT (ceiling 11 000 €) — **5 overdue invoices: 3 217,97 €** |
 | Temperament | warm — quality ★★☆, price ★★☆, risk of losing the customer low |
 
 ## Who they are
@@ -20,30 +20,30 @@ Bistrot de Lavaur, 30 cutlery, Southwest cuisine. Grégory Breton buys cream, eg
 ## People
 
 - **Grégory Breton** — Chief Executive Officer · 06 82 83 20 59 · gregory@bistrotanais.fr
-  - How he/she speaks: Good mood, laughs easily, tells his/her week.
-  - Tics: "Come and taste the new dish!" · "Bives to the team."
+  - Speaking style: Good mood, laughs easily, tells his/her week.
+  - Typical phrases: "Come and taste the new dish!" · "Bives to the team."
 - **Samir Breton** — Chef de cuisine · 07 51 94 48 31
-  - How he/she speaks: Good mood, laughs easily, tells his/her week.
-  - Tics: "Come and taste the new dish!" · "You are lovers."
+  - Speaking style: Good mood, laughs easily, tells his/her week.
+  - Typical phrases: "Come and taste the new dish!" · "You are lovers."
 
 ## What they buy and how
 
-Order twice a week, usually the day before between 15h and 17h, especially by telephone and WhatsApp. Regular products: Medium free-range eggs (tray of 30), 82% pastry butter (10 kg box), Whole UHT milk (1 L carton), Charentes-Poitou AOP laminating butter, 84% (2 kg slab), 82% laminating butter (2 kg slab), 35% UHT whipping cream (1 L carton), Charentes-Poitou AOP unsalted butter (10 × 1 kg box), Pasteurised liquid egg yolk (1 L carton).
+Order twice a week, usually the day before between 15h and 17h, especially by telephone and WhatsApp. Regular products: Free-range eggs, size M (tray of 30), 82% pastry butter (10 kg carton), Whole UHT milk (1 L carton), AOP Charentes-Poitou 84% laminating butter (2 kg sheet), 82% laminating butter (2 kg sheet), UHT liquid cream 35% (1 L carton), AOP Charentes-Poitou unsalted butter (carton of 10 × 1 kg), Pasteurised liquid egg yolk (1 L carton).
 
-On the last 90 days (19 orders delivered):
+Over the last 90 days (19 orders delivered):
 
-| Product | Volume 90 | Lines | Last price |
+| Product | 90-day volume | Lines | Last price |
 |---|---|---|---|
-| Charentes-Poitou AOP laminating butter, 84% (2 kg slab) (`prd_0025`) | 414,92 kg | 11 | 11,54 € |
-| 82% laminating butter (2 kg slab) (`prd_0026`) | 321,35 kg | 10 | 9,32 € |
-| 82% pastry butter (10 kg box) (`prd_0028`) | 173,58 kg | 11 | 7,77 € |
-| Charentes-Poitou AOP unsalted butter (10 × 1 kg box) (`prd_0027`) | 114,48 kg | 9 | 10,19 € |
-| 35% UHT whipping cream (1 L carton) (`prd_0031`) | 147,00 liter | 9 | 4,12 € |
+| AOP Charentes-Poitou 84% laminating butter (2 kg sheet) (`prd_0025`) | 414,92 kg | 11 | 11,54 € |
+| 82% laminating butter (2 kg sheet) (`prd_0026`) | 321,35 kg | 10 | 9,32 € |
+| 82% pastry butter (10 kg carton) (`prd_0028`) | 173,58 kg | 11 | 7,77 € |
+| AOP Charentes-Poitou unsalted butter (carton of 10 × 1 kg) (`prd_0027`) | 114,48 kg | 9 | 10,19 € |
+| UHT liquid cream 35% (1 L carton) (`prd_0031`) | 147,00 liter | 9 | 4,12 € |
 | Pasteurised liquid egg yolk (1 L carton) (`prd_0036`) | 52,00 liter | 10 | 7,97 € |
-| Medium free-range eggs (tray of 30) (`prd_0034`) | 42,00 box | 8 | 8,26 € |
+| Free-range eggs, size M (tray of 30) (`prd_0034`) | 42,00 box | 8 | 8,26 € |
 | Whole UHT milk (1 L carton) (`prd_0033`) | 215,00 liter | 9 | 1,13 € |
 
-Fiche CRM : _Order in the afternoon between two services. pains au chocolat raw for Sunday brunch. Delivered Mar. Fri. Refuses substitutions: call before any modification._
+CRM record : _Order in the afternoon between two services. pains au chocolat raw for Sunday brunch. Delivered Mar. Fri. Refuses substitutions: call before any modification._
 
 ## What frustrates them
 
@@ -62,13 +62,13 @@ Fiche CRM : _Order in the afternoon between two services. pains au chocolat raw 
 - **04/05/2026** · Payment · Recovery : FAC-2026-000671
 - **29/06/2026** · Payment · Recovery : FAC-2026-001088
 - **11/07/2026** · note · Summer closure 2026
-- **31/07/2026** · Quality · Quality : 82% laminating butter (2 kg slab)
+- **31/07/2026** · Quality · Quality : 82% laminating butter (2 kg sheet)
 - **14/08/2026** · Payment · Recovery : FAC-2026-001446
 - **01/11/2026** · Payment · Recovery : FAC-2026-002063
 
 Full history: 65 events (21 payment, 11 visit, 8 quality, 6 special request, 4 rating, 4 price, 3 compliment, 3 call, 2 card, 2 have, 1 opening).
 
-## Files opened today
+## Open cases
 
 None.
 

@@ -1,6 +1,6 @@
 # Garonne Pack Emballages (`sup_0011`)
 
-> Full history in `seed/supplierEvents.json` (filter on `supplierId: "sup_0011"`).
+> Full history in `seed_en/supplierEvents.json` (filter on `supplierId: "sup_0011"`).
 
 | | |
 |---|---|
@@ -17,14 +17,14 @@ Reliable packaging supplier; Epiphany items are reserved as early as October.
 ## People
 
 - **Hervé Pujol** — Commercial · 05 61 70 26 41 · h.pujol@garonnepack.fr
-  - How he/she speaks: Calm, methodical, speaks in catalogue references.
-  - Tics: "This is the reference 4021, kraft 80 grams." · "For crowns, order before Toussaint."
+  - Speaking style: Calm, methodical, speaks in catalogue references.
+  - Typical phrases: "This is the reference 4021, kraft 80 grams." · "For crowns, order before Toussaint."
 
 ## What they sell
 
 Manufacturer-distributor of food packaging: bread bags, pastry bags, pastry boxes, soles, baking paper, crowns and bean of kings.
 
-Main supplier of: Printed kraft baguette bags (box of 1,000) (`prd_0065`), Paper pastry bags (box of 1,000) (`prd_0066`), White cake boxes, 20 cm (pack of 50) (`prd_0067`), Gold cardboard king cake crowns (pack of 100) (`prd_0068`), Porcelain king cake charms (pack of 100) (`prd_0069`), Round gold cake boards, 28 cm (pack of 100) (`prd_0070`), Silicone-coated baking paper, 40 × 60 (box of 500 sheets) (`prd_0071`).
+Main supplier of: Printed kraft baguette bags (carton of 1000) (`prd_0065`), Paper viennoiserie bags (carton of 1000) (`prd_0066`), White pastry boxes 20 cm (pack of 50) (`prd_0067`), Gold cardboard king cake crowns (pack of 100) (`prd_0068`), Porcelain king cake charms (pack of 100) (`prd_0069`), Gold round cake boards 28 cm (pack of 100) (`prd_0070`), Silicone baking paper 40 × 60 (carton of 500 sheets) (`prd_0071`).
 
 ## Negotiation
 
@@ -36,7 +36,7 @@ Main supplier of: Printed kraft baguette bags (box of 1,000) (`prd_0065`), Paper
 
 ## A brief history
 
-- **28/05/2019** · Quality · Quality : Round gold cake boards, 28 cm (pack of 100)
+- **28/05/2019** · Quality · Quality : Gold round cake boards 28 cm (pack of 100)
 - **28/01/2020** · price · annual negotiation 2020
 - **21/01/2021** · price · annual negotiation 2021
 - **20/01/2022** · price · annual negotiation 2022
@@ -49,7 +49,7 @@ Main supplier of: Printed kraft baguette bags (box of 1,000) (`prd_0065`), Paper
 
 Full history: 27 events.
 
-## Files opened today
+## Open cases
 
 None.
 

@@ -8,10 +8,10 @@ export type BucketId = keyof AgingBuckets;
 
 export const BUCKETS: { id: BucketId; label: string; short: string; bar: string; dot: string }[] = [
   { id: "current", label: "Not due", short: "Not due", bar: "bg-success", dot: "bg-success" },
-  { id: "d1_30", label: "1–30 j", short: "1–30", bar: "bg-warning/55", dot: "bg-warning/55" },
-  { id: "d31_60", label: "31–60 j", short: "31–60", bar: "bg-warning", dot: "bg-warning" },
-  { id: "d61_90", label: "61–90 j", short: "61–90", bar: "bg-destructive/65", dot: "bg-destructive/65" },
-  { id: "d90plus", label: "+90 j", short: "+90", bar: "bg-destructive", dot: "bg-destructive" },
+  { id: "d1_30", label: "1–30 days", short: "1–30", bar: "bg-warning/55", dot: "bg-warning/55" },
+  { id: "d31_60", label: "31–60 days", short: "31–60", bar: "bg-warning", dot: "bg-warning" },
+  { id: "d61_90", label: "61–90 days", short: "61–90", bar: "bg-destructive/65", dot: "bg-destructive/65" },
+  { id: "d90plus", label: "90+ days", short: "+90", bar: "bg-destructive", dot: "bg-destructive" },
 ];
 export const isBucket = (s: string): s is BucketId => BUCKETS.some((b) => b.id === s);
 

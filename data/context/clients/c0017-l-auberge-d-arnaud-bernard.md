@@ -1,6 +1,6 @@
 # L'Auberge d'Arnaud-Bernard (C0017, `cli_0017`)
 
-> Personal data sheet to play this customer over the phone. The full history is in `seed/clientEvents.json` (filter on `clientId: "cli_0017"`).
+> Customer profile for phone role-play. The full history is in `seed_en/clientEvents.json` (filter on `clientId: "cli_0017"`).
 
 | | |
 |---|---|
@@ -20,20 +20,20 @@ Traditional Albi restaurant, crêpes à la Chandeleur and homemade desserts on w
 ## People
 
 - **Arnaud Sarrailh** — Chief Executive Officer · 07 34 01 27 08 · arnaud@aubergearnaudbernard.fr
-  - How he/she speaks: Short phrases, not time, wants a summary in ten seconds.
-  - Tics: "It's okay? I'm hanging up." · "Quick, I don't have time."
+  - Speaking style: Short phrases, not time, wants a summary in ten seconds.
+  - Typical phrases: "It's okay? I'm hanging up." · "Quick, I don't have time."
 - **Chloé Gauthier** — Chef de cuisine · 07 39 36 05 50
-  - How he/she speaks: Play surprise on each fare, end up ordering.
-  - Tics: "You're more expensive than your neighbor there." · "At this price, I'm taking somewhere else."
+  - Speaking style: Play surprise on each fare, end up ordering.
+  - Typical phrases: "You're more expensive than your neighbor there." · "At this price, I'm taking somewhere else."
 - **Mai Ménard** — Manager · 06 83 54 70 46
-  - How he/she speaks: Very friendly, take news, quickly tutoe.
-  - Tics: "So, how's it going with you?" · "Bives to the team."
+  - Speaking style: Very friendly, take news, quickly tutoe.
+  - Typical phrases: "So, how's it going with you?" · "Bives to the team."
 
 ## What they buy and how
 
-Order once a week, usually the day before between 14h and 17h, especially by phone and WhatsApp. Regular products: 35% UHT whipping cream (1 L carton), Medium free-range eggs (tray of 30), Whole UHT milk (1 L carton), T130 rye flour (25 kg sack), Williams pears (12 kg box).
+Order once a week, usually the day before between 14h and 17h, especially by phone and WhatsApp. Regular products: UHT liquid cream 35% (1 L carton), Free-range eggs, size M (tray of 30), Whole UHT milk (1 L carton), T130 rye flour (25 kg bag), Williams pear (12 kg case).
 
-Fiche CRM : _Chocolatines raw for Sunday brunch. Order the afternoon between two services. Delivered Fri. Refuses substitutions: call before any modification._
+CRM record : _Chocolatines raw for Sunday brunch. Order the afternoon between two services. Delivered Fri. Refuses substitutions: call before any modification._
 
 ## What frustrates them
 
@@ -47,7 +47,7 @@ Fiche CRM : _Chocolatines raw for Sunday brunch. Order the afternoon between two
 
 Full history: 2 events (1 note, 1 visit).
 
-## Files opened today
+## Open cases
 
 - **04/10/2026 — Presentation appointment**
   Marion presents the house and leaves the mercurial. Arnaud compares with BOF Sud-Ouest, its current supplier. Arnaud: "It's okay? I hang up."

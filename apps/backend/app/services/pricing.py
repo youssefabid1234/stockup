@@ -131,7 +131,7 @@ def resolve_for_subject(who: PriceSubject, product: Doc, qty: float = 1, date: s
     candidates: list[Doc] = []
     cp = crud.client_prices.get(f"{who.client_id}|{product['id']}") if who.client_id else None
     if cp:
-        candidates.append({"source": "client_price", "label": "Price negotiated customer", "price": round2(cp["price"]), "applied": False})
+        candidates.append({"source": "client_price", "label": "Negotiated customer price", "price": round2(cp["price"]), "applied": False})
 
     ranked = [(r, _specificity(r, who, product)) for r in crud.price_rules.all()]
     ranked = sort_by(
@@ -163,9 +163,9 @@ def resolve_for_subject(who: PriceSubject, product: Doc, qty: float = 1, date: s
         if c["applied"] or c.get("reason"):
             continue
         if winner["source"] == "client_price":
-            c["reason"] = "the negotiated price of the prime customer"
+            c["reason"] = "the customer's negotiated price takes precedence"
         else:
-            c["reason"] = "replaced by a rule" if c["source"] == "list" else "less priority rule"
+            c["reason"] = "replaced by a rule" if c["source"] == "list" else "lower-priority rule"
 
     if winner["source"] == "client_price":
         explanation = f"Price negotiated for this customer: {fmt_eur(winner['price'])}"
@@ -217,7 +217,7 @@ def price_grid(client_id: str | None = None, client_tag: str | None = None, prod
     elif client_tag:
         who = PriceSubject(tags=[client_tag])
     else:
-        raise bad_request("missing_subject", "clientId ou clientTag requis")
+        raise bad_request("missing_subject", "clientId or clientTag is required")
     nq = normalize(q) if q else None
     day = today()
     products = crud.products.filter(

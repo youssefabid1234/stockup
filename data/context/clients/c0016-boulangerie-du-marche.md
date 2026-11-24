@@ -1,6 +1,6 @@
 # Boulangerie du Marché (C0016, `cli_0016`)
 
-> Personal data sheet to play this customer over the phone. The full history is in `seed/clientEvents.json` (filter on `clientId: "cli_0016"`).
+> Customer profile for phone role-play. The full history is in `seed_en/clientEvents.json` (filter on `clientId: "cli_0016"`).
 
 | | |
 |---|---|
@@ -20,31 +20,31 @@ Bakery-Paisserie de quartier in Castelnaudary, four employees. Erwan placed an o
 ## People
 
 - **Erwan Perrot** — bakery owner · 06 80 49 16 28
-  - How he/she speaks: Calls between two services, hang up fast.
-  - Tics: "Send, send." · "It's okay? I'm hanging up."
+  - Speaking style: Calls between two services, hang up fast.
+  - Typical phrases: "Send, send." · "It's okay? I'm hanging up."
 - **Maïté Cassagne** — Bakery (shop and orders) · 07 22 29 46 92
-  - How he/she speaks: Calls between two services, hang up fast.
-  - Tics: "Same as usual, go." · "Quickly, I don't have time."
+  - Speaking style: Calls between two services, hang up fast.
+  - Typical phrases: "Same as usual, go." · "Quickly, I don't have time."
 - **Adrien Pujol** — Bakery worker · 06 81 51 57 94
-  - How he/she speaks: Short phrases, not time, wants a summary in ten seconds.
-  - Tics: "It's okay? I'm hanging up." · "Same as usual, go."
+  - Speaking style: Short phrases, not time, wants a summary in ten seconds.
+  - Typical phrases: "It's okay? I'm hanging up." · "Same as usual, go."
 
 ## What they buy and how
 
-Order twice a week, usually the day before between 13h and 18h, especially by telephone and WhatsApp. Regular products: Traditional French T55 wheat flour (25 kg sack), Fresh baker's yeast (500 g block), 82% laminating butter (2 kg slab), 44% baker's chocolate sticks (1.6 kg box, 300 sticks), Printed kraft baguette bags (box of 1,000), Fine sea salt (25 kg sack), Ground blanched almonds (5 kg bag), Organic einkorn flour (10 kg sack).
+Order twice a week, usually the day before between 13h and 18h, especially by telephone and WhatsApp. Regular products: T55 traditional French wheat flour (25 kg bag), Fresh baker's yeast (500 g block), 82% laminating butter (2 kg sheet), Baker's chocolate sticks 44% (1.6 kg carton, 300 sticks), Printed kraft baguette bags (carton of 1000), Fine sea salt (25 kg bag), Blanched ground almonds (5 kg bag), Organic einkorn flour (10 kg bag).
 
-On the last 90 days (22 orders delivered):
+Over the last 90 days (22 orders delivered):
 
-| Product | Volume 90 | Lines | Last price |
+| Product | 90-day volume | Lines | Last price |
 |---|---|---|---|
-| 82% laminating butter (2 kg slab) (`prd_0026`) | 557,52 kg | 16 | 8,89 € |
-| Traditional French T55 wheat flour (25 kg sack) (`prd_0001`) | 220,00 piece | 14 | 19,00 € |
-| T55 baker's wheat flour (25 kg sack) (`prd_0002`) | 81,00 piece | 7 | 16,56 € |
-| 35% UHT whipping cream (1 L carton) (`prd_0031`) | 316,00 liter | 14 | 4,10 € |
-| Ground blanched almonds (5 kg bag) (`prd_0046`) | 84,52 kg | 15 | 11,79 € |
-| T130 rye flour (25 kg sack) (`prd_0006`) | 35,00 piece | 12 | 23,39 € |
-| Printed kraft baguette bags (box of 1,000) (`prd_0065`) | 34,00 box | 13 | 22,00 € |
-| 44% baker's chocolate sticks (1.6 kg box, 300 sticks) (`prd_0042`) | 52,00 box | 11 | 13,82 € |
+| 82% laminating butter (2 kg sheet) (`prd_0026`) | 557,52 kg | 16 | 8,89 € |
+| T55 traditional French wheat flour (25 kg bag) (`prd_0001`) | 220,00 piece | 14 | 19,00 € |
+| T55 baker's wheat flour (25 kg bag) (`prd_0002`) | 81,00 piece | 7 | 16,56 € |
+| UHT liquid cream 35% (1 L carton) (`prd_0031`) | 316,00 liter | 14 | 4,10 € |
+| Blanched ground almonds (5 kg bag) (`prd_0046`) | 84,52 kg | 15 | 11,79 € |
+| T130 rye flour (25 kg bag) (`prd_0006`) | 35,00 piece | 12 | 23,39 € |
+| Printed kraft baguette bags (carton of 1000) (`prd_0065`) | 34,00 box | 13 | 22,00 € |
+| Baker's chocolate sticks 44% (1.6 kg carton, 300 sticks) (`prd_0042`) | 52,00 box | 11 | 13,82 € |
 
 Form CRM : _Paye in LCR to 30 end of month days. Reserves its crowns and beans as early as November. Delivered Mar. Fri. Accept equivalent substitutions if you warn._
 
@@ -56,21 +56,21 @@ Form CRM : _Paye in LCR to 30 end of month days. Reserves its crowns and beans a
 ## A brief history
 
 - **08/11/2024** · delivery · Delivery order wrong
-- **07/01/2025** · Quality · Quality : Traditional French T55 wheat flour (25 kg sack)
-- **11/01/2025** · Have quality : Traditional French T55 wheat flour (25 kg sack)
+- **07/01/2025** · Quality · Quality : T55 traditional French wheat flour (25 kg bag)
+- **11/01/2025** · Have quality : T55 traditional French wheat flour (25 kg bag)
 - **08/07/2025** · note · Summer closure 2025
 - **09/09/2025** · Quality · Quality : Whole UHT milk (1 L carton)
 - **11/09/2025** · Have quality : Whole UHT milk (1 L carton)
 - **30/12/2025** · delivery · Delivery order wrong
-- **06/01/2026** · Quality · Quality : 35% UHT whipping cream (1 L carton)
-- **08/01/2026** · Have quality : 35% UHT whipping cream (1 L carton)
+- **06/01/2026** · Quality · Quality : UHT liquid cream 35% (1 L carton)
+- **08/01/2026** · Have quality : UHT liquid cream 35% (1 L carton)
 - **19/01/2026** · prices · Rates 2026
 - **28/07/2026** · note · Summer closure 2026
-- **22/09/2026** · Quality · Quality : T130 rye flour (25 kg sack)
+- **22/09/2026** · Quality · Quality : T130 rye flour (25 kg bag)
 
 Full history: 39 events (9 visit, 7 quality, 7 call, 3 compliment, 3 price, 3 have, 2 delivery, 2 note, 1 opening, 1 special request, 1 contact).
 
-## Files opened today
+## Open cases
 
 None.
 
@@ -83,7 +83,7 @@ None.
 ## Price & group
 
 Groups: **Boulangeries** (`boulangeries`).
-Negotiated prices (`clientPrices`, always priority): 82% laminating butter (2 kg slab) 8,78 € (list 9,20); T130 rye flour (25 kg sack) 23,37 € (list 24,50); Fresh baker's yeast (500 g block) 1,29 € (list 1,35); Whole UHT milk (1 L carton) 1,07 € (list 1,12); T80 semi-wholemeal flour (25 kg sack) 20,51 € (list 21,50).
+Negotiated prices (`clientPrices`, always priority): 82% laminating butter (2 kg sheet) 8,78 € (list 9,20); T130 rye flour (25 kg bag) 23,37 € (list 24,50); Fresh baker's yeast (500 g block) 1,29 € (list 1,35); Whole UHT milk (1 L carton) 1,07 € (list 1,12); T80 bise flour (25 kg bag) 20,51 € (list 21,50).
 
 Price rules that may apply:
 - `prl_0001` Bakeries: -4 % on flours from 10 bags

@@ -1,6 +1,6 @@
 # La Chocolatine d'Aucamville (C0051, `cli_0051`)
 
-> Personal data sheet to play this customer over the phone. The full history is in `seed/clientEvents.json` (filter on `clientId: "cli_0051"`).
+> Customer profile for phone role-play. The full history is in `seed_en/clientEvents.json` (filter on `clientId: "cli_0051"`).
 
 | | |
 |---|---|
@@ -20,27 +20,27 @@ Snacks point of sale in Aucamville, cooking raw pastries and sandwiches. Minh Gi
 ## People
 
 - **Minh Giraud** — manager · 06 21 02 87 97 · minh@chocolatineaucamville.fr
-  - How he/she speaks: Always starts with the price, compares with the competition.
-  - Tics: "Do you make a move?" · "What if I take twice?"
+  - Speaking style: Always starts with the price, compares with the competition.
+  - Typical phrases: "Do you make a move?" · "What if I take twice?"
 
 ## What they buy and how
 
-Order twice a week, usually the day before between 15h and 18h, mainly via web portal and telephone. Regular products: Frozen unbaked all-butter pains au chocolat, 75 g (box of 140), Frozen unbaked all-butter croissants, 70 g (box of 150), Frozen part-baked baguettes, 280 g (box of 60), Paper pastry bags (box of 1,000), 35% UHT whipping cream (1 L carton), All-butter puff pastry sheets (5 kg box), Porcelain king cake charms (pack of 100), Printed kraft baguette bags (box of 1,000).
+Order twice a week, usually the day before between 15h and 18h, mainly via web portal and telephone. Regular products: Raw frozen all-butter pain au chocolat 75 g (carton of 140), Raw frozen all-butter croissant 70 g (carton of 150), Frozen par-baked baguette 280 g (carton of 60), Paper viennoiserie bags (carton of 1000), UHT liquid cream 35% (1 L carton), All-butter puff pastry sheets (5 kg carton), Porcelain king cake charms (pack of 100), Printed kraft baguette bags (carton of 1000).
 
-On the last 90 days (23 orders delivered):
+Over the last 90 days (23 orders delivered):
 
-| Product | Volume 90 | Lines | Last price |
+| Product | 90-day volume | Lines | Last price |
 |---|---|---|---|
-| Frozen unbaked all-butter croissants, 70 g (box of 150) (`prd_0053`) | 85,00 box | 14 | 52,00 € |
-| Frozen unbaked all-butter pains au chocolat, 75 g (box of 140) (`prd_0054`) | 46,00 box | 14 | 49,80 € |
-| Printed kraft baguette bags (box of 1,000) (`prd_0065`) | 65,00 box | 13 | 22,00 € |
-| Frozen part-baked baguettes, 280 g (box of 60) (`prd_0058`) | 59,00 box | 12 | 24,00 € |
-| All-butter puff pastry sheets (5 kg box) (`prd_0057`) | 36,00 box | 9 | 39,00 € |
-| Assorted unbaked mini pastries (box of 210) (`prd_0056`) | 24,00 box | 9 | 46,00 € |
-| 35% UHT whipping cream (1 L carton) (`prd_0031`) | 246,00 liter | 11 | 4,10 € |
-| Paper pastry bags (box of 1,000) (`prd_0066`) | 42,00 box | 13 | 17,50 € |
+| Raw frozen all-butter croissant 70 g (carton of 150) (`prd_0053`) | 85,00 box | 14 | 52,00 € |
+| Raw frozen all-butter pain au chocolat 75 g (carton of 140) (`prd_0054`) | 46,00 box | 14 | 49,80 € |
+| Printed kraft baguette bags (carton of 1000) (`prd_0065`) | 65,00 box | 13 | 22,00 € |
+| Frozen par-baked baguette 280 g (carton of 60) (`prd_0058`) | 59,00 box | 12 | 24,00 € |
+| All-butter puff pastry sheets (5 kg carton) (`prd_0057`) | 36,00 box | 9 | 39,00 € |
+| Assorted raw mini viennoiseries (carton of 210) (`prd_0056`) | 24,00 box | 9 | 46,00 € |
+| UHT liquid cream 35% (1 L carton) (`prd_0031`) | 246,00 liter | 11 | 4,10 € |
+| Paper viennoiserie bags (carton of 1000) (`prd_0066`) | 42,00 box | 13 | 17,50 € |
 
-Fiche CRM : _Delivery before 7h for cooking. Wants a fixed carton price on the year. Delivered on Fri. Accept equivalent substitutions if warned._
+CRM record : _Delivery before 7h for cooking. Wants a fixed carton price on the year. Delivered on Fri. Accept equivalent substitutions if warned._
 
 ## What frustrates them
 
@@ -62,7 +62,7 @@ Fiche CRM : _Delivery before 7h for cooking. Wants a fixed carton price on the y
 
 Full history: 26 events (9 call, 6 visit, 3 map, 2 price, 2 note, 2 compliment, 1 opening, 1 special request).
 
-## Files opened today
+## Open cases
 
 None.
 

@@ -1,11 +1,11 @@
 # Le Moulin d'Arnaud-Bernard (C0076, `cli_0076`)
 
-> Personal data sheet to play this customer over the phone. The full history is in `seed/clientEvents.json` (filter on `clientId: "cli_0076"`).
+> Customer profile for phone role-play. The full history is in `seed_en/clientEvents.json` (filter on `clientId: "cli_0076"`).
 
 | | |
 |---|---|
 | Type | Retail trade (Artisan bakeries) — 61 rue de Verdun, 31130 Balma |
-| Area | Balma, Labège & Sud Toulousein — delivered Mon, Wed, Fri |
+| Area | Balma, Labège & south Toulouse — delivered Mon, Wed, Fri |
 | Status | **active** — growing |
 | Sales representative | Marion Escudié |
 | Customer since | 12/05/2008 (18 years) |
@@ -20,28 +20,28 @@ Bakery-quartier pastry in Balma, four employees. Pascal placed orders after the 
 ## People
 
 - **Pascal Denis** — bakery owner · 06 65 28 26 61
-  - How he/she speaks: Voice posed, tutoe the commercial for years, always orders the same thing.
-  - Tics: "We've been working together since time..." · "I trust you."
+  - Speaking style: Voice posed, tutoe the commercial for years, always orders the same thing.
+  - Typical phrases: "We've been working together since time..." · "I trust you."
 - **Paolo Duval** — Bakery (shop and orders) · 06 52 37 32 08
-  - How he/she speaks: Quiet, accustomed, calls at fixed time.
-  - Tics: "You put the same thing on me as Tuesday." · "As usual."
+  - Speaking style: Quiet, accustomed, calls at fixed time.
+  - Typical phrases: "You put the same thing on me as Tuesday." · "As usual."
 
 ## What they buy and how
 
-Order three times a week, usually the day before between 12h and 18h, especially by phone and WhatsApp. Regular products: Traditional French T55 wheat flour (25 kg sack), Fresh baker's yeast (500 g block), 44% baker's chocolate sticks (1.6 kg box, 300 sticks), Printed kraft baguette bags (box of 1,000), Fine sea salt (25 kg sack), 50% hazelnut praline (5 kg bucket), T55 baker's wheat flour (25 kg sack), Porcelain king cake charms (pack of 100).
+Order three times a week, usually the day before between 12h and 18h, especially by phone and WhatsApp. Regular products: T55 traditional French wheat flour (25 kg bag), Fresh baker's yeast (500 g block), Baker's chocolate sticks 44% (1.6 kg carton, 300 sticks), Printed kraft baguette bags (carton of 1000), Fine sea salt (25 kg bag), Hazelnut praline 50% (5 kg tub), T55 baker's wheat flour (25 kg bag), Porcelain king cake charms (pack of 100).
 
-On the last 90 days (32 orders delivered):
+Over the last 90 days (32 orders delivered):
 
-| Product | Volume 90 | Lines | Last price |
+| Product | 90-day volume | Lines | Last price |
 |---|---|---|---|
-| Traditional French T55 wheat flour (25 kg sack) (`prd_0001`) | 101,00 piece | 18 | 19,80 € |
-| T65 country bread flour (25 kg sack) (`prd_0004`) | 73,00 piece | 16 | 19,00 € |
-| 50% hazelnut praline (5 kg bucket) (`prd_0045`) | 81,55 kg | 10 | 16,50 € |
-| T55 baker's wheat flour (25 kg sack) (`prd_0002`) | 74,00 piece | 14 | 17,26 € |
-| Printed kraft baguette bags (box of 1,000) (`prd_0065`) | 56,00 box | 22 | 22,00 € |
-| Ground blanched almonds (5 kg bag) (`prd_0046`) | 101,00 kg | 18 | 11,80 € |
-| T45 strong pastry flour (25 kg sack) (`prd_0003`) | 41,00 piece | 10 | 23,57 € |
-| 44% baker's chocolate sticks (1.6 kg box, 300 sticks) (`prd_0042`) | 68,00 box | 21 | 13,90 € |
+| T55 traditional French wheat flour (25 kg bag) (`prd_0001`) | 101,00 piece | 18 | 19,80 € |
+| T65 country wheat flour (25 kg bag) (`prd_0004`) | 73,00 piece | 16 | 19,00 € |
+| Hazelnut praline 50% (5 kg tub) (`prd_0045`) | 81,55 kg | 10 | 16,50 € |
+| T55 baker's wheat flour (25 kg bag) (`prd_0002`) | 74,00 piece | 14 | 17,26 € |
+| Printed kraft baguette bags (carton of 1000) (`prd_0065`) | 56,00 box | 22 | 22,00 € |
+| Blanched ground almonds (5 kg bag) (`prd_0046`) | 101,00 kg | 18 | 11,80 € |
+| T45 gruau pastry flour (25 kg bag) (`prd_0003`) | 41,00 piece | 10 | 23,57 € |
+| Baker's chocolate sticks 44% (1.6 kg carton, 300 sticks) (`prd_0042`) | 68,00 box | 21 | 13,90 € |
 
 Form CRM : _Paye in LCR to 30 end of month days. Reserves its crowns and beans as early as November. Delivered Mon. Fri. Refuses substitutions: call before any modification._
 
@@ -54,25 +54,25 @@ Form CRM : _Paye in LCR to 30 end of month days. Reserves its crowns and beans a
 
 ## A brief history
 
-- **10/04/2026** · claim · Outturn: Organic einkorn flour (10 kg sack) not delivered
-- **11/05/2026** · claim · Outturn: Organic einkorn flour (10 kg sack) not delivered
-- **18/05/2026** · claim · Outturn: Organic einkorn flour (10 kg sack) not delivered
-- **29/05/2026** · claim · Outturn: Organic einkorn flour (10 kg sack) not delivered
-- **05/06/2026** · claim · Outturn: Organic einkorn flour (10 kg sack) not delivered
-- **08/06/2026** · claim · Outturn: Organic einkorn flour (10 kg sack) not delivered
+- **10/04/2026** · claim · Outturn: Organic einkorn flour (10 kg bag) not delivered
+- **11/05/2026** · claim · Outturn: Organic einkorn flour (10 kg bag) not delivered
+- **18/05/2026** · claim · Outturn: Organic einkorn flour (10 kg bag) not delivered
+- **29/05/2026** · claim · Outturn: Organic einkorn flour (10 kg bag) not delivered
+- **05/06/2026** · claim · Outturn: Organic einkorn flour (10 kg bag) not delivered
+- **08/06/2026** · claim · Outturn: Organic einkorn flour (10 kg bag) not delivered
 - **15/06/2026** · delivery · Cold chain
-- **22/06/2026** · claim · Outturn: Organic einkorn flour (10 kg sack) not delivered
-- **22/07/2026** · claim · Outturn: Organic einkorn flour (10 kg sack) not delivered
-- **21/09/2026** · claim · Outturn: Organic einkorn flour (10 kg sack) not delivered
-- **12/10/2026** · claim · Outturn: Organic einkorn flour (10 kg sack) not delivered
-- **23/11/2026** · claim · Outturn: Organic einkorn flour (10 kg sack) not delivered
+- **22/06/2026** · claim · Outturn: Organic einkorn flour (10 kg bag) not delivered
+- **22/07/2026** · claim · Outturn: Organic einkorn flour (10 kg bag) not delivered
+- **21/09/2026** · claim · Outturn: Organic einkorn flour (10 kg bag) not delivered
+- **12/10/2026** · claim · Outturn: Organic einkorn flour (10 kg bag) not delivered
+- **23/11/2026** · claim · Outturn: Organic einkorn flour (10 kg bag) not delivered
 
 Full history: 93 events (49 complaint, 14 visit, 6 compliment, 6 call, 5 special request, 4 delivery, 3 price, 2 quality, 1 opening, 1 return, 1 contact, 1 note).
 
-## Files opened today
+## Open cases
 
-- **23/11/2026 — Outturn: Organic einkorn flour (10 kg sack) not delivered** (`ord_024729`)
-  Organic einkorn flour (10 kg sack) missing on the CMD-2026-007502 command. Pascal refuses the substitutions: we must warn him before the departure of the truck. Pascal: "I trust you."
+- **23/11/2026 — Outturn: Organic einkorn flour (10 kg bag) not delivered** (`ord_024729`)
+  Organic einkorn flour (10 kg bag) missing on the CMD-2026-007502 command. Pascal refuses the substitutions: we must warn him before the departure of the truck. Pascal: "I trust you."
 
 ## How to talk to them
 

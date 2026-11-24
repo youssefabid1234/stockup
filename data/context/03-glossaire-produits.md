@@ -6,122 +6,122 @@ What customers call the products. Prices are the list prices of the day (€ exc
 
 | id | Product | They say | Unit | Price | shelf life |
 |---|---|---|---|---|---|
-| prd_0001 | Traditional French T55 wheat flour (25 kg sack) | tradi, flour tradition, T55 tradi, tradition, flour tradition | piece (sack 25 kg) | 19,80 € | 180 j |
-| prd_0002 | T55 baker's wheat flour (25 kg sack) | T55, 55, white flour, bread flour | piece (sack 25 kg) | 17,20 € | 180 j |
-| prd_0003 | T45 strong pastry flour (25 kg sack) | strong flour, T45, pastry flour, strong flour flour, 45 | piece (sack 25 kg) | 23,50 € | 180 j |
-| prd_0004 | T65 country bread flour (25 kg sack) | T65, 65, country flour, country bread flour | piece (sack 25 kg) | 19,00 € | 180 j |
-| prd_0005 | T80 semi-wholemeal flour (25 kg sack) | bise, bise flour, T80, semi-complete, 80 | piece (sack 25 kg) | 21,50 € | 150 j |
-| prd_0006 | T130 rye flour (25 kg sack) | rye, rye flour, T130 | piece (sack 25 kg) | 24,50 € | 150 j |
-| prd_0007 | Organic T65 wheat flour (25 kg sack) | T65 organic, organic flour, organic, organic Arrats | piece (sack 25 kg) | 29,50 € | 150 j |
-| prd_0008 | Organic T150 wholemeal flour (25 kg sack) | complete, T150, complete flour, integral | piece (sack 25 kg) | 32,00 € | 120 j |
-| prd_0009 | Organic einkorn flour (10 kg sack) | spelt, small spelt, spelt flour | piece (sack 10 kg) | 38,00 € | 120 j |
-| prd_0010 | Multigrain seed mix (25 kg sack) | Multicereals, cereal mix, seed mix, seed bread | piece (sack 25 kg) | 34,00 € | 150 j |
+| prd_0001 | T55 traditional French wheat flour (25 kg bag) | tradi, traditional flour, T55 traditional, traditional, traditional flour | piece (25 kg bag) | €19.80 | 180 days |
+| prd_0002 | T55 baker's wheat flour (25 kg bag) | T55, the 55, white flour, bread flour | piece (25 kg bag) | €17.20 | 180 days |
+| prd_0003 | T45 gruau pastry flour (25 kg bag) | gruau, T45, pastry flour, fine wheat flour, the 45 | piece (25 kg bag) | €23.50 | 180 days |
+| prd_0004 | T65 country wheat flour (25 kg bag) | T65, the 65, country-style flour, flour for country bread | piece (25 kg bag) | €19.00 | 180 days |
+| prd_0005 | T80 bise flour (25 kg bag) | bise, bise flour, T80, semi-wholemeal, the 80 | piece (25 kg bag) | €21.50 | 150 days |
+| prd_0006 | T130 rye flour (25 kg bag) | seigle, rye flour, T130 | piece (25 kg bag) | €24.50 | 150 days |
+| prd_0007 | T65 organic wheat flour (25 kg bag) | organic T65, organic flour, the organic one, organic from the Arrats | piece (25 kg bag) | €29.50 | 150 days |
+| prd_0008 | T150 organic wholemeal flour (25 kg bag) | wholemeal, T150, wholemeal flour, wholegrain | piece (25 kg bag) | €32.00 | 120 days |
+| prd_0009 | Organic einkorn flour (10 kg bag) | spelt, einkorn, spelt flour | piece (10 kg bag) | €38.00 | 120 days |
+| prd_0010 | Multigrain seed mix (25 kg bag) | multigrain, cereal mix, seed mix, seeded bread | piece (25 kg bag) | €34.00 | 150 days |
 
 ## Yeasts, leaven and improving
 
 | id | Product | They say | Unit | Price | shelf life |
 |---|---|---|---|---|---|
-| prd_0011 | Fresh baker's yeast (500 g block) | yeast, fresh yeast, yeast bread, yeast, blue yeast | piece (bread 500 g) | 1,35 € | 30 j |
-| prd_0012 | Instant dry yeast (500 g pack) | dry yeast, dehydrated yeast, dry yeast, package yeast | piece (pack 500 g) | 4,90 € | 365 j |
-| prd_0013 | Dried rye sourdough starter (1 kg bag) | leaven, dry leaven, rye leaven, powdered leaven | piece (sack 1 kg) | 8,90 € | 365 j |
-| prd_0014 | Bread improver (10 kg sack) | improving, correcting, improving, adjuvant | piece (sack 10 kg) | 28,00 € | 365 j |
+| prd_0011 | Fresh baker's yeast (500 g block) | levure, fresh yeast, yeast bread, the yeast, blue yeast | piece (500 g loaf) | €1.35 | 30 days |
+| prd_0012 | Instant dry yeast (500 g packet) | dry yeast, dehydrated yeast, dry, packet yeast | piece (500 g packet) | €4.90 | 365 days |
+| prd_0013 | Dehydrated rye sourdough (1 kg bag) | levain, dried sourdough, rye sourdough, powdered sourdough | piece (1 kg bag) | €8.90 | 365 days |
+| prd_0014 | Bread improver (10 kg bag) | improver, correcteur, the improver, adjuvant | piece (10 kg bag) | €28.00 | 365 days |
 
 ## Butter and fat
 
 | id | Product | They say | Unit | Price | shelf life |
 |---|---|---|---|---|---|
-| prd_0025 | Charentes-Poitou AOP laminating butter, 84% (2 kg slab) | AOP laminating butter, laminating butter, plates AOP, dry butter, laminating butter | kg (cardboard 5 plates of 2 kg) | 11,40 € | 90 j |
-| prd_0026 | 82% laminating butter (2 kg slab) | standard laminating butter, plates, butter slab, laminating butter, leaf butter | kg (cardboard 5 plates of 2 kg) | 9,20 € | 90 j |
-| prd_0027 | Charentes-Poitou AOP unsalted butter (10 × 1 kg box) | butter AOP, butter Charentes, sweet butter AOP, butter in blisters | kg (plate 1 kg) | 10,20 € | 90 j |
-| prd_0028 | 82% pastry butter (10 kg box) | butter, pastry butter, standard butter, cooking butter | kg (cardboard 10 kg) | 7,60 € | 90 j |
-| prd_0029 | Lightly salted churned butter (1 kg block) | half-salt, salted butter, barlet butter | kg (motte 1 kg) | 11,80 € | 60 j |
-| prd_0030 | Laminating margarine (10 kg box) | margarine, marga, margarine of laminating butter, laminated fat | kg (cardboard 10 kg) | 3,90 € | 180 j |
+| prd_0025 | AOP Charentes-Poitou 84% laminating butter (2 kg sheet) | AOP laminating butter, laminating butter, AOP sheets, dry butter, tourage | kg (carton of 5 sheets of 2 kg) | €11.40 | 90 days |
+| prd_0026 | 82% laminating butter (2 kg sheet) | standard laminating butter, plaques, sheet butter, tourage, puff pastry butter | kg (carton of 5 sheets of 2 kg) | €9.20 | 90 days |
+| prd_0027 | AOP Charentes-Poitou unsalted butter (carton of 10 × 1 kg) | AOP butter, Charentes butter, AOP unsalted butter, butter in small blocks | kg (1 kg block) | €10.20 | 90 days |
+| prd_0028 | 82% pastry butter (10 kg carton) | beurre, pastry butter, standard butter, cooking butter | kg (10 kg carton) | €7.60 | 90 days |
+| prd_0029 | Churned lightly salted butter (1 kg block) | demi-sel, salted butter, churned butter | kg (1 kg slab) | €11.80 | 60 days |
+| prd_0030 | Puff pastry margarine (10 kg carton) | margarine, marga, laminating margarine, puff pastry fat | kg (10 kg carton) | €3.90 | 180 days |
 
 ## Creamery and egg products
 
 | id | Product | They say | Unit | Price | shelf life |
 |---|---|---|---|---|---|
-| prd_0031 | 35% UHT whipping cream (1 L carton) | cream, liquid cream, cream 35, cream UHT, cream floret | litre (cardboard 6 × 1 L) | 4,10 € | 90 j |
-| prd_0032 | 30% thick crème fraîche (5 L bucket) | thick cream, fresh cream, raw cream | liter (sail 5 L) | 4,60 € | 20 j |
-| prd_0033 | Whole UHT milk (1 L carton) | milk, whole milk, milk bricks | liter (pack 6 × 1 L) | 1,12 € | 90 j |
-| prd_0034 | Medium free-range eggs (tray of 30) | eggs, eggs, tray, egg tray, egg shell | box (plate 30) | 8,40 € | 21 j |
-| prd_0035 | Pasteurised liquid whole egg (1 L carton) | liquid egg, egg, eggs in carton whole egg | litre (carton 1 L) | 4,30 € | 21 j |
-| prd_0036 | Pasteurised liquid egg yolk (1 L carton) | yellow, egg yolk, liquid yellow, gilded | litre (carton 1 L) | 7,90 € | 21 j |
-| prd_0037 | Pasteurised liquid egg white (1 L carton) | white, egg white, liquid white | litre (carton 1 L) | 3,20 € | 21 j |
+| prd_0031 | UHT liquid cream 35% (1 L carton) | cream, liquid cream, cream 35, UHT cream, crème fleurette | liter (carton of 6 × 1 L) | €4.10 | 90 days |
+| prd_0032 | Thick crème fraîche 30% (5 L tub) | thick cream, crème fraîche, raw cream | liter (5 L tub) | €4.60 | 20 days |
+| prd_0033 | Whole UHT milk (1 L carton) | lait, whole milk, cartons of milk | liter (pack of 6 × 1 L) | €1.12 | 90 days |
+| prd_0034 | Free-range eggs, size M (tray of 30) | eggs, oeufs, plateau, egg tray, shell eggs | box (tray of 30) | €8.40 | 21 days |
+| prd_0035 | Pasteurised liquid whole egg (1 L carton) | liquid egg, ovo, eggs in cartons, whole egg | liter (1 L carton) | €4.30 | 21 days |
+| prd_0036 | Pasteurised liquid egg yolk (1 L carton) | jaunes, egg yolk, liquid yolks, dorure | liter (1 L carton) | €7.90 | 21 days |
+| prd_0037 | Pasteurised liquid egg white (1 L carton) | blancs, egg white, liquid whites | liter (1 L carton) | €3.20 | 21 days |
 
 ## Sugars and pastry ingredients
 
 | id | Product | They say | Unit | Price | shelf life |
 |---|---|---|---|---|---|
-| prd_0015 | Caster sugar (25 kg sack) | sugar, meal, sugar powder, white sugar | piece (sack 25 kg) | 27,50 € | 730 j |
-| prd_0016 | Icing sugar (10 kg sack) | Icing sugar, royal ice cream, impalpable sugar | piece (sack 10 kg) | 16,50 € | 730 j |
-| prd_0017 | Pearl sugar (10 kg sack) | beaded sugar, grain sugar, grains, brown sugar | piece (sack 10 kg) | 19,00 € | 730 j |
-| prd_0018 | Fine sea salt (25 kg sack) | salt, fine salt, salt sack | piece (sack 25 kg) | 9,80 € | 1095 j |
-| prd_0019 | Neutral hot glaze (7 kg bucket) | painting, neutral painting, mirror icing | piece (sail 7 kg) | 24,00 € | 365 j |
-| prd_0020 | White pastry fondant (7 kg bucket) | Melting, white melt, flash icing | piece (sail 7 kg) | 19,50 € | 365 j |
-| prd_0021 | Cold-process pastry cream mix (10 kg sack) | cream paste, cream powder, pastry cream powder, flan powder | piece (sack 10 kg) | 42,00 € | 365 j |
-| prd_0022 | Madagascar Bourbon vanilla pods (100 g pack) | vanilla, pods, Bourbon vanilla, vanilla pods | piece (pack 100 g) | 34,00 € | 365 j |
-| prd_0023 | Liquid vanilla extract (1 L bottle) | vanilla extract, liquid vanilla, vanilla aroma | liter (bottle 1 L) | 26,00 € | 730 j |
-| prd_0024 | Orange blossom water (1 L container) | orange flower, flower water, orange flower for the crown | liter (1 Lbidon) | 7,50 € | 730 j |
+| prd_0015 | Caster sugar (25 kg bag) | sucre, semoule, caster sugar, white sugar | piece (25 kg bag) | €27.50 | 730 days |
+| prd_0016 | Icing sugar (10 kg bag) | icing sugar, royal icing, icing sugar | piece (10 kg bag) | €16.50 | 730 days |
+| prd_0017 | Pearl sugar (10 kg bag) | pearl sugar, sugar grains, grains, sugar lumps | piece (10 kg bag) | €19.00 | 730 days |
+| prd_0018 | Fine sea salt (25 kg bag) | sel, fine salt, bag of salt | piece (25 kg bag) | €9.80 | 1095 days |
+| prd_0019 | Neutral hot glaze (7 kg tub) | nappage, neutral glaze, mirror glaze | piece (7 kg tub) | €24.00 | 365 days |
+| prd_0020 | White pastry fondant (7 kg tub) | fondant, white fondant, éclair glaze | piece (7 kg tub) | €19.50 | 365 days |
+| prd_0021 | Cold-set crème pâtissière mix (10 kg bag) | pastry cream, custard powder, powdered pastry cream, flan powder | piece (10 kg bag) | €42.00 | 365 days |
+| prd_0022 | Bourbon vanilla pods from Madagascar (100 g packet) | vanille, gousses, Bourbon vanilla, vanilla pods | piece (100 g packet) | €34.00 | 365 days |
+| prd_0023 | Liquid vanilla extract (1 L bottle) | vanilla extract, liquid vanilla, vanilla flavouring | liter (1 L bottle) | €26.00 | 730 days |
+| prd_0024 | Orange blossom water (1 L container) | orange blossom, blossom water, orange blossom for the couronne | liter (1 L can) | €7.50 | 730 days |
 
 ## Chocolate and cocoa
 
 | id | Product | They say | Unit | Price | shelf life |
 |---|---|---|---|---|---|
-| prd_0038 | 64% dark couverture chocolate (buttons, 5 kg bag) | black cover, black chocolate, black pistoles, the 64, black 64 | kg (sack 5 kg) | 15,80 € | 365 j |
-| prd_0039 | 70% dark couverture chocolate (buttons, 5 kg bag) | the 70, black 70, cover 70, dark chocolate | kg (sack 5 kg) | 17,40 € | 365 j |
-| prd_0040 | 38% milk couverture chocolate (buttons, 5 kg bag) | milk chocolate, milk blanket, milk 38, pistoles milk | kg (sack 5 kg) | 15,20 € | 365 j |
-| prd_0041 | 33% white couverture chocolate (buttons, 5 kg bag) | white chocolate, white blanket, ivory, white pistoles | kg (sack 5 kg) | 15,90 € | 300 j |
-| prd_0042 | 44% baker's chocolate sticks (1.6 kg box, 300 sticks) | Sticks, chocolate sticks, shock bars, sticks, sticks for pains au chocolat | box (card 300 sticks) | 13,90 € | 365 j |
-| prd_0043 | 22–24% cocoa powder (1 kg bag) | cocoa, cocoa powder, cocoa powder | kg (sack 1 kg) | 11,50 € | 540 j |
-| prd_0044 | Heat-stable dark chocolate chips (5 kg bag) | nuggets, chocolate nuggets, chocolate drops | kg (sack 5 kg) | 8,90 € | 365 j |
-| prd_0045 | 50% hazelnut praline (5 kg bucket) | Praline, hazelnut praline, praline paste | kg (sail 5 kg) | 16,50 € | 270 j |
+| prd_0038 | Dark couverture chocolate 64% (pistoles, 5 kg bag) | dark couverture, dark chocolate, dark pistoles, the 64, dark 64 | kg (5 kg bag) | €15.80 | 365 days |
+| prd_0039 | Dark couverture chocolate 70% (pistoles, 5 kg bag) | the 70, dark 70, 70 couverture, intense dark chocolate | kg (5 kg bag) | €17.40 | 365 days |
+| prd_0040 | Milk couverture chocolate 38% (pistoles, 5 kg bag) | milk chocolate, milk couverture, milk 38, milk pistoles | kg (5 kg bag) | €15.20 | 365 days |
+| prd_0041 | White couverture chocolate 33% (pistoles, 5 kg bag) | white chocolate, white couverture, ivoire, white pistoles | kg (5 kg bag) | €15.90 | 300 days |
+| prd_0042 | Baker's chocolate sticks 44% (1.6 kg carton, 300 sticks) | sticks, chocolate sticks, choc bars, small sticks, sticks for chocolatines | box (carton of 300 sticks) | €13.90 | 365 days |
+| prd_0043 | Cocoa powder 22-24% (1 kg bag) | cacao, cocoa powder, cocoa powder | kg (1 kg bag) | €11.50 | 540 days |
+| prd_0044 | Dark chocolate baking chips (5 kg bag) | chocolate chips, chocolate chips, chocolate drops | kg (5 kg bag) | €8.90 | 365 days |
+| prd_0045 | Hazelnut praline 50% (5 kg tub) | praline, hazelnut praline, praline paste | kg (5 kg tub) | €16.50 | 270 days |
 
 ## Dried fruit and candied fruit
 
 | id | Product | They say | Unit | Price | shelf life |
 |---|---|---|---|---|---|
-| prd_0046 | Ground blanched almonds (5 kg bag) | almond powder, almond powder, almond powder, white almond, powder | kg (sack 5 kg) | 11,80 € | 240 j |
-| prd_0047 | Flaked almonds (1 kg bag) | tapered, Flaked almonds, sliced almonds | kg (sack 1 kg) | 12,90 € | 240 j |
-| prd_0048 | Ground roasted hazelnuts (1 kg bag) | hazelnut powder, hazelnut powder, hazelnut powder | kg (sack 1 kg) | 14,20 € | 240 j |
-| prd_0049 | Shelled green pistachios (1 kg bag) | pistachio, pistachio, pistachio, pistachio | kg (sack 1 kg) | 38,00 € | 240 j |
-| prd_0050 | Sultanas (12.5 kg box) | grapes, raisins, sultanines, sultanas | kg (cardboard 12,5 kg) | 4,60 € | 365 j |
-| prd_0051 | Walnut halves (5 kg box) | nuts, kernels, Walnut halves | kg (cardboard 5 kg) | 13,50 € | 240 j |
-| prd_0052 | Diced candied fruit (5 kg bucket) | candied fruit, cubes, candied fruit crown, candied macedoine, candied bark | kg (sail 5 kg) | 9,80 € | 365 j |
+| prd_0046 | Blanched ground almonds (5 kg bag) | ground almonds, ground almonds, ground almonds, blanched almonds, poudre | kg (5 kg bag) | €11.80 | 240 days |
+| prd_0047 | Flaked almonds (1 kg bag) | flaked almonds, flaked almonds, sliced almonds | kg (1 kg bag) | €12.90 | 240 days |
+| prd_0048 | Roasted hazelnut powder (1 kg bag) | ground hazelnuts, ground hazelnuts, ground hazelnuts | kg (1 kg bag) | €14.20 | 240 days |
+| prd_0049 | Peeled green pistachios (1 kg bag) | pistache, pistaches, blanched pistachios | kg (1 kg bag) | €38.00 | 240 days |
+| prd_0050 | Sultana raisins (12.5 kg carton) | raisins, raisins, sultanines, sultanas | kg (12.5 kg carton) | €4.60 | 365 days |
+| prd_0051 | Walnut kernels (5 kg carton) | noix, cerneaux, walnut halves | kg (5 kg carton) | €13.50 | 240 days |
+| prd_0052 | Diced candied fruit (5 kg bucket) | candied fruit, cubes, candied fruit for crowns, candied fruit mix, candied peel | kg (5 kg tub) | €9.80 | 365 days |
 
 ## Unbaked pastries and frozen dough
 
 | id | Product | They say | Unit | Price | shelf life |
 |---|---|---|---|---|---|
-| prd_0053 | Frozen unbaked all-butter croissants, 70 g (box of 150) | raw croissants, frozen croissants, croissants, croissants | box (cardboard 150 pieces) | 52,00 € | 270 j |
-| prd_0054 | Frozen unbaked all-butter pains au chocolat, 75 g (box of 140) | pains au chocolat, pains au chocolat raw, chocolate bread, frozen shock bread, choco | box (cardboard 140 pieces) | 54,00 € | 270 j |
-| prd_0055 | Frozen unbaked raisin pastries, 110 g (box of 80) | grape bread, snails, frozen grapes | box (cardboard 80 pieces) | 41,00 € | 270 j |
-| prd_0056 | Assorted unbaked mini pastries (box of 210) | minis, mini-pastries, mini assortment, Viennese mints | box (cardboard 210 pieces) | 46,00 € | 270 j |
-| prd_0057 | All-butter puff pastry sheets (5 kg box) | sheeting, laminated paste, sheeting plates, frozen sheeting | box (card 10 plates) | 39,00 € | 270 j |
-| prd_0058 | Frozen part-baked baguettes, 280 g (box of 60) | Pre-cooked sticks, pre-cooked, pre-cooked bread, frozen sticks | box (cardboard 60 pieces) | 24,00 € | 180 j |
-| prd_0059 | Frozen raspberry purée (1 kg tub) | Raspberries puree, coulis Raspberries, pulp Raspberries | kg (package 1 kg) | 9,40 € | 540 j |
+| prd_0053 | Raw frozen all-butter croissant 70 g (carton of 150) | raw croissants, frozen croissants, croissants to bake, croissants | box (carton of 150 pieces) | €52.00 | 270 days |
+| prd_0054 | Raw frozen all-butter pain au chocolat 75 g (carton of 140) | chocolatines, raw chocolatines, pains au chocolat, frozen pains au choc, choco | box (carton of 140 pieces) | €54.00 | 270 days |
+| prd_0055 | Raw frozen pain aux raisins 110 g (carton of 80) | pains aux raisins, escargots, frozen raisin pastries | box (carton of 80 pieces) | €41.00 | 270 days |
+| prd_0056 | Assorted raw mini viennoiseries (carton of 210) | minis, mini-viennoiseries, assorted minis, viennoiserie mignardises | box (carton of 210 pieces) | €46.00 | 270 days |
+| prd_0057 | All-butter puff pastry sheets (5 kg carton) | feuilletage, puff pastry, sheets of puff pastry, frozen puff pastry | box (carton of 10 sheets) | €39.00 | 270 days |
+| prd_0058 | Frozen par-baked baguette 280 g (carton of 60) | part-baked baguettes, part-baked, part-baked bread, frozen baguettes | box (carton of 60 pieces) | €24.00 | 180 days |
+| prd_0059 | Frozen raspberry purée (1 kg tray) | raspberry purée, raspberry coulis, raspberry pulp | kg (1 kg tray) | €9.40 | 540 days |
 
 ## Fresh fruit for pastry
 
 | id | Product | They say | Unit | Price | shelf life |
 |---|---|---|---|---|---|
-| prd_0060 | Gariguette strawberries (500 g punnet) _(out of season)_ | strawberries, gariguette, strawberry tray | piece (package 500 g) | 4,70 € | 3 j |
-| prd_0061 | Raspberries (125 g punnet) _(out of season)_ | raspberries, fresh Raspberries | piece (package 125 g) | 2,70 € | 3 j |
-| prd_0062 | Lemons (5 kg box) | lemons, lemon, Lemons | kg (box 5 kg) | 2,60 € | 21 j |
-| prd_0063 | Golden Delicious baking apples (13 kg box) | apples, golden, pie apples | kg (box 13 kg) | 1,85 € | 30 j |
-| prd_0064 | Williams pears (12 kg box) | pears, pear, williams | kg (box 12 kg) | 2,60 € | 12 j |
+| prd_0060 | Gariguette strawberry (500 g punnet) | fraises, gariguette, punnet of strawberries | piece (500 g tray) | €4.70 | 3 days |
+| prd_0061 | Raspberry (125 g punnet) | framboises, fresh raspberries | piece (125 g tray) | €2.70 | 3 days |
+| prd_0062 | Lemon (5 kg case) | citrons, citron, lemon | kg (5 kg parcel) | €2.60 | 21 days |
+| prd_0063 | Golden pastry apple (13 kg case) | pommes, golden, tart apples | kg (13 kg parcel) | €1.85 | 30 days |
+| prd_0064 | Williams pear (12 kg case) | poires, poire, williams | kg (12 kg parcel) | €2.60 | 12 days |
 
 ## Packaging and shop articles
 
 | id | Product | They say | Unit | Price | shelf life |
 |---|---|---|---|---|---|
-| prd_0065 | Printed kraft baguette bags (box of 1,000) | Bread bags, baguette bags, kraft bags, baguette bags | box (cardboard 1000) | 22,00 € | 1095 j |
-| prd_0066 | Paper pastry bags (box of 1,000) | sachets, croissants, pastry sachets, sachets pains au chocolat | box (cardboard 1000) | 17,50 € | 1095 j |
-| prd_0067 | White cake boxes, 20 cm (pack of 50) | pastry boxes, cake boxes, boxes of 20, pie boxes | box (lot of 50) | 14,50 € | 1095 j |
-| prd_0068 | Gold cardboard king cake crowns (pack of 100) _(out of season)_ | crowns, crowns of kings, crowns of cardboard, golden crowns | box (lot of 100) | 13,00 € | 1095 j |
-| prd_0069 | Porcelain king cake charms (pack of 100) _(out of season)_ | beans, beans of kings, bags of beans | box (sample of 100) | 16,00 € | 1095 j |
-| prd_0070 | Round gold cake boards, 28 cm (pack of 100) | insoles, gold discs, cardboard soles, cakeboards | box (lot of 100) | 9,80 € | 1095 j |
-| prd_0071 | Silicone-coated baking paper, 40 × 60 (box of 500 sheets) | baking paper, baking sheets, sulphurised paper, silicone paper | box (cardboard 500 sheets) | 29,00 € | 1095 j |
+| prd_0065 | Printed kraft baguette bags (carton of 1000) | bread bags, baguette bags, kraft bags, baguette sachets | box (carton of 1000) | €22.00 | 1095 days |
+| prd_0066 | Paper viennoiserie bags (carton of 1000) | sachets, croissant bags, viennoiserie bags, chocolatine bags | box (carton of 1000) | €17.50 | 1095 days |
+| prd_0067 | White pastry boxes 20 cm (pack of 50) | pastry boxes, cake boxes, boxes of 20, tart boxes | box (pack of 50) | €14.50 | 1095 days |
+| prd_0068 | Gold cardboard galette crowns (pack of 100) | couronnes, kings' crowns, cardboard crowns, gold crowns | box (pack of 100) | €13.00 | 1095 days |
+| prd_0069 | Porcelain galette des rois charms (bag of 100) | charms, galette des rois charms, bag of charms | box (pack of 100) | €16.00 | 1095 days |
+| prd_0070 | Gold round cake boards 28 cm (pack of 100) | semelles, gold discs, cardboard bases, galette boxes | box (pack of 100) | €9.80 | 1095 days |
+| prd_0071 | Silicone baking paper 40 × 60 (carton of 500 sheets) | baking paper, baking sheets, greaseproof paper, silicone paper | box (carton of 500 sheets) | €29.00 | 1095 days |
 
 ## Ambiguous terms: always clarify
 
@@ -134,22 +134,22 @@ What customers call the products. Prices are the list prices of the day (€ exc
 
 ## Usual substitutions
 
-- Charentes-Poitou AOP laminating butter, 84% (2 kg slab) (prd_0025) → 82% laminating butter (2 kg slab) (prd_0026)
-- Madagascar Bourbon vanilla pods (100 g pack) (prd_0022) → Liquid vanilla extract (1 L bottle) (prd_0023)
-- 70% dark couverture chocolate (buttons, 5 kg bag) (prd_0039) → 64% dark couverture chocolate (buttons, 5 kg bag) (prd_0038)
-- Traditional French T55 wheat flour (25 kg sack) (prd_0001) → T55 baker's wheat flour (25 kg sack) (prd_0002)
-- Organic T65 wheat flour (25 kg sack) (prd_0007) → T65 country bread flour (25 kg sack) (prd_0004)
-- Medium free-range eggs (tray of 30) (prd_0034) → Pasteurised liquid whole egg (1 L carton) (prd_0035)
-- Flaked almonds (1 kg bag) (prd_0047) → Ground blanched almonds (5 kg bag) (prd_0046)
-- Fresh baker's yeast (500 g block) (prd_0011) → Instant dry yeast (500 g pack) (prd_0012)
-- Charentes-Poitou AOP unsalted butter (10 × 1 kg box) (prd_0027) → 82% pastry butter (10 kg box) (prd_0028)
+- AOP Charentes-Poitou 84% laminating butter (2 kg sheet) (prd_0025) → 82% laminating butter (2 kg sheet) (prd_0026)
+- Bourbon vanilla pods from Madagascar (100 g packet) (prd_0022) → Liquid vanilla extract (1 L bottle) (prd_0023)
+- Dark couverture chocolate 70% (pistoles, 5 kg bag) (prd_0039) → Dark couverture chocolate 64% (pistoles, 5 kg bag) (prd_0038)
+- T55 traditional French wheat flour (25 kg bag) (prd_0001) → T55 baker's wheat flour (25 kg bag) (prd_0002)
+- T65 organic wheat flour (25 kg bag) (prd_0007) → T65 country wheat flour (25 kg bag) (prd_0004)
+- Free-range eggs, size M (tray of 30) (prd_0034) → Pasteurised liquid whole egg (1 L carton) (prd_0035)
+- Flaked almonds (1 kg bag) (prd_0047) → Blanched ground almonds (5 kg bag) (prd_0046)
+- Fresh baker's yeast (500 g block) (prd_0011) → Instant dry yeast (500 g packet) (prd_0012)
+- AOP Charentes-Poitou unsalted butter (carton of 10 × 1 kg) (prd_0027) → 82% pastry butter (10 kg carton) (prd_0028)
 
 Never without the client's explicit consent.
 
 ## Seasonality
 
-- Strawberry Gariguette (barquet) 500 g) (prd_0060) : of the 15/03 to 30/06 — **Off season today**.
-- Raspberry (barquette) 125 g) (prd_0061) : of the 01/06 to 30/09 — **Off season today**.
-- Williams pears (12 kg box) (prd_0064): from 15/08 to 31/03.
-- Crowns of golden cardboard kings (lot of 100) (prd_0068) : of the 01/12 to 31/01 — **Off season today**.
-- King's beans in porcelain (sample of 100) (prd_0069) : of the 01/12 to 31/01 — **Off season today**.
+- Gariguette strawberry (500 g punnet) (prd_0060): from 15/03 to 30/06 — **Currently out of season**.
+- Raspberry (125 g punnet) (prd_0061): from 01/06 to 30/09 — **Currently out of season**.
+- Williams pear (12 kg case) (prd_0064): from 15/08 to 31/03.
+- Gold cardboard galette crowns (pack of 100) (prd_0068): from 01/12 to 31/01 — **Currently out of season**.
+- Porcelain galette des rois charms (bag of 100) (prd_0069): from 01/12 to 31/01 — **Currently out of season**.

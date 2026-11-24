@@ -1,6 +1,6 @@
 # Boulangerie Escaich (C0006, `cli_0006`)
 
-> Personal data sheet to play this customer over the phone. The full history is in `seed/clientEvents.json` (filter on `clientId: "cli_0006"`).
+> Customer profile for phone role-play. The full history is in `seed_en/clientEvents.json` (filter on `clientId: "cli_0006"`).
 
 | | |
 |---|---|
@@ -22,27 +22,27 @@ Bakery of the Place du Marché de Revel, large country bread with rye. Part with
 ## People
 
 - **Thierry Escaich** — bakery owner · 06 74 30 52 18
-  - How he/she speaks: Accent of the Lauragais, suspicious, compares everything, but loyal when he/she trusts.
-  - Tics: "Garonne Boulange does it to me in 18 the tradi." · "Well, put me as usual."
+  - Speaking style: Accent of the Lauragais, suspicious, compares everything, but loyal when he/she trusts.
+  - Typical phrases: "Garonne Boulange does it to me in 18 the tradi." · "Well, put me as usual."
 
 ## What they buy and how
 
-Order twice a week, usually the day before between 13h and 18h, especially by telephone and WhatsApp. Regular products: Traditional French T55 wheat flour (25 kg sack), T65 country bread flour (25 kg sack), T130 rye flour (25 kg sack), Fresh baker's yeast (500 g block), 82% laminating butter (2 kg slab), 44% baker's chocolate sticks (1.6 kg box, 300 sticks), Printed kraft baguette bags (box of 1,000), Fine sea salt (25 kg sack).
+Order twice a week, usually the day before between 13h and 18h, especially by telephone and WhatsApp. Regular products: T55 traditional French wheat flour (25 kg bag), T65 country wheat flour (25 kg bag), T130 rye flour (25 kg bag), Fresh baker's yeast (500 g block), 82% laminating butter (2 kg sheet), Baker's chocolate sticks 44% (1.6 kg carton, 300 sticks), Printed kraft baguette bags (carton of 1000), Fine sea salt (25 kg bag).
 
-On the last 90 days (18 orders delivered):
+Over the last 90 days (18 orders delivered):
 
-| Product | Volume 90 | Lines | Last price |
+| Product | 90-day volume | Lines | Last price |
 |---|---|---|---|
-| Traditional French T55 wheat flour (25 kg sack) (`prd_0001`) | 347,00 piece | 13 | 19,19 € |
-| T65 country bread flour (25 kg sack) (`prd_0004`) | 183,00 piece | 17 | 18,95 € |
-| 82% laminating butter (2 kg slab) (`prd_0026`) | 360,71 kg | 6 | 9,32 € |
-| T130 rye flour (25 kg sack) (`prd_0006`) | 60,00 piece | 16 | 24,52 € |
-| 44% baker's chocolate sticks (1.6 kg box, 300 sticks) (`prd_0042`) | 65,00 box | 6 | 13,82 € |
-| Printed kraft baguette bags (box of 1,000) (`prd_0065`) | 38,00 box | 7 | 22,00 € |
+| T55 traditional French wheat flour (25 kg bag) (`prd_0001`) | 347,00 piece | 13 | 19,19 € |
+| T65 country wheat flour (25 kg bag) (`prd_0004`) | 183,00 piece | 17 | 18,95 € |
+| 82% laminating butter (2 kg sheet) (`prd_0026`) | 360,71 kg | 6 | 9,32 € |
+| T130 rye flour (25 kg bag) (`prd_0006`) | 60,00 piece | 16 | 24,52 € |
+| Baker's chocolate sticks 44% (1.6 kg carton, 300 sticks) (`prd_0042`) | 65,00 box | 6 | 13,82 € |
+| Printed kraft baguette bags (carton of 1000) (`prd_0065`) | 38,00 box | 7 | 22,00 € |
 | Fresh baker's yeast (500 g block) (`prd_0011`) | 294,00 piece | 8 | 1,35 € |
-| Charentes-Poitou AOP laminating butter, 84% (2 kg slab) (`prd_0025`) | 22,75 kg | 1 | 11,04 € |
+| AOP Charentes-Poitou 84% laminating butter (2 kg sheet) (`prd_0025`) | 22,75 kg | 1 | 11,04 € |
 
-Fiche CRM : _Tradition and T65, delivery on Tuesday and Friday with the tour of the Lauragais._
+CRM record : _Tradition and T65, delivery on Tuesday and Friday with the tour of the Lauragais._
 
 ## What frustrates them
 
@@ -59,14 +59,14 @@ Fiche CRM : _Tradition and T65, delivery on Tuesday and Friday with the tour of 
 - **08/06/2025** · returned · Customer return
 - **24/07/2025** · note · Summer closure 2025
 - **17/01/2026** · prices · Rates 2026
-- **17/03/2026** · Quality · Quality : T65 country bread flour (25 kg sack)
-- **21/03/2026** · Have quality : T65 country bread flour (25 kg sack)
-- **03/04/2026** · Quality · Quality : T65 country bread flour (25 kg sack)
-- **08/04/2026** · Have quality : T65 country bread flour (25 kg sack)
+- **17/03/2026** · Quality · Quality : T65 country wheat flour (25 kg bag)
+- **21/03/2026** · Have quality : T65 country wheat flour (25 kg bag)
+- **03/04/2026** · Quality · Quality : T65 country wheat flour (25 kg bag)
+- **08/04/2026** · Have quality : T65 country wheat flour (25 kg bag)
 
 Full history: 58 events (16 visit, 14 quality, 8 call, 6 special request, 5 compliment, 3 price, 2 have, 1 opening, 1 risk of losing the customer, 1 returned, 1 note).
 
-## Files opened today
+## Open cases
 
 None.
 
@@ -78,7 +78,7 @@ None.
 ## Price & group
 
 Groups: **Boulangeries** (`boulangeries`).
-Negotiated prices (`clientPrices`, always priority): Traditional French T55 wheat flour (25 kg sack) 19,20 € (list 19,80).
+Negotiated prices (`clientPrices`, always priority): T55 traditional French wheat flour (25 kg bag) 19,20 € (list 19,80).
 
 Price rules that may apply:
 - `prl_0001` Bakeries: -4 % on flours from 10 bags

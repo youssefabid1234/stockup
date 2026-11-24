@@ -1,4 +1,4 @@
-/** Inline formatters. Always use these for money/qty/dates in JSX (tabular, French). */
+/** Inline formatters. Always use these for money/qty/dates in JSX (tabular, English). */
 import type { Unit } from "@kit/shared";
 import { cn } from "@/lib/cn";
 import { fmtDate, fmtDateLong, fmtDateTime, fmtMoney, fmtQty, fmtRelative, parseDate } from "@/lib/format";

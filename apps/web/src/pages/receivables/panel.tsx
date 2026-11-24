@@ -121,7 +121,7 @@ export function ReceivablePanel({ clientId, row, onClose }: { clientId: Id; row?
                 { label: "Status", value: status ? <StatusDot kind="client" value={status} /> : "—" },
                 { label: "Ceiling", value: row.creditLimit ? <span className="flex items-center gap-3"><Money value={row.creditLimit} compact /><CreditUse row={row} className="w-40" /></span> : "Without ceiling" },
                 { label: "Older maturity", value: row.oldestDueDate ? <span className={row.maxDaysOverdue > 0 ? "text-destructive" : undefined}><DateLabel date={row.oldestDueDate} />{row.maxDaysOverdue > 0 ? ` · +${row.maxDaysOverdue} j` : ""}</span> : "—" },
-                { label: "Average payment time", value: row.avgDaysToPay != null ? `${row.avgDaysToPay} j (conditions ${row.paymentTermsDays} j)` : "—" },
+                { label: "Average payment time", value: row.avgDaysToPay != null ? `${row.avgDaysToPay} days (terms ${row.paymentTermsDays} j)` : "—" },
                 { label: "Last payment", value: row.lastPaymentAt ? <span><DateLabel date={row.lastPaymentAt} /> · <Money value={row.lastPaymentAmount} /></span> : "—" },
                 { label: "Last recovery", value: row.lastReminderAt ? <DateLabel date={row.lastReminderAt} /> : "Never" },
               ]}

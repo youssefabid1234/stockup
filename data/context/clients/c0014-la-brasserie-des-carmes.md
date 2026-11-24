@@ -1,11 +1,11 @@
 # La Brasserie des Carmes (C0014, `cli_0014`)
 
-> Personal data sheet to play this customer over the phone. The full history is in `seed/clientEvents.json` (filter on `clientId: "cli_0014"`).
+> Customer profile for phone role-play. The full history is in `seed_en/clientEvents.json` (filter on `clientId: "cli_0014"`).
 
 | | |
 |---|---|
 | Type | Restaurant (Restaurants and bistros) — 56 rue Émile-Zola, 31320 Castanet-Tolosan |
-| Area | Balma, Labège & Sud Toulousein — delivered Tue |
+| Area | Balma, Labège & south Toulouse — delivered Tue |
 | Status | **active** — lost (more order), last delivery on 01/07/2025 |
 | Sales representative | Marion Escudié |
 | Customer since | 15/07/2023 (3 years) |
@@ -20,15 +20,15 @@ Traditional restaurant in Castanet-Tolosan, pancakes in Chandeleur and homemade 
 ## People
 
 - **Guilhem Martin** — Chief Executive Officer · 07 59 11 34 10
-  - How he/she speaks: Short phrases, not time, wants a summary in ten seconds.
-  - Tics: "Quickly, I don't have time." · "Same as usual, go."
+  - Speaking style: Short phrases, not time, wants a summary in ten seconds.
+  - Typical phrases: "Quickly, I don't have time." · "Same as usual, go."
 - **Sébastien Bousquet** — Chef de cuisine · 07 41 35 85 02
-  - How he/she speaks: Very friendly, take news, quickly tutoe.
-  - Tics: "You are lovers." · "Blessed to the team."
+  - Speaking style: Very friendly, take news, quickly tutoe.
+  - Typical phrases: "You are lovers." · "Blessed to the team."
 
 ## What they buy and how
 
-Order once a week, usually the day before between 14h and 18h, especially by phone and WhatsApp. Regular products: 35% UHT whipping cream (1 L carton), Medium free-range eggs (tray of 30), 82% pastry butter (10 kg box), Whole UHT milk (1 L carton), Pasteurised liquid whole egg (1 L carton), Charentes-Poitou AOP unsalted butter (10 × 1 kg box), Fine sea salt (25 kg sack), Frozen unbaked all-butter croissants, 70 g (box of 150).
+Order once a week, usually the day before between 14h and 18h, especially by phone and WhatsApp. Regular products: UHT liquid cream 35% (1 L carton), Free-range eggs, size M (tray of 30), 82% pastry butter (10 kg carton), Whole UHT milk (1 L carton), Pasteurised liquid whole egg (1 L carton), AOP Charentes-Poitou unsalted butter (carton of 10 × 1 kg), Fine sea salt (25 kg bag), Raw frozen all-butter croissant 70 g (carton of 150).
 
 Sheet CRM: _Chocolatines raw for Sunday brunch. Cream and eggs twice a week. Delivered Tue. Accept equivalent substitutions if warned._
 
@@ -55,7 +55,7 @@ Sheet CRM: _Chocolatines raw for Sunday brunch. Cream and eggs twice a week. Del
 
 Complete history: 34 events (11 payment, 8 visit, 6 call, 2 note, 1 opening, 1 quality, 1 card, 1 delivery, 1 special request, 1 price, 1 risk of losing the customer).
 
-## Files opened today
+## Open cases
 
 None.
 

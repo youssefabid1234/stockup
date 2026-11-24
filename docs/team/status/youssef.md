@@ -1,4 +1,4 @@
-# Youssef – 的 Several brains (orchestrator, preloaded plug, super tool) · updated Tue. 24/11
+# Youssef – Several brains (orchestrator, preloaded plug, super tool) · updated Tue. 24/11
 
 - Done since the last sync:
   - **"Who calls?" before call** (PR #9): 1re replica S01 7,7 s → 3,5 s (/chat), 6,9 s → 3,9 s in voice.
@@ -26,3 +26,5 @@
 - I need: **Everyone → test the Voice page via "Who calls?"** (required before speaking).
 - Switch(s): TEAM_PRELOAD = on · TEAM_PRODUCT_INSIGHT = on (after `make restart`) · TEAM_ORCHESTRATOR = off
 - To test S40 / demo: `--reset` erases demo promo → restart `scripts/setup_demo_data.py` after.
+
+The English ERP pack and product glossary are in `data/seed_en/`. The substitution rules, caller identification and order readback now use it.

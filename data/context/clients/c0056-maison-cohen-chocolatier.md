@@ -1,6 +1,6 @@
 # Maison Cohen Chocolatier (C0056, `cli_0056`)
 
-> Personal data sheet to play this customer over the phone. The full history is in `seed/clientEvents.json` (filter on `clientId: "cli_0056"`).
+> Customer profile for phone role-play. The full history is in `seed_en/clientEvents.json` (filter on `clientId: "cli_0056"`).
 
 | | |
 |---|---|
@@ -20,30 +20,30 @@ Fine pastry of Toulouse (Côte Pavée), showcase of entremets and homemade choco
 ## People
 
 - **Julien Daniel** — Pastry chef-manager · 06 73 11 45 41 · julien@maisoncohenchocolatier.fr
-  - How he/she speaks: Requires details on each lot.
-  - Tics: "I want to see the label." · "You take me in the lot of the day, eh."
+  - Speaking style: Requires details on each lot.
+  - Typical phrases: "I want to see the label." · "You take me in the lot of the day, eh."
 - **Fanny Rolland** — Chocolate · 06 45 04 04 81
-  - How he/she speaks: Very technical, speaks calibers, maturity, cutting.
-  - Tics: "Not one gram less." · "You take me in the lot of the day, eh."
+  - Speaking style: Very technical, speaks calibers, maturity, cutting.
+  - Typical phrases: "Not one gram less." · "You take me in the lot of the day, eh."
 
 ## What they buy and how
 
-Order twice a week, usually the day before between 14h and 18h, especially by telephone and WhatsApp. Regular products: 64% dark couverture chocolate (buttons, 5 kg bag), 35% UHT whipping cream (1 L carton), Charentes-Poitou AOP unsalted butter (10 × 1 kg box), Ground blanched almonds (5 kg bag), White cake boxes, 20 cm (pack of 50), Caster sugar (25 kg sack), 82% laminating butter (2 kg slab), Cold-process pastry cream mix (10 kg sack).
+Order twice a week, usually the day before between 14h and 18h, especially by telephone and WhatsApp. Regular products: Dark couverture chocolate 64% (pistoles, 5 kg bag), UHT liquid cream 35% (1 L carton), AOP Charentes-Poitou unsalted butter (carton of 10 × 1 kg), Blanched ground almonds (5 kg bag), White pastry boxes 20 cm (pack of 50), Caster sugar (25 kg bag), 82% laminating butter (2 kg sheet), Cold-set crème pâtissière mix (10 kg bag).
 
-On the last 90 days (23 orders delivered):
+Over the last 90 days (23 orders delivered):
 
-| Product | Volume 90 | Lines | Last price |
+| Product | 90-day volume | Lines | Last price |
 |---|---|---|---|
-| 82% laminating butter (2 kg slab) (`prd_0026`) | 457,36 kg | 14 | 9,32 € |
-| Charentes-Poitou AOP laminating butter, 84% (2 kg slab) (`prd_0025`) | 346,46 kg | 11 | 11,54 € |
-| Charentes-Poitou AOP unsalted butter (10 × 1 kg box) (`prd_0027`) | 146,91 kg | 8 | 10,16 € |
-| Ground blanched almonds (5 kg bag) (`prd_0046`) | 104,73 kg | 15 | 11,79 € |
-| 64% dark couverture chocolate (buttons, 5 kg bag) (`prd_0038`) | 75,80 kg | 11 | 15,70 € |
-| 38% milk couverture chocolate (buttons, 5 kg bag) (`prd_0040`) | 72,28 kg | 13 | 15,21 € |
-| Caster sugar (25 kg sack) (`prd_0015`) | 24,00 piece | 13 | 27,50 € |
-| 35% UHT whipping cream (1 L carton) (`prd_0031`) | 157,00 liter | 13 | 4,10 € |
+| 82% laminating butter (2 kg sheet) (`prd_0026`) | 457,36 kg | 14 | 9,32 € |
+| AOP Charentes-Poitou 84% laminating butter (2 kg sheet) (`prd_0025`) | 346,46 kg | 11 | 11,54 € |
+| AOP Charentes-Poitou unsalted butter (carton of 10 × 1 kg) (`prd_0027`) | 146,91 kg | 8 | 10,16 € |
+| Blanched ground almonds (5 kg bag) (`prd_0046`) | 104,73 kg | 15 | 11,79 € |
+| Dark couverture chocolate 64% (pistoles, 5 kg bag) (`prd_0038`) | 75,80 kg | 11 | 15,70 € |
+| Milk couverture chocolate 38% (pistoles, 5 kg bag) (`prd_0040`) | 72,28 kg | 13 | 15,21 € |
+| Caster sugar (25 kg bag) (`prd_0015`) | 24,00 piece | 13 | 27,50 € |
+| UHT liquid cream 35% (1 L carton) (`prd_0031`) | 157,00 liter | 13 | 4,10 € |
 
-Fiche CRM : _35 % Creme only, never thick. Always the same cover, same origin. Delivered sea. sam. Refuses substitutions: call before any modification._
+CRM record : _35 % Creme only, never thick. Always the same cover, same origin. Delivered sea. sam. Refuses substitutions: call before any modification._
 
 ## What frustrates them
 
@@ -53,25 +53,25 @@ Fiche CRM : _35 % Creme only, never thick. Always the same cover, same origin. D
 
 ## A brief history
 
-- **03/04/2024** · Quality · Quality : Medium free-range eggs (tray of 30)
+- **03/04/2024** · Quality · Quality : Free-range eggs, size M (tray of 30)
 - **25/01/2025** · prices · Rates 2025
 - **27/03/2025** · contact · New contact : Fanny Rolland
 - **07/07/2025** · note · Summer closure 2025
 - **20/09/2025** · risk of losing the customer · Declining activity
 - **09/01/2026** · prices · Rates 2026
 - **17/01/2026** · delivery · Delivery order wrong
-- **11/04/2026** · Quality · Quality : 82% laminating butter (2 kg slab)
-- **13/04/2026** · Have quality : 82% laminating butter (2 kg slab)
-- **13/06/2026** · back to delivery : Caster sugar (25 kg sack)
+- **11/04/2026** · Quality · Quality : 82% laminating butter (2 kg sheet)
+- **13/04/2026** · Have quality : 82% laminating butter (2 kg sheet)
+- **13/06/2026** · back to delivery : Caster sugar (25 kg bag)
 - **27/07/2026** · note · Summer closure 2026
 - **10/11/2026** · special request · Holidays 2026 : volume reservation
 
 Full history: 61 events (17 quality, 16 visit, 6 compliment, 5 special request, 5 call, 4 price, 2 rating, 1 opening, 1 contact, 1 risk of losing the customer, 1 delivery, 1 have, 1 back).
 
-## Files opened today
+## Open cases
 
 - **10/11/2026 — Holidays 2026: volume reservation**
-  Julien wants to book for the parties: White cake boxes, 20 cm (pack of 50) and Medium free-range eggs (tray of 30) in volume for the 23-24 and 30-31/12. Julien: "You take me in the lot of the day, eh."
+  Julien wants to book for the parties: White pastry boxes 20 cm (pack of 50) and Free-range eggs, size M (tray of 30) in volume for the 23-24 and 30-31/12. Julien: "You take me in the lot of the day, eh."
 
 ## How to talk to them
 

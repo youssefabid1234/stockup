@@ -1,6 +1,6 @@
 # Le Fournil Occitan — Presentation
 
-A toulous distributor of raw materials for bakers and pastry makers, installed in Fondeyre since 1994. Lauragais and Gers mill flours, fresh yeast, butter AOP Charentes-Poitou and laminating butter, cream, eggs, blanket chocolate, dried fruits, raw frozen pastry and all packaging (bread bags, pastry boxes, crowns and beans). Every morning the Artisan bakeries, pastries, restaurants, caterers and bread shelves are delivered from the supermarkets of the agglomeration, Lauragais and Tarn. Two highlights during the year: the galette and crown of kings in January, Easter chocolate in spring.
+Le Fournil Occitan is a Toulouse wholesaler serving bakers and pastry chefs from its Fondeyre depot since 1994. It supplies flour from Lauragais and Gers mills, yeast, butter, dairy, eggs, couverture chocolate, fruit, frozen pastries and packaging. Its trucks deliver each morning to bakeries, pastry shops, restaurants, caterers and supermarket bakery counters across Toulouse, Lauragais and Tarn. Peak seasons are Epiphany in January and Easter in spring.
 
 SARL to the capital of 120 000 €. Area of Fondeyre, 14 path of Fondeyre, 31200 Toulouse. Standard: 05 61 47 32 80. 25 employees, founded in 1994.
 
@@ -10,12 +10,12 @@ Pack reference date: **Tuesday 24 November 2026, 06h30** (see `02-journee-type.m
 
 - Occupation: Distributor of bakery and pastry supplies and BOF products (butter, eggs, cheeses... and creamery) — Toulouse and Haute-Garonne.
 - Catalogue: 71 products (67 active today), 10 families: flours and milling, yeasts, leaven and improving, butters and fats, cream and egg products, sugars and pastry ingredients, chocolate and cocoa, dried fruit and candied fruit, raw pastry and frozen pasta, fresh fruit for pastry, packaging and shop items.
-- Portfolio: 104 customers — 88 assets, 9 lost (no more orders), 3 blocked, 4 prospects.
-- Active customers by type: 43 retail shops, 11 restaurants, 9 large areas, 8 breweries, 6 collective catering, 6 caterers, 5 hotels.
+- Portfolio: 104 customers — 88 active, 9 lost (no more orders), 3 blocked, 4 prospects.
+- Active customers by type: 43 retail shops, 11 restaurants, 9 supermarkets, 8 breweries, 6 collective catering, 6 caterers, 5 hotels.
 - Turnover delivered on 12 months: approximately **8 983 k€ excl. VAT** (2 060 k€ on the last 90 days), 8 295 orders delivered, average basket ~1 083 € excl. VAT.
 - Order channels (12 months): phone 40 %, email 24 %, WhatsApp 22 %, web portal 15 %.
-- First customers in CA (12 months): Hyper Garonne Fenouillet (cli_0004), Hyper Garonne Ramonville-Saint-Agne (cli_0104), Proxi Fraîcheur Saint-Aubin (cli_0062), Maison Sarrailh (cli_0001), Le Fournil de Labège (cli_0050).
-- Hot products in CA (90 days): 82% laminating butter (2 kg slab), Traditional French T55 wheat flour (25 kg sack), Frozen unbaked all-butter pains au chocolat, 75 g (box of 140), Frozen unbaked all-butter croissants, 70 g (box of 150), Charentes-Poitou AOP laminating butter, 84% (2 kg slab), 35% UHT whipping cream (1 L carton), Frozen part-baked baguettes, 280 g (box of 60), Charentes-Poitou AOP unsalted butter (10 × 1 kg box).
+- Top customers by revenue (12 months): Hyper Garonne Fenouillet (cli_0004), Hyper Garonne Ramonville-Saint-Agne (cli_0104), Proxi Fraîcheur Saint-Aubin (cli_0062), Maison Sarrailh (cli_0001), Le Fournil de Labège (cli_0050).
+- Top products by revenue (90 days): 82% laminating butter (2 kg sheet), T55 traditional French wheat flour (25 kg bag), Raw frozen all-butter pain au chocolat 75 g (carton of 140), Raw frozen all-butter croissant 70 g (carton of 150), AOP Charentes-Poitou 84% laminating butter (2 kg sheet), UHT liquid cream 35% (1 L carton), Frozen par-baked baguette 280 g (carton of 60), AOP Charentes-Poitou unsalted butter (carton of 10 × 1 kg).
 - History: 3 years of data (since 25/11/2023): orders, purchases, lots, invoices, payments, tours.
 
 ## History
@@ -42,7 +42,7 @@ Pack reference date: **Tuesday 24 November 2026, 06h30** (see `02-journee-type.m
 | Thierry Bousquet | Buyer | Buy flours, butter and chocolate; attends butter courses every week. Place supplier orders in the afternoon. |
 | Rémi Cazals | Chief of dock | Reception at 5h, preparation, loading; manages frozen and recorded pallets. |
 
-Drivers (one per tour, see `06-livraisons-zones.md`): Yohan Ferrié (Toulouse centre & suburbs), Christophe Rouquette (Fondeyre, L'Union & Nord Toulousein), Mathieu Sabatier (Blagnac, Colomiers & Ouest), Nicolas Py (Balma, Labège & Sud Toulousein), Serge Alibert (Lauragais & Tarn).
+Drivers (one per tour, see `06-livraisons-zones.md`): Yohan Ferrié (Toulouse centre & suburbs), Christophe Rouquette (Fondeyre, L'Union & Nord Toulousein), Mathieu Sabatier (Blagnac, Colomiers & Ouest), Nicolas Py (Balma, Labège & south Toulouse), Serge Alibert (Lauragais & Tarn).
 
 `createdBy` values in the commands: `bernard`, `sandrine`, `julien`, `marion`, `karim`, `lucie`, `thierry`, `remi`, `portail-web`, `quai` (seizure at the dock), `voice-agent` (reserved for the vocal agent).
 
@@ -73,26 +73,26 @@ The flagship products often have 2 suppliers (`supplierPrices.json`); the main s
 ## Competition
 
 - Garonne Boulange Distribution
-- Les Moulins Réunions du Midi
-- BOF South-West
+- Les Moulins Réunis du Midi
+- BOF Sud-Ouest
 - Pâtiss'Occitanie
-- Touloussain du Fournil counter
+- Comptoir Toulousain du Fournil
 
 ## House rules
 
-- Here we say "chocolatine", never "chocolate bread": both words refer to the same article SUR-PAC, the agent must not correct the client.
-- The flours are sold in sack of 25 kg (except spelt in 10 kg): "10 of tradi" = 10 bags of T55 tradition, not 10 kg.
-- The prices of butter and chocolate are reviewed on the 1er of each month; flours in the quarter according to the price of wheat.
-- Kings' cake: pre-orders of almond powder, flaking, crowns and beans before the December 15, otherwise no stock guarantee.
-- At Toulouse the crown of kings is also made (brioche with orange blossom and candied fruits): the candied fruits and orange blossom leave in January as much as the almond powder.
-- free delivery 150 € excl. VAT; below, 12 € delivery. The pallets and insulated bins are taken over by the driver.
-- Bakeries are often closed on Mondays or Wednesdays: never promise delivery on a closing day, check the customer's card.
-- The flour bags are paid in LCR to 30 days end month for bakers; counting for new customers for three months.
+- Locally, customers say “chocolatine” or “pain au chocolat”. Both mean SKU SUR-PAC. Use the caller’s term.
+- Flour comes in 25 kg bags, except spelt in 10 kg bags. “Ten traditional” means ten bags of traditional T55 flour.
+- Butter and chocolate prices change on the first of each month. Flour prices are reviewed quarterly against wheat prices.
+- For Epiphany, pre-order ground almonds, puff pastry, paper crowns and porcelain charms before 15 December for guaranteed stock.
+- Toulouse also sells brioche kings’ crowns with orange blossom and candied fruit. In January, both ingredients are as popular as ground almonds.
+- Delivery is free from €150 excluding VAT. Below that, delivery costs €12. The driver collects returnable pallets and insulated boxes.
+- Check the customer’s record for closing days. Many bakeries close on Monday or Wednesday.
+- Bakers pay for flour by bill of exchange at 30 days end of month. New customers pay on delivery for the first three months.
 
 ## Current situation on 24/11 (to be known)
 
-- **Rupture**: Charentes-Poitou AOP laminating butter, 84% (2 kg slab) (prd_0025) to zero — strike at the Saintonge butter factory collection: AOP plates delivered to 50 % from allocation up to late November. Order to purchase draft at Beurrerie Coopérative de Saintonge, to be confirmed. Possible substitute: 82% laminating butter (2 kg slab).
-- **Rupture**: Madagascar Bourbon vanilla pods (100 g pack) (prd_0022) to zero — Madagascar pods in rupture at the importer (harvest late after the cyclone), return announced mid-December. Order for draft purchase at Sud Fruits Secs Import, to be confirmed. Possible substitute: Liquid vanilla extract (1 L bottle).
+- **Out of stock**: AOP Charentes-Poitou 84% laminating butter (2 kg sheet) (prd_0025) to zero — strike at the Saintonge butter factory collection: AOP plates delivered to 50 % from allocation up to late November. Order to purchase draft at Beurrerie Coopérative de Saintonge, to be confirmed. Possible substitute: 82% laminating butter (2 kg sheet).
+- **Out of stock**: Bourbon vanilla pods from Madagascar (100 g packet) (prd_0022) to zero — Madagascar pods in rupture at the importer (harvest late after the cyclone), return announced mid-December. Order for draft purchase at Sud Fruits Secs Import, to be confirmed. Possible substitute: Liquid vanilla extract (1 L bottle).
 - **Incomplete delivery this morning** : Laiterie de la Garonne (order ACH-2026-001219, `partially_received`).
 - Pre-orders of Epiphany opened since 15/11: almond powder, leafing, crowns, beans, candied fruits and orange blossom.
 - December butter price sent yesterday: +3 % on the AOP laminating butter.

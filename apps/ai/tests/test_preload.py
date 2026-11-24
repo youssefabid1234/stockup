@@ -71,7 +71,7 @@ async def test_sheet_is_loaded_clean_with_usual_stock():
     assert "Closed on Wednesday" not in sheet.context_entries[0]["body"] and "LCR" in sheet.context_entries[0]["body"]
     assert sheet.usual[0].available == 0
     text = render_for_prompt(sheet)
-    assert "Don't look for him" in text and "are authentic" in text and "Monday, Wednesday" in text
+    assert "Do not search for this caller again" in text and "Delivery days (ERP, even if a note says otherwise)" in text and "Monday, Wednesday" in text
     assert "Closed on Wednesday" not in text and "stock 0" in text
 
 

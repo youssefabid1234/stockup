@@ -1,6 +1,6 @@
 # Au Fournil de Mélanie (C0026, `cli_0026`)
 
-> Personal data sheet to play this customer over the phone. The full history is in `seed/clientEvents.json` (filter on `clientId: "cli_0026"`).
+> Customer profile for phone role-play. The full history is in `seed_en/clientEvents.json` (filter on `clientId: "cli_0026"`).
 
 | | |
 |---|---|
@@ -20,27 +20,27 @@ Toulouse (Saint-Cyprien) artisan bakery, two ovens in the morning, one at midday
 ## People
 
 - **Maxime Dumont** — bakery owner · 06 96 73 47 00
-  - How he/she speaks: Calculate everything, ask for promos and lot ends.
-  - Tics: "Do you have lot ends?" · "How much is by kilo, brought back?"
+  - Speaking style: Calculate everything, ask for promos and lot ends.
+  - Typical phrases: "Do you have lot ends?" · "How much is by kilo, brought back?"
 
 ## What they buy and how
 
-Order twice a week, usually the day before between 13h and 17h, especially by telephone and WhatsApp. Regular products: Traditional French T55 wheat flour (25 kg sack), Fresh baker's yeast (500 g block), 82% laminating butter (2 kg slab), 44% baker's chocolate sticks (1.6 kg box, 300 sticks), Fine sea salt (25 kg sack), T65 country bread flour (25 kg sack), Pasteurised liquid whole egg (1 L carton), Organic T150 wholemeal flour (25 kg sack).
+Order twice a week, usually the day before between 13h and 17h, especially by telephone and WhatsApp. Regular products: T55 traditional French wheat flour (25 kg bag), Fresh baker's yeast (500 g block), 82% laminating butter (2 kg sheet), Baker's chocolate sticks 44% (1.6 kg carton, 300 sticks), Fine sea salt (25 kg bag), T65 country wheat flour (25 kg bag), Pasteurised liquid whole egg (1 L carton), T150 organic wholemeal flour (25 kg bag).
 
-On the last 90 days (22 orders delivered):
+Over the last 90 days (22 orders delivered):
 
-| Product | Volume 90 | Lines | Last price |
+| Product | 90-day volume | Lines | Last price |
 |---|---|---|---|
-| 82% laminating butter (2 kg slab) (`prd_0026`) | 725,85 kg | 10 | 9,38 € |
-| Traditional French T55 wheat flour (25 kg sack) (`prd_0001`) | 186,00 piece | 10 | 19,08 € |
-| T65 country bread flour (25 kg sack) (`prd_0004`) | 161,00 piece | 18 | 18,19 € |
-| T45 strong pastry flour (25 kg sack) (`prd_0003`) | 119,00 piece | 12 | 23,57 € |
-| 44% baker's chocolate sticks (1.6 kg box, 300 sticks) (`prd_0042`) | 193,00 box | 14 | 13,82 € |
-| Ground blanched almonds (5 kg bag) (`prd_0046`) | 187,23 kg | 13 | 11,79 € |
-| T80 semi-wholemeal flour (25 kg sack) (`prd_0005`) | 56,00 piece | 11 | 21,57 € |
+| 82% laminating butter (2 kg sheet) (`prd_0026`) | 725,85 kg | 10 | 9,38 € |
+| T55 traditional French wheat flour (25 kg bag) (`prd_0001`) | 186,00 piece | 10 | 19,08 € |
+| T65 country wheat flour (25 kg bag) (`prd_0004`) | 161,00 piece | 18 | 18,19 € |
+| T45 gruau pastry flour (25 kg bag) (`prd_0003`) | 119,00 piece | 12 | 23,57 € |
+| Baker's chocolate sticks 44% (1.6 kg carton, 300 sticks) (`prd_0042`) | 193,00 box | 14 | 13,82 € |
+| Blanched ground almonds (5 kg bag) (`prd_0046`) | 187,23 kg | 13 | 11,79 € |
+| T80 bise flour (25 kg bag) (`prd_0005`) | 56,00 piece | 11 | 21,57 € |
 | Pasteurised liquid whole egg (1 L carton) (`prd_0035`) | 230,00 liter | 12 | 4,30 € |
 
-Fiche CRM: _Delivery before 11h, after morning rush. AOP laminating butter for pastry, pastry butter for the rest. Delivered sea. sam. Accept equivalent substitutions if notified._
+CRM record: _Delivery before 11h, after morning rush. AOP laminating butter for pastry, pastry butter for the rest. Delivered sea. sam. Accept equivalent substitutions if notified._
 
 ## What frustrates them
 
@@ -50,25 +50,25 @@ Fiche CRM: _Delivery before 11h, after morning rush. AOP laminating butter for p
 
 ## A brief history
 
-- **22/02/2024** · Have quality : Fine sea salt (25 kg sack)
-- **13/04/2024** · Quality · Quality : 44% baker's chocolate sticks (1.6 kg box, 300 sticks)
-- **23/11/2024** · Quality · Quality : Sultanas (12.5 kg box)
-- **26/11/2024** · Have quality : Sultanas (12.5 kg box)
+- **22/02/2024** · Have quality : Fine sea salt (25 kg bag)
+- **13/04/2024** · Quality · Quality : Baker's chocolate sticks 44% (1.6 kg carton, 300 sticks)
+- **23/11/2024** · Quality · Quality : Sultana raisins (12.5 kg carton)
+- **26/11/2024** · Have quality : Sultana raisins (12.5 kg carton)
 - **24/01/2025** · prices · Rates 2025
 - **17/07/2025** · note · Summer closure 2025
 - **24/01/2026** · prices · Rates 2026
 - **21/02/2026** · delivery · Cold chain
-- **27/05/2026** · Quality · Quality : White cake boxes, 20 cm (pack of 50)
-- **31/05/2026** · Have quality : White cake boxes, 20 cm (pack of 50)
+- **27/05/2026** · Quality · Quality : White pastry boxes 20 cm (pack of 50)
+- **31/05/2026** · Have quality : White pastry boxes 20 cm (pack of 50)
 - **16/11/2026** · special request · Holidays 2026 : volume reservation
-- **21/11/2026** · claim · Outturn: Organic T65 wheat flour (25 kg sack) not delivered (replaced)
+- **21/11/2026** · claim · Outturn: T65 organic wheat flour (25 kg bag) not delivered (replaced)
 
 Full history: 41 events (9 visit, 6 quality, 5 special request, 5 compliment, 5 call, 4 price, 3 have, 1 opening, 1 note, 1 delivery, 1 claim).
 
-## Files opened today
+## Open cases
 
 - **16/11/2026 — Holidays 2026: volume reservation**
-  Maxime wants to book for the parties: White cake boxes, 20 cm (pack of 50) and Organic T150 wholemeal flour (25 kg sack) in volume for the 23-24 and 30-31/12. Maxime: "Do you have a lot?"
+  Maxime wants to book for the parties: White pastry boxes 20 cm (pack of 50) and T150 organic wholemeal flour (25 kg bag) in volume for the 23-24 and 30-31/12. Maxime: "Do you have a lot?"
 
 ## How to talk to them
 

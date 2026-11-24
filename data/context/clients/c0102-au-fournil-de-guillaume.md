@@ -1,6 +1,6 @@
 # Au Fournil de Guillaume (C0102, `cli_0102`)
 
-> Personal data sheet to play this customer over the phone. The full history is in `seed/clientEvents.json` (filter on `clientId: "cli_0102"`).
+> Customer profile for phone role-play. The full history is in `seed_en/clientEvents.json` (filter on `clientId: "cli_0102"`).
 
 | | |
 |---|---|
@@ -10,7 +10,7 @@
 | Sales representative | Julien Fabre |
 | Customer since | 22/03/2011 (15 years) |
 | Payment | 30 days — Pays on time but deducts what he challenges |
-| Outstanding balance | 9 619,77 € incl. VAT (ceiling 14 000 €) — **3 invoice due: 483,19 €** |
+| Outstanding balance | 9 619,77 € incl. VAT (ceiling 14 000 €) — **3 overdue invoices: 483,19 €** |
 | Temperament | grating — quality ★☆☆, price ★★☆, risk of losing the customer low |
 
 ## Who they are
@@ -20,33 +20,33 @@ Balma's artisan bakery, two ovens in the morning, one at midday. Théo Bernard m
 ## People
 
 - **Théo Bernard** — bakery owner · 07 10 41 25 46
-  - How he/she speaks: Starts with a complaint, ends up ordering.
-  - Tics: "It's always the same with you." · "The last delivery, let's not talk about it."
+  - Speaking style: Starts with a complaint, ends up ordering.
+  - Typical phrases: "It's always the same with you." · "The last delivery, let's not talk about it."
 - **Éric Rémy** — Bakery (shop and orders) · 06 68 84 62 86
-  - How he/she speaks: Starts with a complaint, ends up ordering.
-  - Tics: "The last delivery, let's not talk about it." · "It's always the same with you."
+  - Speaking style: Starts with a complaint, ends up ordering.
+  - Typical phrases: "The last delivery, let's not talk about it." · "It's always the same with you."
 - **Julien Bernard** — Bakery worker · 06 61 67 59 85
-  - How he/she speaks: Ronchonne every call, but remains a customer.
-  - Tics: "Well, come on, put me on anyway..." · "The last delivery, let's not talk about it."
+  - Speaking style: Ronchonne every call, but remains a customer.
+  - Typical phrases: "Well, come on, put me on anyway..." · "The last delivery, let's not talk about it."
 
 ## What they buy and how
 
-Order twice a week, usually the day before between 12h and 17h, especially by telephone and WhatsApp. Regular products: Traditional French T55 wheat flour (25 kg sack), Fresh baker's yeast (500 g block), 44% baker's chocolate sticks (1.6 kg box, 300 sticks), Fine sea salt (25 kg sack), Cold-process pastry cream mix (10 kg sack), Charentes-Poitou AOP laminating butter, 84% (2 kg slab), T65 country bread flour (25 kg sack), Multigrain seed mix (25 kg sack).
+Order twice a week, usually the day before between 12h and 17h, especially by telephone and WhatsApp. Regular products: T55 traditional French wheat flour (25 kg bag), Fresh baker's yeast (500 g block), Baker's chocolate sticks 44% (1.6 kg carton, 300 sticks), Fine sea salt (25 kg bag), Cold-set crème pâtissière mix (10 kg bag), AOP Charentes-Poitou 84% laminating butter (2 kg sheet), T65 country wheat flour (25 kg bag), Multigrain seed mix (25 kg bag).
 
-On the last 90 days (24 orders delivered):
+Over the last 90 days (24 orders delivered):
 
-| Product | Volume 90 | Lines | Last price |
+| Product | 90-day volume | Lines | Last price |
 |---|---|---|---|
-| Charentes-Poitou AOP laminating butter, 84% (2 kg slab) (`prd_0025`) | 747,00 kg | 12 | 11,54 € |
-| Charentes-Poitou AOP unsalted butter (10 × 1 kg box) (`prd_0027`) | 431,90 kg | 14 | 10,19 € |
-| Traditional French T55 wheat flour (25 kg sack) (`prd_0001`) | 208,00 piece | 16 | 19,00 € |
-| Printed kraft baguette bags (box of 1,000) (`prd_0065`) | 74,00 box | 17 | 22,00 € |
-| T65 country bread flour (25 kg sack) (`prd_0004`) | 61,00 piece | 10 | 18,95 € |
-| 44% baker's chocolate sticks (1.6 kg box, 300 sticks) (`prd_0042`) | 82,00 box | 11 | 13,78 € |
-| Medium free-range eggs (tray of 30) (`prd_0034`) | 91,00 box | 12 | 8,34 € |
-| Cold-process pastry cream mix (10 kg sack) (`prd_0021`) | 14,00 piece | 8 | 42,00 € |
+| AOP Charentes-Poitou 84% laminating butter (2 kg sheet) (`prd_0025`) | 747,00 kg | 12 | 11,54 € |
+| AOP Charentes-Poitou unsalted butter (carton of 10 × 1 kg) (`prd_0027`) | 431,90 kg | 14 | 10,19 € |
+| T55 traditional French wheat flour (25 kg bag) (`prd_0001`) | 208,00 piece | 16 | 19,00 € |
+| Printed kraft baguette bags (carton of 1000) (`prd_0065`) | 74,00 box | 17 | 22,00 € |
+| T65 country wheat flour (25 kg bag) (`prd_0004`) | 61,00 piece | 10 | 18,95 € |
+| Baker's chocolate sticks 44% (1.6 kg carton, 300 sticks) (`prd_0042`) | 82,00 box | 11 | 13,78 € |
+| Free-range eggs, size M (tray of 30) (`prd_0034`) | 91,00 box | 12 | 8,34 € |
+| Cold-set crème pâtissière mix (10 kg bag) (`prd_0021`) | 14,00 piece | 8 | 42,00 € |
 
-Fiche CRM: _Delivery before 11h, after the morning rush. AOP laminating butter for pastry, pastry butter for the rest. Delivered Mar. Fri. Accept equivalent substitutions if notified._
+CRM record: _Delivery before 11h, after the morning rush. AOP laminating butter for pastry, pastry butter for the rest. Delivered Mar. Fri. Accept equivalent substitutions if notified._
 
 ## What frustrates them
 
@@ -62,8 +62,8 @@ Fiche CRM: _Delivery before 11h, after the morning rush. AOP laminating butter f
 - **07/06/2026** · dispute · Partial settlement : FAC-2026-001027
 - **20/07/2026** · note · Summer closure 2026
 - **24/09/2026** · dispute · Partial settlement : FAC-2026-001837
-- **30/10/2026** · Quality · Quality : Fine sea salt (25 kg sack)
-- **02/11/2026** · Have quality : Fine sea salt (25 kg sack)
+- **30/10/2026** · Quality · Quality : Fine sea salt (25 kg bag)
+- **02/11/2026** · Have quality : Fine sea salt (25 kg bag)
 - **08/11/2026** · dispute · Partial settlement : FAC-2026-002199
 - **20/11/2026** · special request · Holidays 2026 : volume reservation
 - **22/11/2026** · dispute · Partial settlement : FAC-2026-002294
@@ -72,20 +72,20 @@ Fiche CRM: _Delivery before 11h, after the morning rush. AOP laminating butter f
 
 Full history: 75 events (27 dispute, 13 visit, 8 special request, 6 quality, 5 call, 4 compliment, 4 price, 2 delivery, 2 note, 2 have, 1 opening, 1 back).
 
-## Files opened today
+## Open cases
 
 - **24/09/2026 — Partial Regulation: FAC-2026-001837** (`inv_007652`)
-  Lower regulation of 95,05 € incl. VAT in the amount of FAC-2026-001837. Theo contests the price applied to T65 country bread flour (25 kg sack).
+  Lower regulation of 95,05 € incl. VAT in the amount of FAC-2026-001837. Theo contests the price applied to T65 country wheat flour (25 kg bag).
 - **08/11/2026 — Partial Regulation: FAC-2026-002199** (`inv_008014`)
-  Lower regulation of 133,59 € incl. VAT at the amount of FAC-2026-002199. Theo contests the quality of Medium free-range eggs (tray of 30).
+  Lower regulation of 133,59 € incl. VAT at the amount of FAC-2026-002199. Theo contests the quality of Free-range eggs, size M (tray of 30).
 - **20/11/2026 — Holidays 2026: volume reservation**
-  Eric wants to book for the parties: Printed kraft baguette bags (box of 1,000) and Fresh baker's yeast (500 g block) in volume for the 23-24 and 30-31/12. Julien: "The last delivery, let's not talk about it."
+  Eric wants to book for the parties: Printed kraft baguette bags (carton of 1000) and Fresh baker's yeast (500 g block) in volume for the 23-24 and 30-31/12. Julien: "The last delivery, let's not talk about it."
 - **22/11/2026 — Partial Regulation: FAC-2026-002294** (`inv_008109`)
-  Lower regulation of 254,55 € incl. VAT in the amount of FAC-2026-002294. Theo contests the price applied to Charentes-Poitou AOP unsalted butter (10 × 1 kg box).
+  Lower regulation of 254,55 € incl. VAT in the amount of FAC-2026-002294. Theo contests the price applied to AOP Charentes-Poitou unsalted butter (carton of 10 × 1 kg).
 - **23/11/2026 — Partial Regulation: FAC-2026-002527** (`inv_008342`)
-  121,29 € incl. VAT lower regulation at the amount of FAC-2026-002527. Theo contests the weight billed on Fine sea salt (25 kg sack).
+  121,29 € incl. VAT lower regulation at the amount of FAC-2026-002527. Theo contests the weight billed on Fine sea salt (25 kg bag).
 - **23/11/2026 — Partial Regulation: FAC-2026-002342** (`inv_008157`)
-  125,63 € incl. VAT lower regulation at the amount of FAC-2026-002342. Theo contests the weight billed on Charentes-Poitou AOP unsalted butter (10 × 1 kg box).
+  125,63 € incl. VAT lower regulation at the amount of FAC-2026-002342. Theo contests the weight billed on AOP Charentes-Poitou unsalted butter (carton of 10 × 1 kg).
 
 ## How to talk to them
 

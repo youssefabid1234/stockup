@@ -10,7 +10,7 @@ from app.core.db import Doc, transactional
 from app.core.errors import bad_request, conflict, not_found
 from app.core.utils import fmt_eur, locale_cmp, sort_by
 
-SCOPE_FR = {"client": "clients", "supplier": "fournisseurs", "product": "products"}
+SCOPE_FR = {"client": "clients", "supplier": "suppliers", "product": "products"}
 
 
 def _entities_of(scope: str) -> list[Doc]:

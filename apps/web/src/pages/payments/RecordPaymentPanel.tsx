@@ -19,7 +19,7 @@ import {
   Button, DateLabel, DatePicker, Field, IconButton, Input, Money, Mono, Section, Segmented, Select, SidePanel, Skeleton, StatusDot,
 } from "@/ui";
 
-const PAST_PRESETS = [{ label: "Today", days: 0 }, { label: "Yesterday", days: -1 }, { label: "−7 j", days: -7 }];
+const PAST_PRESETS = [{ label: "Today", days: 0 }, { label: "Yesterday", days: -1 }, { label: "−7 days", days: -7 }];
 const METHOD_OPTIONS = Object.entries(PAYMENT_METHOD_LABEL).map(([value, label]) => ({ value, label }));
 const OPEN_STATUSES = new Set(["issued", "partially_paid", "overdue"]);
 const round2 = (n: number) => Math.round(n * 100) / 100;

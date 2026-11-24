@@ -1,6 +1,6 @@
 # Le Cassoulet d'Or (C0022, `cli_0022`)
 
-> Personal data sheet to play this customer over the phone. The full history is in `seed/clientEvents.json` (filter on `clientId: "cli_0022"`).
+> Customer profile for phone role-play. The full history is in `seed_en/clientEvents.json` (filter on `clientId: "cli_0022"`).
 
 | | |
 |---|---|
@@ -20,27 +20,27 @@ Bistrot de Colomiers, 40 cutlery, Southwest cuisine. Jérôme Louis buys cream, 
 ## People
 
 - **Jérôme Louis** — Chief Executive Officer · 06 94 38 94 87
-  - How he/she speaks: Short phrases, not time, wants a summary in ten seconds.
-  - Tics: "Same as usual, go." · "Quickly, I don't have time."
+  - Speaking style: Short phrases, not time, wants a summary in ten seconds.
+  - Typical phrases: "Same as usual, go." · "Quickly, I don't have time."
 - **Éric Castagné** — Chef de cuisine · 06 65 60 71 11
-  - How he/she speaks: Very friendly, take news, quickly tutoe.
-  - Tics: "You're lovers." · "Come and taste the new dish!"
+  - Speaking style: Very friendly, take news, quickly tutoe.
+  - Typical phrases: "You're lovers." · "Come and taste the new dish!"
 
 ## What they buy and how
 
-Order once a week, usually the day before between 14h and 17h, especially by phone and WhatsApp. Regular products: 35% UHT whipping cream (1 L carton), Medium free-range eggs (tray of 30), 82% pastry butter (10 kg box), Whole UHT milk (1 L carton), Charentes-Poitou AOP unsalted butter (10 × 1 kg box).
+Order once a week, usually the day before between 14h and 17h, especially by phone and WhatsApp. Regular products: UHT liquid cream 35% (1 L carton), Free-range eggs, size M (tray of 30), 82% pastry butter (10 kg carton), Whole UHT milk (1 L carton), AOP Charentes-Poitou unsalted butter (carton of 10 × 1 kg).
 
-On the last 90 days (13 orders delivered):
+Over the last 90 days (13 orders delivered):
 
-| Product | Volume 90 | Lines | Last price |
+| Product | 90-day volume | Lines | Last price |
 |---|---|---|---|
-| Charentes-Poitou AOP unsalted butter (10 × 1 kg box) (`prd_0027`) | 259,62 kg | 10 | 10,19 € |
-| 82% pastry butter (10 kg box) (`prd_0028`) | 186,68 kg | 9 | 7,77 € |
-| Medium free-range eggs (tray of 30) (`prd_0034`) | 166,00 box | 12 | 8,34 € |
-| 35% UHT whipping cream (1 L carton) (`prd_0031`) | 219,00 liter | 7 | 4,12 € |
+| AOP Charentes-Poitou unsalted butter (carton of 10 × 1 kg) (`prd_0027`) | 259,62 kg | 10 | 10,19 € |
+| 82% pastry butter (10 kg carton) (`prd_0028`) | 186,68 kg | 9 | 7,77 € |
+| Free-range eggs, size M (tray of 30) (`prd_0034`) | 166,00 box | 12 | 8,34 € |
+| UHT liquid cream 35% (1 L carton) (`prd_0031`) | 219,00 liter | 7 | 4,12 € |
 | Whole UHT milk (1 L carton) (`prd_0033`) | 412,00 liter | 9 | 1,12 € |
 
-Fiche CRM : _Chocolatines raw for Sunday brunch. Order the afternoon between two services. Delivered game. Refuses substitutions: call before any modification._
+CRM record : _Chocolatines raw for Sunday brunch. Order the afternoon between two services. Delivered game. Refuses substitutions: call before any modification._
 
 ## What frustrates them
 
@@ -53,19 +53,19 @@ Fiche CRM : _Chocolatines raw for Sunday brunch. Order the afternoon between two
 - **23/01/2025** · prices · Rates 2025
 - **29/05/2025** · Quality · Quality : Whole UHT milk (1 L carton)
 - **03/06/2025** · Have quality : Whole UHT milk (1 L carton)
-- **17/07/2025** · Quality · Quality : Charentes-Poitou AOP unsalted butter (10 × 1 kg box)
-- **19/07/2025** · Have quality : Charentes-Poitou AOP unsalted butter (10 × 1 kg box)
+- **17/07/2025** · Quality · Quality : AOP Charentes-Poitou unsalted butter (carton of 10 × 1 kg)
+- **19/07/2025** · Have quality : AOP Charentes-Poitou unsalted butter (carton of 10 × 1 kg)
 - **22/07/2025** · note · Summer closure 2025
 - **10/09/2025** · map · Autumn card
 - **14/01/2026** · prices · Rates 2026
 - **05/03/2026** · Delivery · Delivery left at the door
-- **11/06/2026** · Quality · Quality : Charentes-Poitou AOP unsalted butter (10 × 1 kg box)
+- **11/06/2026** · Quality · Quality : AOP Charentes-Poitou unsalted butter (carton of 10 × 1 kg)
 - **02/07/2026** · note · Summer closure 2026
 - **27/09/2026** · map · Autumn card
 
 Full history: 63 events (14 visit, 12 quality, 9 call, 7 special request, 5 note, 4 compliment, 4 price, 3 card, 2 have, 1 opening, 1 risk of losing the customer, 1 delivery).
 
-## Files opened today
+## Open cases
 
 None.
 

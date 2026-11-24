@@ -1,6 +1,6 @@
 # Cuisine centrale de Colomiers (C0005, `cli_0005`)
 
-> Personal data sheet to play this customer over the phone. The full history is in `seed/clientEvents.json` (filter on `clientId: "cli_0005"`).
+> Customer profile for phone role-play. The full history is in `seed_en/clientEvents.json` (filter on `clientId: "cli_0005"`).
 
 | | |
 |---|---|
@@ -10,7 +10,7 @@
 | Sales representative | Karim Belkacem |
 | Customer since | 04/01/2021 (5 years) |
 | Payment | 30 days — administrative mandate: slow but secure payment |
-| Outstanding balance | 37 301,69 € incl. VAT (ceiling 55 000 €) — **1 invoice due: 26 568,95 €** |
+| Outstanding balance | 37 301,69 € incl. VAT (ceiling 55 000 €) — **1 overdue invoices: 26 568,95 €** |
 | Temperament | procedure — quality ★★★, price ★★☆, risk of losing the customer low |
 
 ## Who they are
@@ -20,25 +20,25 @@ Municipal central kitchen: 4 500 meals per day for schools and EHPAD in Colomier
 ## People
 
 - **Patricia Lafforgue** — Production manager · 05 61 15 22 90 · cuisine.centrale@ville-colomiers-exemple.fr
-  - How he/she speaks: Calm, administrative, everything by order form.
-  - Tics: "It's in the market, I can't change the reference."
+  - Speaking style: Calm, administrative, everything by order form.
+  - Typical phrases: "It's in the market, I can't change the reference."
 
 ## What they buy and how
 
-Order once a week, usually 3 days front between 10h and 12h, especially via e-mail and web portal. Regular products: Pasteurised liquid whole egg (1 L carton), 35% UHT whipping cream (1 L carton), Whole UHT milk (1 L carton), 82% pastry butter (10 kg box), Caster sugar (25 kg sack), T55 baker's wheat flour (25 kg sack), Golden Delicious baking apples (13 kg box), 64% dark couverture chocolate (buttons, 5 kg bag).
+Order once a week, usually 3 days front between 10h and 12h, especially via e-mail and web portal. Regular products: Pasteurised liquid whole egg (1 L carton), UHT liquid cream 35% (1 L carton), Whole UHT milk (1 L carton), 82% pastry butter (10 kg carton), Caster sugar (25 kg bag), T55 baker's wheat flour (25 kg bag), Golden pastry apple (13 kg case), Dark couverture chocolate 64% (pistoles, 5 kg bag).
 
-On the last 90 days (9 orders delivered):
+Over the last 90 days (9 orders delivered):
 
-| Product | Volume 90 | Lines | Last price |
+| Product | 90-day volume | Lines | Last price |
 |---|---|---|---|
-| 82% pastry butter (10 kg box) (`prd_0028`) | 1 553,89 kg | 7 | 7,65 € |
-| T55 baker's wheat flour (25 kg sack) (`prd_0002`) | 629,00 piece | 5 | 17,43 € |
-| 64% dark couverture chocolate (buttons, 5 kg bag) (`prd_0038`) | 560,30 kg | 5 | 15,45 € |
-| 35% UHT whipping cream (1 L carton) (`prd_0031`) | 2 125,00 liter | 9 | 3,96 € |
+| 82% pastry butter (10 kg carton) (`prd_0028`) | 1 553,89 kg | 7 | 7,65 € |
+| T55 baker's wheat flour (25 kg bag) (`prd_0002`) | 629,00 piece | 5 | 17,43 € |
+| Dark couverture chocolate 64% (pistoles, 5 kg bag) (`prd_0038`) | 560,30 kg | 5 | 15,45 € |
+| UHT liquid cream 35% (1 L carton) (`prd_0031`) | 2 125,00 liter | 9 | 3,96 € |
 | Pasteurised liquid whole egg (1 L carton) (`prd_0035`) | 899,00 liter | 8 | 4,08 € |
-| Caster sugar (25 kg sack) (`prd_0015`) | 103,00 piece | 3 | 27,50 € |
+| Caster sugar (25 kg bag) (`prd_0015`) | 103,00 piece | 3 | 27,50 € |
 | Whole UHT milk (1 L carton) (`prd_0033`) | 1 460,00 liter | 9 | 1,08 € |
-| Golden Delicious baking apples (13 kg box) (`prd_0063`) | 473,46 kg | 4 | 1,91 € |
+| Golden pastry apple (13 kg case) (`prd_0063`) | 473,46 kg | 4 | 1,91 € |
 
 Sheet CRM: _Order at J-3 before noon, liquid egg products only, monthly invoice with commitment number._
 
@@ -60,11 +60,11 @@ Sheet CRM: _Order at J-3 before noon, liquid egg products only, monthly invoice 
 - **13/07/2025** · Payment · Recovery : FAC-2025-001171
 - **10/01/2026** · prices · Rates 2026
 - **15/08/2026** · Payment · Recovery : FAC-2026-001450
-- **14/10/2026** · claim · Outturn: Organic T65 wheat flour (25 kg sack) not delivered
+- **14/10/2026** · claim · Outturn: T65 organic wheat flour (25 kg bag) not delivered
 
 Full history: 43 events (11 call, 6 quality, 6 compliment, 6 payment, 4 price, 3 visit, 2 special request, 2 delivery, 1 opening, 1 having, 1 complaint).
 
-## Files opened today
+## Open cases
 
 None.
 

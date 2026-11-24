@@ -8,8 +8,8 @@ from app.tools import registry
 from app.tools.registry import ToolContext
 
 CATALOGUE = [
-    {"id": "prd_0001", "name": "Wheat flour T55 French tradition (sack 25 kg)", "aliases": ["tradi"], "unit": "piece", "caliber": "sac 25 kg", "active": True},
-    {"id": "prd_0006", "name": "Rye flour T130 (sac 25 kg)", "aliases": ["seigle"], "unit": "piece", "caliber": "sac 25 kg", "active": True},
+    {"id": "prd_0001", "name": "Traditional T55 wheat flour (25 kg sack)", "aliases": ["tradi"], "unit": "piece", "caliber": "25 kg sack", "active": True},
+    {"id": "prd_0006", "name": "Rye flour T130 (25 kg sack)", "aliases": ["seigle"], "unit": "piece", "caliber": "25 kg sack", "active": True},
     {"id": "prd_0026", "name": "Touring butter 82 % (plate 2 kg)", "aliases": ["tourage standard", "laminating butter"], "unit": "kg", "caliber": "carton 5 plates of 2 kg", "active": True},
     {"id": "prd_0025", "name": "Butter AOP 84 % (plate 2 kg)", "aliases": ["laminating butter AOP", "laminating butter"], "unit": "kg", "caliber": "carton 5 plates of 2 kg", "active": True},
 ]
@@ -119,7 +119,7 @@ async def test_new_order_in_one_call(place):
     erp = FakeErp()
     r = await place(ToolContext(erp=erp, actor="voice_agent"), "cli_0001", [line(said="tradi", qty=10)], "jeudi", None)
     assert r["written"] and r["daySay"] == "Thursday 26 November"
-    assert r["readback"].startswith("10 bags of wheat flour T55 French tradition")
+    assert r["readback"].startswith("10 sacks of Traditional T55 wheat flour")
     o = next(iter(erp.orders.values()))
     assert o["deliveryDate"] == "2026-11-26" and o["lines"][0]["qty"] == 10 and o["source"] == "voice_agent"
 

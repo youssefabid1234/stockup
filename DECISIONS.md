@@ -218,7 +218,9 @@ relu remains raw); sets "Listen" in vocal mode. Verified in real: audio 2 voice 
 coffee ?" isolated and "T145(?)" (T55 misunderstood) marked; the agent includes "10... no 12" = 12, ignores coffee,
 Ask for the dubious flour again.
 
-### Fair command (Amine Khalil)
+**English ERP pack (Youssef).** The translated pack in `data/seed_en/` preserves IDs, numbers, codes, dates and registered names. The team validated 23,176 translated fields and recorded the catalogue terms in `data/seed_en/GLOSSARY.md`.
+
+### Order accuracy (Amine Khalil)
 
 **Mission**: what ends up in the ERP is exactly what the customer wanted (good product, good quantity, good day,
 `TEAM_ORDER_RULES` switch (set by default in `.env.example`). Code:

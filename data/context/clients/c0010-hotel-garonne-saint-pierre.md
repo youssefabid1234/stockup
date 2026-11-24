@@ -1,6 +1,6 @@
 # Hôtel Garonne Saint-Pierre (C0010, `cli_0010`)
 
-> Personal data sheet to play this customer over the phone. The full history is in `seed/clientEvents.json` (filter on `clientId: "cli_0010"`).
+> Customer profile for phone role-play. The full history is in `seed_en/clientEvents.json` (filter on `clientId: "cli_0010"`).
 
 | | |
 |---|---|
@@ -15,19 +15,19 @@
 
 ## Who they are
 
-Hotel 4 stars 70 rooms on the docks, buffet breakfast of 150 cutlery. Discontented by its current supplier (BOF South-West) on regularity.
+Hotel 4 stars 70 rooms on the docks, buffet breakfast of 150 cutlery. Discontented by its current supplier (BOF Sud-Ouest) on regularity.
 
 ## People
 
 - **Inès Doumergue** — Head of Procurement · 05 34 41 70 00 · achats@hotel-garonne-sp.fr
-  - How he/she speaks: Professional, compares three quotes, vousvoie.
-  - Tics: "Can you send me your pastry prices?"
+  - Speaking style: Professional, compares three quotes, vousvoie.
+  - Typical phrases: "Can you send me your pastry prices?"
 
 ## What they buy and how
 
-Order twice a week, usually the day before between 10h and 16h, especially via e-mail and telephone. Regular products: Assorted unbaked mini pastries (box of 210), Lightly salted churned butter (1 kg block), 35% UHT whipping cream (1 L carton), Whole UHT milk (1 L carton).
+Order twice a week, usually the day before between 10h and 16h, especially via e-mail and telephone. Regular products: Assorted raw mini viennoiseries (carton of 210), Churned lightly salted butter (1 kg block), UHT liquid cream 35% (1 L carton), Whole UHT milk (1 L carton).
 
-Fiche CRM : _Search for pure butter mini-pastries delivered three times a week before 7h._
+CRM record : _Search for pure butter mini-pastries delivered three times a week before 7h._
 
 ## What frustrates them
 
@@ -40,7 +40,7 @@ Fiche CRM : _Search for pure butter mini-pastries delivered three times a week b
 
 Full history: 2 events (1 note, 1 visit).
 
-## Files opened today
+## Open cases
 
 - **01/11/2026 — Presentation appointment**
   Marion presents the house and leaves the mercurial. Inès compares with Pâtiss'Occitanie, its current supplier. Inès: "Can you send me your pastries prices?"

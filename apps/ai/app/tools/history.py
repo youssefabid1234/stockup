@@ -74,11 +74,7 @@ async def log_client_event(
     severity: Severity | None = None,
     order_id: str | None = Field(None, description="Optional: command concerned (or_...)"),
 ) -> dict:
-    """
-    Record an event in the customer's history, e.g. a complaint during the call ("the package has arrived damaged").
-    Les réclamations, problèmes qualité/livraison, retours, litiges sont créés « ouverts » pour être traités par l'équipe.
-    Rewords exactly what the customer says, without promising any commercial gesture. Record a client event (e.g. a complacent).
-    """
+    """Record a customer event in English. Complaints, quality or delivery issues, returns and disputes remain open for follow-up. Record what the caller said without promising compensation."""
     body = {"type": type, "title": title, "description": description, "severity": severity, "orderId": order_id}
     event = await ctx.erp.post(f"/api/clients/{enc(client_id)}/events", without_none(body))
     return compact_event(event)

@@ -1,6 +1,6 @@
 # La Gerbe d'Or (C0013, `cli_0013`)
 
-> Personal data sheet to play this customer over the phone. The full history is in `seed/clientEvents.json` (filter on `clientId: "cli_0013"`).
+> Customer profile for phone role-play. The full history is in `seed_en/clientEvents.json` (filter on `clientId: "cli_0013"`).
 
 | | |
 |---|---|
@@ -20,25 +20,25 @@ Bakery and local pastry shop in Colomiers, four employees. Éric orders after th
 ## People
 
 - **Éric Benoît** — bakery owner · 06 86 79 29 50 · eric@gerbeor.fr
-  - How he/she speaks: Starts with a complaint, ends up ordering.
-  - Tics: "The last delivery, let's not talk about it." · "Well, come on, put me on anyway..."
+  - Speaking style: Starts with a complaint, ends up ordering.
+  - Typical phrases: "The last delivery, let's not talk about it." · "Well, come on, put me on anyway..."
 
 ## What they buy and how
 
-Order once a week, usually the day before between 13h and 18h, especially by phone and WhatsApp. Regular products: Fresh baker's yeast (500 g block), 82% laminating butter (2 kg slab), Printed kraft baguette bags (box of 1,000), Fine sea salt (25 kg sack), 35% UHT whipping cream (1 L carton), Pearl sugar (10 kg sack), T65 country bread flour (25 kg sack), 22–24% cocoa powder (1 kg bag).
+Order once a week, usually the day before between 13h and 18h, especially by phone and WhatsApp. Regular products: Fresh baker's yeast (500 g block), 82% laminating butter (2 kg sheet), Printed kraft baguette bags (carton of 1000), Fine sea salt (25 kg bag), UHT liquid cream 35% (1 L carton), Pearl sugar (10 kg bag), T65 country wheat flour (25 kg bag), Cocoa powder 22-24% (1 kg bag).
 
-On the last 90 days (11 orders delivered):
+Over the last 90 days (11 orders delivered):
 
-| Product | Volume 90 | Lines | Last price |
+| Product | 90-day volume | Lines | Last price |
 |---|---|---|---|
-| Traditional French T55 wheat flour (25 kg sack) (`prd_0001`) | 276,00 piece | 6 | 19,00 € |
-| 82% laminating butter (2 kg slab) (`prd_0026`) | 557,89 kg | 5 | 8,82 € |
-| Charentes-Poitou AOP laminating butter, 84% (2 kg slab) (`prd_0025`) | 394,27 kg | 4 | 11,54 € |
-| T65 country bread flour (25 kg sack) (`prd_0004`) | 123,00 piece | 6 | 18,25 € |
-| T45 strong pastry flour (25 kg sack) (`prd_0003`) | 81,00 piece | 5 | 22,64 € |
-| 35% UHT whipping cream (1 L carton) (`prd_0031`) | 432,00 liter | 6 | 3,92 € |
-| Ground blanched almonds (5 kg bag) (`prd_0046`) | 138,93 kg | 8 | 11,30 € |
-| Medium free-range eggs (tray of 30) (`prd_0034`) | 146,00 box | 7 | 8,34 € |
+| T55 traditional French wheat flour (25 kg bag) (`prd_0001`) | 276,00 piece | 6 | 19,00 € |
+| 82% laminating butter (2 kg sheet) (`prd_0026`) | 557,89 kg | 5 | 8,82 € |
+| AOP Charentes-Poitou 84% laminating butter (2 kg sheet) (`prd_0025`) | 394,27 kg | 4 | 11,54 € |
+| T65 country wheat flour (25 kg bag) (`prd_0004`) | 123,00 piece | 6 | 18,25 € |
+| T45 gruau pastry flour (25 kg bag) (`prd_0003`) | 81,00 piece | 5 | 22,64 € |
+| UHT liquid cream 35% (1 L carton) (`prd_0031`) | 432,00 liter | 6 | 3,92 € |
+| Blanched ground almonds (5 kg bag) (`prd_0046`) | 138,93 kg | 8 | 11,30 € |
+| Free-range eggs, size M (tray of 30) (`prd_0034`) | 146,00 box | 7 | 8,34 € |
 
 CRM: _Reserves its crowns and beans as early as November. Pays in LCR to 30 days end of month. Delivered game. Refuses substitutions: call before any change._
 
@@ -51,13 +51,13 @@ CRM: _Reserves its crowns and beans as early as November. Pays in LCR to 30 days
 
 ## A brief history
 
-- **12/09/2024** · Quality · Quality : 82% laminating butter (2 kg slab)
+- **12/09/2024** · Quality · Quality : 82% laminating butter (2 kg sheet)
 - **06/11/2024** · special request · Holidays 2024 : volume reservation
 - **22/12/2024** · special request · Holidays 2024 : volume reservation
 - **08/01/2025** · prices · Rates 2025
 - **30/01/2025** · delivery · missing box
 - **06/02/2025** · delivery · missing box
-- **10/04/2025** · Quality · Quality : Traditional French T55 wheat flour (25 kg sack)
+- **10/04/2025** · Quality · Quality : T55 traditional French wheat flour (25 kg bag)
 - **23/10/2025** · delivery · Cold chain
 - **16/01/2026** · prices · Rates 2026
 - **21/05/2026** · Delivery · Delivery left at the door
@@ -66,10 +66,10 @@ CRM: _Reserves its crowns and beans as early as November. Pays in LCR to 30 days
 
 Full history: 37 events (9 visit, 7 special request, 5 delivery, 4 call, 3 quality, 3 compliment, 3 price, 2 note, 1 opening).
 
-## Files opened today
+## Open cases
 
 - **06/11/2026 — Holidays 2026: volume reservation**
-  Eric wants to book for the holidays: 35% UHT whipping cream (1 L carton) and Fine sea salt (25 kg sack) in volume for the 23-24 and 30-31/12. Eric: "The last delivery, let's not talk about it."
+  Eric wants to book for the holidays: UHT liquid cream 35% (1 L carton) and Fine sea salt (25 kg bag) in volume for the 23-24 and 30-31/12. Eric: "The last delivery, let's not talk about it."
 
 ## How to talk to them
 
@@ -80,7 +80,7 @@ Full history: 37 events (9 visit, 7 special request, 5 delivery, 4 call, 3 quali
 ## Price & group
 
 Groups: **Boulangeries** (`boulangeries`).
-Negotiated prices (`clientPrices`, always priority): 22–24% cocoa powder (1 kg bag) 11,02 € (list 11,50); Ground blanched almonds (5 kg bag) 11,31 € (list 11,80); T65 country bread flour (25 kg sack) 18,21 € (list 19,00); 82% laminating butter (2 kg slab) 8,82 € (list 9,20); 35% UHT whipping cream (1 L carton) 3,93 € (list 4,10); Whole UHT milk (1 L carton) 1,07 € (list 1,12).
+Negotiated prices (`clientPrices`, always priority): Cocoa powder 22-24% (1 kg bag) 11,02 € (list 11,50); Blanched ground almonds (5 kg bag) 11,31 € (list 11,80); T65 country wheat flour (25 kg bag) 18,21 € (list 19,00); 82% laminating butter (2 kg sheet) 8,82 € (list 9,20); UHT liquid cream 35% (1 L carton) 3,93 € (list 4,10); Whole UHT milk (1 L carton) 1,07 € (list 1,12).
 
 Price rules that may apply:
 - `prl_0001` Bakeries: -4 % on flours from 10 bags

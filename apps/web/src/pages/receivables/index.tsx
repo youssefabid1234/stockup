@@ -126,7 +126,7 @@ export default function ReceivablesPage() {
         meta={data ? <span className="whitespace-nowrap text-[12px] text-muted-foreground" title={fmtDate(data.asOf)}>au {dm.format(parseDate(data.asOf))}</span> : undefined}
         filters={
           <>
-            <SearchInput value={q} onChange={setQ} placeholder="Client, code..." className="w-[168px] shrink-0" />
+            <SearchInput value={q} onChange={setQ} placeholder="Customer name or code…" className="w-[168px] shrink-0" />
             <Select size="sm" value={tag} onChange={setTag} placeholder="Group" options={tagOptions} aria-label="Group" className="w-[128px] shrink-0" />
             <Select size="sm" value={rep} onChange={setRep} placeholder="Sales representative" options={repOptions} aria-label="Sales representative" className="w-[136px] shrink-0" />
             <Select size="sm" value={zone} onChange={setZone} placeholder="Area" options={zoneOptions} aria-label="Area" className="w-[124px] shrink-0" />

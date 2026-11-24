@@ -1,24 +1,8 @@
-# Step by step installation
+# Installation
 
-An unknown word? [GLOSSAIRE.md](GLOSSAIRE.md) · A question ? [FAQ.md](FAQ.md)
+The repository includes the English ERP dataset and customer records. Allow 20–30 minutes for the first build. Copy `.env.example` to `.env` for a fresh installation. Keep an existing `.env` with your team’s credentials private. See the [quick start](README.md#start-an-english-call) for the English database settings.
 
-This guide takes you from zero to a first voice call that changes the ERP. Count **20 to 30 minutes** the first
-10 to 15 minutes of waiting (downloads) Do the 1 ** step before ** the hackathon if you can.
-
-You have received a `team-XX.zip` file. It contains a `voice-erp-kit/` folder:
-
-| What? | Where | Note |
-|---|---|---|
-| The kit (ERP, service AI, interface) | `voice-erp-kit/` | the code you will change |
-| Data from **your** company | `voice-erp-kit/data/` | customers, products, 3 years of history, documents |
-| Configuration and your API keys | `voice-erp-kit/.env` | **private**: don't share it, don't commit it. Zip received the previous day: no keys yet, see [Real keys or simulated models](#clés-réelles-ou-modèles-simulés) |
-| Your team record | `voice-erp-kit/TEAM.md` | the name of your company |
-
-There is nothing else to download or clone: everything is in the zip.
-
----
-
-## Step 1 — Install Docker (的 10 min, to be done before)
+## Step 1 — Install Docker (≈ 10 min, to be done before)
 
 Docker runs all three services (ERP, AI, interface) without installing anything else.
 
@@ -95,16 +79,16 @@ Without risk if it stops. Next times, `make up` starts in seconds.
 
 ---
 
-## Step 3 — First call (的 5 min)
+## Step 3 — First call (≈ 5 min)
 
-1. In the ERP, open **Voix** (left menu, section AI).
+1. In the ERP, open **Voice** (left menu, section AI).
 2. Allow the microphone when requested by the browser (Recommended Chrome).
 3. **Maintenez Espace**, parlez comme un client ("Hello, this is the restaurant..., what do you have this morning?"),
    Relax. While you speak, your words appear live (in italic grey as long as they are temporary);
    the final text goes to the agent. You can also type the sentence instead of speaking.
 4. Look: the transcription, the tools called by the agent, the answer said out loud, and to the right the ERP
    which is updated (in purple: what the agent has done).
-5. Test also **的 Space** (Alt + Space) anywhere in the ERP: a voice command in one sentence
+5. Test also **Alt+Space** (Alt + Space) anywhere in the ERP: a voice command in one sentence
    ("creates a command for ...").
 
 ### Real keys or simulated models
@@ -150,7 +134,7 @@ variable: [README, Configuration](README.md#configuration-one-env).
 
 ---
 
-## Step 4 — Your team repo (的 3 min)
+## Step 4 — Your team repo (≈ 3 min)
 
 ```bash
 git init -b main && git add . && git commit -m "start"

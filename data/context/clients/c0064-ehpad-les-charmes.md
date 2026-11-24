@@ -1,6 +1,6 @@
 # EHPAD Les Charmes (C0064, `cli_0064`)
 
-> Personal data sheet to play this customer over the phone. The full history is in `seed/clientEvents.json` (filter on `clientId: "cli_0064"`).
+> Customer profile for phone role-play. The full history is in `seed_en/clientEvents.json` (filter on `clientId: "cli_0064"`).
 
 | | |
 |---|---|
@@ -10,7 +10,7 @@
 | Sales representative | Julien Fabre |
 | Customer since | 01/01/2016 (10 years) |
 | Payment | 45 days — administrative mandate: slow but secure payment |
-| Outstanding balance | 15 522,36 € incl. VAT (ceiling 22 000 €) — **1 invoice due: 9 229,94 €** |
+| Outstanding balance | 15 522,36 € incl. VAT (ceiling 22 000 €) — **1 overdue invoices: 9 229,94 €** |
 | Temperament | procedure, discreet, suspicious — quality ★★★, price ★★☆, risk of losing the customer low |
 
 ## Who they are
@@ -20,27 +20,27 @@ EHPAD Les Charmes: 600 meals per day, homemade pastries on Thursdays. Order by v
 ## People
 
 - **Charlotte Meunier** — Head of kitchen · 06 26 50 80 38 · charlotte@ehpadcharmes.fr
-  - How he/she speaks: Everything goes by order form and market number, very formal.
-  - Tics: "Thank you for mentioning the voucher number." · "I'll send you back to the prize voucher."
+  - Speaking style: Everything goes by order form and market number, very formal.
+  - Typical phrases: "Thank you for mentioning the voucher number." · "I'll send you back to the prize voucher."
 
 ## What they buy and how
 
-Order twice a week, usually 3 days front between 9h and 12h, especially via e-mail and web portal. Regular products: 35% UHT whipping cream (1 L carton), 82% pastry butter (10 kg box), Caster sugar (25 kg sack), Whole UHT milk (1 L carton), Medium free-range eggs (tray of 30), Golden Delicious baking apples (13 kg box), Frozen unbaked all-butter pains au chocolat, 75 g (box of 140), Lemons (5 kg box).
+Order twice a week, usually 3 days front between 9h and 12h, especially via e-mail and web portal. Regular products: UHT liquid cream 35% (1 L carton), 82% pastry butter (10 kg carton), Caster sugar (25 kg bag), Whole UHT milk (1 L carton), Free-range eggs, size M (tray of 30), Golden pastry apple (13 kg case), Raw frozen all-butter pain au chocolat 75 g (carton of 140), Lemon (5 kg case).
 
-On the last 90 days (19 orders delivered):
+Over the last 90 days (19 orders delivered):
 
-| Product | Volume 90 | Lines | Last price |
+| Product | 90-day volume | Lines | Last price |
 |---|---|---|---|
-| Frozen unbaked all-butter pains au chocolat, 75 g (box of 140) (`prd_0054`) | 120,00 box | 10 | 54,00 € |
-| 82% pastry butter (10 kg box) (`prd_0028`) | 711,05 kg | 8 | 7,65 € |
-| Caster sugar (25 kg sack) (`prd_0015`) | 157,00 piece | 8 | 27,50 € |
-| 35% UHT whipping cream (1 L carton) (`prd_0031`) | 472,00 liter | 8 | 3,96 € |
-| Medium free-range eggs (tray of 30) (`prd_0034`) | 201,00 box | 9 | 7,94 € |
+| Raw frozen all-butter pain au chocolat 75 g (carton of 140) (`prd_0054`) | 120,00 box | 10 | 54,00 € |
+| 82% pastry butter (10 kg carton) (`prd_0028`) | 711,05 kg | 8 | 7,65 € |
+| Caster sugar (25 kg bag) (`prd_0015`) | 157,00 piece | 8 | 27,50 € |
+| UHT liquid cream 35% (1 L carton) (`prd_0031`) | 472,00 liter | 8 | 3,96 € |
+| Free-range eggs, size M (tray of 30) (`prd_0034`) | 201,00 box | 9 | 7,94 € |
 | Whole UHT milk (1 L carton) (`prd_0033`) | 870,00 liter | 12 | 1,08 € |
-| Golden Delicious baking apples (13 kg box) (`prd_0063`) | 265,91 kg | 6 | 1,91 € |
-| Lemons (5 kg box) (`prd_0062`) | 158,78 kg | 8 | 2,81 € |
+| Golden pastry apple (13 kg case) (`prd_0063`) | 265,91 kg | 6 | 1,91 € |
+| Lemon (5 kg case) (`prd_0062`) | 158,78 kg | 8 | 2,81 € |
 
-Sheet CRM: _Monthly work with engagement number. Order form to J-3. Delivered on. game. Accept equivalent substitutions if notified._
+Sheet CRM: _Monthly work with engagement number. Order form three days in advance. Delivered on. game. Accept equivalent substitutions if notified._
 
 ## What frustrates them
 
@@ -54,17 +54,17 @@ Sheet CRM: _Monthly work with engagement number. Order form to J-3. Delivered on
 - **31/03/2025** · Payment · Recovery : FAC-2025-000257
 - **25/11/2025** · Payment · Recovery : FAC-2025-002070
 - **23/01/2026** · prices · Rates 2026
-- **12/02/2026** · Quality · Quality : 35% UHT whipping cream (1 L carton)
-- **17/02/2026** · Have quality : 35% UHT whipping cream (1 L carton)
-- **10/03/2026** · Quality · Quality : Frozen unbaked all-butter pains au chocolat, 75 g (box of 140)
-- **14/03/2026** · Have quality : Frozen unbaked all-butter pains au chocolat, 75 g (box of 140)
+- **12/02/2026** · Quality · Quality : UHT liquid cream 35% (1 L carton)
+- **17/02/2026** · Have quality : UHT liquid cream 35% (1 L carton)
+- **10/03/2026** · Quality · Quality : Raw frozen all-butter pain au chocolat 75 g (carton of 140)
+- **14/03/2026** · Have quality : Raw frozen all-butter pain au chocolat 75 g (carton of 140)
 - **02/06/2026** · delivery · Cold chain
-- **16/06/2026** · Quality · Quality : Medium free-range eggs (tray of 30)
-- **17/06/2026** · Have quality : Medium free-range eggs (tray of 30)
+- **16/06/2026** · Quality · Quality : Free-range eggs, size M (tray of 30)
+- **17/06/2026** · Have quality : Free-range eggs, size M (tray of 30)
 
 Full history: 41 events (13 quality, 6 visit, 4 have, 4 payment, 3 compliment, 3 price, 3 call, 2 special request, 2 delivery, 1 opening).
 
-## Files opened today
+## Open cases
 
 None.
 

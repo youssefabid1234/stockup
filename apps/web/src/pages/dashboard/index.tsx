@@ -65,7 +65,7 @@ function Kpis({ d, loading }: { d?: Dashboard; loading: boolean }) {
   return (
     <StatGrid className="md:grid-cols-3 xl:grid-cols-6 [&>*:nth-child(-n+3)]:border-b [&>*]:border-border xl:[&>*]:border-b-0">
       <Stat icon={Euro} label="CA Agenda" value={v(<Money value={d?.revenueToday} compact />)} hint="Today's deliveries, HT" onClick={() => navigate("/orders?date=today")} />
-      <Stat icon={TrendingUp} label="CA of the month" value={v(<Money value={d?.revenueMonth} compact />)} hint="Depuis le 1er, HT" onClick={() => navigate("/invoices")} />
+      <Stat icon={TrendingUp} label="CA of the month" value={v(<Money value={d?.revenueMonth} compact />)} hint="Since the start of the month, excluding VAT" onClick={() => navigate("/invoices")} />
       <Stat icon={ShoppingCart} label="Orders of the day" value={v(<span className="num">{d?.ordersToday}</span>)} hint="Delivery today" onClick={() => navigate("/orders?date=today")} />
       <Stat
         icon={ClipboardList} label="Pre-orders to be processed" value={v(<span className="num">{d?.draftOrders}</span>)}
@@ -131,7 +131,7 @@ function TopClients({ d }: { d?: Dashboard }) {
   const max = Math.max(1, ...top.map((c) => c.revenue));
   return (
     <Section title="Top customers · 30 d" actions={<SeeAll to="/clients" />}>
-      {!d ? <ListSkeleton /> : top.length === 0 ? <EmptyLine icon={Users} text="Aucune vente sur la période." /> : (
+      {!d ? <ListSkeleton /> : top.length === 0 ? <EmptyLine icon={Users} text="No sales in this period." /> : (
         <ListFrame>
           {top.map((c, i) => (
             <li key={c.clientId}>
@@ -157,7 +157,7 @@ function LowStock({ d }: { d?: Dashboard }) {
   const rows = d?.lowStock.slice().sort((a, b) => a.available - b.available).slice(0, 7) ?? [];
   return (
     <Section title="Low stock" count={d?.lowStock.length} actions={<SeeAll to="/stock" />}>
-      {!d ? <ListSkeleton /> : rows.length === 0 ? <EmptyLine icon={PackageX} text="Aucun produit sous le seuil." /> : (
+      {!d ? <ListSkeleton /> : rows.length === 0 ? <EmptyLine icon={PackageX} text="All products are above their stock threshold." /> : (
         <ListFrame>
           {rows.map((p) => (
             <li key={p.productId}>
@@ -182,7 +182,7 @@ function Expiring({ d }: { d?: Dashboard }) {
   const rows = d?.expiringSoon.slice().sort((a, b) => a.expiresAt.localeCompare(b.expiresAt)).slice(0, 7) ?? [];
   return (
     <Section title="DLC close" count={d?.expiringSoon.length} actions={<SeeAll to="/stock" />}>
-      {!d ? <ListSkeleton /> : rows.length === 0 ? <EmptyLine icon={CalendarClock} text="Aucun lot proche de sa date limite." /> : (
+      {!d ? <ListSkeleton /> : rows.length === 0 ? <EmptyLine icon={CalendarClock} text="No batches are close to expiry." /> : (
         <ListFrame>
           {rows.map((l) => {
             const n = daysBetween(d.today, l.expiresAt);
@@ -216,7 +216,7 @@ function LiveActivity() {
     <aside className="min-w-0">
       <Section title="Live activity" actions={<SeeAll to="/activity" />}>
         {isLoading ? <ListSkeleton /> : events.length === 0 ? (
-          <EmptyLine icon={Activity} text="Les commandes, paiements et appels de l'agent vocal s'afficheront ici en temps réel." />
+          <EmptyLine icon={Activity} text="Orders, payments and voice calls will appear here as they happen." />
         ) : (
           <ListFrame>{events.map((e) => <EventItem key={e.id} e={e} />)}</ListFrame>
         )}

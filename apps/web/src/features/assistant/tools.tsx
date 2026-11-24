@@ -17,7 +17,7 @@ export interface ToolRun {
 
 export interface EntityLink { to: string; label: string }
 
-/** French verb for each harness tool (unknown tools fall back to their raw name). */
+/** English verb for each harness tool (unknown tools fall back to their raw name). */
 export const TOOL_LABEL: Record<string, string> = {
   search: "Search",
   get_client: "Customer record",

@@ -1,6 +1,6 @@
 # Le Comptoir de Toulouse (Minimes) (C0031, `cli_0031`)
 
-> Personal data sheet to play this customer over the phone. The full history is in `seed/clientEvents.json` (filter on `clientId: "cli_0031"`).
+> Customer profile for phone role-play. The full history is in `seed_en/clientEvents.json` (filter on `clientId: "cli_0031"`).
 
 | | |
 |---|---|
@@ -20,24 +20,24 @@ Toulouse Bistrot (Minimes), 40 cutlery, Southwest cuisine. Maxime Leroy buys cre
 ## People
 
 - **Maxime Leroy** — Chief Executive Officer · 06 82 22 78 58 · maxime@comptoirtoulouseminimes.fr
-  - How he/she speaks: Calls between two services, hang up fast.
-  - Tics: "Send, send." · "It's okay? I'm hanging up."
+  - Speaking style: Calls between two services, hang up fast.
+  - Typical phrases: "Send, send." · "It's okay? I'm hanging up."
 
 ## What they buy and how
 
-Order twice a week, usually the day before between 15h and 17h, especially by phone and WhatsApp. Regular products: 35% UHT whipping cream (1 L carton), Medium free-range eggs (tray of 30), 82% pastry butter (10 kg box), Neutral hot glaze (7 kg bucket), 82% laminating butter (2 kg slab), 50% hazelnut praline (5 kg bucket), Williams pears (12 kg box).
+Order twice a week, usually the day before between 15h and 17h, especially by phone and WhatsApp. Regular products: UHT liquid cream 35% (1 L carton), Free-range eggs, size M (tray of 30), 82% pastry butter (10 kg carton), Neutral hot glaze (7 kg tub), 82% laminating butter (2 kg sheet), Hazelnut praline 50% (5 kg tub), Williams pear (12 kg case).
 
-On the last 90 days (24 orders delivered):
+Over the last 90 days (24 orders delivered):
 
-| Product | Volume 90 | Lines | Last price |
+| Product | 90-day volume | Lines | Last price |
 |---|---|---|---|
-| 82% laminating butter (2 kg slab) (`prd_0026`) | 287,23 kg | 10 | 9,32 € |
-| 82% pastry butter (10 kg box) (`prd_0028`) | 266,18 kg | 15 | 7,76 € |
-| 50% hazelnut praline (5 kg bucket) (`prd_0045`) | 105,38 kg | 10 | 16,44 € |
-| 35% UHT whipping cream (1 L carton) (`prd_0031`) | 157,00 liter | 11 | 4,12 € |
-| Medium free-range eggs (tray of 30) (`prd_0034`) | 70,00 box | 12 | 8,34 € |
-| Neutral hot glaze (7 kg bucket) (`prd_0019`) | 9,00 piece | 9 | 24,00 € |
-| Williams pears (12 kg box) (`prd_0064`) | 54,64 kg | 6 | 2,74 € |
+| 82% laminating butter (2 kg sheet) (`prd_0026`) | 287,23 kg | 10 | 9,32 € |
+| 82% pastry butter (10 kg carton) (`prd_0028`) | 266,18 kg | 15 | 7,76 € |
+| Hazelnut praline 50% (5 kg tub) (`prd_0045`) | 105,38 kg | 10 | 16,44 € |
+| UHT liquid cream 35% (1 L carton) (`prd_0031`) | 157,00 liter | 11 | 4,12 € |
+| Free-range eggs, size M (tray of 30) (`prd_0034`) | 70,00 box | 12 | 8,34 € |
+| Neutral hot glaze (7 kg tub) (`prd_0019`) | 9,00 piece | 9 | 24,00 € |
+| Williams pear (12 kg case) (`prd_0064`) | 54,64 kg | 6 | 2,74 € |
 
 Sheet CRM : _Order in the afternoon between two services. Cream and eggs twice a week. Delivered sea. sam. Accept equivalent substitutions if notified._
 
@@ -53,7 +53,7 @@ Sheet CRM : _Order in the afternoon between two services. Cream and eggs twice a
 - **16/03/2020** · note · Containment: administrative closure
 - **19/05/2021** · note · Resumption after confinement
 - **10/04/2022** · price · Tariff increase (diesel, energy)
-- **17/02/2024** · Quality · Quality : 35% UHT whipping cream (1 L carton)
+- **17/02/2024** · Quality · Quality : UHT liquid cream 35% (1 L carton)
 - **09/11/2024** · special request · Holidays 2024 : volume reservation
 - **14/01/2025** · prices · Rates 2025
 - **02/09/2025** · map · Autumn card
@@ -63,10 +63,10 @@ Sheet CRM : _Order in the afternoon between two services. Cream and eggs twice a
 
 Full history: 33 events (9 visit, 9 call, 4 special request, 3 price, 3 compliment, 2 note, 1 opening, 1 quality, 1 card).
 
-## Files opened today
+## Open cases
 
 - **04/11/2026 — Holidays 2026: volume reservation**
-  Maxime wants to book for the parties: 35% UHT whipping cream (1 L carton) and Williams pears (12 kg box) in volume for the 23-24 and 30-31/12. Maxime: "It's okay? I'm hanging up."
+  Maxime wants to book for the parties: UHT liquid cream 35% (1 L carton) and Williams pear (12 kg case) in volume for the 23-24 and 30-31/12. Maxime: "It's okay? I'm hanging up."
 
 ## How to talk to them
 

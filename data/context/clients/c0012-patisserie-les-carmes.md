@@ -1,6 +1,6 @@
 # Pâtisserie Les Carmes (C0012, `cli_0012`)
 
-> Personal data sheet to play this customer over the phone. The full history is in `seed/clientEvents.json` (filter on `clientId: "cli_0012"`).
+> Customer profile for phone role-play. The full history is in `seed_en/clientEvents.json` (filter on `clientId: "cli_0012"`).
 
 | | |
 |---|---|
@@ -22,14 +22,14 @@ Pâtisserie de la place des Carmes, part of Pâtiss'Occitanie in spring 2026 whi
 ## People
 
 - **Claire Bénech** — Manager · 06 81 22 45 19
-  - How he/she speaks: Direct, polite, made his/her accounts.
-  - Tics: "Do you have any lot ends?" · "Just what you need, no more."
+  - Speaking style: Direct, polite, made his/her accounts.
+  - Typical phrases: "Do you have any lot ends?" · "Just what you need, no more."
 
 ## What they buy and how
 
-Order once a week, usually the day before between 14h and 19h, especially by phone and WhatsApp. Regular products: 64% dark couverture chocolate (buttons, 5 kg bag), 35% UHT whipping cream (1 L carton), Charentes-Poitou AOP unsalted butter (10 × 1 kg box), Ground blanched almonds (5 kg bag).
+Order once a week, usually the day before between 14h and 19h, especially by phone and WhatsApp. Regular products: Dark couverture chocolate 64% (pistoles, 5 kg bag), UHT liquid cream 35% (1 L carton), AOP Charentes-Poitou unsalted butter (carton of 10 × 1 kg), Blanched ground almonds (5 kg bag).
 
-Fiche CRM : _Ordered every week chocolate, cream and butter AOP._
+CRM record : _Ordered every week chocolate, cream and butter AOP._
 
 ## What frustrates them
 
@@ -40,11 +40,11 @@ Fiche CRM : _Ordered every week chocolate, cream and butter AOP._
 
 ## A brief history
 
-- **13/12/2023** · Quality · Quality : Ground blanched almonds (5 kg bag)
+- **13/12/2023** · Quality · Quality : Blanched ground almonds (5 kg bag)
 - **07/01/2024** · prices · Rates 2024
 - **08/07/2024** · note · Summer closure 2024
 - **24/07/2024** · delivery · delivery error
-- **04/09/2024** · Quality · Quality : 64% dark couverture chocolate (buttons, 5 kg bag)
+- **04/09/2024** · Quality · Quality : Dark couverture chocolate 64% (pistoles, 5 kg bag)
 - **07/11/2024** · special request · Holidays 2024 : volume reservation
 - **06/01/2025** · prices · Rates 2025
 - **02/04/2025** · delivery · Cold chain
@@ -55,7 +55,7 @@ Fiche CRM : _Ordered every week chocolate, cream and butter AOP._
 
 Full history: 31 events (9 visit, 5 special request, 4 price, 3 quality, 3 note, 2 call, 2 delivery, 1 opening, 1 compliment, 1 risk of losing the customer).
 
-## Files opened today
+## Open cases
 
 None.
 

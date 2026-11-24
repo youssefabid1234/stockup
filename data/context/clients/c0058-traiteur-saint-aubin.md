@@ -1,6 +1,6 @@
 # Traiteur Saint-Aubin (C0058, `cli_0058`)
 
-> Personal data sheet to play this customer over the phone. The full history is in `seed/clientEvents.json` (filter on `clientId: "cli_0058"`).
+> Customer profile for phone role-play. The full history is in `seed_en/clientEvents.json` (filter on `clientId: "cli_0058"`).
 
 | | |
 |---|---|
@@ -20,14 +20,14 @@ Caterer from Revel: weddings in summer, seminars, Christmas Eves. Mini-pastries 
 ## People
 
 - **Gérard Bousquet** — manager · 06 60 47 78 72
-  - How he/she speaks: Speak by doing something else, cooking noise behind.
-  - Tics: "Ah wait, I forgot something..." · "Can you add again?"
+  - Speaking style: Speak by doing something else, cooking noise behind.
+  - Typical phrases: "Ah wait, I forgot something..." · "Can you add again?"
 
 ## What they buy and how
 
-Order once a week, usually 2 days front between 9h and 16h, especially via e-mail and telephone. Regular products: Pasteurised liquid egg yolk (1 L carton), Pasteurised liquid egg white (1 L carton), Traditional French T55 wheat flour (25 kg sack), Whole UHT milk (1 L carton), T55 baker's wheat flour (25 kg sack), Multigrain seed mix (25 kg sack), T65 country bread flour (25 kg sack), 35% UHT whipping cream (1 L carton).
+Order once a week, usually 2 days front between 9h and 16h, especially via e-mail and telephone. Regular products: Pasteurised liquid egg yolk (1 L carton), Pasteurised liquid egg white (1 L carton), T55 traditional French wheat flour (25 kg bag), Whole UHT milk (1 L carton), T55 baker's wheat flour (25 kg bag), Multigrain seed mix (25 kg bag), T65 country wheat flour (25 kg bag), UHT liquid cream 35% (1 L carton).
 
-Fiche CRM : _Pre-orders of Christmas from November. Mini-pastries for seminars. Delivered Mar. Accept equivalent substitutions if notified._
+CRM record : _Pre-orders of Christmas from November. Mini-pastries for seminars. Delivered Mar. Accept equivalent substitutions if notified._
 
 ## What frustrates them
 
@@ -38,7 +38,7 @@ Fiche CRM : _Pre-orders of Christmas from November. Mini-pastries for seminars. 
 
 - **27/02/2022** · opening · Account opening : Traiteur Saint-Aubin
 - **15/04/2022** · price · Tariff increase (diesel, energy)
-- **07/07/2023** · Quality · Quality : Traditional French T55 wheat flour (25 kg sack)
+- **07/07/2023** · Quality · Quality : T55 traditional French wheat flour (25 kg bag)
 - **06/02/2024** · Payment · Recovery : FAC-2023-002709
 - **10/04/2024** · Payment · Recovery : FAC-2024-000476
 - **20/04/2024** · risk of losing the customer · Lower orders
@@ -47,7 +47,7 @@ Fiche CRM : _Pre-orders of Christmas from November. Mini-pastries for seminars. 
 
 Complete history: 13 events (3 payment, 2 visit, 2 compliment, 1 opening, 1 price, 1 quality, 1 call, 1 risk of losing the customer, 1 note).
 
-## Files opened today
+## Open cases
 
 None.
 

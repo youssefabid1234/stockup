@@ -84,11 +84,7 @@ async def get_price(
     product_id: str = Field(description="ex. prd_0042"),
     qty: float | None = Field(None, description="Quantity (default 1): some rules depend on volume"),
 ) -> dict:
-    """
-    Sales price of a product for a customer (HT, par unité), tel qu'une ligne de commande le recevrait : prix négocié > règle de prix
-    (groupe de clients, groupe/catégorie de produits, quantité minimale) > prix catalogue, avec l'explication. À utiliser pour annoncer un prix.
-    Resolved sell price for a client and quantity, with a English explanation.
-    """
+    """Get the price per sales unit for this customer and quantity, excluding VAT. A negotiated price takes priority over a pricing rule, then the catalogue price."""
     query = {"clientId": client_id, "productId": product_id, "qty": format_number(qty) if qty else None}
     r = await ctx.erp.get("/api/prices/resolve", query)
     # A volume rule that would give a better price: worth telling the client.

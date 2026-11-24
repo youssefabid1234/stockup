@@ -1,6 +1,6 @@
 # Les Œufs de la Montagne Noire (`sup_0005`)
 
-> Full history in `seed/supplierEvents.json` (filter on `supplierId: "sup_0005"`).
+> Full history in `seed_en/supplierEvents.json` (filter on `supplierId: "sup_0005"`).
 
 | | |
 |---|---|
@@ -17,14 +17,14 @@ Local breeding for eggshells and egg products. Good product, tight volumes in Ja
 ## People
 
 - **Josette Bonnafous** — Livestock manager · 06 12 85 44 70
-  - How he/she speaks: Rocky Accent, talks about his/her chickens as well as his/her children.
-  - Tics: "The chickens lay less with this cold." · "I put you trays of M, I have more L."
+  - Speaking style: Rocky Accent, talks about his/her chickens as well as his/her children.
+  - Typical phrases: "The chickens lay less with this cold." · "I put you trays of M, I have more L."
 
 ## What they sell
 
 Outdoor hens rearing at the foot of the Black Mountain and breaking partner for liquid egg products. Less laying in winter, avian flu = risk of rupture.
 
-Main supplier of: Medium free-range eggs (tray of 30) (`prd_0034`), Pasteurised liquid whole egg (1 L carton) (`prd_0035`), Pasteurised liquid egg yolk (1 L carton) (`prd_0036`), Pasteurised liquid egg white (1 L carton) (`prd_0037`).
+Main supplier of: Free-range eggs, size M (tray of 30) (`prd_0034`), Pasteurised liquid whole egg (1 L carton) (`prd_0035`), Pasteurised liquid egg yolk (1 L carton) (`prd_0036`), Pasteurised liquid egg white (1 L carton) (`prd_0037`).
 
 ## Negotiation
 
@@ -40,17 +40,17 @@ Main supplier of: Medium free-range eggs (tray of 30) (`prd_0034`), Pasteurised 
 - **30/09/2025** · quality · Refusal at receipt : Pasteurised liquid egg yolk (1 L carton)
 - **02/10/2025** · have · have received : ACH-2025-001016
 - **01/11/2025** · Delivery · Incomplete delivery : ACH-2025-001145
-- **08/01/2026** · shortage · Shortness : Medium free-range eggs (tray of 30) delivered in part
+- **08/01/2026** · shortage · Shortness : Free-range eggs, size M (tray of 30) delivered in part
 - **11/01/2026** · price · annual negotiation 2026
-- **12/02/2026** · shortage · Shortness : Medium free-range eggs (tray of 30) delivered in part
-- **08/09/2026** · quality · Refusal at receipt : Medium free-range eggs (tray of 30)
+- **12/02/2026** · shortage · Shortness : Free-range eggs, size M (tray of 30) delivered in part
+- **08/09/2026** · quality · Refusal at receipt : Free-range eggs, size M (tray of 30)
 - **16/09/2026** · have · have received : ACH-2026-000927
 - **01/10/2026** · quality · Refusal at receipt : Pasteurised liquid whole egg (1 L carton)
 - **09/10/2026** · have · have received : ACH-2026-001020
 
 Full history: 67 events.
 
-## Files opened today
+## Open cases
 
 None.
 

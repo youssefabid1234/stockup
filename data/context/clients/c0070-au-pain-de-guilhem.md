@@ -1,6 +1,6 @@
 # Au Pain de Guilhem (C0070, `cli_0070`)
 
-> Personal data sheet to play this customer over the phone. The full history is in `seed/clientEvents.json` (filter on `clientId: "cli_0070"`).
+> Customer profile for phone role-play. The full history is in `seed_en/clientEvents.json` (filter on `clientId: "cli_0070"`).
 
 | | |
 |---|---|
@@ -20,28 +20,28 @@ Colomiers artisan bakery, two ovens in the morning, one at noon. Sofiane Leroux 
 ## People
 
 - **Sofiane Leroux** — bakery owner · 06 27 93 79 30 · sofiane@painguilhem.fr
-  - How he/she speaks: Command at the fairest, small quantities.
-  - Tics: "There's a promo this week?" · "Do you have a lot?"
+  - Speaking style: Command at the fairest, small quantities.
+  - Typical phrases: "There's a promo this week?" · "Do you have a lot?"
 - **Maxime Aubert** — Bakery (shop and orders) · 06 71 66 23 66
-  - How he/she speaks: Patient, understands ruptures.
-  - Tics: "Do you find me a solution?" · "Thank you for the troubleshooting."
+  - Speaking style: Patient, understands ruptures.
+  - Typical phrases: "Do you find me a solution?" · "Thank you for the troubleshooting."
 
 ## What they buy and how
 
-Order twice a week, usually the day before between 12h and 18h, especially by telephone and WhatsApp. Regular products: Traditional French T55 wheat flour (25 kg sack), Fresh baker's yeast (500 g block), 44% baker's chocolate sticks (1.6 kg box, 300 sticks), Printed kraft baguette bags (box of 1,000), Fine sea salt (25 kg sack), Organic einkorn flour (10 kg sack), T45 strong pastry flour (25 kg sack), Heat-stable dark chocolate chips (5 kg bag).
+Order twice a week, usually the day before between 12h and 18h, especially by telephone and WhatsApp. Regular products: T55 traditional French wheat flour (25 kg bag), Fresh baker's yeast (500 g block), Baker's chocolate sticks 44% (1.6 kg carton, 300 sticks), Printed kraft baguette bags (carton of 1000), Fine sea salt (25 kg bag), Organic einkorn flour (10 kg bag), T45 gruau pastry flour (25 kg bag), Dark chocolate baking chips (5 kg bag).
 
-On the last 90 days (24 orders delivered):
+Over the last 90 days (24 orders delivered):
 
-| Product | Volume 90 | Lines | Last price |
+| Product | 90-day volume | Lines | Last price |
 |---|---|---|---|
-| Charentes-Poitou AOP laminating butter, 84% (2 kg slab) (`prd_0025`) | 820,69 kg | 17 | 11,40 € |
-| T45 strong pastry flour (25 kg sack) (`prd_0003`) | 200,00 piece | 11 | 22,56 € |
-| Traditional French T55 wheat flour (25 kg sack) (`prd_0001`) | 198,00 piece | 13 | 19,00 € |
-| 44% baker's chocolate sticks (1.6 kg box, 300 sticks) (`prd_0042`) | 208,00 box | 13 | 13,90 € |
-| T65 country bread flour (25 kg sack) (`prd_0004`) | 139,00 piece | 13 | 18,19 € |
-| Printed kraft baguette bags (box of 1,000) (`prd_0065`) | 97,00 box | 13 | 22,00 € |
-| 64% dark couverture chocolate (buttons, 5 kg bag) (`prd_0038`) | 128,36 kg | 10 | 15,80 € |
-| Laminating margarine (10 kg box) (`prd_0030`) | 443,67 kg | 12 | 3,80 € |
+| AOP Charentes-Poitou 84% laminating butter (2 kg sheet) (`prd_0025`) | 820,69 kg | 17 | 11,40 € |
+| T45 gruau pastry flour (25 kg bag) (`prd_0003`) | 200,00 piece | 11 | 22,56 € |
+| T55 traditional French wheat flour (25 kg bag) (`prd_0001`) | 198,00 piece | 13 | 19,00 € |
+| Baker's chocolate sticks 44% (1.6 kg carton, 300 sticks) (`prd_0042`) | 208,00 box | 13 | 13,90 € |
+| T65 country wheat flour (25 kg bag) (`prd_0004`) | 139,00 piece | 13 | 18,19 € |
+| Printed kraft baguette bags (carton of 1000) (`prd_0065`) | 97,00 box | 13 | 22,00 € |
+| Dark couverture chocolate 64% (pistoles, 5 kg bag) (`prd_0038`) | 128,36 kg | 10 | 15,80 € |
+| Puff pastry margarine (10 kg carton) (`prd_0030`) | 443,67 kg | 12 | 3,80 € |
 
 Form CRM : _Paye in LCR to 30 end of month days. Don't want to freeze: everything is homemade. Delivered Mon. Sea. Accept equivalent substitutions if you warn._
 
@@ -58,7 +58,7 @@ Form CRM : _Paye in LCR to 30 end of month days. Don't want to freeze: everythin
 - **06/07/2024** · note · Summer closure 2024
 - **16/01/2025** · prices · Rates 2025
 - **26/02/2025** · delivery · Cold chain
-- **07/04/2025** · Quality · Quality : Traditional French T55 wheat flour (25 kg sack)
+- **07/04/2025** · Quality · Quality : T55 traditional French wheat flour (25 kg bag)
 - **23/07/2025** · note · Summer closure 2025
 - **22/11/2025** · special request · Holidays 2025 : volume reservation
 - **22/01/2026** · prices · Rates 2026
@@ -67,10 +67,10 @@ Form CRM : _Paye in LCR to 30 end of month days. Don't want to freeze: everythin
 
 Complete history: 35 events (10 visit, 5 call, 4 compliment, 4 price, 4 special request, 3 rating, 2 quality, 2 delivery, 1 opening).
 
-## Files opened today
+## Open cases
 
 - **05/11/2026 — Holidays 2026: volume reservation**
-  Sofiane wants to book for the parties: Fresh baker's yeast (500 g block) and T45 strong pastry flour (25 kg sack) in volume for the 23-24 and 30-31/12. Sofiane: "Do you have a lot for it?"
+  Sofiane wants to book for the parties: Fresh baker's yeast (500 g block) and T45 gruau pastry flour (25 kg bag) in volume for the 23-24 and 30-31/12. Sofiane: "Do you have a lot for it?"
 
 ## How to talk to them
 

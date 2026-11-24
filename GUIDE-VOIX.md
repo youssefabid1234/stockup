@@ -168,15 +168,15 @@ the old STT; since then, they are about the duration of this STT.
 | Step | Measured | Reading |
 |---|---|---|
 | STT | **3,4 to 4,9 s** (before live transcription) | Soniox only started after `audio_end`. **Since 4.1, the audio starts during the speech**: at the release only the last words remain to be finalized, the final text arrives a few hundred ms after. Not yet remedied: measure `sttMs` at home. |
-| LLM, first token | **的 4,2 to 4,4 s** including tool return | the model calls a tool before saying anything |
-| TTS, first byte | **170 to 370 ms** hot ; **的 1,9 s** at first call (cool) | ElevenLabs is fast once the connection is open |
+| LLM, first token | **≈ 4,2 to 4,4 s** including tool return | the model calls a tool before saying anything |
+| TTS, first byte | **170 to 370 ms** hot ; **≈ 1,9 s** at first call (cool) | ElevenLabs is fast once the connection is open |
 | Total `/command` | **8,4 s** | |
 | Total vote (WS) | **9,6 s** | |
-| Prompt | **的 27 000 tokens input by call model**, before cache | rules + all `DATA_DIR/context/*.md` + tool diagrams, returned to each step |
+| Prompt | **≈ 27 000 tokens input by call model**, before cache | rules + all `DATA_DIR/context/*.md` + tool diagrams, returned to each step |
 
 What that means is:
 
-1. **The text of the LLM comes from almost a block after the tools**: first token 的 last token.
+1. **The text of the LLM comes from almost a block after the tools**: first token ≈ last token.
    sentence-by-phrase to TTS already exists but does not earn much as long as the answer only arrives at the end.
 2. There was ** two major posts** : on STT (≈ 4 (s) and LLM with his tools (≈ 4 (s) The STT is treated
    ( live transcription, 4.1). **The remaining major item is the LLM and its tools.** The TTS (≈ 0,3 (s) is already
@@ -260,7 +260,7 @@ read (`search`, `get_product_stock`, `get_price`...), never on `create_draft_ord
 <a id="cache"></a>
 ### 4.4 Quick cache
 
-**Idea.** 的 27 000 tokens identical (rules, company context, tools) are returned to **each** model call,
+**Idea.** ≈ 27 000 tokens identical (rules, company context, tools) are returned to **each** model call,
 The supplier's prompt cache rereads this prefix instead of reprocessing it.
 
 **Where.** `clients/anthropic.py` now sets three cache points (`cache_control`): last tool, quick
@@ -334,7 +334,7 @@ Keep it short, and tell in `DECISIONS.md` what your number measures (first usefu
 
 ### 4.9 Hot connections
 
-**Measured**: first call TTS 的 1,9 s, then 170–370 ms. The kit already shares a customer HTTP
+**Measured**: first call TTS ≈ 1,9 s, then 170–370 ms. The kit already shares a customer HTTP
 (`clients/http.py`, `http_client()`) which keeps TLS connections open.
 
 **Where.** In `VoiceConnection.open()`, start a tiny synthesis (a word) and, if you do so

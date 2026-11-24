@@ -83,7 +83,7 @@ export default function HistoryPage() {
         filters={
           <>
             <SearchInput value={q} onChange={setQ} placeholder="Title, description..." />
-            <DatePicker size="sm" value={from} onChange={setFrom} max={to || undefined} placeholder="From" clearable presets={[{ label: "−30 j", days: -30 }, { label: "−1 an", days: -365 }]} aria-label="From" className="w-[120px]" />
+            <DatePicker size="sm" value={from} onChange={setFrom} max={to || undefined} placeholder="From" clearable presets={[{ label: "−30 days", days: -30 }, { label: "−1 an", days: -365 }]} aria-label="From" className="w-[120px]" />
             <DatePicker size="sm" value={to} onChange={setTo} min={from || undefined} placeholder="To" clearable presets={[{ label: "Today", days: 0 }]} aria-label="To" className="w-[120px]" />
           </>
         }

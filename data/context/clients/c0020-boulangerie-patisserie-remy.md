@@ -1,6 +1,6 @@
 # Boulangerie-Pâtisserie Rémy (C0020, `cli_0020`)
 
-> Personal data sheet to play this customer over the phone. The full history is in `seed/clientEvents.json` (filter on `clientId: "cli_0020"`).
+> Customer profile for phone role-play. The full history is in `seed_en/clientEvents.json` (filter on `clientId: "cli_0020"`).
 
 | | |
 |---|---|
@@ -20,30 +20,30 @@ Village bakery in Castelginest with bread deposit in two nearby communes. Large 
 ## People
 
 - **Michel Perrin** — bakery owner · 06 57 52 61 46
-  - How he/she speaks: Calculate everything, ask for promos and lot ends.
-  - Tics: "Just what you need, no more." · "There's a promo this week?"
+  - Speaking style: Calculate everything, ask for promos and lot ends.
+  - Typical phrases: "Just what you need, no more." · "There's a promo this week?"
 - **Manon Laurent** — Bakery (shop and orders) · 06 50 25 04 30
-  - How he/she speaks: Calculate everything, ask for promos and lot ends.
-  - Tics: "Just what you need, no more." · "Do you have any lot ends?"
+  - Speaking style: Calculate everything, ask for promos and lot ends.
+  - Typical phrases: "Just what you need, no more." · "Do you have any lot ends?"
 
 ## What they buy and how
 
-Order once a week, usually the day before between 13h and 17h, especially by phone and WhatsApp. Regular products: Traditional French T55 wheat flour (25 kg sack), Fresh baker's yeast (500 g block), 82% laminating butter (2 kg slab), 44% baker's chocolate sticks (1.6 kg box, 300 sticks), Printed kraft baguette bags (box of 1,000), Fine sea salt (25 kg sack), 50% hazelnut praline (5 kg bucket), T80 semi-wholemeal flour (25 kg sack).
+Order once a week, usually the day before between 13h and 17h, especially by phone and WhatsApp. Regular products: T55 traditional French wheat flour (25 kg bag), Fresh baker's yeast (500 g block), 82% laminating butter (2 kg sheet), Baker's chocolate sticks 44% (1.6 kg carton, 300 sticks), Printed kraft baguette bags (carton of 1000), Fine sea salt (25 kg bag), Hazelnut praline 50% (5 kg tub), T80 bise flour (25 kg bag).
 
-On the last 90 days (11 orders delivered):
+Over the last 90 days (11 orders delivered):
 
-| Product | Volume 90 | Lines | Last price |
+| Product | 90-day volume | Lines | Last price |
 |---|---|---|---|
-| Charentes-Poitou AOP laminating butter, 84% (2 kg slab) (`prd_0025`) | 478,56 kg | 7 | 11,40 € |
-| Traditional French T55 wheat flour (25 kg sack) (`prd_0001`) | 200,00 piece | 9 | 19,01 € |
-| 82% laminating butter (2 kg slab) (`prd_0026`) | 379,69 kg | 7 | 9,32 € |
-| Printed kraft baguette bags (box of 1,000) (`prd_0065`) | 55,00 box | 9 | 22,00 € |
-| 35% UHT whipping cream (1 L carton) (`prd_0031`) | 166,00 liter | 4 | 4,09 € |
-| T130 rye flour (25 kg sack) (`prd_0006`) | 27,00 piece | 5 | 24,50 € |
+| AOP Charentes-Poitou 84% laminating butter (2 kg sheet) (`prd_0025`) | 478,56 kg | 7 | 11,40 € |
+| T55 traditional French wheat flour (25 kg bag) (`prd_0001`) | 200,00 piece | 9 | 19,01 € |
+| 82% laminating butter (2 kg sheet) (`prd_0026`) | 379,69 kg | 7 | 9,32 € |
+| Printed kraft baguette bags (carton of 1000) (`prd_0065`) | 55,00 box | 9 | 22,00 € |
+| UHT liquid cream 35% (1 L carton) (`prd_0031`) | 166,00 liter | 4 | 4,09 € |
+| T130 rye flour (25 kg bag) (`prd_0006`) | 27,00 piece | 5 | 24,50 € |
 | Diced candied fruit (5 kg bucket) (`prd_0052`) | 58,46 kg | 9 | 9,80 € |
-| T80 semi-wholemeal flour (25 kg sack) (`prd_0005`) | 19,00 piece | 5 | 21,57 € |
+| T80 bise flour (25 kg bag) (`prd_0005`) | 19,00 piece | 5 | 21,57 € |
 
-Fiche CRM : _Traditional Lauragais only. Does not want frozen: everything is homemade. Delivered Mon. Accept equivalent substitutions if you warn._
+CRM record : _Traditional Lauragais only. Does not want frozen: everything is homemade. Delivered Mon. Accept equivalent substitutions if you warn._
 
 ## What frustrates them
 
@@ -56,9 +56,9 @@ Fiche CRM : _Traditional Lauragais only. Does not want frozen: everything is hom
 
 - **14/12/2015** · special request · Holidays 2015 : reservation
 - **05/12/2019** · special request · Holidays 2019 : reservation
-- **25/06/2021** · Quality · Quality : Fine sea salt (25 kg sack)
+- **25/06/2021** · Quality · Quality : Fine sea salt (25 kg bag)
 - **05/04/2022** · price · Tariff increase (diesel, energy)
-- **13/03/2023** · Quality · Quality : Fine sea salt (25 kg sack)
+- **13/03/2023** · Quality · Quality : Fine sea salt (25 kg bag)
 - **10/12/2023** · special request · Holidays 2023 : volume reservation
 - **23/01/2024** · prices · Rates 2024
 - **15/07/2024** · note · Summer closure 2024
@@ -69,7 +69,7 @@ Fiche CRM : _Traditional Lauragais only. Does not want frozen: everything is hom
 
 Full history: 36 events (9 visit, 7 call, 6 compliment, 4 special request, 4 price, 3 quality, 1 opening, 1 note, 1 delivery).
 
-## Files opened today
+## Open cases
 
 None.
 

@@ -58,11 +58,7 @@ async def get_context(
     entity_type: Literal["client", "supplier", "product", "category"],
     id: str = Field(description="cli_0012, sup_0003, prd_0005 or a category id (see GET /api/categories)"),
 ) -> dict:
-    """
-    The whole context of a customer, supplier, product or radius: profile, people and way of speaking, habits, which irritates them,
-    open files, how to talk to them, price agreements (+ linked cards: product radius, company rules that quote it).
-    À charger avant de répondre à un client ou de parler d'un produit. Load everything known about one entity.
-    """
+    """Load the profile, preferences, contacts, open cases and related company policies for one customer, supplier, product or category."""
     r = await ctx.erp.get("/api/context/for", {"entityType": entity_type, "id": id})
     return {
         "about": r.get("label"),

@@ -100,7 +100,7 @@ Bouton → useApiMutation(api.orders.confirm)            apps/web/src/lib/querie
 ```
 
 <a id="terminal-chat"></a>
-#### 1.2 A message in the assistant (的J)
+#### 1.2 A message in the assistant (⌘J)
 
 ```
 chat.send(text)                                       apps/web/src/features/assistant/chat-store.ts:67
@@ -807,7 +807,7 @@ Step by step:
 | Step | What the kit does | Lever |
 |---|---|---|
 | STT | **difference** transcription support ([live transcription](#stt-direct)): on release, only the last words remain to be finalized | LLM launched on a stable part, hands-free mode (`<end>`) |
-| prompt | rules + all `DATA_DIR/context/*.md` (的 44 Ko in the reference pack) returned to each step; Anthropic: read back to the cache ([4.8](#cache-prompt)) | reduce context, keep prefix stable |
+| prompt | rules + all `DATA_DIR/context/*.md` (≈ 44 Ko in the reference pack) returned to each step; Anthropic: read back to the cache ([4.8](#cache-prompt)) | reduce context, keep prefix stable |
 | LLM | one call per step; tools in parallel | composite tool ([5.4](#outil-composite)), fast model, `LLM_EFFORT=low` |
 | tools | `ErpClient` reuses shared `httpx.AsyncClient` (`erp_http()`, keep-alive, timeout 10 s, shut down) (`tools/erp.py:23-41`) | composite tool, fewer calls ERP |
 | TTS | sentence by sentence: as soon as a sentence ends with `. ! ? …` + space (`Speaker.SENTENCE`, `:230`), it leaves the TTS; only one mp3 segment per turn | cut earlier (virgulate), girl during tools |
@@ -861,7 +861,7 @@ The prefix of a query (tools → quick system → messages) weighs ≈ 27 k toke
 {"type": "ephemeral"}` (API accepts 4): on the **last tool**, on the **block system**, and on the **dernier
 block of the last message**. The next step of the same turn (after a tool result) and the next turn reread
 So all the prefix already seen to the cache: 10 % of the entry price and a first token faster. Shelf life: 5 min
-after the last use; writing the cache costs 的 1,25× the normal price once.
+after the last use; writing the cache costs ≈ 1,25× the normal price once.
 
 - **See Hits**: `POST /chat` event `done` carries `usage.cacheReadInputTokens` (read in cache) and
   `usage.cacheCreationInputTokens` (written); `make chat` displays them ("cache read ... / written ..."). At Anthropic,
@@ -1105,7 +1105,7 @@ A SPA React 18 + Quick + Tailwind + React-router + TanStack Query. She speaks to
 |---|---|
 | `main.tsx` | `QueryClient` (staleTime 15 s, retry 1), business clock loaded before first rendering |
 | `app/routes.tsx` | all routes (one page = `pages/<nom>/index.tsx`, default export) |
-| `app/nav.ts` | side menu + "Go to" commands from 的K |
+| `app/nav.ts` | side menu + "Go to" commands from ⌘K |
 | `app/AppShell.tsx` | sidebar · page · Assistant panel ; mount SSE, |
 | `lib/api.ts` | typed client: a ERP route function, → toast + `ApiRequestError` errors |
 | `lib/queries.ts` | `qk` query keys, one hook per playback, `useApiMutation`, SSE feed, `INVALIDATE` |
@@ -1238,7 +1238,7 @@ Your company pack: `DATA_DIR/seed/*.json` (the ERP tables) and `DATA_DIR/context
 
 **Files seen → tables** (`crud/__init__.py:31-50`). Reference Pack Size Orders:
 
-| File | Table | Content | 的 lines |
+| File | Table | Content | ≈ lines |
 |---|---|---|---|
 | `meta.json` | `meta` | `{company, today, currency, generatedAt}` | 1 object |
 | `clients.json` | `clients` | contact, zone, delivery days, conditions, ceiling, status, preferences, notes, tags | 46 |

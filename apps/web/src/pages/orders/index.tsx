@@ -46,7 +46,7 @@ export default function OrdersPage() {
       extraFilter={<Select size="sm" value={source} onChange={setSource} placeholder="All channels" options={SOURCE_OPTIONS} aria-label="Canal" className="w-[150px]" />}
       extraActive={!!source}
       onResetExtra={() => setSource("")}
-      emptyText="Les commandes saisies, reçues par téléphone ou prises par l'agent vocal apparaîtront ici."
+      emptyText="Orders entered here or taken by phone or by the voice agent will appear here."
     />
   );
 }

@@ -307,7 +307,7 @@ def receive_purchase_order(ctx: Ctx, id: str, received: list[Doc] | None = None)
         raise bad_request("nothing_received", "No quantity received")
     status = "received" if all(l["receivedQty"] >= l["qty"] for l in lines) else "partially_received"
     crud.purchase_orders.put({**po, "lines": lines, "status": status})
-    kind = "Complete" if status == "received" else "partielle"
+    kind = "Complete" if status == "received" else "partial"
     log_event(ctx, "purchase_order.received", "purchase_order", id,
               f"Receipt {kind} of {po['number']} : {lot_count} lot(s) entered into stock")  # fmt: skip
     return po_detail(id)

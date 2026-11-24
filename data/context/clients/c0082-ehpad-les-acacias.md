@@ -1,11 +1,11 @@
 # EHPAD Les Acacias (C0082, `cli_0082`)
 
-> Personal data sheet to play this customer over the phone. The full history is in `seed/clientEvents.json` (filter on `clientId: "cli_0082"`).
+> Customer profile for phone role-play. The full history is in `seed_en/clientEvents.json` (filter on `clientId: "cli_0082"`).
 
 | | |
 |---|---|
 | Type | Collective Restoration (Central Kitchens and Communities) — 74 rue des Halles, 31130 Balma |
-| Area | Balma, Labège & Sud Toulousein — delivered Tue |
+| Area | Balma, Labège & south Toulouse — delivered Tue |
 | Status | **active** — regular customer |
 | Sales representative | Karim Belkacem |
 | Customer since | 24/09/2006 (20 years) |
@@ -20,30 +20,30 @@ EHPAD Les Acacias: 250 meals per day, homemade pastries on Thursdays. Order by v
 ## People
 
 - **Duc Cassagne** — Head of kitchen · 06 57 58 11 74 · duc@ehpadacacias.fr
-  - How he/she speaks: Poli, reserved, never complains directly.
-  - Tics: "That's all, thank you." · "No worries."
+  - Speaking style: Poli, reserved, never complains directly.
+  - Typical phrases: "That's all, thank you." · "No worries."
 - **Julien Dubois** — Invoice Manager · 06 38 21 62 35 · compta@ehpadacacias.fr
-  - How he/she speaks: Speak little, low voice, command in three sentences.
-  - Tics: "Okay." · "That's all, thank you."
+  - Speaking style: Speak little, low voice, command in three sentences.
+  - Typical phrases: "Okay." · "That's all, thank you."
 - **Service comptabilité** — Bills · factures@ehpadacacias.fr
 
 ## What they buy and how
 
-Order once a week, usually 3 days front between 10h and 11h, especially via e-mail and web portal. Regular products: Pasteurised liquid whole egg (1 L carton), 35% UHT whipping cream (1 L carton), Whole UHT milk (1 L carton), 82% pastry butter (10 kg box), Caster sugar (25 kg sack), Fine sea salt (25 kg sack), Frozen unbaked all-butter croissants, 70 g (box of 150).
+Order once a week, usually 3 days front between 10h and 11h, especially via e-mail and web portal. Regular products: Pasteurised liquid whole egg (1 L carton), UHT liquid cream 35% (1 L carton), Whole UHT milk (1 L carton), 82% pastry butter (10 kg carton), Caster sugar (25 kg bag), Fine sea salt (25 kg bag), Raw frozen all-butter croissant 70 g (carton of 150).
 
-On the last 90 days (8 orders delivered):
+Over the last 90 days (8 orders delivered):
 
-| Product | Volume 90 | Lines | Last price |
+| Product | 90-day volume | Lines | Last price |
 |---|---|---|---|
-| Caster sugar (25 kg sack) (`prd_0015`) | 194,00 piece | 7 | 27,50 € |
-| Frozen unbaked all-butter croissants, 70 g (box of 150) (`prd_0053`) | 72,00 box | 4 | 52,00 € |
-| 35% UHT whipping cream (1 L carton) (`prd_0031`) | 488,00 liter | 3 | 3,94 € |
-| 82% pastry butter (10 kg box) (`prd_0028`) | 171,55 kg | 3 | 7,90 € |
+| Caster sugar (25 kg bag) (`prd_0015`) | 194,00 piece | 7 | 27,50 € |
+| Raw frozen all-butter croissant 70 g (carton of 150) (`prd_0053`) | 72,00 box | 4 | 52,00 € |
+| UHT liquid cream 35% (1 L carton) (`prd_0031`) | 488,00 liter | 3 | 3,94 € |
+| 82% pastry butter (10 kg carton) (`prd_0028`) | 171,55 kg | 3 | 7,90 € |
 | Whole UHT milk (1 L carton) (`prd_0033`) | 364,00 liter | 3 | 1,08 € |
 | Pasteurised liquid whole egg (1 L carton) (`prd_0035`) | 92,00 liter | 2 | 4,17 € |
-| Fine sea salt (25 kg sack) (`prd_0018`) | 38,00 piece | 4 | 9,80 € |
+| Fine sea salt (25 kg bag) (`prd_0018`) | 38,00 piece | 4 | 9,80 € |
 
-Sheet CRM: _Monthly production with commitment number. Liquid products only (HACCP). Delivered on. Accept equivalent substitutions if notified._
+Sheet CRM: _Monthly production with commitment number. Liquid egg products only (HACCP). Delivered on. Accept equivalent substitutions if notified._
 
 ## What frustrates them
 
@@ -52,14 +52,14 @@ Sheet CRM: _Monthly production with commitment number. Liquid products only (HAC
 
 ## A brief history
 
-- **20/03/2021** · Quality · Quality : Frozen unbaked all-butter croissants, 70 g (box of 150)
+- **20/03/2021** · Quality · Quality : Raw frozen all-butter croissant 70 g (carton of 150)
 - **13/04/2022** · price · Tariff increase (diesel, energy)
-- **04/06/2022** · Quality · Quality : 35% UHT whipping cream (1 L carton)
-- **12/12/2023** · Quality · Quality : 82% pastry butter (10 kg box)
-- **15/12/2023** · Have quality : 82% pastry butter (10 kg box)
+- **04/06/2022** · Quality · Quality : UHT liquid cream 35% (1 L carton)
+- **12/12/2023** · Quality · Quality : 82% pastry butter (10 kg carton)
+- **15/12/2023** · Have quality : 82% pastry butter (10 kg carton)
 - **28/05/2024** · Quality · Quality : Pasteurised liquid whole egg (1 L carton)
 - **20/01/2025** · prices · Rates 2025
-- **04/02/2025** · Quality · Quality : Caster sugar (25 kg sack)
+- **04/02/2025** · Quality · Quality : Caster sugar (25 kg bag)
 - **25/03/2025** · Delivery · Delivery left at the door
 - **18/11/2025** · Quality · Quality : Whole UHT milk (1 L carton)
 - **19/11/2025** · Have quality : Whole UHT milk (1 L carton)
@@ -67,7 +67,7 @@ Sheet CRM: _Monthly production with commitment number. Liquid products only (HAC
 
 Full history: 47 events (12 quality, 10 call, 7 visit, 6 compliment, 5 special request, 3 price, 2 have, 1 opening, 1 delivery).
 
-## Files opened today
+## Open cases
 
 None.
 

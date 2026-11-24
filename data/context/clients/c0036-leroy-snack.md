@@ -1,6 +1,6 @@
 # Leroy Snack (C0036, `cli_0036`)
 
-> Personal data sheet to play this customer over the phone. The full history is in `seed/clientEvents.json` (filter on `clientId: "cli_0036"`).
+> Customer profile for phone role-play. The full history is in `seed_en/clientEvents.json` (filter on `clientId: "cli_0036"`).
 
 | | |
 |---|---|
@@ -20,28 +20,28 @@ Snacks point of sale in Aucamville, cooking raw pastries and sandwiches. Antoine
 ## People
 
 - **Antoine Durand** — manager · 06 79 53 18 85 · antoine@leroysnack.fr
-  - How he/she speaks: Play surprise on each fare, end up ordering.
-  - Tics: "You're making a gesture?" · "You're more expensive than your neighbor there."
+  - Speaking style: Play surprise on each fare, end up ordering.
+  - Typical phrases: "You're making a gesture?" · "You're more expensive than your neighbor there."
 - **Olivier Bousquet** — Point of sale manager · 06 90 24 20 86
-  - How he/she speaks: Play surprise on each fare, end up ordering.
-  - Tics: "At this price, I take somewhere else." · "You are more expensive than your neighbor there."
+  - Speaking style: Play surprise on each fare, end up ordering.
+  - Typical phrases: "At this price, I take somewhere else." · "You are more expensive than your neighbor there."
 
 ## What they buy and how
 
-Order twice a week, usually the day before between 14h and 19h, mainly via web portal and telephone. Regular products: Frozen unbaked all-butter pains au chocolat, 75 g (box of 140), Frozen part-baked baguettes, 280 g (box of 60), Gold cardboard king cake crowns (pack of 100), Medium free-range eggs (tray of 30), Porcelain king cake charms (pack of 100), Printed kraft baguette bags (box of 1,000).
+Order twice a week, usually the day before between 14h and 19h, mainly via web portal and telephone. Regular products: Raw frozen all-butter pain au chocolat 75 g (carton of 140), Frozen par-baked baguette 280 g (carton of 60), Gold cardboard king cake crowns (pack of 100), Free-range eggs, size M (tray of 30), Porcelain king cake charms (pack of 100), Printed kraft baguette bags (carton of 1000).
 
-On the last 90 days (22 orders delivered):
+Over the last 90 days (22 orders delivered):
 
-| Product | Volume 90 | Lines | Last price |
+| Product | 90-day volume | Lines | Last price |
 |---|---|---|---|
-| Frozen part-baked baguettes, 280 g (box of 60) (`prd_0058`) | 207,00 box | 9 | 24,00 € |
-| Printed kraft baguette bags (box of 1,000) (`prd_0065`) | 137,00 box | 13 | 22,00 € |
-| Frozen unbaked all-butter pains au chocolat, 75 g (box of 140) (`prd_0054`) | 51,00 box | 6 | 49,80 € |
-| Medium free-range eggs (tray of 30) (`prd_0034`) | 262,00 box | 16 | 8,34 € |
-| Heat-stable dark chocolate chips (5 kg bag) (`prd_0044`) | 7,71 kg | 1 | 8,98 € |
-| Round gold cake boards, 28 cm (pack of 100) (`prd_0070`) | 3,00 box | 1 | 9,80 € |
+| Frozen par-baked baguette 280 g (carton of 60) (`prd_0058`) | 207,00 box | 9 | 24,00 € |
+| Printed kraft baguette bags (carton of 1000) (`prd_0065`) | 137,00 box | 13 | 22,00 € |
+| Raw frozen all-butter pain au chocolat 75 g (carton of 140) (`prd_0054`) | 51,00 box | 6 | 49,80 € |
+| Free-range eggs, size M (tray of 30) (`prd_0034`) | 262,00 box | 16 | 8,34 € |
+| Dark chocolate baking chips (5 kg bag) (`prd_0044`) | 7,71 kg | 1 | 8,98 € |
+| Gold round cake boards 28 cm (pack of 100) (`prd_0070`) | 3,00 box | 1 | 9,80 € |
 
-Fiche CRM : _Delivery before 7h for cooking. Wants a fixed carton price on the year. Delivered on Fri. Accept equivalent substitutions if warned._
+CRM record : _Delivery before 7h for cooking. Wants a fixed carton price on the year. Delivered on Fri. Accept equivalent substitutions if warned._
 
 ## What frustrates them
 
@@ -55,7 +55,7 @@ Fiche CRM : _Delivery before 7h for cooking. Wants a fixed carton price on the y
 
 Full history: 4 events (2 visit, 1 opening, 1 call).
 
-## Files opened today
+## Open cases
 
 None.
 

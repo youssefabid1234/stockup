@@ -1,6 +1,6 @@
 # Au Pain de Bernard (C0024, `cli_0024`)
 
-> Personal data sheet to play this customer over the phone. The full history is in `seed/clientEvents.json` (filter on `clientId: "cli_0024"`).
+> Customer profile for phone role-play. The full history is in `seed_en/clientEvents.json` (filter on `clientId: "cli_0024"`).
 
 | | |
 |---|---|
@@ -20,31 +20,31 @@ Toulouse (Saint-Cyprien) artisan bakery, two ovens in the morning, one at midday
 ## People
 
 - **Wei Baron** — bakery owner · 06 55 02 28 05 · wei@painbernard.fr
-  - How he/she speaks: Starts with a complaint, ends up ordering.
-  - Tics: "The last delivery, let's not talk about it." · "It's always the same with you."
+  - Speaking style: Starts with a complaint, ends up ordering.
+  - Typical phrases: "The last delivery, let's not talk about it." · "It's always the same with you."
 - **Fatima Brunet** — Bakery (shop and orders) · 06 47 99 23 79
-  - How he/she speaks: Calculate everything, ask for promos and lot ends.
-  - Tics: "Do you have lots?" · "Is there a promotion this week?"
+  - Speaking style: Calculate everything, ask for promos and lot ends.
+  - Typical phrases: "Do you have lots?" · "Is there a promotion this week?"
 - **Bernard Colin** — Bakery worker · 06 27 95 08 29
-  - How he/she speaks: Calculate everything, ask for promos and lot ends.
-  - Tics: "Do you have lots?" · "Is there a promotion this week?"
+  - Speaking style: Calculate everything, ask for promos and lot ends.
+  - Typical phrases: "Do you have lots?" · "Is there a promotion this week?"
 
 ## What they buy and how
 
-Order twice a week, usually the day before between 12h and 17h, especially by telephone and WhatsApp. Regular products: Traditional French T55 wheat flour (25 kg sack), Fresh baker's yeast (500 g block), 82% laminating butter (2 kg slab), 44% baker's chocolate sticks (1.6 kg box, 300 sticks), Printed kraft baguette bags (box of 1,000), Charentes-Poitou AOP unsalted butter (10 × 1 kg box), Ground blanched almonds (5 kg bag), T45 strong pastry flour (25 kg sack).
+Order twice a week, usually the day before between 12h and 17h, especially by telephone and WhatsApp. Regular products: T55 traditional French wheat flour (25 kg bag), Fresh baker's yeast (500 g block), 82% laminating butter (2 kg sheet), Baker's chocolate sticks 44% (1.6 kg carton, 300 sticks), Printed kraft baguette bags (carton of 1000), AOP Charentes-Poitou unsalted butter (carton of 10 × 1 kg), Blanched ground almonds (5 kg bag), T45 gruau pastry flour (25 kg bag).
 
-On the last 90 days (25 orders delivered):
+Over the last 90 days (25 orders delivered):
 
-| Product | Volume 90 | Lines | Last price |
+| Product | 90-day volume | Lines | Last price |
 |---|---|---|---|
-| 82% laminating butter (2 kg slab) (`prd_0026`) | 331,38 kg | 10 | 9,38 € |
-| Traditional French T55 wheat flour (25 kg sack) (`prd_0001`) | 134,00 piece | 9 | 19,01 € |
-| 44% baker's chocolate sticks (1.6 kg box, 300 sticks) (`prd_0042`) | 111,00 box | 17 | 13,90 € |
-| Caster sugar (25 kg sack) (`prd_0015`) | 54,00 piece | 14 | 27,50 € |
-| Charentes-Poitou AOP unsalted butter (10 × 1 kg box) (`prd_0027`) | 137,01 kg | 14 | 10,20 € |
-| T45 strong pastry flour (25 kg sack) (`prd_0003`) | 42,00 piece | 10 | 23,37 € |
-| Ground blanched almonds (5 kg bag) (`prd_0046`) | 82,70 kg | 16 | 11,79 € |
-| T65 country bread flour (25 kg sack) (`prd_0004`) | 49,00 piece | 14 | 18,95 € |
+| 82% laminating butter (2 kg sheet) (`prd_0026`) | 331,38 kg | 10 | 9,38 € |
+| T55 traditional French wheat flour (25 kg bag) (`prd_0001`) | 134,00 piece | 9 | 19,01 € |
+| Baker's chocolate sticks 44% (1.6 kg carton, 300 sticks) (`prd_0042`) | 111,00 box | 17 | 13,90 € |
+| Caster sugar (25 kg bag) (`prd_0015`) | 54,00 piece | 14 | 27,50 € |
+| AOP Charentes-Poitou unsalted butter (carton of 10 × 1 kg) (`prd_0027`) | 137,01 kg | 14 | 10,20 € |
+| T45 gruau pastry flour (25 kg bag) (`prd_0003`) | 42,00 piece | 10 | 23,37 € |
+| Blanched ground almonds (5 kg bag) (`prd_0046`) | 82,70 kg | 16 | 11,79 € |
+| T65 country wheat flour (25 kg bag) (`prd_0004`) | 49,00 piece | 14 | 18,95 € |
 
 Form CRM : _Paye in LCR to 30 end of month days. Traditional Lauragais flour only. Delivered Mon. game. Accept equivalent substitutions if you warn._
 
@@ -60,10 +60,10 @@ Form CRM : _Paye in LCR to 30 end of month days. Traditional Lauragais flour onl
 - **01/07/2024** · note · Summer closure 2024
 - **26/09/2024** · delivery · Delivery order wrong
 - **13/01/2025** · prices · Rates 2025
-- **06/02/2025** · Quality · Quality : Paper pastry bags (box of 1,000)
-- **08/02/2025** · Have quality : Paper pastry bags (box of 1,000)
-- **20/03/2025** · Quality · Quality : Caster sugar (25 kg sack)
-- **24/03/2025** · Have quality : Caster sugar (25 kg sack)
+- **06/02/2025** · Quality · Quality : Paper viennoiserie bags (carton of 1000)
+- **08/02/2025** · Have quality : Paper viennoiserie bags (carton of 1000)
+- **20/03/2025** · Quality · Quality : Caster sugar (25 kg bag)
+- **24/03/2025** · Have quality : Caster sugar (25 kg bag)
 - **05/05/2025** · delivery · delivery error
 - **19/07/2025** · note · Summer closure 2025
 - **11/09/2025** · Delivery · Delivery left at the door
@@ -71,7 +71,7 @@ Form CRM : _Paye in LCR to 30 end of month days. Traditional Lauragais flour onl
 
 Full history: 30 events (6 visit, 5 call, 4 delivery, 3 compliment, 3 quality, 2 price, 2 special request, 2 note, 2 have, 1 opening).
 
-## Files opened today
+## Open cases
 
 None.
 

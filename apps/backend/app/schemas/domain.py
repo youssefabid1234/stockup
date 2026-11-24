@@ -365,7 +365,7 @@ class ClientEvent(Schema):
     title: str  # "Claim: Norway lobsters who have arrived dead"
     description: str
     channel: EventChannel | None = None
-    author: str  # "Sophie (commerciale)", "Agent vocal"
+    author: str  # "Sophie (commerciale)", "Voice agent"
     severity: Severity | None = None
     status: IssueStatus | None = None  # for issues
     resolved_at: IsoDateTime | None = None

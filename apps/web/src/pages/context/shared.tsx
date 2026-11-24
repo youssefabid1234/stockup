@@ -200,7 +200,7 @@ export function NewContextPanel({ defaults, lockTarget, onClose, onCreated }: {
           <Field label="Gender"><Select value={kind} onChange={(v) => setKind(v as ContextKind)} options={KIND_OPTIONS} className="w-full" /></Field>
           <Field label="Keywords"><Input value={tags} onChange={(e) => setTags(e.target.value)} placeholder="Delivery, access" /></Field>
         </div>
-        <MarkdownEditor label="Content" hint="1 à 5 lignes, markdown." value={body} onChange={setBody} defaultMode="raw" placeholder="- The driver goes through the court, code 4821." />
+        <MarkdownEditor label="Content" hint="1 to 5 lines. Markdown is supported." value={body} onChange={setBody} defaultMode="raw" placeholder="- The driver goes through the court, code 4821." />
       </form>
     </SidePanel>
   );

@@ -7,23 +7,23 @@
 | C0001 | [Maison Sarrailh](c0001-maison-sarrailh.md) | Retail | Toulouse centre & suburbs | active | Julien Fabre |
 | C0002 | [Pâtisserie Lacombe-Viguier](c0002-patisserie-lacombe-viguier.md) | Retail | Toulouse centre & suburbs | active | Marion Escudié |
 | C0003 | [Les Chocolatines du Capitole](c0003-les-chocolatines-du-capitole.md) | Brewery | Toulouse centre & suburbs | active | Karim Belkacem |
-| C0004 | [Hyper Garonne Fenouillet](c0004-hyper-garonne-fenouillet.md) | Large area | Fondeyre, The Union & Northern Toulouse | active | Karim Belkacem |
-| C0005 | [Cuisine centrale de Colomiers](c0005-cuisine-centrale-de-colomiers.md) | Collective restoration | Blagnac, Colomiers & Ouest | active | Karim Belkacem |
+| C0004 | [Hyper Garonne Fenouillet](c0004-hyper-garonne-fenouillet.md) | Large area | Fondeyre, L'Union & Northern Toulouse | active | Karim Belkacem |
+| C0005 | [Cuisine centrale de Colomiers](c0005-cuisine-centrale-de-colomiers.md) | Institutional catering | Blagnac, Colomiers & Ouest | active | Karim Belkacem |
 | C0006 | [Boulangerie Escaich](c0006-boulangerie-escaich.md) | Retail | Lauragais & Tarn | active | Julien Fabre |
-| C0007 | [Le Pétrin de Balma](c0007-le-petrin-de-balma.md) | Retail | Balma, Labège & Sud Toulousein | blocked | Julien Fabre |
-| C0008 | [Au Pain d'Antan](c0008-au-pain-d-antan.md) | Retail | Fondeyre, The Union & Northern Toulouse | blocked | Julien Fabre |
-| C0009 | [Maison Pujol Traiteur](c0009-maison-pujol-traiteur.md) | Caterer | Balma, Labège & Sud Toulousein | active | Karim Belkacem |
+| C0007 | [Le Pétrin de Balma](c0007-le-petrin-de-balma.md) | Retail | Balma, Labège & south Toulouse | blocked | Julien Fabre |
+| C0008 | [Au Pain d'Antan](c0008-au-pain-d-antan.md) | Retail | Fondeyre, L'Union & Northern Toulouse | blocked | Julien Fabre |
+| C0009 | [Maison Pujol Traiteur](c0009-maison-pujol-traiteur.md) | Caterer | Balma, Labège & south Toulouse | active | Karim Belkacem |
 | C0010 | [Hôtel Garonne Saint-Pierre](c0010-hotel-garonne-saint-pierre.md) | Hotel | Toulouse centre & suburbs | prospect | Marion Escudié |
-| C0011 | [La Mie Câline de Muret](c0011-la-mie-caline-de-muret.md) | Retail | Balma, Labège & Sud Toulousein | prospect | Julien Fabre |
+| C0011 | [La Mie Câline de Muret](c0011-la-mie-caline-de-muret.md) | Retail | Balma, Labège & south Toulouse | prospect | Julien Fabre |
 | C0012 | [Pâtisserie Les Carmes](c0012-patisserie-les-carmes.md) | Retail | Toulouse centre & suburbs | active (lost) | Marion Escudié |
 | C0013 | [La Gerbe d'Or](c0013-la-gerbe-d-or.md) | Retail | Blagnac, Colomiers & Ouest | active | Karim Belkacem |
-| C0014 | [La Brasserie des Carmes](c0014-la-brasserie-des-carmes.md) | Restaurant | Balma, Labège & Sud Toulousein | active (lost) | Marion Escudié |
+| C0014 | [La Brasserie des Carmes](c0014-la-brasserie-des-carmes.md) | Restaurant | Balma, Labège & south Toulouse | active (lost) | Marion Escudié |
 | C0015 | [Traiteur Minimes](c0015-traiteur-minimes.md) | Caterer | Toulouse centre & suburbs | active | Marion Escudié |
 | C0016 | [Boulangerie du Marché](c0016-boulangerie-du-marche.md) | Retail | Lauragais & Tarn | active | Julien Fabre |
 | C0017 | [L'Auberge d'Arnaud-Bernard](c0017-l-auberge-d-arnaud-bernard.md) | Restaurant | Lauragais & Tarn | prospect | Marion Escudié |
 | C0018 | [Hyper Garonne Blagnac](c0018-hyper-garonne-blagnac.md) | Large area | Blagnac, Colomiers & Ouest | active | Karim Belkacem |
-| C0019 | [Le Pétrin de Muret](c0019-le-petrin-de-muret.md) | Retail | Balma, Labège & Sud Toulousein | active | Marion Escudié |
-| C0020 | [Boulangerie-Pâtisserie Rémy](c0020-boulangerie-patisserie-remy.md) | Retail | Fondeyre, The Union & Northern Toulouse | active | Julien Fabre |
+| C0019 | [Le Pétrin de Muret](c0019-le-petrin-de-muret.md) | Retail | Balma, Labège & south Toulouse | active | Marion Escudié |
+| C0020 | [Boulangerie-Pâtisserie Rémy](c0020-boulangerie-patisserie-remy.md) | Retail | Fondeyre, L'Union & Northern Toulouse | active | Julien Fabre |
 | C0021 | [Le Pétrin de Colomiers](c0021-le-petrin-de-colomiers.md) | Retail | Blagnac, Colomiers & Ouest | active | Karim Belkacem |
 | C0022 | [Le Cassoulet d'Or](c0022-le-cassoulet-d-or.md) | Restaurant | Blagnac, Colomiers & Ouest | active | Karim Belkacem |
 | C0023 | [Restaurant Jean](c0023-restaurant-jean.md) | Restaurant | Toulouse centre & suburbs | active (lost) | Marion Escudié |
@@ -32,79 +32,79 @@
 | C0026 | [Au Fournil de Mélanie](c0026-au-fournil-de-melanie.md) | Retail | Toulouse centre & suburbs | active | Julien Fabre |
 | C0027 | [Restaurant Noël](c0027-restaurant-noel.md) | Restaurant | Lauragais & Tarn | active | Marion Escudié |
 | C0028 | [La Chocolatine de Toulouse (Saint-Cyprien)](c0028-la-chocolatine-de-toulouse-saint-cyprien.md) | Brewery | Toulouse centre & suburbs | active | Karim Belkacem |
-| C0029 | [Aux Délices de Pascale](c0029-aux-delices-de-pascale.md) | Retail | Fondeyre, The Union & Northern Toulouse | prospect | Julien Fabre |
-| C0030 | [Restaurant inter-entreprises Compans](c0030-restaurant-inter-entreprises-compans.md) | Collective restoration | Blagnac, Colomiers & Ouest | active | Karim Belkacem |
-| C0031 | [Le Comptoir de Toulouse (Minimum)](c0031-le-comptoir-de-toulouse-minimes.md) | Restaurant | Fondeyre, The Union & Northern Toulouse | active | Marion Escudié |
-| C0032 | [Salon de thé Les Camélias](c0032-salon-de-the-les-camelias.md) | Retail | Balma, Labège & Sud Toulousein | active | Marion Escudié |
-| C0033 | [Au Fournil de Sandrine](c0033-au-fournil-de-sandrine.md) | Retail | Fondeyre, The Union & Northern Toulouse | active | Julien Fabre |
+| C0029 | [Aux Délices de Pascale](c0029-aux-delices-de-pascale.md) | Retail | Fondeyre, L'Union & Northern Toulouse | prospect | Julien Fabre |
+| C0030 | [Restaurant inter-entreprises Compans](c0030-restaurant-inter-entreprises-compans.md) | Institutional catering | Blagnac, Colomiers & Ouest | active | Karim Belkacem |
+| C0031 | [Le Comptoir de Toulouse (Minimum)](c0031-le-comptoir-de-toulouse-minimes.md) | Restaurant | Fondeyre, L'Union & Northern Toulouse | active | Marion Escudié |
+| C0032 | [Salon de thé Les Camélias](c0032-salon-de-the-les-camelias.md) | Retail | Balma, Labège & south Toulouse | active | Marion Escudié |
+| C0033 | [Au Fournil de Sandrine](c0033-au-fournil-de-sandrine.md) | Retail | Fondeyre, L'Union & Northern Toulouse | active | Julien Fabre |
 | C0034 | [Le Petit Capitole](c0034-le-petit-capitole.md) | Restaurant | Lauragais & Tarn | active | Marion Escudié |
 | C0035 | [Garcia Traiteur](c0035-garcia-traiteur.md) | Caterer | Toulouse centre & suburbs | active | Karim Belkacem |
-| C0036 | [Leroy Snack](c0036-leroy-snack.md) | Brewery | Fondeyre, The Union & Northern Toulouse | active | Julien Fabre |
+| C0036 | [Leroy Snack](c0036-leroy-snack.md) | Brewery | Fondeyre, L'Union & Northern Toulouse | active | Julien Fabre |
 | C0037 | [Le Comptoir de Toulouse (Capitol)](c0037-le-comptoir-de-toulouse-capitole.md) | Restaurant | Toulouse centre & suburbs | active (lost) | Marion Escudié |
-| C0038 | [Hyper Garonne Aucamville](c0038-hyper-garonne-aucamville.md) | Large area | Fondeyre, The Union & Northern Toulouse | active (lost) | Julien Fabre |
-| C0039 | [Hôtel Saint-Anh](c0039-hotel-saint-anh.md) | Hotel | Balma, Labège & Sud Toulousein | active | Marion Escudié |
+| C0038 | [Hyper Garonne Aucamville](c0038-hyper-garonne-aucamville.md) | Large area | Fondeyre, L'Union & Northern Toulouse | active (lost) | Julien Fabre |
+| C0039 | [Hôtel Saint-Anh](c0039-hotel-saint-anh.md) | Hotel | Balma, Labège & south Toulouse | active | Marion Escudié |
 | C0040 | [Maison Bourgeois Chocolatier](c0040-maison-bourgeois-chocolatier.md) | Retail | Lauragais & Tarn | active | Julien Fabre |
-| C0041 | [Maison Chen Chocolatier](c0041-maison-chen-chocolatier.md) | Retail | Balma, Labège & Sud Toulousein | active | Marion Escudié |
-| C0042 | [L'Épi de Balma](c0042-l-epi-de-balma.md) | Retail | Balma, Labège & Sud Toulousein | active | Julien Fabre |
+| C0041 | [Maison Chen Chocolatier](c0041-maison-chen-chocolatier.md) | Retail | Balma, Labège & south Toulouse | active | Marion Escudié |
+| C0042 | [L'Épi de Balma](c0042-l-epi-de-balma.md) | Retail | Balma, Labège & south Toulouse | active | Julien Fabre |
 | C0043 | [Hôtel de Toulouse (Paved Coast)](c0043-hotel-de-toulouse-cote-pavee.md) | Hotel | Toulouse centre & suburbs | active | Marion Escudié |
 | C0044 | [Au Pain de Chloé](c0044-au-pain-de-chloe.md) | Retail | Lauragais & Tarn | active (lost) | Julien Fabre |
-| C0045 | [Boulangerie Moreau](c0045-boulangerie-moreau.md) | Retail | Fondeyre, The Union & Northern Toulouse | active | Julien Fabre |
+| C0045 | [Boulangerie Moreau](c0045-boulangerie-moreau.md) | Retail | Fondeyre, L'Union & Northern Toulouse | active | Julien Fabre |
 | C0046 | [Le Buffet Toulousain](c0046-le-buffet-toulousain.md) | Caterer | Toulouse centre & suburbs | blocked | Karim Belkacem |
-| C0047 | [Super Occitan Muret](c0047-super-occitan-muret.md) | Large area | Balma, Labège & Sud Toulousein | active | Karim Belkacem |
-| C0048 | [Le Fournil de Balma](c0048-le-fournil-de-balma.md) | Retail | Balma, Labège & Sud Toulousein | active | Marion Escudié |
+| C0047 | [Super Occitan Muret](c0047-super-occitan-muret.md) | Large area | Balma, Labège & south Toulouse | active | Karim Belkacem |
+| C0048 | [Le Fournil de Balma](c0048-le-fournil-de-balma.md) | Retail | Balma, Labège & south Toulouse | active | Marion Escudié |
 | C0049 | [Pause Gourmande Toulouse (Saint-Michel)](c0049-pause-gourmande-toulouse-saint-michel.md) | Brewery | Toulouse centre & suburbs | active | Karim Belkacem |
-| C0050 | [Le Fournil de Labège](c0050-le-fournil-de-labege.md) | Retail | Balma, Labège & Sud Toulousein | active | Marion Escudié |
-| C0051 | [La Chocolatine d'Aucamville](c0051-la-chocolatine-d-aucamville.md) | Brewery | Fondeyre, The Union & Northern Toulouse | active | Karim Belkacem |
-| C0052 | [Le Comptoir de L'Union](c0052-le-comptoir-de-l-union.md) | Restaurant | Fondeyre, The Union & Northern Toulouse | active | Julien Fabre |
+| C0050 | [Le Fournil de Labège](c0050-le-fournil-de-labege.md) | Retail | Balma, Labège & south Toulouse | active | Marion Escudié |
+| C0051 | [La Chocolatine d'Aucamville](c0051-la-chocolatine-d-aucamville.md) | Brewery | Fondeyre, L'Union & Northern Toulouse | active | Karim Belkacem |
+| C0052 | [Le Comptoir de L'Union](c0052-le-comptoir-de-l-union.md) | Restaurant | Fondeyre, L'Union & Northern Toulouse | active | Julien Fabre |
 | C0053 | [Le Petit Four de Saint-Cyprien](c0053-le-petit-four-de-saint-cyprien.md) | Retail | Toulouse centre & suburbs | active | Marion Escudié |
-| C0054 | [Intermarché-Proxi Fronton](c0054-intermarche-proxi-fronton.md) | Large area | Fondeyre, The Union & Northern Toulouse | active | Karim Belkacem |
-| C0055 | [Roussel Traiteur](c0055-roussel-traiteur.md) | Caterer | Fondeyre, The Union & Northern Toulouse | active | Karim Belkacem |
+| C0054 | [Intermarché-Proxi Fronton](c0054-intermarche-proxi-fronton.md) | Large area | Fondeyre, L'Union & Northern Toulouse | active | Karim Belkacem |
+| C0055 | [Roussel Traiteur](c0055-roussel-traiteur.md) | Caterer | Fondeyre, L'Union & Northern Toulouse | active | Karim Belkacem |
 | C0056 | [Maison Cohen Chocolatier](c0056-maison-cohen-chocolatier.md) | Retail | Toulouse centre & suburbs | active | Marion Escudié |
-| C0057 | [Restaurant inter-entreprises Rangueil](c0057-restaurant-inter-entreprises-rangueil.md) | Collective restoration | Fondeyre, The Union & Northern Toulouse | active | Karim Belkacem |
+| C0057 | [Restaurant inter-entreprises Rangueil](c0057-restaurant-inter-entreprises-rangueil.md) | Institutional catering | Fondeyre, L'Union & Northern Toulouse | active | Karim Belkacem |
 | C0058 | [Traiteur Saint-Aubin](c0058-traiteur-saint-aubin.md) | Caterer | Lauragais & Tarn | active (lost) | Julien Fabre |
 | C0059 | [Aux Délices d'Éric](c0059-aux-delices-d-eric.md) | Retail | Lauragais & Tarn | active | Julien Fabre |
 | C0060 | [La Mie de Saint-Michel](c0060-la-mie-de-saint-michel.md) | Retail | Blagnac, Colomiers & Ouest | active | Karim Belkacem |
-| C0061 | [Maison Charles](c0061-maison-charles.md) | Retail | Fondeyre, The Union & Northern Toulouse | active | Julien Fabre |
-| C0062 | [Proxi Fraîcheur Saint-Aubin](c0062-proxi-fraicheur-saint-aubin.md) | Large area | Fondeyre, The Union & Northern Toulouse | active | Karim Belkacem |
+| C0061 | [Maison Charles](c0061-maison-charles.md) | Retail | Fondeyre, L'Union & Northern Toulouse | active | Julien Fabre |
+| C0062 | [Proxi Fraîcheur Saint-Aubin](c0062-proxi-fraicheur-saint-aubin.md) | Large area | Fondeyre, L'Union & Northern Toulouse | active | Karim Belkacem |
 | C0063 | [Chocolaterie Xavier](c0063-chocolaterie-xavier.md) | Retail | Toulouse centre & suburbs | active | Marion Escudié |
-| C0064 | [EHPAD Les Charmes](c0064-ehpad-les-charmes.md) | Collective restoration | Fondeyre, The Union & Northern Toulouse | active | Julien Fabre |
+| C0064 | [EHPAD Les Charmes](c0064-ehpad-les-charmes.md) | Institutional catering | Fondeyre, L'Union & Northern Toulouse | active | Julien Fabre |
 | C0065 | [Rouquette Snack](c0065-rouquette-snack.md) | Brewery | Blagnac, Colomiers & Ouest | active | Karim Belkacem |
-| C0066 | [Au Fournil de Didier](c0066-au-fournil-de-didier.md) | Retail | Balma, Labège & Sud Toulousein | active | Marion Escudié |
+| C0066 | [Au Fournil de Didier](c0066-au-fournil-de-didier.md) | Retail | Balma, Labège & south Toulouse | active | Marion Escudié |
 | C0067 | [Aux Délices de Florian](c0067-aux-delices-de-florian.md) | Retail | Lauragais & Tarn | active | Julien Fabre |
-| C0068 | [L'Auberge de Minimes](c0068-l-auberge-de-minimes.md) | Restaurant | Balma, Labège & Sud Toulousein | active | Marion Escudié |
-| C0069 | [Hôtel des Capitouls](c0069-hotel-des-capitouls.md) | Hotel | Balma, Labège & Sud Toulousein | active | Marion Escudié |
+| C0068 | [L'Auberge de Minimes](c0068-l-auberge-de-minimes.md) | Restaurant | Balma, Labège & south Toulouse | active | Marion Escudié |
+| C0069 | [Hôtel des Capitouls](c0069-hotel-des-capitouls.md) | Hotel | Balma, Labège & south Toulouse | active | Marion Escudié |
 | C0070 | [Au Pain de Guilhem](c0070-au-pain-de-guilhem.md) | Retail | Blagnac, Colomiers & Ouest | active | Karim Belkacem |
 | C0071 | [Maison Cousin Chocolatier](c0071-maison-cousin-chocolatier.md) | Retail | Toulouse centre & suburbs | active | Marion Escudié |
 | C0072 | [Hôtel Dupont](c0072-hotel-dupont.md) | Hotel | Toulouse centre & suburbs | active | Marion Escudié |
-| C0073 | [Super Occitan Toulouse (Minimum)](c0073-super-occitan-toulouse-minimes.md) | Large area | Fondeyre, The Union & Northern Toulouse | active | Julien Fabre |
-| C0074 | [Au Fournil de Philippe](c0074-au-fournil-de-philippe.md) | Retail | Fondeyre, The Union & Northern Toulouse | active | Julien Fabre |
+| C0073 | [Super Occitan Toulouse (Minimum)](c0073-super-occitan-toulouse-minimes.md) | Large area | Fondeyre, L'Union & Northern Toulouse | active | Julien Fabre |
+| C0074 | [Au Fournil de Philippe](c0074-au-fournil-de-philippe.md) | Retail | Fondeyre, L'Union & Northern Toulouse | active | Julien Fabre |
 | C0075 | [Au Fournil de Théo](c0075-au-fournil-de-theo.md) | Retail | Toulouse centre & suburbs | active | Julien Fabre |
-| C0076 | [Le Moulin d'Arnaud-Bernard](c0076-le-moulin-d-arnaud-bernard.md) | Retail | Balma, Labège & Sud Toulousein | active | Marion Escudié |
-| C0077 | [Lycée Antoine de Saint-Exupéry](c0077-lycee-antoine-de-saint-exupery.md) | Collective restoration | Fondeyre, The Union & Northern Toulouse | active | Karim Belkacem |
-| C0078 | [La Table de Toulouse (Minimum)](c0078-la-table-de-toulouse-minimes.md) | Restaurant | Fondeyre, The Union & Northern Toulouse | active | Julien Fabre |
+| C0076 | [Le Moulin d'Arnaud-Bernard](c0076-le-moulin-d-arnaud-bernard.md) | Retail | Balma, Labège & south Toulouse | active | Marion Escudié |
+| C0077 | [Lycée Antoine de Saint-Exupéry](c0077-lycee-antoine-de-saint-exupery.md) | Institutional catering | Fondeyre, L'Union & Northern Toulouse | active | Karim Belkacem |
+| C0078 | [La Table de Toulouse (Minimum)](c0078-la-table-de-toulouse-minimes.md) | Restaurant | Fondeyre, L'Union & Northern Toulouse | active | Julien Fabre |
 | C0079 | [Salon de thé Les Bleuets](c0079-salon-de-the-les-bleuets.md) | Retail | Blagnac, Colomiers & Ouest | active | Karim Belkacem |
-| C0080 | [Maison Carpentier](c0080-maison-carpentier.md) | Retail | Fondeyre, The Union & Northern Toulouse | active | Julien Fabre |
+| C0080 | [Maison Carpentier](c0080-maison-carpentier.md) | Retail | Fondeyre, L'Union & Northern Toulouse | active | Julien Fabre |
 | C0081 | [Le Bistrot d'Anaïs](c0081-le-bistrot-d-anais.md) | Restaurant | Lauragais & Tarn | active | Marion Escudié |
-| C0082 | [EHPAD Les Acacias](c0082-ehpad-les-acacias.md) | Collective restoration | Balma, Labège & Sud Toulousein | active | Karim Belkacem |
+| C0082 | [EHPAD Les Acacias](c0082-ehpad-les-acacias.md) | Institutional catering | Balma, Labège & south Toulouse | active | Karim Belkacem |
 | C0083 | [Le Fournil de Toulouse (Saint-Michel)](c0083-le-fournil-de-toulouse-saint-michel.md) | Retail | Toulouse centre & suburbs | active | Julien Fabre |
-| C0084 | [Marché Plus Rangueil](c0084-marche-plus-rangueil.md) | Large area | Fondeyre, The Union & Northern Toulouse | active | Karim Belkacem |
+| C0084 | [Marché Plus Rangueil](c0084-marche-plus-rangueil.md) | Large area | Fondeyre, L'Union & Northern Toulouse | active | Karim Belkacem |
 | C0085 | [La Mie d'Arnaud-Bernard](c0085-la-mie-d-arnaud-bernard.md) | Retail | Toulouse centre & suburbs | active | Marion Escudié |
-| C0086 | [Au Pain d'Audrey](c0086-au-pain-d-audrey.md) | Retail | Fondeyre, The Union & Northern Toulouse | active | Julien Fabre |
+| C0086 | [Au Pain d'Audrey](c0086-au-pain-d-audrey.md) | Retail | Fondeyre, L'Union & Northern Toulouse | active | Julien Fabre |
 | C0087 | [La Table de Toulouse (Capitol)](c0087-la-table-de-toulouse-capitole.md) | Restaurant | Toulouse centre & suburbs | active | Marion Escudié |
 | C0088 | [Salon de thé Les Glycines](c0088-salon-de-the-les-glycines.md) | Retail | Blagnac, Colomiers & Ouest | active | Karim Belkacem |
 | C0089 | [Au Fournil de Jean-Marc](c0089-au-fournil-de-jean-marc.md) | Retail | Lauragais & Tarn | active (lost) | Julien Fabre |
-| C0090 | [Chez Stéphane](c0090-chez-stephane.md) | Restaurant | Balma, Labège & Sud Toulousein | active | Marion Escudié |
+| C0090 | [Chez Stéphane](c0090-chez-stephane.md) | Restaurant | Balma, Labège & south Toulouse | active | Marion Escudié |
 | C0091 | [Les Réceptions de Rachid](c0091-les-receptions-de-rachid.md) | Caterer | Blagnac, Colomiers & Ouest | active | Karim Belkacem |
 | C0092 | [Pause Gourmande Toulouse (Saint-Cyprien)](c0092-pause-gourmande-toulouse-saint-cyprien.md) | Brewery | Toulouse centre & suburbs | active | Karim Belkacem |
-| C0093 | [Maison Maffre](c0093-maison-maffre.md) | Retail | Balma, Labège & Sud Toulousein | active | Julien Fabre |
+| C0093 | [Maison Maffre](c0093-maison-maffre.md) | Retail | Balma, Labège & south Toulouse | active | Julien Fabre |
 | C0094 | [L'Épi de Toulouse (Capitol)](c0094-l-epi-de-toulouse-capitole.md) | Retail | Toulouse centre & suburbs | active | Marion Escudié |
-| C0095 | [Maison Pelletier Événements](c0095-maison-pelletier-evenements.md) | Caterer | Fondeyre, The Union & Northern Toulouse | active | Karim Belkacem |
+| C0095 | [Maison Pelletier Événements](c0095-maison-pelletier-evenements.md) | Caterer | Fondeyre, L'Union & Northern Toulouse | active | Karim Belkacem |
 | C0096 | [Croc'Midi Saint-Aubin](c0096-croc-midi-saint-aubin.md) | Brewery | Blagnac, Colomiers & Ouest | active | Karim Belkacem |
-| C0097 | [Au Fournil de Brigitte](c0097-au-fournil-de-brigitte.md) | Retail | Balma, Labège & Sud Toulousein | active | Marion Escudié |
+| C0097 | [Au Fournil de Brigitte](c0097-au-fournil-de-brigitte.md) | Retail | Balma, Labège & south Toulouse | active | Marion Escudié |
 | C0098 | [Super Occitan Revel](c0098-super-occitan-revel.md) | Large area | Lauragais & Tarn | active | Karim Belkacem |
 | C0099 | [Maison Aubert](c0099-maison-aubert.md) | Retail | Blagnac, Colomiers & Ouest | active | Julien Fabre |
 | C0100 | [Grand Hôtel de Saint-Cyprien](c0100-grand-hotel-de-saint-cyprien.md) | Hotel | Toulouse centre & suburbs | active (lost) | Marion Escudié |
 | C0101 | [Hôtel Jean](c0101-hotel-jean.md) | Hotel | Toulouse centre & suburbs | active | Marion Escudié |
-| C0102 | [Au Fournil de Guillaume](c0102-au-fournil-de-guillaume.md) | Retail | Balma, Labège & Sud Toulousein | active | Julien Fabre |
+| C0102 | [Au Fournil de Guillaume](c0102-au-fournil-de-guillaume.md) | Retail | Balma, Labège & south Toulouse | active | Julien Fabre |
 | C0103 | [Chocolaterie Bernard](c0103-chocolaterie-bernard.md) | Retail | Toulouse centre & suburbs | active | Marion Escudié |
-| C0104 | [Hyper Garonne Ramonville-Saint-Agne](c0104-hyper-garonne-ramonville-saint-agne.md) | Large area | Balma, Labège & Sud Toulousein | active | Karim Belkacem |
+| C0104 | [Hyper Garonne Ramonville-Saint-Agne](c0104-hyper-garonne-ramonville-saint-agne.md) | Large area | Balma, Labège & south Toulouse | active | Karim Belkacem |

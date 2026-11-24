@@ -1,26 +1,27 @@
 # Voice ERP kit
 
-> **For the jury · Team 12 · Le Fournil Occitan (the telephone standard)**
-> 1. Put the `data/` folder of the zip next to the `Makefile` (`data/seed/` is not in git), and your `.env` (keys) to the root.
-> 2. `make setup` → http://localhost:5173, page **Voix**. Our settings (`TEAM_*`) are added to the `.env` if they are missing; the demo promo is recreated every time you reset the ERP.
-> 3. Choose **"Who calls?"** (the client, like the number display), then **"Start Call"**; hold Space to speak.
-> 4. To be tried: Le Pétrin de Colomiers, "3 cartons of AOP laminating butter for Monday" (break → laminating butter 82 % on promo); Maison Sarrailh, same request (refuse all replacements).
-> 5. Our choices and measurements: [DECISIONS.md](DECISIONS.md).
+## Start an English call
+
+1. Copy `.env.example` to `.env` on a fresh checkout. On an existing checkout, keep your keys and set `DATA_DIR=./data`, `SEED_DIR_NAME=seed_en`, `STT_LANGUAGE=en` and `TTS_LANGUAGE=en`.
+2. Run `make setup` and open http://localhost:5173/voice. Docker uses a separate SQLite file for the English ERP. Your previous database stays in the same volume. Orders and edits made in that database are not copied into the new one.
+3. Choose the caller and select **Start call**. Hold Space to speak. For example, choose Le Pétrin de Colomiers and ask “Could I have three cartons of AOP laminating butter for Monday?” Try Maison Sarrailh to hear how a different substitution preference changes the answer.
+
+The English catalogue and customer records are included in the checkout. The mock providers work offline. Real calls require the provider keys in your local `.env`.
 
 A small but complete ERP for a food wholesaler, an AI service that reads and writes it through tools, and a
 push-to-talk voice harness. Built for the Stockline voice hackathon: make the voice agent **smart, fast and natural**.
 
-**Install and run: [SETUP.md](SETUP.md)** (French, step by step: Mac, Windows/WSL, Linux, without Docker,
-troubleshooting). **The challenge: [BRIEF.md](BRIEF.md)** (French). How the food wholesale trade works:
+**Install and run: [SETUP.md](SETUP.md)** (step by step: Mac, Windows/WSL, Linux, without Docker,
+troubleshooting). **The challenge: [BRIEF.md](BRIEF.md)** . How the food wholesale trade works:
 [METIER.md](METIER.md). How the ERP works (pages, business rules, API): [ERP.md](ERP.md). How everything works under the
-hood and how to extend it: [TECH.md](TECH.md) (French). Using a coding agent? Point it at [AGENTS.md](AGENTS.md). This
+hood and how to extend it: [TECH.md](TECH.md) . Using a coding agent? Point it at [AGENTS.md](AGENTS.md). This
 README covers the architecture, the configuration and how to extend the kit.
 
-### What doc read?
+### Which guide do I need?
 
 | Doc | To read when... |
 |---|---|
-| [GLOSSAIRE.md](GLOSSAIRE.md) | un mot technique vous échappe (Docker, port, token, STT, WebSocket…) |
+| [GLOSSAIRE.md](GLOSSAIRE.md) | you need a technical term explained (Docker, port, token, STT, WebSocket…) |
 | [FAQ.md](FAQ.md) | you have a practical question: where to code, how to test, keys, costs, deliverables |
 | [SETUP.md](SETUP.md) | you install and launch the kit, or something doesn't start |
 | [BRIEF.md](BRIEF.md) | you want to know what is expected of you: challenge, deliverables, jury |
@@ -189,7 +190,7 @@ ai_chat · voice_agent.
 - **Voix** page (`/voice`): hold **Space** to talk as the caller, release to send (or type). Shows the transcript,
   streamed answer, tool calls, per-turn timings (STT, first LLM token, first audio byte, total) and the ERP changes live.
   Talking while the agent speaks interrupts it.
-- **的Space** anywhere: one-shot voice command ("creates an order for the Ecumen, 5 kilos of bar").
+- **Alt+Space** anywhere: one-shot voice command ("creates an order for the Ecumen, 5 kilos of bar").
 - **Live transcription**: the audio is streamed to the STT while the key is down (Soniox, Deepgram; the mock simulates it),
   so the caller's words appear as they are spoken (grey italic = provisional) and the final text is ready right after the
   release. Client / product names from the ERP are sent as STT vocabulary. See TECH.md « Transcription en direct ».
