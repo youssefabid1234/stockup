@@ -31,6 +31,7 @@ from app.routers import (
     logistics,
     orders,
     outbound_calls,
+    outbound_plan,
     pricing,
     products,
     purchase_orders,
@@ -117,6 +118,7 @@ for router in [
     context.router,
     recommendations.router,
     outbound_calls.router,
+    outbound_plan.router,
 ]:
     app.include_router(router, responses=ERROR_RESPONSES)
 

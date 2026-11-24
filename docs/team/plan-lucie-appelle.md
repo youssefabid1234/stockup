@@ -13,6 +13,21 @@
 
 **Ce qui manque pour le « waouh »** : (1) c'est un humain qui clique « Lancer un appel », pas Lucie qui décide ; (2) le message est un gabarit froid ; (3) rien n'arrive sur un vrai téléphone.
 
+## Fait (24/11 après-midi) : lots A et B, version « démo sur la plateforme »
+
+- **Lucie planifie** (`backend/services/outbound_plan.py`, `GET /api/outbound-plan`) : pour chaque client joignable
+  avec une offre vérifiée, *qui* (meilleure offre par client, 4 au plus), *pourquoi* (achats récents, dernier achat,
+  promo et date de fin, interlocuteur) et *à quelle heure* (30 min avant son heure habituelle de commande, sinon
+  prochain créneau libre, 5 min d'écart ; le 1er au plus tôt dans `TEAM_OUTBOUND_FIRST_CALL_MIN` minutes). Sans modèle.
+- **Page Voix, colonne de droite « Appels planifiés par Lucie »** : à l'heure prévue, si la page est ouverte, l'appel
+  sonne tout seul ; « Appeler maintenant » sur chaque ligne ; « Replanifier ». Décrocher → on joue le client, Lucie
+  présente l'offre (parcours de Mohamed Amine, inchangé).
+- **Sans réponse → message vocal de Lucie** (`ai/services/outbound_message.py`, `POST /outbound/voicemail/{id}`) :
+  rédigé par le modèle rapide avec ses règles de parole, prix dit comme en appel, chaque nombre contrôlé en code (sinon
+  phrase fixe), dit avec sa voix ; la conversation du client s'ouvre dans la page (bulle vocale + transcription + lien
+  fiche client) et l'historique client garde le message. Mesuré : ~3,5 s, message de 16 s.
+- Pas de C ni de D (décidé avec Youssef) : pas de vrai SMS ni de vrai appel téléphonique.
+
 ## 1. Ce que le jury verra (démo de 60 s)
 
 1. Page Voix : bandeau **« Lucie appelle Au Fournil de Sandrine : elle prend ce beurre chaque semaine, il est en promo jusqu'au 30/11 »**. Personne n'a cliqué.
