@@ -212,3 +212,45 @@ acceptent les remplacements :
 La crème épaisse, premier choix pour un client sans exclusion, n'est jamais proposée au client qui l'a exclue.
 (Cas construit : dans l'ERP du 24/11, aucun produit réellement en rupture ne touche une fiche à exclusion ; le
 scénario S46 utilise le cas réel le plus proche.)
+
+## Bilingue : données anglaises (`SEED_DIR_NAME=seed_en`, 24/11)
+
+Les mêmes fonctions lisent le français et l'anglais **sans réglage** (une fiche est dans l'une ou l'autre langue).
+Audit sans modèle : ERP français (port 4000) contre un ERP anglais temporaire (port 4001, base à part), même code.
+
+| Audit | Français | Anglais avant | Anglais après |
+|---|---|---|---|
+| Décision de remplacement, tourage AOP (104 fiches) | refuse 37 · accepte 52 · demander 6 · inconnu 9 | inconnu 104 | refuse 37 · accepte 51 · demander 7 · inconnu 9 |
+| Premiers choix du classement (71 produits) | — | 61 / 71 comme le français | **71 / 71** |
+| « Aucun remplaçant de même usage » | 23 | 25 | 23 (les mêmes) |
+| Fiches où une exclusion est lue | 39 | 0 | 41 |
+
+**Le français n'a pas bougé** : code de `main` contre code bilingue, sur les 104 fiches × 71 produits (préférences et
+notes) : 7 384 / 7 384 décisions identiques, 7 384 / 7 384 classements identiques (ordre et exclusions).
+
+Comment :
+- `substitution_policy` : tournures anglaises réelles (« Accepts equivalent substitutions if informed », « Equivalent
+  substitutions accepted if we are told », « Refuses substitutions », « Substitutions refused », « Never any
+  substitution on the butter », « Does not want any substitution without being told »).
+- `card_rules` : « never X », « does not want X », « no X », « X only », « only X », « exclusively X » ; mots
+  génériques anglais ignorés (goods, products, from, the…).
+- Noms de produits : en anglais le produit est **le dernier mot** (« UHT liquid cream »), en français le premier ;
+  `name_match` compare les noms anglais **via leur original français** (`data/seed_en/GLOSSARY.md`), d'où les mêmes
+  premiers choix. Un nom anglais hors glossaire utilise le dernier mot.
+- `doc_substitutes` : lu par identifiant, marche dans les deux langues (testé avec une ligne anglaise).
+
+Écarts restants (aucun refus lu comme un accord, ni l'inverse) :
+1. **« demander » au lieu de « accepte »** sur 39 couples fiche × produit sur 7 384 (dont cli_0007 pour le tourage
+   AOP : « standard laminating butter » partage deux mots avec « AOP … laminating butter », un seul en français
+   « tourage standard »). Côté prudent : l'agent demande avant de nommer un remplaçant. Une correction (ne pas compter
+   le mot de famille) faisait bouger 11 décisions françaises : abandonnée.
+2. **Exclusions** (32 couples, 11 fiches) :
+   - « Liquid egg products only » (3 fiches) **est lue en anglais** (le mot « egg » est dans les noms) : si un œuf
+     liquide manque, plus d'œufs en coquille ni de crème. En français, « ovoproduits » reste ignoré (limite 1).
+   - « 35% cream only » (7 fiches) ne s'applique pas quand la crème fraîche épaisse ou la préparation pour crème
+     pâtissière manque : leurs noms anglais gardent « crème », pas « cream ». La règle française allait plus loin
+     (seulement des produits « crème »), sans effet utile en pratique.
+   - Sarrailh (« exclusively AOP butter for laminating ») : la règle anglaise touche aussi le beurre doux AOP. Sans
+     effet en pratique : ce client refuse les remplacements, `product_insight` ne propose rien.
+3. **Le prompt reste en français** : `SALES_RULES_EN` est prête (mêmes règles, exemples sans nom réel, test « stay
+   general » anglais) mais **pas branchée**, en attendant le réglage de langue commun à l'équipe.
