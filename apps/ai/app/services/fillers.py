@@ -72,7 +72,7 @@ class FillerBank:
 
     async def warm_up(self, tts: TTSClient, voice: str | None = None) -> None:
         phrases_by_situation = PHRASES
-        if team_flags.fast_fillers():
+        if team_flags.fillers_mode() == 2:
             phrases_by_situation = {"fast_intro": [FAST_INTRO], "follow_up": PHRASES["follow_up"]}
         for situation, phrases in phrases_by_situation.items():
             clips = self.audio.setdefault(situation, [])
@@ -158,20 +158,14 @@ async def keep_waiting_with_restatement(speaker) -> None:
             await speaker.play_audio("audio/mpeg", keyboard_click())
             return
 
-    loop = asyncio.get_running_loop()
-    ready_after = loop.time() + FAST_RESTATEMENT_DELAY
-    clip = speaker.bank.pick("follow_up")
-    try:
-        async with asyncio.timeout(FAST_AUDIO_TIMEOUT):
-            phrase = await fast_restatement(speaker.quick_transcript)
-            if phrase:
-                result = await synthesize_clip(speaker.tts, phrase, settings.tts.voice or None)
-                if result.mime == "audio/mpeg":
-                    clip = result
-    except Exception as exc:
-        logging.getLogger(__name__).debug("Fast waiting audio unavailable (%s)", type(exc).__name__)
+    async with asyncio.TaskGroup() as pending:
+        preparation = pending.create_task(prepare_fast_clip(speaker))
+        if team_flags.fillers_mode() == 3:
+            await asyncio.sleep(FIRST_KEYBOARD_DELAY)
+            await speaker.play_audio("audio/mpeg", keyboard_click())
+        await asyncio.sleep(FAST_RESTATEMENT_DELAY)
 
-    await asyncio.sleep(max(0, ready_after - loop.time()))
+    clip = preparation.result()
     if clip and clip.mime == "audio/mpeg":
         await speaker.play_audio(clip.mime, clip.data)
     for _ in range(2):
@@ -179,20 +173,34 @@ async def keep_waiting_with_restatement(speaker) -> None:
         await speaker.play_audio("audio/mpeg", keyboard_click())
 
 
+async def prepare_fast_clip(speaker) -> CachedAudio | None:
+    try:
+        async with asyncio.timeout(FAST_AUDIO_TIMEOUT):
+            phrase = await fast_restatement(speaker.quick_transcript) or speaker.restatement
+            if phrase:
+                result = await synthesize_clip(speaker.tts, phrase, settings.tts.voice or None)
+                if result.mime == "audio/mpeg":
+                    return result
+    except Exception as exc:
+        logging.getLogger(__name__).debug("Fast waiting audio unavailable (%s)", type(exc).__name__)
+    return speaker.bank.pick("follow_up")
+
+
 async def on_turn_start(speaker, heard: str) -> None:
     if not team_flags.fillers():
         return
     words = heard.replace("’", "'")
     speaker.social_turn = bool(SOCIAL_TURN.fullmatch(words))
-    if speaker.social_turn or team_flags.orchestrator() or speaker.tts.name == "mock":
+    if speaker.social_turn or speaker.tts.name == "mock":
         return
+    if team_flags.fillers_mode() != 2:
+        speaker.restatement = quantity_restatement(words)
     if team_flags.fast_fillers():
         speaker.quick_transcript = words
-        if LOOKUP.search(words):
+        if LOOKUP.search(words) or speaker.restatement:
             await play_waiting_line(speaker)
         speaker.start_waiting()
         return
-    speaker.restatement = quantity_restatement(words)
     if (LOOKUP.search(words) or speaker.restatement) and await play_waiting_line(speaker):
         speaker.start_waiting()
 
@@ -204,11 +212,6 @@ async def on_tool_call(speaker, tool_name: str) -> None:
         return
     if speaker.buffer.strip() and not WAITING_LINE.fullmatch(speaker.buffer):
         return
-    if team_flags.orchestrator():
-        if not speaker.clicked and not speaker.buffer.strip():
-            await speaker.play_audio("audio/mpeg", keyboard_click())
-            speaker.clicked = True
-        return
     if speaker.waiting_task is None:
         if not speaker.acknowledged and not await play_waiting_line(speaker):
             await speaker.play_audio("audio/mpeg", keyboard_click())
@@ -216,7 +219,7 @@ async def on_tool_call(speaker, tool_name: str) -> None:
 
 
 async def play_waiting_line(speaker) -> bool:
-    clip = speaker.bank.pick("fast_intro" if speaker.quick_transcript is not None else "thinking")
+    clip = speaker.bank.pick("fast_intro" if team_flags.fillers_mode() == 2 else "thinking")
     if clip is None or clip.mime != "audio/mpeg":
         return False
     await speaker.play_audio(clip.mime, clip.data)
