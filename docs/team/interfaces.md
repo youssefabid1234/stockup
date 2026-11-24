@@ -47,13 +47,21 @@ règles (« d'après la fiche du client au téléphone… »).
 
 ```json
 {
-  "product": {"id", "name", "unit", "available", "clientPrice", "listPrice", "priceExplanation"},
+  "product": {"id", "name", "unit", "available", "clientPrice", "listPrice", "priceExplanation",
+              "incoming?", "promo?", "betterPriceWithVolume?"},
   "inStock": true,
-  "alternatives": [{"id", "name", "unit", "available", "clientPrice", "listPrice", "promo": "−8 % jusqu'au 30/11"}]
+  "missing?": 6,
+  "substitution?": "refuse | accepte | demander | inconnu",
+  "note?": "…",
+  "alternatives": [{"id", "name", "unit", "available", "clientPrice", "listPrice",
+                    "promo?": {"name": "Promo tourage 82 % : −8 % jusqu'au 30/11", "until": "2026-11-30", "pctOff": 8}}]
 }
 ```
 
-Les `alternatives` sont triées par `rules_sales.rank_alternatives` (Daycem) quand elle existe.
+`substitution` et `alternatives` seulement si le produit manque (sinon `alternatives: []`). Les `alternatives` sont
+triées par `rules_sales.rank_alternatives` (Daycem), vides si le client refuse (`substitution_policy` de Daycem).
+Promo = règle de prix **datée** appliquée sous le prix catalogue. Logique : `apps/ai/app/tools/insight.py` (testable
+sans l'interrupteur) ; consigne ajoutée au prompt quand l'interrupteur est allumé (`product_insight_section`).
 
 ## 3. Orchestrateur (Youssef)
 

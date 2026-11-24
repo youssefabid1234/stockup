@@ -107,6 +107,32 @@ passe de 6,9 à 3,9 s. Les répliques suivantes ne changent pas (bruit ±1-2 s).
 
 **Outil de rejeu corrigé** : en /chat il renvoie maintenant l'historique complet (outils appelés + résultats) comme la
 page Voix ; avant, l'agent oubliait son brouillon et recommençait (S01·2 : 6 outils, 9,4 s → 1 outil, 2,4 s).
+
+**T1 · Super-outil produit (`TEAM_PRODUCT_INSIGHT`, mar. 24/11 1h30).** Vraie vie : un coup d'œil à l'écran de Lucie
+suffit. `product_insight(client, produit, quantité)` lit en parallèle le produit (stock, arrivages), le prix de CE
+client, les remplaçants de l'ERP, la fiche et les règles de prix ; si le produit manque, il calcule le prix client de
+chaque remplaçant (en parallèle), dit si le client accepte un remplacement (`substitution_policy` de Daycem) et classe
+les remplaçants (`rank_alternatives` de Daycem : le substitut des documents d'abord). **Promo** = le prix appliqué vient
+d'une règle **datée** (validTo) et est sous le prix catalogue : jamais inventée (une remise de groupe permanente n'est
+pas une promo). Client qui refuse : aucun remplaçant renvoyé.
+
+Mesure via /chat, ERP remis à zéro puis promo de démo recréée (`setup_demo_data.py`), `TEAM_ORDER_RULES`,
+`TEAM_PRELOAD`, `TEAM_SALES_RULES` = 1, 1re réplique, 2 essais (3 pour S04 après correction) :
+
+| 1re réplique | Éteint | Allumé |
+|---|---|---|
+| S04 Sarrailh, AOP en rupture, refuse les remplacements | 2 outils · 3,8 / 4,3 s | 2 outils · 3,6 / 3,5 / 3,5 s, 3/3 PASS |
+| S05 Pétrin de Colomiers, AOP en rupture | 5 puis 3 outils · 6,6 / 5,8 s | 2 outils (product_insight, date) · 2,8 / 4,9 s |
+| S40 scène de démo (promo) | 3 outils · 4,2 / 4,3 s | 2 outils · 3,9 / 2,9 s |
+| S40 en **voix** (totalMs) | – | 4,6 s |
+
+Lecture : 1 à 3 allers-retours de moins ; médiane S05 6,2 → 3,9 s, S40 4,3 → 3,4 s, S04 4,1 → 3,5 s. Avec l'outil,
+l'agent cite la promo exacte (8,46 €/kg, −8 % jusqu'au 30/11) dans les 4 premières répliques S05/S40. Deux pièges
+corrigés pendant la mesure : les notes CRM de l'ERP sont des objets (l'outil plantait, l'agent repassait par les
+anciens outils), et sans consigne l'agent enregistrait la demande « premier arrivage » de Sarrailh sans son accord
+(+2 s) : l'outil rappelle maintenant de **proposer** d'abord. Les échecs restants des scénarios ne viennent pas de
+l'outil (S05·2 attend get_price alors que quote_line d'Amine K. répond ; S05·1 a dit « quatre-vingt-deux » en
+lettres ; S40·4 redemande « commande séparée ou ajout ? »). `TEAM_PRODUCT_INSIGHT` passe à 1 dans `.env.example`.
 ### Commande juste (Amine Khalil)
 
 **Mission** : ce qui finit dans l'ERP est exactement ce que le client voulait (bon produit, bonne quantité, bon jour,

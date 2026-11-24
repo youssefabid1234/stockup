@@ -6,6 +6,7 @@
 
 | # | Idée | Pourquoi (critère / source) | Qui pourrait la porter | Taille |
 |---|---|---|---|---|
+| 0 | **L'agent parle en premier et salue l'appelant par son nom** (« Bonjour Nadine, Le Fournil Occitan, que puis-je pour vous ? ») dès « Démarrer l'appel », grâce à la fiche déjà chargée. Phrase fixe sans appel au modèle (≈ 0 s d'attente). Une 1re version existe (PR #14 : « Bonjour Madame / Monsieur » préparé pendant le chargement de la fiche) ; reste à dire le **nom** et à parler **avant** que le client parle | Naturel + Rapide — demandé par Youssef (24/11) | Mohamed Amine | S |
 | 1 | **Changer la voix** : la voix actuelle parle un mauvais français et ne sonne pas naturel (choisir une voix française ElevenLabs, modèle plus expressif, ou un autre fournisseur ; écouter et comparer) | Naturel — remarque de Youssef (CTO aussi sensible au naturel) | Mohamed Amine (voix) | S |
 | 2 | **Jev pour les décisions rapides** : classer la phrase du client (simple / besoin de l'ERP), accord ou refus d'un remplaçant | Rapide — conseillé par le CTO (« peut être très utile pour la voice ») ; prévu dans T4 de Youssef | Youssef (T4) | M |
 | 3 | **Corriger les données contradictoires** (notes « Fermé le mercredi » de 9 clients alors que l'ERP et l'historique les livrent le mercredi) dans l'ERP lui-même | Intelligent — décision Youssef : ERP + historique font foi ; le CTO autorise à modifier la donnée. Aujourd'hui traité par les règles (A1, Amine K.) et la fiche préchargée (A2, Youssef) | Amine K. ou Youssef | S |
