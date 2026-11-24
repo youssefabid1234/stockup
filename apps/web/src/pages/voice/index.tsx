@@ -9,7 +9,8 @@
  */
 import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
 import { useUrlState } from "@/lib/url-state";
-import { MicOff, Mic, RotateCcw, Send, VolumeX } from "lucide-react";
+import { Ear, MicOff, Mic, RotateCcw, Send, VolumeX } from "lucide-react";
+import { useHandsFree } from "@/features/assistant/useHandsFree";
 import { cn } from "@/lib/cn";
 import { Button, Dot, IconButton, Input, Kbd, Page, PageHeader, Spinner, Tabs } from "@/ui";
 import { useVoiceSession, type Activity, type Conn } from "@/features/assistant/useVoiceSession";
@@ -47,6 +48,10 @@ function CallMode({ modeSwitch }: { modeSwitch: ReactNode }) {
   vRef.current = v;
   const [text, setText] = useState("");
   const spaceDown = useRef(false);
+  // team 12 (Youssef): hands-free = talk like on the phone (no key), on by default, remembered per browser
+  const [handsFree, setHandsFree] = useState(() => { try { return localStorage.getItem("voice.handsFree") !== "0"; } catch { return true; } });
+  const toggleHandsFree = () => setHandsFree((on) => { try { localStorage.setItem("voice.handsFree", on ? "0" : "1"); } catch { /* private mode */ } return !on; });
+  const listening = useHandsFree(v, handsFree && v.conn === "ready" && !!v.caller, spaceDown);
 
   // Space = push-to-talk (outside text fields), Esc = stop playback.
   useEffect(() => {
@@ -106,6 +111,9 @@ function CallMode({ modeSwitch }: { modeSwitch: ReactNode }) {
               </div>
             ) : null}
             {v.activity === "speaking" ? <Button size="sm" variant="ghost" icon={VolumeX} kbd="Échap" onClick={v.stopPlayback}>Couper</Button> : null}
+            <Button size="sm" variant={handsFree ? "primary" : "default"} icon={Ear} onClick={toggleHandsFree} aria-pressed={handsFree}>
+              Mains libres
+            </Button>
             <Button size="sm" icon={RotateCcw} onClick={v.reset} disabled={!ready}>Recommencer l'appel</Button>
           </>
         }
@@ -140,10 +148,12 @@ function CallMode({ modeSwitch }: { modeSwitch: ReactNode }) {
             <div className="flex shrink-0 flex-col gap-1 xl:w-[180px]">
               <span className={cn("flex items-center gap-1.5 text-[13px] font-medium", v.activity !== "idle" && "text-violet")}>
                 {v.activity === "thinking" ? <Spinner size={12} /> : v.activity !== "idle" ? <Dot tone="violet" pulse /> : null}
-                {ready ? STATE_LABEL[v.activity] : connected ? "Identifiez l'appelant" : v.conn === "connecting" ? "Connexion…" : "Hors ligne"}
+                {ready ? (listening && v.activity === "idle" ? "À l'écoute, parlez" : STATE_LABEL[v.activity]) : connected ? "Identifiez l'appelant" : v.conn === "connecting" ? "Connexion…" : "Hors ligne"}
               </span>
               {v.activity === "recording" ? (
                 <LevelBars level={v.level} />
+              ) : listening ? (
+                <span className="hidden items-center gap-1 text-[11.5px] text-muted-foreground xl:flex">Mains libres · parlez pour couper l'agent</span>
               ) : (
                 <span className="hidden items-center gap-1 text-[11.5px] text-muted-foreground xl:flex"><Kbd>Espace</Kbd> maintenir pour parler</span>
               )}
