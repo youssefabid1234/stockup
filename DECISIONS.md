@@ -227,6 +227,16 @@ adresses, villes. Contrôles : structure identique (0 différence d'ID ou de nom
 en français (une liste de noms d'entreprises). L'ERP lit l'anglais avec `SEED_DIR_NAME=seed_en` ; la promo de démo
 prend alors un nom anglais. Glossaire : `data/seed_en/GLOSSARY.md`.
 
+**150 appels de test et corrections (Youssef, 24/11 matin).** `scripts/stress_cases.py` (150 cas, 15 familles :
+courts, longs, bégaiements, corrections, ruptures, prix, dates, comptes bloqués, inconnus, mots ambigus, hors sujet,
+SAV, habituel, multi-produits, manipulation) + `scripts/stress_test.py` (agent réel, juge Sonnet, ~3 min, ~8 $).
+Résultat : 133/150 après relecture (le juge comptait les brouillons `place_order` comme des commandes) ; réplique
+médiane 2,9 s. Corrigé : (1) confirmation sur une simple date (« Pour jeudi ») → garde-fou `explicit_yes` avant Jev
+dans `confirm_order` ; (2) couronnes et fèves inactives dans les données → réactivées à chaque chargement
+(`team_demo.py`) ; (3) questions « A ou B ? » → question fermée « je l'ajoute dedans ? » ; (4) raisonnement prononcé
+(« La fiche du client dit… ») → filtré ; (5) délai « J-3 » et (6) dernières commandes → dans la fiche ; relecture
+résumée au-delà de 4 produits. Contre-test des 17 appels ratés + 13 témoins : plus aucune confirmation sans oui.
+
 ### Commande juste (Amine Khalil)
 
 **Mission** : ce qui finit dans l'ERP est exactement ce que le client voulait (bon produit, bonne quantité, bon jour,
