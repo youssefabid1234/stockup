@@ -8,7 +8,7 @@
     {
       "say": "Bonjour, Le Petit Four de Saint-Cyprien. Il me faudrait 10 kilos de poudre de noisette pour vendredi.",
       "expect": {
-        "tools_none": ["create_draft_order", "add_order_line", "place_order", "confirm_order"],
+        "tools_none": ["create_draft_order", "add_order_line", "confirm_order"],
         "says_any": ["amande"],
         "says_none": ["cerneaux", "noix,", "inconnu", "substitution"]
       }

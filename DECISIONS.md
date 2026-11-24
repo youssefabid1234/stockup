@@ -24,13 +24,41 @@ Détail : `docs/team/README.md`.
 
 ## 3. Mesures
 
-Médiane et pire cas sur nos scénarios (`scripts/run_scenarios.py`, `--voice` pour les temps vocaux). t0 = relâchement
-de la touche Espace (push-to-talk).
+Médiane et pire cas sur nos scénarios (`scripts/run_scenarios.py`, `--voice` pour les temps vocaux). t0 = fin de la
+phrase du client (relâchement de la touche Espace, ou fin de parole détectée en mains libres).
 
-| Version | sttMs | llmFirstTokenMs | ttsFirstByteMs | totalMs | perceivedMs | Scénarios réussis | Coût / appel |
-|---|---|---|---|---|---|---|---|
-| Kit d'origine | | | | | | | |
-| + … | | | | | | | |
+**Tous nos scénarios, avant / après** (mar. 24/11 09h20-09h35, 21 scénarios, 43 répliques, vraies clés : Sonnet 5.5,
+Haiku 5.5, ElevenLabs ; `scripts/run_scenarios.py --voice --reset` par le WebSocket `/voice` en texte, donc sans
+transcription : ajouter ~0,3-0,5 s de Soniox au micro ; coût mesuré sur le même rejeu par `/chat`, qui renvoie les tokens,
+aux prix Sonnet 5.5 : 2 $ / M en entrée, 10 $ / M en sortie, 2,50 $ / M en écriture de cache, 0,10 $ / M en lecture de cache).
+
+| Version | 1er son après la phrase (médiane / pire) | Réponse utile prête (médiane / pire) | 1er octet de synthèse vocale | Répliques réussies | Scénarios entièrement réussis | Coût / appel (moyenne / pire) |
+|---|---|---|---|---|---|---|
+| Nos interrupteurs éteints (≈ kit d'origine) | 3,4 s / 6,7 s (silence jusque-là) | 3,3 s / 6,6 s | 0,1 s / 0,3 s | 32 / 43 (74 %) | 10 / 21 | 0,019 $ / 0,036 $ |
+| **Configuration du jury** (`.env.example`, 8 interrupteurs) | **0,0 s / 0,9 s** (« je regarde » + clavier) | 3,6 s / 6,8 s | 0,1 s / 0,2 s | **39 / 43 (91 %)** | **17 / 21** | 0,022 $ / 0,076 $ |
+
+Lecture :
+- **Rapide** : l'appelant n'entend plus jamais de blanc (premier son à 0,0 s au lieu de 3,4 s en médiane). La réponse
+  utile arrive en un temps comparable (3,3 → 3,6 s), alors que l'agent en fait plus : relecture, vérification Jev,
+  franco, remplaçant argumenté. Ces chiffres moyennent toutes les répliques ; les gains ciblés sont mesurés plus bas
+  (commande 7,2 → 2,1-2,4 s avec `place_order`, « c'est bon, validez » 2,2 s sur Haiku, questions de stock et de prix
+  1,8-2,0 → 1,0-1,5 s avec l'orchestrateur).
+- **Intelligent** : 91 % des répliques passent au lieu de 74 %. Ce que le kit rate et que nous réussissons : l'habitude
+  du client (S02), le message noté pour un compte bloqué (S03), le franco (S30), la modification au lieu d'une 2e
+  commande (S32), la promo du remplaçant (S40), un remplaçant de même usage ou « rien d'équivalent » (S43-S45).
+- **Coût** : environ 2 centimes par appel dans les deux cas. Le prompt allégé compense les outils et règles en plus. Les
+  pires cas (0,07-0,08 $) sont S40, la scène de démo (rupture, remplaçant en promo, 4 répliques), et S30 (franco), où
+  la commande change à chaque réplique (sous le franco, puis au-dessus) et où une autre livraison du jeudi existait déjà.
+- **Nos 4 échecs restants** (en voix) : 3 viennent de l'enchaînement des scénarios dans le même ERP (la commande Sarrailh
+  de jeudi créée par S01 existe encore pour S02, S30 et S32 ; l'agent propose alors, à raison, d'y ajouter les
+  produits) ; 1 était un vrai défaut : sur S45 (stock insuffisant), `place_order` écrivait la commande avant que le
+  client ait accepté le remplaçant. **Corrigé** : `place_order` vérifie le stock avant d'écrire ; s'il manque, rien n'est
+  écrit et l'outil renvoie ce qui reste et le meilleur remplaçant (ou la date de retour si le client refuse les
+  remplacements), dans le même appel. Rejeu : S45 PASS (poudre d'amande proposée, aucun brouillon dans l'ERP), S01, S04,
+  S40 PASS ; S05 11 répliques sur 12 (au tour 2, l'agent redonne le prix déjà lu au tour 1 sans rappeler d'outil :
+  prix juste, mais le scénario attend un outil).
+- « Interrupteurs éteints » n'est pas tout à fait le kit brut : la fiche choisie dans « Qui appelle ? » est toujours
+  transmise à l'agent, et les règles vocales communes restent actives.
 
 **Silence entendu par l'appelant** (mar. 24/11 02h00, Maison Sarrailh, 4 répliques : commande, « oui mais mettez-en
 douze », prix, « c'est bon, validez » ; vraies clés, WS `/voice` en texte (ajouter ~0,3-0,5 s de transcription au
@@ -354,3 +382,20 @@ Windows) → corrigé dans git. `make setup` ajoute aussi au `.env` les interrup
 ERP + promo (8,46 €), 7 interrupteurs, outils de l'équipe enregistrés, site et agent qui répondent.
 
 ## 6. Ce qui n'a pas marché / abandonné
+
+Le détail est dans chaque section du §4 ; ici, l'essentiel en une ligne, avec ce qu'on a fait à la place.
+
+| Essayé | Pourquoi ça n'a pas marché | À la place |
+|---|---|---|
+| Un agent rapide (Haiku) qui **parle** en parallèle du cerveau (plan initial de T4) | Risque de contradiction et de chiffre inventé ; une reformulation « Vous disiez : … » (`TEAM_FILLERS=2/3`) laissait encore 1,4 à 1,9 s de silence d'un bloc | Phrases d'attente préparées + clavier jusqu'au premier mot (`TEAM_FILLERS=4`, 0,0 s de silence), Haiku seulement pour les répliques simples (`TEAM_ROUTER`), et un « collègue » qui lit l'ERP en parallèle (`TEAM_ORCHESTRATOR`) |
+| Orchestrateur v1 : garder les faits lus dans l'ERP dans l'historique | Répliques suivantes plus lentes (+1,2 à 1,5 s) et plus bavardes | Les faits ne servent qu'au tour en cours (v2) |
+| Le modèle dit lui-même « Je regarde. » | Doublon avec la phrase d'attente, et rien pendant les longs silences suivants | La couche voix fait patienter ; le lecteur retire l'annonce répétée en tête de réponse |
+| « Très bien, je vérifie » avant chaque réplique | Inutile et lent sur « c'est bon, validez » ou « merci » | Accusé dit seulement si l'agent doit chercher (`needs_lookup`) |
+| Jev seul pour dire si un client accepte les remplacements | 6/10 puis 5/10 justes sur de vraies fiches | Mots-clés de la fiche d'abord, Jev seulement si la fiche ne dit rien, et toute erreur → demander au client |
+| Jev réglé strict pour valider une commande | « C'est bon, validez » juste après une question de prix refusé (accord 0,95, changement 0,55) | Seuil « oui sûr » à 0,9, quel que soit le score de changement |
+| Enchaîner les outils du kit pour une commande (`resolve`, `check_delivery_date`, `create_draft_order`, `review_order`) | 4 à 6 allers-retours modèle ↔ ERP, 7,2 s pour une commande | Un seul outil `place_order` (3,6 s, puis 2,1 à 2,4 s) |
+| Prompt complet (tous les documents de contexte à chaque tour) | ~25 000 tokens relus à chaque appel du modèle | Prompt allégé (`TEAM_SLIM_PROMPT`, −37 % de tokens) ; la fiche du client préchargée une fois |
+| Rejeu des scénarios en ne renvoyant que le texte | L'agent perdait l'id du brouillon et en recréait un (faux doublons sur S05) | Le script rejoue tout l'historique ; garde-fou `duplicateDrafts` dans la relecture |
+| Version anglaise de tout l'ERP et de l'agent (PR #28, #29) | Choix d'équipe : la démo et le jury sont en français, et la traduction touchait plus de 350 fichiers à quelques heures du rendu | Annulée (PR #30) ; le pack `data/seed_en` reste disponible |
+| Corriger les notes « Fermé le mercredi » contradictoires dans la donnée | Données du pack, 9 clients concernés, pas le temps de valider client par client | Règle : l'ERP et l'historique de livraison font foi ; la fiche préchargée retire ces notes |
+| `from __future__ import annotations` dans un fichier d'outils | Le registre `@tool` ne lisait plus les types : schéma vide, service IA arrêté au démarrage | Retiré, et un test vérifie le schéma de `place_order` |
