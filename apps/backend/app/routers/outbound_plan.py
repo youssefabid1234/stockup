@@ -22,3 +22,8 @@ async def replan():
 @router.post("/{plan_id}/call")
 async def call_now(plan_id: str):
     return outbound_plan.call_now(plan_id)
+
+
+@router.post("/{plan_id}/decline")
+async def decline(plan_id: str):
+    return outbound_plan.decline(plan_id)
