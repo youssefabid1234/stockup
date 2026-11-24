@@ -171,3 +171,6 @@ L'agent d'origine croit la note et refuse à tort (vu en S03 et dans un test S1 
 - Scénarios S20, S21, S22 écrits. Rejeu voix S08 S20 S21 S22 : 7/7.
 - Préchargement anticipé (orchestrateur) : fait, gain 30-40 ms seulement. Découverte : `sttMs` ≈ 1,55 s en vrai audio
   (MP3 en flux), Soniox ~1 s en retard sur l'audio. **À vérifier au micro du navigateur** (voir DECISIONS).
+- Test au micro (Amine) : transcription 1,24-1,52 s ; le « je regarde » l'attendait → 1,3-1,9 s de silence. Corrigé
+  (accusé sur la transcription partielle) : premier son 0,00-0,26 s en vrai audio. Bug corrigé : confirmer une commande
+  déjà confirmée faisait 12,5 s d'erreurs → succès direct.

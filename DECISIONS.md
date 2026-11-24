@@ -37,6 +37,15 @@ aux prix Sonnet 5.5 : 2 $ / M en entrée, 10 $ / M en sortie, 2,50 $ / M en écr
 | Nos interrupteurs éteints (≈ kit d'origine) | 3,4 s / 6,7 s (silence jusque-là) | 3,3 s / 6,6 s | 0,1 s / 0,3 s | 32 / 43 (74 %) | 10 / 21 | 0,019 $ / 0,036 $ |
 | **Configuration du jury** (`.env.example`, 8 interrupteurs) | **0,0 s / 0,9 s** (« je regarde » + clavier) | 3,6 s / 6,8 s | 0,1 s / 0,2 s | **39 / 43 (91 %)** | **17 / 21** | 0,022 $ / 0,076 $ |
 
+**Au vrai micro (24/11, ~10h30), une correction importante.** Les chiffres ci-dessus passent par du texte, sans
+transcription. Au micro du navigateur, la transcription finale de Soniox arrive **1,24 à 1,52 s** après la fin de la
+phrase (9 répliques, médiane 1,34 s), et le « je regarde » + clavier l'attendait : le premier son arrivait **1,33 à
+1,86 s** après la phrase, pas 0,0 s. Corrigé : dès la fin de la parole, les mots déjà entendus (transcription partielle)
+sont regardés toutes les 50 ms ; s'ils annoncent une recherche (« vous avez encore du tourage… », « c'est combien… »),
+l'accusé et le clavier partent aussitôt (`fillers.early_acknowledgement`). Vrai audio (ElevenLabs → Soniox, 3 questions) :
+**premier son 0,00 à 0,26 s** après la phrase ; réponse utile 2,4 à 2,6 s, dont 1,2 à 1,4 s de transcription (le plus gros
+poste restant). Une réponse simple (« oui », « merci ») ne déclenche toujours rien.
+
 Lecture :
 - **Rapide** : l'appelant n'entend plus jamais de blanc (premier son à 0,0 s au lieu de 3,4 s en médiane). La réponse
   utile arrive en un temps comparable (3,3 → 3,6 s), alors que l'agent en fait plus : relecture, vérification Jev,

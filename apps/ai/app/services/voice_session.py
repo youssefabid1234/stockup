@@ -353,6 +353,10 @@ class VoiceConnection:
                     conv.opening_greeting = None
 
             # 1. Speech → text: with a streaming STT only the last words are left to finalize
+            early = None
+            if utterance is not None and team_flags.no_silence():  # team 12: « je regarde » before the final transcript
+                speaker = speaker or Speaker(get_tts_client(), self.send, self.send_bytes, self.bank)
+                early = asyncio.create_task(fillers.early_acknowledgement(speaker, utterance))
             if utterance is not None:
                 try:
                     text = await utterance.text()
@@ -360,7 +364,14 @@ class VoiceConnection:
                     # team 12 (Youssef): the caller spoke again before this piece was final: keep what was heard
                     if partial := (getattr(utterance, "partial", "") or "").strip():
                         conv.pending.append(partial)
+                    if early is not None:
+                        early.cancel()
                     raise
+                finally:
+                    if early is not None:
+                        speaker.transcript_ready = True
+                        if not early.done():
+                            await asyncio.wait({early}, timeout=1.0)
                 timings.stt_ms = ms_since(t0)  # end of speech → final transcript
             heard = (text or "").strip()
             if not heard:
@@ -425,6 +436,8 @@ class VoiceConnection:
             timings.tts_first_byte_ms = speaker.tts_first_byte_ms
             if speaker.first_byte_at:
                 timings.total_ms = int((speaker.first_byte_at - t0) * 1000 + 0.5)
+            print(f"[tour] transcription {timings.stt_ms} ms · modèle {timings.llm_total_ms} ms · 1er son {timings.total_ms} ms"
+                  f" · « {heard[:60]} »", flush=True)  # team 12: per-turn timings in the logs (micro tests)
             await self.send(AgentDoneMessage(text=spoken.strip(), timings=timings))
 
         except asyncio.CancelledError:
@@ -459,6 +472,7 @@ class Speaker:
         self.tts, self.send, self.send_bytes = tts, send, send_bytes
         self.bank = bank if bank is not None else fillers.FillerBank()
         self.acknowledged = False
+        self.transcript_ready = False  # team 12: early_acknowledgement stops once the final transcript is there
         self.restatement: str | None = None
         self.quick_transcript: str | None = None
         self.waiting_task: asyncio.Task | None = None
