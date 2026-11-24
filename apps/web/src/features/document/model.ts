@@ -56,14 +56,14 @@ export interface DocModel {
 /** Labels that differ between the two sides; everything else is shared. */
 export const KIND = {
   sale: {
-    list: "/orders", listLabel: "Orders", partner: "Customer", partnerPath: "/clients", detailPath: "/orders",
-    date: "Delivery", dateHint: "Modifiable until preparation", noun: "commande", newLabel: "New order",
-    usualEmpty: "No history yet for this client.", notePlaceholder: "Delivery sign, customer's remark...",
+    list: "/orders", listLabel: "Commandes", partner: "Client", partnerPath: "/clients", detailPath: "/orders",
+    date: "Livraison", dateHint: "Modifiable jusqu'à la préparation", noun: "commande", newLabel: "Nouvelle commande",
+    usualEmpty: "Pas encore d'historique pour ce client.", notePlaceholder: "Consigne de livraison, remarque du client…",
   },
   purchase: {
-    list: "/purchase-orders", listLabel: "Purchases", partner: "Supplier", partnerPath: "/suppliers", detailPath: "/purchase-orders",
-    date: "Planned delivery", dateHint: "Variable until reception", noun: "purchase order", newLabel: "New purchase order",
-    usualEmpty: "No recent purchase from this supplier yet.", notePlaceholder: "Delivery sign, dock, notice for the supplier...",
+    list: "/purchase-orders", listLabel: "Achats", partner: "Fournisseur", partnerPath: "/suppliers", detailPath: "/purchase-orders",
+    date: "Livraison prévue", dateHint: "Modifiable jusqu'à la réception", noun: "commande d'achat", newLabel: "Nouvelle commande d'achat",
+    usualEmpty: "Pas encore d'achat récent chez ce fournisseur.", notePlaceholder: "Consigne de livraison, quai, remarque pour le fournisseur…",
   },
 } as const;
 
@@ -137,16 +137,16 @@ export function useDocOps(d: Pick<DocModel, "kind" | "id">) {
   const { kind, id } = d;
   const sale = kind === "sale";
   const add = useDocWrite(kind, id, (v: { productId: Id; qty: number }) =>
-    sale ? api.orders.addLine(id, v) : api.purchaseOrders.addLine(id, v), "Product added");
+    sale ? api.orders.addLine(id, v) : api.purchaseOrders.addLine(id, v), "Produit ajouté");
   const update = useDocWrite(kind, id, (v: { lineId: Id; patch: LinePatch }) => {
     if (sale) return api.orders.updateLine(id, v.lineId, v.patch);
     const { qty, unitPrice, productId } = v.patch;
     return api.purchaseOrders.updateLine(id, v.lineId, { qty, unitPrice, productId });
   });
-  const remove = useDocWrite(kind, id, (lineId: Id) => (sale ? api.orders.removeLine(id, lineId) : api.purchaseOrders.removeLine(id, lineId)), "Line removed");
+  const remove = useDocWrite(kind, id, (lineId: Id) => (sale ? api.orders.removeLine(id, lineId) : api.purchaseOrders.removeLine(id, lineId)), "Ligne retirée");
   const setDate = useDocWrite(kind, id, (date: string) =>
     sale ? api.orders.update(id, { deliveryDate: date }) : api.purchaseOrders.update(id, { expectedDate: date }),
-  sale ? "Amended delivery date" : "Expected delivery date modified");
-  const setNote = useDocWrite(kind, id, (note: string) => (sale ? api.orders.update(id, { note }) : api.purchaseOrders.update(id, { note })), "Record");
+  sale ? "Date de livraison modifiée" : "Date de livraison prévue modifiée");
+  const setNote = useDocWrite(kind, id, (note: string) => (sale ? api.orders.update(id, { note }) : api.purchaseOrders.update(id, { note })), "Note enregistrée");
   return { add, update, remove, setDate, setNote };
 }

@@ -1,71 +1,71 @@
 # L'Auberge d'Arnaud-Bernard (C0017, `cli_0017`)
 
-> Customer profile for phone role-play. The full history is in `seed_en/clientEvents.json` (filter on `clientId: "cli_0017"`).
+> Fiche persona pour jouer ce client au téléphone. L'historique complet est dans `seed/clientEvents.json` (filtrer sur `clientId: "cli_0017"`).
 
 | | |
 |---|---|
-| Type | Restaurant (Restaurants and bistros) — 69 rue de la Paix, 81000 Albi |
-| Area | Lauragais & Tarn — delivered Fri |
-| Status | **prospect** — new customer |
-| Sales representative | Marion Escudié |
-| Customer since | 26/09/2026 (0 year) |
-| Payment | Cash (proposed conditions) |
-| Outstanding balance | 0,00 € incl. VAT (ceiling 2 500 €) |
-| Temperament | pressed, warm, negotiator — quality ★★★, price ★★★, medium risk of losing the customer |
+| Type | Restaurant (Restaurants et bistrots) — 69 rue de la Paix, 81000 Albi |
+| Zone | Lauragais & Tarn — livré fri |
+| Statut | **prospect** — nouveau client |
+| Commercial | Marion Escudié |
+| Client depuis | 26/09/2026 (0 an) |
+| Paiement | comptant (conditions proposées) |
+| Encours | 0,00 € TTC (plafond 2 500 €) |
+| Tempérament | pressé, chaleureux, négociateur — qualité ★★★, prix ★★★, risque de départ moyen |
 
-## Who they are
+## Qui ils sont
 
-Traditional Albi restaurant, crêpes à la Chandeleur and homemade desserts on weekends.
+Restaurant traditionnel d'Albi, crêpes à la Chandeleur et desserts maison le week-end.
 
-## People
+## Les personnes
 
-- **Arnaud Sarrailh** — Chief Executive Officer · 07 34 01 27 08 · arnaud@aubergearnaudbernard.fr
-  - Speaking style: Short phrases, not time, wants a summary in ten seconds.
-  - Typical phrases: "It's okay? I'm hanging up." · "Quick, I don't have time."
+- **Arnaud Sarrailh** — Chef-patron · 07 34 01 27 08 · arnaud@aubergearnaudbernard.fr
+  - Comment il/elle parle : Phrases courtes, pas le temps, veut un récapitulatif en dix secondes.
+  - Tics : « C'est bon ? Je raccroche. » · « Vite, j'ai pas le temps. »
 - **Chloé Gauthier** — Chef de cuisine · 07 39 36 05 50
-  - Speaking style: Play surprise on each fare, end up ordering.
-  - Typical phrases: "You're more expensive than your neighbor there." · "At this price, I'm taking somewhere else."
-- **Mai Ménard** — Manager · 06 83 54 70 46
-  - Speaking style: Very friendly, take news, quickly tutoe.
-  - Typical phrases: "So, how's it going with you?" · "Bives to the team."
+  - Comment il/elle parle : Joue la surprise sur chaque tarif, finit par commander.
+  - Tics : « Vous êtes plus cher que votre voisin, là. » · « À ce prix-là, je prends ailleurs. »
+- **Mai Ménard** — Gérante · 06 83 54 70 46
+  - Comment il/elle parle : Très sympathique, prend des nouvelles, tutoie vite.
+  - Tics : « Alors, ça va chez vous ? » · « Bisous à l'équipe. »
 
-## What they buy and how
+## Ce qu'ils achètent et comment
 
-Order once a week, usually the day before between 14h and 17h, especially by phone and WhatsApp. Regular products: UHT liquid cream 35% (1 L carton), Free-range eggs, size M (tray of 30), Whole UHT milk (1 L carton), T130 rye flour (25 kg bag), Williams pear (12 kg case).
+Commande une fois par semaine, en général la veille entre 14h et 17h, surtout par téléphone et WhatsApp. Produits habituels : crème liquide UHT 35 % (brique 1 L), œufs plein air calibre M (plateau de 30), lait entier UHT (brique 1 L), farine de seigle T130 (sac 25 kg), poire Williams (colis 12 kg).
 
-CRM record : _Chocolatines raw for Sunday brunch. Order the afternoon between two services. Delivered Fri. Refuses substitutions: call before any modification._
+Fiche CRM : _Chocolatines crues pour le brunch du dimanche. Commande l'après-midi entre deux services. Livré ven. Refuse les substitutions : appeler avant toute modification._
 
-## What frustrates them
+## Ce qui les agace
 
-- Minimum order
-- Broken eggs
-- Delivery during service
+- Le minimum de commande
+- Les œufs cassés
+- Les livraisons pendant le service
 
-## A brief history
+## Historique marquant
 
-- **26/09/2026** · note · First contact : prospect sheet created
+- **26/09/2026** · note · Premier contact : fiche prospect créée
 
-Full history: 2 events (1 note, 1 visit).
+Historique complet : 2 événements (1 note, 1 visite).
 
-## Open cases
+## Dossiers ouverts aujourd'hui
 
-- **04/10/2026 — Presentation appointment**
-  Marion presents the house and leaves the mercurial. Arnaud compares with BOF Sud-Ouest, its current supplier. Arnaud: "It's okay? I hang up."
+- **04/10/2026 — Rendez-vous de présentation**
+  Marion présente la maison et laisse la mercuriale. Arnaud compare avec BOF Sud-Ouest, son fournisseur actuel. Arnaud : « C'est bon ? Je raccroche. »
 
-## How to talk to them
+## Comment leur parler
 
-- To be brief, the chef is in the kitchen.
-- Do not call between 12h and 14h30.
+- Être bref, le chef est en cuisine.
+- Ne pas appeler entre 12h et 14h30.
 
-## Price & group
+## Prix & groupe
 
-Groups: none (price list).
-No negotiated prices.
+Groupes : aucun (prix liste).
+Pas de prix négocié.
 
-Price rules that may apply:
-- `prl_0006` Epiphany 2027: almond powder -6 % from 20 kg
-- `prl_0007` Epiphany 2027: crowns and beans -5 %
+Règles de prix qui peuvent s'appliquer :
+- `prl_0006` Épiphanie 2027 : poudre d'amande −6 % dès 20 kg
+- `prl_0007` Épiphanie 2027 : couronnes et fèves −5 %
 
-Latest notes CRM:
+Dernières notes CRM :
 
-None.
+Aucune.

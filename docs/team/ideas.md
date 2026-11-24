@@ -1,15 +1,15 @@
-# Ideas File (in order of priority)
+# File d'idées (par ordre de priorité)
 
-> You can only touch ** after the ** essential (quite and fast control). You take the ** ideas from the top**.
-> add one (who proposed it and why); reorder the sync. The CTO allows to change everything: ERP,
-> tables, data, features, "as long as it gives something nice".
+> On n'y touche **qu'après l'essentiel** (commande rapide et juste). On prend les idées **par le haut**. Chacun peut en
+> ajouter une (avec qui l'a proposée et pourquoi) ; on réordonne à la sync. Le CTO autorise à tout modifier : ERP,
+> tables, données, features, « tant que ça donne quelque chose de sympa ».
 
-| # | Idea | Why (criterion / source) | Who could wear it | Size |
+| # | Idée | Pourquoi (critère / source) | Qui pourrait la porter | Taille |
 |---|---|---|---|---|
-| 0 | **The agent speaks first and greets the caller by his name** ("Hello Nadine, Le Fournil Occitan, what can I do for you?") from "Start the call", thanks to the file already loaded. Fixed phrase without a call to the model (≈ 0 s waiting). A 1re version exists (PR #14: "Hello Madam/Monsieur" prepared during the loading of the plug); remains to say the **nom** and to speak **avant** that the customer speaks | Natural + Fast — requested by Youssef (24/11) | Mohamed Amine | S |
-| 1 | **Change voice**: the current voice speaks a bad French and does not sound natural (choose a French voice ElevenLabs, more expressive model, or another supplier; listen and compare) | Natural — remark by Youssef (CTO also sensitive to natural) | Mohamed Amine (voice) | S |
-| 2 | **Jev for quick decisions**: classify the customer's sentence (simple / need of ERP), agreement or refusal of a substitute | Fast — advised by the CTO ("can be very useful for voice"), provided in T4 of Youssef | Youssef (T4) | M |
-| 3 | **Correct conflicting data** (notes "Closed Wednesday" of 9 customers while ERP and history deliver them on Wednesday) in the ERP itself | Intelligent — decision Youssef: ERP + historical are authentic; the CTO allows to modify the data. Today processed by the rules (A1, Amine K.) and the preloaded sheet (A2, Youssef) | Amine K. or Youssef | S |
-| 4 | **A parallel outbound call campaign to sell stock**: the agent calls bakeries who buy laminating butter to place the laminating butter 82 % on a promo (or a product close to the deadline) | Impressive — example of CTO ("agents calling 100 conservators in parallel") ; prolongs the demo promo of Daycem and the parallelism of Youssef | Youssef + Daycem | L |
-| 5 | **SAV with stock context**: claim (incomplete delivery, damaged product) + immediate solution depending on stock (delivery, have) | Planned case 2 (S08); example of CTO | Amine K. | M |
-| 6 | **Negotiation parallel suppliers**: Call butter suppliers during breakup AOP to compare prices | Example of CTO; actual data (rupture, 218 negotiations, purchase order draft) | to be seen | L |
+| 0 | **L'agent parle en premier et salue l'appelant par son nom** (« Bonjour Nadine, Le Fournil Occitan, que puis-je pour vous ? ») dès « Démarrer l'appel », grâce à la fiche déjà chargée. Phrase fixe sans appel au modèle (≈ 0 s d'attente). Une 1re version existe (PR #14 : « Bonjour Madame / Monsieur » préparé pendant le chargement de la fiche) ; reste à dire le **nom** et à parler **avant** que le client parle | Naturel + Rapide — demandé par Youssef (24/11) | Mohamed Amine | S |
+| 1 | **Changer la voix** : la voix actuelle parle un mauvais français et ne sonne pas naturel (choisir une voix française ElevenLabs, modèle plus expressif, ou un autre fournisseur ; écouter et comparer) | Naturel — remarque de Youssef (CTO aussi sensible au naturel) | Mohamed Amine (voix) | S |
+| 2 | **Jev pour les décisions rapides** : classer la phrase du client (simple / besoin de l'ERP), accord ou refus d'un remplaçant | Rapide — conseillé par le CTO (« peut être très utile pour la voice ») ; prévu dans T4 de Youssef | Youssef (T4) | M |
+| 3 | **Corriger les données contradictoires** (notes « Fermé le mercredi » de 9 clients alors que l'ERP et l'historique les livrent le mercredi) dans l'ERP lui-même | Intelligent — décision Youssef : ERP + historique font foi ; le CTO autorise à modifier la donnée. Aujourd'hui traité par les règles (A1, Amine K.) et la fiche préchargée (A2, Youssef) | Amine K. ou Youssef | S |
+| 4 | **Campagne d'appels sortants en parallèle pour écouler du stock** : l'agent appelle les boulangeries qui achètent du tourage pour placer le tourage 82 % en promo (ou un produit proche de la date limite) | Impressionnant — exemple du CTO (« des agents qui appellent 100 restaurateurs en parallèle ») ; prolonge la promo de démo de Daycem et le parallélisme de Youssef | Youssef + Daycem | L |
+| 5 | **SAV avec contexte stock** : réclamation (livraison incomplète, produit abîmé) + solution immédiate selon le stock (relivraison, avoir) | Cas 2 prévu (S08) ; exemple du CTO | Amine K. | M |
+| 6 | **Négociation fournisseurs en parallèle** : appeler les fournisseurs de beurre pendant la rupture AOP pour comparer les prix | Exemple du CTO ; données réelles (rupture, 218 négociations, commande d'achat brouillon) | à voir | L |

@@ -1,88 +1,88 @@
 # Intermarché-Proxi Fronton (C0054, `cli_0054`)
 
-> Customer profile for phone role-play. The full history is in `seed_en/clientEvents.json` (filter on `clientId: "cli_0054"`).
+> Fiche persona pour jouer ce client au téléphone. L'historique complet est dans `seed/clientEvents.json` (filtrer sur `clientId: "cli_0054"`).
 
 | | |
 |---|---|
-| Type | Large area (Bread Rays and Supermarket Cooking Terminals) — 62 rue Carnot, 31620 Fronton |
-| Area | Fondeyre, L'Union & Nord Toulousein — delivered Mon, Wed, Fri |
-| Status | **active** — new customer |
-| Sales representative | Karim Belkacem |
-| Customer since | 04/08/2025 (1 year) |
-| Payment | 45 days — SEPA direct debit, no delay |
-| Outstanding balance | 17 437,27 € incl. VAT (ceiling 24 500 €) |
-| Temperament | negotiator — quality ★★☆, price ★★★, average risk of losing the customer |
+| Type | Grande surface (Rayons pain et terminaux de cuisson de supermarchés) — 62 rue Carnot, 31620 Fronton |
+| Zone | Fondeyre, L'Union & Nord toulousain — livré mon, wed, fri |
+| Statut | **active** — nouveau client |
+| Commercial | Karim Belkacem |
+| Client depuis | 04/08/2025 (1 an) |
+| Paiement | 45 jours — prélèvement SEPA, aucun retard |
+| Encours | 17 437,27 € TTC (plafond 24 500 €) |
+| Tempérament | négociateur — qualité ★★☆, prix ★★★, risque de départ moyen |
 
-## Who they are
+## Qui ils sont
 
-Fronton Supermarket with cooking terminal: pre-cooked chopsticks and pastries raw cooked on site all day long. The head of the department orders by mail in the morning.
+Supermarché de Fronton avec terminal de cuisson : baguettes précuites et viennoiseries crues cuites sur place toute la journée. Le chef de rayon commande par mail le matin.
 
-## People
+## Les personnes
 
-- **Paolo Fournier** — Head of bakery department · 06 87 43 56 77 · paolo@intermarcheproxifronton.fr
-  - Speaking style: Play surprise on each fare, end up ordering.
-  - Typical phrases: "Do you make a move?" · "What if I take twice?"
-- **Damien Lafforgue** — Store manager · 06 80 29 91 13
-  - Speaking style: Play surprise on each fare, end up ordering.
-  - Typical phrases: "At this price, I take somewhere else." · "You are more expensive than your neighbor there."
-- **Khadija Paris** — Head of Reception · 06 70 44 53 63
-  - Speaking style: Always starts with the price, compares with the competition.
-  - Typical phrases: "You're more expensive than your neighbor there." · "At this price, I'm taking somewhere else."
-- **Service comptabilité** — Bills · factures@intermarcheproxifronton.fr
+- **Paolo Fournier** — Chef de rayon boulangerie · 06 87 43 56 77 · paolo@intermarcheproxifronton.fr
+  - Comment il/elle parle : Joue la surprise sur chaque tarif, finit par commander.
+  - Tics : « Vous me faites un geste ? » · « Et si j'en prends le double ? »
+- **Damien Lafforgue** — Directeur de magasin · 06 80 29 91 13
+  - Comment il/elle parle : Joue la surprise sur chaque tarif, finit par commander.
+  - Tics : « À ce prix-là, je prends ailleurs. » · « Vous êtes plus cher que votre voisin, là. »
+- **Khadija Paris** — Responsable réception · 06 70 44 53 63
+  - Comment il/elle parle : Commence toujours par le prix, compare avec la concurrence.
+  - Tics : « Vous êtes plus cher que votre voisin, là. » · « À ce prix-là, je prends ailleurs. »
+- **Service comptabilité** — Factures · factures@intermarcheproxifronton.fr
 
-## What they buy and how
+## Ce qu'ils achètent et comment
 
-Order three times a week, usually the day before between 10h and 15h, especially via e-mail and web portal. Regular products: Frozen par-baked baguette 280 g (carton of 60), Raw frozen all-butter croissant 70 g (carton of 150), Raw frozen all-butter pain au chocolat 75 g (carton of 140), T45 gruau pastry flour (25 kg bag), Paper viennoiserie bags (carton of 1000), Raw frozen pain aux raisins 110 g (carton of 80), T55 traditional French wheat flour (25 kg bag), Gold round cake boards 28 cm (pack of 100).
+Commande trois fois par semaine, en général la veille entre 10h et 15h, surtout par e-mail et portail web. Produits habituels : baguette précuite surgelée 280 g (carton 60), croissant pur beurre cru surgelé 70 g (carton 150), chocolatine pur beurre crue surgelée 75 g (carton 140), farine de gruau T45 pâtissière (sac 25 kg), sachets viennoiserie papier (carton 1000), pain aux raisins cru surgelé 110 g (carton 80), farine de blé T55 tradition française (sac 25 kg), semelles dorées rondes 28 cm (lot de 100).
 
-Over the last 90 days (34 orders delivered):
+Sur les 90 derniers jours (34 commandes livrées) :
 
-| Product | 90-day volume | Lines | Last price |
+| Produit | Volume 90 j | Lignes | Dernier prix |
 |---|---|---|---|
-| T55 traditional French wheat flour (25 kg bag) (`prd_0001`) | 784,00 piece | 21 | 19,80 € |
-| T45 gruau pastry flour (25 kg bag) (`prd_0003`) | 398,00 piece | 21 | 23,50 € |
-| Raw frozen all-butter pain au chocolat 75 g (carton of 140) (`prd_0054`) | 136,00 box | 15 | 51,30 € |
-| Raw frozen all-butter croissant 70 g (carton of 150) (`prd_0053`) | 106,00 box | 16 | 48,56 € |
-| Raw frozen pain aux raisins 110 g (carton of 80) (`prd_0055`) | 126,00 box | 24 | 38,28 € |
-| Frozen par-baked baguette 280 g (carton of 60) (`prd_0058`) | 166,00 box | 14 | 22,41 € |
-| UHT liquid cream 35% (1 L carton) (`prd_0031`) | 528,00 liter | 18 | 3,82 € |
-| Paper viennoiserie bags (carton of 1000) (`prd_0066`) | 90,00 box | 20 | 17,50 € |
+| Farine de blé T55 tradition française (sac 25 kg) (`prd_0001`) | 784,00 pièce | 21 | 19,80 € |
+| Farine de gruau T45 pâtissière (sac 25 kg) (`prd_0003`) | 398,00 pièce | 21 | 23,50 € |
+| Chocolatine pur beurre crue surgelée 75 g (carton 140) (`prd_0054`) | 136,00 colis | 15 | 51,30 € |
+| Croissant pur beurre cru surgelé 70 g (carton 150) (`prd_0053`) | 106,00 colis | 16 | 48,56 € |
+| Pain aux raisins cru surgelé 110 g (carton 80) (`prd_0055`) | 126,00 colis | 24 | 38,28 € |
+| Baguette précuite surgelée 280 g (carton 60) (`prd_0058`) | 166,00 colis | 14 | 22,41 € |
+| Crème liquide UHT 35 % (brique 1 L) (`prd_0031`) | 528,00 litre | 18 | 3,82 € |
+| Sachets viennoiserie papier (carton 1000) (`prd_0066`) | 90,00 colis | 20 | 17,50 € |
 
-CRM record : _Delivery at the dock before 8h. Order by mail with the store order number. Delivered Mon. Fri. Fri. Refuses substitutions: call before any modification._
+Fiche CRM : _Livraison au quai avant 8h. Commande par mail avec le numéro de commande magasin. Livré lun. mer. ven. Refuse les substitutions : appeler avant toute modification._
 
-## What frustrates them
+## Ce qui les agace
 
-- Cartons damaged
-- Difference between BL and invoice
+- Cartons abîmés
+- Écart entre BL et facture
 
-## A brief history
+## Historique marquant
 
-- **04/08/2025** · opening · Account opening : Intermarché-Proxi Fronton
-- **15/10/2025** · contact · New contact : Damien Lafforgue
-- **17/01/2026** · prices · Rates 2026
-- **19/10/2026** · Delivery · Delivery left at the door
-- **27/10/2026** · contact · New contact : Damien Lafforgue
+- **04/08/2025** · ouverture · Ouverture de compte : Intermarché-Proxi Fronton
+- **15/10/2025** · contact · Nouveau contact : Damien Lafforgue
+- **17/01/2026** · prix · Tarifs 2026
+- **19/10/2026** · livraison · Livraison laissée devant la porte
+- **27/10/2026** · contact · Nouveau contact : Damien Lafforgue
 
-Full history: 9 events (2 call, 2 contact, 2 visit, 1 opening, 1 price, 1 delivery).
+Historique complet : 9 événements (2 appel, 2 contact, 2 visite, 1 ouverture, 1 prix, 1 livraison).
 
-## Open cases
+## Dossiers ouverts aujourd'hui
 
-None.
+Aucun.
 
-## How to talk to them
+## Comment leur parler
 
-- Talk in cartons and pallets.
-- Always call the store order number.
+- Parler en cartons et en palettes.
+- Toujours rappeler le numéro de commande magasin.
 
-## Price & group
+## Prix & groupe
 
-Groups: **GMS** (`gms`), **Grand accounts** (`grands-comptes`).
-Negotiated prices (`clientPrices`, always priority): Raw frozen pain aux raisins 110 g (carton of 80) 38,28 € (list 41,00); Raw frozen all-butter croissant 70 g (carton of 150) 48,56 € (list 52,00); Frozen par-baked baguette 280 g (carton of 60) 22,41 € (list 24,00); UHT liquid cream 35% (1 L carton) 3,83 € (list 4,10); Gold round cake boards 28 cm (pack of 100) 9,15 € (list 9,80).
+Groupes : **GMS** (`gms`), **Grands comptes** (`grands-comptes`).
+Prix négociés (`clientPrices`, toujours prioritaires) : pain aux raisins cru surgelé 110 g (carton 80) 38,28 € (liste 41,00) ; croissant pur beurre cru surgelé 70 g (carton 150) 48,56 € (liste 52,00) ; baguette précuite surgelée 280 g (carton 60) 22,41 € (liste 24,00) ; crème liquide UHT 35 % (brique 1 L) 3,83 € (liste 4,10) ; semelles dorées rondes 28 cm (lot de 100) 9,15 € (liste 9,80).
 
-Price rules that may apply:
-- `prl_0003` GMS: -5 % on raw pastry
-- `prl_0006` Epiphany 2027: almond powder -6 % from 20 kg
-- `prl_0007` Epiphany 2027: crowns and beans -5 %
+Règles de prix qui peuvent s'appliquer :
+- `prl_0003` GMS : −5 % sur la viennoiserie crue
+- `prl_0006` Épiphanie 2027 : poudre d'amande −6 % dès 20 kg
+- `prl_0007` Épiphanie 2027 : couronnes et fèves −5 %
 
-Latest notes CRM:
+Dernières notes CRM :
 
-- 29/10/2026, Karim (commercial): Don't want any substitution without being warned: if a product is missing, call Paolo before the truck leaves.
+- 29/10/2026, Karim (commercial) : Ne veut aucune substitution sans être prévenu : si un produit manque, appeler Paolo avant le départ du camion.

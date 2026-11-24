@@ -123,12 +123,12 @@ async def test_anthropic_stream_thinking_tools_and_replay():
     events = [
         {"type": "message_start", "message": {"usage": {"input_tokens": 30}}},
         {"type": "content_block_start", "index": 0, "content_block": {"type": "thinking", "thinking": ""}},
-        {"type": "content_block_delta", "index": 0, "delta": {"type": "thinking_delta", "thinking": "Look up "}},
-        {"type": "content_block_delta", "index": 0, "delta": {"type": "thinking_delta", "thinking": "the sea bass."}},
+        {"type": "content_block_delta", "index": 0, "delta": {"type": "thinking_delta", "thinking": "Chercher "}},
+        {"type": "content_block_delta", "index": 0, "delta": {"type": "thinking_delta", "thinking": "le bar."}},
         {"type": "content_block_delta", "index": 0, "delta": {"type": "signature_delta", "signature": "SIG"}},
         {"type": "content_block_stop", "index": 0},
         {"type": "content_block_start", "index": 1, "content_block": {"type": "text", "text": ""}},
-        {"type": "content_block_delta", "index": 1, "delta": {"type": "text_delta", "text": "Let me check."}},
+        {"type": "content_block_delta", "index": 1, "delta": {"type": "text_delta", "text": "Je regarde."}},
         {"type": "content_block_stop", "index": 1},
         {"type": "content_block_start", "index": 2, "content_block": {"type": "tool_use", "id": "toolu_1", "name": "search", "input": {}}},
         {"type": "content_block_delta", "index": 2, "delta": {"type": "input_json_delta", "partial_json": '{"query":'}},
@@ -140,7 +140,7 @@ async def test_anthropic_stream_thinking_tools_and_replay():
     http, seen = recorder(lambda _: sse(*events))
     llm = AnthropicLLM("claude-test", "key", "https://anthropic.test", effort="low", http=http)
     out = await collect(llm, LLMRequest(system="SYS", messages=[ChatMessage(role="user", content="bar ?")], tools=TOOLS))
-    assert out == [LLMText("Let me check."), LLMUsage(30, 40), LLMToolCall(ToolCall(id="toolu_1", name="search", arguments={"query": "bar"}))]
+    assert out == [LLMText("Je regarde."), LLMUsage(30, 40), LLMToolCall(ToolCall(id="toolu_1", name="search", arguments={"query": "bar"}))]
 
     first = json.loads(seen[0].content)
     assert str(seen[0].url) == "https://anthropic.test/v1/messages"
@@ -158,7 +158,7 @@ async def test_anthropic_stream_thinking_tools_and_replay():
     # Next request: the thinking block goes back with the tool-calling turn; tool results merge into one user message.
     history = [
         ChatMessage(role="user", content="bar ?"),
-        ChatMessage(role="assistant", content="Let me check.", tool_calls=[ToolCall(id="toolu_1", name="search", arguments={"query": "bar"})]),
+        ChatMessage(role="assistant", content="Je regarde.", tool_calls=[ToolCall(id="toolu_1", name="search", arguments={"query": "bar"})]),
         ChatMessage(role="tool", tool_call_id="toolu_1", name="search", content="[1]"),
         ChatMessage(role="tool", tool_call_id="toolu_2", name="search", content="[2]"),
     ]
@@ -168,8 +168,8 @@ async def test_anthropic_stream_thinking_tools_and_replay():
         {
             "role": "assistant",
             "content": [
-                {"type": "thinking", "thinking": "Look up the sea bass.", "signature": "SIG"},
-                {"type": "text", "text": "Let me check."},
+                {"type": "thinking", "thinking": "Chercher le bar.", "signature": "SIG"},
+                {"type": "text", "text": "Je regarde."},
                 {"type": "tool_use", "id": "toolu_1", "name": "search", "input": {"query": "bar"}},
             ],
         },
@@ -219,7 +219,7 @@ async def test_anthropic_usage_with_cache_tokens():
     events = [
         {"type": "message_start", "message": {"usage": {"input_tokens": 12, "cache_creation_input_tokens": 0, "cache_read_input_tokens": 26800, "output_tokens": 1}}},
         {"type": "content_block_start", "index": 0, "content_block": {"type": "text", "text": ""}},
-        {"type": "content_block_delta", "index": 0, "delta": {"type": "text_delta", "text": "Il en have 12 kilos."}},
+        {"type": "content_block_delta", "index": 0, "delta": {"type": "text_delta", "text": "Il en reste 12 kilos."}},
         {"type": "content_block_stop", "index": 0},
         {"type": "message_delta", "delta": {"stop_reason": "end_turn"}, "usage": {"output_tokens": 9, "cache_read_input_tokens": None}},
         {"type": "message_stop"},
@@ -270,13 +270,13 @@ async def test_gemini_stream_and_signature_replay():
 
     history = [
         ChatMessage(role="user", content="bar ?"),
-        ChatMessage(role="assistant", content="Let me check.", tool_calls=[call]),
+        ChatMessage(role="assistant", content="Je regarde.", tool_calls=[call]),
         ChatMessage(role="tool", tool_call_id=call.id, name="search", content='[{"id":"prd_1"}]'),
     ]
     await collect(llm, LLMRequest(system="SYS", messages=history))
     assert json.loads(seen[1].content)["contents"] == [
         {"role": "user", "parts": [{"text": "bar ?"}]},
-        {"role": "model", "parts": [{"text": "Let me check."}, {"functionCall": {"name": "search", "args": {"query": "bar"}}, "thoughtSignature": "TS1"}]},
+        {"role": "model", "parts": [{"text": "Je regarde."}, {"functionCall": {"name": "search", "args": {"query": "bar"}}, "thoughtSignature": "TS1"}]},
         {"role": "user", "parts": [{"functionResponse": {"name": "search", "response": {"result": [{"id": "prd_1"}]}}}]},
     ]
 
@@ -285,22 +285,22 @@ async def test_gemini_stream_and_signature_replay():
 
 
 async def test_deepgram_params_and_transcript():
-    reply = {"results": {"channels": [{"alternatives": [{"transcript": " il you have sea bass? "}]}]}}
+    reply = {"results": {"channels": [{"alternatives": [{"transcript": " il vous reste du bar ? "}]}]}}
     http, seen = recorder(lambda _: httpx.Response(200, json=reply))
-    text = await DeepgramSTT("dg", http=http).transcribe(b"AUDIO", "audio/webm", hint="Lemoine, line-caught bass ,")
-    assert text == "il you have sea bass?"
+    text = await DeepgramSTT("dg", http=http).transcribe(b"AUDIO", "audio/webm", hint="Lemoine, bar de ligne ,")
+    assert text == "il vous reste du bar ?"
     req = seen[0]
     assert req.url.path == "/v1/listen"
     assert req.url.params.multi_items() == [
-        ("model", "nova-3"), ("language", "en"), ("smart_format", "true"), ("keyterm", "Lemoine"), ("keyterm", "line-caught bass"),
+        ("model", "nova-3"), ("language", "fr"), ("smart_format", "true"), ("keyterm", "Lemoine"), ("keyterm", "bar de ligne"),
     ]  # fmt: skip
     assert req.headers["authorization"] == "Token dg" and req.headers["content-type"] == "audio/webm"
     assert req.content == b"AUDIO"
 
 
 async def test_openai_stt_multipart():
-    http, seen = recorder(lambda _: httpx.Response(200, json={"text": "Hello "}))
-    assert await OpenAISTT("sk", http=http).transcribe(b"AUDIO", "audio/webm;codecs=opus", hint="Lemoine") == "Hello"
+    http, seen = recorder(lambda _: httpx.Response(200, json={"text": "Bonjour "}))
+    assert await OpenAISTT("sk", http=http).transcribe(b"AUDIO", "audio/webm;codecs=opus", hint="Lemoine") == "Bonjour"
     req = seen[0]
     body = req.content.decode("latin-1")
     assert req.url.path == "/v1/audio/transcriptions" and req.headers["authorization"] == "Bearer sk"
@@ -309,24 +309,24 @@ async def test_openai_stt_multipart():
 
 async def test_openai_tts_streams_mp3():
     http, seen = recorder(lambda _: httpx.Response(200, content=b"ID3mp3bytes"))
-    result = await OpenAITTS("sk", http=http).synthesize("Hello", voice="nova")
+    result = await OpenAITTS("sk", http=http).synthesize("Bonjour", voice="nova")
     assert result.mime == "audio/mpeg" and b"".join([c async for c in result.chunks]) == b"ID3mp3bytes"
-    assert json.loads(seen[0].content) == {"model": "gpt-4o-mini-tts", "voice": "nova", "input": "Hello", "response_format": "mp3"}
+    assert json.loads(seen[0].content) == {"model": "gpt-4o-mini-tts", "voice": "nova", "input": "Bonjour", "response_format": "mp3"}
 
 
 async def test_elevenlabs_request_and_error():
     http, seen = recorder(lambda _: httpx.Response(200, content=b"mp3"))
-    result = await ElevenLabsTTS("xi", http=http).synthesize("Hello")
+    result = await ElevenLabsTTS("xi", http=http).synthesize("Bonjour")
     assert b"".join([c async for c in result.chunks]) == b"mp3"
     req = seen[0]
     assert req.url.path == "/v1/text-to-speech/JBFqnCBsd6RMkjVDRZzb/stream" and req.url.params["output_format"] == "mp3_44100_128"
     assert req.headers["xi-api-key"] == "xi"
-    assert json.loads(req.content) == {"text": "Hello", "model_id": "eleven_flash_v2_5", "language_code": "en"}
+    assert json.loads(req.content) == {"text": "Bonjour", "model_id": "eleven_flash_v2_5", "language_code": "fr"}
 
     http, _ = recorder(lambda _: httpx.Response(429, text="quota"))
     try:
         await ElevenLabsTTS("xi", http=http).synthesize("x")
     except Exception as e:
-        assert str(e) == "elevenlabs tts HTTP 429: quota — rate limit or quota reached: try again shortly"
+        assert str(e) == "elevenlabs tts HTTP 429: quota — limite de débit ou quota atteint : réessayez dans un instant"
     else:
         raise AssertionError("expected an error")

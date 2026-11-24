@@ -92,7 +92,7 @@ export function Sidebar() {
           <div className={cn("min-w-0 flex-1", fade)}>
             <div className="truncate text-[13.5px] font-semibold leading-4">{meta?.company ?? "ERP"}</div>
             <div className="truncate text-[11px] leading-4 text-muted-foreground">
-              {meta?.trade ? `Wholesaler ${meta.trade}` : "Food wholesaler"}
+              {meta?.trade ? `Grossiste ${meta.trade}` : "Grossiste alimentaire"}
             </div>
           </div>
           {/* Linear-like: the collapse control appears on header hover / focus, over the end of the subtitle. */}
@@ -110,8 +110,8 @@ export function Sidebar() {
           <button
             type="button"
             onClick={shell.openCommand}
-            title={collapsed ? "Search (⌘K)" : undefined}
-            aria-label="Search"
+            title={collapsed ? "Rechercher (⌘K)" : undefined}
+            aria-label="Rechercher"
             className={cn(
               "flex h-8 items-center gap-2 overflow-hidden rounded-[4px] border border-border bg-card px-2.5 text-[12.5px] text-muted-foreground transition-colors hover:border-border-hover hover:text-foreground",
               collapsed ? "w-[31px] justify-center px-0" : "w-full",
@@ -120,7 +120,7 @@ export function Sidebar() {
             <Search size={13} strokeWidth={1.75} className="shrink-0" />
             {collapsed ? null : (
               <>
-                <span className="truncate">Search...</span>
+                <span className="truncate">Rechercher…</span>
                 <Kbd className="ml-auto">⌘K</Kbd>
               </>
             )}
@@ -148,17 +148,17 @@ export function Sidebar() {
             <>
               <span
                 className="flex items-center gap-1.5 whitespace-nowrap text-[11.5px] text-muted-foreground"
-                title="Live activity stream (/api/events/stream)"
+                title="Flux d'activité temps réel (/api/events/stream)"
               >
                 <Dot tone={status === "live" ? "success" : status === "connecting" ? "warning" : "destructive"} pulse={status === "live"} />
-                {status === "live" ? "Live" : status === "connecting" ? "Connection..." : "Offline"}
+                {status === "live" ? "En direct" : status === "connecting" ? "Connexion…" : "Hors ligne"}
               </span>
               <ThemeToggle className="ml-auto" />
             </>
           )}
         </div>
       </nav>
-      {collapsed ? null : <ResizeHandle r={r} edge="right" label="Resize Sidebar" />}
+      {collapsed ? null : <ResizeHandle r={r} edge="right" label="Redimensionner la barre latérale" />}
     </div>
   );
 }

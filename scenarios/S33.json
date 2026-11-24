@@ -1,12 +1,12 @@
 {
   "id": "S33",
   "owner": "amine-khalil",
-  "title": "A qualified yes changes the order",
-  "why": "Apply the correction and read it back before accepting a later confirmation.",
+  "title": "Jev : « oui mais… » n'est pas un oui ; « tourage » ambigu tranché par l'habitude du client",
+  "why": "Intelligent : on ne confirme jamais sur un oui ambigu (vérifié par Jev, ~150 ms), et le bon produit est choisi sans deviner",
   "client": "cli_0001",
   "turns": [
     {
-      "say": "Hi, Nadine from Sarrailh. Ten sacks of traditional flour for Thursday.",
+      "say": "Bonjour, Nadine de chez Sarrailh. Dix sacs de tradi pour jeudi.",
       "expect": {
         "tools_any": [
           "create_draft_order",
@@ -17,12 +17,12 @@
         ],
         "says_any": [
           "10",
-          "ten"
+          "dix"
         ]
       }
     },
     {
-      "say": "Yes, but make it twelve.",
+      "say": "Oui mais mettez-en douze.",
       "expect": {
         "tools_any": [
           "update_order_line",
@@ -31,12 +31,12 @@
         ],
         "says_any": [
           "12",
-          "twelve"
+          "douze"
         ]
       }
     },
     {
-      "say": "Yes, that's right. Please confirm.",
+      "say": "Oui c'est bon, validez.",
       "expect": {
         "tools_any": [
           "confirm_order"

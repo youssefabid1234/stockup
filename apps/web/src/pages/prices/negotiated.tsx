@@ -77,19 +77,19 @@ export function NegotiatedTab({ clientId, clientTag, productId, q, adding, onClo
   const qc = useQueryClient();
   const invalidateClient = (id: Id) => void qc.invalidateQueries({ queryKey: qk.clients.detail(id) });
   const put = useApiMutation((v: { clientId: Id; productId: Id; price: number }) => api.prices.setClientPrice(v.clientId, v.productId, v.price), {
-    success: (cp) => `Negotiated price: ${fmtMoney(cp.price)}`,
+    success: (cp) => `Prix négocié : ${fmtMoney(cp.price)}`,
     invalidate: [qk.pricing.all],
     onSuccess: (_, v) => invalidateClient(v.clientId),
   });
   const remove = useApiMutation((v: { clientId: Id; productId: Id }) => api.prices.removeClientPrice(v.clientId, v.productId), {
-    success: "Negotiated price deleted",
+    success: "Prix négocié supprimé",
     invalidate: [qk.pricing.all],
     onSuccess: (_, v) => invalidateClient(v.clientId),
   });
 
   const columns: Column<NegotiatedRow>[] = [
     {
-      id: "client", header: "Customer", sortValue: (r) => r.clientName, className: "w-1/2 max-w-0",
+      id: "client", header: "Client", sortValue: (r) => r.clientName, className: "w-1/2 max-w-0",
       cell: (r) => (
         <span className="flex min-w-0 items-center gap-2">
           <Link to={`/clients/${r.clientId}`} className="truncate font-medium hover:underline" onClick={(e) => e.stopPropagation()}>{r.clientName}</Link>
@@ -98,7 +98,7 @@ export function NegotiatedTab({ clientId, clientTag, productId, q, adding, onClo
       ),
     },
     {
-      id: "product", header: "Product", sortValue: (r) => r.productName, className: "w-1/2 max-w-0",
+      id: "product", header: "Produit", sortValue: (r) => r.productName, className: "w-1/2 max-w-0",
       cell: (r) => (
         <span className="flex min-w-0 items-center gap-2">
           <Link to={`/products/${r.productId}`} className="truncate hover:underline" onClick={(e) => e.stopPropagation()}>{r.productName}</Link>
@@ -106,20 +106,20 @@ export function NegotiatedTab({ clientId, clientTag, productId, q, adding, onClo
         </span>
       ),
     },
-    { id: "unit", header: "Unit", width: 64, muted: true, cell: (r) => UNIT_LABEL[r.unit as keyof typeof UNIT_LABEL] ?? r.unit },
+    { id: "unit", header: "Unité", width: 64, muted: true, cell: (r) => UNIT_LABEL[r.unit as keyof typeof UNIT_LABEL] ?? r.unit },
     { id: "list", header: "Catalogue", width: 100, numeric: true, sortValue: (r) => r.listPrice, cell: (r) => <Money value={r.listPrice} className="text-muted-foreground" /> },
     {
-      id: "price", header: "Negotiated", width: 120, numeric: true, sortValue: (r) => r.price, className: "py-0 pr-2",
+      id: "price", header: "Négocié", width: 120, numeric: true, sortValue: (r) => r.price, className: "py-0 pr-2",
       cell: (r) => (
         <PriceInput value={r.price} tone={r.price < r.cost ? "destructive" : undefined}
           onCommit={(price) => put.mutate({ clientId: r.clientId, productId: r.productId, price })} />
       ),
     },
-    { id: "delta", header: "Difference", width: 80, numeric: true, sortValue: (r) => (r.price - r.listPrice) / (r.listPrice || 1), cell: (r) => <DeltaCell price={r.price} list={r.listPrice} /> },
-    { id: "margin", header: "Margin", width: 90, numeric: true, sortValue: (r) => (r.price - r.cost) / r.price, cell: (r) => <MarginCell value={r.price ? (r.price - r.cost) / r.price : 0} /> },
+    { id: "delta", header: "Écart", width: 80, numeric: true, sortValue: (r) => (r.price - r.listPrice) / (r.listPrice || 1), cell: (r) => <DeltaCell price={r.price} list={r.listPrice} /> },
+    { id: "margin", header: "Marge", width: 90, numeric: true, sortValue: (r) => (r.price - r.cost) / r.price, cell: (r) => <MarginCell value={r.price ? (r.price - r.cost) / r.price : 0} /> },
     {
       id: "actions", header: "", width: 100, align: "right",
-      cell: (r) => <span className="flex justify-end"><InlineConfirmDelete onConfirm={() => remove.mutate({ clientId: r.clientId, productId: r.productId })} label="Remove the negotiated price" /></span>,
+      cell: (r) => <span className="flex justify-end"><InlineConfirmDelete onConfirm={() => remove.mutate({ clientId: r.clientId, productId: r.productId })} label="Supprimer le prix négocié" /></span>,
     },
   ];
 
@@ -134,10 +134,10 @@ export function NegotiatedTab({ clientId, clientTag, productId, q, adding, onClo
         getRowId={(r) => r.key}
         defaultSort={{ id: "client", dir: "asc" }}
         pageKey="cpPage"
-        footer={filtered ? `${filtered.length} negotiated price${filtered.length > 1 ? "s" : ""}${any ? " · filtered" : ""}${filtered.length ? ` · average difference ${avgDelta(filtered)}` : ""}` : undefined}
+        footer={filtered ? `${filtered.length} prix négocié${filtered.length > 1 ? "s" : ""}${any ? " · filtrés" : ""}${filtered.length ? ` · écart moyen ${avgDelta(filtered)}` : ""}` : undefined}
         empty={
-          any ? <EmptyState icon={Handshake} title="No negotiated price" description="Change the filters." />
-            : <EmptyState icon={Handshake} title="No price negotiated" description="A negotiated price sets the price of a product for a customer. It overrides all rules." action={<Button size="sm" icon={Plus} onClick={onAdd}>New negotiated price</Button>} />
+          any ? <EmptyState icon={Handshake} title="Aucun prix négocié ne correspond" description="Modifiez les filtres." />
+            : <EmptyState icon={Handshake} title="Aucun prix négocié" description="Un prix négocié fixe le prix d'un produit pour un client. Il prime sur toutes les règles." action={<Button size="sm" icon={Plus} onClick={onAdd}>Nouveau prix négocié</Button>} />
         }
       />
     </div>
@@ -162,7 +162,7 @@ function AddBar({ onClose, defaultClientId, onAdded, existing }: { onClose: () =
   const ok = clientId && productId && price.trim() && Number.isFinite(n) && n > 0;
   const already = existing?.some((r) => r.clientId === clientId && r.productId === productId);
   const add = useApiMutation((v: { clientId: Id; productId: Id; price: number }) => api.prices.setClientPrice(v.clientId, v.productId, v.price), {
-    success: (cp) => `Registered negotiated price: ${fmtMoney(cp.price)}`,
+    success: (cp) => `Prix négocié enregistré : ${fmtMoney(cp.price)}`,
     invalidate: [qk.pricing.all],
     onSuccess: (_, v) => { onAdded(v.clientId); setProductId(""); setPrice(""); },
   });
@@ -173,20 +173,20 @@ function AddBar({ onClose, defaultClientId, onAdded, existing }: { onClose: () =
       onKeyDown={(e) => { if (e.key === "Escape" && !e.defaultPrevented) onClose(); }}
       className="flex flex-wrap items-center gap-2 border-b border-border bg-muted/30 px-4 py-2.5"
     >
-      <Combobox value={clientId} onChange={setClientId} options={clientOptions} placeholder="Client..." size="sm" width={240} autoFocus={!clientId} />
-      <Combobox value={productId} onChange={setProductId} options={productOptions} placeholder="Product..." size="sm" width={260} autoFocus={!!clientId} />
+      <Combobox value={clientId} onChange={setClientId} options={clientOptions} placeholder="Client…" size="sm" width={240} autoFocus={!clientId} />
+      <Combobox value={productId} onChange={setProductId} options={productOptions} placeholder="Produit…" size="sm" width={260} autoFocus={!!clientId} />
       <div className="relative w-[96px]">
-        <Input size="sm" inputMode="decimal" value={price} onChange={(e) => setPrice(e.target.value)} placeholder={r ? String(r.price).replace(".", ",") : "Price"} className="num pr-6 text-right" />
+        <Input size="sm" inputMode="decimal" value={price} onChange={(e) => setPrice(e.target.value)} placeholder={r ? String(r.price).replace(".", ",") : "Prix"} className="num pr-6 text-right" />
         <span className="pointer-events-none absolute inset-y-0 right-2 flex items-center text-[12px] text-muted-foreground">€</span>
       </div>
-      <Button size="sm" variant="primary" type="submit" disabled={!ok} loading={add.isPending}>{already ? "Replace" : "Add"}</Button>
-      <Button size="sm" variant="ghost" onClick={onClose}>Close</Button>
+      <Button size="sm" variant="primary" type="submit" disabled={!ok} loading={add.isPending}>{already ? "Remplacer" : "Ajouter"}</Button>
+      <Button size="sm" variant="ghost" onClick={onClose}>Fermer</Button>
       {r ? (
         <span className="ml-2 flex min-w-0 items-center gap-2 text-[12px] text-muted-foreground">
-          Today <span className="font-medium text-foreground">{fmtMoney(r.price)}</span>
+          Aujourd'hui <span className="font-medium text-foreground">{fmtMoney(r.price)}</span>
           <SourceLabel source={r.source} ruleName={ruleNameOf(r.candidates.find((c) => c.applied)?.label ?? "")} />
-          · catalogue {fmtMoney(r.listPrice)} · cost {fmtMoney(r.cost)}
-          {Number.isFinite(n) && n > 0 ? <> · margin <MarginCell value={(n - r.cost) / n} /></> : null}
+          · catalogue {fmtMoney(r.listPrice)} · coût {fmtMoney(r.cost)}
+          {Number.isFinite(n) && n > 0 ? <> · marge <MarginCell value={(n - r.cost) / n} /></> : null}
         </span>
       ) : null}
     </form>

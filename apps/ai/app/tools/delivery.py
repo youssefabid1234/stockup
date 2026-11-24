@@ -38,12 +38,12 @@ def pack_now(meta: dict) -> tuple[date, float]:
 async def check_delivery_date(
     ctx: ToolContext,
     client_id: str = Field(description="ex. cli_0001"),
-    asked: str | None = Field(None, description="The day as said: \"Thursday\", \"Tnight\", \"27\", \"as fast as possible\" (empty = fast)"),
+    asked: str | None = Field(None, description="Le jour tel que dit : « jeudi », « demain », « le 27 », « au plus vite » (vide = au plus vite)"),
 ) -> dict:
     """
-    Checks a day of delivery for a customer: day of tour of the customer, time limit (17h the day before); Lauragais-Tarn:
-    the day before 12pm). Returns ok + date (YYYY-MM-DD, to move on to create_draft_order) and "say" (say), or reason
-    and the next possible day. Call as soon as a delivery day is requested. Check a delivery day for a customer.
+    Vérifie un jour de livraison pour un client : jour de tournée du client, heure limite (17h la veille ; Lauragais-Tarn :
+    la veille avant 12h). Renvoie ok + la date (YYYY-MM-DD, à passer à create_draft_order) et « say » (à dire), ou la raison
+    et le prochain jour possible. À appeler dès qu'un jour de livraison est demandé. Check a delivery day for a client.
     """
     # imported here, not at the top: app.agent imports the tools package (a top-level import would be circular)
     from app.agent.rules_order import delivery_answer

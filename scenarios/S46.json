@@ -1,43 +1,23 @@
 {
   "id": "S46",
   "owner": "daycem",
-  "title": "Lacombe-Viguier accepts only couverture chocolate",
-  "why": "Respect the customer's restrictions and ask permission before changing the order.",
+  "title": "Pâtisserie Lacombe-Viguier (« couvertures exclusivement ») : couverture blanche insuffisante → ne proposer qu'une couverture",
+  "why": "Intelligent : ce que la fiche impose (« Couvertures exclusivement… ») ou interdit n'est jamais proposé ; d'abord l'accord du client, jamais rien d'ajouté sans son oui.",
   "client": "cli_0002",
   "turns": [
     {
-      "say": "Hello, Pâtisserie Lacombe-Viguier here. I need 150 kilos of white couverture for Saturday.",
+      "say": "Bonjour, Pâtisserie Lacombe-Viguier. Il me faudrait 150 kilos de couverture blanche pour samedi.",
       "expect": {
-        "tools_none": [
-          "confirm_order"
-        ],
-        "says_none": [
-          "praline",
-          "chips",
-          "cocoa",
-          "sticks",
-          "unknown",
-          "substitution"
-        ]
+        "tools_none": ["confirm_order"],
+        "says_none": ["praliné", "pépites", "cacao", "bâtons", "inconnu", "substitution"]
       }
     },
     {
-      "say": "Yes, what do you have instead?",
+      "say": "Oui, qu'est-ce que vous avez à la place ?",
       "expect": {
-        "tools_none": [
-          "confirm_order"
-        ],
-        "says_any": [
-          "couverture",
-          "dark",
-          "milk"
-        ],
-        "says_none": [
-          "praline",
-          "chips",
-          "cocoa",
-          "sticks"
-        ]
+        "tools_none": ["confirm_order"],
+        "says_any": ["couverture", "noir", "lait"],
+        "says_none": ["praliné", "pépites", "cacao", "bâtons"]
       }
     }
   ]

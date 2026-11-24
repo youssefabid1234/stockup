@@ -1,73 +1,73 @@
 # Hyper Garonne Aucamville (C0038, `cli_0038`)
 
-> Customer profile for phone role-play. The full history is in `seed_en/clientEvents.json` (filter on `clientId: "cli_0038"`).
+> Fiche persona pour jouer ce client au téléphone. L'historique complet est dans `seed/clientEvents.json` (filtrer sur `clientId: "cli_0038"`).
 
 | | |
 |---|---|
-| Type | Large area (Bread Rays and Supermarket Cooking Terminals) — 29 quai de la Fontaine, 31140 Aucamville |
-| Area | Fondeyre, L'Union & Nord Toulousein — delivered Tue, Thu, Sat |
-| Status | **active** — lost (more order), last delivery on 04/04/2024 |
-| Sales representative | Julien Fabre |
-| Customer since | 01/04/2022 (4 years) |
-| Payment | 45 days — SEPA direct debit, no delay |
-| Outstanding balance | 0,00 € incl. VAT (ceiling 18 500 €) |
-| Temperament | negotiator — quality ★★☆, price ★★★, high risk of losing the customer |
+| Type | Grande surface (Rayons pain et terminaux de cuisson de supermarchés) — 29 quai de la Fontaine, 31140 Aucamville |
+| Zone | Fondeyre, L'Union & Nord toulousain — livré tue, thu, sat |
+| Statut | **active** — perdu (plus de commande), dernière livraison le 04/04/2024 |
+| Commercial | Julien Fabre |
+| Client depuis | 01/04/2022 (4 ans) |
+| Paiement | 45 jours — prélèvement SEPA, aucun retard |
+| Encours | 0,00 € TTC (plafond 18 500 €) |
+| Tempérament | négociateur — qualité ★★☆, prix ★★★, risque de départ élevé |
 
-## Who they are
+## Qui ils sont
 
-Aucamville Supermarket with cooking terminal: pre-cooked chopsticks and pastries raw cooked on site all day long. The head of the department orders by mail in the morning.
+Supermarché d'Aucamville avec terminal de cuisson : baguettes précuites et viennoiseries crues cuites sur place toute la journée. Le chef de rayon commande par mail le matin.
 
-## People
+## Les personnes
 
-- **Jordan Renard** — Head of bakery department · 06 13 89 82 38 · jordan@hypergaronneaucamville.fr
-  - Speaking style: Play surprise on each fare, end up ordering.
-  - Typical phrases: "At this price, I take elsewhere." · "What if I take twice?"
-- **Service comptabilité** — Bills · factures@hypergaronneaucamville.fr
+- **Jordan Renard** — Chef de rayon boulangerie · 06 13 89 82 38 · jordan@hypergaronneaucamville.fr
+  - Comment il/elle parle : Joue la surprise sur chaque tarif, finit par commander.
+  - Tics : « À ce prix-là, je prends ailleurs. » · « Et si j'en prends le double ? »
+- **Service comptabilité** — Factures · factures@hypergaronneaucamville.fr
 
-## What they buy and how
+## Ce qu'ils achètent et comment
 
-Order three times a week, usually the day before between 11h and 15h, especially via e-mail and web portal. Regular products: Raw frozen all-butter croissant 70 g (carton of 150), Raw frozen all-butter pain au chocolat 75 g (carton of 140), Frozen par-baked baguette 280 g (carton of 60), Gold cardboard king cake crowns (pack of 100), Porcelain king cake charms (pack of 100), Frozen raspberry purée (1 kg tray), Multigrain seed mix (25 kg bag), Printed kraft baguette bags (carton of 1000).
+Commande trois fois par semaine, en général la veille entre 11h et 15h, surtout par e-mail et portail web. Produits habituels : croissant pur beurre cru surgelé 70 g (carton 150), chocolatine pur beurre crue surgelée 75 g (carton 140), baguette précuite surgelée 280 g (carton 60), couronnes des rois carton dorées (lot de 100), fèves des rois en porcelaine (sachet de 100), purée de framboise surgelée (barquette 1 kg), mélange multicéréales graines (sac 25 kg), sacs à baguette kraft imprimés (carton 1000).
 
-CRM record : _Order by mail with the order number of the store. Delivery to the dock before 8h. Delivered Tue. Sat. Sat. Accept equivalent substitutions if notified._
+Fiche CRM : _Commande par mail avec le numéro de commande magasin. Livraison au quai avant 8h. Livré mar. jeu. sam. Accepte les substitutions équivalentes si on prévient._
 
-## What frustrates them
+## Ce qui les agace
 
-- Cartons damaged
-- Difference between BL and invoice
+- Cartons abîmés
+- Écart entre BL et facture
 
-## A brief history
+## Historique marquant
 
-- **01/04/2022** · opening · Account opening : Hyper Garonne Aucamville
-- **14/10/2022** · Quality · Quality : Assorted raw mini viennoiseries (carton of 210)
-- **13/12/2022** · special request · Holidays 2022 : reservation
-- **23/06/2023** · Quality · Quality : Silicone baking paper 40 × 60 (carton of 500 sheets)
-- **18/12/2023** · special request · Holidays 2023 : volume reservation
-- **08/01/2024** · prices · Rates 2024
-- **07/03/2024** · risk of losing the customer · Lower orders
-- **14/04/2024** · contact · New contact : Service comptabilité
-- **01/05/2024** · note · More orders for a month
+- **01/04/2022** · ouverture · Ouverture de compte : Hyper Garonne Aucamville
+- **14/10/2022** · qualité · Qualité : assortiment mini-viennoiseries crues (carton 210)
+- **13/12/2022** · demande spéciale · Fêtes 2022 : réservation
+- **23/06/2023** · qualité · Qualité : papier cuisson siliconé 40 × 60 (carton 500 feuilles)
+- **18/12/2023** · demande spéciale · Fêtes 2023 : réservation de volumes
+- **08/01/2024** · prix · Tarifs 2024
+- **07/03/2024** · risque de départ · Commandes en baisse
+- **14/04/2024** · contact · Nouveau contact : Service comptabilité
+- **01/05/2024** · note · Plus de commande depuis un mois
 
-Full history: 12 events (2 quality, 2 special request, 1 opening, 1 compliment, 1 price, 1 risk of losing the customer, 1 visit, 1 call, 1 contact, 1 note).
+Historique complet : 12 événements (2 qualité, 2 demande spéciale, 1 ouverture, 1 compliment, 1 prix, 1 risque de départ, 1 visite, 1 appel, 1 contact, 1 note).
 
-## Open cases
+## Dossiers ouverts aujourd'hui
 
-None.
+Aucun.
 
-## How to talk to them
+## Comment leur parler
 
-- Talk in cartons and pallets.
-- Always call the store order number.
+- Parler en cartons et en palettes.
+- Toujours rappeler le numéro de commande magasin.
 
-## Price & group
+## Prix & groupe
 
-Groups: **GMS** (`gms`), **Lost customers** (`perdus`).
-Negotiated prices (`clientPrices`, always high priority): Silicone baking paper 40 × 60 (carton of 500 sheets) 27,69 € (list 29,00); Frozen raspberry purée (1 kg tray) 8,97 € (list 9,40); Porcelain king cake charms (pack of 100) 15,28 € (list 16,00).
+Groupes : **GMS** (`gms`), **Clients perdus** (`perdus`).
+Prix négociés (`clientPrices`, toujours prioritaires) : papier cuisson siliconé 40 × 60 (carton 500 feuilles) 27,69 € (liste 29,00) ; purée de framboise surgelée (barquette 1 kg) 8,97 € (liste 9,40) ; fèves des rois en porcelaine (sachet de 100) 15,28 € (liste 16,00).
 
-Price rules that may apply:
-- `prl_0003` GMS: -5 % on raw pastry
-- `prl_0006` Epiphany 2027: almond powder -6 % from 20 kg
-- `prl_0007` Epiphany 2027: crowns and beans -5 %
+Règles de prix qui peuvent s'appliquer :
+- `prl_0003` GMS : −5 % sur la viennoiserie crue
+- `prl_0006` Épiphanie 2027 : poudre d'amande −6 % dès 20 kg
+- `prl_0007` Épiphanie 2027 : couronnes et fèves −5 %
 
-Latest notes CRM:
+Dernières notes CRM :
 
-None.
+Aucune.

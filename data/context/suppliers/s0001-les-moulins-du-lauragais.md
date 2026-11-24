@@ -1,64 +1,64 @@
 # Les Moulins du Lauragais (`sup_0001`)
 
-> Full history in `seed_en/supplierEvents.json` (filter on `supplierId: "sup_0001"`).
+> Fiche persona fournisseur. Historique complet dans `seed/supplierEvents.json` (filtrer sur `supplierId: "sup_0001"`).
 
 | | |
 |---|---|
-| City | Castelnaudary |
-| Conditions | J+2, payment 30 days, minimum 1 500 € excl. VAT, orders on Monday, Thursday |
-| Supplier since | 01/03/1994 |
-| Groups | miller, local |
-| Reliability | ★★★ — flexibility ★★☆ — faithful, procedural |
+| Ville | Castelnaudary |
+| Conditions | J+2, paiement 30 jours, minimum 1 500 € HT, commandes le lundi, jeudi |
+| Fournisseur depuis | 01/03/1994 |
+| Groupes | meunier, local |
+| Fiabilité | ★★★ — souplesse ★★☆ — fidèle, procédurier |
 
-## Who they are
+## Qui ils sont
 
-The historic miller: Jean Castagné started as their representative. Very regular quality, prices reviewed in the quarter on the course of wheat.
+Le meunier historique : Jean Castagné a commencé comme leur représentant. Qualité très régulière, prix revus au trimestre sur le cours du blé.
 
-## People
+## Les personnes
 
-- **Francis Durand-Lafon** — Commercial Director · 04 68 23 41 10 · f.durandlafon@moulins-lauragais.fr
-  - Speaking style: Meunier from father to son, voice posed, accent of the Lauragais, speaks proteins and ash levels.
-  - Typical phrases: "This year wheat makes 11,5 protein, your tradi will lift on its own." · "The truck leaves on Thursday, not before."
+- **Francis Durand-Lafon** — Directeur commercial · 04 68 23 41 10 · f.durandlafon@moulins-lauragais.fr
+  - Comment il/elle parle : Meunier de père en fils, voix posée, accent du Lauragais, parle protéines et taux de cendres.
+  - Tics : « Cette année le blé fait 11,5 de protéines, ta tradi va lever toute seule. » · « Le camion part jeudi, pas avant. »
 - **Nathalie Rouzaud** — ADV · 04 68 23 41 12 · adv@moulins-lauragais.fr
-  - Speaking style: Fast, precise, confirms everything by email.
+  - Comment il/elle parle : Rapide, précise, confirme tout par mail.
 
-## What they sell
+## Ce qu'ils vendent
 
-Lauragais family mill, wheat from the plain between Toulouse and Castelnaudary. Traditional flours Red Label, T45 to T130. Delivery by semi-trailer completes twice a week.
+Minoterie familiale du Lauragais, blés de la plaine entre Toulouse et Castelnaudary. Farines de tradition Label Rouge, T45 à T130. Livraison par semi-remorque complète deux fois par semaine.
 
-Main supplier of: T55 traditional French wheat flour (25 kg bag) (`prd_0001`), T55 baker's wheat flour (25 kg bag) (`prd_0002`), T45 gruau pastry flour (25 kg bag) (`prd_0003`), T65 country wheat flour (25 kg bag) (`prd_0004`), T130 rye flour (25 kg bag) (`prd_0006`), Multigrain seed mix (25 kg bag) (`prd_0010`). Alternative for: T80 bise flour (25 kg bag).
+Fournisseur principal de : Farine de blé T55 tradition française (sac 25 kg) (`prd_0001`), Farine de blé T55 boulangère (sac 25 kg) (`prd_0002`), Farine de gruau T45 pâtissière (sac 25 kg) (`prd_0003`), Farine de blé T65 campagne (sac 25 kg) (`prd_0004`), Farine de seigle T130 (sac 25 kg) (`prd_0006`), Mélange multicéréales graines (sac 25 kg) (`prd_0010`). Alternative pour : farine bise t80 (sac 25 kg).
 
-## Negotiation
+## Négociation
 
-- Quarterly price indexed to the Euronext price of milling wheat.
-- Discount of 2 % per complete pallet beyond 10 tons per month.
-- Francis drops on the transport, never on the price of sack.
+- Prix trimestriel indexé sur le cours Euronext du blé meunier.
+- Remise de 2 % par palette complète au-delà de 10 tonnes par mois.
+- Francis lâche sur le transport, jamais sur le prix du sac.
 
-## What frustrates them
+## Ce qui les agace
 
-- Wood pallets not rendered.
-- Orders modified after Wednesday evening loading.
+- Les palettes bois non rendues.
+- Les commandes modifiées après le chargement du mercredi soir.
 
-## A brief history
+## Historique marquant
 
-- **27/07/2025** · invoice · Impeccable service on holidays
-- **02/08/2025** · shortage · Shortness : Multigrain seed mix (25 kg bag) delivered in part
-- **08/09/2025** · price · Campaign agreement 2025-2026
-- **27/09/2025** · Delivery · Incomplete delivery : ACH-2025-001005
-- **08/11/2025** · Delivery · Incomplete delivery : ACH-2025-001167
-- **27/01/2026** · price · annual negotiation 2026
-- **14/02/2026** · Delivery · Incomplete delivery : ACH-2026-000166
-- **21/02/2026** · Delivery · Incomplete delivery : ACH-2026-000189
-- **18/04/2026** · Delivery · Incomplete delivery : ACH-2026-000406
-- **18/08/2026** · shortage · Shortness : T55 traditional French wheat flour (25 kg bag)
+- **27/07/2025** · facture · Service irréprochable sur les fêtes
+- **02/08/2025** · pénurie · Pénurie : mélange multicéréales graines (sac 25 kg) livré en partie
+- **08/09/2025** · prix · Accord de campagne 2025-2026
+- **27/09/2025** · livraison · Livraison incomplète : ACH-2025-001005
+- **08/11/2025** · livraison · Livraison incomplète : ACH-2025-001167
+- **27/01/2026** · prix · Négociation annuelle 2026
+- **14/02/2026** · livraison · Livraison incomplète : ACH-2026-000166
+- **21/02/2026** · livraison · Livraison incomplète : ACH-2026-000189
+- **18/04/2026** · livraison · Livraison incomplète : ACH-2026-000406
+- **18/08/2026** · pénurie · Pénurie : farine de blé T55 tradition française (sac 25 kg)
 
-Full history: 92 events.
+Historique complet : 92 événements.
 
-## Open cases
+## Dossiers ouverts aujourd'hui
 
-None.
+Aucun.
 
-## How to talk to them
+## Comment leur parler
 
-- Talking technical (proteins, W, hydration), he loves.
-- Order Monday or Thursday before 11h.
+- Parler technique (protéines, W, hydratation), il adore.
+- Commander le lundi ou le jeudi avant 11h.

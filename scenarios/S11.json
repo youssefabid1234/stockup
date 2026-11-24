@@ -1,26 +1,12 @@
 {
   "id": "S11",
   "owner": "mohamed-amine",
-  "title": "A simple goodbye",
-  "why": "A social turn should receive a direct reply without waiting phrases.",
+  "title": "Fin d'appel sans phrase d'attente ni clavier",
+  "why": "Écouter le premier son sur la page Voix. On attend une salutation directe. Le rejeu contrôle le texte et les outils.",
   "turns": [
     {
-      "say": "That's all, thanks. Goodbye.",
-      "expect": {
-        "tools_none": [
-          "search",
-          "get_client",
-          "get_product_stock",
-          "get_price",
-          "product_insight",
-          "confirm_order"
-        ],
-        "says_none": [
-          "let me check",
-          "I'm checking",
-          "I'll take a look"
-        ]
-      }
+      "say": "C'est tout, merci. Au revoir.",
+      "expect": {"tools_none": ["search", "get_client", "get_product_stock", "get_price", "product_insight", "confirm_order"], "says_none": ["je regarde", "je vérifie"]}
     }
   ]
 }

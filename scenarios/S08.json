@@ -1,28 +1,27 @@
 {
   "id": "S08",
   "owner": "youssef",
-  "title": "A delivery complaint followed by an order",
-  "why": "Log the missing items before taking the next order.",
+  "title": "(extension) Réclamation puis commande dans le même appel",
+  "why": "Cas 2 : plusieurs sujets dans un appel ; à faire après le cas 1",
   "client": "cli_0001",
   "turns": [
     {
-      "say": "Hello, it's Nadine from Sarrailh. Two sacks of traditional flour were missing from this morning's delivery.",
+      "say": "Bonjour c'est Nadine de chez Sarrailh. La livraison de ce matin, il manquait deux sacs de tradi.",
       "expect": {
         "tools_any": [
           "log_client_event",
           "get_client_history"
         ],
         "says_any": [
-          "sorry",
-          "apologi",
-          "noted",
-          "recorded",
-          "logged"
+          "désolé",
+          "excuse",
+          "noté",
+          "enregistr"
         ]
       }
     },
     {
-      "say": "And for Thursday, put me down for 10 sacks of traditional flour.",
+      "say": "Et pour jeudi, mettez-moi 10 sacs de tradi.",
       "expect": {
         "tools_any": [
           "create_draft_order",

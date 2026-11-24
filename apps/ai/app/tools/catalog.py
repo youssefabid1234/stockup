@@ -12,13 +12,13 @@ from .registry import ToolContext, tool
 @tool
 async def search(
     ctx: ToolContext,
-    query: str = Field(description="What the user said, e.g. an approximate customer name (\"port bistro\"), a product as said, \" CMD-2026-000123 »"),
+    query: str = Field(description="Ce que l'utilisateur a dit, ex. un nom de client approximatif (« bistrot du port »), un produit tel que dit, « CMD-2026-000123 »"),
     types: list[Literal["client", "product", "supplier", "order"]] | None = Field(
-        None, description="Optional: restrict types"
+        None, description="Optionnel : restreindre les types"
     ),
 ) -> list[dict]:
     """
-    Unsure search (accents, errors, product nicknames) in theERP : customers, products, suppliers, orders.
+    Recherche floue (accents, fautes, surnoms de produits) dans l'ERP : clients, produits, fournisseurs, commandes.
     Fuzzy search for clients/products/suppliers/orders. Returns ids to use with the other tools.
     """
     results = await ctx.erp.get("/api/search", {"q": query, "types": ",".join(types) if types else None})
@@ -31,8 +31,8 @@ CLIENT_FIELDS = ("id", "name", "type", "status", "city", "deliveryDays", "paymen
 @tool
 async def get_client(ctx: ToolContext, client_id: str = Field(description="ex. cli_0012")) -> dict:
     """
-    Customer profile: status, conditions, stock, preferences, commercial notes, "usual" (which it usually orders),
-    Open problems and 5 last events of history (get_client_history for the whole history).
+    Fiche client : statut, conditions, encours, préférences, notes des commerciaux, « l'habituel » (ce qu'il commande d'habitude),
+    problèmes ouverts et 5 derniers événements de l'historique (get_client_history pour tout l'historique).
     Client detail incl. usual basket, notes, open issues and latest history events.
     """
     c = await ctx.erp.get(f"/api/clients/{enc(client_id)}")
@@ -55,7 +55,7 @@ async def get_client(ctx: ToolContext, client_id: str = Field(description="ex. c
 @tool
 async def get_product_stock(ctx: ToolContext, product_id: str = Field(description="ex. prd_0042")) -> dict:
     """
-    Stock of a product : available (= physical - reserved), expected arrivals, next DLC, catalogue price.
+    Stock d'un produit : disponible (= physique - réservé), arrivages attendus, prochaine DLC, prix catalogue.
     Product stock, incoming, next expiry and list price.
     """
     p = await ctx.erp.get(f"/api/products/{enc(product_id)}")
@@ -70,7 +70,7 @@ async def get_product_stock(ctx: ToolContext, product_id: str = Field(descriptio
 @tool
 async def find_alternatives(ctx: ToolContext, product_id: str) -> list[dict]:
     """
-    Alternative products available (same category, near price) when a product is missing.
+    Produits de remplacement disponibles (même catégorie, prix proche) quand un produit manque.
     Substitutes in stock for a product. Check the client's notes before proposing a substitution.
     """
     alternatives = await ctx.erp.get(f"/api/products/{enc(product_id)}/alternatives")
@@ -82,9 +82,13 @@ async def get_price(
     ctx: ToolContext,
     client_id: str = Field(description="ex. cli_0012"),
     product_id: str = Field(description="ex. prd_0042"),
-    qty: float | None = Field(None, description="Quantity (default 1): some rules depend on volume"),
+    qty: float | None = Field(None, description="Quantité (défaut 1) : certaines règles dépendent du volume"),
 ) -> dict:
-    """Get the price per sales unit for this customer and quantity, excluding VAT. A negotiated price takes priority over a pricing rule, then the catalogue price."""
+    """
+    Prix de vente d'un produit pour un client (HT, par unité), tel qu'une ligne de commande le recevrait : prix négocié > règle de prix
+    (groupe de clients, groupe/catégorie de produits, quantité minimale) > prix catalogue, avec l'explication. À utiliser pour annoncer un prix.
+    Resolved sell price for a client and quantity, with a French explanation.
+    """
     query = {"clientId": client_id, "productId": product_id, "qty": format_number(qty) if qty else None}
     r = await ctx.erp.get("/api/prices/resolve", query)
     # A volume rule that would give a better price: worth telling the client.
@@ -92,7 +96,7 @@ async def get_price(
         (
             c
             for c in r["candidates"]
-            if c.get("source") == "rule" and (c.get("reason") or "").startswith("from") and c["price"] < r["price"]
+            if c.get("source") == "rule" and (c.get("reason") or "").startswith("à partir de") and c["price"] < r["price"]
         ),
         None,
     )

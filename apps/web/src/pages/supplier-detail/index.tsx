@@ -24,8 +24,8 @@ export default function SupplierDetailPage() {
   if (isError || !s) {
     return (
       <Page>
-        <PageHeader breadcrumb={[{ label: "Suppliers", to: "/suppliers" }]} title={id} />
-        <PageBody><EmptyState icon={Truck} title="Vendor not found" description={`No supplier matches the identifier ${id}.`} /></PageBody>
+        <PageHeader breadcrumb={[{ label: "Fournisseurs", to: "/suppliers" }]} title={id} />
+        <PageBody><EmptyState icon={Truck} title="Fournisseur introuvable" description={`Aucun fournisseur ne correspond à l'identifiant ${id}.`} /></PageBody>
       </Page>
     );
   }
@@ -43,7 +43,7 @@ function SupplierView({ s }: { s: SupplierDetail }) {
   return (
     <Page>
       <PageHeader
-        breadcrumb={[{ label: "Suppliers", to: "/suppliers" }]}
+        breadcrumb={[{ label: "Fournisseurs", to: "/suppliers" }]}
         title={s.name}
         meta={
           <>
@@ -55,19 +55,19 @@ function SupplierView({ s }: { s: SupplierDetail }) {
             value={tab as "overview" | "history" | "context"}
             onChange={setTab}
             items={[
-              { id: "overview", label: "Overview" },
-              { id: "history", label: s.eventStats.open ? <>Background <Dot tone="warning" /></> : "Background", count: s.eventStats.total },
-              { id: "context", label: "Context", count: ctx?.entries.length },
+              { id: "overview", label: "Vue d'ensemble" },
+              { id: "history", label: s.eventStats.open ? <>Historique <Dot tone="warning" /></> : "Historique", count: s.eventStats.total },
+              { id: "context", label: "Contexte", count: ctx?.entries.length },
             ]}
           />
         }
         actions={
           tab === "history" ? (
-            <Button variant="primary" icon={History} onClick={() => setNewEvent("1")}>New event</Button>
+            <Button variant="primary" icon={History} onClick={() => setNewEvent("1")}>Nouvel événement</Button>
           ) : tab === "context" ? (
-            <Button variant="primary" icon={BookOpen} onClick={() => setNewCtx("1")}>New form</Button>
+            <Button variant="primary" icon={BookOpen} onClick={() => setNewCtx("1")}>Nouvelle fiche</Button>
           ) : (
-            <Button variant="primary" icon={Plus} loading={order.isPending} onClick={() => order.mutate(s.id)}>Order</Button>
+            <Button variant="primary" icon={Plus} loading={order.isPending} onClick={() => order.mutate(s.id)}>Commander</Button>
           )
         }
       />
@@ -77,12 +77,12 @@ function SupplierView({ s }: { s: SupplierDetail }) {
           <EntityContext scope="supplier" id={s.id} label={s.name} layout="tab" newOpen={!!newCtx} onNewClose={() => setNewCtx("")} />
         ) : <>
         <StatGrid className="md:grid-cols-5">
-          <Stat label="Delivery time" value={`${s.leadTimeDays} j`} />
-          <Stat label="Conditions" value={s.paymentTermsDays ? `${s.paymentTermsDays} j` : "Cash"} hint="Payment period" />
-          <Stat label="Minimum order" value={<Money value={s.minOrderAmount} compact />} />
-          <Stat label="In progress" value={<Money value={st.openTotal} compact />} tone={st.openCount ? "info" : undefined}
+          <Stat label="Délai de livraison" value={`${s.leadTimeDays} j`} />
+          <Stat label="Conditions" value={s.paymentTermsDays ? `${s.paymentTermsDays} j` : "Comptant"} hint="Délai de paiement" />
+          <Stat label="Minimum de commande" value={<Money value={s.minOrderAmount} compact />} />
+          <Stat label="En cours" value={<Money value={st.openTotal} compact />} tone={st.openCount ? "info" : undefined}
             hint={`${st.openCount} commande${st.openCount > 1 ? "s" : ""}${st.draftCount ? ` · ${st.draftCount} brouillon${st.draftCount > 1 ? "s" : ""}` : ""}`} />
-          <Stat label="Total purchased" value={<Money value={st.doneTotal} compact />} hint={`${st.doneCount} commande${st.doneCount > 1 ? "s" : ""}`} />
+          <Stat label="Total acheté" value={<Money value={st.doneTotal} compact />} hint={`${st.doneCount} commande${st.doneCount > 1 ? "s" : ""}`} />
         </StatGrid>
 
         <div className="grid grid-cols-1 gap-8 px-5 py-5 xl:grid-cols-[minmax(0,1fr)_340px]">
@@ -91,14 +91,14 @@ function SupplierView({ s }: { s: SupplierDetail }) {
             <PurchaseOrders supplierId={s.id} onOrder={() => order.mutate(s.id)} />
           </div>
           <aside className="flex min-w-0 flex-col gap-7">
-            <Section title="Information">
+            <Section title="Informations">
               <KeyValue
                 labelWidth={120}
                 items={[
-                  { label: "City", value: s.city || "—" },
-                  { label: "Categories", value: s.categories.length ? <span className="flex flex-wrap gap-1">{s.categories.map((c) => <Badge key={c}>{categoryLabel(c)}</Badge>)}</span> : "—" },
-                  { label: "Delay", value: `${s.leadTimeDays} day${s.leadTimeDays > 1 ? "s" : ""}` },
-                  { label: "Payment", value: s.paymentTermsDays ? `${s.paymentTermsDays} days` : "Cash" },
+                  { label: "Ville", value: s.city || "—" },
+                  { label: "Catégories", value: s.categories.length ? <span className="flex flex-wrap gap-1">{s.categories.map((c) => <Badge key={c}>{categoryLabel(c)}</Badge>)}</span> : "—" },
+                  { label: "Délai", value: `${s.leadTimeDays} jour${s.leadTimeDays > 1 ? "s" : ""}` },
+                  { label: "Paiement", value: s.paymentTermsDays ? `${s.paymentTermsDays} jours` : "Comptant" },
                   { label: "Minimum", value: <Money value={s.minOrderAmount} /> },
                 ]}
               />
@@ -118,29 +118,29 @@ function SupplierView({ s }: { s: SupplierDetail }) {
 
 type PriceRow = SupplierDetail["prices"][number];
 const PRICE_COLS: Column<PriceRow>[] = [
-  { id: "product", header: "Product", sortValue: (p) => p.productName, cell: (p) => <span className="font-medium">{p.productName}</span> },
-  { id: "unit", header: "Unit", width: 80, muted: true, cell: (p) => UNIT_LABEL[p.unit as keyof typeof UNIT_LABEL] ?? p.unit },
-  { id: "updated", header: "Updated", width: 130, sortValue: (p) => p.updatedAt, cell: (p) => <DateLabel date={p.updatedAt} className="text-muted-foreground" /> },
-  { id: "price", header: "Purchase price HT", width: 140, numeric: true, sortValue: (p) => p.price, cell: (p) => <Money value={p.price} className="font-medium" /> },
+  { id: "product", header: "Produit", sortValue: (p) => p.productName, cell: (p) => <span className="font-medium">{p.productName}</span> },
+  { id: "unit", header: "Unité", width: 80, muted: true, cell: (p) => UNIT_LABEL[p.unit as keyof typeof UNIT_LABEL] ?? p.unit },
+  { id: "updated", header: "Mis à jour", width: 130, sortValue: (p) => p.updatedAt, cell: (p) => <DateLabel date={p.updatedAt} className="text-muted-foreground" /> },
+  { id: "price", header: "Prix d'achat HT", width: 140, numeric: true, sortValue: (p) => p.price, cell: (p) => <Money value={p.price} className="font-medium" /> },
 ];
 function PriceList({ prices }: { prices: PriceRow[] }) {
   const navigate = useNavigate();
   return (
-    <Section title="Price list" count={prices.length}>
+    <Section title="Liste de prix" count={prices.length}>
       <DataTable inset pageKey="pricesPage" columns={PRICE_COLS} rows={prices} getRowId={(p) => p.productId} defaultSort={{ id: "product", dir: "asc" }}
         onRowClick={(p) => navigate(`/products/${p.productId}`)}
-        empty={<EmptyFrame icon={Tag} text="There are no listed prices for this supplier." />} />
+        empty={<EmptyFrame icon={Tag} text="Aucun prix référencé chez ce fournisseur." />} />
     </Section>
   );
 }
 
 const PO_COLS: Column<PurchaseOrderSummary>[] = [
   { id: "number", header: "N°", width: 170, sortKey: "number", cell: (p) => <Mono>{p.number}</Mono> },
-  { id: "created", header: "Created", width: 120, sortKey: "createdAt", cell: (p) => <DateLabel date={p.createdAt} className="text-muted-foreground" /> },
-  { id: "expected", header: "Planned delivery", sortKey: "date", cell: (p) => <DateLabel date={p.expectedDate} /> },
-  { id: "lines", header: "Lines", width: 70, numeric: true, muted: true, cell: (p) => p.lineCount },
+  { id: "created", header: "Créée", width: 120, sortKey: "createdAt", cell: (p) => <DateLabel date={p.createdAt} className="text-muted-foreground" /> },
+  { id: "expected", header: "Livraison prévue", sortKey: "date", cell: (p) => <DateLabel date={p.expectedDate} /> },
+  { id: "lines", header: "Lignes", width: 70, numeric: true, muted: true, cell: (p) => p.lineCount },
   { id: "total", header: "Total HT", width: 110, numeric: true, sortKey: "total", cell: (p) => <Money value={p.totalHt} /> },
-  { id: "status", header: "Status", width: 160, sortKey: "status", cell: (p) => <StatusDot kind="purchaseOrder" value={p.status} /> },
+  { id: "status", header: "Statut", width: 160, sortKey: "status", cell: (p) => <StatusDot kind="purchaseOrder" value={p.status} /> },
 ];
 /** Every purchase order of the supplier, newest first, one server page at a time. */
 function PurchaseOrders({ supplierId, onOrder }: { supplierId: string; onOrder: () => void }) {
@@ -148,13 +148,13 @@ function PurchaseOrders({ supplierId, onOrder }: { supplierId: string; onOrder: 
   const list = useServerList({ pageKey: "ordersPage", sortKey: "ordersSort", defaultSort: { id: "createdAt", dir: "desc" } });
   const { data, isLoading } = usePurchaseOrdersPage({ supplierId, ...list.params });
   return (
-    <Section title="Purchase orders" count={data?.total}>
+    <Section title="Commandes d'achat" count={data?.total}>
       <DataTable inset server={{ list, total: data?.total }} columns={PO_COLS} rows={data?.items} loading={isLoading} getRowId={(p) => p.id}
         onRowClick={(p) => navigate(`/purchase-orders/${p.id}`)}
         empty={
           <div className="flex items-center gap-2 rounded-[6px] border border-dashed border-border px-3 py-2 text-[12.5px] text-muted-foreground">
-            <ShoppingBasket size={14} strokeWidth={1.75} />No orders placed at this supplier.
-            <Button size="sm" variant="ghost" icon={Plus} className="ml-auto" onClick={onOrder}>Order</Button>
+            <ShoppingBasket size={14} strokeWidth={1.75} />Aucune commande passée chez ce fournisseur.
+            <Button size="sm" variant="ghost" icon={Plus} className="ml-auto" onClick={onOrder}>Commander</Button>
           </div>
         } />
     </Section>
@@ -165,7 +165,7 @@ function Contacts({ contacts }: { contacts: SupplierDetail["contacts"] }) {
   return (
     <Section title="Contacts" count={contacts.length}>
       {contacts.length === 0 ? (
-        <div className="text-[12.5px] text-muted-foreground">No contact information.</div>
+        <div className="text-[12.5px] text-muted-foreground">Aucun contact renseigné.</div>
       ) : (
         <ul className="flex flex-col divide-y divide-border rounded-[6px] border border-border bg-card">
           {contacts.map((ct, i) => (
@@ -197,7 +197,7 @@ function EmptyFrame({ icon: Icon, text }: { icon: typeof Truck; text: string }) 
 function DetailSkeleton() {
   return (
     <Page>
-      <PageHeader breadcrumb={[{ label: "Suppliers", to: "/suppliers" }]} title={<Skeleton className="h-4 w-48" />} />
+      <PageHeader breadcrumb={[{ label: "Fournisseurs", to: "/suppliers" }]} title={<Skeleton className="h-4 w-48" />} />
       <PageBody flush>
         <StatGrid className="md:grid-cols-5">
           {Array.from({ length: 5 }).map((_, i) => <Stat key={i} label={<Skeleton className="h-3 w-20" />} value={<Skeleton className="mt-1 h-5 w-24" />} />)}

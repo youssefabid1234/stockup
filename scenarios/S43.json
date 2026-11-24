@@ -1,12 +1,12 @@
 {
   "id": "S43",
   "owner": "daycem",
-  "title": "Les Carmes asks about an out-of-stock butter without a recorded substitution preference",
-  "why": "Ask permission before naming an alternative or changing the order.",
+  "title": "Pâtisserie Les Carmes : tourage AOP en rupture, fiche muette sur les remplacements → demander d'abord, sans nommer",
+  "why": "Intelligent : sans préférence connue, on demande au client s'il accepte un équivalent avant d'en nommer un ; rien n'est ajouté à la commande sans son accord.",
   "client": "cli_0012",
   "turns": [
     {
-      "say": "Hello, Pâtisserie Les Carmes here. I need 20 kilos of AOP laminating butter.",
+      "say": "Bonjour, Pâtisserie Les Carmes. Il me faudrait 20 kilos de tourage AOP.",
       "expect": {
         "tools_none": [
           "create_draft_order",
@@ -14,15 +14,15 @@
           "confirm_order"
         ],
         "says_any": [
-          "equivalent",
-          "another product",
-          "replacement",
-          "instead"
+          "équivalent",
+          "autre produit",
+          "remplac",
+          "à la place"
         ],
         "says_none": [
           "82",
-          "eighty-two",
-          "unknown",
+          "quatre-vingt-deux",
+          "inconnu",
           "substitution"
         ]
       }

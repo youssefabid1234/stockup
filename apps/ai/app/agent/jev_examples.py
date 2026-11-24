@@ -10,8 +10,8 @@ turn without a full LLM round-trip, and tell you when it is unsure (low confiden
     jev = get_jev_client()                      # None when JEV_API_KEY is not set: keep the LLM path then
     if jev:
         hits = await ctx.erp.get("/api/search", {"q": "du bar", "types": "product"})
-        product_id = await pick_product(Jev, "I need 5 kilos of line bar," hits)
-        # → "prd_0042", or None: too close to call, let the LLM Ask "what?"
+        product_id = await pick_product(jev, "Il me faut 5 kilos de bar de ligne", hits)
+        # → "prd_0042", or None: too close to call, let the LLM ask "lequel ?"
 
 Inside a @tool, `ctx.erp` is there already; elsewhere use `ErpClient("voice_agent")` (app.tools).
 """
@@ -28,7 +28,7 @@ async def pick_product(jev: JevClient, utterance: str, candidates: list[dict], m
         return next(iter(options), None)
     decision = await jev.choose(
         {"ce_que_dit_le_client": utterance},
-        "What product does the customer ask for in the catalogue?",
+        "Quel produit du catalogue le client demande-t-il ?",
         options,
     )
     return decision.choice if decision.confidence >= min_confidence else None
@@ -38,6 +38,6 @@ async def is_yes(jev: JevClient, question_asked: str, answer: str) -> bool | Non
     """Did the caller confirm? True / False, or None when unclear ("euh… plutôt le gros"): ask again."""
     p = await jev.yes_no(
         {"question_posee": question_asked, "reponse_du_client": answer},
-        "The client confirms or accepts what is offered.",
+        "Le client confirme ou accepte ce qu'on lui propose.",
     )
     return True if p >= 0.8 else False if p <= 0.2 else None

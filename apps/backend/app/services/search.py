@@ -1,5 +1,5 @@
 """Global fuzzy search (accent/case-insensitive, token-based) — what the voice agent uses to turn
-"it's the Lemoine fish shop" or "the wolf for the bistro" into a client id and a product id.
+"c'est la poissonnerie Lemoine" or "le loup pour le bistrot" into a client id and a product id.
 
 Query and fields are normalised (lowercase, no accents/punctuation), split into tokens, and French
 fillers/stopwords are dropped ("bonjour c'est la …", "je voudrais … pour …"). Each candidate has a few
@@ -33,11 +33,6 @@ STOPWORDS = set(
         "kg kilo kilos kilogramme kilogrammes g gr gramme grammes pce pces piece pieces douz douzaine douzaines litre litres "
         "demain aujourd hui ce soir matin apres midi"
     ).split(" ")
-)
-STOPWORDS.update(
-    "the these this that some my your from for with and of in on to it is are please hello hi thanks "
-    "would could like want need order add have can get me today tomorrow morning evening "
-    "kilo kilos kilogram kilograms gram grams litre litres liter liters pieces units dozens".split()
 )
 # Spoken/written abbreviations expanded before matching.
 ABBREV = {"st": "saint", "ste": "sainte", "sts": "saints", "bd": "boulevard", "av": "avenue"}
@@ -117,7 +112,7 @@ def _best(qc: list[str], fields: list[tuple[str | None, float]]) -> int:
     return js_round(s)
 
 
-UNIT_SHORT = {"kg": "kg", "piece": "pc", "box": "box", "dozen": "doz.", "liter": "L"}
+UNIT_SHORT = {"kg": "kg", "piece": "pce", "box": "colis", "dozen": "douz.", "liter": "L"}
 
 
 def _price_label(price: float, unit: str) -> str:
@@ -147,7 +142,7 @@ def search(raw_query: str, types: list[str] | None = None, limit: int = 20) -> l
             if phone_q:
                 phones = [(re.sub(r"\D", "", ct["phone"])[-9:] if ct.get("phone") else None, 0.9) for ct in c["contacts"]]
                 phone_score = _best(phone_q, phones)
-            blocked = " · blocked" if c["status"] == "blocked" else ""
+            blocked = " · bloqué" if c["status"] == "blocked" else ""
             push({"type": "client", "id": c["id"], "label": c["name"], "sublabel": f"{c['code']} · {c['city']}{blocked}",
                   "score": max(_best(qc, fields), phone_score)})  # fmt: skip
     if "product" in want:

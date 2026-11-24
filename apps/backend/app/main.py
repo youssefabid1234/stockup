@@ -148,7 +148,7 @@ async def invalid_request(_: Request, exc: RequestValidationError):
     issues = []
     for e in exc.errors():
         if e["type"] == "json_invalid":
-            return error(400, "invalid_json", "Invalid JSON request body")
+            return error(400, "invalid_json", "Corps de requête JSON invalide")
         path = ".".join(str(p) for p in e["loc"][1:]) or "body"
         issues.append(f"{path}: {_message(e)}")
     return error(400, "validation_error", "; ".join(issues))
@@ -157,7 +157,7 @@ async def invalid_request(_: Request, exc: RequestValidationError):
 @app.exception_handler(StarletteHTTPException)
 async def http_error(request: Request, exc: StarletteHTTPException):
     if exc.status_code in (404, 405):
-        return error(404, "not_found", f"Unknown route: {request.method} {request.url.path}")
+        return error(404, "not_found", f"Route inconnue : {request.method} {request.url.path}")
     return error(exc.status_code, "http_error", str(exc.detail))
 
 

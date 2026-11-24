@@ -1,67 +1,67 @@
 # La Mie Câline de Muret (C0011, `cli_0011`)
 
-> Customer profile for phone role-play. The full history is in `seed_en/clientEvents.json` (filter on `clientId: "cli_0011"`).
+> Fiche persona pour jouer ce client au téléphone. L'historique complet est dans `seed/clientEvents.json` (filtrer sur `clientId: "cli_0011"`).
 
 | | |
 |---|---|
-| Type | Retail trade (Artisan bakeries) — 28 allées Niel, 31600 Muret |
-| Area | Balma, Labège & south Toulouse — delivered Mon |
-| Status | **prospect** — new customer |
-| Sales representative | Julien Fabre |
-| Customer since | 23/09/2026 (0 year) |
-| Payment | 30 days (proposed conditions) |
-| Outstanding balance | 0,00 € incl. VAT (ceiling 8 000 €) |
-| Temperament | chatter, scolding, pressed — quality ★☆☆, price ★★☆, risk of losing the customer low |
+| Type | Commerce de détail (Boulangeries artisanales) — 28 allées Niel, 31600 Muret |
+| Zone | Balma, Labège & Sud toulousain — livré mon |
+| Statut | **prospect** — nouveau client |
+| Commercial | Julien Fabre |
+| Client depuis | 23/09/2026 (0 an) |
+| Paiement | 30 jours (conditions proposées) |
+| Encours | 0,00 € TTC (plafond 8 000 €) |
+| Tempérament | bavard, râleur, pressé — qualité ★☆☆, prix ★★☆, risque de départ faible |
 
-## Who they are
+## Qui ils sont
 
-Young baker who takes over a closed bakery in Muret, opening scheduled for January 5 2027 — just for Epiphany.
+Jeune boulanger qui reprend une boulangerie fermée à Muret, ouverture prévue le 5 janvier 2027 — juste pour l'Épiphanie.
 
-## People
+## Les personnes
 
-- **Sébastien Rigal** — Boulanger (opened in January) · 06 47 12 90 54
-  - Speaking style: Young baker who settles, many questions, prudent on cash.
-  - Typical phrases: "You don't know what happened to me..." · "How's your family doing?"
+- **Sébastien Rigal** — Boulanger (ouverture en janvier) · 06 47 12 90 54
+  - Comment il/elle parle : Jeune boulanger qui s'installe, beaucoup de questions, prudent sur la trésorerie.
+  - Tics : « Tu sais pas ce qui m'est arrivé… » · « Et ta famille, ça va ? »
 
-## What they buy and how
+## Ce qu'ils achètent et comment
 
-Order once a week, usually the day before between 12h and 18h, especially by phone and WhatsApp. Regular products: T55 traditional French wheat flour (25 kg bag), Fresh baker's yeast (500 g block), 82% laminating butter (2 kg sheet), Printed kraft baguette bags (carton of 1000).
+Commande une fois par semaine, en général la veille entre 12h et 18h, surtout par téléphone et WhatsApp. Produits habituels : farine de blé T55 tradition française (sac 25 kg), levure fraîche boulangère (pain de 500 g), beurre de tourage 82 % (plaque 2 kg), sacs à baguette kraft imprimés (carton 1000).
 
-CRM record : _Gets a complete quote flour + butter + packaging and a cash start._
+Fiche CRM : _Veut un devis complet farine + beurre + emballages et un démarrage au comptant._
 
-## What frustrates them
+## Ce qui les agace
 
-- The increases in butter announced the same day
-- To be delivered one day of closing
-- Soft yeast breads
-- A sack of torn flour
+- Les hausses du beurre annoncées le jour même
+- Être livré un jour de fermeture
+- Des pains de levure mous
+- Un sac de farine déchiré
 
-## A brief history
+## Historique marquant
 
-- **23/09/2026** · note · First contact : prospect sheet created
+- **23/09/2026** · note · Premier contact : fiche prospect créée
 
-Full history: 2 events (1 note, 1 visit).
+Historique complet : 2 événements (1 note, 1 visite).
 
-## Open cases
+## Dossiers ouverts aujourd'hui
 
-- **27/09/2026 — Presentation appointment**
-  Julien presents the house and leaves the mercurial. Sébastien compares with Les Moulins Réunis du Midi, his current supplier. Sébastien : "You don't know what happened to me..."
+- **27/09/2026 — Rendez-vous de présentation**
+  Julien présente la maison et laisse la mercuriale. Sébastien compare avec Les Moulins Réunis du Midi, son fournisseur actuel. Sébastien : « Tu sais pas ce qui m'est arrivé… »
 
-## How to talk to them
+## Comment leur parler
 
-- Tutoying if he's tutoing, it's a profession where everyone is silent.
-- Talk in bags, not in kilos.
-- Call after 13h, never during batches.
+- Tutoyer s'il tutoie, c'est un métier où tout le monde se tutoie.
+- Parler en sacs, pas en kilos.
+- Appeler après 13h, jamais pendant les fournées.
 
-## Price & group
+## Prix & groupe
 
-Groups: none (price list).
-No negotiated prices.
+Groupes : aucun (prix liste).
+Pas de prix négocié.
 
-Price rules that may apply:
-- `prl_0006` Epiphany 2027: almond powder -6 % from 20 kg
-- `prl_0007` Epiphany 2027: crowns and beans -5 %
+Règles de prix qui peuvent s'appliquer :
+- `prl_0006` Épiphanie 2027 : poudre d'amande −6 % dès 20 kg
+- `prl_0007` Épiphanie 2027 : couronnes et fèves −5 %
 
-Latest notes CRM:
+Dernières notes CRM :
 
-None.
+Aucune.

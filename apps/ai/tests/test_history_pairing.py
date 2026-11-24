@@ -55,7 +55,7 @@ class TurnRecorder:
         self._close_open_calls()
         last = self.messages[-1] if self.messages else None
         if not last or last.role != "assistant" or last.tool_calls:
-            self.messages.append(ChatMessage(role="assistant", content=self.text.strip() or "(response interrupted)"))
+            self.messages.append(ChatMessage(role="assistant", content=self.text.strip() or "(réponse interrompue)"))
         return self.messages
 
     def _close_open_calls(self) -> None:
@@ -170,9 +170,9 @@ async def run(steps, history=None, max_steps=None):
 
 
 SCENARIOS = {
-    "two_chained_rounds_no_text": [[call("a")], [call("b")], [LLMText("There.")]],
+    "two_chained_rounds_no_text": [[call("a")], [call("b")], [LLMText("Voilà.")]],
     "parallel_then_second_round": [[call("a"), call("b")], [call("c")], [LLMText("OK.")]],
-    "text_and_calls_same_step": [[LLMText("Let me check."), call("a")], [LLMText("Again "), call("b"), call("c")], [LLMText("Fait.")]],
+    "text_and_calls_same_step": [[LLMText("Je regarde."), call("a")], [LLMText("Encore "), call("b"), call("c")], [LLMText("Fait.")]],
     "tool_error_result": [[call("a", "fail")], [call("b", "unknown_tool")], [LLMText("Erreur.")]],
     "whitespace_text_before_calls": [[LLMText("\n\n"), call("a")], [LLMText("OK")]],
 }
@@ -216,7 +216,7 @@ async def test_error_after_some_tool_results():
         rec.push(ev)
     assert server[-1].role == "tool"  # the loop leaves the done rounds, paired
     browser = [ChatMessage(role="user", content="go"), *rec.finish()]
-    assert browser[-1].content == "(response interrupted)"
+    assert browser[-1].content == "(réponse interrompue)"
     assert_paired(browser)
     assert_anthropic_valid([*browser, ChatMessage(role="user", content="encore")])
 
@@ -253,14 +253,14 @@ def test_sanitize_keeps_a_valid_history_unchanged():
 
 def test_sanitize_old_turnrecorder_bug_shape():
     """The pre-fix browser history: round 2's result glued under round 1's assistant, round 2's call lost."""
-    bad = [U, A("", "a"), R("a"), R("b"), A("There."), U]
+    bad = [U, A("", "a"), R("a"), R("b"), A("Voilà."), U]
     fixed = sanitize_history(bad)
-    assert fixed == [U, A("", "a"), R("a"), A("There."), U]
+    assert fixed == [U, A("", "a"), R("a"), A("Voilà."), U]
     assert_anthropic_valid(fixed)
 
 
 def test_sanitize_missing_and_dangling_results_get_interrupted():
-    fixed = sanitize_history([U, A("", "a", "b"), R("b"), U, A("I create", "c")])
+    fixed = sanitize_history([U, A("", "a", "b"), R("b"), U, A("je crée", "c")])
     assert [(m.role, m.tool_call_id) for m in fixed] == [("user", None), ("assistant", None), ("tool", "a"), ("tool", "b"), ("user", None), ("assistant", None), ("tool", "c")]
     assert fixed[2].content == INTERRUPTED and fixed[6].content == INTERRUPTED and fixed[6].name == "lookup"
     assert_paired(fixed)
@@ -295,7 +295,7 @@ def test_sanitize_blank_text_with_calls_and_result_name_filled():
 
 
 def test_every_provider_conversion_after_sanitize():
-    fixed = sanitize_history([U, A("Let me check.", "a", "b"), R("a"), R("zz"), A("", "c")])
+    fixed = sanitize_history([U, A("Je regarde.", "a", "b"), R("a"), R("zz"), A("", "c")])
     assert_anthropic_valid(fixed)
     oa = [to_openai_message(m) for m in fixed]
     ids = [tc["id"] for m in oa if m.get("tool_calls") for tc in m["tool_calls"]]
@@ -370,18 +370,18 @@ async def _barge_in(session, conv, text, after=0.05):
 
 
 async def test_voice_barge_in_mid_tool_keeps_done_rounds_and_stays_valid(monkeypatch):
-    session, conv, _ = voice_session_with(monkeypatch, [[call("a")], [LLMText("I'm creating."), call("s", "slow")]])
-    await _barge_in(session, conv, "creates the command")
+    session, conv, _ = voice_session_with(monkeypatch, [[call("a")], [LLMText("Je crée."), call("s", "slow")]])
+    await _barge_in(session, conv, "crée la commande")
     h = conv.history
     assert [m.role for m in h] == ["user", "assistant", "tool", "assistant", "tool"]
     assert h[2].tool_call_id == "a" and h[2].content != INTERRUPTED  # the round that ran stays known
     assert h[4].tool_call_id == "s" and h[4].content == INTERRUPTED
     assert_paired(h)
-    assert_anthropic_valid([*h, ChatMessage(role="user", content="So what?")])
+    assert_anthropic_valid([*h, ChatMessage(role="user", content="et alors ?")])
 
 
 async def test_voice_barge_in_keeps_tools_without_unspoken_text(monkeypatch):
-    session, conv, _ = voice_session_with(monkeypatch, [[call("a")], [LLMText("Here's the"), "SLEEP"]])
+    session, conv, _ = voice_session_with(monkeypatch, [[call("a")], [LLMText("Voici le"), "SLEEP"]])
     await _barge_in(session, conv, "liste")
     assert [m.role for m in conv.history] == ["user", "assistant", "tool"]
     assert not any(m["type"] == "agent_text" for m in session.ws.sent)
@@ -389,9 +389,9 @@ async def test_voice_barge_in_keeps_tools_without_unspoken_text(monkeypatch):
 
 
 async def test_voice_barge_in_during_last_audio_does_not_duplicate_the_turn(monkeypatch):
-    session, conv, _ = voice_session_with(monkeypatch, [[LLMText("Hello, I'm here. ")]], tts_sleep=True)
+    session, conv, _ = voice_session_with(monkeypatch, [[LLMText("Bonjour. Je suis là. ")]], tts_sleep=True)
     await _barge_in(session, conv, "allo", after=0.1)
-    assert [(m.role, m.content) for m in conv.history] == [("user", "allo"), ("assistant", "Hello, I'm here.")]
+    assert [(m.role, m.content) for m in conv.history] == [("user", "allo"), ("assistant", "Bonjour. Je suis là.")]
 
 
 async def test_voice_error_mid_turn_then_next_turn_valid(monkeypatch):
@@ -424,20 +424,20 @@ async def test_voice_sends_only_the_customer_facing_reply(monkeypatch):
             return await super().synthesize(text, voice)
 
     monkeypatch.setenv("TEAM_FILLERS", "0")
-    reply = "Hello. Yes, we have T55 flour in stock."
+    reply = "Bonjour. Oui, il nous reste de la farine T55."
     session, conv, _ = voice_session_with(
         monkeypatch,
         [
-            [LLMText("I need to check the stock. "), call("a")],
-            [LLMText("Analysis: stock is available. I'll tell Nadine. "), LLMText(reply)],
+            [LLMText("Je dois consulter le stock. "), call("a")],
+            [LLMText("Analyse : le stock est disponible. Je vais le dire à Nadine. "), LLMText(reply)],
         ],
     )
     monkeypatch.setattr(voice_session, "get_tts_client", RecordingTTS)
-    await session.run_turn(conv, text="You have flour. T55 ?")
+    await session.run_turn(conv, text="Vous avez de la farine T55 ?")
 
     text = [m["delta"] for m in session.ws.sent if m["type"] == "agent_text"]
     assert text == [reply]
-    assert spoken == ["Hello.", "Yes, we have T55 flour in stock."]
+    assert spoken == ["Bonjour.", "Oui, il nous reste de la farine T55."]
     assert session.ws.sent[-1]["text"] == reply
     assert [m.content for m in conv.history if m.role == "assistant"] == ["", reply]
     assert_paired(conv.history)

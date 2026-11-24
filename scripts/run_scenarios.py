@@ -1,5 +1,5 @@
 """
-Team 12 · Replay our call scenarios against the running agent and check the results. OWNERYoussef.
+Team 12 · Replay our call scenarios against the running agent and check the results. OWNER: Youssef.
 
 Real life: before opening the switchboard, Lucie's manager plays 8 typical calls and checks every answer.
 Here: each scenarios/*.json is a call (several turns). For each turn we send the caller's words, collect what the
@@ -170,8 +170,8 @@ async def run(args) -> int:
                     problems = check(turn, got)
                     failed += bool(problems)
                     status = "PASS" if not problems else "FAIL"
-                    print(f"[{i}] customer: {turn['say']}")
-                    print(f"    Officer: {got['text']}")
+                    print(f"[{i}] client : {turn['say']}")
+                    print(f"    agent  : {got['text']}")
                     print(f"    tools  : {', '.join(got['tools']) or '-'} · {got.get('ms')} ms"
                           + (f" · first text {got['firstTextMs']} ms" if got.get("firstTextMs") is not None else ""))
                     print(f"    {status}" + (f" — {'; '.join(problems)}" if problems else ""))

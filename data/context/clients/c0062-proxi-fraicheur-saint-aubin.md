@@ -1,91 +1,91 @@
 # Proxi Fraîcheur Saint-Aubin (C0062, `cli_0062`)
 
-> Customer profile for phone role-play. The full history is in `seed_en/clientEvents.json` (filter on `clientId: "cli_0062"`).
+> Fiche persona pour jouer ce client au téléphone. L'historique complet est dans `seed/clientEvents.json` (filtrer sur `clientId: "cli_0062"`).
 
 | | |
 |---|---|
-| Type | Large area (Bread Rays and Supermarket Cooking Terminals) — 64 rue Thiers, 31200 Toulouse (Minimes) |
-| Area | Fondeyre, L'Union & Nord Toulousein — delivered Tue, Thu, Sat |
-| Status | **active** — regular customer |
-| Sales representative | Karim Belkacem |
-| Customer since | 03/03/2014 (12 years) |
-| Payment | 45 days — Pays on due date, without history |
-| Outstanding balance | 27 373,58 € incl. VAT (ceiling 35 000 €) |
-| Temperament | pressed — quality ★☆☆, price ★☆☆, risk of losing the customer low |
+| Type | Grande surface (Rayons pain et terminaux de cuisson de supermarchés) — 64 rue Thiers, 31200 Toulouse (Minimes) |
+| Zone | Fondeyre, L'Union & Nord toulousain — livré tue, thu, sat |
+| Statut | **active** — client régulier |
+| Commercial | Karim Belkacem |
+| Client depuis | 03/03/2014 (12 ans) |
+| Paiement | 45 jours — paie à l'échéance, sans histoire |
+| Encours | 27 373,58 € TTC (plafond 35 000 €) |
+| Tempérament | pressé — qualité ★☆☆, prix ★☆☆, risque de départ faible |
 
-## Who they are
+## Qui ils sont
 
-Toulouse Supermarket (Minimes) with cooking terminal: pre-cooked chopsticks and pastries raw cooked on site all day long. The head of the department orders by mail in the morning.
+Supermarché de Toulouse (Minimes) avec terminal de cuisson : baguettes précuites et viennoiseries crues cuites sur place toute la journée. Le chef de rayon commande par mail le matin.
 
-## People
+## Les personnes
 
-- **Karim Vincent** — Head of bakery department · 06 82 93 97 40 · karim@proxifraicheursaintaubin.fr
-  - Speaking style: Calls between two services, hang up fast.
-  - Typical phrases: "It's okay? I'm hanging up." · "Quick, I don't have time."
-- **Service comptabilité** — Bills · factures@proxifraicheursaintaubin.fr
+- **Karim Vincent** — Chef de rayon boulangerie · 06 82 93 97 40 · karim@proxifraicheursaintaubin.fr
+  - Comment il/elle parle : Appelle entre deux services, raccroche vite.
+  - Tics : « C'est bon ? Je raccroche. » · « Vite, j'ai pas le temps. »
+- **Service comptabilité** — Factures · factures@proxifraicheursaintaubin.fr
 
-## What they buy and how
+## Ce qu'ils achètent et comment
 
-Order three times a week, usually the day before between 11h and 16h, especially via e-mail and web portal. Regular products: Frozen par-baked baguette 280 g (carton of 60), Raw frozen all-butter croissant 70 g (carton of 150), Raw frozen all-butter pain au chocolat 75 g (carton of 140), Porcelain king cake charms (pack of 100), Gold round cake boards 28 cm (pack of 100), Frozen raspberry purée (1 kg tray), UHT liquid cream 35% (1 L carton), Thick crème fraîche 30% (5 L tub).
+Commande trois fois par semaine, en général la veille entre 11h et 16h, surtout par e-mail et portail web. Produits habituels : baguette précuite surgelée 280 g (carton 60), croissant pur beurre cru surgelé 70 g (carton 150), chocolatine pur beurre crue surgelée 75 g (carton 140), fèves des rois en porcelaine (sachet de 100), semelles dorées rondes 28 cm (lot de 100), purée de framboise surgelée (barquette 1 kg), crème liquide UHT 35 % (brique 1 L), crème fraîche épaisse 30 % (seau 5 L).
 
-Over the last 90 days (33 orders delivered):
+Sur les 90 derniers jours (33 commandes livrées) :
 
-| Product | 90-day volume | Lines | Last price |
+| Produit | Volume 90 j | Lignes | Dernier prix |
 |---|---|---|---|
-| Raw frozen all-butter croissant 70 g (carton of 150) (`prd_0053`) | 218,00 box | 16 | 49,40 € |
-| Printed kraft baguette bags (carton of 1000) (`prd_0065`) | 269,00 box | 17 | 22,00 € |
-| Raw frozen all-butter pain au chocolat 75 g (carton of 140) (`prd_0054`) | 108,00 box | 14 | 51,30 € |
-| T45 gruau pastry flour (25 kg bag) (`prd_0003`) | 235,00 piece | 12 | 23,37 € |
-| UHT liquid cream 35% (1 L carton) (`prd_0031`) | 1 121,00 liter | 15 | 4,10 € |
-| Frozen par-baked baguette 280 g (carton of 60) (`prd_0058`) | 195,00 box | 9 | 22,80 € |
-| White pastry boxes 20 cm (pack of 50) (`prd_0067`) | 189,00 box | 17 | 14,50 € |
-| Thick crème fraîche 30% (5 L tub) (`prd_0032`) | 504,00 liter | 15 | 4,58 € |
+| Croissant pur beurre cru surgelé 70 g (carton 150) (`prd_0053`) | 218,00 colis | 16 | 49,40 € |
+| Sacs à baguette kraft imprimés (carton 1000) (`prd_0065`) | 269,00 colis | 17 | 22,00 € |
+| Chocolatine pur beurre crue surgelée 75 g (carton 140) (`prd_0054`) | 108,00 colis | 14 | 51,30 € |
+| Farine de gruau T45 pâtissière (sac 25 kg) (`prd_0003`) | 235,00 pièce | 12 | 23,37 € |
+| Crème liquide UHT 35 % (brique 1 L) (`prd_0031`) | 1 121,00 litre | 15 | 4,10 € |
+| Baguette précuite surgelée 280 g (carton 60) (`prd_0058`) | 195,00 colis | 9 | 22,80 € |
+| Boîtes pâtissières blanches 20 cm (lot de 50) (`prd_0067`) | 189,00 colis | 17 | 14,50 € |
+| Crème fraîche épaisse 30 % (seau 5 L) (`prd_0032`) | 504,00 litre | 15 | 4,58 € |
 
-CRM record : _Delivery at the dock before 8h. Order by mail with the order number store. Delivered on. game. sam. Accept equivalent substitutions if notified._
+Fiche CRM : _Livraison au quai avant 8h. Commande par mail avec le numéro de commande magasin. Livré mar. jeu. sam. Accepte les substitutions équivalentes si on prévient._
 
-## What frustrates them
+## Ce qui les agace
 
-- Delivery out of dock niche
-- Cartons damaged
-- Difference between BL and invoice
+- Livraison hors créneau de quai
+- Cartons abîmés
+- Écart entre BL et facture
 
-## A brief history
+## Historique marquant
 
-- **11/12/2018** · special request · Holidays 2018 : reservation
-- **04/12/2020** · special request · Holidays 2020 : reservation
-- **04/04/2022** · price · Tariff increase (diesel, energy)
-- **17/12/2023** · special request · Holidays 2023 : volume reservation
-- **30/12/2023** · Quality · Quality : UHT liquid cream 35% (1 L carton)
-- **15/01/2024** · prices · Rates 2024
-- **21/10/2025** · Quality · Quality : Raw frozen all-butter pain au chocolat 75 g (carton of 140)
-- **22/10/2025** · Have quality : Raw frozen all-butter pain au chocolat 75 g (carton of 140)
-- **25/10/2025** · Delivery · Delivery left at the door
-- **20/01/2026** · prices · Rates 2026
-- **29/01/2026** · Quality · Quality : Porcelain king cake charms (pack of 100)
-- **21/11/2026** · special request · Holidays 2026 : volume reservation
+- **11/12/2018** · demande spéciale · Fêtes 2018 : réservation
+- **04/12/2020** · demande spéciale · Fêtes 2020 : réservation
+- **04/04/2022** · prix · Hausse tarifaire (gazole, énergie)
+- **17/12/2023** · demande spéciale · Fêtes 2023 : réservation de volumes
+- **30/12/2023** · qualité · Qualité : crème liquide UHT 35 % (brique 1 L)
+- **15/01/2024** · prix · Tarifs 2024
+- **21/10/2025** · qualité · Qualité : chocolatine pur beurre crue surgelée 75 g (carton 140)
+- **22/10/2025** · avoir · Avoir qualité : chocolatine pur beurre crue surgelée 75 g (carton 140)
+- **25/10/2025** · livraison · Livraison laissée devant la porte
+- **20/01/2026** · prix · Tarifs 2026
+- **29/01/2026** · qualité · Qualité : fèves des rois en porcelaine (sachet de 100)
+- **21/11/2026** · demande spéciale · Fêtes 2026 : réservation de volumes
 
-Full history: 38 events (9 visit, 9 call, 5 special request, 5 compliment, 4 quality, 3 price, 1 opening, 1 have, 1 delivery).
+Historique complet : 38 événements (9 visite, 9 appel, 5 demande spéciale, 5 compliment, 4 qualité, 3 prix, 1 ouverture, 1 avoir, 1 livraison).
 
-## Open cases
+## Dossiers ouverts aujourd'hui
 
-- **21/11/2026 — Holidays 2026: volume reservation**
-  Karim wants to book for the holidays: Porcelain king cake charms (pack of 100) and UHT liquid cream 35% (1 L carton) in volume for the 23-24 and 30-31/12. Karim: "It's okay? I'm hanging up."
+- **21/11/2026 — Fêtes 2026 : réservation de volumes**
+  Karim veut réserver pour les fêtes : fèves des rois en porcelaine (sachet de 100) et crème liquide UHT 35 % (brique 1 L) en volume pour les 23-24 et 30-31/12. Karim : « C'est bon ? Je raccroche. »
 
-## How to talk to them
+## Comment leur parler
 
-- Always call the store order number.
-- Talk in cartons and pallets.
+- Toujours rappeler le numéro de commande magasin.
+- Parler en cartons et en palettes.
 
-## Price & group
+## Prix & groupe
 
-Groups: **GMS** (`gms`), **Grand accounts** (`grands-comptes`).
-No negotiated prices.
+Groupes : **GMS** (`gms`), **Grands comptes** (`grands-comptes`).
+Pas de prix négocié.
 
-Price rules that may apply:
-- `prl_0003` GMS: -5 % on raw pastry
-- `prl_0006` Epiphany 2027: almond powder -6 % from 20 kg
-- `prl_0007` Epiphany 2027: crowns and beans -5 %
+Règles de prix qui peuvent s'appliquer :
+- `prl_0003` GMS : −5 % sur la viennoiserie crue
+- `prl_0006` Épiphanie 2027 : poudre d'amande −6 % dès 20 kg
+- `prl_0007` Épiphanie 2027 : couronnes et fèves −5 %
 
-Latest notes CRM:
+Dernières notes CRM :
 
-None.
+Aucune.

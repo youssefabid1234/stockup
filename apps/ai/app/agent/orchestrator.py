@@ -10,7 +10,7 @@ Real life: Lucie keeps talking to the caller ("Oui Nadine, je regarde…") while
        ├──► FAST "speaker" agent (TEAM_FAST_MODEL, Haiku, tiny prompt, no tools)
        │        says right away what can be said without the ERP (greeting, "c'est noté", a question back)
        │
-       └──► BRAIN Officer (LLM_MODEL, Sonnet, full prompt + tools) = today's run_agent
+       └──► BRAIN agent (LLM_MODEL, Sonnet, full prompt + tools) = today's run_agent
                 checks, decides, acts in the ERP, gives the real answer
 
 v0 (now): run_voice_turn() just delegates to run_agent → exactly the kit's behaviour. The switch is OFF.

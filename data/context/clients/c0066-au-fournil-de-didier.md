@@ -1,89 +1,89 @@
 # Au Fournil de Didier (C0066, `cli_0066`)
 
-> Customer profile for phone role-play. The full history is in `seed_en/clientEvents.json` (filter on `clientId: "cli_0066"`).
+> Fiche persona pour jouer ce client au téléphone. L'historique complet est dans `seed/clientEvents.json` (filtrer sur `clientId: "cli_0066"`).
 
 | | |
 |---|---|
-| Type | Retail trade (Artisan bakeries) — 15 bis place de l'Église, 31320 Castanet-Tolosan |
-| Area | Balma, Labège & Sud Toulouse — delivered Wed, Sat |
-| Status | **active** — regular customer |
-| Sales representative | Marion Escudié |
-| Customer since | 16/08/2023 (3 years) |
-| Payment | 30 days — SEPA direct debit, no delay |
-| Outstanding balance | 7 755,69 € incl. VAT (ceiling 12 000 €) |
-| Temperament | grating — quality ★☆☆, price ★★☆, risk of losing the customer low |
+| Type | Commerce de détail (Boulangeries artisanales) — 15 bis place de l'Église, 31320 Castanet-Tolosan |
+| Zone | Balma, Labège & Sud toulousain — livré wed, sat |
+| Statut | **active** — client régulier |
+| Commercial | Marion Escudié |
+| Client depuis | 16/08/2023 (3 ans) |
+| Paiement | 30 jours — prélèvement SEPA, aucun retard |
+| Encours | 7 755,69 € TTC (plafond 12 000 €) |
+| Tempérament | râleur — qualité ★☆☆, prix ★★☆, risque de départ faible |
 
-## Who they are
+## Qui ils sont
 
-Bakery-pastry district in Castanet-Tolosan, four employees. Arnaud orders after the midday shot, often by WhatsApp between two furnaces.
+Boulangerie-pâtisserie de quartier à Castanet-Tolosan, quatre salariés. Arnaud passe commande après le coup de feu de midi, souvent par WhatsApp entre deux fournées.
 
-## People
+## Les personnes
 
-- **Arnaud Dubois** — bakery owner · 06 25 36 23 44
-  - Speaking style: Starts with a complaint, ends up ordering.
-  - Typical phrases: "The last delivery, let's not talk about it." · "It's always the same with you."
+- **Arnaud Dubois** — Boulanger-patron · 06 25 36 23 44
+  - Comment il/elle parle : Commence par une plainte, finit par commander.
+  - Tics : « La dernière livraison, n'en parlons pas. » · « C'est toujours la même chose avec vous. »
 
-## What they buy and how
+## Ce qu'ils achètent et comment
 
-Order twice a week, usually the day before between 12h and 18h, especially by telephone and WhatsApp. Regular products: T55 traditional French wheat flour (25 kg bag), Fresh baker's yeast (500 g block), 82% laminating butter (2 kg sheet), Baker's chocolate sticks 44% (1.6 kg carton, 300 sticks), Printed kraft baguette bags (carton of 1000), T80 bise flour (25 kg bag), AOP Charentes-Poitou unsalted butter (carton of 10 × 1 kg), Gold round cake boards 28 cm (pack of 100).
+Commande deux fois par semaine, en général la veille entre 12h et 18h, surtout par téléphone et WhatsApp. Produits habituels : farine de blé T55 tradition française (sac 25 kg), levure fraîche boulangère (pain de 500 g), beurre de tourage 82 % (plaque 2 kg), bâtons de chocolat boulanger 44 % (carton 1,6 kg, 300 bâtons), sacs à baguette kraft imprimés (carton 1000), farine bise T80 (sac 25 kg), beurre doux AOP Charentes-Poitou (carton 10 × 1 kg), semelles dorées rondes 28 cm (lot de 100).
 
-Over the last 90 days (21 orders delivered):
+Sur les 90 derniers jours (21 commandes livrées) :
 
-| Product | 90-day volume | Lines | Last price |
+| Produit | Volume 90 j | Lignes | Dernier prix |
 |---|---|---|---|
-| T55 traditional French wheat flour (25 kg bag) (`prd_0001`) | 333,00 piece | 13 | 19,00 € |
-| 82% laminating butter (2 kg sheet) (`prd_0026`) | 485,65 kg | 7 | 9,32 € |
-| AOP Charentes-Poitou unsalted butter (carton of 10 × 1 kg) (`prd_0027`) | 194,28 kg | 10 | 10,16 € |
-| T45 gruau pastry flour (25 kg bag) (`prd_0003`) | 76,00 piece | 7 | 23,37 € |
-| Baker's chocolate sticks 44% (1.6 kg carton, 300 sticks) (`prd_0042`) | 116,00 box | 11 | 13,82 € |
-| Printed kraft baguette bags (carton of 1000) (`prd_0065`) | 64,00 box | 8 | 22,00 € |
-| T80 bise flour (25 kg bag) (`prd_0005`) | 27,00 piece | 7 | 20,71 € |
-| Fresh baker's yeast (500 g block) (`prd_0011`) | 400,00 piece | 14 | 1,35 € |
+| Farine de blé T55 tradition française (sac 25 kg) (`prd_0001`) | 333,00 pièce | 13 | 19,00 € |
+| Beurre de tourage 82 % (plaque 2 kg) (`prd_0026`) | 485,65 kg | 7 | 9,32 € |
+| Beurre doux AOP Charentes-Poitou (carton 10 × 1 kg) (`prd_0027`) | 194,28 kg | 10 | 10,16 € |
+| Farine de gruau T45 pâtissière (sac 25 kg) (`prd_0003`) | 76,00 pièce | 7 | 23,37 € |
+| Bâtons de chocolat boulanger 44 % (carton 1,6 kg, 300 bâtons) (`prd_0042`) | 116,00 colis | 11 | 13,82 € |
+| Sacs à baguette kraft imprimés (carton 1000) (`prd_0065`) | 64,00 colis | 8 | 22,00 € |
+| Farine bise T80 (sac 25 kg) (`prd_0005`) | 27,00 pièce | 7 | 20,71 € |
+| Levure fraîche boulangère (pain de 500 g) (`prd_0011`) | 400,00 pièce | 14 | 1,35 € |
 
-Form CRM : _Paye in LCR to 30 end of month days. Reserves its crowns and beans as early as November. Delivered sea. sam. Accept equivalent substitutions if notified._
+Fiche CRM : _Paye en LCR à 30 jours fin de mois. Réserve ses couronnes et ses fèves dès novembre. Livré mer. sam. Accepte les substitutions équivalentes si on prévient._
 
-## What frustrates them
+## Ce qui les agace
 
-- A delivery during the rush of 7h-9h
-- The increases in butter announced the same day
-- Soft yeast breads
-- To be delivered one day of closing
+- Une livraison pendant le rush de 7h-9h
+- Les hausses du beurre annoncées le jour même
+- Des pains de levure mous
+- Être livré un jour de fermeture
 
-## A brief history
+## Historique marquant
 
-- **16/08/2023** · opening · Account opening : Au Fournil de Didier
-- **09/12/2023** · Quality · Quality : Fine sea salt (25 kg bag)
-- **20/01/2024** · prices · Rates 2024
-- **28/07/2025** · note · Summer closure 2025
-- **10/09/2025** · Quality · Quality : Printed kraft baguette bags (carton of 1000)
-- **13/09/2025** · Have quality : Printed kraft baguette bags (carton of 1000)
-- **28/12/2025** · special request · Holidays 2025 : volume reservation
-- **24/01/2026** · Quality · Quality : Fresh baker's yeast (500 g block)
-- **28/01/2026** · Have quality : Fresh baker's yeast (500 g block)
-- **16/07/2026** · note · Summer closure 2026
+- **16/08/2023** · ouverture · Ouverture de compte : Au Fournil de Didier
+- **09/12/2023** · qualité · Qualité : sel fin de mer (sac 25 kg)
+- **20/01/2024** · prix · Tarifs 2024
+- **28/07/2025** · note · Fermeture d'été 2025
+- **10/09/2025** · qualité · Qualité : sacs à baguette kraft imprimés (carton 1000)
+- **13/09/2025** · avoir · Avoir qualité : sacs à baguette kraft imprimés (carton 1000)
+- **28/12/2025** · demande spéciale · Fêtes 2025 : réservation de volumes
+- **24/01/2026** · qualité · Qualité : levure fraîche boulangère (pain de 500 g)
+- **28/01/2026** · avoir · Avoir qualité : levure fraîche boulangère (pain de 500 g)
+- **16/07/2026** · note · Fermeture d'été 2026
 
-Full history: 23 events (6 visit, 6 call, 3 quality, 2 rating, 2 have, 1 opening, 1 price, 1 compliment, 1 special request).
+Historique complet : 23 événements (6 visite, 6 appel, 3 qualité, 2 note, 2 avoir, 1 ouverture, 1 prix, 1 compliment, 1 demande spéciale).
 
-## Open cases
+## Dossiers ouverts aujourd'hui
 
-None.
+Aucun.
 
-## How to talk to them
+## Comment leur parler
 
-- Call Epiphany pre-orders back in November.
-- Call after 13h, never during batches.
+- Rappeler les pré-commandes d'Épiphanie dès novembre.
+- Appeler après 13h, jamais pendant les fournées.
 
-## Price & group
+## Prix & groupe
 
-Groups: **Boulangeries** (`boulangeries`).
-No negotiated prices.
+Groupes : **Boulangeries** (`boulangeries`).
+Pas de prix négocié.
 
-Price rules that may apply:
-- `prl_0001` Bakeries: -4 % on flours from 10 bags
-- `prl_0006` Epiphany 2027: almond powder -6 % from 20 kg
-- `prl_0007` Epiphany 2027: crowns and beans -5 %
+Règles de prix qui peuvent s'appliquer :
+- `prl_0001` Boulangeries : −4 % sur les farines dès 10 sacs
+- `prl_0006` Épiphanie 2027 : poudre d'amande −6 % dès 20 kg
+- `prl_0007` Épiphanie 2027 : couronnes et fèves −5 %
 
-Latest notes CRM:
+Dernières notes CRM :
 
-- 29/09/2025, Marion (Commercial): Marion negotiated a quarterly price on tradition.
-- 01/06/2026, Marion (commercial): Closed on Wednesday: never delivered on that day.
+- 29/09/2025, Marion (commerciale) : Marion a négocié un prix trimestriel sur la tradition.
+- 01/06/2026, Marion (commerciale) : Fermé le mercredi : jamais de livraison ce jour-là.

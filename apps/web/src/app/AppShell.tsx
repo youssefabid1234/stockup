@@ -84,7 +84,7 @@ export function AppShell() {
           {/* Fixed inner width: the chat never reflows while the column animates. Pinned right so it slides in. */}
           <aside style={{ width: assistant.width }} className="absolute inset-y-0 right-0 border-l border-border bg-card">
             <AssistantPanel />
-            <ResizeHandle r={assistant} edge="left" label="Resize Assistant" />
+            <ResizeHandle r={assistant} edge="left" label="Redimensionner l'assistant" />
           </aside>
         </div>
       ) : null}

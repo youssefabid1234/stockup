@@ -1,52 +1,68 @@
-# Installation
+# Installation pas à pas
 
-The repository includes the English ERP dataset and customer records. Allow 20–30 minutes for the first build. Copy `.env.example` to `.env` for a fresh installation. Keep an existing `.env` with your team’s credentials private. See the [quick start](README.md#start-an-english-call) for the English database settings.
+Un mot inconnu ? [GLOSSAIRE.md](GLOSSAIRE.md) · Une question ? [FAQ.md](FAQ.md)
 
-## Step 1 — Install Docker (≈ 10 min, to be done before)
+Ce guide vous amène de zéro à un premier appel vocal qui modifie l'ERP. Comptez **20 à 30 minutes** la première
+fois, dont 10 à 15 minutes d'attente (téléchargements). Faites l'étape 1 **avant** le hackathon si vous pouvez.
 
-Docker runs all three services (ERP, AI, interface) without installing anything else.
+Vous avez reçu un fichier `team-XX.zip`. Il contient un dossier `voice-erp-kit/` :
 
-### Mac
+| Quoi | Où | Note |
+|---|---|---|
+| Le kit (ERP, service IA, interface) | `voice-erp-kit/` | le code que vous allez modifier |
+| Les données de **votre** entreprise | `voice-erp-kit/data/` | clients, produits, 3 ans d'historique, documents |
+| La configuration et vos clés API | `voice-erp-kit/.env` | **privé** : ne le partagez pas, ne le committez pas. Zip reçu la veille : pas encore de clés, voir [Clés réelles ou modèles simulés](#clés-réelles-ou-modèles-simulés) |
+| Votre fiche équipe | `voice-erp-kit/TEAM.md` | le nom de votre entreprise |
 
-1. Install Apple development tools (`make`, `git`): in a terminal, `xcode-select --install`, then
-   "Install." If he answers "already installed," it's okay.
-2. Download [Docker Desktop](https://www.docker.com/products/docker-desktop/) (Apple or Intel chip: the site
-   Chooses for you). About 600 Mo.
-3. Open the `.dmg`, drag Docker to Applications, launch it. Accept permissions (Mac password).
-4. Wait until the whale at the top of the screen stops flashing.
-5. In a terminal: `docker run hello-world`. You must see "Hello from Docker!".
-
-### Windows
-
-On Windows, everything is done ** in WSL** (a Linux built-in Windows): `make` and the scripts in the kit do not work
-in PowerShell or in the command prompt. You need the admin rights to install WSL.
-
-1. In PowerShell ** admin**: `wsl --install`, then restart. Upon restarting, Ubuntu opens and you
-   requires a username and password (for Linux, choose them).
-2. Install [Docker Desktop](https://www.docker.com/products/docker-desktop/). During installation, keep
-   "Use WSL 2". Start it, then Settings → Resources → WSL integration → activate **Ubuntu**.
-3. Open terminal **Ubuntu** (Start menu), then: `sudo apt update && sudo apt install -y make unzip curl git`.
-4. Check in Ubuntu: `docker run hello-world`.
-
-From here, on Windows, ** all commands are typed in the Ubuntu** terminal, and the project lives in the
-Linux (`~/voice-erp-kit`), not in `C:\`: it's much faster and automatic reloading of the code works.
-To open the project in VS Code: `code .` from Ubuntu (extension "WSL").
-
-### Linux
-
-Install [Docker Engine](https://docs.docker.com/engine/install/) and the plugin composes, add to the group
-`docker` (`sudo usermod -aG docker $USER`, then reconnect), install `make`, `unzip`, `curl` and `git`.
-
-### Adjusting for all
-
-Docker Desktop → Settings → Resources: give at least **4 GB of RAM**.
-
-> Not the admin rights? On Mac or Linux, go to [Without Docker](#without-docker). On Windows, WSL requires
-> these rights: come and see Team Stockline.
+Il n'y a rien d'autre à télécharger ni à cloner : tout est dans le zip.
 
 ---
 
-## Step 2 — Start the project (5 to 10 min the first time)
+## Étape 1 — Installer Docker (≈ 10 min, à faire avant)
+
+Docker fait tourner les trois services (ERP, IA, interface) sans rien installer d'autre.
+
+### Mac
+
+1. Installez les outils de développement Apple (`make`, `git`) : dans un terminal, `xcode-select --install`, puis
+   « Installer ». S'il répond « already installed », c'est bon.
+2. Téléchargez [Docker Desktop](https://www.docker.com/products/docker-desktop/) (puce Apple ou Intel : le site
+   choisit pour vous). Environ 600 Mo.
+3. Ouvrez le `.dmg`, glissez Docker dans Applications, lancez-le. Acceptez les autorisations (mot de passe Mac).
+4. Attendez que la baleine en haut de l'écran arrête de clignoter.
+5. Dans un terminal : `docker run hello-world`. Vous devez voir « Hello from Docker! ».
+
+### Windows
+
+Sur Windows, tout se fait **dans WSL** (un Linux intégré à Windows) : `make` et les scripts du kit ne marchent ni
+dans PowerShell ni dans l'invite de commandes. Il faut les droits administrateur pour installer WSL.
+
+1. Dans PowerShell **administrateur** : `wsl --install`, puis redémarrez. Au redémarrage, Ubuntu s'ouvre et vous
+   demande un nom d'utilisateur et un mot de passe (pour Linux, choisissez-les).
+2. Installez [Docker Desktop](https://www.docker.com/products/docker-desktop/). Pendant l'installation, gardez
+   « Use WSL 2 ». Lancez-le, puis Settings → Resources → WSL integration → activez **Ubuntu**.
+3. Ouvrez le terminal **Ubuntu** (menu Démarrer), puis : `sudo apt update && sudo apt install -y make unzip curl git`.
+4. Vérifiez dans Ubuntu : `docker run hello-world`.
+
+À partir d'ici, sur Windows, **toutes les commandes se tapent dans le terminal Ubuntu**, et le projet vit dans le
+Linux (`~/voice-erp-kit`), pas dans `C:\` : c'est beaucoup plus rapide et le rechargement automatique du code marche.
+Pour ouvrir le projet dans VS Code : `code .` depuis Ubuntu (extension « WSL »).
+
+### Linux
+
+Installez [Docker Engine](https://docs.docker.com/engine/install/) et le plugin compose, ajoutez-vous au groupe
+`docker` (`sudo usermod -aG docker $USER`, puis reconnectez-vous), installez `make`, `unzip`, `curl` et `git`.
+
+### Réglage pour tous
+
+Docker Desktop → Settings → Resources : donnez au moins **4 Go de RAM**.
+
+> Pas les droits administrateur ? Sur Mac ou Linux, passez à [Sans Docker](#sans-docker). Sur Windows, WSL exige
+> ces droits : venez voir l'équipe Stockline.
+
+---
+
+## Étape 2 — Lancer le projet (5 à 10 min la première fois)
 
 ```bash
 # Mac / Linux : depuis le dossier où est le zip.
@@ -57,8 +73,8 @@ cd voice-erp-kit
 make setup
 ```
 
-`make setup` checks Docker and ports, builds images and starts services. It stops when all
-You'll see:
+`make setup` vérifie Docker et les ports, construit les images puis démarre les services. Il s'arrête quand tout
+répond. Vous verrez :
 
 ```
   ✓ api, ai and web are up
@@ -66,48 +82,53 @@ You'll see:
 Ready → http://localhost:5173
 ```
 
-The first time, it downloads 1 to 2 Go and then builds the images: this is the long step. You can restart it
-Without risk if it stops. Next times, `make up` starts in seconds.
+La première fois, il télécharge 1 à 2 Go puis construit les images : c'est l'étape longue. Vous pouvez le relancer
+sans risque s'il s'arrête. Les fois suivantes, `make up` démarre en quelques secondes.
 
-**Check that everything works:**
+**Vérifiez que tout marche :**
 
-| Open | You need to see |
+| Ouvrez | Vous devez voir |
 |---|---|
-| http://localhost:5173 (wait ~10 s after "Ready") | the ERP, with the name of **your** company at the top left |
-| http://localhost:4000/docs | the API doc of ERP |
-| http://localhost:4100/health | `"ok": true` and active suppliers (`llm`, `stt`, `tts`); `mock` = simulated model |
+| http://localhost:5173 (attendez ~10 s après « Ready ») | l'ERP, avec le nom de **votre** entreprise en haut à gauche |
+| http://localhost:4000/docs | la doc de l'API de l'ERP |
+| http://localhost:4100/health | `"ok": true` et les fournisseurs actifs (`llm`, `stt`, `tts`) ; `mock` = modèle simulé |
 
 ---
 
-## Step 3 — First call (≈ 5 min)
+## Étape 3 — Premier appel (≈ 5 min)
 
-1. Open **Voice** in the sidebar. Select the customer under **Who's calling?** and choose **Start call**.
-2. Allow microphone access. Hold Space and say “How much laminating butter is in stock?” Release Space when you finish. You can also type the question.
-3. Watch the transcript, the stock lookup and the agent’s reply. With a speech provider configured, listen to the reply and the waiting phrases.
-4. To give the ERP a staff command, use Alt+Space anywhere and say “Show me the stock for traditional flour.”
+1. Dans l'ERP, ouvrez **Voix** (menu de gauche, section IA).
+2. Autorisez le micro quand le navigateur le demande (Chrome conseillé).
+3. **Maintenez Espace**, parlez comme un client (« Bonjour, c'est le restaurant…, vous avez quoi ce matin ? »),
+   relâchez. Pendant que vous parlez, vos mots s'affichent en direct (en gris italique tant qu'ils sont provisoires) ;
+   au relâchement, le texte final part à l'agent. Vous pouvez aussi taper la phrase au lieu de parler.
+4. Regardez : la transcription, les outils appelés par l'agent, la réponse dite à voix haute, et à droite l'ERP
+   qui se met à jour (en violet : ce que l'agent a fait).
+5. Testez aussi **⌥ Espace** (Alt + Espace) n'importe où dans l'ERP : une commande vocale en une phrase
+   (« crée une commande pour … »).
 
-### Real keys or simulated models
+### Clés réelles ou modèles simulés
 
-Everything is set in `.env` (one file for all three services):
+Tout est réglé dans `.env` (un seul fichier pour les trois services) :
 
-- **Zip received the day J**: your keys are already in `.env`, the selected suppliers are active.
-- **Zip received the previous **: `.env` uses simulated models (`mock`), without a key. On D-Day, you will be given your
-  `.env` file: Replace the folder with the new one (keep the name `.env`), then `make restart`.
+- **Zip reçu le jour J** : vos clés sont déjà dans `.env`, les fournisseurs choisis sont actifs.
+- **Zip reçu la veille** : `.env` utilise les modèles simulés (`mock`), sans clé. Le jour J, on vous donne votre
+  fichier `.env` : remplacez celui du dossier par le nouveau (gardez le nom `.env`), puis `make restart`.
 
-With simulated models, everything works offline and the agent calls the real ERP, but:
+Avec les modèles simulés, tout marche hors ligne et l'agent appelle le vrai ERP, mais :
 
-- the false LLM includes only a few simple sentences;
-- the false transcription hears **always ** the same sentence ("Hello, do you have left of the bar?"), whatever you
-  Say: type your text to test something else;
-- It is the browser that reads the answer aloud.
+- le faux LLM ne comprend que quelques phrases simples ;
+- la fausse transcription entend **toujours** la même phrase (« Bonjour, il vous reste du bar ? »), quoi que vous
+  disiez : tapez votre texte pour tester autre chose ;
+- c'est le navigateur qui lit la réponse à voix haute.
 
-It is useful to develop without consuming credit. To return to it at any time: `LLM_PROVIDER=mock`,
-`STT_PROVIDER=mock`, `TTS_PROVIDER=mock`, then `make restart`.
+C'est utile pour développer sans consommer de crédits. Pour y revenir à tout moment : `LLM_PROVIDER=mock`,
+`STT_PROVIDER=mock`, `TTS_PROVIDER=mock`, puis `make restart`.
 
-### Change model or voice
+### Changer de modèle ou de voix
 
-Your `.env` list at the bottom, in comment, all the keys of your team. To change supplier, change
-the `*_PROVIDER` and copy the corresponding key to the `*_API_KEY` just below, then `make restart`. Example:
+Votre `.env` liste en bas, en commentaire, toutes les clés de votre équipe. Pour changer de fournisseur, modifiez
+le `*_PROVIDER` et copiez la clé correspondante dans le `*_API_KEY` juste en dessous, puis `make restart`. Exemple :
 
 ```bash
 LLM_PROVIDER=anthropic
@@ -115,42 +136,42 @@ LLM_MODEL=              # vide = le modèle par défaut du fournisseur
 LLM_API_KEY=<la valeur de la ligne # ANTHROPIC_KEY=…>
 ```
 
-| Role | Suppliers | Variables |
+| Rôle | Fournisseurs | Variables |
 |---|---|---|
-| LLM (brain) | `openai`, `anthropic`, `gemini`, `openai-compatible`, `mock` | `LLM_PROVIDER`, `LLM_MODEL`, `LLM_API_KEY` |
-| Transcript (STT) | `soniox`, `deepgram`, `gradium`, `openai`, `mock` | `STT_PROVIDER`, `STT_MODEL`, `STT_API_KEY` |
-| Voice Synthesis (TTS) | `elevenlabs`, `gradium`, `openai`, `mock` | `TTS_PROVIDER`, `TTS_MODEL`, `TTS_VOICE`, `TTS_API_KEY` |
-| Jev (decision model, optional) | TypeSafe AI | `JEV_API_KEY` |
+| LLM (le cerveau) | `openai`, `anthropic`, `gemini`, `openai-compatible`, `mock` | `LLM_PROVIDER`, `LLM_MODEL`, `LLM_API_KEY` |
+| Transcription (STT) | `soniox`, `deepgram`, `gradium`, `openai`, `mock` | `STT_PROVIDER`, `STT_MODEL`, `STT_API_KEY` |
+| Synthèse vocale (TTS) | `elevenlabs`, `gradium`, `openai`, `mock` | `TTS_PROVIDER`, `TTS_MODEL`, `TTS_VOICE`, `TTS_API_KEY` |
+| Jev (modèle de décision, optionnel) | TypeSafe AI | `JEV_API_KEY` |
 
-Jev is not a LLM: it quickly answers closed questions (choice, score, yes/no) and is used ** next to **
-LLM. The basic agent does not use it: it is up to you to plug it (see
-[apps/ai/README.md](apps/ai/README.md#jev-decision-model)]. Default templates and voices, and details of each
-variable: [README, Configuration](README.md#configuration-one-env).
+Jev n'est pas un LLM : il répond vite à des questions fermées (choix, score, oui/non) et s'utilise **à côté** du
+LLM. L'agent de base ne s'en sert pas : c'est à vous de le brancher (voir
+[apps/ai/README.md](apps/ai/README.md#jev-decision-model)). Modèles et voix par défaut, et le détail de chaque
+variable : [README, Configuration](README.md#configuration-one-env).
 
 ---
 
-## Step 4 — Your team repo (≈ 3 min)
+## Étape 4 — Votre repo d'équipe (≈ 3 min)
 
 ```bash
 git init -b main && git add . && git commit -m "start"
 ```
 
-Create a **private** repo on GitHub, push the code (`git remote add origin … && git push -u origin main`), then
-Add the jury accounts as employees. This is your deliverable.
+Créez un repo **privé** sur GitHub, poussez-y le code (`git remote add origin … && git push -u origin main`), puis
+ajoutez les comptes du jury en collaborateurs. C'est votre livrable.
 
-`.env` (your keys) and `data/seed/` (the data, too heavy for GitHub) are ignored by git, on purpose.
+`.env` (vos clés) et `data/seed/` (les données, trop lourdes pour GitHub) sont ignorés par git, exprès.
 
 ---
 
-## Step 5 — Coder
+## Étape 5 — Coder
 
-- Files to read first: `apps/ai/app/agent/loop.py` (the agent loop) and `apps/ai/app/tools/`
-  (what the agent can do in the ERP). The project plan is just below.
-- The code recharges itself when you save. After a change of `.env`: `make restart`.
-- Do you use a code agent (Claude Code, Cursor...)? Give it [AGENTS.md](AGENTS.md).
-- Read: [BRIEF.md](BRIEF.md) (the challenge), [METIER.md](METIER.md) (the occupation), [ERP.md](ERP.md) (the ERP).
+- Les fichiers à lire en premier : `apps/ai/app/agent/loop.py` (la boucle de l'agent) et `apps/ai/app/tools/`
+  (ce que l'agent peut faire dans l'ERP). Le plan du projet est juste en dessous.
+- Le code se recharge tout seul quand vous enregistrez. Après un changement de `.env` : `make restart`.
+- Vous utilisez un agent de code (Claude Code, Cursor…) ? Donnez-lui [AGENTS.md](AGENTS.md).
+- À lire : [BRIEF.md](BRIEF.md) (le défi), [METIER.md](METIER.md) (le métier), [ERP.md](ERP.md) (l'ERP).
 
-### How the project is organised
+### Comment le projet est organisé
 
 ```
 voice-erp-kit/
@@ -171,46 +192,46 @@ voice-erp-kit/
 └── .env                 la configuration et vos clés
 ```
 
-The path of a call: the interface sends the sound to the service AI → transcription (STT) → the agent (LLM) calls
-→ tools each tool is a HTTP call to ERP → the answer is read aloud (TTS) and the ERP updates to
-the screen. Business rules only live in the ERP. Diagram: [README, Architecture](README.md#architecture); details
-and examples to extend the kit: [TECH.md](TECH.md).
+Le chemin d'un appel : l'interface envoie le son au service IA → transcription (STT) → l'agent (LLM) appelle des
+outils → chaque outil est un appel HTTP à l'ERP → la réponse est lue à voix haute (TTS) et l'ERP se met à jour à
+l'écran. Les règles métier ne vivent que dans l'ERP. Schéma : [README, Architecture](README.md#architecture) ; détails
+et exemples pour étendre le kit : [TECH.md](TECH.md).
 
-| You want to... | Look. |
+| Vous voulez… | Regardez |
 |---|---|
-| the agent respond faster | `apps/ai/app/services/voice_session.py`, `apps/ai/app/clients/`, `agent/loop.py` |
-| that he knows more about the client | `agent/prompts.py`, `tools/context.py`, `data/context/` |
-| give him a new action in the ERP | one route in `apps/backend/app/routers/` + one tool in `apps/ai/app/tools/` ([README, Add a tool](README.md#add-a-tool)) |
-| changing the interface | `apps/web/src/pages/`, components of `apps/web/src/ui/` ([DESIGN.md](DESIGN.md)) |
+| que l'agent réponde plus vite | `apps/ai/app/services/voice_session.py`, `apps/ai/app/clients/`, `agent/loop.py` |
+| qu'il en sache plus sur le client | `agent/prompts.py`, `tools/context.py`, `data/context/` |
+| lui donner une nouvelle action dans l'ERP | une route dans `apps/backend/app/routers/` + un outil dans `apps/ai/app/tools/` ([README, Add a tool](README.md#add-a-tool)) |
+| changer l'interface | `apps/web/src/pages/`, composants de `apps/web/src/ui/` ([DESIGN.md](DESIGN.md)) |
 
-### Useful commands
+### Les commandes utiles
 
-| Command | Effect |
+| Commande | Effet |
 |---|---|
-| `make up` / `make down` | start/stop (data are kept) |
-| `make restart` | apply a change from `.env` |
-| `make logs` | see the logs of the 3 services (Ctrl-C to exit) |
-| `make reset` | reset ERP data to zero (remove your changes) |
-| `make rebuild` | after adding a Python or npm addiction |
-| `make chat` | Talk to the agent in the terminal |
-| `make clean` | delete all, including database (`make setup` to leave) |
-| `make help` | all commands |
+| `make up` / `make down` | démarrer / arrêter (les données sont gardées) |
+| `make restart` | appliquer un changement de `.env` |
+| `make logs` | voir les logs des 3 services (Ctrl-C pour sortir) |
+| `make reset` | remettre les données de l'ERP à zéro (efface vos modifications) |
+| `make rebuild` | après avoir ajouté une dépendance Python ou npm |
+| `make chat` | parler à l'agent dans le terminal |
+| `make clean` | tout supprimer, base de données comprise (`make setup` pour repartir) |
+| `make help` | toutes les commandes |
 
-`make test`, `make types` and `make check` turn on your machine, without Docker: they ask for the tools of
-[Without Docker](#without-docker) (uv for `test`, Node 22 and pnpm for `types` and `check`).
+`make test`, `make types` et `make check` tournent sur votre machine, hors Docker : ils demandent les outils de
+[Sans Docker](#sans-docker) (uv pour `test`, Node 22 et pnpm pour `types` et `check`).
 
 ---
 
-## Without Docker
+## Sans Docker
 
-For a machine without admin rights (Mac or Linux), or if Docker does not want to start. You must:
+Pour une machine sans droits administrateur (Mac ou Linux), ou si Docker ne veut pas démarrer. Il faut :
 
-- [uv](https://docs.astral.sh/uv/getting-started/installation/), which installs Python 3.12 on its own. `make local`
-  Set him up if he misses.
-- **Node 22 or more.** Without admin rights, go through [nvm](https://github.com/nvm-sh/nvm):
-  `curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash`, reopen the terminal, then
+- [uv](https://docs.astral.sh/uv/getting-started/installation/), qui installe Python 3.12 tout seul. `make local`
+  l'installe s'il manque.
+- **Node 22 ou plus.** Sans droits administrateur, passez par [nvm](https://github.com/nvm-sh/nvm) :
+  `curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash`, rouvrez le terminal, puis
   `nvm install 22`.
-- `pnpm`: `make local` active via corepack (provided with Node).
+- `pnpm` : `make local` l'active via corepack (fourni avec Node).
 
 ```bash
 cd voice-erp-kit
@@ -218,49 +239,49 @@ make local        # installe tout (≈ 5 min) et démarre les 3 services (Ctrl-C
 make dev          # les fois suivantes
 ```
 
-Everything else is the same: http://localhost:5173, `make reset`, `make chat`. Only Docker commands
-(`make up`, `make restart`, `make logs`...) do not serve: after a change of `.env`, stop (Ctrl-C) and
-restart `make dev`. If you change `API_PORT`, put the same port in `ERP_API_URL`.
+Tout le reste est identique : http://localhost:5173, `make reset`, `make chat`. Seules les commandes Docker
+(`make up`, `make restart`, `make logs`…) ne servent pas : après un changement de `.env`, arrêtez (Ctrl-C) et
+relancez `make dev`. Si vous changez `API_PORT`, mettez le même port dans `ERP_API_URL`.
 
 ---
 
-## Without Internet (key USB)
+## Sans Internet (clé USB)
 
-If Wi-Fi is not enough for `make setup`, the Stockline team has a USB key with Docker images already built.
-Copy to your **le** machine that fits it:
+Si le Wi-Fi ne suffit pas pour `make setup`, l'équipe Stockline a une clé USB avec les images Docker déjà construites.
+Copiez sur votre machine **le** fichier qui lui correspond :
 
-| Your machine | File |
+| Votre machine | Fichier |
 |---|---|
-| Mac Apple Silicon (M1, M2, M3, M4...) | `voice-erp-kit-images-arm64.tar.gz` |
-| Everything else (Mac Intel, Windows/WSL, Linux) | `voice-erp-kit-images-amd64.tar.gz` |
+| Mac Apple Silicon (M1, M2, M3, M4…) | `voice-erp-kit-images-arm64.tar.gz` |
+| Tout le reste (Mac Intel, Windows/WSL, Linux) | `voice-erp-kit-images-amd64.tar.gz` |
 
-Then, in the project file (after `unzip team-XX.zip` and `cd voice-erp-kit`):
+Puis, dans le dossier du projet (après `unzip team-XX.zip` et `cd voice-erp-kit`) :
 
 ```bash
 make offline IMAGES=/chemin/vers/voice-erp-kit-images-arm64.tar.gz   # ou -amd64.tar.gz ; le .tar non compressé marche aussi
 ```
 
-Nothing is downloaded or built: the services start directly (wait for ~20 s before opening
-http://localhost:5173). Then, `make up` / `make down` as usual.
+Rien n'est téléchargé ni construit : les services démarrent directement (attendez ~20 s avant d'ouvrir
+http://localhost:5173). Ensuite, `make up` / `make down` comme d'habitude.
 
 ---
 
-## In case of a problem
+## En cas de problème
 
-| Symptoms | Solution |
+| Symptôme | Solution |
 |---|---|
-| `Docker is installed but not running` | Launch Docker Desktop and wait for the whale to be stable |
-| `port 5173 is already used` (or 4000, 4100) | another program uses this port: stop it, or change `WEB_PORT` / `API_PORT` / `AI_PORT` in `.env` |
-| `make: command not found` (Windows) | you are in PowerShell: open the terminal **Ubuntu** (step 1) |
-| `make: command not found` or "Development Tools" window (Mac) | `xcode-select --install` (Step 1) |
-| `Permission denied` on `./scripts/…` | the zip has been extracted by Windows: `chmod +x scripts/*.sh`, or re-extray it with `unzip` in Ubuntu |
-| `no data at ./data` | the `data/` folder must be next to the `Makefile`, and `.env` must contain `DATA_DIR=./data` |
-| Page remains blank just after « Ready » | Wait for 10–20 s and then recharge |
-| The first `make setup` is very long or fails to download | This is the download (1–2 GB); on the Wi-Fi of the place, ask the USB key of images to the Stockline team, then `make offline IMAGES=<chemin du fichier>` (section "Without Internet") |
-| The ERP displays strange data after your tests | `make reset` |
-| The microphone doesn't work | Allow it in the browser (icon to the left of the address), use Chrome |
-| The agent still understands "you still have the bar?" | the transcription is in `mock`: see [Real keys or simulated models](#real-keys-or-simulated-models) |
-| `HTTP 401` / `HTTP 429` / `quota` in the answers | key refused or ceiling reached: check the key in `.env`, then `make restart`; if the ceiling is reached, come see us |
-| A change to `.env` is not taken into account | `make restart` (without Docker: Ctrl-C then `make dev`) |
-| `corepack enable` fails (`EACCES`) in Docker-free mode | install Node with nvm (see [Without Docker](#without-docker)), or `npm install -g pnpm@10` |
-| Another thing. | `make logs` shows the error; otherwise come see team Stockline (blocked more than 20 min = come) |
+| `Docker is installed but not running` | lancez Docker Desktop et attendez que la baleine soit stable |
+| `port 5173 is already used` (ou 4000, 4100) | un autre programme utilise ce port : arrêtez-le, ou changez `WEB_PORT` / `API_PORT` / `AI_PORT` dans `.env` |
+| `make: command not found` (Windows) | vous êtes dans PowerShell : ouvrez le terminal **Ubuntu** (étape 1) |
+| `make: command not found` ou fenêtre « outils de développement » (Mac) | `xcode-select --install` (étape 1) |
+| `Permission denied` sur `./scripts/…` | le zip a été extrait par Windows : `chmod +x scripts/*.sh`, ou ré-extrayez-le avec `unzip` dans Ubuntu |
+| `no data at ./data` | le dossier `data/` doit être à côté du `Makefile`, et `.env` doit contenir `DATA_DIR=./data` |
+| La page reste blanche juste après « Ready » | attendez 10–20 s puis rechargez |
+| Le premier `make setup` est très long ou échoue au téléchargement | c'est le téléchargement (1–2 Go) ; sur le Wi-Fi du lieu, demandez la clé USB d'images à l'équipe Stockline, puis `make offline IMAGES=<chemin du fichier>` (section « Sans Internet ») |
+| L'ERP affiche des données bizarres après vos tests | `make reset` |
+| Le micro ne marche pas | autorisez-le dans le navigateur (icône à gauche de l'adresse), utilisez Chrome |
+| L'agent comprend toujours « il vous reste du bar ? » | la transcription est en `mock` : voir [Clés réelles ou modèles simulés](#clés-réelles-ou-modèles-simulés) |
+| `HTTP 401` / `HTTP 429` / `quota` dans les réponses | clé refusée ou plafond atteint : vérifiez la clé dans `.env`, puis `make restart` ; si le plafond est atteint, venez nous voir |
+| Une modification de `.env` n'est pas prise en compte | `make restart` (sans Docker : Ctrl-C puis `make dev`) |
+| `corepack enable` échoue (`EACCES`) en mode sans Docker | installez Node avec nvm (voir [Sans Docker](#sans-docker)), ou `npm install -g pnpm@10` |
+| Autre chose | `make logs` montre l'erreur ; sinon venez voir l'équipe Stockline (bloqués plus de 20 min = venez) |

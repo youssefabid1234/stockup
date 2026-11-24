@@ -183,7 +183,7 @@ function DataTableInner<T>({ columns: allColumns, rows, getRowId, onRowClick, se
       if (va == null && vb == null) return 0;
       if (va == null) return 1;
       if (vb == null) return -1;
-      const r = typeof va === "number" && typeof vb === "number" ? va - vb : String(va).localeCompare(String(vb), "en");
+      const r = typeof va === "number" && typeof vb === "number" ? va - vb : String(va).localeCompare(String(vb), "fr");
       return sort.dir === "asc" ? r : -r;
     });
   }, [rows, sort, allColumns, server]);

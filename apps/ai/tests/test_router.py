@@ -6,13 +6,13 @@ from app.agent.router import is_simple_turn, pick_llm
 from app.services import fillers
 
 SIMPLE = [
-    "That's right, please confirm.", "Confirmed.", "Yes.", "Yeah, go ahead.", "Perfect, thanks!", "Thank you, goodbye.", "Okay, sounds good.",
-    "Yes, that's right.", "No thanks, that's all.", "Okay.", "Okay, go ahead.", "Please confirm.",
+    "C'est bon, validez.", "Validé.", "Oui.", "Ouais vas-y.", "Parfait, merci !", "Merci, au revoir.", "OK ça marche.",
+    "Oui c'est bon.", "Non merci, c'est tout.", "D'accord.", "Bon d'accord, allez-y.", "Je confirme.",
 ]
 NOT_SIMPLE = [
-    "Yes, but make it twelve.", "How much is a sack?", "I need ten sacks of traditional flour for Thursday.",
-    "Actually, remove the rye.", "Is Thursday okay?", "Yes, and add two blocks of yeast.",
-    "No, Friday instead.", "This morning's delivery was missing two sacks.",
+    "Oui mais mettez-en douze.", "C'est combien le sac ?", "Il me faudrait dix sacs de tradi pour jeudi.",
+    "Finalement enlevez le seigle.", "C'est bon pour jeudi ?", "Oui, et rajoutez deux pains de levure.",
+    "Non, plutôt vendredi.", "La livraison de ce matin, il manquait deux sacs.",
 ]
 
 
@@ -29,15 +29,15 @@ def test_replies_that_need_the_main_model(said):
 def test_pick_llm_follows_the_switch(monkeypatch):
     main, fast = object(), object()
     monkeypatch.delenv("TEAM_ROUTER", raising=False)
-    assert pick_llm("That's right, please confirm.", main, lambda: fast) == (main, "main")
+    assert pick_llm("C'est bon, validez.", main, lambda: fast) == (main, "principal")
     monkeypatch.setenv("TEAM_ROUTER", "1")
-    assert pick_llm("That's right, please confirm.", main, lambda: fast) == (fast, "fast")
-    assert pick_llm("Yes, but make it twelve.", main, lambda: fast) == (main, "main")
+    assert pick_llm("C'est bon, validez.", main, lambda: fast) == (fast, "rapide")
+    assert pick_llm("Oui mais mettez-en douze.", main, lambda: fast) == (main, "principal")
 
     def broken():
         raise RuntimeError("no fast model")
 
-    assert pick_llm("Thanks.", main, broken) == (main, "main")
+    assert pick_llm("Merci.", main, broken) == (main, "principal")
 
 
 @pytest.mark.parametrize("said", SIMPLE)
@@ -47,8 +47,8 @@ def test_no_acknowledgement_for_a_confirmation(said):
 
 @pytest.mark.parametrize(
     "said",
-    ["Yes, but make it twelve.", "How much is a sack?", "I need ten sacks of traditional flour for Thursday.",
-     "Actually, remove the rye.", "No, Friday instead."],
+    ["Oui mais mettez-en douze.", "C'est combien le sac ?", "Il me faudrait dix sacs de tradi pour jeudi.",
+     "Finalement enlevez le seigle.", "Non, plutôt vendredi."],
 )
 def test_acknowledgement_when_there_is_something_to_look_up(said):
     assert fillers.needs_lookup(said)
@@ -57,9 +57,9 @@ def test_acknowledgement_when_there_is_something_to_look_up(said):
 def test_erp_codes_are_never_said():
     from app.services.voice_reply import spoken_reply
 
-    assert spoken_reply("Confirmed, Nadine. Your order CMD-2026-007543 is confirmed for Thursday.") == (
-        "Confirmed, Nadine. Your order is confirmed for Thursday."
+    assert spoken_reply("C'est validé, Nadine. Votre commande CMD-2026-007543 est confirmée pour jeudi.") == (
+        "C'est validé, Nadine. Votre commande est confirmée pour jeudi."
     )
-    assert spoken_reply("Order number CMD-2026-000123, for delivery tomorrow.") == "Order, for delivery tomorrow."
-    assert spoken_reply("I added prd_0001 to the order.") == "I added to the order."
-    assert spoken_reply("Eighteen euros ninety per 25-kilo sack.") == "Eighteen euros ninety per 25-kilo sack."
+    assert spoken_reply("La commande n° CMD-2026-000123, livrée demain.") == "La commande, livrée demain."
+    assert spoken_reply("J'ai ajouté prd_0001 à la commande.") == "J'ai ajouté à la commande."
+    assert spoken_reply("Dix-huit euros 90 le sac de 25 kilos.") == "Dix-huit euros 90 le sac de 25 kilos."

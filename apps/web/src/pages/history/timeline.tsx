@@ -37,30 +37,30 @@ export type TimelineEvent = (ClientEvent | SupplierEvent) & {
 };
 
 export const EVENT_TYPE_LABEL: Record<AnyEventType, string> = {
-  onboarding: "Relationship",
-  call: "Call",
-  visit: "Visit",
-  complaint: "Claim",
-  quality_issue: "Quality problem",
-  delivery_issue: "Delivery problem",
-  return: "Return goods",
-  credit_note: "Credit note",
-  dispute: "Dispute",
-  late_payment: "Payment incident",
-  payment_plan: "Timeline",
-  price_negotiation: "Tariff negotiations",
-  special_request: "Special request",
-  menu_change: "Change of card",
-  contact_change: "Change of contact",
+  onboarding: "Entrée en relation",
+  call: "Appel",
+  visit: "Visite",
+  complaint: "Réclamation",
+  quality_issue: "Problème qualité",
+  delivery_issue: "Problème de livraison",
+  return: "Retour marchandise",
+  credit_note: "Avoir",
+  dispute: "Litige",
+  late_payment: "Incident de paiement",
+  payment_plan: "Échéancier",
+  price_negotiation: "Négociation tarifaire",
+  special_request: "Demande spéciale",
+  menu_change: "Changement de carte",
+  contact_change: "Changement de contact",
   compliment: "Compliment",
-  churn_risk: "Risk of loss",
-  won_back: "Reconnaissed Client",
+  churn_risk: "Risque de perte",
+  won_back: "Client reconquis",
   note: "Note",
-  shortage: "Supply cut",
-  price_change: "Price change",
-  invoice_issue: "Invoice problem",
-  payment: "Payment",
-  contract: "Contract",
+  shortage: "Rupture d'approvisionnement",
+  price_change: "Changement de prix",
+  invoice_issue: "Problème de facture",
+  payment: "Paiement",
+  contract: "Contrat",
   certification: "Certification",
 };
 
@@ -88,11 +88,11 @@ export const ISSUE_TYPES = new Set<AnyEventType>([
 
 export type FamilyId = "issues" | "returns" | "payments" | "commercial" | "relation" | "notes";
 export const FAMILIES: { id: FamilyId; label: string; types: AnyEventType[] }[] = [
-  { id: "issues", label: "Claims & quality", types: ["complaint", "quality_issue", "delivery_issue", "dispute", "churn_risk", "shortage", "invoice_issue"] },
-  { id: "returns", label: "Returns & assets", types: ["return", "credit_note"] },
-  { id: "payments", label: "Payments", types: ["late_payment", "payment_plan", "payment"] },
-  { id: "commercial", label: "Sales representative", types: ["price_negotiation", "price_change", "special_request", "menu_change", "contract", "certification"] },
-  { id: "relation", label: "Relationship", types: ["onboarding", "call", "visit", "contact_change", "compliment", "won_back"] },
+  { id: "issues", label: "Réclamations & qualité", types: ["complaint", "quality_issue", "delivery_issue", "dispute", "churn_risk", "shortage", "invoice_issue"] },
+  { id: "returns", label: "Retours & avoirs", types: ["return", "credit_note"] },
+  { id: "payments", label: "Paiements", types: ["late_payment", "payment_plan", "payment"] },
+  { id: "commercial", label: "Commercial", types: ["price_negotiation", "price_change", "special_request", "menu_change", "contract", "certification"] },
+  { id: "relation", label: "Relation", types: ["onboarding", "call", "visit", "contact_change", "compliment", "won_back"] },
   { id: "notes", label: "Notes", types: ["note"] },
 ];
 const FAMILY_OF = new Map<AnyEventType, FamilyId>(FAMILIES.flatMap((f) => f.types.map((t) => [t, f.id] as const)));
@@ -125,15 +125,15 @@ const ICON_TONE: Record<Tone, string> = {
 };
 
 export const CHANNEL_LABEL: Record<NonNullable<ClientEvent["channel"]>, string> = {
-  phone: "Phone", email: "E-mail", whatsapp: "WhatsApp", visit: "Visit", voice_agent: "Voice agent", sms: "SMS", other: "Other",
+  phone: "Téléphone", email: "E-mail", whatsapp: "WhatsApp", visit: "Visite", voice_agent: "Agent vocal", sms: "SMS", other: "Autre",
 };
 const SEVERITY: Record<NonNullable<ClientEvent["severity"]>, { label: string; tone: Tone }> = {
-  low: { label: "Low", tone: "muted" },
-  medium: { label: "Average", tone: "warning" },
-  high: { label: "High", tone: "destructive" },
+  low: { label: "Faible", tone: "muted" },
+  medium: { label: "Moyenne", tone: "warning" },
+  high: { label: "Haute", tone: "destructive" },
 };
 
-const MONTH = new Intl.DateTimeFormat("en-GB", { month: "long" });
+const MONTH = new Intl.DateTimeFormat("fr-FR", { month: "long" });
 const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
 // ───────────────────────── Filters ─────────────────────────
@@ -174,7 +174,7 @@ export function FamilyChips({ value, onToggle, onClear, counts }: {
     );
   return (
     <div className="flex flex-wrap items-center gap-1">
-      <button type="button" className={chip(value.length === 0)} onClick={onClear}>All</button>
+      <button type="button" className={chip(value.length === 0)} onClick={onClear}>Tout</button>
       {FAMILIES.map((f) => {
         const n = counts?.[f.id];
         if (counts && !n && !value.includes(f.id)) return null;
@@ -203,7 +203,7 @@ export function useProductNames() {
 export function GroupsStrip({ children }: { children: ReactNode }) {
   return (
     <div className="flex min-h-9 flex-wrap items-center gap-2 border-b border-border px-5 py-1.5">
-      <span className="text-[10.5px] font-semibold uppercase tracking-[.08em] text-muted-foreground">Groups</span>
+      <span className="text-[10.5px] font-semibold uppercase tracking-[.08em] text-muted-foreground">Groupes</span>
       {children}
     </div>
   );
@@ -265,9 +265,9 @@ export function EventTimeline({
             <Segmented
               value={(f.status || "all") as "all" | "open" | "resolved"}
               onChange={(v) => f.setStatus(v === "all" ? "" : v)}
-              options={[{ id: "all", label: "All" }, { id: "open", label: `Open${openCount ? ` · ${openCount}` : ""}` }, { id: "resolved", label: "Solved" }]}
+              options={[{ id: "all", label: "Tous" }, { id: "open", label: `Ouverts${openCount ? ` · ${openCount}` : ""}` }, { id: "resolved", label: "Résolus" }]}
             />
-            <SearchInput value={f.q} onChange={f.setQ} placeholder="Search history..." className="w-56" />
+            <SearchInput value={f.q} onChange={f.setQ} placeholder="Rechercher dans l'historique…" className="w-56" />
           </div>
         </div>
       ) : null}
@@ -280,8 +280,8 @@ export function EventTimeline({
           <EmptyState
             compact
             icon={History}
-            title={all.length ? "No event matching" : "No history"}
-            description={all.length ? "Edit filters or search." : "Appeals, claims, returns and negotiations will appear here."}
+            title={all.length ? "Aucun événement ne correspond" : "Aucun historique"}
+            description={all.length ? "Modifiez les filtres ou la recherche." : "Les appels, réclamations, retours et négociations apparaîtront ici."}
           />
         )
       ) : (
@@ -290,7 +290,7 @@ export function EventTimeline({
             <section key={y.year} className="flex flex-col">
               <div className="sticky top-0 z-[1] -mx-1 flex items-baseline gap-2 bg-background/95 px-1 py-1.5 backdrop-blur">
                 <span className="num text-[13px] font-semibold">{y.year}</span>
-                <span className="num text-[11.5px] text-muted-foreground">{yearTotals.get(y.year) ?? y.count} event{(yearTotals.get(y.year) ?? y.count) > 1 ? "s" : ""}</span>
+                <span className="num text-[11.5px] text-muted-foreground">{yearTotals.get(y.year) ?? y.count} événement{(yearTotals.get(y.year) ?? y.count) > 1 ? "s" : ""}</span>
                 <span className="ml-2 h-px flex-1 bg-border" />
               </div>
               {y.months.map((m) => (
@@ -320,7 +320,7 @@ export function EventTimeline({
         </div>
       )}
       <Pagination pagination={pg} className="mt-2 px-0">
-        {pg.total} event{pg.total > 1 ? "s" : ""}
+        {pg.total} événement{pg.total > 1 ? "s" : ""}
       </Pagination>
     </div>
   );
@@ -397,13 +397,13 @@ export function EventItem({
               <span>·</span>
               <span className="num" title={ev.at}>{fmtDate(ev.at)} {new Date(ev.at).getFullYear()} · {fmtTime(ev.at)}</span>
               {ev.severity ? (
-                <><span>·</span><span className="inline-flex items-center gap-1"><Dot tone={SEVERITY[ev.severity].tone} />Gravity {SEVERITY[ev.severity].label.toLowerCase()}</span></>
+                <><span>·</span><span className="inline-flex items-center gap-1"><Dot tone={SEVERITY[ev.severity].tone} />Gravité {SEVERITY[ev.severity].label.toLowerCase()}</span></>
               ) : null}
             </div>
           </div>
           <div className="flex shrink-0 items-center gap-3 pt-[1px]">
             {ev.amount ? <span className="num text-[12.5px] font-medium">{fmtMoney(ev.amount)}</span> : null}
-            {ev.status === "open" ? <StatusDot tone="warning" label="Open" /> : ev.status === "resolved" ? <StatusDot tone="success" label="Resolute" /> : null}
+            {ev.status === "open" ? <StatusDot tone="warning" label="Ouvert" /> : ev.status === "resolved" ? <StatusDot tone="success" label="Résolu" /> : null}
           </div>
         </div>
 
@@ -412,7 +412,7 @@ export function EventItem({
             <p className={cn("whitespace-pre-wrap", !expanded && long && "line-clamp-2")}>{ev.description}</p>
             {long ? (
               <button type="button" onClick={() => setExpanded((x) => !x)} className="mt-0.5 inline-flex items-center gap-0.5 text-[11.5px] text-muted-foreground hover:text-foreground">
-                {expanded ? "Reduce" : "Read more"}
+                {expanded ? "Réduire" : "Lire la suite"}
                 <ChevronDown size={12} className={cn("transition-transform", expanded && "rotate-180")} />
               </button>
             ) : null}
@@ -434,7 +434,7 @@ export function EventItem({
           <div className="mt-1.5 flex max-w-[860px] items-start gap-1.5 text-[12px] text-muted-foreground">
             <CircleCheck size={13} strokeWidth={1.75} className="mt-[2px] shrink-0 text-success" />
             <span>
-              {ev.resolvedAt ? <span className="text-secondary-foreground">Resolved on {fmtDate(ev.resolvedAt)} {new Date(ev.resolvedAt).getFullYear()}</span> : "Resolute"}
+              {ev.resolvedAt ? <span className="text-secondary-foreground">Résolu le {fmtDate(ev.resolvedAt)} {new Date(ev.resolvedAt).getFullYear()}</span> : "Résolu"}
               {ev.resolution ? <> — {ev.resolution}</> : null}
             </span>
           </div>
@@ -452,16 +452,16 @@ export function EventItem({
                   if (e.key === "Enter") submit();
                   if (e.key === "Escape") { e.preventDefault(); setResolveOpen(false); }
                 }}
-                placeholder="How is it settled? (e.g. to have €84 awarded, batch replaced)"
+                placeholder="Comment c'est réglé ? (ex. avoir de 84 € accordé, lot remplacé)"
                 className="flex-1"
-                aria-label="Resolution"
+                aria-label="Résolution"
               />
-              <Button size="sm" variant="ghost" onClick={() => setResolveOpen(false)}>Cancel</Button>
-              <Button size="sm" variant="primary" icon={BadgeCheck} loading={resolving} onClick={submit}>Solve</Button>
+              <Button size="sm" variant="ghost" onClick={() => setResolveOpen(false)}>Annuler</Button>
+              <Button size="sm" variant="primary" icon={BadgeCheck} loading={resolving} onClick={submit}>Résoudre</Button>
             </div>
           ) : (
             <Button size="sm" variant={highlight ? "default" : "ghost"} icon={BadgeCheck} className={cn("mt-1.5", !highlight && "-ml-2")} onClick={() => setResolveOpen(true)}>
-              Mark Solved
+              Marquer résolu
             </Button>
           )
         ) : null}
@@ -478,13 +478,13 @@ function entityOf(ev: TimelineEvent): { name: string; to: string } | undefined {
 
 function eventLinks(kind: EventKind, ev: TimelineEvent, refs?: TimelineRefs, productName?: Map<Id, string>) {
   const out: { key: string; kind: string; label: string; to: string; mono?: boolean }[] = [];
-  if ("orderId" in ev && ev.orderId) out.push({ key: "o", kind: "Order", label: ev.orderNumber ?? refs?.orders?.get(ev.orderId) ?? ev.orderId, to: `/orders/${ev.orderId}`, mono: true });
-  if ("invoiceId" in ev && ev.invoiceId) out.push({ key: "i", kind: "Invoice", label: ev.invoiceNumber ?? refs?.invoices?.get(ev.invoiceId) ?? ev.invoiceId, to: `/invoices/${ev.invoiceId}`, mono: true });
+  if ("orderId" in ev && ev.orderId) out.push({ key: "o", kind: "Commande", label: ev.orderNumber ?? refs?.orders?.get(ev.orderId) ?? ev.orderId, to: `/orders/${ev.orderId}`, mono: true });
+  if ("invoiceId" in ev && ev.invoiceId) out.push({ key: "i", kind: "Facture", label: ev.invoiceNumber ?? refs?.invoices?.get(ev.invoiceId) ?? ev.invoiceId, to: `/invoices/${ev.invoiceId}`, mono: true });
   if ("purchaseOrderId" in ev && ev.purchaseOrderId)
-    out.push({ key: "po", kind: "Purchase", label: ev.poNumber ?? refs?.purchaseOrders?.get(ev.purchaseOrderId) ?? ev.purchaseOrderId, to: `/purchase-orders/${ev.purchaseOrderId}`, mono: true });
+    out.push({ key: "po", kind: "Achat", label: ev.poNumber ?? refs?.purchaseOrders?.get(ev.purchaseOrderId) ?? ev.purchaseOrderId, to: `/purchase-orders/${ev.purchaseOrderId}`, mono: true });
   const pids = ev.productIds ?? [];
   for (const pid of pids.slice(0, 4)) out.push({ key: `p${pid}`, kind: "", label: productName?.get(pid) ?? pid, to: `/products/${pid}` });
-  if (pids.length > 4) out.push({ key: "more", kind: "", label: `+${pids.length - 4} products`, to: `/products/${pids[4]}` });
+  if (pids.length > 4) out.push({ key: "more", kind: "", label: `+${pids.length - 4} produits`, to: `/products/${pids[4]}` });
   void kind;
   return out;
 }
@@ -515,18 +515,18 @@ export function EventStatsLine({ kind, stats, className }: {
   className?: string;
 }) {
   const parts: ReactNode[] = [];
-  if (stats.since) parts.push(<>{kind === "client" ? "Customer" : "Supplier"} depuis <b className="num font-medium text-foreground">{stats.since.slice(0, 4)}</b></>);
-  parts.push(<><b className="num font-medium text-foreground">{stats.total}</b> event{stats.total > 1 ? "s" : ""}</>);
+  if (stats.since) parts.push(<>{kind === "client" ? "Client" : "Fournisseur"} depuis <b className="num font-medium text-foreground">{stats.since.slice(0, 4)}</b></>);
+  parts.push(<><b className="num font-medium text-foreground">{stats.total}</b> événement{stats.total > 1 ? "s" : ""}</>);
   parts.push(
     <span className={stats.open ? "text-[hsl(32_80%_36%)] dark:text-warning" : undefined}>
       <b className="num font-medium">{stats.open}</b> ouvert{stats.open > 1 ? "s" : ""}
     </span>,
   );
   if (stats.complaints12m !== undefined)
-    parts.push(<><b className="num font-medium text-foreground">{stats.complaints12m}</b> claim{stats.complaints12m > 1 ? "s" : ""} 12 months</>);
-  if (stats.returns12m) parts.push(<><b className="num font-medium text-foreground">{stats.returns12m}</b> retour{stats.returns12m > 1 ? "s" : ""} 12 months</>);
+    parts.push(<><b className="num font-medium text-foreground">{stats.complaints12m}</b> réclamation{stats.complaints12m > 1 ? "s" : ""} sur 12 mois</>);
+  if (stats.returns12m) parts.push(<><b className="num font-medium text-foreground">{stats.returns12m}</b> retour{stats.returns12m > 1 ? "s" : ""} sur 12 mois</>);
   if (stats.issues12m !== undefined)
-    parts.push(<><b className="num font-medium text-foreground">{stats.issues12m}</b> incident{stats.issues12m > 1 ? "s" : ""} 12 months</>);
+    parts.push(<><b className="num font-medium text-foreground">{stats.issues12m}</b> incident{stats.issues12m > 1 ? "s" : ""} sur 12 mois</>);
   return (
     <div className={cn("flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[12.5px] text-muted-foreground", className)}>
       {parts.map((p, i) => (
@@ -583,14 +583,14 @@ export function NewEventPanel({ kind, subtitle, onClose, onSubmit, pending, link
   return (
     <SidePanel
       id="new-event"
-      title="New event"
+      title="Nouvel événement"
       subtitle={subtitle}
       onClose={onClose}
       footer={
         <>
-          <span className="mr-auto text-[11.5px] text-muted-foreground">{issue ? "Will be created \"Open\"" : "⌘↵ to save"}</span>
-          <Button variant="ghost" onClick={onClose}>Cancel</Button>
-          <Button variant="primary" loading={pending} disabled={!title.trim()} onClick={submit} kbd="⌘↵">Save</Button>
+          <span className="mr-auto text-[11.5px] text-muted-foreground">{issue ? "Sera créé « Ouvert »" : "⌘↵ pour enregistrer"}</span>
+          <Button variant="ghost" onClick={onClose}>Annuler</Button>
+          <Button variant="primary" loading={pending} disabled={!title.trim()} onClick={submit} kbd="⌘↵">Enregistrer</Button>
         </>
       }
     >
@@ -601,38 +601,38 @@ export function NewEventPanel({ kind, subtitle, onClose, onSubmit, pending, link
         <Field label="Type">
           <Select value={type} onChange={(v) => setType(v as AnyEventType)} options={typeOptions} className="w-full" />
         </Field>
-        <Field label="Title">
-          <Input autoFocus value={title} onChange={(e) => setTitle(e.target.value)} placeholder={kind === "client" ? "Ex.: lobsters who have arrived dead" : "Example: the truck arrived at 7 am instead of 4 am"} />
+        <Field label="Titre">
+          <Input autoFocus value={title} onChange={(e) => setTitle(e.target.value)} placeholder={kind === "client" ? "Ex. : langoustines arrivées mortes" : "Ex. : camion arrivé à 7 h au lieu de 4 h"} />
         </Field>
         <Field label="Description">
-          <Textarea rows={4} value={description} onChange={(e) => setDescription(e.target.value)} placeholder="What happened, with the client's words if possible." />
+          <Textarea rows={4} value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Ce qui s'est passé, avec les mots du client si possible." />
         </Field>
         <div className="grid grid-cols-2 gap-3">
           <Field label="Date">
-            <DatePicker value={date} onChange={(v) => setDate(v || todayIso())} max={todayIso()} presets={[{ label: "Today", days: 0 }, { label: "Yesterday", days: -1 }, { label: "−7 days", days: -7 }]} />
+            <DatePicker value={date} onChange={(v) => setDate(v || todayIso())} max={todayIso()} presets={[{ label: "Aujourd'hui", days: 0 }, { label: "Hier", days: -1 }, { label: "−7 j", days: -7 }]} />
           </Field>
           <Field label="Canal">
             <Select className="w-full" value={channel} onChange={setChannel} placeholder="—" options={Object.entries(CHANNEL_LABEL).map(([value, label]) => ({ value, label }))} />
           </Field>
         </div>
-        <Field label="Gravity">
+        <Field label="Gravité">
           <Segmented
             value={(severity || "none") as "none" | "low" | "medium" | "high"}
             onChange={(v) => setSeverity(v === "none" ? "" : v)}
-            options={[{ id: "none", label: "—" }, { id: "low", label: "Low" }, { id: "medium", label: "Average" }, { id: "high", label: "High" }]}
+            options={[{ id: "none", label: "—" }, { id: "low", label: "Faible" }, { id: "medium", label: "Moyenne" }, { id: "high", label: "Haute" }]}
           />
         </Field>
         {links.map((l) => (
           <Field key={l.field} label={l.label}>
-            <Select className="w-full" value={linkVals[l.field] ?? ""} onChange={(v) => setLinkVals((x) => ({ ...x, [l.field]: v }))} placeholder="No link" options={l.options} />
+            <Select className="w-full" value={linkVals[l.field] ?? ""} onChange={(v) => setLinkVals((x) => ({ ...x, [l.field]: v }))} placeholder="Aucun lien" options={l.options} />
           </Field>
         ))}
         <div className="grid grid-cols-2 gap-3">
-          <Field label="Amount (€)" hint="Have, litigation, debt...">
+          <Field label="Montant (€)" hint="Avoir, litige, dette…">
             <Input inputMode="decimal" value={amount} onChange={(e) => setAmount(e.target.value)} placeholder="0,00" />
           </Field>
-          <Field label="Author">
-            <Input value={author} onChange={(e) => setAuthor(e.target.value)} placeholder="Team" />
+          <Field label="Auteur">
+            <Input value={author} onChange={(e) => setAuthor(e.target.value)} placeholder="Équipe" />
           </Field>
         </div>
       </div>

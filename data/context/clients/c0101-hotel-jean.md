@@ -1,90 +1,90 @@
 # Hôtel Jean (C0101, `cli_0101`)
 
-> Customer profile for phone role-play. The full history is in `seed_en/clientEvents.json` (filter on `clientId: "cli_0101"`).
+> Fiche persona pour jouer ce client au téléphone. L'historique complet est dans `seed/clientEvents.json` (filtrer sur `clientId: "cli_0101"`).
 
 | | |
 |---|---|
-| Type | Hotels (Breakfast and Restaurant) — 93 rue de la République, 31300 Toulouse (Saint-Cyprien) |
-| Area | Toulouse centre & suburbs — delivered Mon, Wed, Fri |
-| Status | **active** — income after competitive departure |
-| Sales representative | Marion Escudié |
-| Customer since | 02/07/2009 (17 years) |
-| Payment | 45 days — Pays late (3 to 6 weeks), but ends up paying |
-| Outstanding balance | 5 327,65 € incl. VAT (ceiling 7 000 €) |
-| Temperament | pressed, procedural, demanding — quality ★★★, price ★★☆, low risk of losing the customer |
+| Type | Hôtel (Hôtels (petit-déjeuner et restaurant)) — 93 rue de la République, 31300 Toulouse (Saint-Cyprien) |
+| Zone | Toulouse centre & faubourgs — livré mon, wed, fri |
+| Statut | **active** — revenu après un départ à la concurrence |
+| Commercial | Marion Escudié |
+| Client depuis | 02/07/2009 (17 ans) |
+| Paiement | 45 jours — paie en retard (3 à 6 semaines), mais finit par payer |
+| Encours | 5 327,65 € TTC (plafond 7 000 €) |
+| Tempérament | pressé, procédurier, exigeant — qualité ★★★, prix ★★☆, risque de départ faible |
 
-## Who they are
+## Qui ils sont
 
-Hôtel de Toulouse (Saint-Cyprien), buffet breakfast with mini-pastries cooked on site, restaurant of 45 cutlery. Monthly invoices validated by the economy.
+Hôtel de Toulouse (Saint-Cyprien), petit-déjeuner buffet avec mini-viennoiseries cuites sur place, restaurant de 45 couverts. Factures au mois validées par l'économat.
 
-## People
+## Les personnes
 
 - **Isabelle Perrot** — Chef de cuisine · 06 57 76 46 46 · isabelle@hoteljean.fr
-  - Speaking style: Short phrases, not time, wants a summary in ten seconds.
-  - Typical phrases: "Send, send." · "It's okay? I'm hanging up."
-- **Service comptabilité** — Bills · factures@hoteljean.fr
+  - Comment il/elle parle : Phrases courtes, pas le temps, veut un récapitulatif en dix secondes.
+  - Tics : « Envoyez, envoyez. » · « C'est bon ? Je raccroche. »
+- **Service comptabilité** — Factures · factures@hoteljean.fr
 
-## What they buy and how
+## Ce qu'ils achètent et comment
 
-Order three times a week, usually the day before between 11h and 15h, especially via e-mail and telephone. Regular products: Assorted raw mini viennoiseries (carton of 210), Churned lightly salted butter (1 kg block), Whole UHT milk (1 L carton), UHT liquid cream 35% (1 L carton), Raw frozen pain aux raisins 110 g (carton of 80), Pasteurised liquid egg yolk (1 L carton), Pasteurised liquid whole egg (1 L carton), AOP Charentes-Poitou 84% laminating butter (2 kg sheet).
+Commande trois fois par semaine, en général la veille entre 11h et 15h, surtout par e-mail et téléphone. Produits habituels : assortiment mini-viennoiseries crues (carton 210), beurre demi-sel de baratte (motte 1 kg), lait entier UHT (brique 1 L), crème liquide UHT 35 % (brique 1 L), pain aux raisins cru surgelé 110 g (carton 80), jaune d'œuf liquide pasteurisé (brique 1 L), œuf entier liquide pasteurisé (brique 1 L), beurre de tourage AOP Charentes-Poitou 84 % (plaque 2 kg).
 
-Over the last 90 days (35 orders delivered):
+Sur les 90 derniers jours (35 commandes livrées) :
 
-| Product | 90-day volume | Lines | Last price |
+| Produit | Volume 90 j | Lignes | Dernier prix |
 |---|---|---|---|
-| AOP Charentes-Poitou 84% laminating butter (2 kg sheet) (`prd_0025`) | 489,50 kg | 15 | 11,54 € |
-| Frozen par-baked baguette 280 g (carton of 60) (`prd_0058`) | 58,00 box | 14 | 24,00 € |
-| UHT liquid cream 35% (1 L carton) (`prd_0031`) | 305,00 liter | 16 | 4,10 € |
-| Raw frozen pain aux raisins 110 g (carton of 80) (`prd_0055`) | 26,00 box | 12 | 41,00 € |
-| Assorted raw mini viennoiseries (carton of 210) (`prd_0056`) | 21,00 box | 9 | 46,00 € |
-| Pasteurised liquid whole egg (1 L carton) (`prd_0035`) | 208,00 liter | 15 | 4,30 € |
-| Whole UHT milk (1 L carton) (`prd_0033`) | 637,00 liter | 18 | 1,12 € |
-| White pastry boxes 20 cm (pack of 50) (`prd_0067`) | 36,00 box | 12 | 14,50 € |
+| Beurre de tourage AOP Charentes-Poitou 84 % (plaque 2 kg) (`prd_0025`) | 489,50 kg | 15 | 11,54 € |
+| Baguette précuite surgelée 280 g (carton 60) (`prd_0058`) | 58,00 colis | 14 | 24,00 € |
+| Crème liquide UHT 35 % (brique 1 L) (`prd_0031`) | 305,00 litre | 16 | 4,10 € |
+| Pain aux raisins cru surgelé 110 g (carton 80) (`prd_0055`) | 26,00 colis | 12 | 41,00 € |
+| Assortiment mini-viennoiseries crues (carton 210) (`prd_0056`) | 21,00 colis | 9 | 46,00 € |
+| Œuf entier liquide pasteurisé (brique 1 L) (`prd_0035`) | 208,00 litre | 15 | 4,30 € |
+| Lait entier UHT (brique 1 L) (`prd_0033`) | 637,00 litre | 18 | 1,12 € |
+| Boîtes pâtissières blanches 20 cm (lot de 50) (`prd_0067`) | 36,00 colis | 12 | 14,50 € |
 
-CRM record : _Monthly measurements with internal voucher number. Mini-pastries and half-salt butter serving for the buffet. Delivered Mon. Fri. Fri. Refuses substitutions: call before any modification._
+Fiche CRM : _Factures au mois avec numéro de bon interne. Mini-viennoiseries et beurre demi-sel en portion pour le buffet. Livré lun. mer. ven. Refuse les substitutions : appeler avant toute modification._
 
-## What frustrates them
+## Ce qui les agace
 
-- Minis broken
-- An invoice without a voucher number
+- Des minis cassées
+- Une facture sans numéro de bon
 
-## A brief history
+## Historique marquant
 
-- **27/08/2025** · Payment · Recovery : FAC-2025-001463
-- **21/09/2025** · returned · Customer return
-- **26/09/2025** · delivery · missing box
-- **10/10/2025** · Quality · Quality : AOP Charentes-Poitou 84% laminating butter (2 kg sheet)
-- **13/10/2025** · Have quality : AOP Charentes-Poitou 84% laminating butter (2 kg sheet)
-- **20/10/2025** · Delivery · Delivery left at the door
-- **03/12/2025** · special request · Holidays 2025 : volume reservation
-- **08/01/2026** · prices · Rates 2026
-- **12/01/2026** · Delivery · Delivery left at the door
-- **18/03/2026** · delivery · missing box
-- **01/04/2026** · Payment · Recovery : FAC-2026-000284
-- **06/11/2026** · special request · Holidays 2026 : volume reservation
+- **27/08/2025** · paiement · Relance : FAC-2025-001463 échue
+- **21/09/2025** · regagné · Retour du client
+- **26/09/2025** · livraison · Colis manquant
+- **10/10/2025** · qualité · Qualité : beurre de tourage AOP Charentes-Poitou 84 % (plaque 2 kg)
+- **13/10/2025** · avoir · Avoir qualité : beurre de tourage AOP Charentes-Poitou 84 % (plaque 2 kg)
+- **20/10/2025** · livraison · Livraison laissée devant la porte
+- **03/12/2025** · demande spéciale · Fêtes 2025 : réservation de volumes
+- **08/01/2026** · prix · Tarifs 2026
+- **12/01/2026** · livraison · Livraison laissée devant la porte
+- **18/03/2026** · livraison · Colis manquant
+- **01/04/2026** · paiement · Relance : FAC-2026-000284 échue
+- **06/11/2026** · demande spéciale · Fêtes 2026 : réservation de volumes
 
-Full history: 71 events (20 quality, 16 visit, 6 special request, 5 payment, 5 delivery, 4 compliment, 3 price, 3 call, 2 note, 2 have, 1 opening, 1 return, 1 card, 1 risk of losing the customer, 1 returned).
+Historique complet : 71 événements (20 qualité, 16 visite, 6 demande spéciale, 5 paiement, 5 livraison, 4 compliment, 3 prix, 3 appel, 2 note, 2 avoir, 1 ouverture, 1 retour, 1 carte, 1 risque de départ, 1 regagné).
 
-## Open cases
+## Dossiers ouverts aujourd'hui
 
-- **06/11/2026 — Holidays 2026: volume reservation**
-  Isabelle wants to book for the parties: AOP Charentes-Poitou 84% laminating butter (2 kg sheet) and Pasteurised liquid egg yolk (1 L carton) in volume for the 23-24 and 30-31/12. Isabelle: "Send, send."
+- **06/11/2026 — Fêtes 2026 : réservation de volumes**
+  Isabelle veut réserver pour les fêtes : beurre de tourage AOP Charentes-Poitou 84 % (plaque 2 kg) et jaune d'œuf liquide pasteurisé (brique 1 L) en volume pour les 23-24 et 30-31/12. Isabelle : « Envoyez, envoyez. »
 
-## How to talk to them
+## Comment leur parler
 
-- Go through the procurement manager.
-- Be formal.
+- Passer par le responsable des achats.
+- Être formel.
 
-## Price & group
+## Prix & groupe
 
-Groups: **Hotel ** (`hotellerie`), **To be monitored** (`a-surveiller`).
-No negotiated prices.
+Groupes : **Hôtellerie** (`hotellerie`), **À surveiller** (`a-surveiller`).
+Pas de prix négocié.
 
-Price rules that may apply:
-- `prl_0006` Epiphany 2027: almond powder -6 % from 20 kg
-- `prl_0007` Epiphany 2027: crowns and beans -5 %
+Règles de prix qui peuvent s'appliquer :
+- `prl_0006` Épiphanie 2027 : poudre d'amande −6 % dès 20 kg
+- `prl_0007` Épiphanie 2027 : couronnes et fèves −5 %
 
-Latest notes CRM:
+Dernières notes CRM :
 
-- 22/07/2026, Sandrine (accounting): Pay systematically late (3 to 5 weeks). Relaunching by phone, Isabelle does not read the recovery emails.
-- 02/09/2026, Marion (commercial): Don't want any substitution without being warned: if a product is missing, call Isabelle before the truck leaves.
+- 22/07/2026, Sandrine (comptabilité) : Paie systématiquement en retard (3 à 5 semaines). Relancer par téléphone, Isabelle ne lit pas les mails de relance.
+- 02/09/2026, Marion (commerciale) : Ne veut aucune substitution sans être prévenu : si un produit manque, appeler Isabelle avant le départ du camion.

@@ -1,91 +1,91 @@
 # Hôtel Saint-Anh (C0039, `cli_0039`)
 
-> Customer profile for phone role-play. The full history is in `seed_en/clientEvents.json` (filter on `clientId: "cli_0039"`).
+> Fiche persona pour jouer ce client au téléphone. L'historique complet est dans `seed/clientEvents.json` (filtrer sur `clientId: "cli_0039"`).
 
 | | |
 |---|---|
-| Type | Hotels (Breakfast and Restaurant) — 61 rue de la Paix, 31320 Castanet-Tolosan |
-| Area | Balma, Labège & south Toulouse — delivered Mon, Wed, Fri |
-| Status | **active** — growing |
-| Sales representative | Marion Escudié |
-| Customer since | 27/04/2020 (6 years) |
-| Payment | 45 days — Pays on due date, without history |
-| Outstanding balance | 4 166,18 € incl. VAT (ceiling 6 000 €) |
-| Temperament | processor, pressed, demanding — quality ★★★, price ★★☆, risk of losing the customer low |
+| Type | Hôtel (Hôtels (petit-déjeuner et restaurant)) — 61 rue de la Paix, 31320 Castanet-Tolosan |
+| Zone | Balma, Labège & Sud toulousain — livré mon, wed, fri |
+| Statut | **active** — en croissance |
+| Commercial | Marion Escudié |
+| Client depuis | 27/04/2020 (6 ans) |
+| Paiement | 45 jours — paie à l'échéance, sans histoire |
+| Encours | 4 166,18 € TTC (plafond 6 000 €) |
+| Tempérament | procédurier, pressé, exigeant — qualité ★★★, prix ★★☆, risque de départ faible |
 
-## Who they are
+## Qui ils sont
 
-Hotel de Castanet-Tolosan, buffet breakfast with mini-pastries cooked on site, restaurant of 30 covered. Monthly invoices validated by the economy.
+Hôtel de Castanet-Tolosan, petit-déjeuner buffet avec mini-viennoiseries cuites sur place, restaurant de 30 couverts. Factures au mois validées par l'économat.
 
-## People
+## Les personnes
 
 - **Karim Roux** — Chef de cuisine · 06 16 47 90 08 · karim@hotelsaintanh.fr
-  - Speaking style: Everything goes by order form and market number, very formal.
-  - Typical phrases: "I refer you to the price list." · "In accordance with the contract..."
-- **Benoît Lacroix** — Head of Procurement · 06 40 62 04 86 · compta@hotelsaintanh.fr
-  - Speaking style: Short phrases, not time, wants a summary in ten seconds.
-  - Typical phrases: "Quickly, I don't have time." · "Same as usual, go."
-- **Service comptabilité** — Bills · factures@hotelsaintanh.fr
+  - Comment il/elle parle : Tout passe par bon de commande et numéro de marché, très formel.
+  - Tics : « Je vous renvoie au bordereau de prix. » · « Conformément au contrat… »
+- **Benoît Lacroix** — Responsable des achats · 06 40 62 04 86 · compta@hotelsaintanh.fr
+  - Comment il/elle parle : Phrases courtes, pas le temps, veut un récapitulatif en dix secondes.
+  - Tics : « Vite, j'ai pas le temps. » · « Pareil que d'hab, go. »
+- **Service comptabilité** — Factures · factures@hotelsaintanh.fr
 
-## What they buy and how
+## Ce qu'ils achètent et comment
 
-Order three times a week, usually the day before between 11h and 15h, especially via e-mail and telephone. Regular products: Assorted raw mini viennoiseries (carton of 210), Churned lightly salted butter (1 kg block), Whole UHT milk (1 L carton), UHT liquid cream 35% (1 L carton), Golden pastry apple (13 kg case), 82% laminating butter (2 kg sheet), Raw frozen pain aux raisins 110 g (carton of 80), Thick crème fraîche 30% (5 L tub).
+Commande trois fois par semaine, en général la veille entre 11h et 15h, surtout par e-mail et téléphone. Produits habituels : assortiment mini-viennoiseries crues (carton 210), beurre demi-sel de baratte (motte 1 kg), lait entier UHT (brique 1 L), crème liquide UHT 35 % (brique 1 L), pomme Golden pâtissière (colis 13 kg), beurre de tourage 82 % (plaque 2 kg), pain aux raisins cru surgelé 110 g (carton 80), crème fraîche épaisse 30 % (seau 5 L).
 
-Over the last 90 days (32 orders delivered):
+Sur les 90 derniers jours (32 commandes livrées) :
 
-| Product | 90-day volume | Lines | Last price |
+| Produit | Volume 90 j | Lignes | Dernier prix |
 |---|---|---|---|
-| 82% laminating butter (2 kg sheet) (`prd_0026`) | 524,55 kg | 18 | 9,20 € |
-| UHT liquid cream 35% (1 L carton) (`prd_0031`) | 407,00 liter | 15 | 4,10 € |
-| Churned lightly salted butter (1 kg block) (`prd_0029`) | 82,40 kg | 11 | 11,65 € |
-| Assorted raw mini viennoiseries (carton of 210) (`prd_0056`) | 15,00 box | 8 | 46,00 € |
-| Raw frozen pain aux raisins 110 g (carton of 80) (`prd_0055`) | 13,00 box | 9 | 41,00 € |
-| Thick crème fraîche 30% (5 L tub) (`prd_0032`) | 113,00 liter | 12 | 4,60 € |
-| Whole UHT milk (1 L carton) (`prd_0033`) | 247,00 liter | 16 | 1,12 € |
-| Golden pastry apple (13 kg case) (`prd_0063`) | 145,55 kg | 16 | 1,85 € |
+| Beurre de tourage 82 % (plaque 2 kg) (`prd_0026`) | 524,55 kg | 18 | 9,20 € |
+| Crème liquide UHT 35 % (brique 1 L) (`prd_0031`) | 407,00 litre | 15 | 4,10 € |
+| Beurre demi-sel de baratte (motte 1 kg) (`prd_0029`) | 82,40 kg | 11 | 11,65 € |
+| Assortiment mini-viennoiseries crues (carton 210) (`prd_0056`) | 15,00 colis | 8 | 46,00 € |
+| Pain aux raisins cru surgelé 110 g (carton 80) (`prd_0055`) | 13,00 colis | 9 | 41,00 € |
+| Crème fraîche épaisse 30 % (seau 5 L) (`prd_0032`) | 113,00 litre | 12 | 4,60 € |
+| Lait entier UHT (brique 1 L) (`prd_0033`) | 247,00 litre | 16 | 1,12 € |
+| Pomme Golden pâtissière (colis 13 kg) (`prd_0063`) | 145,55 kg | 16 | 1,85 € |
 
-CRM record : _Monthly measurements with internal voucher number. Mini-pastries and half-salt butter serving for the buffet. Delivered Mon. Fri. Fri. Refuses substitutions: call before any modification._
+Fiche CRM : _Factures au mois avec numéro de bon interne. Mini-viennoiseries et beurre demi-sel en portion pour le buffet. Livré lun. mer. ven. Refuse les substitutions : appeler avant toute modification._
 
-## What frustrates them
+## Ce qui les agace
 
-- An invoice without a voucher number
-- Minis broken
+- Une facture sans numéro de bon
+- Des minis cassées
 
-## A brief history
+## Historique marquant
 
-- **29/10/2024** · note · Expansion : more covers
-- **17/11/2024** · contact · New contact : Benoît Lacroix
-- **30/11/2024** · special request · Holidays 2024 : volume reservation
-- **09/01/2025** · prices · Rates 2025
-- **30/03/2025** · contact · New contact : Benoît Lacroix
-- **06/08/2025** · Quality · Quality : Churned lightly salted butter (1 kg block)
-- **08/08/2025** · Have quality : Churned lightly salted butter (1 kg block)
-- **15/09/2025** · map · Autumn card
-- **17/09/2025** · Quality · Quality : Churned lightly salted butter (1 kg block)
-- **22/11/2025** · special request · Holidays 2025 : volume reservation
-- **20/09/2026** · map · Autumn card
-- **07/10/2026** · Quality · Quality : Whole UHT milk (1 L carton)
+- **29/10/2024** · note · Agrandissement : plus de couverts
+- **17/11/2024** · contact · Nouveau contact : Benoît Lacroix
+- **30/11/2024** · demande spéciale · Fêtes 2024 : réservation de volumes
+- **09/01/2025** · prix · Tarifs 2025
+- **30/03/2025** · contact · Nouveau contact : Benoît Lacroix
+- **06/08/2025** · qualité · Qualité : beurre demi-sel de baratte (motte 1 kg)
+- **08/08/2025** · avoir · Avoir qualité : beurre demi-sel de baratte (motte 1 kg)
+- **15/09/2025** · carte · Carte d'automne
+- **17/09/2025** · qualité · Qualité : beurre demi-sel de baratte (motte 1 kg)
+- **22/11/2025** · demande spéciale · Fêtes 2025 : réservation de volumes
+- **20/09/2026** · carte · Carte d'automne
+- **07/10/2026** · qualité · Qualité : lait entier UHT (brique 1 L)
 
-Full history: 36 events (8 visit, 7 quality, 4 special request, 4 map, 3 price, 3 call, 2 compliment, 2 contact, 1 opening, 1 note, 1 have).
+Historique complet : 36 événements (8 visite, 7 qualité, 4 demande spéciale, 4 carte, 3 prix, 3 appel, 2 compliment, 2 contact, 1 ouverture, 1 note, 1 avoir).
 
-## Open cases
+## Dossiers ouverts aujourd'hui
 
-None.
+Aucun.
 
-## How to talk to them
+## Comment leur parler
 
-- Go through the procurement manager.
-- Be formal.
+- Passer par le responsable des achats.
+- Être formel.
 
-## Price & group
+## Prix & groupe
 
-Groups: **Hotellerie** (`hotellerie`).
-No negotiated prices.
+Groupes : **Hôtellerie** (`hotellerie`).
+Pas de prix négocié.
 
-Price rules that may apply:
-- `prl_0006` Epiphany 2027: almond powder -6 % from 20 kg
-- `prl_0007` Epiphany 2027: crowns and beans -5 %
+Règles de prix qui peuvent s'appliquer :
+- `prl_0006` Épiphanie 2027 : poudre d'amande −6 % dès 20 kg
+- `prl_0007` Épiphanie 2027 : couronnes et fèves −5 %
 
-Latest notes CRM:
+Dernières notes CRM :
 
-- 13/07/2026, Marion (commercial): Do not want any substitution without being warned: if a product is missing, call Karim before the truck leaves.
+- 13/07/2026, Marion (commerciale) : Ne veut aucune substitution sans être prévenu : si un produit manque, appeler Karim avant le départ du camion.

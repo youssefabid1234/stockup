@@ -114,7 +114,7 @@ def invoice_order(ctx: Ctx, order: Doc) -> Doc:
     """Build the invoice of a delivered order: lines from preparedQty ?? qty, VAT per product,
     due date = issue date + client payment terms."""
     if order["status"] != "delivered":
-        raise conflict("invalid_transition", f"Only an order delivered can be invoiced (current status: {order['status']})")
+        raise conflict("invalid_transition", f"Seule une commande livrée peut être facturée (statut actuel : {order['status']})")
     client = crud.clients.require(order["clientId"])
     lines = []
     for l in order["lines"]:
@@ -148,5 +148,5 @@ def invoice_order(ctx: Ctx, order: Doc) -> Doc:
     crud.invoices.put(inv)
     crud.orders.put({**order, "status": "invoiced", "invoiceId": inv["id"]})
     log_event(ctx, "invoice.issued", "invoice", inv["id"],
-              f"Invoice {inv['number']} issued for {client['name']} ({fmt_eur(inv['totalTtc'])} TTC, maturity {inv['dueDate']})")  # fmt: skip
+              f"Facture {inv['number']} émise pour {client['name']} ({fmt_eur(inv['totalTtc'])} TTC, échéance {inv['dueDate']})")  # fmt: skip
     return inv

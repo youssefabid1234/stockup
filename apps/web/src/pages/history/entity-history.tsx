@@ -22,7 +22,7 @@ function useResolve(kind: EventKind) {
       kind === "client"
         ? api.clientEvents.update(ev.id, { status: "resolved", ...(resolution ? { resolution } : {}) })
         : api.supplierEvents.update(ev.id, { status: "resolved", ...(resolution ? { resolution } : {}) }),
-    { success: "Event resolved", invalidate: [kind === "client" ? qk.clients.all : qk.suppliers.all, qk.history.all] },
+    { success: "Événement résolu", invalidate: [kind === "client" ? qk.clients.all : qk.suppliers.all, qk.history.all] },
   );
 }
 
@@ -30,7 +30,7 @@ export function useCreateEvent(kind: EventKind, entityId: Id, onDone: () => void
   return useApiMutation(
     (body: NewEventBody): Promise<unknown> =>
       kind === "client" ? api.clientEvents.create(entityId, body as never) : api.supplierEvents.create(entityId, body as never),
-    { success: "Event added to history", invalidate: [kind === "client" ? qk.clients.all : qk.suppliers.all, qk.history.all], onSuccess: onDone },
+    { success: "Événement ajouté à l'historique", invalidate: [kind === "client" ? qk.clients.all : qk.suppliers.all, qk.history.all], onSuccess: onDone },
   );
 }
 
@@ -51,7 +51,7 @@ function HistoryBody({ kind, events, loading, stats, refs }: {
     <div className="flex flex-col gap-5 px-5 py-4">
       <EventStatsLine kind={kind} stats={stats} />
       {open.length ? (
-        <Section title="To be processed" count={open.length}>
+        <Section title="À traiter" count={open.length}>
           <ol className="flex flex-col gap-2">
             {open.map((e) => (
               <EventItem key={e.id} kind={kind} ev={e} refs={refs} productName={productName} onResolve={onResolve} resolving={resolvingId === e.id} highlight />
@@ -59,7 +59,7 @@ function HistoryBody({ kind, events, loading, stats, refs }: {
           </ol>
         </Section>
       ) : null}
-      <Section title="Full history" count={events?.length}>
+      <Section title="Historique complet" count={events?.length}>
         <EventTimeline kind={kind} events={events} loading={loading} refs={refs} onResolve={onResolve} resolvingId={resolvingId} />
       </Section>
     </div>
@@ -76,7 +76,7 @@ export function useClientRefs(clientId: Id) {
     const i = [...(invoices ?? [])].sort((a, b) => b.issuedAt.localeCompare(a.issuedAt));
     return {
       refs: { orders: new Map(o.map((x) => [x.id, x.number])), invoices: new Map(i.map((x) => [x.id, x.number])) } as TimelineRefs,
-      orderOptions: o.slice(0, 60).map((x) => ({ value: x.id, label: `${x.number} · delivery ${fmtDate(x.deliveryDate)}` })),
+      orderOptions: o.slice(0, 60).map((x) => ({ value: x.id, label: `${x.number} · livraison ${fmtDate(x.deliveryDate)}` })),
       invoiceOptions: i.slice(0, 60).map((x) => ({ value: x.id, label: `${x.number} · ${fmtDate(x.issuedAt)}` })),
     };
   }, [orders, invoices]);
@@ -99,8 +99,8 @@ export function ClientNewEventPanel({ c, onClose }: { c: ClientDetail; onClose: 
       onSubmit={(b) => create.mutate(b)}
       pending={create.isPending}
       links={[
-        { field: "orderId", label: "Related command", options: orderOptions },
-        { field: "invoiceId", label: "Related invoice", options: invoiceOptions },
+        { field: "orderId", label: "Commande liée", options: orderOptions },
+        { field: "invoiceId", label: "Facture liée", options: invoiceOptions },
       ]}
     />
   );
@@ -131,7 +131,7 @@ export function SupplierNewEventPanel({ s, onClose }: { s: SupplierDetail; onClo
       onClose={onClose}
       onSubmit={(b) => create.mutate(b)}
       pending={create.isPending}
-      links={[{ field: "purchaseOrderId", label: "Related purchase order", options: poOptions }]}
+      links={[{ field: "purchaseOrderId", label: "Commande d'achat liée", options: poOptions }]}
     />
   );
 }
@@ -146,13 +146,13 @@ export function RecentHistory({ kind, events, stats, onOpen }: {
   const shown = [...events.filter((e) => e.status === "open"), ...events.filter((e) => e.status !== "open")].slice(0, 6);
   return (
     <Section
-      title="Background"
+      title="Historique"
       count={stats.total}
-      actions={<Button size="sm" variant="ghost" icon={History} onClick={onOpen}>See all</Button>}
+      actions={<Button size="sm" variant="ghost" icon={History} onClick={onOpen}>Tout voir</Button>}
     >
       <EventStatsLine kind={kind} stats={stats} className="mb-2 text-[12px]" />
       {shown.length === 0 ? (
-        <div className="text-[12.5px] text-muted-foreground">No event yet.</div>
+        <div className="text-[12.5px] text-muted-foreground">Aucun événement pour l'instant.</div>
       ) : (
         <ul className="flex flex-col divide-y divide-border rounded-[6px] border border-border bg-card">
           {shown.map((e) => (
@@ -165,7 +165,7 @@ export function RecentHistory({ kind, events, stats, onOpen }: {
                     {EVENT_TYPE_LABEL[e.type]} · {fmtDate(e.at)} {e.at.slice(0, 4)}
                   </span>
                 </span>
-                {e.status === "open" ? <StatusDot tone="warning" label="Open" className="shrink-0 text-[11.5px]" /> : null}
+                {e.status === "open" ? <StatusDot tone="warning" label="Ouvert" className="shrink-0 text-[11.5px]" /> : null}
               </button>
             </li>
           ))}

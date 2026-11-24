@@ -55,7 +55,7 @@ async def test_non_json_tool_result_becomes_an_error():
         erp, _ = recording_erp()
         ev = await execute_tool(ToolCall(id="c1", name="demo_datetime", arguments={}), [demo_datetime], ToolContext(erp=erp, actor="ai_chat"))
         assert ev.ok is False
-        assert "not serializable" in ev.result["error"]
+        assert "non sérialisable" in ev.result["error"]
     finally:
         TOOLS.pop("demo_datetime")
 
@@ -79,21 +79,21 @@ async def test_voice_audio_start_hint_reaches_stt(monkeypatch):
         return
         yield
 
-    monkeypatch.setattr(voice_session, "get_stt_client", lambda: MockSTT("fixed text"))
+    monkeypatch.setattr(voice_session, "get_stt_client", lambda: MockSTT("texte fixe"))
     monkeypatch.setattr(voice_session, "get_tts_client", lambda: MockTTS())
     monkeypatch.setattr(voice_session, "get_llm_client", lambda: FakeLLM())
     monkeypatch.setattr(voice_session, "run_agent", no_agent)
 
     conn = voice_session.VoiceConnection(FakeWS())  # type: ignore[arg-type]
-    await conn.handle_text(json.dumps({"type": "audio_start", "mime": "audio/webm", "hint": "You got any more ceps?"}))
+    await conn.handle_text(json.dumps({"type": "audio_start", "mime": "audio/webm", "hint": "il vous reste des cèpes ?"}))
     conn.recording.feed(b"\x00")  # type: ignore[union-attr]
     await conn.handle_text(json.dumps({"type": "audio_end"}))
     await conn.turn
     transcripts = [m["text"] for m in conn.ws.sent if m["type"] == "transcript" and m["final"]]
-    assert transcripts == ["You got any more ceps?"]
+    assert transcripts == ["il vous reste des cèpes ?"]
 
     # without a hint, the mock STT falls back to its fixed text (the web app sends none)
     await conn.handle_text(json.dumps({"type": "audio_start", "mime": "audio/webm"}))
     await conn.handle_text(json.dumps({"type": "audio_end"}))
     await conn.turn
-    assert [m["text"] for m in conn.ws.sent if m["type"] == "transcript"][-1] == "fixed text"
+    assert [m["text"] for m in conn.ws.sent if m["type"] == "transcript"][-1] == "texte fixe"

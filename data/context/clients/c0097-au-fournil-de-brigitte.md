@@ -1,96 +1,96 @@
 # Au Fournil de Brigitte (C0097, `cli_0097`)
 
-> Customer profile for phone role-play. The full history is in `seed_en/clientEvents.json` (filter on `clientId: "cli_0097"`).
+> Fiche persona pour jouer ce client au téléphone. L'historique complet est dans `seed/clientEvents.json` (filtrer sur `clientId: "cli_0097"`).
 
 | | |
 |---|---|
-| Type | Retail trade (Artisan bakeries) — 99 rue Pasteur, 31520 Ramonville-Saint-Agne |
-| Area | Balma, Labège & Sud Toulouse — delivered Wed, Sat |
-| Status | **active** — regular customer |
-| Sales representative | Marion Escudié |
-| Customer since | 25/06/2015 (11 years) |
-| Payment | 30 days — Pays late (3 to 6 weeks), but ends up paying |
-| Outstanding balance | 21 179,95 € incl. VAT (ceiling 30 000 €) — **1 overdue invoices: 10 328,79 €** |
-| Temperament | pressed, loyal — quality ★★☆, price ★☆☆, risk of losing the customer low |
+| Type | Commerce de détail (Boulangeries artisanales) — 99 rue Pasteur, 31520 Ramonville-Saint-Agne |
+| Zone | Balma, Labège & Sud toulousain — livré wed, sat |
+| Statut | **active** — client régulier |
+| Commercial | Marion Escudié |
+| Client depuis | 25/06/2015 (11 ans) |
+| Paiement | 30 jours — paie en retard (3 à 6 semaines), mais finit par payer |
+| Encours | 21 179,95 € TTC (plafond 30 000 €) — **1 facture échue : 10 328,79 €** |
+| Tempérament | pressé, loyal — qualité ★★☆, prix ★☆☆, risque de départ faible |
 
-## Who they are
+## Qui ils sont
 
-Ramonville-Saint-Agne artisan bakery, two ovens in the morning, one at midday. Maxime Fontaine makes its tradition on poolish and stands for its AOP laminating butter for the pains au chocolat.
+Boulangerie artisanale de Ramonville-Saint-Agne, deux fournées le matin, une à midi. Maxime Fontaine fait sa tradition sur poolish et tient à son tourage AOP pour les chocolatines.
 
-## People
+## Les personnes
 
-- **Maxime Fontaine** — bakery owner · 06 10 42 16 54
-  - How he/she talks: Never change supplier, defend home when things go wrong.
-  - Typical phrases: "I know you're doing the best you can." · "Do you find me a solution?"
-- **Gwenaëlle Leroux** — Bakery (shop and orders) · 06 20 85 83 41
-  - Speaking style: Short phrases, not time, wants a summary in ten seconds.
-  - Typical phrases: "It's okay? I'm hanging up." · "Quick, I don't have time."
+- **Maxime Fontaine** — Boulanger-patron · 06 10 42 16 54
+  - Comment il/elle parle : Ne change jamais de fournisseur, défend la maison quand ça va mal.
+  - Tics : « Je sais que vous faites au mieux. » · « Vous me trouvez une solution ? »
+- **Gwenaëlle Leroux** — Boulangère (boutique et commandes) · 06 20 85 83 41
+  - Comment il/elle parle : Phrases courtes, pas le temps, veut un récapitulatif en dix secondes.
+  - Tics : « C'est bon ? Je raccroche. » · « Vite, j'ai pas le temps. »
 
-## What they buy and how
+## Ce qu'ils achètent et comment
 
-Order twice a week, usually the day before between 13h and 17h, especially by telephone and WhatsApp. Regular products: T55 traditional French wheat flour (25 kg bag), Fresh baker's yeast (500 g block), 82% laminating butter (2 kg sheet), Baker's chocolate sticks 44% (1.6 kg carton, 300 sticks), Fine sea salt (25 kg bag), Neutral hot glaze (7 kg tub), T45 gruau pastry flour (25 kg bag), T80 bise flour (25 kg bag).
+Commande deux fois par semaine, en général la veille entre 13h et 17h, surtout par téléphone et WhatsApp. Produits habituels : farine de blé T55 tradition française (sac 25 kg), levure fraîche boulangère (pain de 500 g), beurre de tourage 82 % (plaque 2 kg), bâtons de chocolat boulanger 44 % (carton 1,6 kg, 300 bâtons), sel fin de mer (sac 25 kg), nappage neutre à chaud (seau 7 kg), farine de gruau T45 pâtissière (sac 25 kg), farine bise T80 (sac 25 kg).
 
-Over the last 90 days (24 orders delivered):
+Sur les 90 derniers jours (24 commandes livrées) :
 
-| Product | 90-day volume | Lines | Last price |
+| Produit | Volume 90 j | Lignes | Dernier prix |
 |---|---|---|---|
-| 82% laminating butter (2 kg sheet) (`prd_0026`) | 698,45 kg | 13 | 9,32 € |
-| T55 traditional French wheat flour (25 kg bag) (`prd_0001`) | 186,00 piece | 13 | 19,10 € |
-| Dark couverture chocolate 70% (pistoles, 5 kg bag) (`prd_0039`) | 195,94 kg | 12 | 17,23 € |
-| T55 baker's wheat flour (25 kg bag) (`prd_0002`) | 182,00 piece | 14 | 16,56 € |
-| Caster sugar (25 kg bag) (`prd_0015`) | 97,00 piece | 18 | 27,50 € |
-| Dark couverture chocolate 64% (pistoles, 5 kg bag) (`prd_0038`) | 143,01 kg | 12 | 15,68 € |
-| T45 gruau pastry flour (25 kg bag) (`prd_0003`) | 87,00 piece | 7 | 22,63 € |
-| Baker's chocolate sticks 44% (1.6 kg carton, 300 sticks) (`prd_0042`) | 136,00 box | 9 | 13,80 € |
+| Beurre de tourage 82 % (plaque 2 kg) (`prd_0026`) | 698,45 kg | 13 | 9,32 € |
+| Farine de blé T55 tradition française (sac 25 kg) (`prd_0001`) | 186,00 pièce | 13 | 19,10 € |
+| Chocolat de couverture noir 70 % (pistoles, sac 5 kg) (`prd_0039`) | 195,94 kg | 12 | 17,23 € |
+| Farine de blé T55 boulangère (sac 25 kg) (`prd_0002`) | 182,00 pièce | 14 | 16,56 € |
+| Sucre semoule (sac 25 kg) (`prd_0015`) | 97,00 pièce | 18 | 27,50 € |
+| Chocolat de couverture noir 64 % (pistoles, sac 5 kg) (`prd_0038`) | 143,01 kg | 12 | 15,68 € |
+| Farine de gruau T45 pâtissière (sac 25 kg) (`prd_0003`) | 87,00 pièce | 7 | 22,63 € |
+| Bâtons de chocolat boulanger 44 % (carton 1,6 kg, 300 bâtons) (`prd_0042`) | 136,00 colis | 9 | 13,80 € |
 
-Form CRM : _Tourage AOP for pastry, pastry butter for the rest. Traditional Lauragais flour only. Delivered sea. sam. Refuses substitutions: call before any modification._
+Fiche CRM : _Tourage AOP pour la viennoiserie, beurre pâtissier pour le reste. Farine de tradition du Lauragais uniquement. Livré mer. sam. Refuse les substitutions : appeler avant toute modification._
 
-## What frustrates them
+## Ce qui les agace
 
-- The increases in butter announced the same day
-- To be delivered one day of closing
-- A delivery during the rush of 7h-9h
+- Les hausses du beurre annoncées le jour même
+- Être livré un jour de fermeture
+- Une livraison pendant le rush de 7h-9h
 
-## A brief history
+## Historique marquant
 
-- **08/04/2026** · claim · Outturn: T65 organic wheat flour (25 kg bag) not delivered
-- **13/05/2026** · Payment · Recovery : FAC-2026-000760
-- **16/05/2026** · claim · Outturn: T65 organic wheat flour (25 kg bag) not delivered
-- **17/06/2026** · Quality · Quality : Caster sugar (25 kg bag)
-- **20/06/2026** · Have quality : Caster sugar (25 kg bag)
-- **08/07/2026** · claim · Outturn: T80 bise flour (25 kg bag) not delivered
-- **09/07/2026** · note · Summer closure 2026
-- **22/07/2026** · claim · Outturn: T65 organic wheat flour (25 kg bag) not delivered
-- **14/08/2026** · Payment · Recovery : FAC-2026-001493
-- **07/10/2026** · claim · Outturn: T80 bise flour (25 kg bag) not delivered
-- **28/10/2026** · claim · Outturn: T65 organic wheat flour (25 kg bag) not delivered
-- **20/11/2026** · special request · Holidays 2026 : volume reservation
+- **08/04/2026** · réclamation · Rupture : farine de blé T65 bio (sac 25 kg) non livré
+- **13/05/2026** · paiement · Relance : FAC-2026-000760 échue
+- **16/05/2026** · réclamation · Rupture : farine de blé T65 bio (sac 25 kg) non livré
+- **17/06/2026** · qualité · Qualité : sucre semoule (sac 25 kg)
+- **20/06/2026** · avoir · Avoir qualité : sucre semoule (sac 25 kg)
+- **08/07/2026** · réclamation · Rupture : farine bise T80 (sac 25 kg) non livré
+- **09/07/2026** · note · Fermeture d'été 2026
+- **22/07/2026** · réclamation · Rupture : farine de blé T65 bio (sac 25 kg) non livré
+- **14/08/2026** · paiement · Relance : FAC-2026-001493 échue
+- **07/10/2026** · réclamation · Rupture : farine bise T80 (sac 25 kg) non livré
+- **28/10/2026** · réclamation · Rupture : farine de blé T65 bio (sac 25 kg) non livré
+- **20/11/2026** · demande spéciale · Fêtes 2026 : réservation de volumes
 
-Full history: 83 events (24 claim, 12 quality, 12 visit, 8 payment, 7 call, 5 special request, 4 compliment, 3 price, 3 note, 3 have, 1 opening, 1 delivery).
+Historique complet : 83 événements (24 réclamation, 12 qualité, 12 visite, 8 paiement, 7 appel, 5 demande spéciale, 4 compliment, 3 prix, 3 note, 3 avoir, 1 ouverture, 1 livraison).
 
-## Open cases
+## Dossiers ouverts aujourd'hui
 
-- **20/11/2026 — Holidays 2026: volume reservation**
-  Gwenaëlle wants to book for the holidays: T80 bise flour (25 kg bag) and Dark couverture chocolate 70% (pistoles, 5 kg bag) in volume for the 23-24 and 30-31/12. Gwenaëlle: "Quick, I don't have time."
+- **20/11/2026 — Fêtes 2026 : réservation de volumes**
+  Gwenaëlle veut réserver pour les fêtes : farine bise T80 (sac 25 kg) et chocolat de couverture noir 70 % (pistoles, sac 5 kg) en volume pour les 23-24 et 30-31/12. Gwenaëlle : « Vite, j'ai pas le temps. »
 
-## How to talk to them
+## Comment leur parler
 
-- Tutoying if he's tutoing, it's a profession where everyone is silent.
-- Call Epiphany pre-orders back in November.
-- Talk in bags, not in kilos.
+- Tutoyer s'il tutoie, c'est un métier où tout le monde se tutoie.
+- Rappeler les pré-commandes d'Épiphanie dès novembre.
+- Parler en sacs, pas en kilos.
 
-## Price & group
+## Prix & groupe
 
-Groups: **Boulangeries** (`boulangeries`), **To be monitored** (`a-surveiller`).
-No negotiated prices.
+Groupes : **Boulangeries** (`boulangeries`), **À surveiller** (`a-surveiller`).
+Pas de prix négocié.
 
-Price rules that may apply:
-- `prl_0001` Bakeries: -4 % on flours from 10 bags
-- `prl_0006` Epiphany 2027: almond powder -6 % from 20 kg
-- `prl_0007` Epiphany 2027: crowns and beans -5 %
+Règles de prix qui peuvent s'appliquer :
+- `prl_0001` Boulangeries : −4 % sur les farines dès 10 sacs
+- `prl_0006` Épiphanie 2027 : poudre d'amande −6 % dès 20 kg
+- `prl_0007` Épiphanie 2027 : couronnes et fèves −5 %
 
-Latest notes CRM:
+Dernières notes CRM :
 
-- 28/04/2025, Marion (commercial): Yeast change if it arrives lukewarm: check the insulated bin.
-- 01/09/2025, Marion (commercial): Closed on Wednesday: never delivered on that day.
-- 07/06/2026, Marion (commercial): Does not want any substitution without being warned: if a product is missing, call Maxime before the truck leaves.
+- 28/04/2025, Marion (commerciale) : Change de levure si elle arrive tiède : vérifier le bac isotherme.
+- 01/09/2025, Marion (commerciale) : Fermé le mercredi : jamais de livraison ce jour-là.
+- 07/06/2026, Marion (commerciale) : Ne veut aucune substitution sans être prévenu : si un produit manque, appeler Maxime avant le départ du camion.

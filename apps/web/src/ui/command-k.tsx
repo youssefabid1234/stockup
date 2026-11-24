@@ -11,7 +11,7 @@ import { Kbd, Spinner } from "./button";
 import { SECTION_LABEL } from "./section";
 
 const TYPE_ICON: Record<SearchResult["type"], LucideIcon> = { client: Users, product: Package, supplier: Building2, order: ShoppingCart, context: BookOpen };
-const TYPE_LABEL: Record<SearchResult["type"], string> = { client: "Customer", product: "Product", supplier: "Supplier", order: "Order", context: "Context" };
+const TYPE_LABEL: Record<SearchResult["type"], string> = { client: "Client", product: "Produit", supplier: "Fournisseur", order: "Commande", context: "Contexte" };
 const TYPE_PATH: Record<SearchResult["type"], string> = { client: "/clients", product: "/products", supplier: "/suppliers", order: "/orders", context: "/context" };
 
 /** Route for a search result: /clients/:id, /products/:id, … */
@@ -50,10 +50,10 @@ export function CommandK() {
       if (!needle) return true;
       const hay = `${n.label} ${n.keywords ?? ""}`.toLowerCase().normalize("NFD").replace(/\p{Diacritic}/gu, "");
       return hay.includes(needle);
-    }).map<Item>((n) => ({ key: `nav:${n.to}`, icon: n.icon, label: n.label, hint: "Go to", run: go(n.to), group: "Pages" }));
+    }).map<Item>((n) => ({ key: `nav:${n.to}`, icon: n.icon, label: n.label, hint: "Aller à", run: go(n.to), group: "Pages" }));
     const results = (dq ? data ?? [] : []).slice(0, 12).map<Item>((r) => ({
       key: `${r.type}:${r.id}`, icon: TYPE_ICON[r.type], label: r.label, sublabel: r.sublabel, hint: TYPE_LABEL[r.type],
-      run: go(searchResultPath(r)), group: "Results",
+      run: go(searchResultPath(r)), group: "Résultats",
     }));
     return needle ? [...results, ...pages.slice(0, 4)] : pages;
   }, [q, dq, data, navigate]);
@@ -77,7 +77,7 @@ export function CommandK() {
     <div className="fixed inset-0 z-50 flex justify-center bg-foreground/10 pt-[12vh] animate-fade-in dark:bg-black/40" onMouseDown={() => shell.closeCommand()}>
       <div
         role="dialog"
-        aria-label="Search"
+        aria-label="Recherche"
         onMouseDown={(e) => e.stopPropagation()}
         className="flex h-fit max-h-[460px] w-[600px] max-w-[calc(100vw-32px)] flex-col overflow-hidden rounded-[6px] border border-border bg-card shadow-pop"
       >
@@ -88,15 +88,15 @@ export function CommandK() {
             value={q}
             onChange={(e) => setQ(e.target.value)}
             onKeyDown={onKeyDown}
-            placeholder="Find a customer, product, order..."
+            placeholder="Rechercher un client, un produit, une commande…"
             className="h-full flex-1 bg-transparent text-[14px] outline-none placeholder:text-muted-foreground/70"
           />
-          <Kbd>Escape</Kbd>
+          <Kbd>Échap</Kbd>
         </div>
         <div ref={listRef} className="min-h-0 flex-1 overflow-auto p-1.5">
           {items.length === 0 ? (
             <div className="px-3 py-8 text-center text-[12.5px] text-muted-foreground">
-              {isFetching ? "Search..." : `No results for " ${q} »`}
+              {isFetching ? "Recherche…" : `Aucun résultat pour « ${q} »`}
             </div>
           ) : (
             items.map((it, i) => {

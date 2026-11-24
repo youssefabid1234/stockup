@@ -231,7 +231,7 @@ export function Tabs<T extends string>({ items, value, onChange, className }: {
             type="button"
             aria-haspopup="menu"
             aria-expanded={menu}
-            aria-label={active ? "Tabs" : `${hidden.length} Other tabs`}
+            aria-label={active ? "Onglets" : `${hidden.length} autres onglets`}
             onClick={() => setMenu((o) => !o)}
             onBlur={() => setMenu(false)}
             onKeyDown={(e) => { if (e.key === "Escape") setMenu(false); }}
@@ -289,7 +289,7 @@ export function useResizableWidth(key: string, def: number, min: number, max: nu
 export type Resizable = ReturnType<typeof useResizableWidth>;
 
 /** Hairline drag handle lying on a panel edge (inside the panel). edge="right" → dragging right grows the panel. */
-export function ResizeHandle({ r, edge, label = "Resize" }: { r: Resizable; edge: "left" | "right"; label?: string }) {
+export function ResizeHandle({ r, edge, label = "Redimensionner" }: { r: Resizable; edge: "left" | "right"; label?: string }) {
   const sign = edge === "right" ? 1 : -1;
   const onPointerDown = (e: ReactPointerEvent<HTMLDivElement>) => {
     if (e.button !== 0) return;
@@ -330,7 +330,7 @@ export function ResizeHandle({ r, edge, label = "Resize" }: { r: Resizable; edge
       aria-valuemin={r.min}
       aria-valuemax={r.max}
       tabIndex={0}
-      title={`${label} · double click: default size`}
+      title={`${label} · double-clic : taille par défaut`}
       data-resize-handle={edge}
       onPointerDown={onPointerDown}
       onDoubleClick={r.reset}
@@ -389,14 +389,14 @@ export function SidePanel({ title, subtitle, actions, onClose, children, width =
         leaving && "translate-x-4 opacity-0",
       )}
     >
-      <ResizeHandle r={r} edge="left" label="Resize Panel" />
+      <ResizeHandle r={r} edge="left" label="Redimensionner le panneau" />
       <div className="flex h-12 shrink-0 items-center gap-2 border-b border-border pl-4 pr-2">
         <div className="min-w-0 flex-1">
           <div className="truncate text-[13.5px] font-semibold">{title}</div>
           {subtitle ? <div className="truncate text-[11.5px] text-muted-foreground">{subtitle}</div> : null}
         </div>
         {actions}
-        <IconButton icon={X} label="Close (Escape)" size="sm" onClick={close} />
+        <IconButton icon={X} label="Fermer (Échap)" size="sm" onClick={close} />
       </div>
       <div className="min-h-0 flex-1 overflow-auto px-4 py-4">{children}</div>
       {footer ? <div className="flex shrink-0 items-center justify-end gap-2 border-t border-border px-4 py-2.5">{footer}</div> : null}

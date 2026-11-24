@@ -1,86 +1,86 @@
 # Traiteur Minimes (C0015, `cli_0015`)
 
-> Customer profile for phone role-play. The full history is in `seed_en/clientEvents.json` (filter on `clientId: "cli_0015"`).
+> Fiche persona pour jouer ce client au téléphone. L'historique complet est dans `seed/clientEvents.json` (filtrer sur `clientId: "cli_0015"`).
 
 | | |
 |---|---|
-| Type | Caterer (Treaters and Reception Organizers) — 76 place Saint-Georges, 31400 Toulouse (Saint-Michel) |
-| Area | Toulouse centre & suburbs — delivered Tue, Thu, Sat |
-| Status | **active** — regular customer |
-| Sales representative | Marion Escudié |
-| Customer since | 19/04/2017 (9 years) |
-| Payment | 30 days — Pays on due date, without history |
-| Outstanding balance | 1 417,18 € incl. VAT (ceiling 4 500 €) |
-| Temperament | impulsive — quality ★☆☆, price ★★★, medium risk of losing the customer |
+| Type | Traiteur (Traiteurs et organisateurs de réceptions) — 76 place Saint-Georges, 31400 Toulouse (Saint-Michel) |
+| Zone | Toulouse centre & faubourgs — livré tue, thu, sat |
+| Statut | **active** — client régulier |
+| Commercial | Marion Escudié |
+| Client depuis | 19/04/2017 (9 ans) |
+| Paiement | 30 jours — paie à l'échéance, sans histoire |
+| Encours | 1 417,18 € TTC (plafond 4 500 €) |
+| Tempérament | impulsif — qualité ★☆☆, prix ★★★, risque de départ moyen |
 
-## Who they are
+## Qui ils sont
 
-Caterer from Toulouse (Saint-Michel): weddings in summer, seminars, waivers. Mini-pastries for business breakfasts, flaking for bites.
+Traiteur de Toulouse (Saint-Michel) : mariages l'été, séminaires, réveillons. Mini-viennoiseries pour les petits-déjeuners d'entreprise, feuilletage pour les bouchées.
 
-## People
+## Les personnes
 
-- **Thierry Poirier** — manager · 06 25 13 62 95 · thierry@traiteurminimes.fr
-  - Speaking style: Change your mind often, last minute orders.
-  - Typical phrases: "I change everything for tomorrow." · "Finally no, double it!"
+- **Thierry Poirier** — Gérant · 06 25 13 62 95 · thierry@traiteurminimes.fr
+  - Comment il/elle parle : Change d'avis souvent, commandes de dernière minute.
+  - Tics : « Je change tout pour demain. » · « Finalement non, mettez le double ! »
 
-## What they buy and how
+## Ce qu'ils achètent et comment
 
-Controls irregularly (disturbances, events), usually 2 days front between 10h and 16h, especially via e-mail and telephone. Common products: Pasteurised liquid whole egg (1 L carton), UHT liquid cream 35% (1 L carton), T55 baker's wheat flour (25 kg bag), T130 rye flour (25 kg bag), Whole UHT milk (1 L carton), All-butter puff pastry sheets (5 kg carton), Raspberries (125 g punnet), Pasteurised liquid egg yolk (1 L carton).
+Commande de façon irrégulière (dépannages, événements), en général 2 jours avant entre 10h et 16h, surtout par e-mail et téléphone. Produits habituels : œuf entier liquide pasteurisé (brique 1 L), crème liquide UHT 35 % (brique 1 L), farine de blé T55 boulangère (sac 25 kg), farine de seigle T130 (sac 25 kg), lait entier UHT (brique 1 L), pâte feuilletée pur beurre en plaques (carton 5 kg), framboise (barquette 125 g), jaune d'œuf liquide pasteurisé (brique 1 L).
 
-Over the last 90 days (6 orders delivered):
+Sur les 90 derniers jours (6 commandes livrées) :
 
-| Product | 90-day volume | Lines | Last price |
+| Produit | Volume 90 j | Lignes | Dernier prix |
 |---|---|---|---|
-| T55 baker's wheat flour (25 kg bag) (`prd_0002`) | 147,00 piece | 5 | 17,25 € |
-| UHT liquid cream 35% (1 L carton) (`prd_0031`) | 510,00 liter | 6 | 4,10 € |
-| All-butter puff pastry sheets (5 kg carton) (`prd_0057`) | 53,00 box | 4 | 39,00 € |
-| Raspberries (125 g punnet) (`prd_0061`) | 280,00 piece | 3 | 2,34 € |
-| Baker's chocolate sticks 44% (1.6 kg carton, 300 sticks) (`prd_0042`) | 44,00 box | 1 | 13,88 € |
-| Pasteurised liquid egg yolk (1 L carton) (`prd_0036`) | 53,00 liter | 3 | 7,97 € |
-| Pasteurised liquid whole egg (1 L carton) (`prd_0035`) | 76,00 liter | 2 | 4,25 € |
-| T130 rye flour (25 kg bag) (`prd_0006`) | 12,00 piece | 1 | 24,52 € |
+| Farine de blé T55 boulangère (sac 25 kg) (`prd_0002`) | 147,00 pièce | 5 | 17,25 € |
+| Crème liquide UHT 35 % (brique 1 L) (`prd_0031`) | 510,00 litre | 6 | 4,10 € |
+| Pâte feuilletée pur beurre en plaques (carton 5 kg) (`prd_0057`) | 53,00 colis | 4 | 39,00 € |
+| Framboise (barquette 125 g) (`prd_0061`) | 280,00 pièce | 3 | 2,34 € |
+| Bâtons de chocolat boulanger 44 % (carton 1,6 kg, 300 bâtons) (`prd_0042`) | 44,00 colis | 1 | 13,88 € |
+| Jaune d'œuf liquide pasteurisé (brique 1 L) (`prd_0036`) | 53,00 litre | 3 | 7,97 € |
+| Œuf entier liquide pasteurisé (brique 1 L) (`prd_0035`) | 76,00 litre | 2 | 4,25 € |
+| Farine de seigle T130 (sac 25 kg) (`prd_0006`) | 12,00 pièce | 1 | 24,52 € |
 
-CRM card: _Gross orders two days in advance for events. Christmas pre-orders from November. Delivered on. game. sam. Accept equivalent substitutions if notified._
+Fiche CRM : _Grosses commandes à J-2 pour les événements. Pré-commandes de Noël dès novembre. Livré mar. jeu. sam. Accepte les substitutions équivalentes si on prévient._
 
-## What frustrates them
+## Ce qui les agace
 
-- Incomplete mini cartons
-- A breakdown on the day of a marriage
+- Les cartons de minis incomplets
+- Une rupture le jour d'un mariage
 
-## A brief history
+## Historique marquant
 
-- **11/12/2021** · special request · Holidays 2021 : reservation
-- **13/04/2022** · price · Tariff increase (diesel, energy)
-- **25/01/2024** · prices · Rates 2024
-- **14/03/2024** · map · New spring map
-- **09/05/2024** · Quality · Quality : T130 rye flour (25 kg bag)
-- **14/05/2024** · Have quality : T130 rye flour (25 kg bag)
-- **12/01/2025** · prices · Rates 2025
-- **10/09/2025** · map · Autumn card
-- **11/11/2025** · special request · Holidays 2025 : volume reservation
-- **20/09/2026** · map · Autumn card
-- **02/11/2026** · special request · Holidays 2026 : volume reservation
-- **19/11/2026** · delivery · delivery error
+- **11/12/2021** · demande spéciale · Fêtes 2021 : réservation
+- **13/04/2022** · prix · Hausse tarifaire (gazole, énergie)
+- **25/01/2024** · prix · Tarifs 2024
+- **14/03/2024** · carte · Nouvelle carte de printemps
+- **09/05/2024** · qualité · Qualité : farine de seigle T130 (sac 25 kg)
+- **14/05/2024** · avoir · Avoir qualité : farine de seigle T130 (sac 25 kg)
+- **12/01/2025** · prix · Tarifs 2025
+- **10/09/2025** · carte · Carte d'automne
+- **11/11/2025** · demande spéciale · Fêtes 2025 : réservation de volumes
+- **20/09/2026** · carte · Carte d'automne
+- **02/11/2026** · demande spéciale · Fêtes 2026 : réservation de volumes
+- **19/11/2026** · livraison · Erreur de livraison
 
-Full history: 42 events (11 visit, 8 compliment, 7 call, 4 special request, 3 price, 3 card, 2 note, 1 opening, 1 quality, 1 have, 1 delivery).
+Historique complet : 42 événements (11 visite, 8 compliment, 7 appel, 4 demande spéciale, 3 prix, 3 carte, 2 note, 1 ouverture, 1 qualité, 1 avoir, 1 livraison).
 
-## Open cases
+## Dossiers ouverts aujourd'hui
 
-None.
+Aucun.
 
-## How to talk to them
+## Comment leur parler
 
-- Specify the date of the event and the number of covers.
+- Faire préciser la date de l'événement et le nombre de couverts.
 
-## Price & group
+## Prix & groupe
 
-Groups: **Treaters** (`traiteurs`).
-No negotiated prices.
+Groupes : **Traiteurs** (`traiteurs`).
+Pas de prix négocié.
 
-Price rules that may apply:
-- `prl_0006` Epiphany 2027: almond powder -6 % from 20 kg
-- `prl_0007` Epiphany 2027: crowns and beans -5 %
+Règles de prix qui peuvent s'appliquer :
+- `prl_0006` Épiphanie 2027 : poudre d'amande −6 % dès 20 kg
+- `prl_0007` Épiphanie 2027 : couronnes et fèves −5 %
 
-Latest notes CRM:
+Dernières notes CRM :
 
-- 15/04/2026, Marion (commercial): Order irregularly, especially in troubleshooting. Offer him the arrivals when he calls.
+- 15/04/2026, Marion (commerciale) : Commande irrégulièrement, surtout en dépannage. Lui proposer les arrivages quand il appelle.

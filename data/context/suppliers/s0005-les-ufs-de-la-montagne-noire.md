@@ -1,59 +1,59 @@
 # Les Œufs de la Montagne Noire (`sup_0005`)
 
-> Full history in `seed_en/supplierEvents.json` (filter on `supplierId: "sup_0005"`).
+> Fiche persona fournisseur. Historique complet dans `seed/supplierEvents.json` (filtrer sur `supplierId: "sup_0005"`).
 
 | | |
 |---|---|
-| City | Revel |
-| Conditions | J+1, payment 30 days, minimum 200 € excl. VAT, orders on Monday, Wednesday, Friday |
-| Supplier since | 20/04/2009 |
-| Groups | producer, local |
-| Reliability | ★★☆ — softness ★★☆ — talkative, faithful |
+| Ville | Revel |
+| Conditions | J+1, paiement 30 jours, minimum 200 € HT, commandes le lundi, mercredi, vendredi |
+| Fournisseur depuis | 20/04/2009 |
+| Groupes | producteur, local |
+| Fiabilité | ★★☆ — souplesse ★★☆ — bavard, fidèle |
 
-## Who they are
+## Qui ils sont
 
-Local breeding for eggshells and egg products. Good product, tight volumes in January-February (gallets + Chandeleur).
+L'élevage local pour les œufs coquille et les ovoproduits. Bon produit, volumes serrés en janvier-février (galettes + Chandeleur).
 
-## People
+## Les personnes
 
-- **Josette Bonnafous** — Livestock manager · 06 12 85 44 70
-  - Speaking style: Rocky Accent, talks about his/her chickens as well as his/her children.
-  - Typical phrases: "The chickens lay less with this cold." · "I put you trays of M, I have more L."
+- **Josette Bonnafous** — Gérante de l'élevage · 06 12 85 44 70
+  - Comment il/elle parle : Accent rocailleux, parle de ses poules comme de ses enfants.
+  - Tics : « Les poules pondent moins avec ce froid. » · « Je vous mets des plateaux de M, j'ai plus de L. »
 
-## What they sell
+## Ce qu'ils vendent
 
-Outdoor hens rearing at the foot of the Black Mountain and breaking partner for liquid egg products. Less laying in winter, avian flu = risk of rupture.
+Élevage de poules plein air au pied de la Montagne Noire et casserie partenaire pour les ovoproduits liquides. Moins de ponte en hiver, grippe aviaire = risque de rupture.
 
-Main supplier of: Free-range eggs, size M (tray of 30) (`prd_0034`), Pasteurised liquid whole egg (1 L carton) (`prd_0035`), Pasteurised liquid egg yolk (1 L carton) (`prd_0036`), Pasteurised liquid egg white (1 L carton) (`prd_0037`).
+Fournisseur principal de : Œufs plein air calibre M (plateau de 30) (`prd_0034`), Œuf entier liquide pasteurisé (brique 1 L) (`prd_0035`), Jaune d'œuf liquide pasteurisé (brique 1 L) (`prd_0036`), Blanc d'œuf liquide pasteurisé (brique 1 L) (`prd_0037`).
 
-## Negotiation
+## Négociation
 
-- Fixed price for the semester.
-- Volume priority if January needs are announced as of December.
+- Prix fixe au semestre.
+- Priorité de volume si on annonce les besoins de janvier dès décembre.
 
-## What frustrates them
+## Ce qui les agace
 
-- Cardboard trays not rendered.
+- Les plateaux en carton non rendus.
 
-## A brief history
+## Historique marquant
 
-- **30/09/2025** · quality · Refusal at receipt : Pasteurised liquid egg yolk (1 L carton)
-- **02/10/2025** · have · have received : ACH-2025-001016
-- **01/11/2025** · Delivery · Incomplete delivery : ACH-2025-001145
-- **08/01/2026** · shortage · Shortness : Free-range eggs, size M (tray of 30) delivered in part
-- **11/01/2026** · price · annual negotiation 2026
-- **12/02/2026** · shortage · Shortness : Free-range eggs, size M (tray of 30) delivered in part
-- **08/09/2026** · quality · Refusal at receipt : Free-range eggs, size M (tray of 30)
-- **16/09/2026** · have · have received : ACH-2026-000927
-- **01/10/2026** · quality · Refusal at receipt : Pasteurised liquid whole egg (1 L carton)
-- **09/10/2026** · have · have received : ACH-2026-001020
+- **30/09/2025** · qualité · Refus à réception : jaune d'œuf liquide pasteurisé (brique 1 L)
+- **02/10/2025** · avoir · Avoir reçu : ACH-2025-001016
+- **01/11/2025** · livraison · Livraison incomplète : ACH-2025-001145
+- **08/01/2026** · pénurie · Pénurie : œufs plein air calibre M (plateau de 30) livré en partie
+- **11/01/2026** · prix · Négociation annuelle 2026
+- **12/02/2026** · pénurie · Pénurie : œufs plein air calibre M (plateau de 30) livré en partie
+- **08/09/2026** · qualité · Refus à réception : œufs plein air calibre M (plateau de 30)
+- **16/09/2026** · avoir · Avoir reçu : ACH-2026-000927
+- **01/10/2026** · qualité · Refus à réception : œuf entier liquide pasteurisé (brique 1 L)
+- **09/10/2026** · avoir · Avoir reçu : ACH-2026-001020
 
-Full history: 67 events.
+Historique complet : 67 événements.
 
-## Open cases
+## Dossiers ouverts aujourd'hui
 
-None.
+Aucun.
 
-## How to talk to them
+## Comment leur parler
 
-- Early warning of peaks (Epiphany, Chandeleur, Easter).
+- Prévenir tôt des pics (Épiphanie, Chandeleur, Pâques).

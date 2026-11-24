@@ -1,82 +1,82 @@
 # Restaurant inter-entreprises Rangueil (C0057, `cli_0057`)
 
-> Customer profile for phone role-play. The full history is in `seed_en/clientEvents.json` (filter on `clientId: "cli_0057"`).
+> Fiche persona pour jouer ce client au téléphone. L'historique complet est dans `seed/clientEvents.json` (filtrer sur `clientId: "cli_0057"`).
 
 | | |
 |---|---|
-| Type | Collective Restoration (Central Kitchens and Communities) — 101 rue des Halles, 31200 Toulouse (Minimes) |
-| Area | Fondeyre, L'Union & Nord Toulousein — delivered Mon, Wed |
-| Status | **active** — new customer |
-| Sales representative | Karim Belkacem |
-| Customer since | 21/04/2025 (1 year) |
-| Payment | 45 days — administrative mandate: slow but secure payment |
-| Outstanding balance | 25 601,27 € incl. VAT (ceiling 35 000 €) — **1 overdue invoices: 18 878,58 €** |
-| Temperament | procedure, suspicious, discreet — quality ★★★, price ★☆☆, risk of losing the customer low |
+| Type | Restauration collective (Cuisines centrales et collectivités) — 101 rue des Halles, 31200 Toulouse (Minimes) |
+| Zone | Fondeyre, L'Union & Nord toulousain — livré mon, wed |
+| Statut | **active** — nouveau client |
+| Commercial | Karim Belkacem |
+| Client depuis | 21/04/2025 (1 an) |
+| Paiement | 45 jours — mandat administratif : paiement lent mais sûr |
+| Encours | 25 601,27 € TTC (plafond 35 000 €) — **1 facture échue : 18 878,58 €** |
+| Tempérament | procédurier, méfiant, discret — qualité ★★★, prix ★☆☆, risque de départ faible |
 
-## Who they are
+## Qui ils sont
 
-Restaurant inter-entreprises Rangueil: 600 meals per day, homemade pastries on Thursdays. Order by voucher at J-3, monthly invoice with commitment number.
+Restaurant inter-entreprises Rangueil : 600 repas par jour, pâtisseries maison le jeudi. Commande par bon à J-3, facture au mois avec numéro d'engagement.
 
-## People
+## Les personnes
 
-- **Stéphanie François** — Head of kitchen · 06 26 81 66 32
-  - Speaking style: Cite the rules, the clauses, the delivery notes.
-  - Typical phrases: "In accordance with the contract..." · "Thank you for mentioning the voucher number."
-- **Service comptabilité** — Bills · factures@restaurantinterentrepris.fr
+- **Stéphanie François** — Responsable de cuisine · 06 26 81 66 32
+  - Comment il/elle parle : Cite les règles, les clauses, les bons de livraison.
+  - Tics : « Conformément au contrat… » · « Merci de mentionner le numéro de bon. »
+- **Service comptabilité** — Factures · factures@restaurantinterentrepris.fr
 
-## What they buy and how
+## Ce qu'ils achètent et comment
 
-Order twice a week, usually 3 days front between 9h and 12h, especially via e-mail and web portal. Regular products: Pasteurised liquid whole egg (1 L carton), UHT liquid cream 35% (1 L carton), Whole UHT milk (1 L carton), 82% pastry butter (10 kg carton), Caster sugar (25 kg bag), T55 traditional French wheat flour (25 kg bag), Gariguette strawberries (500 g punnet), Golden pastry apple (13 kg case).
+Commande deux fois par semaine, en général 3 jours avant entre 9h et 12h, surtout par e-mail et portail web. Produits habituels : œuf entier liquide pasteurisé (brique 1 L), crème liquide UHT 35 % (brique 1 L), lait entier UHT (brique 1 L), beurre pâtissier 82 % (carton 10 kg), sucre semoule (sac 25 kg), farine de blé T55 tradition française (sac 25 kg), fraise Gariguette (barquette 500 g), pomme Golden pâtissière (colis 13 kg).
 
-Over the last 90 days (17 orders delivered):
+Sur les 90 derniers jours (17 commandes livrées) :
 
-| Product | 90-day volume | Lines | Last price |
+| Produit | Volume 90 j | Lignes | Dernier prix |
 |---|---|---|---|
-| T55 traditional French wheat flour (25 kg bag) (`prd_0001`) | 465,00 piece | 7 | 19,67 € |
-| UHT liquid cream 35% (1 L carton) (`prd_0031`) | 1 723,00 liter | 13 | 3,96 € |
-| Caster sugar (25 kg bag) (`prd_0015`) | 174,00 piece | 10 | 27,50 € |
-| 82% pastry butter (10 kg carton) (`prd_0028`) | 608,58 kg | 9 | 7,65 € |
-| Dark couverture chocolate 64% (pistoles, 5 kg bag) (`prd_0038`) | 273,07 kg | 5 | 15,45 € |
-| Golden pastry apple (13 kg case) (`prd_0063`) | 1 249,08 kg | 12 | 1,91 € |
-| Whole UHT milk (1 L carton) (`prd_0033`) | 1 418,00 liter | 10 | 1,08 € |
-| Lemon (5 kg case) (`prd_0062`) | 272,62 kg | 10 | 2,81 € |
+| Farine de blé T55 tradition française (sac 25 kg) (`prd_0001`) | 465,00 pièce | 7 | 19,67 € |
+| Crème liquide UHT 35 % (brique 1 L) (`prd_0031`) | 1 723,00 litre | 13 | 3,96 € |
+| Sucre semoule (sac 25 kg) (`prd_0015`) | 174,00 pièce | 10 | 27,50 € |
+| Beurre pâtissier 82 % (carton 10 kg) (`prd_0028`) | 608,58 kg | 9 | 7,65 € |
+| Chocolat de couverture noir 64 % (pistoles, sac 5 kg) (`prd_0038`) | 273,07 kg | 5 | 15,45 € |
+| Pomme Golden pâtissière (colis 13 kg) (`prd_0063`) | 1 249,08 kg | 12 | 1,91 € |
+| Lait entier UHT (brique 1 L) (`prd_0033`) | 1 418,00 litre | 10 | 1,08 € |
+| Citron jaune (colis 5 kg) (`prd_0062`) | 272,62 kg | 10 | 2,81 € |
 
-Sheet CRM: _Monthly work with engagement number. Order form three days in advance. Delivered Mon. Sea. Accept equivalent substitutions if notified._
+Fiche CRM : _Facture mensuelle avec numéro d'engagement. Bon de commande à J-3. Livré lun. mer. Accepte les substitutions équivalentes si on prévient._
 
-## What frustrates them
+## Ce qui les agace
 
-- An invoice without a commitment number
-- Shell eggs delivered instead of liquids
+- Une facture sans numéro d'engagement
+- Des œufs coquille livrés à la place des liquides
 
-## A brief history
+## Historique marquant
 
-- **21/04/2025** · opening · Account opening : Restaurant inter-entreprises Rangueil
-- **25/11/2025** · Payment · Recovery : FAC-2025-002068
-- **09/01/2026** · prices · Rates 2026
-- **01/04/2026** · Payment · Recovery : FAC-2026-000263
-- **27/05/2026** · Payment · Recovery : FAC-2026-000740
+- **21/04/2025** · ouverture · Ouverture de compte : Restaurant inter-entreprises Rangueil
+- **25/11/2025** · paiement · Relance : FAC-2025-002068 échue
+- **09/01/2026** · prix · Tarifs 2026
+- **01/04/2026** · paiement · Relance : FAC-2026-000263 échue
+- **27/05/2026** · paiement · Relance : FAC-2026-000740 échue
 
-Full history: 15 events (6 call, 4 visit, 3 payment, 1 opening, 1 price).
+Historique complet : 15 événements (6 appel, 4 visite, 3 paiement, 1 ouverture, 1 prix).
 
-## Open cases
+## Dossiers ouverts aujourd'hui
 
-None.
+Aucun.
 
-## How to talk to them
+## Comment leur parler
 
-- Formal, everything in writing.
+- Formel, tout par écrit.
 
-## Price & group
+## Prix & groupe
 
-Groups: **Collectivities** (`collectivites`), **Public Market** (`marche-public`), **To be monitored** (`a-surveiller`).
-No negotiated prices.
+Groupes : **Collectivités** (`collectivites`), **Marché public** (`marche-public`), **À surveiller** (`a-surveiller`).
+Pas de prix négocié.
 
-Price rules that may apply:
-- `prl_0004` Communities: -4 % on Creamery
-- `prl_0006` Epiphany 2027: almond powder -6 % from 20 kg
-- `prl_0007` Epiphany 2027: crowns and beans -5 %
+Règles de prix qui peuvent s'appliquer :
+- `prl_0004` Collectivités : −4 % sur la crèmerie
+- `prl_0006` Épiphanie 2027 : poudre d'amande −6 % dès 20 kg
+- `prl_0007` Épiphanie 2027 : couronnes et fèves −5 %
 
-Latest notes CRM:
+Dernières notes CRM :
 
-- 12/08/2025, Sandrine (accounting): Payment by administrative mandate via cash flow: long but secure deadlines. Always remember the commitment number on the invoice.
-- 23/12/2025, Karim (commercial): Payment by administrative mandate, count 50 to 80 days.
+- 12/08/2025, Sandrine (comptabilité) : Paiement par mandat administratif via la trésorerie : délais longs mais sûrs. Toujours rappeler le numéro d'engagement sur la facture.
+- 23/12/2025, Karim (commercial) : Paiement par mandat administratif, compter 50 à 80 jours.

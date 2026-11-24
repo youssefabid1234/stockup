@@ -1,5 +1,5 @@
 """
-OWNER: Amine Khalil (T4 taken from Youssef) · switch TEAM_ORDER_RULES (registered only when it is on)
+OWNER: Amine Khalil (T4 repris de Youssef) · switch TEAM_ORDER_RULES (registered only when it is on)
 
 place_order: a whole order step in ONE tool call. Measured before (mar. 24/11): taking « dix sacs de tradi pour
 jeudi » cost 3 to 4 model round trips (check_delivery_date + product_insight, then create_draft_order, then
@@ -21,10 +21,10 @@ from .registry import ToolArgs, ToolContext, tool
 
 
 class PlaceLine(ToolArgs):
-    said: str | None = Field(None, description="The caller’s own words for the product")
-    product_id: str | None = Field(None, description="If you already know him (prd_...); otherwise \"said\"")
-    qty: float = Field(description="The quantity said. 0 = remove this product from the current order")
-    said_unit: str | None = Field(None, description="Spoken unit, such as sacks, kilos, boxes or slabs")
+    said: str | None = Field(None, description="Le produit tel que dit par le client : « tradi », « tourage AOP », « crème »")
+    product_id: str | None = Field(None, description="Si tu le connais déjà (prd_…) ; sinon donne « said »")
+    qty: float = Field(description="La quantité dite. 0 = retirer ce produit de la commande en cours")
+    said_unit: str | None = Field(None, description="L'unité dite si elle l'a été : « sacs », « kilos », « cartons », « plaques »")
 
 
 @tool
@@ -32,14 +32,14 @@ async def place_order(
     ctx: ToolContext,
     client_id: str,
     lines: list[PlaceLine],
-    delivery_day: str | None = Field(None, description="The day as said: \"Thursday\", \"Tomorrow\", \"The 27\" (empty = next possible day, or the day of the current order)"),
-    order_id: str | None = Field(None, description="The current command to be modified (if not a new one is created)"),
+    delivery_day: str | None = Field(None, description="Le jour tel que dit : « jeudi », « demain », « le 27 » (vide = prochain jour possible, ou celui de la commande en cours)"),
+    order_id: str | None = Field(None, description="La commande en cours à modifier (sinon une nouvelle est créée)"),
 ) -> dict:
     """
-    Takes or modifies an order in UN call: check the delivery day, find the products ("trade", "tourage"...),
-    converts units, creates draft or modifies the current command (quantity, line 0 = removed, other day),
-    then returns readback, alerts, franco, unusual quantities and
-    canConfirm. If "next" is present, nothing has been written: ask the question it indicates. Take or change an order.
+    Prend ou modifie une commande en UN appel : vérifie le jour de livraison, trouve les produits (« tradi », « tourage »…),
+    convertit les unités, crée le brouillon ou modifie la commande en cours (quantité, ligne à 0 = retirée, autre jour),
+    puis renvoie la relecture prête à dire (« readback »), les alertes, le franco, les quantités inhabituelles et
+    canConfirm. Si « next » est présent, rien n'a été écrit : pose la question qu'il indique. Take or change an order.
     """
     from app.agent.rules_order import delivery_answer, short_name, to_selling_qty
 
@@ -52,8 +52,8 @@ async def place_order(
     )
     if client.get("status") == "blocked":
         return {"written": False, "blocked": True,
-                "next": "Account blocked: do not take the order, promise nothing; say that accounting recalls and "
-                        "records the application (log_client_event)."}
+                "next": "Compte bloqué : ne prends pas la commande, ne promets rien ; dis que la comptabilité rappelle et "
+                        "enregistre la demande (log_client_event)."}
 
     order = await ctx.erp.get(f"/api/orders/{enc(order_id)}") if order_id else None
     if order and order.get("status") not in ("draft", "confirmed"):
@@ -67,7 +67,7 @@ async def place_order(
         day = delivery_answer(today, client.get("deliveryDays") or [], delivery_day, hour, client.get("zone"))
         if not day.get("ok"):
             return {"written": False, "day": day,
-                    "next": f"Delivery unavailable ({day.get('reason')}). Offer {day.get('sayNext') or 'another day'}."}
+                    "next": f"Jour impossible ({day.get('reason')}). Propose {day.get('sayNext') or 'un autre jour'}."}
         date, say_day = day["date"], day["say"]
 
     # 2. The products, in parallel (catalogue alias first, else Jev with the client's habits)
@@ -77,7 +77,7 @@ async def place_order(
         return await resolve_product.fn(ctx, client_id, line.said or "")
 
     found = await asyncio.gather(*(find(li) for li in lines))
-    unclear = [f.get("ask") or f"What product for \" {li.said} » ?" for li, f in zip(lines, found, strict=True) if not f.get("found")]
+    unclear = [f.get("ask") or f"Quel produit pour « {li.said} » ?" for li, f in zip(lines, found, strict=True) if not f.get("found")]
     if unclear:
         return {"written": False, "next": " ".join(unclear)}
 
@@ -88,8 +88,8 @@ async def place_order(
         qty = to_selling_qty(li.qty, li.said_unit, p["unit"], p.get("caliber") or "", p["name"])
         if p["unit"] in ("piece", "box") and qty != int(qty):
             return {"written": False,
-                    "next": f"{li.qty:g} {li.said_unit or ''} of {short_name(p['name'])} = {qty:g} {p.get('caliber') or ''} : "
-                            f"asks how many {(p.get('caliber') or 'Units').split()[0]}If he wants."}
+                    "next": f"{li.qty:g} {li.said_unit or ''} de {short_name(p['name'])} = {qty:g} {p.get('caliber') or ''} : "
+                            f"demande combien de {(p.get('caliber') or 'unités').split()[0]}s il veut."}
         wanted.append((f["productId"], qty))
 
     # 4. The write: a new draft, or the order in progress edited (one order per call)
@@ -112,7 +112,7 @@ async def place_order(
         body = {"clientId": client_id, "deliveryDate": date, "source": "voice_agent",
                 "lines": [{"productId": pid, "qty": q} for pid, q in wanted if q > 0]}
         if not body["lines"]:
-            return {"written": False, "next": "No quantity: ask what he wants to order."}
+            return {"written": False, "next": "Aucune quantité : demande ce qu'il veut commander."}
         order_id = (await ctx.erp.post("/api/orders", body))["id"]
 
     # 5. The read-back, ready to say

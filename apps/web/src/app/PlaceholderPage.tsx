@@ -8,7 +8,7 @@ export function PlaceholderPage({ title, breadcrumb, description }: { title: Rea
     <Page>
       <PageHeader title={title} breadcrumb={breadcrumb} />
       <PageBody>
-        <EmptyState icon={Hammer} title="Page under construction" description={description ?? "This page will be built on the Clients model."} />
+        <EmptyState icon={Hammer} title="Page en construction" description={description ?? "Cette page sera construite sur le modèle de Clients."} />
       </PageBody>
     </Page>
   );

@@ -31,23 +31,23 @@ export function SimulatorTab() {
     <div className="grid min-h-full grid-cols-1 lg:grid-cols-[320px_minmax(0,1fr)]">
       <aside className="flex flex-col gap-3.5 border-b border-border p-4 lg:border-b-0 lg:border-r">
         <div className={SECTION_LABEL}>Simulation</div>
-        <Field label="Customer"><Combobox value={clientId} onChange={setClientId} options={clientOptions} placeholder="Look for a client..." /></Field>
-        <Field label="Product"><Combobox value={productId} onChange={setProductId} options={productOptions} placeholder="Search for a product..." autoFocus={!productId} /></Field>
+        <Field label="Client"><Combobox value={clientId} onChange={setClientId} options={clientOptions} placeholder="Chercher un client…" /></Field>
+        <Field label="Produit"><Combobox value={productId} onChange={setProductId} options={productOptions} placeholder="Chercher un produit…" autoFocus={!productId} /></Field>
         <div className="grid grid-cols-2 gap-3">
-          <Field label={`Quantity${product ? ` (${fmtQty(1, product.unit).replace(/^1\s*/, "")})` : ""}`} hint={!qtyOk ? "Invalid quantity" : undefined}>
+          <Field label={`Quantité${product ? ` (${fmtQty(1, product.unit).replace(/^1\s*/, "")})` : ""}`} hint={!qtyOk ? "Quantité invalide" : undefined}>
             <Input inputMode="decimal" value={qtyStr} onChange={(e) => setQty(e.target.value)} className="num" />
           </Field>
           <Field label="Date">
-            <DatePicker value={date || todayIso()} onChange={setDate} presets={[{ label: "Today", days: 0 }, { label: "In 7 days", days: 7 }, { label: "In 30 days", days: 30 }]} />
+            <DatePicker value={date || todayIso()} onChange={setDate} presets={[{ label: "Aujourd'hui", days: 0 }, { label: "Dans 7 j", days: 7 }, { label: "Dans 30 j", days: 30 }]} />
           </Field>
         </div>
         <p className="text-[11.5px] leading-4 text-muted-foreground">
-          The same calculation as the order lines: negotiated price, then the most precise rule valid on that date and for this quantity, if not the catalogue price.
+          Le même calcul que les lignes de commande : prix négocié, puis la règle la plus précise valable à cette date et pour cette quantité, sinon le prix catalogue.
         </p>
       </aside>
       <section className="min-w-0 p-5">
         {!clientId || !productId ? (
-          <EmptyState icon={Calculator} title="Choose a customer and product" description="The simulator shows the price applied, the margin and all the rules envisaged." />
+          <EmptyState icon={Calculator} title="Choisissez un client et un produit" description="Le simulateur montre le prix appliqué, la marge et toutes les règles envisagées." />
         ) : isError && !r ? (
           <ErrorState onRetry={() => refetch()} />
         ) : !r || isLoading ? (
@@ -57,14 +57,14 @@ export function SimulatorTab() {
             <ResolvedHeadline r={r} />
             {qtyOk && qty !== 1 ? (
               <div className="text-[13px] text-secondary-foreground">
-                Line {fmtQty(qty, product?.unit)} : <span className="font-semibold text-foreground">{fmtMoney(r.price * qty)}</span> excl. VAT
-                <span className="text-muted-foreground"> · margin {fmtMoney((r.price - r.cost) * qty)}</span>
+                Ligne de {fmtQty(qty, product?.unit)} : <span className="font-semibold text-foreground">{fmtMoney(r.price * qty)}</span> HT
+                <span className="text-muted-foreground"> · marge {fmtMoney((r.price - r.cost) * qty)}</span>
               </div>
             ) : null}
             <div>
               <div className="mb-1 flex items-baseline justify-between">
-                <span className={SECTION_LABEL}>Candidate awards</span>
-                <span className="text-[11.5px] text-muted-foreground">in the order of resolution</span>
+                <span className={SECTION_LABEL}>Prix candidats</span>
+                <span className="text-[11.5px] text-muted-foreground">dans l'ordre de résolution</span>
               </div>
               <div className="rounded-[6px] border border-border px-3">
                 <CandidatesList r={r} />

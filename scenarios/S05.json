@@ -1,24 +1,24 @@
 {
   "id": "S05",
   "owner": "daycem",
-  "title": "Offer an alternative to out-of-stock AOP laminating butter",
-  "why": "Explain why the 82% butter suits this customer, quote the actual price and wait for consent.",
+  "title": "Pétrin de Colomiers : AOP en rupture → proposer et argumenter le 82 %, puis accord",
+  "why": "Intelligent + naturel : remplaçant proposé et argumenté (prix, usage), jamais sans accord ; c'est la scène du CTO",
   "client": "cli_0021",
   "turns": [
     {
-      "say": "Hello, Le Pétrin de Colomiers here. I'd like 3 boxes of AOP laminating butter for Wednesday.",
+      "say": "Bonjour, Le Pétrin de Colomiers. Je voudrais 3 cartons de tourage AOP pour mercredi.",
       "expect": {
         "tools_none": [
           "confirm_order"
         ],
         "says_any": [
           "82",
-          "eighty-two"
+          "quatre-vingt-deux"
         ]
       }
     },
     {
-      "say": "How much is the 82% one?",
+      "say": "Ah. Et il est à combien, le 82 ?",
       "expect": {
         "tools_any": [
           "get_price",
@@ -32,7 +32,7 @@
       }
     },
     {
-      "say": "All right, I'll take the 82% then.",
+      "say": "Bon d'accord, mettez-moi le 82 alors.",
       "expect": {
         "tools_any": [
           "create_draft_order",
@@ -45,7 +45,7 @@
       }
     },
     {
-      "say": "Yes, that's right.",
+      "say": "Oui c'est bon.",
       "expect": {
         "tools_any": [
           "confirm_order"

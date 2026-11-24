@@ -20,14 +20,14 @@ export function ResolvedHeadline({ r, size = "lg" }: { r: ResolvedPrice; size?: 
     <div className="flex flex-col gap-2">
       <div className="flex flex-wrap items-end gap-x-6 gap-y-2">
         <div>
-          <div className={SECTION_LABEL}>Unit price HT</div>
+          <div className={SECTION_LABEL}>Prix unitaire HT</div>
           <div className={cn("num font-semibold tabular-nums tracking-tight", size === "lg" ? "text-[30px] leading-[36px]" : "text-[22px] leading-7")}>
             {fmtMoney(r.price)}
           </div>
         </div>
         <Metric label="Catalogue" value={<Money value={r.listPrice} />} hint={Math.abs(delta) >= 0.0005 ? `${delta < 0 ? "−" : "+"}${fmtPercent(Math.abs(delta))}` : undefined} />
-        <Metric label="Cost" value={<Money value={r.cost} />} />
-        <Metric label="Margin" value={<MarginCell value={r.marginPct} />} hint={fmtMoney(r.price - r.cost)} />
+        <Metric label="Coût" value={<Money value={r.cost} />} />
+        <Metric label="Marge" value={<MarginCell value={r.marginPct} />} hint={fmtMoney(r.price - r.cost)} />
         <Metric label="Source" value={<SourceLabel source={r.source} ruleName={applied ? ruleNameOf(applied.label) : undefined} />} />
       </div>
       <p className="text-[13px] leading-5 text-secondary-foreground">{r.explanation}</p>
@@ -74,7 +74,7 @@ export function CandidatesList({ r, compact }: { r: ResolvedPrice; compact?: boo
               <div className={cn("flex items-baseline gap-2 text-[13px]", !c.applied && "text-secondary-foreground")}>
                 <span className={cn("min-w-0 flex-1 truncate", c.applied && "font-medium")}>
                   {c.source === "rule" ? (
-                    <>Rule " {c.ruleId ? <Link to={`/prices?tab=rules&rule=${c.ruleId}`} className="hover:underline">{name}</Link> : name} »</>
+                    <>Règle « {c.ruleId ? <Link to={`/prices?tab=rules&rule=${c.ruleId}`} className="hover:underline">{name}</Link> : name} »</>
                   ) : c.label}
                 </span>
                 <span className={cn("num shrink-0 tabular-nums", c.applied ? "font-semibold" : "text-muted-foreground line-through decoration-muted-foreground/40")}>
@@ -83,7 +83,7 @@ export function CandidatesList({ r, compact }: { r: ResolvedPrice; compact?: boo
               </div>
               {scope ? <div className="truncate text-[11.5px] text-muted-foreground" title={scope}>{scope}</div> : null}
               <div className={cn("text-[11.5px]", c.applied ? "text-primary" : "text-muted-foreground")}>
-                {c.applied ? "Implemented" : c.reason ? `Not accepted: ${c.reason}` : "Not accepted"}
+                {c.applied ? "Appliqué" : c.reason ? `Non retenu : ${c.reason}` : "Non retenu"}
               </div>
             </div>
           </li>

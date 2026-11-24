@@ -31,7 +31,7 @@ while IFS= read -r line; do
 done < <(grep -E '^TEAM_[A-Z_]+=' .env.example | sed 's/[[:space:]]*#.*$//')
 [[ -n "$added" ]] && ok "team 12 switches added to .env:$added" || ok "team 12 switches already in .env"
 envval() { grep -E "^$1=" .env | tail -1 | cut -d= -f2- | sed 's/[[:space:]]*$//'; }
-DATA_DIR="$(envval DATA_DIR)"; DATA_DIR="${DATA_DIR:-./data}"
+DATA_DIR="$(envval DATA_DIR)"; DATA_DIR="${DATA_DIR:-../hackathon-data}"
 WEB_PORT="$(envval WEB_PORT)"; WEB_PORT="${WEB_PORT:-5173}"
 API_PORT="$(envval API_PORT)"; API_PORT="${API_PORT:-4000}"
 
@@ -41,14 +41,12 @@ setenv() {  # set KEY=VALUE in .env (replace or append)
 PACK_ROOT="${DATA_DIR%%/companies/*}"
 if [[ -n "$COMPANY" ]]; then DATA_DIR="$PACK_ROOT/companies/$COMPANY"; setenv DATA_DIR "$DATA_DIR"; fi
 
-SEED_DIR_NAME="${SEED_DIR_NAME:-$(envval SEED_DIR_NAME || true)}"
-SEED_DIR_NAME="${SEED_DIR_NAME:-seed_en}"
-bold "2. Data pack ($DATA_DIR/$SEED_DIR_NAME)"
+bold "2. Data pack ($DATA_DIR)"
 if [[ ! -d "$PACK_ROOT" ]]; then
   [[ -n "$DATA_REPO" ]] || fail "no data at $PACK_ROOT. Your team zip ships it in ./data: check the folder is there and .env says DATA_DIR=./data"
   git clone "$DATA_REPO" "$PACK_ROOT" && ok "data pack cloned"
 fi
-if [[ ! -f "$DATA_DIR/$SEED_DIR_NAME/meta.json" && -n "$COMPANY" ]]; then
+if [[ ! -f "$DATA_DIR/seed/meta.json" && -n "$COMPANY" ]]; then
   if [[ -n "$DATA_RELEASE" ]]; then
     echo "  downloading $COMPANY…"
     mkdir -p "$DATA_DIR" && curl -fsSL "$DATA_RELEASE/$COMPANY.tar.gz" | tar -xz -C "$DATA_DIR" && ok "downloaded"
@@ -58,8 +56,8 @@ if [[ ! -f "$DATA_DIR/$SEED_DIR_NAME/meta.json" && -n "$COMPANY" ]]; then
     (cd "$PACK_ROOT" && npm install --silent && npx tsx engine/cli.ts generate --company "$COMPANY") && ok "generated"
   fi
 fi
-[[ -f "$DATA_DIR/$SEED_DIR_NAME/meta.json" ]] && ok "company: $(grep -o '"company": *"[^"]*"' "$DATA_DIR/$SEED_DIR_NAME/meta.json" | cut -d'"' -f4)" \
-  || fail "no seed in $DATA_DIR (expected $DATA_DIR/$SEED_DIR_NAME/meta.json). Team zip: check DATA_DIR=./data in .env"
+[[ -f "$DATA_DIR/seed/meta.json" ]] && ok "company: $(grep -o '"company": *"[^"]*"' "$DATA_DIR/seed/meta.json" | cut -d'"' -f4)" \
+  || fail "no seed in $DATA_DIR (expected $DATA_DIR/seed/meta.json). Team zip: check DATA_DIR=./data in .env"
 
 port_free() { ! (exec 3<>"/dev/tcp/127.0.0.1/$1") 2>/dev/null; }
 
@@ -69,7 +67,7 @@ if [[ "$MODE" == docker ]]; then
   docker info >/dev/null 2>&1 || fail "Docker is installed but not running: start Docker Desktop"
   docker compose version >/dev/null 2>&1 || fail "docker compose v2 missing (update Docker)"
   ok "docker $(docker version --format '{{.Server.Version}}')"
-  if ! docker compose ps --services --status running 2>/dev/null | grep -qx backend; then
+  if ! docker compose ps --status running 2>/dev/null | grep -q api; then
     for p in "$WEB_PORT" "$API_PORT" "$(envval AI_PORT)"; do
       [[ -z "$p" ]] || port_free "$p" || fail "port $p is already used (another 'pnpm dev'?). Stop it or change the port in .env"
     done
@@ -80,7 +78,7 @@ if [[ "$MODE" == docker ]]; then
   for _ in $(seq 1 90); do
     curl -fsS "http://localhost:$API_PORT/api/meta" >/dev/null 2>&1 && break; printf '.'; sleep 2
   done; echo
-  curl -fsS "http://localhost:$API_PORT/api/meta" >/dev/null 2>&1 || fail "API not answering — see: docker compose logs backend"
+  curl -fsS "http://localhost:$API_PORT/api/meta" >/dev/null 2>&1 || fail "API not answering — see: docker compose logs api"
   ok "api, ai and web are up"
   echo
   bold "Ready → http://localhost:$WEB_PORT"

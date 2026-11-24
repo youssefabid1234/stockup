@@ -1,61 +1,61 @@
 # Sud Fruits Secs Import (`sup_0007`)
 
-> Full history in `seed_en/supplierEvents.json` (filter on `supplierId: "sup_0007"`).
+> Fiche persona fournisseur. Historique complet dans `seed/supplierEvents.json` (filtrer sur `supplierId: "sup_0007"`).
 
 | | |
 |---|---|
-| City | Marseille (Saint-Louis) |
-| Conditions | J+3, payment 45 days, minimum 700 € excl. VAT, orders on Tuesday |
-| Supplier since | 10/01/2005 |
-| Groups | importer |
-| Reliability | ★★☆ — flexibility ★★★ — negotiator, talkative |
+| Ville | Marseille (Saint-Louis) |
+| Conditions | J+3, paiement 45 jours, minimum 700 € HT, commandes le mardi |
+| Fournisseur depuis | 10/01/2005 |
+| Groupes | importateur |
+| Fiabilité | ★★☆ — souplesse ★★★ — négociateur, bavard |
 
-## Who they are
+## Qui ils sont
 
-The importer of dried fruits and candied fruits: indispensable for the cakes and crowns of kings, provided to order early.
+L'importateur des fruits secs et des confits : indispensable pour les galettes et les couronnes des rois, à condition de commander tôt.
 
-## People
+## Les personnes
 
 - **Sami Haddad** — Commercial · 04 91 58 30 22 · sami@sudfruitssecs.fr
-  - Speaking style: Accent Marseillellais, always a case to propose, tutoie to the second appeal.
-  - Typical phrases: "I have a lot of California almonds, I'll give you a prize if you take the palette." · "Vanilla is madness this year."
+  - Comment il/elle parle : Accent marseillais, toujours une affaire à proposer, tutoie au deuxième appel.
+  - Tics : « J'ai un lot d'amandes de Californie, je te fais un prix si tu prends la palette. » · « La vanille, c'est la folie cette année. »
 
-## What they sell
+## Ce qu'ils vendent
 
-Marseille importer: almond powder, dried fruits, candied fruits, vanilla, orange blossom. Low price but to be negotiated, deadlines that slide in December.
+Importateur marseillais : poudre d'amande, fruits secs, fruits confits, vanille, fleur d'oranger. Prix bas mais à négocier, délais qui glissent en décembre.
 
-Main supplier of: Bourbon vanilla pods from Madagascar (100 g packet) (`prd_0022`), Orange blossom water (1 L container) (`prd_0024`), Blanched ground almonds (5 kg bag) (`prd_0046`), Flaked almonds (1 kg bag) (`prd_0047`), Roasted hazelnut powder (1 kg bag) (`prd_0048`), Peeled green pistachios (1 kg bag) (`prd_0049`), Sultana raisins (12.5 kg carton) (`prd_0050`), Walnut kernels (5 kg carton) (`prd_0051`), Diced candied fruit (5 kg bucket) (`prd_0052`).
+Fournisseur principal de : Gousses de vanille Bourbon de Madagascar (paquet 100 g) (`prd_0022`), Eau de fleur d'oranger (bidon 1 L) (`prd_0024`), Poudre d'amande blanche (sac 5 kg) (`prd_0046`), Amandes effilées (sac 1 kg) (`prd_0047`), Poudre de noisette torréfiée (sac 1 kg) (`prd_0048`), Pistaches vertes émondées (sac 1 kg) (`prd_0049`), Raisins secs sultanines (carton 12,5 kg) (`prd_0050`), Cerneaux de noix (carton 5 kg) (`prd_0051`), Fruits confits en cubes (seau 5 kg) (`prd_0052`).
 
-## Negotiation
+## Négociation
 
-- Everything's on the pallet.
-- Block the price of almond powder for Epiphany in October.
+- Tout se négocie à la palette.
+- Bloquer le prix de la poudre d'amande pour l'Épiphanie dès octobre.
 
-## What frustrates them
+## Ce qui les agace
 
-- Small urgent orders in December.
+- Les petites commandes urgentes en décembre.
 
-## A brief history
+## Historique marquant
 
-- **24/01/2025** · price · annual negotiation 2025
-- **11/07/2025** · quality · Refusal at receipt : Orange blossom water (1 L container)
-- **15/07/2025** · have · have received : ACH-2025-000714
-- **05/09/2025** · Delivery · Incomplete delivery : ACH-2025-000918
-- **12/12/2025** · shortage · Shortness : Bourbon vanilla pods from Madagascar (100 g packet) delivered in part
-- **20/12/2025** · shortage · Shortness : Orange blossom water (1 L container)
-- **11/01/2026** · price · annual negotiation 2026
-- **09/10/2026** · Delivery · Incomplete delivery : ACH-2026-001046
-- **18/11/2026** · shortage · Bourbon Vanilla in rupture
-- **19/11/2026** · shortage · Outage : Bourbon vanilla pods from Madagascar (100 g packet)
+- **24/01/2025** · prix · Négociation annuelle 2025
+- **11/07/2025** · qualité · Refus à réception : eau de fleur d'oranger (bidon 1 L)
+- **15/07/2025** · avoir · Avoir reçu : ACH-2025-000714
+- **05/09/2025** · livraison · Livraison incomplète : ACH-2025-000918
+- **12/12/2025** · pénurie · Pénurie : gousses de vanille Bourbon de Madagascar (paquet 100 g) livré en partie
+- **20/12/2025** · pénurie · Pénurie : eau de fleur d'oranger (bidon 1 L)
+- **11/01/2026** · prix · Négociation annuelle 2026
+- **09/10/2026** · livraison · Livraison incomplète : ACH-2026-001046
+- **18/11/2026** · pénurie · Vanille Bourbon en rupture
+- **19/11/2026** · pénurie · Rupture : gousses de vanille Bourbon de Madagascar (paquet 100 g)
 
-Full history: 70 events.
+Historique complet : 70 événements.
 
-## Open cases
+## Dossiers ouverts aujourd'hui
 
-- **19/11/2026 — Outturn: Bourbon vanilla pods from Madagascar (100 g packet)** (`po_004102`)
-  Sami: more than Bourbon vanilla pods from Madagascar (100 g packet) (slides from Madagascar broken at the importer (harvest after the cyclone), return announced mid-December). Resumption expected in some days, without any guarantee of volume.
+- **19/11/2026 — Rupture : gousses de vanille Bourbon de Madagascar (paquet 100 g)** (`po_004102`)
+  Sami : plus de gousses de vanille Bourbon de Madagascar (paquet 100 g) (gousses de Madagascar en rupture chez l'importateur (récolte en retard après le cyclone), retour annoncé mi-décembre). Reprise attendue dans quelques jours, sans garantie de volume.
 
-## How to talk to them
+## Comment leur parler
 
-- never accept the first prize.
-- Request the DLUO of each batch of almond powder.
+- Ne jamais accepter le premier prix.
+- Demander la DLUO de chaque lot de poudre d'amande.

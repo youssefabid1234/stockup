@@ -90,12 +90,12 @@ export function Skeleton({ className }: { className?: string }) {
 }
 
 /** Error block for a failed query (toasts already fired): <ErrorState onRetry={refetch} /> */
-export function ErrorState({ message = "Could not load data.", onRetry }: { message?: string; onRetry?: () => void }) {
+export function ErrorState({ message = "Impossible de charger les données.", onRetry }: { message?: string; onRetry?: () => void }) {
   return (
     <EmptyState
-      title="Loading error"
+      title="Erreur de chargement"
       description={message}
-      action={onRetry ? <button type="button" onClick={onRetry} className="text-[12.5px] font-medium text-primary hover:underline">Retry</button> : undefined}
+      action={onRetry ? <button type="button" onClick={onRetry} className="text-[12.5px] font-medium text-primary hover:underline">Réessayer</button> : undefined}
     />
   );
 }

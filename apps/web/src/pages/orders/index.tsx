@@ -10,13 +10,13 @@ import { DocumentListPage, useDocListFilters, type DocRow } from "@/features/doc
 import { SOURCE_OPTIONS, SourceLabel } from "./source";
 
 const STATUS_TABS = [
-  { id: "", label: "All" },
-  { id: "draft", label: "Pre-orders" },
-  { id: "confirmed", label: "Confirmed" },
-  { id: "prepared", label: "Prepared" },
-  { id: "delivered", label: "Delivered" },
-  { id: "invoiced", label: "Invoices" },
-  { id: "cancelled", label: "Cancelled" },
+  { id: "", label: "Toutes" },
+  { id: "draft", label: "Pré-commandes" },
+  { id: "confirmed", label: "Confirmées" },
+  { id: "prepared", label: "Préparées" },
+  { id: "delivered", label: "Livrées" },
+  { id: "invoiced", label: "Facturées" },
+  { id: "cancelled", label: "Annulées" },
 ] as const;
 
 export default function OrdersPage() {
@@ -32,7 +32,7 @@ export default function OrdersPage() {
   return (
     <DocumentListPage
       kind="sale"
-      title="Orders"
+      title="Commandes"
       icon={ShoppingCart}
       tabs={STATUS_TABS}
       filters={f}
@@ -43,10 +43,10 @@ export default function OrdersPage() {
       loading={isLoading}
       error={isError}
       onRetry={() => refetch()}
-      extraFilter={<Select size="sm" value={source} onChange={setSource} placeholder="All channels" options={SOURCE_OPTIONS} aria-label="Canal" className="w-[150px]" />}
+      extraFilter={<Select size="sm" value={source} onChange={setSource} placeholder="Tous canaux" options={SOURCE_OPTIONS} aria-label="Canal" className="w-[150px]" />}
       extraActive={!!source}
       onResetExtra={() => setSource("")}
-      emptyText="Orders entered here or taken by phone or by the voice agent will appear here."
+      emptyText="Les commandes saisies, reçues par téléphone ou prises par l'agent vocal apparaîtront ici."
     />
   );
 }

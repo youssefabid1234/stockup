@@ -1,43 +1,28 @@
 {
   "id": "S31",
   "owner": "amine-khalil",
-  "title": "An unusually large order",
-  "why": "Check the unusual quantity and apply the caller's correction to the draft.",
+  "title": "Quantité anormale (200 sacs au lieu d'une vingtaine) : faire confirmer avant de valider",
+  "why": "Intelligent : une erreur de dictée ou de transcription (« deux cents » pour « vingt ») ne part pas dans l'ERP",
   "client": "cli_0001",
   "turns": [
     {
-      "say": "Hello, Nadine here from Maison Sarrailh. Put me down for two hundred sacks of traditional flour for Thursday.",
+      "say": "Bonjour, Nadine, Maison Sarrailh. Mettez-moi deux cents sacs de tradi pour jeudi.",
       "expect": {
-        "tools_none": [
-          "confirm_order"
-        ],
-        "says_any": [
-          "usual",
-          "sure",
-          "confirm",
-          "two hundred",
-          "200"
-        ]
+        "tools_none": ["confirm_order"],
+        "says_any": ["habitude", "d'habitude", "sûre", "sûr", "confirm", "bien deux cents", "bien 200"]
       }
     },
     {
-      "say": "Oh no, sorry, twenty sacks.",
+      "say": "Ah non pardon, vingt sacs.",
       "expect": {
-        "tools_none": [
-          "confirm_order"
-        ],
-        "says_any": [
-          "20",
-          "twenty"
-        ]
+        "tools_none": ["confirm_order"],
+        "says_any": ["20", "vingt"]
       }
     },
     {
-      "say": "Yes, that's right. Confirm it.",
+      "say": "Oui c'est bon, validez.",
       "expect": {
-        "tools_any": [
-          "confirm_order"
-        ]
+        "tools_any": ["confirm_order"]
       }
     }
   ]

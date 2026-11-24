@@ -12,19 +12,19 @@ import {
 
 /** Tabs = (effective) statuses sent to the API; "all" = no status filter. */
 const TABS = [
-  { id: "open", label: "Payable", statuses: ["issued", "partially_paid"] },
-  { id: "overdue", label: "Overdue", statuses: ["overdue"] },
-  { id: "paid", label: "Paid", statuses: ["paid"] },
-  { id: "all", label: "All", statuses: [] },
+  { id: "open", label: "À payer", statuses: ["issued", "partially_paid"] },
+  { id: "overdue", label: "En retard", statuses: ["overdue"] },
+  { id: "paid", label: "Payées", statuses: ["paid"] },
+  { id: "all", label: "Toutes", statuses: [] },
 ] as const;
 type TabId = (typeof TABS)[number]["id"];
 
 const COLUMNS: Column<InvoiceSummary>[] = [
   { id: "number", header: "N°", width: 170, sortKey: "number", cell: (i) => <Mono>{i.number}</Mono> },
-  { id: "client", header: "Customer", sortKey: "client", cell: (i) => <span className="truncate font-medium">{i.clientName}</span> },
-  { id: "issued", header: "Issued", width: 115, hideBelow: 1000, sortKey: "issued", cell: (i) => <DateLabel date={i.issuedAt} className="text-secondary-foreground" /> },
+  { id: "client", header: "Client", sortKey: "client", cell: (i) => <span className="truncate font-medium">{i.clientName}</span> },
+  { id: "issued", header: "Émise", width: 115, hideBelow: 1000, sortKey: "issued", cell: (i) => <DateLabel date={i.issuedAt} className="text-secondary-foreground" /> },
   {
-    id: "due", header: "Due date", width: 150, sortKey: "due",
+    id: "due", header: "Échéance", width: 150, sortKey: "due",
     cell: (i) => (
       <span className={i.daysOverdue > 0 ? "text-destructive" : undefined}>
         <DateLabel date={i.dueDate} />
@@ -33,12 +33,12 @@ const COLUMNS: Column<InvoiceSummary>[] = [
     ),
   },
   { id: "ttc", header: "Total TTC", width: 120, hideBelow: 900, numeric: true, sortKey: "ttc", cell: (i) => <Money value={i.totalTtc} /> },
-  { id: "paid", header: "Paid", width: 115, hideBelow: 1000, numeric: true, sortKey: "paid", cell: (i) => <Money value={i.amountPaid} zeroMuted /> },
+  { id: "paid", header: "Payé", width: 115, hideBelow: 1000, numeric: true, sortKey: "paid", cell: (i) => <Money value={i.amountPaid} zeroMuted /> },
   {
-    id: "balance", header: "Remains due", width: 120, numeric: true, sortKey: "balance",
+    id: "balance", header: "Reste dû", width: 120, numeric: true, sortKey: "balance",
     cell: (i) => <Money value={i.balance} zeroMuted className="font-medium" tone={i.daysOverdue > 0 ? "destructive" : undefined} />,
   },
-  { id: "status", header: "Status", width: 160, sortKey: "status", cell: (i) => <StatusDot kind="invoice" value={i.status} /> },
+  { id: "status", header: "Statut", width: 160, sortKey: "status", cell: (i) => <StatusDot kind="invoice" value={i.status} /> },
 ];
 
 export default function InvoicesPage() {
@@ -76,7 +76,7 @@ export default function InvoicesPage() {
   return (
     <Page>
       <PageHeader
-        title="Invoices"
+        title="Factures"
         tabs={
           <Tabs<TabId>
             value={current.id}
@@ -97,11 +97,11 @@ export default function InvoicesPage() {
             }))}
           />
         }
-        filters={<SearchInput value={q} onChange={setQ} placeholder="Bill number, customer..." />}
+        filters={<SearchInput value={q} onChange={setQ} placeholder="N° de facture, client…" />}
       />
       <PageBody flush>
         {isError && !data ? (
-          <EmptyState icon={FileText} title="Invoices not available" description="TheAPI Check that the server is running on port 4000." action={<Button size="sm" onClick={() => refetch()}>Retry</Button>} />
+          <EmptyState icon={FileText} title="Factures indisponibles" description="L'API ne répond pas. Vérifiez que le serveur tourne sur le port 4000." action={<Button size="sm" onClick={() => refetch()}>Réessayer</Button>} />
         ) : (
           <DataTable
             columns={COLUMNS}
@@ -112,17 +112,17 @@ export default function InvoicesPage() {
             onRowClick={(i) => navigate(`/invoices/${i.id}`)}
             footer={rows ? (
               <span className="flex flex-wrap items-center gap-x-5 gap-y-1">
-                <span>{total} facture{total > 1 ? "s" : ""}{dq ? " · filtered" : ""}</span>
+                <span>{total} facture{total > 1 ? "s" : ""}{dq ? " · filtrées" : ""}</span>
                 <span className="ml-auto">Total TTC <Money value={totals.ttc} className="font-medium text-foreground" /></span>
-                <span>Paid <Money value={totals.paid} className="font-medium text-foreground" /></span>
-                <span>Remains due <Money value={totals.balance} className="font-medium text-foreground" /></span>
+                <span>Payé <Money value={totals.paid} className="font-medium text-foreground" /></span>
+                <span>Reste dû <Money value={totals.balance} className="font-medium text-foreground" /></span>
               </span>
             ) : undefined}
             empty={
               dq ? (
-                <EmptyState icon={FileText} title="No invoice matching" description="Change the search." action={<Button size="sm" onClick={() => setQ("")}>Clear Search</Button>} />
+                <EmptyState icon={FileText} title="Aucune facture ne correspond" description="Modifiez la recherche." action={<Button size="sm" onClick={() => setQ("")}>Effacer la recherche</Button>} />
               ) : (
-                <EmptyState icon={FileText} title={current.id === "overdue" ? "No invoice late" : "No invoice"} description="Invoices are created from an order delivered." />
+                <EmptyState icon={FileText} title={current.id === "overdue" ? "Aucune facture en retard" : "Aucune facture"} description="Les factures sont créées depuis une commande livrée." />
               )
             }
           />

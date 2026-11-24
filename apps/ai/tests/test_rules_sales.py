@@ -11,19 +11,32 @@ import pytest
 from app.agent import rules_sales
 from app.agent.rules_sales import decide_substitution, substitution_policy
 
-TOURAGE_AOP = "Charentes-Poitou AOP laminating butter, 84% (2 kg slab)"
-COUVERTURE = "64% dark couverture chocolate"
-CREME = "35% UHT whipping cream (1 L carton)"
-SARRAILH = "AOP laminating butter only. Never substitute for butter: Guy would rather run out."
-PETRIN_COLOMIERS = "Delivery before 11 am. Accepts equivalent substitutions with advance notice."
-FOURNIL_BRIGITTE = "AOP laminating butter for pastries. Refuses substitutions: call before any change."
-FOURNIL_BRIGITTE_NOTE = "No substitution without prior notice."
-FOURNIL_GUILLAUME = "AOP laminating butter for pastries. Accepts equivalent substitutions with advance notice."
-PETRIN_BALMA = "Orders traditional flour, yeast and standard butter twice a week."
-PETRIN_BALMA_NOTE = "No substitution without being told. Call Romain before the truck leaves."
-LES_CARMES = "Orders chocolate, cream and butter every week."
-LES_CARMES_NOTE = "Never substitute for couverture without agreement."
-HOTEL_GARONNE = "Needs all-butter mini pastries three times a week before 7 am."
+TOURAGE_AOP = "Beurre de tourage AOP Charentes-Poitou 84 % (plaque 2 kg)"
+COUVERTURE = "Chocolat de couverture noir 64 %"
+CREME = "Crème liquide UHT 35 % (brique 1 l)"
+
+SARRAILH = (  # c0001
+    "Tradition du Lauragais, tourage AOP exclusivement, poudre d'amande blanche. Jamais de substitution sur le beurre : "
+    "Guy préfère manquer que faire de la viennoiserie au tourage standard."
+)
+PETRIN_COLOMIERS = (  # c0021
+    "Paye en LCR à 30 jours fin de mois. Livraison avant 11h, après le rush du matin. Livré lun. mer. "
+    "Accepte les substitutions équivalentes si on prévient."
+)
+FOURNIL_BRIGITTE = (  # c0097
+    "Tourage AOP pour la viennoiserie, beurre pâtissier pour le reste. Farine de tradition du Lauragais uniquement. "
+    "Livré mer. sam. Refuse les substitutions : appeler avant toute modification."
+)
+FOURNIL_BRIGITTE_NOTE = "Ne veut aucune substitution sans être prévenu : si un produit manque, appeler Maxime avant le départ du camion."
+FOURNIL_GUILLAUME = (  # c0102
+    "Livraison avant 11h, après le rush du matin. Tourage AOP pour la viennoiserie, beurre pâtissier pour le reste. "
+    "Livré mar. ven. Accepte les substitutions équivalentes si on prévient."
+)
+PETRIN_BALMA = "Commandait deux fois par semaine : tradition, levure, tourage standard."  # c0007
+PETRIN_BALMA_NOTE = "Ne veut aucune substitution sans être prévenu : si un produit manque, appeler Romain avant le départ du camion."
+LES_CARMES = "Commandait chaque semaine chocolat, crème et beurre AOP."  # c0012
+LES_CARMES_NOTE = "Ne jamais substituer une couverture sans accord."
+HOTEL_GARONNE = "Cherche des mini-viennoiseries pur beurre livrées trois fois par semaine avant 7h."  # c0010
 
 
 # ── keywords ──
@@ -108,19 +121,19 @@ async def test_without_jev_or_when_jev_fails_ask_the_client():
 
 from app.agent.rules_sales import doc_substitutes, rank_alternatives  # noqa: E402
 
-GLOSSARY = """## Usual Substitutions
+GLOSSARY = """## Substitutions habituelles
 
-- Touring butter AOP Charentes-Poitou 84% (plate 2 kg) (prd_0025) → Touring butter 82% (plate 2 kg) (prd_0026)
-- Bourbon vanilla pods from Madagascar (package 100 g) (prd_0022) → Liquid vanilla extract (bottle 1 L) (prd_0023)
+- Beurre de tourage AOP Charentes-Poitou 84 % (plaque 2 kg) (prd_0025) → Beurre de tourage 82 % (plaque 2 kg) (prd_0026)
+- Gousses de vanille Bourbon de Madagascar (paquet 100 g) (prd_0022) → Extrait de vanille liquide (bouteille 1 L) (prd_0023)
 """
 
 # What GET /api/products/prd_0025/alternatives really returns (closest price first), trimmed
 ERP_ALTERNATIVES_FOR_TOURAGE_AOP = [
-    {"id": "prd_0029", "name": "Half-salt butter (motte 1 kg)", "category": "beurres", "available": 45.49, "price": 11.8},
-    {"id": "prd_0027", "name": "Sweet butter AOP Charentes-Poitou (carton 10 × 1 kg)", "category": "beurres", "available": 893.36, "price": 10.2},
-    {"id": "prd_0026", "name": "Touring butter 82 % (plate 2 kg)", "category": "beurres", "available": 1712.92, "price": 9.2},
-    {"id": "prd_0028", "name": "Pastry butter 82 % (carton 10 kg)", "category": "beurres", "available": 933.71, "price": 7.6},
-    {"id": "prd_0030", "name": "Sheeting margarine (carton 10 kg)", "category": "beurres", "available": 151.27, "price": 3.9},
+    {"id": "prd_0029", "name": "Beurre demi-sel de baratte (motte 1 kg)", "category": "beurres", "available": 45.49, "price": 11.8},
+    {"id": "prd_0027", "name": "Beurre doux AOP Charentes-Poitou (carton 10 × 1 kg)", "category": "beurres", "available": 893.36, "price": 10.2},
+    {"id": "prd_0026", "name": "Beurre de tourage 82 % (plaque 2 kg)", "category": "beurres", "available": 1712.92, "price": 9.2},
+    {"id": "prd_0028", "name": "Beurre pâtissier 82 % (carton 10 kg)", "category": "beurres", "available": 933.71, "price": 7.6},
+    {"id": "prd_0030", "name": "Margarine de feuilletage (carton 10 kg)", "category": "beurres", "available": 151.27, "price": 3.9},
 ]
 
 
@@ -149,8 +162,8 @@ def test_an_out_of_stock_doc_substitute_never_goes_before_an_available_product()
 def test_same_category_before_other_uses_then_promo():
     alts = [
         {"id": "x", "name": "Margarine", "category": "matieres-grasses", "available": 10, "promo": "-10 %"},
-        {"id": "y", "name": "Pastry butter", "category": "beurres", "available": 10},
-        {"id": "z", "name": "Sweet butter", "category": "beurres", "available": 10, "promo": "-5 %"},
+        {"id": "y", "name": "Beurre pâtissier", "category": "beurres", "available": 10},
+        {"id": "z", "name": "Beurre doux", "category": "beurres", "available": 10, "promo": "-5 %"},
     ]
     ranked = rank_alternatives(alts, "", for_product_id="prd_9999", for_category="beurres", substitutes={})
     assert [a["id"] for a in ranked] == ["z", "y", "x"]

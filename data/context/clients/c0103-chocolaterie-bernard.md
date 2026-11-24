@@ -1,90 +1,90 @@
 # Chocolaterie Bernard (C0103, `cli_0103`)
 
-> Customer profile for phone role-play. The full history is in `seed_en/clientEvents.json` (filter on `clientId: "cli_0103"`).
+> Fiche persona pour jouer ce client au téléphone. L'historique complet est dans `seed/clientEvents.json` (filtrer sur `clientId: "cli_0103"`).
 
 | | |
 |---|---|
-| Type | Retail trade (Passeries, chocolate makers and tea shops) — 5 rue des Couteliers, 31000 Toulouse (Capitole) |
-| Area | Toulouse centre & suburbs — delivered Mon, Thu |
-| Status | **active** — regular customer |
-| Sales representative | Marion Escudié |
-| Customer since | 09/09/2021 (5 years) |
-| Payment | 30 days — Pays on due date, without history |
-| Outstanding balance | 6 887,30 € incl. VAT (ceiling 11 000 €) |
-| Temperament | perfectionist, suspicious, warm — quality ★★★, price ★★☆, low risk of losing the customer |
+| Type | Commerce de détail (Pâtisseries, chocolatiers et salons de thé) — 5 rue des Couteliers, 31000 Toulouse (Capitole) |
+| Zone | Toulouse centre & faubourgs — livré mon, thu |
+| Statut | **active** — client régulier |
+| Commercial | Marion Escudié |
+| Client depuis | 09/09/2021 (5 ans) |
+| Paiement | 30 jours — paie à l'échéance, sans histoire |
+| Encours | 6 887,30 € TTC (plafond 11 000 €) |
+| Tempérament | perfectionniste, méfiant, chaleureux — qualité ★★★, prix ★★☆, risque de départ faible |
 
-## Who they are
+## Qui ils sont
 
-Chocolate-pastry shop in Toulouse (Capitol): Easter molds, logs and Christmas ballotins account for half of its figure.
+Chocolatier-pâtissier à Toulouse (Capitole) : moulages de Pâques, bûches et ballotins de Noël représentent la moitié de son chiffre.
 
-## People
+## Les personnes
 
-- **Paolo Lasserre** — Pastry chef-manager · 07 96 86 41 35 · paolo@chocolateriebernard.fr
-  - Speaking style: Very friendly, take news, quickly tutoe.
-  - Typical phrases: "You're lovers." · "Come and taste the new dish!"
+- **Paolo Lasserre** — Chef pâtissier-gérant · 07 96 86 41 35 · paolo@chocolateriebernard.fr
+  - Comment il/elle parle : Très sympathique, prend des nouvelles, tutoie vite.
+  - Tics : « Vous êtes des amours. » · « Passez goûter le nouveau plat ! »
 
-## What they buy and how
+## Ce qu'ils achètent et comment
 
-Order twice a week, usually the day before between 13h and 19h, especially by telephone and WhatsApp. Regular products: Dark couverture chocolate 64% (pistoles, 5 kg bag), UHT liquid cream 35% (1 L carton), AOP Charentes-Poitou unsalted butter (carton of 10 × 1 kg), Blanched ground almonds (5 kg bag), White pastry boxes 20 cm (pack of 50), White couverture chocolate 33% (pistoles, 5 kg bag), Icing sugar (10 kg bag), Multigrain seed mix (25 kg bag).
+Commande deux fois par semaine, en général la veille entre 13h et 19h, surtout par téléphone et WhatsApp. Produits habituels : chocolat de couverture noir 64 % (pistoles, sac 5 kg), crème liquide UHT 35 % (brique 1 L), beurre doux AOP Charentes-Poitou (carton 10 × 1 kg), poudre d'amande blanche (sac 5 kg), boîtes pâtissières blanches 20 cm (lot de 50), chocolat de couverture blanc 33 % (pistoles, sac 5 kg), sucre glace (sac 10 kg), mélange multicéréales graines (sac 25 kg).
 
-Over the last 90 days (24 orders delivered):
+Sur les 90 derniers jours (24 commandes livrées) :
 
-| Product | 90-day volume | Lines | Last price |
+| Produit | Volume 90 j | Lignes | Dernier prix |
 |---|---|---|---|
-| AOP Charentes-Poitou unsalted butter (carton of 10 × 1 kg) (`prd_0027`) | 291,88 kg | 10 | 10,22 € |
-| Blanched ground almonds (5 kg bag) (`prd_0046`) | 181,86 kg | 13 | 11,80 € |
-| UHT liquid cream 35% (1 L carton) (`prd_0031`) | 497,00 liter | 18 | 4,10 € |
-| Dark couverture chocolate 64% (pistoles, 5 kg bag) (`prd_0038`) | 122,39 kg | 11 | 15,72 € |
-| Free-range eggs, size M (tray of 30) (`prd_0034`) | 188,00 box | 18 | 7,85 € |
-| Printed kraft baguette bags (carton of 1000) (`prd_0065`) | 69,00 box | 14 | 20,55 € |
-| White couverture chocolate 33% (pistoles, 5 kg bag) (`prd_0041`) | 74,45 kg | 10 | 15,99 € |
-| White pastry boxes 20 cm (pack of 50) (`prd_0067`) | 69,00 box | 11 | 14,50 € |
+| Beurre doux AOP Charentes-Poitou (carton 10 × 1 kg) (`prd_0027`) | 291,88 kg | 10 | 10,22 € |
+| Poudre d'amande blanche (sac 5 kg) (`prd_0046`) | 181,86 kg | 13 | 11,80 € |
+| Crème liquide UHT 35 % (brique 1 L) (`prd_0031`) | 497,00 litre | 18 | 4,10 € |
+| Chocolat de couverture noir 64 % (pistoles, sac 5 kg) (`prd_0038`) | 122,39 kg | 11 | 15,72 € |
+| Œufs plein air calibre M (plateau de 30) (`prd_0034`) | 188,00 colis | 18 | 7,85 € |
+| Sacs à baguette kraft imprimés (carton 1000) (`prd_0065`) | 69,00 colis | 14 | 20,55 € |
+| Chocolat de couverture blanc 33 % (pistoles, sac 5 kg) (`prd_0041`) | 74,45 kg | 10 | 15,99 € |
+| Boîtes pâtissières blanches 20 cm (lot de 50) (`prd_0067`) | 69,00 colis | 11 | 14,50 € |
 
-CRM record: _Always the same cover, same origin. Easter chocolate preorders in February. Delivered Mon. Game. Refuses substitutions: call before any modification._
+Fiche CRM : _Toujours la même couverture, même origine. Précommandes de chocolat de Pâques en février. Livré lun. jeu. Refuse les substitutions : appeler avant toute modification._
 
-## What frustrates them
+## Ce qui les agace
 
-- Chilled strawberries
-- Breaking the Easter Week
-- A cover substitution
+- Des fraises abîmées
+- Une rupture la semaine de Pâques
+- Une substitution de couverture
 
-## A brief history
+## Historique marquant
 
-- **14/06/2023** · Quality · Quality : Printed kraft baguette bags (carton of 1000)
-- **25/11/2023** · special request · Holidays 2023 : volume reservation
-- **23/01/2024** · prices · Rates 2024
-- **24/07/2024** · note · Summer closure 2024
-- **27/03/2025** · Delivery late
-- **28/04/2025** · Quality · Quality : AOP Charentes-Poitou unsalted butter (carton of 10 × 1 kg)
-- **16/10/2025** · Quality · Quality : Multigrain seed mix (25 kg bag)
-- **29/12/2025** · delivery · delivery error
-- **07/01/2026** · prices · Rates 2026
-- **12/01/2026** · back to delivery : Lemon (5 kg case)
-- **22/06/2026** · back to delivery : Icing sugar (10 kg bag)
-- **07/09/2026** · Quality · Quality : Golden pastry apple (13 kg case)
+- **14/06/2023** · qualité · Qualité : sacs à baguette kraft imprimés (carton 1000)
+- **25/11/2023** · demande spéciale · Fêtes 2023 : réservation de volumes
+- **23/01/2024** · prix · Tarifs 2024
+- **24/07/2024** · note · Fermeture d'été 2024
+- **27/03/2025** · livraison · Livraison en retard
+- **28/04/2025** · qualité · Qualité : beurre doux AOP Charentes-Poitou (carton 10 × 1 kg)
+- **16/10/2025** · qualité · Qualité : mélange multicéréales graines (sac 25 kg)
+- **29/12/2025** · livraison · Erreur de livraison
+- **07/01/2026** · prix · Tarifs 2026
+- **12/01/2026** · retour · Retour à la livraison : citron jaune (colis 5 kg)
+- **22/06/2026** · retour · Retour à la livraison : sucre glace (sac 10 kg)
+- **07/09/2026** · qualité · Qualité : pomme Golden pâtissière (colis 13 kg)
 
-Full history: 34 events (8 call, 7 visit, 6 quality, 3 price, 2 special request, 2 compliment, 2 delivery, 2 return, 1 opening, 1 note).
+Historique complet : 34 événements (8 appel, 7 visite, 6 qualité, 3 prix, 2 demande spéciale, 2 compliment, 2 livraison, 2 retour, 1 ouverture, 1 note).
 
-## Open cases
+## Dossiers ouverts aujourd'hui
 
-None.
+Aucun.
 
-## How to talk to them
+## Comment leur parler
 
-- never substitute a cover without agreement.
-- Talking technical and origins.
+- Ne jamais substituer une couverture sans accord.
+- Parler technique et origines.
 
-## Price & group
+## Prix & groupe
 
-Groups: **Passeries** (`patisseries`).
-Negotiated prices (`clientPrices`, always priority): Lemon (5 kg case) 2,43 € (list 2,60); Icing sugar (10 kg bag) 15,41 € (list 16,50); Printed kraft baguette bags (carton of 1000) 20,55 € (list 22,00); Multigrain seed mix (25 kg bag) 31,76 € (list 34,00); Hazelnut praline 50% (5 kg tub) 15,41 € (list 16,50); Free-range eggs, size M (tray of 30) 7,85 € (list 8,40).
+Groupes : **Pâtisseries** (`patisseries`).
+Prix négociés (`clientPrices`, toujours prioritaires) : citron jaune (colis 5 kg) 2,43 € (liste 2,60) ; sucre glace (sac 10 kg) 15,41 € (liste 16,50) ; sacs à baguette kraft imprimés (carton 1000) 20,55 € (liste 22,00) ; mélange multicéréales graines (sac 25 kg) 31,76 € (liste 34,00) ; praliné noisette 50 % (seau 5 kg) 15,41 € (liste 16,50) ; œufs plein air calibre M (plateau de 30) 7,85 € (liste 8,40).
 
-Price rules that may apply:
-- `prl_0002` Pastries: -5 % on chocolate from 20 kg
-- `prl_0006` Epiphany 2027: almond powder -6 % from 20 kg
-- `prl_0007` Epiphany 2027: crowns and beans -5 %
+Règles de prix qui peuvent s'appliquer :
+- `prl_0002` Pâtisseries : −5 % sur le chocolat dès 20 kg
+- `prl_0006` Épiphanie 2027 : poudre d'amande −6 % dès 20 kg
+- `prl_0007` Épiphanie 2027 : couronnes et fèves −5 %
 
-Latest notes CRM:
+Dernières notes CRM :
 
-- 17/02/2026, Marion (commercial): Does not want any substitution without being warned: if a product is missing, call Paolo before the truck leaves.
-- 16/05/2026, Marion (commercial): Paolo prepares 800 kg of mouldings for Easter: pre-order in February.
+- 17/02/2026, Marion (commerciale) : Ne veut aucune substitution sans être prévenu : si un produit manque, appeler Paolo avant le départ du camion.
+- 16/05/2026, Marion (commerciale) : Paolo prépare 800 kg de moulages pour Pâques : précommande en février.

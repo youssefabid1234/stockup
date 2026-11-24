@@ -1,87 +1,87 @@
 # Le Comptoir de Colomiers (C0025, `cli_0025`)
 
-> Customer profile for phone role-play. The full history is in `seed_en/clientEvents.json` (filter on `clientId: "cli_0025"`).
+> Fiche persona pour jouer ce client au téléphone. L'historique complet est dans `seed/clientEvents.json` (filtrer sur `clientId: "cli_0025"`).
 
 | | |
 |---|---|
-| Type | Restaurant (Restaurants and bistros) — 130 cours de la Liberté, 31770 Colomiers |
-| Area | Blagnac, Colomiers & Ouest — delivered Fri |
-| Status | **active** — regular customer |
-| Sales representative | Karim Belkacem |
-| Customer since | 22/08/2014 (12 years) |
-| Payment | 30 days — Pays late (3 to 6 weeks), but ends up paying |
-| Outstanding balance | 3 271,09 € incl. VAT (ceiling 5 000 €) — **1 overdue invoices: 672,39 €** |
-| Temperament | warm, pressed — quality ★★☆, price ★★★, medium risk of losing the customer |
+| Type | Restaurant (Restaurants et bistrots) — 130 cours de la Liberté, 31770 Colomiers |
+| Zone | Blagnac, Colomiers & Ouest — livré fri |
+| Statut | **active** — client régulier |
+| Commercial | Karim Belkacem |
+| Client depuis | 22/08/2014 (12 ans) |
+| Paiement | 30 jours — paie en retard (3 à 6 semaines), mais finit par payer |
+| Encours | 3 271,09 € TTC (plafond 5 000 €) — **1 facture échue : 672,39 €** |
+| Tempérament | chaleureux, pressé — qualité ★★☆, prix ★★★, risque de départ moyen |
 
-## Who they are
+## Qui ils sont
 
-Traditional restaurant in Colomiers, crêpes à la Chandeleur and homemade desserts on weekends.
+Restaurant traditionnel de Colomiers, crêpes à la Chandeleur et desserts maison le week-end.
 
-## People
+## Les personnes
 
-- **Julien Julien** — Chief Executive Officer · 06 67 87 58 64 · julien@comptoircolomiers.fr
-  - Speaking style: Very friendly, take news, quickly tutoe.
-  - Typical phrases: "Tiss to the team." · "So, how's it going with you?"
+- **Julien Julien** — Chef-patron · 06 67 87 58 64 · julien@comptoircolomiers.fr
+  - Comment il/elle parle : Très sympathique, prend des nouvelles, tutoie vite.
+  - Tics : « Bisous à l'équipe. » · « Alors, ça va chez vous ? »
 - **Morgane Giraud** — Chef de cuisine · 06 67 06 34 40
-  - Speaking style: Very friendly, take news, quickly tutoe.
-  - Typical phrases: "So, how's it going at home?" · "Come and taste the new dish!"
+  - Comment il/elle parle : Très sympathique, prend des nouvelles, tutoie vite.
+  - Tics : « Alors, ça va chez vous ? » · « Passez goûter le nouveau plat ! »
 
-## What they buy and how
+## Ce qu'ils achètent et comment
 
-Order once a week, usually the day before between 14h and 18h, especially by phone and WhatsApp. Regular products: UHT liquid cream 35% (1 L carton), Free-range eggs, size M (tray of 30), 82% pastry butter (10 kg carton), Whole UHT milk (1 L carton), AOP Charentes-Poitou unsalted butter (carton of 10 × 1 kg).
+Commande une fois par semaine, en général la veille entre 14h et 18h, surtout par téléphone et WhatsApp. Produits habituels : crème liquide UHT 35 % (brique 1 L), œufs plein air calibre M (plateau de 30), beurre pâtissier 82 % (carton 10 kg), lait entier UHT (brique 1 L), beurre doux AOP Charentes-Poitou (carton 10 × 1 kg).
 
-Over the last 90 days (12 orders delivered):
+Sur les 90 derniers jours (12 commandes livrées) :
 
-| Product | 90-day volume | Lines | Last price |
+| Produit | Volume 90 j | Lignes | Dernier prix |
 |---|---|---|---|
-| AOP Charentes-Poitou unsalted butter (carton of 10 × 1 kg) (`prd_0027`) | 205,79 kg | 9 | 10,16 € |
-| UHT liquid cream 35% (1 L carton) (`prd_0031`) | 362,00 liter | 8 | 4,10 € |
-| 82% pastry butter (10 kg carton) (`prd_0028`) | 122,27 kg | 3 | 7,81 € |
-| Free-range eggs, size M (tray of 30) (`prd_0034`) | 66,00 box | 8 | 8,34 € |
-| Whole UHT milk (1 L carton) (`prd_0033`) | 314,00 liter | 10 | 1,12 € |
+| Beurre doux AOP Charentes-Poitou (carton 10 × 1 kg) (`prd_0027`) | 205,79 kg | 9 | 10,16 € |
+| Crème liquide UHT 35 % (brique 1 L) (`prd_0031`) | 362,00 litre | 8 | 4,10 € |
+| Beurre pâtissier 82 % (carton 10 kg) (`prd_0028`) | 122,27 kg | 3 | 7,81 € |
+| Œufs plein air calibre M (plateau de 30) (`prd_0034`) | 66,00 colis | 8 | 8,34 € |
+| Lait entier UHT (brique 1 L) (`prd_0033`) | 314,00 litre | 10 | 1,12 € |
 
-CRM record : _Chocolatines raw for Sunday brunch. Order the afternoon between two services. Delivered Fri. Refuses substitutions: call before any modification._
+Fiche CRM : _Chocolatines crues pour le brunch du dimanche. Commande l'après-midi entre deux services. Livré ven. Refuse les substitutions : appeler avant toute modification._
 
-## What frustrates them
+## Ce qui les agace
 
-- Delivery during service
-- Broken eggs
+- Les livraisons pendant le service
+- Les œufs cassés
 
-## A brief history
+## Historique marquant
 
-- **04/09/2025** · map · Autumn card
-- **14/10/2025** · Payment · Recovery : FAC-2025-001814
-- **30/11/2025** · Payment · Recovery : FAC-2025-002192
-- **08/01/2026** · prices · Rates 2026
-- **26/01/2026** · Payment · Recovery : FAC-2025-002636
-- **27/03/2026** · Quality · Quality : Free-range eggs, size M (tray of 30)
-- **10/05/2026** · Payment · Recovery : FAC-2026-000688
-- **22/05/2026** · Quality · Quality : Whole UHT milk (1 L carton)
-- **27/06/2026** · Payment · Recovery : FAC-2026-001095
-- **25/08/2026** · Payment · Recovery : FAC-2026-001556
-- **11/09/2026** · map · Autumn card
-- **12/11/2026** · Payment · Recovery : FAC-2026-002081
+- **04/09/2025** · carte · Carte d'automne
+- **14/10/2025** · paiement · Relance : FAC-2025-001814 échue
+- **30/11/2025** · paiement · Relance : FAC-2025-002192 échue
+- **08/01/2026** · prix · Tarifs 2026
+- **26/01/2026** · paiement · Relance : FAC-2025-002636 échue
+- **27/03/2026** · qualité · Qualité : œufs plein air calibre M (plateau de 30)
+- **10/05/2026** · paiement · Relance : FAC-2026-000688 échue
+- **22/05/2026** · qualité · Qualité : lait entier UHT (brique 1 L)
+- **27/06/2026** · paiement · Relance : FAC-2026-001095 échue
+- **25/08/2026** · paiement · Relance : FAC-2026-001556 échue
+- **11/09/2026** · carte · Carte d'automne
+- **12/11/2026** · paiement · Relance : FAC-2026-002081 échue
 
-Full history: 58 events (16 payment, 9 visit, 9 call, 7 quality, 5 compliment, 3 special request, 3 note, 3 price, 2 card, 1 opening).
+Historique complet : 58 événements (16 paiement, 9 visite, 9 appel, 7 qualité, 5 compliment, 3 demande spéciale, 3 note, 3 prix, 2 carte, 1 ouverture).
 
-## Open cases
+## Dossiers ouverts aujourd'hui
 
-None.
+Aucun.
 
-## How to talk to them
+## Comment leur parler
 
-- To be brief, the chef is in the kitchen.
-- Do not call between 12h and 14h30.
+- Être bref, le chef est en cuisine.
+- Ne pas appeler entre 12h et 14h30.
 
-## Price & group
+## Prix & groupe
 
-Groups: **Restaurants** (`chr`), **To be monitored** (`a-surveiller`).
-No negotiated prices.
+Groupes : **Restaurants** (`chr`), **À surveiller** (`a-surveiller`).
+Pas de prix négocié.
 
-Price rules that may apply:
-- `prl_0006` Epiphany 2027: almond powder -6 % from 20 kg
-- `prl_0007` Epiphany 2027: crowns and beans -5 %
+Règles de prix qui peuvent s'appliquer :
+- `prl_0006` Épiphanie 2027 : poudre d'amande −6 % dès 20 kg
+- `prl_0007` Épiphanie 2027 : couronnes et fèves −5 %
 
-Latest notes CRM:
+Dernières notes CRM :
 
-- 20/09/2026, Karim (commercial): Don't want any substitution without being warned: if a product is missing, call Julien before the truck leaves.
+- 20/09/2026, Karim (commercial) : Ne veut aucune substitution sans être prévenu : si un produit manque, appeler Julien avant le départ du camion.

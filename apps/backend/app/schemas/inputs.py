@@ -47,7 +47,7 @@ def _pattern(regex: str, message: str):
 
 IsoDateStr = Annotated[str, _pattern(r"^\d{4}-\d{2}-\d{2}$", "format AAAA-MM-JJ attendu")]
 IsoDateTimeStr = Annotated[str, _pattern(r"^\d{4}-\d{2}-\d{2}(T.*)?$", "date ISO attendue")]
-Slug = Annotated[str, _pattern(r"^[a-z0-9][a-z0-9-_]*$", "slug expected (a-z, 0-9, -)")]
+Slug = Annotated[str, _pattern(r"^[a-z0-9][a-z0-9-_]*$", "slug attendu (a-z, 0-9, -)")]
 NonEmpty = Annotated[str, Field(min_length=1)]
 Positive = Annotated[float, Field(gt=0)]
 NonNegative = Annotated[float, Field(ge=0)]
@@ -99,7 +99,7 @@ class ClientPatch(Input):
 
 class ClientNoteInput(Input):
     text: NonEmpty
-    author: str = "Team"
+    author: str = "Équipe"
 
 
 class ClientPriceInput(Input):

@@ -16,12 +16,12 @@ import {
 } from "./shared";
 
 const SCOPE_TABS: { id: "" | ContextScope; label: string }[] = [
-  { id: "", label: "All" },
-  { id: "company", label: "Company" },
-  { id: "client", label: "Customers" },
-  { id: "supplier", label: "Suppliers" },
-  { id: "product", label: "Products" },
-  { id: "category", label: "Departments" },
+  { id: "", label: "Toutes" },
+  { id: "company", label: "Entreprise" },
+  { id: "client", label: "Clients" },
+  { id: "supplier", label: "Fournisseurs" },
+  { id: "product", label: "Produits" },
+  { id: "category", label: "Rayons" },
 ];
 
 /** First meaningful line of the body, without markdown marks. */
@@ -30,7 +30,7 @@ const preview = (body: string) =>
 
 const COLUMNS: Column<ContextEntrySummary>[] = [
   {
-    id: "title", header: "Form", sortKey: "title", className: "w-full max-w-0", // fill, and let the preview truncate
+    id: "title", header: "Fiche", sortKey: "title", className: "w-full max-w-0", // fill, and let the preview truncate
     cell: (e) => (
       <span className="flex min-w-0 items-center gap-2">
         {isAiSource(e.source) ? <SourceMark source={e.source} compact /> : null}
@@ -40,7 +40,7 @@ const COLUMNS: Column<ContextEntrySummary>[] = [
     ),
   },
   {
-    id: "entity", header: "Subject", width: 230, sortKey: "entity",
+    id: "entity", header: "Concerne", width: 230, sortKey: "entity",
     cell: (e) => (
       <span className="flex min-w-0 items-baseline gap-1.5">
         <span className="truncate">{e.entityLabel}</span>
@@ -48,10 +48,10 @@ const COLUMNS: Column<ContextEntrySummary>[] = [
       </span>
     ),
   },
-  { id: "kind", header: "Gender", width: 120, sortKey: "kind", cell: (e) => <KindDot kind={e.kind} /> },
-  { id: "tags", header: "Keywords", width: 170, hideBelow: 1400, muted: true, sortKey: "tags", cell: (e) => <span className="truncate">{(e.tags ?? []).join(", ") || "—"}</span> },
+  { id: "kind", header: "Genre", width: 120, sortKey: "kind", cell: (e) => <KindDot kind={e.kind} /> },
+  { id: "tags", header: "Mots-clés", width: 170, hideBelow: 1400, muted: true, sortKey: "tags", cell: (e) => <span className="truncate">{(e.tags ?? []).join(", ") || "—"}</span> },
   { id: "source", header: "Source", width: 130, hideBelow: 1200, sortKey: "source", cell: (e) => <SourceMark source={e.source} /> },
-  { id: "updated", header: "Modified", width: 110, hideBelow: 1100, sortKey: "updated", cell: (e) => <DateLabel date={e.updatedAt} className="text-secondary-foreground" /> },
+  { id: "updated", header: "Modifiée", width: 110, hideBelow: 1100, sortKey: "updated", cell: (e) => <DateLabel date={e.updatedAt} className="text-secondary-foreground" /> },
 ];
 
 export default function ContextPage() {
@@ -91,7 +91,7 @@ export default function ContextPage() {
   return (
     <Page>
       <PageHeader
-        title="Context"
+        title="Contexte"
         tabs={
           <Tabs<"" | ContextScope>
             value={scope as "" | ContextScope}
@@ -101,22 +101,22 @@ export default function ContextPage() {
         }
         filters={
           <>
-            <SearchInput value={q} onChange={setQ} placeholder="Search the records..." className="w-[260px]" />
-            <Select size="sm" value={kind} onChange={setKind} placeholder="All genres" options={KIND_OPTIONS} aria-label="Gender" />
-            <Select size="sm" value={source} onChange={setSource} placeholder="All sources" options={SOURCE_OPTIONS} aria-label="Source" />
+            <SearchInput value={q} onChange={setQ} placeholder="Chercher dans les fiches…" className="w-[260px]" />
+            <Select size="sm" value={kind} onChange={setKind} placeholder="Tous les genres" options={KIND_OPTIONS} aria-label="Genre" />
+            <Select size="sm" value={source} onChange={setSource} placeholder="Toutes les sources" options={SOURCE_OPTIONS} aria-label="Source" />
             {entity ? (
-              <Button size="sm" variant="ghost" icon={X} onClick={() => setEntity("")} title="Remove this filter">
+              <Button size="sm" variant="ghost" icon={X} onClick={() => setEntity("")} title="Retirer ce filtre">
                 {entityLabel}
               </Button>
             ) : null}
-            {filtered ? <Button size="sm" variant="ghost" className="ml-auto" onClick={reset}>Clear Filters</Button> : null}
+            {filtered ? <Button size="sm" variant="ghost" className="ml-auto" onClick={reset}>Effacer les filtres</Button> : null}
           </>
         }
-        actions={<Button variant="primary" icon={Plus} onClick={() => setCreating("1")}>New form</Button>}
+        actions={<Button variant="primary" icon={Plus} onClick={() => setCreating("1")}>Nouvelle fiche</Button>}
       />
       <PageBody flush>
         {isError && !data ? (
-          <EmptyState icon={BookOpen} title="Background unavailable" description="TheAPI Check that the server is running on port 4000." action={<Button size="sm" onClick={() => refetch()}>Retry</Button>} />
+          <EmptyState icon={BookOpen} title="Contexte indisponible" description="L'API ne répond pas. Vérifiez que le serveur tourne sur le port 4000." action={<Button size="sm" onClick={() => refetch()}>Réessayer</Button>} />
         ) : (
           <DataTable
             columns={COLUMNS}
@@ -126,12 +126,12 @@ export default function ContextPage() {
             getRowId={(e) => e.id}
             onRowClick={(e) => setSel(sel === e.id ? "" : e.id)}
             selectedId={sel || null}
-            footer={data ? `${total} fiche${total > 1 ? "s" : ""}${filtered ? " · filtered" : ""}${dq ? " · sorted by relevance" : ""}${aiCount ? ` · ${aiCount} in writing${aiCount > 1 ? "s" : ""} by officials` : ""}` : undefined}
+            footer={data ? `${total} fiche${total > 1 ? "s" : ""}${filtered ? " · filtrées" : ""}${dq ? " · triées par pertinence" : ""}${aiCount ? ` · ${aiCount} écrite${aiCount > 1 ? "s" : ""} par les agents` : ""}` : undefined}
             empty={
               filtered ? (
-                <EmptyState icon={BookOpen} title="No record matches" description="Change the search or filters." action={<Button size="sm" onClick={reset}>Clear Filters</Button>} />
+                <EmptyState icon={BookOpen} title="Aucune fiche ne correspond" description="Modifiez la recherche ou les filtres." action={<Button size="sm" onClick={reset}>Effacer les filtres</Button>} />
               ) : (
-                <EmptyState icon={BookOpen} title="No background information" description="The data pack and the records written by the agents will appear here." action={<Button size="sm" icon={Plus} onClick={() => setCreating("1")}>New form</Button>} />
+                <EmptyState icon={BookOpen} title="Aucune fiche de contexte" description="Les fiches du data pack et celles écrites par les agents apparaîtront ici." action={<Button size="sm" icon={Plus} onClick={() => setCreating("1")}>Nouvelle fiche</Button>} />
               )
             }
           />
