@@ -58,6 +58,7 @@ class CallContext:
     caller_contact: str | None = None  # who is on the phone (caller ID form), e.g. "Nadine Sarrailh"
     caller_phone: str | None = None
     recent_orders: list[str] = field(default_factory=list)  # team 12: latest orders, newest first, ready to say
+    sales_rep: str | None = None  # team 12 (Daycem, T5): the client's sales rep from the ERP card (salesRep)
     company_name: str | None = None  # team 12: a NEW client's business name typed in the form (None = to ask)
     prospect_note: str = ""  # team 12: a prospect calling back: its card and the requests already noted
 
@@ -92,6 +93,7 @@ async def load_call_context(erp: ErpClient, client_id: str) -> CallContext:
         delivery_days=client.get("deliveryDays") or [],
         preferences=client.get("preferences") or "",
         contacts=client.get("contacts") or [],
+        sales_rep=client.get("salesRep") or None,
         usual=[
             UsualItem(
                 product_id=u.get("productId", ""),
@@ -390,6 +392,7 @@ def render_for_prompt(cc: CallContext | None) -> str:
         " search, get_client ni get_context pour ce client), sers-toi de cette fiche et de son id. Utilise toujours les"
         " outils pour le stock d'un autre produit, les prix et la commande.",
         on_phone,
+        f"- Commercial(e) : {cc.sales_rep}" if cc.sales_rep else "",
         f"- Statut : {cc.status}" + (" — COMPTE BLOQUÉ : ne rien promettre, prendre le message" if cc.blocked else ""),
         f"- Jours de livraison (ERP, ils font foi même si une note dit le contraire) : "
         f"{', '.join(DAYS_FR.get(d, d) for d in cc.delivery_days) or 'inconnus'}",
