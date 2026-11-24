@@ -9,7 +9,7 @@ import { DEFAULT_VAD, Vad } from "./vad";
 import type { Activity } from "./useVoiceSession";
 
 const CHECK_MS = 900; // team 12: how long a sound over Lucie's voice is checked
-const CONFIRM_LOUD_MS = 450; // voiced this long within it = a real interruption
+const CONFIRM_LOUD_MS = 300; // voiced this long within it = a real interruption
 
 export interface HandsFreeTarget {
   activity: Activity;
@@ -17,6 +17,8 @@ export interface HandsFreeTarget {
   readRms: () => number | undefined;
   startTalking: (opts?: { tentative?: boolean }) => Promise<void>;
   confirmTalking?: () => void;
+  isAgentAudible?: () => boolean;
+  isAgentBusy?: () => boolean;
   cancelTalking?: () => void;
   stopTalking: (opts?: { quiet?: boolean }) => void;
   nudge?: () => void;
@@ -53,7 +55,8 @@ export function useHandsFree(target: HandsFreeTarget, enabled: boolean, spaceDow
         const rms = t.readRms();
         if (rms === undefined) return;
         const now = performance.now();
-        const ev = vad.feed(rms, now, t.activity === "speaking");
+        const audible = t.isAgentAudible ? t.isAgentAudible() : t.activity === "speaking";
+        const ev = vad.feed(rms, now, audible); // team 12: the louder barge-in threshold only while her voice is heard
         // silence after the agent's answer: one nudge, then wait (reset as soon as anyone speaks)
         if (t.activity !== "idle" || vad.isSpeaking) { idleSince = null; nudged = vad.isSpeaking ? false : nudged; }
         else if (idleSince === null) idleSince = now;
@@ -73,8 +76,8 @@ export function useHandsFree(target: HandsFreeTarget, enabled: boolean, spaceDow
         }
         if (ev === "start" && !owns.current) {
           owns.current = true;
-          if ((t.activity === "speaking" || t.activity === "thinking") && t.confirmTalking) {
-            check = { at: now, loud: 0, level: Math.max(0.02, rms * 0.5) };
+          if ((audible || t.isAgentBusy?.()) && t.confirmTalking) {
+            check = { at: now, loud: 0, level: Math.max(0.015, rms * 0.4) };
             void t.startTalking({ tentative: true });
           } else void t.startTalking();
         } else if ((ev === "end" || ev === "cancel") && owns.current) {

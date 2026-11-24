@@ -105,27 +105,32 @@ function CallMode({ modeSwitch }: { modeSwitch: ReactNode }) {
     };
   }, []);
 
-  // team 12 (Youssef): the call is over (the caller said goodbye, or Lucie closed with a goodbye and no question):
-  // hang up by itself as soon as her voice is over — and after 12 s at the latest, whatever the activity says.
+  // team 12 (Youssef): the call is over (the caller said goodbye / wants to stop, or Lucie closed with a goodbye and no
+  // question) → hang up by itself as soon as her voice is over, 12 s at the latest. One timer per goodbye, kept in a ref:
+  // screen updates (timings, text) no longer cancel it (that is why it did not hang up).
   const goodbyeDone = useRef<number>();
+  const byeTimer = useRef<number>();
+  useEffect(() => () => window.clearInterval(byeTimer.current), []);
   useEffect(() => {
+    if (!v.caller) { window.clearInterval(byeTimer.current); byeTimer.current = undefined; return; }
     const last = v.turns[v.turns.length - 1];
-    if (!v.caller || !last || !last.agent.done || goodbyeDone.current === last.id) return;
-    const callerBye = /\b(au revoir|adieu|bonne (?:journ[ée]e|soir[ée]e|fin de journ[ée]e|continuation|soirée)|[àa] (?:bient[ôo]t|plus|demain)|ciao|bye)\b/i.test(last.caller.text);
+    if (!last || !last.agent.done || goodbyeDone.current === last.id || byeTimer.current) return;
+    const callerBye = /\b(au revoir|adieu|bonne (?:journ[ée]e|soir[ée]e|fin de journ[ée]e|continuation)|[àa] (?:bient[ôo]t|plus|demain)|ciao|bye|c['’]est tout(?: pour moi)?|ce sera tout|je n['’]ai (?:plus )?rien d['’]autre|on s['’]arr[êe]te l[àa]|je raccroche|il faut que je (?:vous )?laisse)\b/i.test(last.caller.text);
     const said = last.agent.text.trim();
-    const lucieBye = !said.includes("?") && /\b(au revoir|belle journ[ée]e|bonne journ[ée]e|bonne soir[ée]e|bonne fin de journ[ée]e)\s*[!.]*\s*$/i.test(said);
+    const lucieBye = !said.includes("?") && /\b(au revoir|belle journ[ée]e|bonne journ[ée]e|bonne soir[ée]e|bonne fin de journ[ée]e|[àa] bient[ôo]t)\s*[!.]*\s*$/i.test(said);
     if (!callerBye && !lucieBye) return;
     goodbyeDone.current = last.id;
     const started = Date.now();
-    const timer = window.setInterval(() => {
-      const busy = vRef.current.activity === "speaking" || vRef.current.activity === "thinking";
-      if (!vRef.current.caller) { window.clearInterval(timer); return; }
-      if ((!busy && Date.now() - started > 900) || Date.now() - started > 12000) {
-        window.clearInterval(timer);
-        vRef.current.endCall();
+    byeTimer.current = window.setInterval(() => {
+      const s = vRef.current;
+      if (!s.caller) { window.clearInterval(byeTimer.current); byeTimer.current = undefined; return; }
+      const busy = s.isAgentAudible() || s.activity === "thinking";
+      if ((!busy && Date.now() - started > 800) || Date.now() - started > 12000) {
+        window.clearInterval(byeTimer.current);
+        byeTimer.current = undefined;
+        s.endCall();
       }
-    }, 300);
-    return () => window.clearInterval(timer);
+    }, 250);
   }, [v.turns, v.caller]);
 
   const connected = v.conn === "ready";
