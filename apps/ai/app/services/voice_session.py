@@ -311,7 +311,7 @@ class VoiceConnection:
             self.turn = asyncio.create_task(self.open_outbound(conv))
 
     async def open_outbound(self, conv: Conversation) -> None:
-        line = "Bonjour, c’est l’assistant vocal du Fournil Occitan. Est-ce que vous avez trente secondes pour une offre ?"
+        line = "Bonjour, c’est Lucie, l’assistante du Fournil Occitan. Vous avez trente secondes pour une petite offre ?"
         await self.send(NudgeSaidMessage(text=line))
         speaker = Speaker(get_tts_client(), self.send, self.send_bytes, self.bank)
         try:
@@ -492,7 +492,7 @@ class VoiceConnection:
 
                     def first_sentence(sentence: str, contact=contact, greeted=greeted) -> str:
                         if greeted:
-                            sentence = without_repeated_greeting(sentence, contact)
+                            sentence = without_repeated_greeting(sentence, contact, heard)
                         return vary_opening(sentence, conv.last_spoken)
 
                     ahead = EarlySpeech(lambda sentence: speaker.push(sentence + " "), first_sentence)
@@ -518,7 +518,7 @@ class VoiceConnection:
                             spoken = spoken_reply(message.content) or "Je n’ai pas de réponse à vous donner pour le moment."
                             if greeted:
                                 contact = conv.call_context.caller_contact if conv.call_context else None
-                                spoken = without_repeated_greeting(spoken, contact)
+                                spoken = without_repeated_greeting(spoken, contact, heard)
                             spoken = vary_opening(spoken, conv.last_spoken)  # team 12 (Youssef): no « Parfait, » twice in a row
                             asked = asked_questions(spoken)  # before one_question turns the earlier ones into statements
                             spoken = vary_closing(one_question(spoken), conv.used_closings)  # one question, varied closing

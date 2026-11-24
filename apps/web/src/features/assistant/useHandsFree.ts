@@ -8,11 +8,16 @@ import { useEffect, useRef, useState, type MutableRefObject } from "react";
 import { DEFAULT_VAD, Vad } from "./vad";
 import type { Activity } from "./useVoiceSession";
 
+const CHECK_MS = 900; // team 12: how long a sound over Lucie's voice is checked
+const CONFIRM_LOUD_MS = 450; // voiced this long within it = a real interruption
+
 export interface HandsFreeTarget {
   activity: Activity;
   ensureMic: () => Promise<MediaStream | undefined>;
   readRms: () => number | undefined;
-  startTalking: () => Promise<void>;
+  startTalking: (opts?: { tentative?: boolean }) => Promise<void>;
+  confirmTalking?: () => void;
+  cancelTalking?: () => void;
   stopTalking: (opts?: { quiet?: boolean }) => void;
   nudge?: () => void;
   turns?: { length: number };
@@ -38,6 +43,7 @@ export function useHandsFree(target: HandsFreeTarget, enabled: boolean, spaceDow
     const vad = new Vad(DEFAULT_VAD);
     let idleSince: number | null = null;
     let nudged = false;
+    let check: { at: number; loud: number; level: number } | null = null;
     void (async () => {
       if (!(await ref.current.ensureMic()) || stopped) return;
       setListening(true);
@@ -52,9 +58,25 @@ export function useHandsFree(target: HandsFreeTarget, enabled: boolean, spaceDow
         if (t.activity !== "idle" || vad.isSpeaking) { idleSince = null; nudged = vad.isSpeaking ? false : nudged; }
         else if (idleSince === null) idleSince = now;
         else if (!nudged && (t.turns?.length ?? 0) > 0 && now - idleSince > NUDGE_AFTER_MS && t.nudge) { nudged = true; t.nudge(); }
+        // team 12 (Youssef): over Lucie's voice, a sound is first checked: real speech (loud ≥ CONFIRM_LOUD_MS within
+        // CHECK_MS) interrupts her; a click, a cough, a short noise does not (her voice dips, then comes back)
+        if (check) {
+          if (rms >= check.level) check.loud += TICK_MS;
+          if (check.loud >= CONFIRM_LOUD_MS) { check = null; t.confirmTalking?.(); }
+          else if (now - check.at >= CHECK_MS || ev === "end" || ev === "cancel") {
+            check = null;
+            owns.current = false;
+            vad.reset();
+            t.cancelTalking?.();
+            return;
+          }
+        }
         if (ev === "start" && !owns.current) {
           owns.current = true;
-          void t.startTalking();
+          if (t.activity === "speaking" && t.confirmTalking) {
+            check = { at: now, loud: 0, level: Math.max(0.02, rms * 0.5) };
+            void t.startTalking({ tentative: true });
+          } else void t.startTalking();
         } else if ((ev === "end" || ev === "cancel") && owns.current) {
           owns.current = false;
           t.stopTalking({ quiet: true });

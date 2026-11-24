@@ -27,6 +27,19 @@ ASK_OFFERS = re.compile(
     r"(?:(?:des|une|les|vos) )?(promos?|promotions?|nouveautes?|offres?|suggestions?)"
     r"(?: (?:en ce moment|aujourd hui|pour moi))?"
 )
+# team 12 (Youssef) · Lucie's own calls stay short: on the offer only, and a client who is not interested gets an apology
+# and a goodbye at once (the page then hangs up by itself on « au revoir »). Something the CLIENT asks is handled.
+OUTBOUND_GOODBYE = "Je ne vous dérange pas plus, excusez-moi pour le dérangement. Belle journée, au revoir !"
+NOT_NOW = re.compile(
+    r"\b(?:non|pas (?:interesse(?:e)?|besoin|le temps|maintenant|aujourd hui|pour l instant|pour moi|la peine)|occupe(?:e)?|"
+    r"rappelez|plus tard|une autre fois|sans facon|bof|j en ai deja|j ai deja|ca ira|c est bon merci|laissez tomber|"
+    r"(?:ca|cela) (?:ne )?m interesse pas|je n ai pas le temps|pas trop|je ne crois pas)\b"
+)
+ENGAGE = re.compile(
+    r"\b(?:j ai un (?:probleme|souci)|pouvez vous|vous pouvez|est ce que vous pouvez|je voudrais|il me faudrait|"
+    r"reclamation|(?:ma|mon|mes) (?:commande|facture|livraison|compte|avoir))\b"
+)
+WHEN = re.compile(r"\b(?:jusqu a quand|jusqu quand|combien de temps|c est quoi|quel produit|lequel|laquelle)\b")
 PRICE = re.compile(r"\b(?:prix|combien|tarif|ca coute)\b")
 WORDS = {word: i for i, word in enumerate(
     "zero un deux trois quatre cinq six sept huit neuf dix onze douze treize quatorze quinze seize".split()
@@ -112,6 +125,8 @@ class CallOffers:
         self.permission = bool(outbound)
         self.quoted = False
         self.readback: str | None = None
+        self.interest = False  # team 12: « ça vous intéresse ? » asked, waiting for the answer
+        self.reasked = False  # the opening question asked again once at most
 
     async def complete(self) -> None:
         if self.outbound:
@@ -126,31 +141,49 @@ class CallOffers:
         outbound_offer = self.outbound["offer"] if self.outbound else None
         if self.permission:
             self.permission = False
-            if YES.fullmatch(text) or PRICE.search(text):
+            if NOT_NOW.search(text) and not YES.fullmatch(text):
+                await self._decline(outbound_offer)
+                return Handled(OUTBOUND_GOODBYE)
+            if YES.fullmatch(text) or PRICE.search(text) or WHEN.search(text) or re.match(r"^(?:oui|ouais|allez|vas y|d accord|ok|dites)\b", text):
                 if not (offer := await self._check(outbound_offer)):
-                    return Handled("L’offre vient de changer. Merci de m’avoir répondu, bonne journée.")
+                    return Handled("L’offre vient de se terminer, désolée pour le dérangement. Belle journée, au revoir !")
                 self.pending = offer
                 self.quoted = True
-                reason = "Vous en commandez régulièrement. " if offer["purchaseCount"] >= 2 else "C’est une nouveauté du catalogue. "
-                return Handled(f"Je vous appelais pour le produit {short_name(offer['productName'])}. {reason}{self._price(offer)}")
-            if NO.fullmatch(text):
-                await self._decline(outbound_offer)
-                return Handled("Bien sûr. Merci de m’avoir répondu, bonne journée.")
-            self.permission = True
-            return Handled("C’est l’assistant vocal du Fournil Occitan. Est-ce que je peux vous présenter l’offre ?")
+                self.interest = True
+                product = short_name(offer["productName"])
+                product = product[:1].lower() + product[1:]
+                why = "que vous prenez souvent, " if offer["purchaseCount"] >= 2 else "une nouveauté de notre catalogue, "
+                return Handled(f"Le {product}, {why}est {'en promo à' if offer['kind'] == 'promo' else 'à'} {self._price_only(offer)}. Ça vous intéresse ?")
+            if ENGAGE.search(text):
+                return None  # the client asks something: Lucie handles it
+            if self.reasked:
+                return Handled(OUTBOUND_GOODBYE)
+            self.permission = self.reasked = True
+            return Handled("Je suis toujours là : j’ai une promo sur un produit que vous prenez souvent. Je vous en dis deux mots ?")
 
         if not (offer := self.pending):
             if self.readback:
                 readback, self.readback = self.readback, None
                 if CONFIRM.fullmatch(text):
                     return await self._confirm(heard, readback)
+                if self.outbound and NOT_NOW.search(text):
+                    return Handled("Pas de souci, je ne valide rien. " + OUTBOUND_GOODBYE)
             if ask := ASK_OFFERS.fullmatch(text):
                 return await self._requested_offer(ask[1])
             return None
+        if self.outbound and NOT_NOW.search(text) and not amount_requested(text, offer):
+            self.pending = None
+            await self._decline(offer)
+            return Handled("Pas de souci. " + OUTBOUND_GOODBYE)
         if NO.fullmatch(text):
             self.pending = None
             await self._decline(offer)
             return await self._readback("Bien sûr.")
+        if self.outbound and self.interest and YES.fullmatch(text):
+            self.interest = False
+            return Handled(f"Très bien. Combien je vous en mets ? C’est par {re.sub(r'^(\w+) (\d)', r'\1 de \2', product_caliber(offer) or 'unité')}.")
+        if self.outbound and WHEN.search(text):
+            return Handled(f"C’est {self._price_only(offer)}. Ça vous intéresse ?")
         asks_price = PRICE.search(text) and not re.search(r"\b(?:commande|panier|livraison|frais|total)\b", text)
         if YES.fullmatch(text) or asks_price:
             if not (fresh := await self._check(offer)):
@@ -260,6 +293,12 @@ class CallOffers:
             pass  # the conversation still honours the refusal
 
     @staticmethod
+    def _price_only(offer: dict) -> str:
+        price = quote(1, offer["unit"], product_caliber(offer), offer["productName"], offer["unitPrice"])["say"].split(", soit")[0]
+        until = date.fromisoformat(offer["validUntil"]) if offer.get("validUntil") else None
+        return f"{price} hors taxes" + (f" jusqu’au {until.day} {MONTHS_FR[until.month - 1]}" if until else "")
+
+    @staticmethod
     def _price(offer: dict) -> str:
         price = quote(1, offer["unit"], product_caliber(offer), offer["productName"], offer["unitPrice"])["say"]
         until = date.fromisoformat(offer["validUntil"]) if offer.get("validUntil") else None
@@ -303,7 +342,8 @@ class CallOffers:
         if result.get("confirmed") is False or (result.get("status") != "confirmed" and not result.get("alreadyConfirmed")):
             return Handled("Je n’ai pas pu valider. Je vous confirme seulement après votre accord clair.", awaiting_confirmation=True)
         self.draft = None
-        return Handled("C’est confirmé. Votre commande a bien été enregistrée.", order=result if result.get("id") else None)
+        bye = " Merci beaucoup, belle journée, au revoir !" if self.outbound else ""
+        return Handled("C’est confirmé. Votre commande a bien été enregistrée." + bye, order=result if result.get("id") else None)
 
     @staticmethod
     def _recap(prefix: str, review: dict | None) -> str:
