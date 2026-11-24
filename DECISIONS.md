@@ -41,6 +41,16 @@ micro) ; le flux MP3 reçu est rejoué comme le navigateur, durées lues dans le
 | `TEAM_FILLERS=0` (kit) | non | 3,0 s / 5,0 s | 2,2–4,8 s | tout ce temps (2,3–5,0 s) |
 | `TEAM_FILLERS=3` | non (« Bonjour » joué après la 1re phrase) | 0,0 s / 0,8 s | 2,1–4,3 s | jusqu'à 1,4–1,9 s d'un bloc |
 | **`TEAM_FILLERS=4` (défaut)** · configuration du jury | **oui, 0,3 s** après le formulaire | **0,0 s / 0,0 s** | 2,8–6,3 s | **0,0 s** |
+| **+ `TEAM_ROUTER=1` (défaut)** · accusé ciblé + Haiku pour les répliques simples | oui, 0,4 s | 0,0 s / 0,4 s | « c'est bon, validez » **2,2 s** (2,6–3,3 s sur Sonnet) ; « merci, au revoir » **0,7 s** | **0,0 s** |
+
+**Routage du modèle** (`agent/router.py`, `TEAM_ROUTER`) : une réplique faite uniquement de confirmation ou de politesse
+(« c'est bon, validez », « oui », « parfait », « merci, au revoir ») part sur le modèle rapide (Haiku, `TEAM_FAST_MODEL`),
+tout le reste (produit, quantité, prix, changement d'avis, réclamation) sur Sonnet. Mesuré avec nos réglages : premier mot
+0,45–0,57 s (Haiku) contre 1,19–1,33 s (Sonnet). La confirmation reste vérifiée par Jev (accord 0,94 en 190 ms sur
+Haiku). Ces répliques ne déclenchent plus « Très bien, je vérifie » (inutile et lent) : l'accusé n'est dit que si l'agent
+doit chercher quelque chose. Les codes ERP (« CMD-2026-007543 », `prd_…`) sont retirés du texte prononcé, quel que soit le
+modèle (Haiku en avait lu un). Rejeu `--voice` : S01, S30, S31, S32, S33 PASS ; S02 PASS 2 fois sur 3 (la 3e, le modèle
+rapide demande la quantité de gruau restée floue au tour 1 au lieu de confirmer : il n'invente pas).
 
 Premier relevé (23/11, via /chat, sans audio) : S03 (client bloqué) PASS, 6 099 ms, premier mot à 4 092 ms ; défaut
 noté : l'agent prononce son raisonnement (« Le compte est bloqué ; je ne prends pas de commande… »).

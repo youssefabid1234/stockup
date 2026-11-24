@@ -41,6 +41,11 @@ def fast_fillers() -> bool:
     return fillers_mode() in {2, 3}
 
 
+def router() -> bool:
+    """TEAM_ROUTER=1: simple replies (« c'est bon, validez », « merci ») go to the fast model (agent/router.py)."""
+    return _on("TEAM_ROUTER")
+
+
 def no_silence() -> bool:
     """TEAM_FILLERS=4: the agent opens the call, acknowledges at once and types until the answer (services/fillers.py)."""
     return fillers_mode() == 4
@@ -80,4 +85,5 @@ def all_flags() -> dict[str, bool]:
         "product_insight": product_insight(),
         "order_rules": order_rules(),
         "sales_rules": sales_rules(),
+        "router": router(),
     }

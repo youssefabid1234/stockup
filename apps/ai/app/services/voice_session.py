@@ -32,7 +32,8 @@ from app.agent import call_context as preload
 from app.agent import run_agent, sanitize_history
 from app.agent.call_context import CallContext
 from app.agent.loop import ms_since
-from app.agent.orchestrator import run_voice_turn
+from app.agent.orchestrator import get_fast_llm_client, run_voice_turn
+from app.agent.router import pick_llm
 from app.clients import STTUpdate, TTSClient, get_llm_client, get_stt_client, get_tts_client
 from app.config import settings
 from app.schemas import (
@@ -336,7 +337,11 @@ class VoiceConnection:
             # team 12 (Youssef): the orchestrator when TEAM_ORCHESTRATOR is on, else the kit's agent loop
             agent = run_voice_turn if team_flags.orchestrator() else run_agent
             extra = {"call_context": conv.call_context} if conv.call_context is not None else {}
-            async for ev in agent(working, llm=get_llm_client(), tools=all_tools(), mode="voice", actor_name=conv.actor_name, **extra):
+            # TEAM_ROUTER: « c'est bon, validez », « merci » → the fast model (2-3× faster); the rest → the main model
+            llm, model_used = pick_llm(heard, get_llm_client(), get_fast_llm_client)
+            if model_used == "rapide":
+                print(f"[router] modèle rapide pour « {heard} »", flush=True)
+            async for ev in agent(working, llm=llm, tools=all_tools(), mode="voice", actor_name=conv.actor_name, **extra):
                 match ev:
                     case TextEvent(delta=delta) if delta.strip():
                         if timings.llm_first_token_ms is None:

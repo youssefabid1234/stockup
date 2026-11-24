@@ -1,4 +1,11 @@
-# Amine Khalil – 🧠 « La commande juste » + ⚡ voix (repris de Mohamed Amine)  ·  mis à jour mar. 24/11 02h10
+# Amine Khalil – 🧠 « La commande juste » + ⚡ voix (repris de Mohamed Amine)  ·  mis à jour mar. 24/11 02h40
+
+- Fait (02h40) – **routage Haiku / Sonnet** (`agent/router.py`, `TEAM_ROUTER=1` par défaut) : « c'est bon, validez »,
+  « oui », « merci » → Haiku (premier mot 0,5 s au lieu de 1,2-1,3 s) ; le reste → Sonnet. Plus de « Très bien, je
+  vérifie » sur une simple confirmation (accusé seulement s'il y a quelque chose à chercher). Codes ERP jamais lus à voix
+  haute. Mesuré : validation 2,2 s (2,6-3,3 s avant), « merci, au revoir » 0,7 s. 272 tests passent. S02 : attente
+  `get_client` retirée (la fiche est préchargée).
+- **Pour tous** : ajouter `TEAM_ROUTER=1` dans votre `.env`.
 
 - Fait (02h10) – **mode 4 « zéro silence »** (`TEAM_FILLERS=4`, défaut dans `.env.example`), tâches voix reprises de
   Mohamed Amine : l'agent **ouvre l'appel** (« Bonjour Madame, que puis-je faire pour vous ? », 0,3 s après le

@@ -67,6 +67,14 @@ async def test_social_turn_gets_no_phrase_only_late_typing(mode4):
     assert sent  # typing only, if the answer takes a moment
 
 
+async def test_confirmation_gets_no_phrase(mode4):
+    sent: list[bytes] = []
+    sp = speaker_with_bank(sent)
+    await fillers.on_turn_start(sp, "C'est bon, validez.")  # was « Très bien, je vérifie » : useless and slow
+    assert not sp.acknowledged and sent == []
+    await sp.stop_waiting()
+
+
 async def test_typing_stops_when_cancelled(mode4):
     sent: list[bytes] = []
     sp = speaker_with_bank(sent)

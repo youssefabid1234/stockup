@@ -155,6 +155,23 @@ def typing_clip(variant: int) -> tuple[bytes, float]:
     return encoder.encode(bytes(pcm)) + encoder.flush(), TYPING_SECONDS
 
 
+LOOKUP_MORE = re.compile(
+    r"\b(?:faudrait|faut|besoin|livr\w*|commande\w*|habitude|reste|dispo\w*|quand|combien|prix|tarif|"
+    r"finalement|plutôt|plutot|enlev\w*|retir\w*|annul\w*|rajout\w*|ajout\w*|change\w*|modifi\w*|"
+    r"\d+|un|une|deux|trois|quatre|cinq|six|sept|huit|neuf|dix|onze|douze|quinze|vingt|trente|quarante|cinquante|cent)\b",
+    re.I,
+)
+
+
+def needs_lookup(words: str) -> bool:
+    """Will the agent have to search the ERP (worth « D'accord, je regarde ça »)? Not for a plain confirmation."""
+    from app.agent.router import is_simple_turn
+
+    if is_simple_turn(words):
+        return False
+    return bool(LOOKUP.search(words) or QUANTITY.search(words) or LOOKUP_MORE.search(words))
+
+
 def mp3_seconds(data: bytes, kbps: int = TTS_KBPS) -> float:
     """Playing time of a constant-bitrate MP3 chunk (enough to pace the audio we queue)."""
     return len(data) * 8 / (kbps * 1000)
@@ -257,8 +274,10 @@ async def on_turn_start(speaker, heard: str) -> None:
     if team_flags.no_silence():
         if speaker.tts.name == "mock":
             return
-        # Every request gets its acknowledgement at once; a « oui » / « merci » only gets typing if the answer lags.
-        if not speaker.social_turn:
+        # The acknowledgement only when the agent really has to look something up (an order, a quantity, a price, a
+        # change). « C'est bon, validez », « oui », « merci » get no phrase (it slowed the talk down for nothing): only
+        # typing, and only if the answer lags.
+        if needs_lookup(words):
             await play_waiting_line(speaker)
         speaker.waiting_task = asyncio.create_task(keep_typing(speaker, 0.0 if speaker.acknowledged else SOCIAL_TYPING_DELAY))
         return

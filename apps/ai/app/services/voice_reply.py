@@ -18,9 +18,22 @@ _GREETING = re.compile(r"^\s*(?:bonjour|bonsoir)\b", re.I)
 _SENTENCE_BREAK = re.compile(r"(?<=[.!?…])\s+|\n+")
 
 
+# ERP codes are never said on the phone (« votre commande CMD-2026-007543 est confirmée » was heard with the fast model)
+_CODE = r"(?:CMD|ACH|FAC|AV)-\d{4}-\d+|\b(?:cli|prd|ord|sup|lin|po|pol|ctx|rte|prl)_\d+\b"
+_NUMBERED = re.compile(rf"\s*(?:,\s*)?(?:(?:la |le |votre |n°\s*|numéro\s*|référence\s*)*)(?:{_CODE})(?=[\s.,;:!?)]|$)", re.I)
+
+
+def without_codes(text: str) -> str:
+    """« Votre commande CMD-2026-007543 est confirmée » → « Votre commande est confirmée »."""
+    cleaned, found = _NUMBERED.subn("", text)
+    if not found:
+        return text  # untouched: French spacing before « ? » / « : » stays as the model wrote it
+    return re.sub(r"\s{2,}", " ", re.sub(r"\s+([.,;])", r"\1", cleaned)).strip()
+
+
 def spoken_reply(text: str) -> str:
-    """Strip explicit internal blocks and obvious leading notes from a final model message."""
-    text = _INTERNAL_BLOCK.sub("", text).strip()
+    """Strip explicit internal blocks, obvious leading notes and ERP codes from a final model message."""
+    text = without_codes(_INTERNAL_BLOCK.sub("", text)).strip()
     segments = _SENTENCE_BREAK.split(text)
     if segments and _INTERNAL_LEAD.match(segments[0]):
         # When an obvious note precedes the greeting, discard the entire preamble.
