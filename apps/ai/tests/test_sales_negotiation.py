@@ -20,6 +20,8 @@ def test_negotiation_rule_fr():
     assert "celui que donne sa fiche" in rule and "2 phrases" in rule
     assert "par son prénom et son nom" in rule and "« notée pour »" in rule and "jamais « transmise »" in rule
     assert "propose de la transmettre" not in rule
+    assert "Quand le client cite un prix, compare-le au prix que l'ERP donne pour lui" in rule
+    assert "sans jamais lui dire cet écart ni ce seuil" in rule
 
 
 def test_negotiation_rule_en():
@@ -30,6 +32,8 @@ def test_negotiation_rule_en():
     assert "the one their card gives" in rule and "2 sentences" in rule
     assert "by first and last name" in rule and "« noted for »" in rule and "never « passed on »" in rule
     assert "offer to pass it on" not in rule
+    assert "When the client quotes a price, compare it with the price the ERP gives for them" in rule
+    assert "never telling them that gap or that threshold" in rule
 
 
 def test_negotiation_rule_names_no_one():

@@ -468,6 +468,8 @@ produit ou de personne dans le code (tests « stay general », en français et e
   3 événements `price_negotiation` lus dans l'ERP ; « Bernard Castagné » pour 10 % et l'alignement à 18 €, « Marion
   Escudié » pour 3 %. Limites : 3 réponses sur 8 font 3 phrases ; une relance à 5 % après une demande de 10 % reste
   chez le gérant (une fois sur deux elle est allée à la commerciale) ; les scénarios ne comptent pas les phrases.
+  Une fois sur six l'agent a d'abord cité le commercial d'un autre client avant de se corriger (relance à 5 % de S41) ;
+  la relance à 5 % va tantôt à la commerciale, tantôt au gérant.
 
 ## 5. Données modifiées pour la démo
 
