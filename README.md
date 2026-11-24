@@ -1,5 +1,12 @@
 # Voice ERP kit
 
+> **Pour le jury · Équipe 12 · Le Fournil Occitan (le standard téléphonique)**
+> 1. Remettez le dossier `data/` du zip à côté du `Makefile` (`data/seed/` n'est pas dans git), et votre `.env` (clés) à la racine.
+> 2. `make setup` → http://localhost:5173, page **Voix**. Nos réglages (`TEAM_*`) sont ajoutés au `.env` s'ils manquent ; la promo de démo est recréée à chaque remise à zéro de l'ERP.
+> 3. Choisissez **« Qui appelle ? »** (le client, comme l'affichage du numéro), puis **« Démarrer l'appel »** ; maintenez Espace pour parler.
+> 4. À essayer : Le Pétrin de Colomiers, « 3 cartons de tourage AOP pour lundi » (rupture → tourage 82 % en promo) ; Maison Sarrailh, même demande (refuse tout remplaçant).
+> 5. Nos choix et nos mesures : [DECISIONS.md](DECISIONS.md).
+
 A small but complete ERP for a food wholesaler, an AI service that reads and writes it through tools, and a
 push-to-talk voice harness. Built for the Stockline voice hackathon: make the voice agent **smart, fast and natural**.
 
