@@ -61,6 +61,39 @@ SALES_RULES = """Règles de vente (rupture, remplacement, prix) :
 - N'appelle le client par un nom que s'il l'a donné lui-même pendant l'appel, ou si c'est l'interlocuteur indiqué dans sa fiche. Sinon, pas de nom."""
 
 
+# English version, READY BUT NOT WIRED: the team picks one language setting for the whole prompt first (prompts.py,
+# ORDER_RULES, product_insight's rule). Same rules, same order as SALES_RULES; examples with no real name.
+SALES_RULES_EN = """Sales rules (shortage, substitute, price):
+- Requested product unavailable or not enough of it: before any offer, identify the client and read their preferences and notes. If their card is already in the conversation (preloaded or already fetched), do not call get_client again.
+- If their preferences or notes refuse substitutes for this product or its family (a rule about « the butter » covers every butter):
+  - announce the shortage and the return date exactly as written in the ERP or the documents (otherwise say you do not have a date yet);
+  - then look for a solution that is not another product: an allocation or a reservation already noted for this client on this product (quote the quantity and the period as written), or an expected arrival in stock, as the ERP gives it;
+  - offer to note their request for the first arrival only if you can record it with a tool (log_client_event, type special_request, with the product, the quantity and the wished date); present it as a noted request, never as a reservation or a guaranteed delivery;
+  - mention no other product, nor why you are not offering one;
+  - even with all of this, exactly 2 sentences. Sentence 1: the shortage, with the return date, or else the allocation or arrival that concerns them. Sentence 2: the offer to note their request, as a question. Example of the form: « The [requested product] is out of stock, with no return date yet, but you have [quantity] reserved for [period]. Shall I note your request for the first arrival? »
+- If this client asks for an alternative themselves: offer the substitute (same use, in stock) and say clearly how it differs from the requested product (quality, composition, price), then ask for their agreement. Without a « yes », nothing is added.
+- Otherwise, offer ONE substitute only, in stock and with the same use. Prefer the one the company documents name as the substitute; never pick a product only because its price is close.
+- When the tool says no product in stock has the same use, announce the shortage and ask the client what they would like, without offering any product. Example of what you say: « The [requested product] is out of stock at the moment, and I have nothing equivalent in stock. What would you like to do? »
+- First offer of a substitute: exactly 2 sentences.
+  - Sentence 1: the shortage and the substitute, with its reason in a few words.
+  - Sentence 2: its price for this client as the ERP already gives it (per kilo, per unit or per carton, with the promotion only if the ERP returns one), then the question asking for agreement.
+  - Example of the form: « The [requested product] is out of stock, but I have the [substitute], which does the same job. It is [price] a kilo with the promotion until [date]: shall I put it in instead? »
+  - Nothing else at that point: no total and no calculation (quote_line comes later for totals), no delivery date, unless the client asks for them or the requested day is not delivered (then the order's date rule applies).
+- An end-of-shortage or back-to-normal date found in the documents counts as the return date: give it exactly as written, without changing it or deducing another one (if the document says « until the end of the month », say « normally the end of the month », not « early next month »). Without the cause, and do not say « no promise ».
+- Mention a promotion only if the ERP returns one for this product and this client. Otherwise, do not talk about it.
+- Without an explicit « yes » from the client, never add a substitute to the order.
+- When the card says nothing clear about substitutes for this product, announce the shortage, then ask the client whether they accept an equivalent product, without naming it. Example of what you say: « The [requested product] is out of stock at the moment. Would you accept an equivalent product instead? »
+- Discount request or comparison with a competitor: you neither grant nor promise any discount. Give their price as the ERP gives it for this client (negotiated if they have one), then the product's value in one sentence (quality, origin, as the documents describe them). If the request goes beyond what a sales rep may grant according to the company documents, offer to pass it on to the person who approves such discounts (named in the documents), not to the sales rep; otherwise, to their sales rep. Add no committing word (« guaranteed », « he will approve », « it should go through »): only say that this person will decide.
+- Promise an action (telling someone, calling back, noting) only if you do it during the call with a tool (log_client_event, save_context).
+- Internal notes stay private: do not tell the client the causes (strike, supplier problem) or the team's opinions. Facts that concern them directly may be told (available or not, when, at what price, an allocation or a reservation already noted for them).
+- Speak as their card asks (section on how to talk to them: units, formality, contact person).
+- Answer in 1 or 2 sentences. A short greeting at the start of the call (« Hello [first name]. ») does not count in these 2 sentences.
+- Never say a field name or a technical value returned by a tool (« substitution », « inconnu », « demander », « inStock »…): they are hints for you, not sentences for the client.
+- Your answer starts directly with what you say to the client: never a label followed by a colon, nor a note about what you decided.
+- One question at a time: first the agreement on the substitute, the rest (day, quantity, total) afterwards.
+- Never explain out loud what you are checking and why (what you read on the card, why you do or do not do something): only tell the client the result.
+- Call the client by a name only if they gave it themselves during the call, or if it is the contact person on their card. Otherwise, no name."""
+
 def sales_rules_section() -> str:
     """What prompts.py adds to the system prompt. '' when the switch is off or the rules are empty."""
     return SALES_RULES.strip() if team_flags.sales_rules() else ""
@@ -75,19 +108,30 @@ def sales_rules_section() -> str:
 
 Policy = Literal["refuse", "accepte", "demander", "inconnu"]
 
+# French and English (data/seed_en, SEED_DIR_NAME=seed_en): a card is in one language or the other, no switch needed.
 # "refuse ... substitution(s)", "jamais de substitution", "aucune substitution", "ne jamais substituer"
+# "refuses substitutions", "substitutions refused", "never any substitution", "does not want any substitution"
 _REFUSAL = re.compile(
     r"(refuse (?:les |toute |toutes les )?substitutions?|jamais de substitutions?|aucune substitution"
-    r"|ne (?:jamais )?substitue[rz]?|jamais substituer)(?P<rest>[^.;:]*)"
+    r"|ne (?:jamais )?substitue[rz]?|jamais substituer"
+    r"|refuses (?:any |all )?substitutions?|substitutions? (?:are |is )?refused|never (?:any )?substitutions?"
+    r"|no substitutions?|(?:does|do) not (?:want|accept) any substitutions?)(?P<rest>[^.;:]*)"
 )
-_ACCEPT = re.compile(r"accepte (?:les |des )?substitutions?")
-# "... sans être prévenu / sans accord / si on prévient" turns a refusal into "yes, if we ask first": on the phone we do.
-_WITH_NOTICE = re.compile(r"\b(sans (?:etre |l')?(?:prevenu|prevenir|accord|son accord)|si on (?:le )?previent)\b")
-_SCOPE = re.compile(r"^\s*(?:sur\s+)?(?:(?:le|la|les|un|une|des|du|de)\s+|l')([a-z]+)")
+_ACCEPT = re.compile(r"accepte (?:les |des )?substitutions?|accepts? (?:\w+ )?substitutions?|substitutions? (?:are |is )?accepted")
+# "... sans être prévenu / sans accord / si on prévient" (« without being told », « if informed ») turns a refusal into
+# "yes, if we ask first": on the phone we do.
+_WITH_NOTICE = re.compile(
+    r"\b(sans (?:etre |l')?(?:prevenu|prevenir|accord|son accord)|si on (?:le )?previent"
+    r"|without (?:being )?(?:told|informed|warned|notified)|without (?:his |her |their |prior )?(?:agreement|consent|notice)"
+    r"|if (?:we are |he is |she is |they are )?(?:told|informed|warned|notified))\b"
+)
+_SCOPE = re.compile(r"^\s*(?:(?:sur\s+)?(?:(?:le|la|les|un|une|des|du|de)\s+|l')|(?:on|for)\s+(?:the\s+)?)([a-z]+)")
 # words that say nothing about which product it is
 _GENERIC = {
     "de", "du", "des", "la", "le", "les", "et", "en", "au", "aux", "pour", "avec", "sans", "plaque", "plaques", "carton",
     "cartons", "sac", "sacs", "kg", "brique", "motte", "piece", "pieces", "lot", "boite", "pot", "seau", "bidon",
+    "the", "of", "for", "with", "from", "and", "bag", "sheet", "tub", "tray", "case", "pack", "box", "bottle", "block",
+    "packet", "punnet", "size", "container",
 }  # fmt: skip
 
 
@@ -102,13 +146,15 @@ def _words(text: str) -> set[str]:
 
 
 def _applies_to(scope: str | None, product_words: set[str]) -> bool:
-    """A sentence scoped to « le beurre » applies to « Beurre de tourage … »; no scope = every product."""
+    """A sentence scoped to « le beurre » / « the butter » applies to every product named so; no scope = every product."""
     return scope is None or scope in product_words or scope.rstrip("s") in product_words
 
 
 def _names_product(preferences: str, product_words: set[str]) -> bool:
     """Do the preferences name THIS product as their choice (e.g. « Tourage AOP pour la viennoiserie »)?
-    Two distinctive words of the product in one clause."""
+    Two distinctive words of the product in one clause. (English names use two words for one French one, « laminating
+    butter » for « tourage »: a card can then look like it names the product when it names a cousin → « demander »,
+    the careful side. Audit: docs/team/t3-ranking-audit.md.)"""
     return any(len(_words(clause) & product_words) >= 2 for clause in re.split(r"[.;,]", preferences or ""))
 
 
@@ -214,7 +260,50 @@ def _read_substitutes(folder: str) -> tuple[tuple[str, list[str]], ...]:
 # compare them, without the packaging (in parentheses), numbers and units. No product name lives in this code.
 
 _NAME_STOP = {"de", "du", "des", "la", "le", "les", "et", "en", "au", "aux", "pour", "avec", "sans", "cm", "mm", "kg",
-              "ml", "cl", "g", "l", "x", "un", "une", "ce", "cet", "cette", "ces", "tout", "tous", "on", "il", "elle"}  # fmt: skip
+              "ml", "cl", "g", "l", "x", "un", "une", "ce", "cet", "cette", "ces", "tout", "tous", "on", "il", "elle",
+              # English (data/seed_en): small words, and the generic nouns of the cards (« frozen goods »)
+              "the", "of", "from", "for", "with", "and", "in", "an", "to", "by", "per", "that", "this", "any", "all",
+              "goods", "good", "products", "product", "items", "item"}  # fmt: skip
+
+# English names put the product LAST (« UHT liquid cream 35% »), French names FIRST (« Crème liquide UHT 35 % »).
+_EN_MARKERS = re.compile(r"\b(?:of|the|from|with|for|and|only|never|exclusively|does|bag|tub|sheet|tray|case|pack|punnet|"
+                         r"packet|bottle|block|container)\b")  # fmt: skip
+_FR_MARKERS = re.compile(r"\b(?:de|du|des|la|le|les|aux|au|et|pour|avec|uniquement|jamais|exclusivement|sac|seau|plaque|"
+                         r"barquette|colis|lot|brique|bidon|paquet|plateau|bouteille|sachet)\b|\bd'|\bl'")  # fmt: skip
+_EN_CUT = re.compile(r"\s(?:of|from|for|with|in)\s")
+
+
+@lru_cache(maxsize=4)
+def _glossary(folder: str) -> dict[str, str]:
+    """{English name (normalised): French name} from every DATA_DIR/*/GLOSSARY.md (| `prd_…` | French | English |,
+    data/seed_en/GLOSSARY.md by Youssef). Lets an English name be compared word for word like its French original
+    (« cream » and « crème » are not the same word). {} if there is none: then the English rules below apply."""
+    found: dict[str, str] = {}
+    for path in sorted(Path(folder).glob("*/GLOSSARY.md")):
+        for fr, en in re.findall(r"^\|\s*`[^`]+`\s*\|\s*(.+?)\s*\|\s*(.+?)\s*\|\s*$", path.read_text(encoding="utf-8"), re.M):
+            found[_norm(en).strip()] = fr
+    return found
+
+
+def _as_french(name: str) -> str:
+    """The French original of a glossary name, else the name itself (a French name stays as it is)."""
+    return _glossary(str(settings.data_dir)).get(_norm(name or "").strip(), name or "")
+
+
+def _is_english(text: str) -> bool:
+    t = _norm(text)
+    return len(_EN_MARKERS.findall(t)) > len(_FR_MARKERS.findall(t))
+
+
+def _head(text: str, english: bool | None = None) -> str | None:
+    """The word that says which product it is: first word in French, last word before « of / from / for… » in English.
+    Percentages never are. `english`: the language when the text alone is too short to tell (« 35% cream »)."""
+    if _is_english(text) if english is None else english:
+        core = _EN_CUT.split(" " + re.sub(r"\([^)]*\)", " ", _norm(text)) + " ", maxsplit=1)[0]
+        words = [w for w in _name_words(core) if "%" not in w]
+        return words[-1] if words else None
+    words = [w for w in _name_words(text) if "%" not in w]
+    return words[0] if words else None
 
 
 def _name_words(name: str, *, percent: bool = False) -> list[str]:
@@ -241,13 +330,15 @@ def name_match(missing_name: str, candidate_name: str, others: list[str] | tuple
     """How much a candidate's name says « same use » as the missing product: shared distinctive words, the first word
     of the missing product counting double. A word that most `others` (the candidate list) share decides nothing
     (the family word shared by the whole list). 0 = nothing in common."""
+    missing_name, candidate_name = _as_french(missing_name), _as_french(candidate_name)  # English → French original
     missing, cand = _name_words(missing_name), set(_name_words(candidate_name))
     if not missing:
         return 0
-    lists = [set(_name_words(o)) for o in others]
+    first = _head(missing_name) or missing[0]
+    lists = [set(_name_words(_as_french(o))) for o in others]
     common = {w for w in missing if lists and sum(w in o for o in lists) > len(lists) / 2}
-    head = 2 if missing[0] in cand and missing[0] not in common else 0
-    return head + len((set(missing[1:]) - common) & cand)
+    head = 2 if first in cand and first not in common else 0
+    return head + len((set(missing) - {first} - common) & cand)
 
 
 # ── T3 · what the client's card forbids (« jamais de… ») or imposes (« … uniquement ») is never proposed ────────────
@@ -260,10 +351,11 @@ def name_match(missing_name: str, candidate_name: str, others: list[str] | tuple
 CardRule = tuple[Literal["interdit", "seulement"], str, frozenset[str]]  # kind, first word, words
 
 _FORBID = re.compile(
-    r"\b(?:jamais\s+(?:de\s+|d'|du\s+|des\s+)?|(?:ne veu(?:t|lent) )?pas\s+(?:de\s+|d'|du\s+|des\s+)|aucune?\s+)(?P<x>.+)$"
+    r"\b(?:jamais\s+(?:de\s+|d'|du\s+|des\s+)?|(?:ne veu(?:t|lent) )?pas\s+(?:de\s+|d'|du\s+|des\s+)|aucune?\s+"
+    r"|never\s+(?:any\s+)?|(?:does|do)\s+not\s+want\s+(?:any\s+)?|no\s+)(?P<x>.+)$"
 )
-_ONLY_AFTER = re.compile(r"^(?P<x>.+?)\s+(?:uniquement|exclusivement)\b")
-_ONLY_BEFORE = re.compile(r"\b(?:uniquement|exclusivement)\s+(?P<x>.+)$")
+_ONLY_AFTER = re.compile(r"^(?P<x>.+?)\s+(?:uniquement|exclusivement|only|exclusively)\b")
+_ONLY_BEFORE = re.compile(r"\b(?:uniquement|exclusivement|only|exclusively)\s+(?P<x>.+)$")
 
 
 def card_rules(preferences: str, notes: list[str] | tuple[str, ...] = ()) -> list[CardRule]:
@@ -282,15 +374,16 @@ def card_rules(preferences: str, notes: list[str] | tuple[str, ...] = ()) -> lis
             else:
                 continue
             words = _name_words(m.group("x"), percent=True)
-            if words:
-                found.append((kind, words[0], frozenset(words)))
+            head = _head(m.group("x"), english=_is_english(clause))
+            if words and head:
+                found.append((kind, head, frozenset(words)))
     return found
 
 
 def allowed_by_card(missing_name: str, candidate_name: str, rules: list[CardRule]) -> bool:
     """False when the card forbids this candidate:
       « jamais de X »    the candidate's name holds every word of X
-      « X uniquement »   only when the missing product holds X's first word (the product family): the candidate
+      « X uniquement »   only when the missing product holds X's product word (the family): the candidate
                          must hold every word X shares with the missing product (family word and percentage)."""
     cand = set(_name_words(candidate_name, percent=True))
     missing = set(_name_words(missing_name, percent=True))
