@@ -466,7 +466,7 @@ for them: don't count on it without your own key.
 **Configuration** (`.env`, then `make restart`): `STT_PROVIDER`, `STT_MODEL`, `STT_API_KEY`, `STT_LANGUAGE`;
 `TTS_PROVIDER`, `TTS_MODEL`, `TTS_VOICE`, `TTS_API_KEY`, `TTS_LANGUAGE` ; `LLM_PROVIDER`, `LLM_MODEL`,
 `LLM_API_KEY`, `LLM_EFFORT`; `JEV_API_KEY`. Detail: [apps/ai/README.md](apps/ai/README.md#environment) and
-[SETUP.md](SETUP.md#change-model-or-voice).
+[SETUP.md](SETUP.md#changer-de-modèle-ou-de-voix).
 
 ** Audio formats**:
 

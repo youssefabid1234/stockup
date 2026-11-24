@@ -43,7 +43,7 @@ A practical question rather than a word? [FAQ.md](FAQ.md).
 | **Repo** (deposit) | A file followed by git, with all its history. | Your team repo = `voice-erp-kit/` folder |
 | **Commit** | A recorded photo of your changes, with a message. | `git add . && git commit -m "filler avant les outils"` |
 | **Push** | Send your commits to an online repo. | `git push` to your private GitHub repo |
-| **GitHub** | Site that hosts online git rest and allows to share them. | The "repo GitHub" deliverable of [BRIEF.md §8](BRIEF.md#8-finishables-and-final-demo) |
+| **GitHub** | Site that hosts online git rest and allows to share them. | The "repo GitHub" deliverable of [BRIEF.md §8](BRIEF.md#8-livrables-et-démo-finale) |
 | **`.gitignore`** | List of files that git does not follow. | `.env` and `data/seed/` are there, on purpose |
 
 <a id="network"></a>

@@ -86,7 +86,7 @@ Every hour (or when someone writes "sync" in the group), each one:
 5. **Fusionne** if it turns (a teammate takes a look). `main` must always work.
 6. **Retrieve** `main` in its branch and read the statutes of the others.
 
-Claude Code: `/sync`. Codex: "sync". Detail in [AGENTS.md](../../AGENTS.md#team-12--team-rules).
+Claude Code: `/sync`. Codex: "sync". Detail in [AGENTS.md](../../AGENTS.md#team-12--règles-déquipe).
 
 ## 6. What we keep from our first job (repo amine-ml/Stockline-Hackathon)
 

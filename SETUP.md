@@ -41,7 +41,7 @@ Install [Docker Engine](https://docs.docker.com/engine/install/) and the plugin 
 
 Docker Desktop → Settings → Resources: give at least **4 GB of RAM**.
 
-> Not the admin rights? On Mac or Linux, go to [Without Docker](#without-docker). On Windows, WSL requires
+> Not the admin rights? On Mac or Linux, go to [Without Docker](#sans-docker). On Windows, WSL requires
 > these rights: come and see Team Stockline.
 
 ---
@@ -81,10 +81,15 @@ Without risk if it stops. Next times, `make up` starts in seconds.
 
 ## Step 3 — First call (≈ 5 min)
 
-1. Open **Voice** in the sidebar. Select the customer under **Who's calling?** and choose **Start call**.
-2. Allow microphone access. Hold Space and say “How much laminating butter is in stock?” Release Space when you finish. You can also type the question.
-3. Watch the transcript, the stock lookup and the agent’s reply. With a speech provider configured, listen to the reply and the waiting phrases.
-4. To give the ERP a staff command, use Alt+Space anywhere and say “Show me the stock for traditional flour.”
+1. In the ERP, open **Voice** (left menu, section AI).
+2. Allow the microphone when requested by the browser (Recommended Chrome).
+3. **Maintenez Espace**, parlez comme un client ("Hello, this is the restaurant..., what do you have this morning?"),
+   Relax. While you speak, your words appear live (in italic grey as long as they are temporary);
+   the final text goes to the agent. You can also type the sentence instead of speaking.
+4. Look: the transcription, the tools called by the agent, the answer said out loud, and to the right the ERP
+   which is updated (in purple: what the agent has done).
+5. Test also **Alt+Space** (Alt + Space) anywhere in the ERP: a voice command in one sentence
+   ("creates a command for ...").
 
 ### Real keys or simulated models
 
@@ -104,7 +109,7 @@ With simulated models, everything works offline and the agent calls the real ERP
 It is useful to develop without consuming credit. To return to it at any time: `LLM_PROVIDER=mock`,
 `STT_PROVIDER=mock`, `TTS_PROVIDER=mock`, then `make restart`.
 
-### Change model or voice
+### Change pattern or voice
 
 Your `.env` list at the bottom, in comment, all the keys of your team. To change supplier, change
 the `*_PROVIDER` and copy the corresponding key to the `*_API_KEY` just below, then `make restart`. Example:
@@ -197,7 +202,7 @@ and examples to extend the kit: [TECH.md](TECH.md).
 | `make help` | all commands |
 
 `make test`, `make types` and `make check` turn on your machine, without Docker: they ask for the tools of
-[Without Docker](#without-docker) (uv for `test`, Node 22 and pnpm for `types` and `check`).
+[Without Docker](#sans-docker) (uv for `test`, Node 22 and pnpm for `types` and `check`).
 
 ---
 
@@ -259,8 +264,8 @@ http://localhost:5173). Then, `make up` / `make down` as usual.
 | The first `make setup` is very long or fails to download | This is the download (1–2 GB); on the Wi-Fi of the place, ask the USB key of images to the Stockline team, then `make offline IMAGES=<chemin du fichier>` (section "Without Internet") |
 | The ERP displays strange data after your tests | `make reset` |
 | The microphone doesn't work | Allow it in the browser (icon to the left of the address), use Chrome |
-| The agent still understands "you still have the bar?" | the transcription is in `mock`: see [Real keys or simulated models](#real-keys-or-simulated-models) |
+| The agent still understands "you still have the bar?" | the transcription is in `mock`: see [Real keys or simulated models](#clés-réelles-ou-modèles-simulés) |
 | `HTTP 401` / `HTTP 429` / `quota` in the answers | key refused or ceiling reached: check the key in `.env`, then `make restart`; if the ceiling is reached, come see us |
 | A change to `.env` is not taken into account | `make restart` (without Docker: Ctrl-C then `make dev`) |
-| `corepack enable` fails (`EACCES`) in Docker-free mode | install Node with nvm (see [Without Docker](#without-docker)), or `npm install -g pnpm@10` |
+| `corepack enable` fails (`EACCES`) in Docker-free mode | install Node with nvm (see [Without Docker](#sans-docker)), or `npm install -g pnpm@10` |
 | Another thing. | `make logs` shows the error; otherwise come see team Stockline (blocked more than 20 min = come) |

@@ -5,7 +5,7 @@ Any unknown word? [GLOSSAIRE.md](GLOSSAIRE.md). Still blocked after
 
 1. [Installation](#installation)
 2. [Understanding project ](#comprendre)
-3. [Coder](#code)
+3. [Coder](#coder)
 4. [Clears and costs](#cles)
 5. [Living and demo](#livrables)
 
@@ -21,7 +21,7 @@ existing tool in `apps/ai/app/tools/` and modify it. A code agent (Claude Code, 
 **The terminal tells me `command not found` or `No such file or directory`.**
 You may not be in the right folder. `pwd` displays where you are; `cd voice-erp-kit` to enter it
 (the folder that contains the `Makefile`). On Windows, use the terminal **Ubuntu**, not PowerShell. Other
-common errors: [SETUP.md, "In case of problem"](SETUP.md#in-case-of-a-problem).
+common errors: [SETUP.md, "In case of problem"](SETUP.md#en-cas-de-problème).
 
 **I'm on Windows and .**
 Normal: Alt+Space is a shortcut to the Windows system (it opens the window menu). Go to the page
@@ -129,7 +129,7 @@ Your own key is allowed: say it in `DECISIONS.md`.
 
 **What should I do?**
 Repo GitHub, `DECISIONS.md`, slides (5 min), video (2 min) and live demo:
-[BRIEF.md §8](BRIEF.md#8-finishables-and-final-demo).
+[BRIEF.md §8](BRIEF.md#8-livrables-et-démo-finale).
 
 **How to show that our agent is fast?**
 Page **Voix**: columns **Total** and **Perçu** of each round. Note median and worst case, before/after each round
