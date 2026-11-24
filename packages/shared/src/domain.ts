@@ -43,6 +43,7 @@ export interface Product {
   caliber?: string; // "1-2 kg", "n°3"
   mainSupplierId?: Id;
   active: boolean;
+  launchedOn?: IsoDate;
   tags?: string[]; // product groups, e.g. ["premium", "fetes", "bretagne"] — see TagDef
 }
 

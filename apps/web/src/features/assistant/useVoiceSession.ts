@@ -215,6 +215,11 @@ export function useVoiceSession() {
         currentTurn.current = undefined;
         break;
       case "error":
+        if (m.code === "outbound_unavailable") {
+          callerInput.current = undefined;
+          setCaller(undefined);
+          setCallerPending(false);
+        }
         if (quietEmpty.current && m.message.startsWith("Rien entendu")) {
           // team 12: hands-free picked up a noise, not a sentence: forget it silently
           quietEmpty.current = false;
@@ -384,7 +389,7 @@ export function useVoiceSession() {
     void audioCtx.current?.close().catch(() => undefined);
     audioCtx.current = undefined;
     stopPlayback();
-    send({ type: "reset" });
+    send({ type: "reset", hangUp: true });
     currentTurn.current = undefined;
     setTurns([]);
     setCaller(undefined);

@@ -133,6 +133,7 @@ def package_quantity(product: Doc) -> float:
         suffix = r"(?:kg|kilos?)" if unit == "kg" else r"l(?:itre)?s?"
         size = r"(\d+(?:[.,]\d+)?)"
         text = (product.get("caliber") or "").lower()
+        text = re.sub(r"^carton of (\d+) (?:sheets|packs|blocks) of ", r"carton \1 x ", text)
         if match := re.match(r"^\w+\s+(\d+)\s+(?:\w+s?\s+de|[×x])\s*" + size + r"\s*" + suffix + r"\b", text):
             return int(match[1]) * float(match[2].replace(",", "."))
         if match := re.match(r"^\w+\s+" + size + r"\s*" + suffix + r"\b", text):

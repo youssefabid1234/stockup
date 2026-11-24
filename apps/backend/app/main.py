@@ -5,8 +5,9 @@ On boot the SQLite database is loaded into memory, or seeded from the data pack 
 
 from __future__ import annotations
 
+import asyncio
 import logging
-from contextlib import asynccontextmanager
+from contextlib import asynccontextmanager, suppress
 from typing import Any
 
 from fastapi import FastAPI, Request
@@ -29,6 +30,7 @@ from app.routers import (
     context,
     logistics,
     orders,
+    outbound_calls,
     pricing,
     products,
     purchase_orders,
@@ -52,7 +54,18 @@ async def lifespan(_: FastAPI):
         source = reset_from_pack()
     log.info("today=%s — %s: %s", get_meta()["today"], source, counts())
     warm_up()
-    yield
+    if not outbound_calls.enabled():
+        yield
+        return
+    from app.services.outbound_calls import process_due
+
+    worker = asyncio.create_task(process_due())
+    try:
+        yield
+    finally:
+        worker.cancel()
+        with suppress(asyncio.CancelledError):
+            await worker
 
 
 def warm_up() -> None:
@@ -103,6 +116,7 @@ for router in [
     logistics.route_runs,
     context.router,
     recommendations.router,
+    outbound_calls.router,
 ]:
     app.include_router(router, responses=ERROR_RESPONSES)
 
