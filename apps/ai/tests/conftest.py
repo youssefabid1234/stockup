@@ -9,3 +9,4 @@ def _waiting_mode_from_the_test(monkeypatch):
     the mode it exercises itself, so the suite gives the same result on every laptop."""
     monkeypatch.delenv("TEAM_FILLERS", raising=False)
     monkeypatch.delenv("TEAM_ROUTER", raising=False)
+    monkeypatch.delenv("TEAM_SLIM_PROMPT", raising=False)

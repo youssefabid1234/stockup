@@ -41,6 +41,11 @@ def fast_fillers() -> bool:
     return fillers_mode() in {2, 3}
 
 
+def slim_prompt() -> bool:
+    """TEAM_SLIM_PROMPT=1: only the essential sections of DATA_DIR/context/*.md in the prompt (agent/context_digest.py)."""
+    return _on("TEAM_SLIM_PROMPT")
+
+
 def router() -> bool:
     """TEAM_ROUTER=1: simple replies (« c'est bon, validez », « merci ») go to the fast model (agent/router.py)."""
     return _on("TEAM_ROUTER")
@@ -86,4 +91,5 @@ def all_flags() -> dict[str, bool]:
         "order_rules": order_rules(),
         "sales_rules": sales_rules(),
         "router": router(),
+        "slim_prompt": slim_prompt(),
     }

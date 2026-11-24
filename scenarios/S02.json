@@ -12,10 +12,12 @@
           "confirm_order"
         ],
         "says_any": [
-          "tradi",
-          "tradition",
           "farine",
-          "habitude"
+          "habitude",
+          "habituel",
+          "habituelle",
+          "tradi",
+          "tradition"
         ]
       }
     },

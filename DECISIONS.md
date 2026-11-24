@@ -79,6 +79,30 @@ noté : l'agent prononce son raisonnement (« Le compte est bloqué ; je ne pren
 
 ### Plusieurs agents, fiche préchargée, super-outil (Youssef)
 
+**T3 / T4 · Prompt allégé (`TEAM_SLIM_PROMPT=1`, défaut ; repris par Amine Khalil, mar. 24/11 03h00).** Chaque appel au
+modèle relisait ≈ 34 400 tokens (le cache Anthropic marche : presque tout est « cache lu »). Décomposition : contexte
+entreprise 55 % (les 6 `data/context/*.md`, surtout les tableaux du catalogue), schémas des 25 outils ≈ 24 %, règles et
+fiche client le reste. Le catalogue (alias, prix, DLC) est déjà donné à la demande par les outils (`search`,
+`resolve_product`, `product_insight`, `quote_line`) et la fiche client couvre statut, habitudes et encours.
+`agent/context_digest.py` garde, extraites des mêmes fichiers à chaque tour : règles de la maison, situation du jour,
+équipe, heures limites, facturation, alias ambigus, substitutions habituelles, saisonnalité, prise de commande, clients
+bloqués, réclamations, prix / règles de prix / crédit, tournées. Contexte 39 016 → 13 996 caractères (−64 %).
+
+| Mesure (`/chat`, Sarrailh, 4 répliques, 3 appels, médianes) | Prompt complet | Allégé |
+|---|---|---|
+| Tokens relus par appel modèle | ≈ 34 400 | **≈ 21 600 (−37 %)** |
+| Commande · « mettez-en douze » · prix · « validez » | 7,2 · 4,6 · 3,5 · 4,0 s | **6,4 · 4,1 · 3,1 · 3,5 s** |
+| Somme des 4 répliques | 19,3 s | **17,1 s (−11 %)** |
+| Commande juste dans l'ERP | 3/3 | 3/3 |
+
+Le gain de temps est modeste parce que le cache rend la relecture rapide : le temps vient surtout des tokens écrits
+(200 à 430 par réplique : appels d'outils + phrase) et du nombre d'allers-retours. Le gain de **coût** est net (−37 % de
+tokens lus). Scénarios (`/chat`) : S01, S05 (3/4, attente `get_price`), S30, S31, S32, S33 PASS ; S03 PASS après mise à
+jour de l'attente (la fiche préchargée rend `search` inutile) ; S02 instable **avec les deux prompts** (1 réussite
+complète sur 3 dans les deux cas : « comme d'hab » + rupture AOP) — avec le prompt allégé l'agent ouvre 2 fois sur 3 par
+la rupture plutôt que par le panier habituel. Règle ajoutée : nommer le produit comme le client (« tradi »), jamais le nom
+catalogue (sans le glossaire, l'agent disait « farine T cinquante-cinq tradition française »).
+
 **Mesure de départ (T0, lun. 23/11 23h, `TEAM_ORDER_RULES=1`, autres briques éteintes).**
 `totalMs` = fin de parole du client → premier octet audio de l'agent (`--voice`, phrase tapée donc sans STT) ; c'est la
 métrique du jury. Via /chat (sans audio) on mesure le tour complet : le texte n'arrivant qu'à la fin, c'est presque

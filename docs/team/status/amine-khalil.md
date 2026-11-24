@@ -1,4 +1,12 @@
-# Amine Khalil – 🧠 « La commande juste » + ⚡ voix (repris de Mohamed Amine)  ·  mis à jour mar. 24/11 02h40
+# Amine Khalil – 🧠 « La commande juste » + ⚡ voix et T3/T4 (repris de Mohamed Amine et Youssef)  ·  mar. 24/11 03h00
+
+- Fait (03h00) – **prompt allégé** (`agent/context_digest.py`, `TEAM_SLIM_PROMPT=1` par défaut) : contexte −64 %, tokens
+  relus par appel modèle 34 400 → 21 600 (−37 %), somme des 4 répliques 19,3 → 17,1 s, commande juste 3/3. S03 et S02 :
+  attentes mises à jour (fiche préchargée ; « habituel »). S02 reste instable avec les deux prompts. Détail : DECISIONS.md
+  (section Youssef, « T3 / T4 »).
+- **Pour tous** : ajouter `TEAM_SLIM_PROMPT=1` dans votre `.env`.
+- T4 reste : moins d'allers-retours (outil « vérifier + créer + relire » en un appel) et démarrage anticipé sur la
+  transcription partielle ; le gros du temps vient maintenant des tokens écrits et du nombre d'étapes.
 
 - Fait (02h40) – **routage Haiku / Sonnet** (`agent/router.py`, `TEAM_ROUTER=1` par défaut) : « c'est bon, validez »,
   « oui », « merci » → Haiku (premier mot 0,5 s au lieu de 1,2-1,3 s) ; le reste → Sonnet. Plus de « Très bien, je
