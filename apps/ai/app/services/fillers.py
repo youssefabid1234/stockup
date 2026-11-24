@@ -28,8 +28,47 @@ PHRASES = {
 }
 # Mode 4 · « zéro silence » (TEAM_FILLERS=4): the agent opens the call, says one of these at once after each request,
 # then types on the keyboard without a gap until the first word of the real answer.
-ACK_PHRASES = ["D'accord, je regarde ça.", "Ok, je vois ça.", "Très bien, je vérifie.", "Entendu, une seconde.",
-               "Ça marche, je regarde.", "Parfait, voyons ça."]
+# Default acknowledgement (no clear intent). No « Parfait » / « Ça marche »: they sound like a yes before the answer.
+ACK_PHRASES = ["Je regarde ça.", "Une seconde, je vérifie.", "Je vois ça tout de suite.", "Voyons ça."]
+# team 12 (Youssef): the first words match what the caller asked (tested 24/11: « Parfait, je vais voir ça » before
+# refusing a discount sounded like a yes, and the same phrase came back on every turn). Neutral: never a promise.
+ACK_BY_INTENT = {
+    "discount": ["J'entends bien.", "Je comprends.", "Je vois."],
+    "complaint": ["Ah, je suis désolée.", "Oh, désolée pour ça.", "Je suis navrée, je regarde."],
+    "readback": ["Je vous relis ça.", "Je reprends votre commande.", "Alors, votre commande…"],
+    "total": ["Je fais le compte.", "Je calcule ça.", "Je regarde le total."],
+    "usual": ["Je reprends votre habituel.", "Votre habituel, je regarde.", "Je regarde ce que vous prenez d'habitude."],
+    "change": ["Pas de souci, je change ça.", "Je corrige.", "D'accord, je modifie."],
+    "price": ["Je regarde votre prix.", "Je vous dis ça.", "Voyons votre tarif."],
+    "stock": ["Je regarde le stock.", "Voyons ce qu'il me reste.", "Je regarde ce que j'ai."],
+    "order": ["Je note ça.", "Je vous prépare ça.", "Je regarde ça pour vous."],
+    "delivery": ["Je regarde vos livraisons.", "Voyons les jours de livraison.", "Je regarde le calendrier."],
+}
+# Checked in this order (the first match wins): « non, mettez-en 12 » is a change, « 10 % sur l'ensemble » a discount.
+INTENT_PATTERNS = [
+    ("discount", r"\b(remise|r[ée]duc\w*|geste|ristourne|moins cher|concurren\w*|rabais|faire un prix)\b|\d+\s?%|pour cent"),
+    ("complaint", r"\b(manqu\w*|ab[îi]m\w*|cass[ée]\w*|pas re[çc]u|erreur|r[ée]clam\w*|m[ée]content|en retard|pas livr\w*|probl[eè]me)\b"),
+    ("readback", r"\b(reli\w*|r[ée]cap\w*|r[ée]p[ée]t\w*|confirme[zr]?-moi|rappelez-moi|relecture|qu'est-ce que j'ai command\w*)\b"),
+    ("total", r"\b(en tout|au total|le total|ça fait combien|combien ça fait)\b"),
+    ("usual", r"\b(comme d'hab\w*|habituel\w*|la m[êe]me chose|comme la derni[èe]re)"),
+    ("change", r"(^|\W)non\s*,|\b(plut[ôo]t|finalement|enl[eè]v\w*|retir\w*|annul\w*|corrig\w*|à la place|au lieu|chang\w*|en fait)\b"),
+    ("price", r"\b(combien|prix|tarif\w*|co[ûu]te)\b"),
+    ("stock", r"\b(vous avez|vous reste|il vous reste|dispo\w*|en stock|rupture|vous en avez)\b"),
+    ("order", r"\b(il me faut|il me faudrait|je voudrais|je veux|mettez|ajoutez|rajoutez|je prends|command\w*)\b|\b\d+\s*(sacs?|cartons?|kilos?|kg|litres?|plateaux?|paquets?|pains?|seaux?)\b"),
+    ("delivery", r"\b(livr\w*|quel jour|quand|demain|lundi|mardi|mercredi|jeudi|vendredi|samedi|horaire\w*)\b"),
+]
+INTENT_RX = [(name, re.compile(rx, re.I)) for name, rx in INTENT_PATTERNS]
+JEV_INTENTS = {  # when no keyword matches: Jev chooses (fast, ~150-250 ms)
+    "discount": "il demande une remise, un geste ou compare avec un concurrent",
+    "complaint": "il se plaint d'un problème (livraison, qualité, erreur)",
+    "readback": "il veut qu'on lui relise ou rappelle sa commande",
+    "price": "il demande un prix",
+    "stock": "il demande si un produit est disponible",
+    "order": "il commande ou ajoute un produit",
+    "change": "il corrige ou change quelque chose",
+    "other": "autre chose (question générale, bavardage)",
+}
+JEV_TIMEOUT = 0.3
 # team 12 (Youssef): said once after a silence in hands-free mode (voice_session.nudge), never twice the same
 NUDGES = ["Vous êtes toujours là ?", "Allô, vous m'entendez ?", "Je vous écoute, prenez votre temps.", "Oui, je suis là, je vous écoute."]
 OPENING_LINES = {
@@ -84,6 +123,7 @@ WAITING_LINE = re.compile(
 class CachedAudio:
     mime: str
     data: bytes
+    text: str = ""  # team 12: the phrase, for the log (« [ack] price → Je regarde votre prix. »)
 
 
 @dataclass
@@ -94,7 +134,7 @@ class FillerBank:
     async def warm_up(self, tts: TTSClient, voice: str | None = None) -> None:
         phrases_by_situation = PHRASES
         if team_flags.no_silence():
-            phrases_by_situation = {"ack": ACK_PHRASES}
+            phrases_by_situation = {"ack": ACK_PHRASES, **{f"ack:{k}": v for k, v in ACK_BY_INTENT.items()}}
         elif team_flags.fillers_mode() == 2:
             phrases_by_situation = {"fast_intro": [FAST_INTRO], "follow_up": PHRASES["follow_up"]}
         for situation, phrases in phrases_by_situation.items():
@@ -143,7 +183,7 @@ async def synthesize_clip(tts: TTSClient, phrase: str, voice: str | None) -> Cac
         data = b"".join([chunk async for chunk in chunks])
     if not data:
         raise ValueError("Empty waiting audio from TTS")
-    return CachedAudio(result.mime, data)
+    return CachedAudio(result.mime, data, phrase)
 
 
 @cache
@@ -316,7 +356,12 @@ async def on_turn_start(speaker, heard: str) -> None:
         # The acknowledgement only when the agent really has to look something up (an order, a quantity, a price, a
         # change). « C'est bon, validez », « oui », « merci » get no phrase (it slowed the talk down for nothing): only
         # typing, and only if the answer lags.
-        if needs_lookup(words):
+        # team 12 (Youssef): the phrase follows the request (keywords, else Jev); a discount or a complaint gets one too
+        from app.agent.router import is_simple_turn
+
+        simple = speaker.social_turn or is_simple_turn(words)  # « c'est bon, validez », « merci »: no phrase
+        speaker.intent = None if simple else await choose_intent(words)
+        if needs_lookup(words) or speaker.intent:
             await play_waiting_line(speaker)
         speaker.waiting_task = asyncio.create_task(keep_typing(speaker, 0.0 if speaker.acknowledged else SOCIAL_TYPING_DELAY))
         return
@@ -346,6 +391,7 @@ async def early_acknowledgement(speaker, utterance) -> None:
     while not speaker.transcript_ready:
         words = (getattr(utterance, "partial", "") or "").replace("’", "'")
         if words and needs_lookup(words):
+            speaker.intent = intent_of(words)  # keywords only here: this path is about speed
             await play_waiting_line(speaker)
             speaker.waiting_task = asyncio.create_task(keep_typing(speaker, 0.0))
             return
@@ -367,9 +413,39 @@ async def on_tool_call(speaker, tool_name: str) -> None:
         speaker.start_waiting()
 
 
+def intent_of(words: str) -> str | None:
+    """What kind of request is it (keywords, instant)? None when nothing matches."""
+    text = (words or "").replace("’", "'")
+    return next((name for name, rx in INTENT_RX if rx.search(text)), None)
+
+
+async def choose_intent(words: str, use_jev: bool = True) -> str | None:
+    """Keywords first; if none match, Jev picks among the intents (capped at JEV_TIMEOUT, never blocks the turn)."""
+    found = intent_of(words)
+    if found or not use_jev or not words.strip():
+        return found
+    try:
+        from app.clients import get_jev_client
+
+        jev = get_jev_client()
+        if jev is None:
+            return None
+        async with asyncio.timeout(JEV_TIMEOUT):
+            c = await jev.choose(words, "Que demande le client au téléphone ?", JEV_INTENTS)
+        return c.choice if c.choice in ACK_BY_INTENT and c.confidence >= 0.5 else None
+    except Exception:
+        return None
+
+
 async def play_waiting_line(speaker) -> bool:
     situation = "ack" if team_flags.no_silence() else "fast_intro" if team_flags.fillers_mode() == 2 else "thinking"
+    intent = getattr(speaker, "intent", None)
+    audio = getattr(speaker.bank, "audio", None) or {}
+    if situation == "ack" and intent and audio.get(f"ack:{intent}"):
+        situation = f"ack:{intent}"
     clip = speaker.bank.pick(situation)
+    if getattr(clip, "text", ""):
+        print(f"[ack] {intent or 'défaut'} → {clip.text}", flush=True)
     if clip is None or clip.mime != "audio/mpeg":
         return False
     await speaker.play_audio(clip.mime, clip.data)

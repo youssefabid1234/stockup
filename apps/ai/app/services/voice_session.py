@@ -219,7 +219,15 @@ class VoiceConnection:
             conv.used_closings = []
             conv.agent_opened = False
             greetings = fillers.OPENING_LINES if team_flags.no_silence() else CALL_GREETINGS  # mode 4: the agent opens
-            conv.opening_greeting = greetings[msg.contact_title] if opening_enabled else None
+            # team 12 (Youssef): greet the person on the phone by first name (prepared while the sheet loads, no delay)
+            first = (msg.contact_name or "").split()[0] if (msg.contact_name or "").strip() else ""
+            if msg.contact_title or not first:  # a civility sent by an older page: kept
+                personal = greetings[msg.contact_title]
+            elif team_flags.no_silence():
+                personal = f"Bonjour {first}, que puis-je faire pour vous ?"
+            else:
+                personal = f"Bonjour {first}."
+            conv.opening_greeting = personal if opening_enabled else None
         async with asyncio.TaskGroup() as preparation:
             if team_flags.no_silence() and not msg.resume and conv.opening_greeting:
                 # mode 4: say « Bonjour…, que puis-je faire pour vous ? » as soon as the clip is ready, while the
