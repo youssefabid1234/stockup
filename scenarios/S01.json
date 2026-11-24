@@ -12,7 +12,8 @@
           "search",
           "get_client",
           "product_insight",
-          "create_draft_order"
+          "create_draft_order",
+          "place_order"
         ],
         "tools_none": [
           "confirm_order"

@@ -7,15 +7,41 @@
   "turns": [
     {
       "say": "Bonjour, Nadine de chez Sarrailh. Dix sacs de tradi pour jeudi.",
-      "expect": {"tools_any": ["create_draft_order"], "tools_none": ["confirm_order"], "says_any": ["10", "dix"]}
+      "expect": {
+        "tools_any": [
+          "create_draft_order",
+          "place_order"
+        ],
+        "tools_none": [
+          "confirm_order"
+        ],
+        "says_any": [
+          "10",
+          "dix"
+        ]
+      }
     },
     {
       "say": "Oui mais mettez-en douze.",
-      "expect": {"tools_any": ["update_order_line", "confirm_order"], "says_any": ["12", "douze"]}
+      "expect": {
+        "tools_any": [
+          "update_order_line",
+          "confirm_order",
+          "place_order"
+        ],
+        "says_any": [
+          "12",
+          "douze"
+        ]
+      }
     },
     {
       "say": "Oui c'est bon, validez.",
-      "expect": {"tools_any": ["confirm_order"]}
+      "expect": {
+        "tools_any": [
+          "confirm_order"
+        ]
+      }
     }
   ]
 }

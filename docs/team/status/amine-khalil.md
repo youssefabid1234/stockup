@@ -5,8 +5,10 @@
   attentes mises à jour (fiche préchargée ; « habituel »). S02 reste instable avec les deux prompts. Détail : DECISIONS.md
   (section Youssef, « T3 / T4 »).
 - **Pour tous** : ajouter `TEAM_SLIM_PROMPT=1` dans votre `.env`.
-- T4 reste : moins d'allers-retours (outil « vérifier + créer + relire » en un appel) et démarrage anticipé sur la
-  transcription partielle ; le gros du temps vient maintenant des tokens écrits et du nombre d'étapes.
+- Fait (03h40) – **`place_order`** (T4) : jour + produits + unités + écriture + relecture en UN appel d'outil. Commande
+  7,2 → 3,6 s, somme des 4 répliques 19,3 → 13,8 s (−29 %), tokens de la 1re réplique −68 %. En vocal : 3,7 s (au lieu
+  de 6,1–6,3). 10 scénarios PASS (dont S05 4/4), une seule commande à chaque fois. 283 tests passent.
+- T4 reste (facultatif) : démarrage anticipé sur la transcription partielle (à valider au micro) ; T6 / S08 réclamation.
 
 - Fait (02h40) – **routage Haiku / Sonnet** (`agent/router.py`, `TEAM_ROUTER=1` par défaut) : « c'est bon, validez »,
   « oui », « merci » → Haiku (premier mot 0,5 s au lieu de 1,2-1,3 s) ; le reste → Sonnet. Plus de « Très bien, je

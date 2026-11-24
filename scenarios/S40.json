@@ -8,28 +8,50 @@
     {
       "say": "Bonjour, Le Pétrin de Colomiers. Il me faudrait 3 cartons de tourage AOP pour lundi.",
       "expect": {
-        "tools_none": ["confirm_order", "create_draft_order", "add_order_line"],
-        "says_any": ["promo", "promotion"]
+        "tools_none": [
+          "confirm_order",
+          "create_draft_order",
+          "add_order_line"
+        ],
+        "says_any": [
+          "promo",
+          "promotion"
+        ]
       }
     },
     {
       "say": "Ah oui ? Il est à combien, le 82 ?",
       "expect": {
-        "tools_none": ["confirm_order"],
-        "says_any": ["8 euros 46", "8,46", "8.46", "huit euros quarante-six"]
+        "tools_none": [
+          "confirm_order"
+        ],
+        "says_any": [
+          "8 euros 46",
+          "8,46",
+          "8.46",
+          "huit euros quarante-six"
+        ]
       }
     },
     {
       "say": "Bon, d'accord, mettez-moi les 3 cartons de 82.",
       "expect": {
-        "tools_any": ["create_draft_order", "add_order_line"],
-        "tools_none": ["confirm_order"]
+        "tools_any": [
+          "create_draft_order",
+          "add_order_line",
+          "place_order"
+        ],
+        "tools_none": [
+          "confirm_order"
+        ]
       }
     },
     {
       "say": "Oui, c'est bon.",
       "expect": {
-        "tools_any": ["confirm_order"]
+        "tools_any": [
+          "confirm_order"
+        ]
       }
     }
   ]

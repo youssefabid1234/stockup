@@ -12,7 +12,8 @@
           "confirm_order"
         ],
         "says_any": [
-          "82"
+          "82",
+          "quatre-vingt-deux"
         ]
       }
     },
@@ -21,7 +22,8 @@
       "expect": {
         "tools_any": [
           "get_price",
-          "product_insight"
+          "product_insight",
+          "quote_line"
         ],
         "says_any": [
           "euro",
@@ -34,7 +36,8 @@
       "expect": {
         "tools_any": [
           "create_draft_order",
-          "add_order_line"
+          "add_order_line",
+          "place_order"
         ],
         "tools_none": [
           "confirm_order"

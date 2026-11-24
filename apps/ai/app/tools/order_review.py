@@ -36,6 +36,11 @@ async def review_order(ctx: ToolContext, order_id: str = Field(description="ex. 
     confirmer (« askFirst »), « canConfirm » (false = ne pas confirmer), brouillons en double de l'appel à abandonner
     (« duplicateDrafts ») et autres commandes du client pour le même jour (« sameDayOrders »). Read-back before confirming.
     """
+    return await review_for(ctx, order_id)
+
+
+async def review_for(ctx: ToolContext, order_id: str) -> dict:
+    """review_order's work, reusable by place_order (tools/order_place.py)."""
     from app.agent.rules_order import review  # here, not at the top: app.agent imports the tools package
 
     order = await ctx.erp.get(f"/api/orders/{enc(order_id)}")
