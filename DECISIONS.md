@@ -440,10 +440,13 @@ Mohamed Amine.
 
 #### Ton de comptoir, clavier mécanique (Amine Khalil, retour d'écoute du 24/11)
 
-- **Clavier** : l'ancien son (souffle + note) ne ressemblait pas à un clavier. Chaque touche est maintenant synthétisée
-  comme un clavier mécanique : clic du switch, clac de la touche, toc grave en fin de course, petit clic au relâchement ;
-  barre d'espace plus sourde ; et un clip sur quatre est un **clic de souris** (simple ou double). Toujours sans fichier
-  son (`fillers.typing_clip`, `mouse_clip`).
+- **Clavier et souris enregistrés** : les sons synthétisés ne ressemblaient pas à un vrai clavier (deux essais écoutés).
+  L'équipe a choisi deux enregistrements : un clavier mécanique, dont deux passages de frappe continue (13 s) sont
+  découpés en 28 extraits de 0,45 s, et une souris (7 clics). Les deux sont mis au format de la voix (mono, 44,1 kHz,
+  128 kb/s, sans quoi le lecteur du navigateur peut décrocher) et baissés (−30 / −32 LUFS) pour rester derrière elle
+  (`assets/keyboard`, `assets/mouse`, recette ffmpeg dans leur README). Pendant l'attente : frappe dans l'ordre de
+  l'enregistrement (départ différent à chaque fois), un clic de souris tous les quatre extraits. La durée réelle des
+  extraits (0,496 s avec le rembourrage MP3) rythme l'envoi : jamais de clavier accumulé devant la réponse.
 - **Interjections** : « Okéééé, je regarde. », « Oké chef, une seconde. », « Hm hm, je regarde. » ; au milieu d'une
   attente : « Hm hm… », « Hmmmm, voyons voir… », « Alors alors… ». « Çaaa marche » et « Ça roule » seulement **après** la
   validation (« Çaaa marche, c'est validé ! ») : un accusé ne doit jamais sonner comme un oui avant vérification (règle

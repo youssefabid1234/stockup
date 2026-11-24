@@ -11,6 +11,7 @@ import struct
 from contextlib import aclosing
 from dataclasses import dataclass, field
 from functools import cache
+from pathlib import Path
 
 from app import team_flags
 from app.clients import TTSClient
@@ -244,20 +245,6 @@ def _keystroke(out: list[float], at: float, rnd: random.Random, noise: random.Ra
         out[i] += 9000 * level * x
 
 
-def _mouse_click(out: list[float], at: float, noise: random.Random) -> None:
-    """A mouse button: press, then release ~80 ms later (two small plastic clicks)."""
-    rate = TYPING_RATE
-    for start, level in ((at, 1.0), (at + random.Random(int(at * 1000)).uniform(0.07, 0.1), 0.7)):
-        previous = 0.0
-        for i in range(int(start * rate), min(len(out), int((start + 0.02) * rate))):
-            dt = i / rate - start
-            white = noise.uniform(-1, 1)
-            bright, previous = white - previous, white
-            x = 0.6 * bright * math.exp(-dt / 0.0008) + 0.35 * math.sin(2 * math.pi * 3400 * dt) * math.exp(-dt / 0.004)
-            x += 0.25 * math.sin(2 * math.pi * 1150 * dt) * math.exp(-dt / 0.006)
-            out[i] += 7000 * level * x
-
-
 def _mp3(out: list[float]) -> bytes:
     pcm = bytearray()
     for sample in out:
@@ -266,10 +253,37 @@ def _mp3(out: list[float]) -> bytes:
     return encoder.encode(bytes(pcm)) + encoder.flush()
 
 
+KEYBOARD_DIR = Path(__file__).resolve().parent.parent / "assets" / "keyboard"
+
+
 @cache
+def recorded_keyboard() -> tuple[bytes, ...]:
+    """Team 12 (Amine K., chosen by ear 24/11): a real mechanical keyboard, recorded, cut in 0.45 s clips (mono,
+    44.1 kHz, 128 kb/s like the voice, so the browser's stream never changes format) — assets/keyboard/README.md."""
+    return tuple(f.read_bytes() for f in sorted(KEYBOARD_DIR.glob("k*.mp3")))
+
+
+MOUSE_DIR = KEYBOARD_DIR.parent / "mouse"
+
+
+@cache
+def recorded_mouse() -> tuple[bytes, ...]:
+    """Team 12 (Amine K., chosen by ear 24/11): real mouse clicks, one per 0.45 s clip (assets/mouse/README.md)."""
+    return tuple(f.read_bytes() for f in sorted(MOUSE_DIR.glob("m*.mp3")))
+
+
 def typing_clip(variant: int) -> tuple[bytes, float]:
-    """0.45 s of someone typing on a mechanical keyboard (3 to 4 keys at an irregular rhythm, sometimes the space bar),
-    MP3. Several variants so the loop does not sound like a loop. Returns (mp3, seconds)."""
+    """0.45 s of typing, MP3: the recorded keyboard (clip `variant`, in recording order), or a synthesized one if the
+    recording is missing. Returns (mp3, seconds)."""
+    if clips := recorded_keyboard():
+        data = clips[variant % len(clips)]
+        return data, mp3_seconds(data)
+    return synthesized_typing(variant % 6)
+
+
+@cache
+def synthesized_typing(variant: int) -> tuple[bytes, float]:
+    """0.45 s of someone typing on a mechanical keyboard (synthesized fallback)."""
     rnd = random.Random(100 + variant)
     noise = random.Random(7 + variant)
     out = [0.0] * int(TYPING_RATE * TYPING_SECONDS)
@@ -279,19 +293,6 @@ def typing_clip(variant: int) -> tuple[bytes, float]:
         t += rnd.uniform(0.09, 0.17)
     return _mp3(out), TYPING_SECONDS
 
-
-@cache
-def mouse_clip(variant: int) -> tuple[bytes, float]:
-    """0.45 s: a mouse click (press + release), sometimes a double click, then a key or two."""
-    rnd = random.Random(500 + variant)
-    noise = random.Random(900 + variant)
-    out = [0.0] * int(TYPING_RATE * TYPING_SECONDS)
-    _mouse_click(out, 0.02, noise)
-    if variant % 2:
-        _mouse_click(out, 0.2, noise)  # double click
-    else:
-        _keystroke(out, rnd.uniform(0.22, 0.28), rnd, noise)
-    return _mp3(out), TYPING_SECONDS
 
 LOOKUP_MORE = re.compile(
     r"\b(?:faudrait|faut|besoin|livr\w*|commande\w*|habitude|reste|dispo\w*|quand|combien|prix|tarif|"
@@ -324,7 +325,7 @@ async def keep_typing(speaker, delay: float = 0.0) -> None:
     loop = asyncio.get_running_loop()
     started = loop.time()
     stop_at = started + TYPING_MAX
-    variant = 0
+    variant = random.randrange(max(1, len(recorded_keyboard())))  # each wait starts somewhere else in the recording
     hummed = False
     while loop.time() < stop_at:
         if (wait := speaker.audio_until - loop.time() - TYPING_LEAD) > 0:
@@ -334,8 +335,13 @@ async def keep_typing(speaker, delay: float = 0.0) -> None:
             if (clip := bank.pick("hmm")) and clip.mime == "audio/mpeg":
                 await speaker.play_audio(clip.mime, clip.data, seconds=mp3_seconds(clip.data))
                 continue
-        # every 4th clip a mouse click (someone looking through the ERP), else typing
-        data, seconds = mouse_clip(variant // 4 % 2) if variant % 4 == 3 else typing_clip(variant % 6)
+        # the recording in order (continuous typing, not a loop); every 4th clip a mouse click (looking through the ERP)
+        mouse = recorded_mouse()
+        if mouse and variant % 4 == 3:
+            data = mouse[variant // 4 % len(mouse)]
+            data, seconds = data, mp3_seconds(data)
+        else:
+            data, seconds = typing_clip(variant)
         variant += 1
         await speaker.play_audio("audio/mpeg", data, seconds=seconds)
 
