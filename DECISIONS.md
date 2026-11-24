@@ -233,7 +233,15 @@ suite complète de l'équipe passe (151 tests au mar. 24/11 01h00), interrupteur
   gagne toujours (La Gerbe d'Or reste à 8,82 €) ; les autres clients restent à 9,20 € ;
 - pourquoi : la scène de démo « rupture du tourage AOP → remplaçant **en promo**, argumenté, avec accord ». L'agent ne
   cite la promo que parce que `get_price` la renvoie (règle « jamais de promo inventée ») ;
-- à relancer après chaque `make reset` (la remise à zéro l'efface). Le script ne crée rien si la règle existe déjà ;
-  `--check` vérifie sans rien écrire.
+- **automatique depuis le 24/11 (Youssef)** : l'ERP l'ajoute lui-même à chaque chargement des données (1er démarrage,
+  `make reset`, bouton de remise à zéro, `run_scenarios.py --reset`) : `apps/backend/app/core/team_demo.py`, même
+  règle, id `prl_0900`. Avant, chaque remise à zéro l'effaçait et la scène de démo tombait (vu pendant les mesures T1).
+  Le script de Daycem reste utilisable (il répond « déjà là »).
+
+**Prêt pour le jury (Youssef, 24/11).** Testé sur un clone neuf avec seulement `data/seed/` remis en place et une base
+vide : `make setup` échouait (« Permission denied » : les scripts `.sh` étaient enregistrés non exécutables depuis
+Windows) → corrigé dans git. `make setup` ajoute aussi au `.env` les interrupteurs `TEAM_*` qui manquent (valeurs de
+`.env.example`, sans toucher une ligne existante), pour qu'un `.env` venu d'ailleurs n'éteigne pas nos briques. Résultat :
+ERP + promo (8,46 €), 7 interrupteurs, outils de l'équipe enregistrés, site et agent qui répondent.
 
 ## 6. Ce qui n'a pas marché / abandonné
