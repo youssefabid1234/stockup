@@ -80,7 +80,7 @@ def test_switch_off_is_the_kit(monkeypatch, fake_brain):
 def test_switch_on_gives_the_facts_to_the_brain(monkeypatch, fake_brain):
     monkeypatch.setenv("TEAM_ORCHESTRATOR", "1")
 
-    async def colleague(heard, cc, actor_name=None):
+    async def colleague(heard, cc, actor_name=None, anticipated=None):
         return [{"product": {"id": "prd_0025", "name": "Beurre de tourage AOP", "available": 0}, "inStock": False}]
 
     monkeypatch.setattr(orch, "colleague_check", colleague)
@@ -114,3 +114,69 @@ def test_slow_or_failing_erp_never_blocks_the_brain(monkeypatch, fake_brain):
 def test_blocked_or_unknown_caller_is_not_checked():
     assert asyncio.run(orch.colleague_check("Vous avez du tourage AOP ?", None)) == []
     assert asyncio.run(orch.colleague_check("Vous avez du tourage AOP ?", _ctx(status="blocked"))) == []
+
+
+# ── anticipation: the colleague starts while the caller is still speaking ──
+
+
+@pytest.fixture
+def fake_erp_reads(monkeypatch):
+    calls = {"spot": [], "facts": []}
+
+    async def spot(heard, cc, actor_name=None):
+        calls["spot"].append(heard)
+        return tuple(orch.products_in(heard, CATALOGUE, {u.product_id for u in cc.usual}))
+
+    async def facts_for(pids, cc, actor_name=None):
+        calls["facts"].append(pids)
+        await asyncio.sleep(0.01)
+        return [{"product": {"id": pid}, "inStock": True} for pid in pids]
+
+    monkeypatch.setattr(orch, "spot", spot)
+    monkeypatch.setattr(orch, "facts_for", facts_for)
+    return calls
+
+
+def test_partials_start_the_check_once_per_set_of_products(monkeypatch, fake_erp_reads):
+    monkeypatch.setenv("TEAM_ORCHESTRATOR", "1")
+
+    async def scenario():
+        a = orch.Anticipation(_ctx())
+        for partial in ("Vous avez", "Vous avez encore du tourage AOP", "Vous avez encore du tourage AOP ce", "Vous avez encore du tourage AOP ce matin"):
+            a.heard(partial)
+            await asyncio.sleep(0.005)
+        await asyncio.sleep(0.03)
+        facts = await orch.colleague_check("Vous avez encore du tourage AOP ce matin ?", _ctx(), None, a)
+        return a, facts
+
+    a, facts = asyncio.run(scenario())
+    assert fake_erp_reads["facts"] == [("prd_0025",)]  # fetched once, while speaking; reused at the end
+    assert facts == [{"product": {"id": "prd_0025"}, "inStock": True}]
+
+
+def test_a_different_final_sentence_drops_the_guess(monkeypatch, fake_erp_reads):
+    monkeypatch.setenv("TEAM_ORCHESTRATOR", "1")
+
+    async def scenario():
+        a = orch.Anticipation(_ctx())
+        a.heard("Vous avez encore du tourage AOP")
+        await asyncio.sleep(0.03)
+        return await orch.colleague_check("Vous avez encore de la levure ?", _ctx(), None, a)
+
+    facts = asyncio.run(scenario())
+    assert fake_erp_reads["facts"] == [("prd_0025",), ("prd_0011",)] and facts[0]["product"]["id"] == "prd_0011"
+
+
+def test_no_anticipation_when_the_switch_is_off_or_the_caller_is_blocked(monkeypatch, fake_erp_reads):
+    monkeypatch.delenv("TEAM_ORCHESTRATOR", raising=False)
+
+    async def scenario(cc):
+        a = orch.Anticipation(cc)
+        a.heard("Vous avez encore du tourage AOP")
+        await asyncio.sleep(0.02)
+        return a
+
+    assert asyncio.run(scenario(_ctx())).task is None
+    monkeypatch.setenv("TEAM_ORCHESTRATOR", "1")
+    assert asyncio.run(scenario(_ctx(status="blocked"))).task is None
+    assert fake_erp_reads["facts"] == []

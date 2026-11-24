@@ -311,7 +311,7 @@ async def on_turn_start(speaker, heard: str) -> None:
     words = heard.replace("’", "'")
     speaker.social_turn = bool(SOCIAL_TURN.fullmatch(words))
     if team_flags.no_silence():
-        if speaker.tts.name == "mock":
+        if speaker.tts.name == "mock" or speaker.waiting_task is not None:  # already typing (early_acknowledgement)
             return
         # The acknowledgement only when the agent really has to look something up (an order, a quantity, a price, a
         # change). « C'est bon, validez », « oui », « merci » get no phrase (it slowed the talk down for nothing): only
@@ -332,6 +332,24 @@ async def on_turn_start(speaker, heard: str) -> None:
         return
     if (LOOKUP.search(words) or speaker.restatement) and await play_waiting_line(speaker):
         speaker.start_waiting()
+
+
+async def early_acknowledgement(speaker, utterance) -> None:
+    """
+    Mode 4, at the microphone: the final transcript comes 1.2-1.5 s after the caller's last word (Soniox, measured
+    24/11), and the acknowledgement used to wait for it: 1.3-1.9 s of silence. Now, from the end of speech, the words
+    heard so far are checked every 50 ms; as soon as they show a lookup (« vous avez encore du tourage… »), the
+    acknowledgement plays and the typing starts. Stops as soon as the final transcript is there (on_turn_start decides).
+    """
+    if not (team_flags.fillers() and team_flags.no_silence()) or speaker.tts.name == "mock":
+        return
+    while not speaker.transcript_ready:
+        words = (getattr(utterance, "partial", "") or "").replace("’", "'")
+        if words and needs_lookup(words):
+            await play_waiting_line(speaker)
+            speaker.waiting_task = asyncio.create_task(keep_typing(speaker, 0.0))
+            return
+        await asyncio.sleep(0.05)
 
 
 async def on_tool_call(speaker, tool_name: str) -> None:

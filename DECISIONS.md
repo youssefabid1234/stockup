@@ -37,6 +37,15 @@ aux prix Sonnet 5.5 : 2 $ / M en entrée, 10 $ / M en sortie, 2,50 $ / M en écr
 | Nos interrupteurs éteints (≈ kit d'origine) | 3,4 s / 6,7 s (silence jusque-là) | 3,3 s / 6,6 s | 0,1 s / 0,3 s | 32 / 43 (74 %) | 10 / 21 | 0,019 $ / 0,036 $ |
 | **Configuration du jury** (`.env.example`, 8 interrupteurs) | **0,0 s / 0,9 s** (« je regarde » + clavier) | 3,6 s / 6,8 s | 0,1 s / 0,2 s | **39 / 43 (91 %)** | **17 / 21** | 0,022 $ / 0,076 $ |
 
+**Au vrai micro (24/11, ~10h30), une correction importante.** Les chiffres ci-dessus passent par du texte, sans
+transcription. Au micro du navigateur, la transcription finale de Soniox arrive **1,24 à 1,52 s** après la fin de la
+phrase (9 répliques, médiane 1,34 s), et le « je regarde » + clavier l'attendait : le premier son arrivait **1,33 à
+1,86 s** après la phrase, pas 0,0 s. Corrigé : dès la fin de la parole, les mots déjà entendus (transcription partielle)
+sont regardés toutes les 50 ms ; s'ils annoncent une recherche (« vous avez encore du tourage… », « c'est combien… »),
+l'accusé et le clavier partent aussitôt (`fillers.early_acknowledgement`). Vrai audio (ElevenLabs → Soniox, 3 questions) :
+**premier son 0,00 à 0,26 s** après la phrase ; réponse utile 2,4 à 2,6 s, dont 1,2 à 1,4 s de transcription (le plus gros
+poste restant). Une réponse simple (« oui », « merci ») ne déclenche toujours rien.
+
 Lecture :
 - **Rapide** : l'appelant n'entend plus jamais de blanc (premier son à 0,0 s au lieu de 3,4 s en médiane). La réponse
   utile arrive en un temps comparable (3,3 → 3,6 s), alors que l'agent en fait plus : relecture, vérification Jev,
@@ -328,6 +337,26 @@ samedi 21 novembre, c'est bien celle-là ? », rien d'enregistré). Nouveaux sc�
 fausse), S21 (appelant non identifié : l'agent demande qui appelle), S22 (plusieurs produits dont un en rupture : rien
 n'est écrit avant l'accord sur le 82 %, puis la commande entière en une fois) ; 7 répliques sur 7. Tests : 6 dans
 `test_after_sales.py`, suite complète 391 verts.
+
+#### Préchargement anticipé (TODO 4 de l'orchestrateur, Amine Khalil) : fait, gain faible, et une découverte sur le STT
+
+**Fait** (`agent/orchestrator.py` `Anticipation`, branché dans `voice_session.py`) : pendant que le client parle, chaque
+transcription partielle est scannée (sans modèle, catalogue en cache) ; dès que des produits sont cités, leur stock, prix,
+promo et remplaçants sont lus en arrière-plan. À la fin de la phrase, mêmes produits → le résultat est repris tel quel ;
+sinon il est jeté et la vérification normale tourne. Lecture seule, annulé si le client coupe la parole. 6 tests.
+
+**Mesuré en vrai audio** (phrase lue par ElevenLabs, MP3 envoyé au rythme de la parole sur le WebSocket `/voice`, vraie
+transcription Soniox, 3 questions de Sarrailh, 2 appels) : la vérification était déjà prête à la fin de la phrase sur
+1 question sur 3 ; le gain est de **30 à 40 ms** seulement, car une fois le catalogue en cache la lecture de l'ERP ne
+prend que 9 à 48 ms (les 300 ms mesurés plus tôt étaient le premier appel, à froid).
+
+**Découverte** : sur ce même test, la transcription finale arrive **1,55-1,60 s** après la fin de la parole
+(`sttMs`), et au moment où le client s'arrête, Soniox n'a transcrit que le début de la phrase (« Bonjour, vous avez encore
+du tourage », aucun mot figé) : Soniox a ~1 s de retard sur l'audio. Démarrer le modèle sur le partiel ne servirait donc à
+rien ici. C'est le plus gros délai d'un tour (le modèle met 1,0-1,5 s). **À vérifier au micro du navigateur**
+(WebM/Opus, pas MP3) : si `sttMs` y est aussi > 1 s, c'est la piste n°1 de vitesse (format audio, réglages de Soniox,
+ou fin de parole détectée plus tôt en mains libres). **Vérifié au micro le jour même** : 1,24 à 1,52 s ; l'accusé part
+maintenant sur la transcription partielle (premier son 0,00-0,26 s, voir §3).
 
 **Plus de blanc, voix française (Youssef, 24/11 midi).** (1) Blancs de 1,8 à 4,5 s : un `.env` créé avant `TEAM_FILLERS=4`
 n'avait pas la ligne → phrases d'attente éteintes ; docker-compose lit maintenant `.env.example` puis `.env` (une ligne

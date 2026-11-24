@@ -116,3 +116,11 @@ async def test_credit_note_written_on_the_complaint(sav):
     s = await sav["settle_delivery_issue"].fn(ctx, "cli_0001", "avoir", r["eventId"], "prd_0001", 2, 37.78, None)
     assert s["done"] and "37 euros 78" in s["say"] and "Avoir de 37.78" in erp.events[r["eventId"]]["resolution"]
     assert len(erp.orders) == 1  # no order written for a credit note
+
+
+async def test_confirming_an_order_already_confirmed_is_a_success(sav):
+    """24/11 at the mic: lines added to a confirmed order, then « Oui. » → confirm_order failed and retried for 12.5 s."""
+    erp = SavErp()
+    erp.orders["ord_9"]["status"] = "confirmed"
+    r = await sav["confirm_order"].fn(ToolContext(erp=erp, actor="voice_agent"), "ord_9", "Oui.", "Je vous la valide ?")
+    assert r["confirmed"] is True and r["alreadyConfirmed"] is True and not any(m == "POST" for m, _ in erp.calls)

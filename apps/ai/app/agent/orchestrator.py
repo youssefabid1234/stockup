@@ -127,25 +127,99 @@ def _brief(insight: dict) -> dict:
     return out
 
 
-async def colleague_check(heard: str, call_context: CallContext | None, actor_name: str | None = None) -> list[dict]:
-    """The ERP facts about the products the caller named, fetched in parallel. [] when nothing to check."""
-    if call_context is None or call_context.blocked or call_context.is_new or not wants_prefetch(heard):
-        return []
+def _eligible(call_context: CallContext | None) -> bool:
+    return call_context is not None and not call_context.blocked and not call_context.is_new
+
+
+async def spot(heard: str, call_context: CallContext, actor_name: str | None = None) -> tuple[str, ...]:
+    """The products named in `heard` (catalogue cached 10 min: no ERP call after the first)."""
     from app.tools.erp import ErpClient
-    from app.tools.insight import gather_insight
     from app.tools.order_review import products_by_id
     from app.tools.registry import ToolContext
 
-    ctx = ToolContext(erp=ErpClient("voice_agent", actor_name), actor="voice_agent")
-    catalogue = await products_by_id(ctx)
-    usual = {u.product_id for u in call_context.usual}
-    pids = products_in(heard, catalogue, usual)
+    catalogue = await products_by_id(ToolContext(erp=ErpClient("voice_agent", actor_name), actor="voice_agent"))
+    return tuple(products_in(heard, catalogue, {u.product_id for u in call_context.usual}))
+
+
+async def facts_for(pids: tuple[str, ...], call_context: CallContext, actor_name: str | None = None) -> list[dict]:
+    """Stock + this client's price + promo + substitutes of these products, in parallel (reads only)."""
+    from app.tools.erp import ErpClient
+    from app.tools.insight import gather_insight
+
+    erp = ErpClient("voice_agent", actor_name)
+    results = await asyncio.gather(*(gather_insight(erp, call_context.client_id, pid, None) for pid in pids),
+                                   return_exceptions=True)
+    return [_brief(r) for r in results if isinstance(r, dict)]
+
+
+class Anticipation:
+    """
+    The colleague starts while the caller is still speaking: every partial transcript is scanned for products (no
+    model, catalogue cached) and, as soon as the products named change, their ERP facts are fetched in the background.
+    At the end of the sentence the final transcript is scanned again: same products → the facts are (usually) already
+    there and the brain starts at once; otherwise the speculative fetch is dropped and the normal check runs.
+    """
+
+    def __init__(self, call_context: CallContext | None, actor_name: str | None = None):
+        self.cc, self.actor = call_context, actor_name
+        self.pids: tuple[str, ...] = ()
+        self.task: asyncio.Task | None = None  # the facts for self.pids
+        self._latest: str | None = None
+        self._spotting: asyncio.Task | None = None
+
+    def heard(self, partial: str) -> None:
+        """Called on every partial transcript; never blocks the transcription."""
+        if not team_flags.orchestrator() or not _eligible(self.cc) or not partial.strip():
+            return
+        self._latest = partial
+        if self._spotting is None or self._spotting.done():
+            self._spotting = asyncio.create_task(self._spot_latest())
+
+    async def _spot_latest(self) -> None:
+        while self._latest is not None:
+            text, self._latest = self._latest, None
+            try:
+                pids = await spot(text, self.cc, self.actor)
+            except Exception:
+                return
+            if pids and pids != self.pids:
+                if self.task:
+                    self.task.cancel()
+                self.pids = pids
+                self.task = asyncio.create_task(facts_for(pids, self.cc, self.actor))
+
+    def take(self, pids: tuple[str, ...]) -> asyncio.Task | None:
+        """The speculative fetch if it was for exactly these products, else None (and it is dropped)."""
+        if self.task and pids == self.pids:
+            return self.task
+        self.cancel()
+        return None
+
+    def cancel(self) -> None:
+        for t in (self._spotting, self.task):
+            if t and not t.done():
+                t.cancel()
+
+
+async def colleague_check(heard: str, call_context: CallContext | None, actor_name: str | None = None,
+                          anticipated: Anticipation | None = None) -> list[dict]:
+    """The ERP facts about the products the caller named, fetched in parallel. [] when nothing to check."""
+    if not _eligible(call_context) or not wants_prefetch(heard):
+        if anticipated:
+            anticipated.cancel()
+        return []
+    pids = await spot(heard, call_context, actor_name)
     if not pids:
         return []
-    results = await asyncio.gather(
-        *(gather_insight(ctx.erp, call_context.client_id, pid, None) for pid in pids), return_exceptions=True
-    )
-    return [_brief(r) for r in results if isinstance(r, dict)]
+    if anticipated and (task := anticipated.take(pids)):
+        early = task.done()
+        try:
+            facts = await task
+            print(f"[orchestrateur] vérification anticipée {'déjà prête' if early else 'en cours'} à la fin de la phrase", flush=True)
+            return facts
+        except Exception:
+            pass
+    return await facts_for(pids, call_context, actor_name)
 
 
 def with_colleague_note(message: ChatMessage, facts: list[dict]) -> ChatMessage:
@@ -167,6 +241,7 @@ async def run_voice_turn(
     mode: ChatMode = "voice",
     actor_name: str | None = None,
     call_context: CallContext | None = None,
+    anticipated: Anticipation | None = None,  # started while the caller was still speaking (voice_session)
 ) -> AsyncIterator[ChatStreamEvent]:
     """Same contract as run_agent (same events, appends to `messages`). The voice session calls this."""
     asked_at, asked = len(messages) - 1, messages[-1] if messages else None
@@ -174,7 +249,7 @@ async def run_voice_turn(
         started = time.perf_counter()
         try:
             facts = await asyncio.wait_for(
-                colleague_check(messages[-1].content or "", call_context, actor_name), PREFETCH_BUDGET
+                colleague_check(messages[-1].content or "", call_context, actor_name, anticipated), PREFETCH_BUDGET
             )
         except Exception as exc:  # slow or failing ERP: the brain does it itself, as before
             print(f"[orchestrateur] vérification sautée ({type(exc).__name__})", flush=True)
