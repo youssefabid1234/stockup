@@ -18,6 +18,12 @@
     et mots douteux marqués « mot(?) » → l'agent ignore les autres voix, garde la dernière correction, redemande un mot
     douteux. Vérifié en vrai (2 voix ElevenLabs → Soniox ; 3 réponses de l'agent). ⚠️ Mohamed Amine : touche
     voice_session (Conversation.pending), utterance.py, soniox.py (enable_speaker_diarization) : relis stp.
+  - **ERP en anglais** : `data/seed_en/` dans git (toutes les données traduites, ID intacts) ; s'active avec
+    `SEED_DIR_NAME=seed_en` dans `.env`. ⚠️ Pour l'agent/branche anglaise : le code qui lit du FRANÇAIS dans les données
+    doit suivre : `rules_sales.substitution_policy` (« refuse/accepte les substitutions » → « never any substitution »,
+    « accepts … substitutions »), `call_context` (« Fermé le <jour> » → « Closed on <day>s »), `rules_order` (alias et
+    mots d'emballage « sac/carton/plaque » → « bag/carton/sheet »), et les phrases générées par l'ERP lui-même
+    (`apps/backend`, ex. « Règle « … » : -8 % sur prix catalogue »). Noms des produits : `data/seed_en/GLOSSARY.md`.
 - En cours : T4 (deux cerveaux + Jev).
 - Pour Daycem : S05·2 attend `get_price` mais `quote_line` (Amine K.) répond juste → ajouter `quote_line` à `tools_any` ;
   S05·1 « 82 » est dit en lettres (« quatre-vingt-deux ») → ajouter cette forme à `says_any`.

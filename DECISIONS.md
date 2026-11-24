@@ -218,6 +218,15 @@ relu reste brut) ; consigne « Écoute » en mode vocal. Vérifié en vrai : aud
 café ? » isolé et « T145(?) » (T55 mal entendu) marqué ; l'agent comprend « 10… non 12 » = 12, ignore le café,
 redemande la farine douteuse.
 
+**Données de l'ERP en anglais (Youssef, 24/11 nuit).** `data/seed_en/` (dans git, ~75 Mo, 24,6 Mo max par fichier)
+= `data/seed` traduit par `scripts/translate_seed.py` avec la clé de l'équipe : catalogue + glossaire produits par
+Claude Sonnet 5.5, le reste (historique, notes de contexte, préférences…) par Claude Haiku 5.5, textes uniques
+seulement, en parallèle (~3 min, coût < 1 $) ; lignes de facture par règle (« (BL n du jj/mm) » → « (DN n of dd/mm) »).
+Gardés tels quels : ID, nombres, dates, codes (`beurres`, `price_negotiation`), noms d'entreprises et de personnes,
+adresses, villes. Contrôles : structure identique (0 différence d'ID ou de nombre), 23 176 champs traduits, 1 seul resté
+en français (une liste de noms d'entreprises). L'ERP lit l'anglais avec `SEED_DIR_NAME=seed_en` ; la promo de démo
+prend alors un nom anglais. Glossaire : `data/seed_en/GLOSSARY.md`.
+
 ### Commande juste (Amine Khalil)
 
 **Mission** : ce qui finit dans l'ERP est exactement ce que le client voulait (bon produit, bonne quantité, bon jour,
