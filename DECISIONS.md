@@ -227,6 +227,32 @@ adresses, villes. Contrôles : structure identique (0 différence d'ID ou de nom
 en français (une liste de noms d'entreprises). L'ERP lit l'anglais avec `SEED_DIR_NAME=seed_en` ; la promo de démo
 prend alors un nom anglais. Glossaire : `data/seed_en/GLOSSARY.md`.
 
+#### T4 · l'orchestrateur allumé (Amine Khalil, reprise de T4, `TEAM_ORCHESTRATOR=1`)
+
+Trois rôles en même temps, comme Lucie et un collègue : la **voix** dit « je regarde » et tape au clavier à 0 s
+(`TEAM_FILLERS=4`) ; le **collègue** (`agent/orchestrator.py`, sans modèle) repère les produits cités (alias du
+catalogue, habitudes du client pour un mot ambigu comme « tourage ») et lit dans l'ERP, **en parallèle**, stock + prix
+du client + promo + remplaçants (`tools/insight.py`, 25-370 ms) ; le **cerveau** (Sonnet) démarre avec ces faits et répond
+à une question de stock ou de prix **en un seul appel au modèle**, sans outil. Les répliques simples vont au modèle
+rapide (`TEAM_ROUTER`). Une commande avec des quantités n'est pas préchargée (`place_order` = déjà un seul outil). Le
+collègue ne fait que lire, et il a 0,8 s au plus : un ERP lent ne retarde jamais le cerveau davantage.
+
+Mesure (appel vocal réel, Maison Sarrailh, 5 répliques, « réponse prête » après la fin de la phrase, 2 appels par
+réglage, mar. 24/11) :
+
+| Réplique | Orchestrateur éteint | v1 : faits gardés dans l'historique | **v2 : faits pour ce tour seulement** |
+|---|---|---|---|
+| « vous avez encore du tourage AOP ? » | 2,3 s · `product_insight` | 2,1-2,4 s · aucun outil | 2,4-3,3 s · aucun outil |
+| « et la levure, il vous en reste ? » | 1,8 s · `product_insight` | 1,8-1,9 s · aucun outil | **1,0-1,5 s** · aucun outil |
+| « c'est combien la tradi ? » | 1,8-2,0 s · `quote_line` | 2,9-4,5 s · `quote_line` | **1,2 s** · aucun outil |
+| « mettez-moi dix sacs de tradi pour jeudi » | 2,1-2,2 s · `place_order` | 3,3-3,8 s | 2,3-2,4 s |
+| « c'est bon, validez » (Haiku) | 2,2-2,3 s | 2,0-2,1 s | 2,0-2,1 s |
+
+Ce qui n'a pas marché : la v1 laissait la note de vérification dans l'historique ; les répliques suivantes devenaient
+plus lentes (+1,2 à 1,5 s) et plus bavardes (le modèle revenait sur les produits déjà traités). La v2 la retire après le
+tour. Le gain est réel mais modeste (0,3 à 0,8 s sur les questions de stock et de prix), parce que Sonnet décide
+vite d'appeler un outil : le gros du temps reste la génération de la réponse.
+
 ### Commande juste (Amine Khalil)
 
 **Mission** : ce qui finit dans l'ERP est exactement ce que le client voulait (bon produit, bonne quantité, bon jour,
