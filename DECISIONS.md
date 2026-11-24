@@ -412,6 +412,19 @@ ERP pour tout le rejeu : l'agent demande d'abord quoi en faire). S05·4 vient d'
 par une offre ; le « Oui, c'est bon » suivant est alors ambigu (valider ou accepter l'offre ?) → à trancher avec
 Mohamed Amine.
 
+#### Naturel : interjections, ambiance de bureau, voix (Amine Khalil)
+
+- **Interjections** : les accusés disent parfois « Hmm, une seconde, je vérifie. », « Alors… voyons ça. » ; et quand
+  l'attente dépasse 1,6 s, un seul « Hmm… » / « Hmmm, voyons… » s'intercale dans le clavier (comme quelqu'un qui
+  réfléchit en cherchant), jamais deux fois par réplique.
+- **Ambiance de bureau** (bouton « Ambiance » de la page Voix, allumé par défaut) : bruit de fond léger et, toutes les
+  8 à 20 s, un téléphone fixe qui sonne dans un autre bureau (étouffé, à gauche ou à droite). Synthétisée dans le
+  navigateur (Web Audio, aucun fichier son), elle descend à 15 % dès que la vraie réponse commence (nouveau message
+  serveur `agent_answer_start`, envoyé au premier octet de la réponse, après le clavier) et remonte quand l'agent se tait.
+- **Voix** : réglages ElevenLabs plus expressifs (stabilité 0,4, style 0,15). Le réglage de vitesse est **ignoré par
+  `eleven_v4_turbo`** (même phrase : 6,35 s à 1,0, 6,43 s à 1,2) ; il marche sur `eleven_turbo_v2_5` (−26 %) et
+  `eleven_flash_v2_5`. Trois extraits écoutés : l'équipe garde **v4** pour son français.
+
 #### Idées 2 et 3 : l'heure du camion, la date courte (Amine Khalil)
 
 - **Heure de passage** (`tools/delivery_eta.py`) : « vous passez à quelle heure ? » → l'arrêt du client sur la tournée

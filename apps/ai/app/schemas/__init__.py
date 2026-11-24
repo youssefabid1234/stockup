@@ -23,6 +23,7 @@ from .chat import (
 from .command import CommandRequest, CommandStreamEvent, NavigateEvent, SpeechEvent, TranscriptEvent
 from .service import MOCK_TTS_MIME, ErrorResponse, HealthResponse, LLMInfo, ProviderInfo, SttResponse, TtsRequest
 from .voice import (
+    AgentAnswerStartMessage,
     AgentAudioEndMessage,
     AgentAudioStartMessage,
     AgentDoneMessage,

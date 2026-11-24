@@ -22,6 +22,11 @@ class ElevenLabsTTS(TTSClient):
 
     def build_body(self, text: str) -> dict:
         body = {"text": tts_text(text), "model_id": self.model}  # team 12: « T55 », « 82 % », « 8,46 € » read as words
+        import os  # team 12 (Amine K.): livelier delivery (lower stability = more expressive), chosen by ear 24/11.
+        # speed (0.7-1.2) is ignored by eleven_v4_turbo (measured: 6.35 s at 1.0 vs 6.43 s at 1.2); it works on the
+        # v2.5 models (turbo: −26 %), but the team kept v4 for its French. TEAM_TTS_SPEED to try another model.
+        body["voice_settings"] = {"speed": float(os.environ.get("TEAM_TTS_SPEED") or 1.0), "stability": 0.4,
+                                  "similarity_boost": 0.75, "style": 0.15, "use_speaker_boost": True}
         if "multilingual_v2" not in self.model:  # language_code is refused by eleven_multilingual_v2
             body["language_code"] = self.language
         return body
