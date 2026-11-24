@@ -191,7 +191,9 @@ def drop_contradictions(body: str, delivery_days: list[str]) -> str:
 
 # ── Finding the caller in the conversation, and keeping their sheet ready ──
 
-CACHE_TTL_S = 300  # a sheet is reused for 5 min (a call), then reloaded
+# team 12 (Youssef): 20 s, not 5 min: a second test call with the same client must see the order just placed and the
+# summary of the previous call (the preload during the form is still reused)
+CACHE_TTL_S = 20
 _cache: dict[str, tuple[float, CallContext]] = {}
 _pending: dict[str, asyncio.Task] = {}
 
