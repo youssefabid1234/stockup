@@ -130,6 +130,23 @@ export function useVoiceSession() {
     synth.speak(u);
   }, [markPerceived, stopPlayback]);
 
+  /** Team 12 (Youssef): the agent's voice is audible right now. */
+  const isAgentAudible = useCallback(() => {
+    try { if (window.speechSynthesis?.speaking) return true; } catch { /* ignore */ }
+    return !!player.current?.isPlaying();
+  }, []);
+
+  // team 12 (Youssef): a « speaking » label with no sound for 1.5 s is stale (an audio end that never fired): idle again
+  useEffect(() => {
+    let silentSince: number | null = null;
+    const t = window.setInterval(() => {
+      if (activity !== "speaking" || isAgentAudible()) { silentSince = null; return; }
+      silentSince ??= Date.now();
+      if (Date.now() - silentSince > 1500) { silentSince = null; setAnswering(false); setActivity((a) => (a === "speaking" ? "idle" : a)); }
+    }, 300);
+    return () => window.clearInterval(t);
+  }, [activity, isAgentAudible]);
+
   // ── Server messages ──
   const onMessage = useCallback((ev: MessageEvent) => {
     if (typeof ev.data !== "string") {
@@ -383,6 +400,9 @@ export function useVoiceSession() {
     player.current?.setVolume(1);
   }, []);
 
+  /** Team 12 (Youssef): the agent is still preparing / saying its answer (a caller turn is open, not finished). */
+  const isAgentBusy = useCallback(() => currentTurn.current !== undefined && !pressed.current, []);
+
   /** `quiet`: hands-free ended it (an empty transcript is then a noise, dropped without an error). */
   const stopTalking = useCallback((opts?: { quiet?: boolean }) => {
     if (!pressed.current) return;
@@ -473,7 +493,7 @@ export function useVoiceSession() {
 
   return {
     conn, activity, answering, mic, providers, turns, level, lastError,
-    startTalking, stopTalking, confirmTalking, cancelTalking, sendText, stopPlayback, reset, reconnect: connect,
+    startTalking, stopTalking, confirmTalking, cancelTalking, isAgentAudible, isAgentBusy, sendText, stopPlayback, reset, reconnect: connect,
     ensureMic, readRms,
     nudge: () => send({ type: "nudge" }), // team 12 (Youssef): hands-free silence → one short line from the agent
     caller, callerPending, identifyCaller, endCall,

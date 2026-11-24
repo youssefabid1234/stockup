@@ -77,6 +77,11 @@ export class SegmentPlayer {
     this.open(URL.createObjectURL(new Blob(this.chunks, { type: this.mime })));
   }
 
+  /** Team 12 (Youssef): true only while sound is actually coming out (not paused, not finished). */
+  isPlaying() {
+    return !!this.el && !this.el.paused && !this.el.ended && !this.stopped;
+  }
+
   /** Team 12 (Youssef): duck the voice while a sound is checked (0.2), back to 1 when it was only noise. */
   setVolume(v: number) {
     this.volume = v;
