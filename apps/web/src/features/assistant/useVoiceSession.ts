@@ -35,6 +35,7 @@ const wsUrl = () => `${location.protocol === "https:" ? "wss" : "ws"}://${locati
 export function useVoiceSession() {
   const [conn, setConn] = useState<Conn>("connecting");
   const [activity, setActivity] = useState<Activity>("idle");
+  const [answering, setAnswering] = useState(false); // team 12: the answer itself is being spoken (not the fillers)
   const [mic, setMic] = useState<MicState>("unknown");
   const [providers, setProviders] = useState<Providers>();
   const [turns, setTurns] = useState<VoiceTurn[]>([]);
@@ -102,6 +103,7 @@ export function useVoiceSession() {
     const p = player.current;
     player.current = undefined;
     p?.stop();
+    setAnswering(false);
     setActivity((a) => (a === "speaking" ? "idle" : a));
   }, []);
 
@@ -196,11 +198,15 @@ export function useVoiceSession() {
             onPlaying: () => { setActivity("speaking"); markPerceived(id); },
             onEnded: () => {
               if (player.current === p) player.current = undefined;
+              setAnswering(false);
               setActivity((a) => (a === "speaking" ? "idle" : a));
             },
           });
           player.current = p;
         }
+        break;
+      case "agent_answer_start":
+        if (!discardAudio.current) setAnswering(true);
         break;
       case "agent_audio_end":
         // An interrupted turn's segment closes after the new turn started: drop it.
@@ -418,7 +424,7 @@ export function useVoiceSession() {
   }, []);
 
   return {
-    conn, activity, mic, providers, turns, level, lastError,
+    conn, activity, answering, mic, providers, turns, level, lastError,
     startTalking, stopTalking, sendText, stopPlayback, reset, reconnect: connect,
     ensureMic, readRms,
     nudge: () => send({ type: "nudge" }), // team 12 (Youssef): hands-free silence → one short line from the agent

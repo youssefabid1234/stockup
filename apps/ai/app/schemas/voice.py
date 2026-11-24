@@ -127,6 +127,13 @@ class AgentAudioEndMessage(WireModel):
     type: Literal["agent_audio_end"] = "agent_audio_end"
 
 
+class AgentAnswerStartMessage(WireModel):
+    """Team 12: the answer itself starts in the audio segment (after the fillers / typing): the page fades its
+    office background out while the agent speaks."""
+
+    type: Literal["agent_answer_start"] = "agent_answer_start"
+
+
 class AgentDoneMessage(WireModel):
     type: Literal["agent_done"] = "agent_done"
     text: str
@@ -171,6 +178,7 @@ VoiceServerMessage = Annotated[
         AgentToolMessage,
         AgentAudioStartMessage,
         AgentAudioEndMessage,
+        AgentAnswerStartMessage,
         AgentDoneMessage,
         VoiceErrorMessage,
     ],

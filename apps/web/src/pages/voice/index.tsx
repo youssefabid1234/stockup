@@ -10,6 +10,7 @@ import { PlannedCalls } from "./planned";
  * Per-turn latency chips + running average; live ERP writes of the voice agent on the right.
  */
 import { useEffect, useRef, useState, type ReactNode } from "react";
+import { OfficeAmbiance } from "@/features/assistant/ambiance";
 import { useUrlState } from "@/lib/url-state";
 import { MicOff } from "lucide-react";
 import { useHandsFree } from "@/features/assistant/useHandsFree";
@@ -51,6 +52,22 @@ function CallMode({ modeSwitch }: { modeSwitch: ReactNode }) {
   const [handsFree, setHandsFree] = useState(() => { try { return localStorage.getItem("voice.handsFree") === "1"; } catch { return false; } });
   const toggleHandsFree = () => setHandsFree((on) => { try { localStorage.setItem("voice.handsFree", on ? "0" : "1"); } catch { /* private mode */ } return !on; });
   const listening = useHandsFree(v, handsFree && v.conn === "ready" && !!v.caller, spaceDown);
+  // team 12 (Amine K.): office background during the call (phones ringing far away), faded under the agent's answer
+  const [ambiance, setAmbiance] = useState(() => { try { return localStorage.getItem("voice.ambiance") !== "0"; } catch { return true; } });
+  const toggleAmbiance = () => setAmbiance((on) => { try { localStorage.setItem("voice.ambiance", on ? "0" : "1"); } catch { /* private mode */ } return !on; });
+  const office = useRef<OfficeAmbiance>();
+  const inCall = !!v.caller;
+  useEffect(() => {
+    if (ambiance && inCall) {
+      office.current ??= new OfficeAmbiance();
+      office.current.start();
+    } else {
+      office.current?.stop();
+      office.current = undefined;
+    }
+  }, [ambiance, inCall]);
+  useEffect(() => { office.current?.duck(v.answering); }, [v.answering]);
+  useEffect(() => () => office.current?.stop(), []);
   // team 12 (Youssef): call timer of the chat header (from the moment the caller is identified)
   const [callStart, setCallStart] = useState<number>();
   useEffect(() => {
@@ -120,6 +137,8 @@ function CallMode({ modeSwitch }: { modeSwitch: ReactNode }) {
                 listening={listening}
                 handsFree={handsFree}
                 onToggleHandsFree={toggleHandsFree}
+                ambiance={ambiance}
+                onToggleAmbiance={toggleAmbiance}
                 onStopPlayback={v.stopPlayback}
                 onRestart={v.caller.outboundId ? undefined : v.reset}
                 onHangUp={v.endCall}

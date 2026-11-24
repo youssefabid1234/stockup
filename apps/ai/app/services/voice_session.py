@@ -38,6 +38,7 @@ from app.agent.router import pick_llm
 from app.clients import STTUpdate, TTSClient, get_llm_client, get_stt_client, get_tts_client
 from app.config import settings
 from app.schemas import (
+    AgentAnswerStartMessage,
     AgentAudioEndMessage,
     AgentAudioStartMessage,
     AgentDoneMessage,
@@ -684,6 +685,7 @@ class Speaker:
                             self.tts_first_byte_ms = ms_since(tts_start)
                         if chunk and self.answer_audio_at is None:
                             self.answer_audio_at = time.perf_counter()  # team 12: the real answer starts being heard
+                            await self.send(AgentAnswerStartMessage())  # the page fades its office background
                         if chunk and self.waiting_task and not self.waiting_task.done():
                             await self.stop_waiting()  # mode 4: the answer is here, stop typing
                         await self.play_audio(result.mime, chunk)

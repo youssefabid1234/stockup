@@ -84,3 +84,27 @@ def test_off_outside_mode_4(monkeypatch):
         return speaker
 
     assert not asyncio.run(scenario()).played
+
+
+def test_one_hmm_in_the_middle_of_a_long_wait(monkeypatch):
+    """Typing for more than HMM_AFTER s: one « hmm » from the bank, then typing again (never twice in a turn)."""
+    monkeypatch.setenv("TEAM_FILLERS", "4")
+    monkeypatch.setattr(fillers, "HMM_AFTER", 0.2)
+
+    async def scenario():
+        speaker = FakeSpeaker()
+        speaker.audio_until = 0.0
+        speaker.bank = SimpleNamespace(pick=lambda situation: SimpleNamespace(mime="audio/mpeg", data=b"hmm" * 100) if situation == "hmm" else None)
+
+        async def play_audio(mime, data, seconds=None):
+            speaker.played.append((0, data))
+            speaker.audio_until = asyncio.get_running_loop().time() + 0.05
+
+        speaker.play_audio = play_audio
+        task = asyncio.create_task(fillers.keep_typing(speaker))
+        await asyncio.sleep(0.6)
+        task.cancel()
+        return speaker
+
+    played = [d for _, d in asyncio.run(scenario()).played]
+    assert played.count(b"hmm" * 100) == 1 and len(played) > 3  # typing, one hmm, typing

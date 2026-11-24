@@ -6,7 +6,7 @@
  * Colours: WhatsApp's palette in light and dark (the page's own look; the rest of the ERP keeps the design system).
  */
 import { useEffect, useLayoutEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
-import { CheckCheck, ChevronDown, CircleAlert, Ear, Keyboard, Mic, PhoneOff, RotateCcw, Send, VolumeX, Zap } from "lucide-react";
+import { Building2, CheckCheck, ChevronDown, CircleAlert, Ear, Keyboard, Mic, PhoneOff, RotateCcw, Send, VolumeX, Zap } from "lucide-react";
 import type { CallerReady } from "@kit/shared";
 import { cn } from "@/lib/cn";
 import { LiveTranscript } from "@/features/assistant/LiveTranscript";
@@ -42,6 +42,8 @@ export function ChatHeader(props: {
   listening: boolean;
   handsFree: boolean;
   onToggleHandsFree: () => void;
+  ambiance?: boolean;
+  onToggleAmbiance?: () => void;
   onStopPlayback: () => void;
   onRestart?: () => void;
   onHangUp: () => void;
@@ -81,6 +83,22 @@ export function ChatHeader(props: {
           <Ear size={16} strokeWidth={1.9} />
           <span className="hidden 2xl:inline">Mains libres</span>
         </button>
+        {props.onToggleAmbiance ? (
+          <button
+            type="button"
+            onClick={props.onToggleAmbiance}
+            aria-pressed={props.ambiance}
+            aria-label="Ambiance bureau"
+            title="Ambiance bureau : téléphones au loin pendant l'appel, baissée quand l'agent répond"
+            className={cn(
+              "flex h-9 items-center gap-1.5 rounded-full px-3 text-[12.5px] font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00a884]/60",
+              props.ambiance ? ACCENT : "bg-black/5 text-[#3b4a54] hover:bg-black/10 dark:bg-white/10 dark:text-[#d1d7db] dark:hover:bg-white/15",
+            )}
+          >
+            <Building2 size={16} strokeWidth={1.9} />
+            <span className="hidden 2xl:inline">Ambiance</span>
+          </button>
+        ) : null}
         {props.onRestart ? <RoundButton title="Recommencer l'appel" onClick={props.onRestart} icon={<RotateCcw size={17} strokeWidth={1.9} />} /> : null}
         <button
           type="button"

@@ -98,6 +98,7 @@ export type VoiceServerMessage =
   | { type: "agent_tool"; name: string; ok?: boolean; ms?: number; args?: Record<string, unknown> }
   | { type: "agent_audio_start"; mime: string } // binary frames follow
   | { type: "agent_audio_end" }
+  | { type: "agent_answer_start" } // team 12: the answer itself starts (the page fades its office background)
   | { type: "agent_done"; text: string; timings: TurnTimings }
   | { type: "error"; message: string; code?: string };
 
