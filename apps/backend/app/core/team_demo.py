@@ -25,11 +25,19 @@ DISCOUNT_PCT = 8.0
 RULE_ID = "prl_0900"  # far from the seed's ids; new rules created in the ERP continue after it
 
 
+def english() -> bool:
+    """The English data pack is loaded (SEED_DIR_NAME=seed_en): name the rule in English too."""
+    from .config import SEED_DIR
+
+    return SEED_DIR.name.endswith("_en")
+
+
 def demo_price_rule(today: date) -> Doc:
     end = today.replace(day=calendar.monthrange(today.year, today.month)[1])
     return {
         "id": RULE_ID,
-        "name": f"Promo tourage 82 % : −{DISCOUNT_PCT:g} % jusqu'au {end:%d/%m}",
+        "name": (f"Promo 82% laminating butter: −{DISCOUNT_PCT:g}% until {end:%d/%m}" if english()
+                 else f"Promo tourage 82 % : −{DISCOUNT_PCT:g} % jusqu'au {end:%d/%m}"),
         "active": True,
         "priority": 0,
         "clientScope": {"kind": "tag", "tag": CLIENT_TAG},
@@ -37,7 +45,8 @@ def demo_price_rule(today: date) -> Doc:
         "method": {"kind": "discount_pct", "pct": DISCOUNT_PCT},
         "validFrom": today.isoformat(),
         "validTo": end.isoformat(),
-        "note": "Données de démo (hackathon) : déstockage du tourage standard pendant la rupture du tourage AOP.",
+        "note": ("Demo data (hackathon): clearing standard laminating butter while the AOP one is out of stock." if english()
+                 else "Données de démo (hackathon) : déstockage du tourage standard pendant la rupture du tourage AOP."),
         "createdAt": f"{today.isoformat()}T06:00:00.000Z",
     }
 

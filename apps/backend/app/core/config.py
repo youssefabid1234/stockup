@@ -20,6 +20,8 @@ REPO_ROOT = BACKEND_ROOT.parents[1]  # hackathon-kit
 load_dotenv(REPO_ROOT / ".env", override=False)
 
 DATA_DIR = (REPO_ROOT / (os.environ.get("DATA_DIR") or "../hackathon-data")).resolve()
-SEED_DIR = DATA_DIR / "seed"
+# team 12 (Youssef): SEED_DIR_NAME=seed_en reads the English data pack (data/seed_en, committed; made by
+# scripts/translate_seed.py from the French data/seed). Default: the kit's French "seed".
+SEED_DIR = DATA_DIR / (os.environ.get("SEED_DIR_NAME") or "seed").strip()
 DB_PATH = Path(os.environ.get("DB_PATH") or BACKEND_ROOT / "data" / "erp.db").resolve()
 API_PORT = int(os.environ.get("API_PORT") or 4000)
