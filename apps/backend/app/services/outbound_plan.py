@@ -23,15 +23,23 @@ from app.services import outbound_calls
 
 PARIS = ZoneInfo("Europe/Paris")
 MAX_CALLS = 4
-GAP_MIN, LEAD_MIN = 5, 30  # calls ≥ 5 min apart, 30 min before the usual order
+LEAD_MIN = 30  # 30 min before the usual order
+
+
+def gap_min() -> int:
+    """Minutes between two planned calls (TEAM_OUTBOUND_GAP_MIN, default 60: one call an hour)."""
+    try:
+        return max(1, int(os.environ.get("TEAM_OUTBOUND_GAP_MIN", "60")))
+    except ValueError:
+        return 60
 
 
 def first_slot_min() -> int:
-    """Minutes before the first call (TEAM_OUTBOUND_FIRST_CALL_MIN, default 3; 1 for a quick demo)."""
+    """Minutes before the first call (TEAM_OUTBOUND_FIRST_CALL_MIN, default 60; « Appeler maintenant » for a demo)."""
     try:
-        return max(1, int(os.environ.get("TEAM_OUTBOUND_FIRST_CALL_MIN", "3")))
+        return max(1, int(os.environ.get("TEAM_OUTBOUND_FIRST_CALL_MIN", "60")))
     except ValueError:
-        return 3
+        return 60
 MONTHS = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"]
 PLAN: dict[str, Doc] = {}  # id → planned call (also the id of its attempt once started)
 
@@ -76,7 +84,7 @@ def build(now: float | None = None) -> list[Doc]:
     """A fresh plan: the best offer per client (candidates are already ranked), at most MAX_CALLS clients."""
     now = now or time.time()
     local = datetime.fromtimestamp(now, PARIS)
-    now_min, first = local.hour * 60 + local.minute, first_slot_min()
+    now_min, first, gap = local.hour * 60 + local.minute, first_slot_min(), gap_min()
     taken: list[int] = []
     PLAN.clear()
     seen: set[str] = set()
@@ -89,8 +97,8 @@ def build(now: float | None = None) -> list[Doc]:
         usual = usual_order_minute(target["clientId"])
         wished = usual - LEAD_MIN if usual is not None else None
         slot = wished if wished is not None and wished >= now_min + first else now_min + first
-        while any(abs(slot - t) < GAP_MIN for t in taken):
-            slot += GAP_MIN
+        while any(abs(slot - t) < gap for t in taken):
+            slot += gap
         taken.append(slot)
         if wished is not None and slot == wished:
             why = f"Il commande d'habitude vers {_hhmm(usual)} : Lucie l'appelle juste avant, à {_hhmm(slot)}."
