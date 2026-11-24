@@ -125,7 +125,7 @@ export function CallerBar({ caller, onHangUp }: { caller: CallerReady; onHangUp:
             ? `· fiche chargée${caller.loadedMs != null ? ` en ${caller.loadedMs} ms` : ""}`
             : "· identifié (fiche indisponible : l'agent cherchera le client)"}
       </span>
-      <Button size="sm" variant="ghost" icon={PhoneOff} className="ml-auto" onClick={onHangUp}>Raccrocher</Button>
+      <Button size="sm" variant="danger" icon={PhoneOff} className="ml-auto" onClick={onHangUp}>Raccrocher</Button>
     </div>
   );
 }
