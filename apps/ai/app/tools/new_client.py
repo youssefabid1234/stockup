@@ -90,35 +90,34 @@ def communes(entries: list[dict]) -> dict[str, str]:
 
 
 async def _directory(erp) -> dict:
-    """Clients (for duplicates), place → zone (zone sheets, then the ERP's clients) and zone → round weekdays. 60 s cache."""
+    """Clients (for duplicates: read fresh on every call, a stale list would point at a deleted card), place → zone (zone
+    sheets, then the ERP's clients) and zone → round weekdays (both cached 10 min: they hardly change)."""
     global _cache
-    if _cache and time.monotonic() - _cache[0] < 60:
-        return _cache[1]
     clients = await erp.get("/api/clients", {"limit": 1000})
     clients = clients.get("items", clients) if isinstance(clients, dict) else clients
+    if not _cache or time.monotonic() - _cache[0] > 600:
 
-    async def optional(path, query=None):
-        try:
-            d = await erp.get(path, query)
-            return d.get("items", d) if isinstance(d, dict) else d
-        except Exception:
-            return []
+        async def optional(path, query=None):
+            try:
+                d = await erp.get(path, query)
+                return d.get("items", d) if isinstance(d, dict) else d
+            except Exception:
+                return []
 
-    routes, entries = await optional("/api/routes"), await optional("/api/context", {"entityType": "company", "limit": 1000})
-    places = communes(entries or [])
-    by_city: dict[str, Counter] = {}
-    for c in clients:
-        if c.get("city") and c.get("zone"):
-            by_city.setdefault(norm(re.sub(r"\s*\(.*\)", "", c["city"])), Counter())[c["zone"]] += 1
-    for city, zones in by_city.items():
-        places.setdefault(city, zones.most_common(1)[0][0])
-    zone_days: dict[str, set] = {}
-    for r in routes or []:
-        if r.get("zone"):
-            zone_days.setdefault(r["zone"], set()).update(r.get("days") or [])
-    d = {"clients": clients, "places": places, "zone_days": zone_days}
-    _cache = (time.monotonic(), d)
-    return d
+        routes, entries = await optional("/api/routes"), await optional("/api/context", {"entityType": "company", "limit": 1000})
+        places = communes(entries or [])
+        by_city: dict[str, Counter] = {}
+        for c in clients:
+            if c.get("city") and c.get("zone"):
+                by_city.setdefault(norm(re.sub(r"\s*\(.*\)", "", c["city"])), Counter())[c["zone"]] += 1
+        for city, zones in by_city.items():
+            places.setdefault(city, zones.most_common(1)[0][0])
+        zone_days: dict[str, set] = {}
+        for r in routes or []:
+            if r.get("zone"):
+                zone_days.setdefault(r["zone"], set()).update(r.get("days") or [])
+        _cache = (time.monotonic(), {"places": places, "zone_days": zone_days})
+    return {"clients": clients, **_cache[1]}
 
 
 def clear_cache() -> None:
@@ -190,7 +189,6 @@ async def register_new_client(
             patch["deliveryDays"] = days
         if patch:
             await ctx.erp.patch(f"/api/clients/{enc(cid)}", patch)
-            clear_cache()
         events = await ctx.erp.get(f"/api/clients/{enc(cid)}/events")
         events = events.get("items", events) if isinstance(events, dict) else events
         said_before = [e.get("description") or "" for e in events or [] if e.get("type") == "onboarding"]
@@ -209,7 +207,6 @@ async def register_new_client(
         }  # fmt: skip
         client = await ctx.erp.post("/api/clients", {k: v for k, v in body.items() if v is not None})
         cid, created, said_before = client["id"], True, []
-        clear_cache()
 
     repeated = already_said(request, said_before, f"{address or ''} {city or ''}")
     if not repeated:  # the same request sent again (the model repeating itself) is not a new event for the team
@@ -253,9 +250,11 @@ def words(s: str) -> set[str]:
 def already_said(request: str, before: list[str], known: str = "") -> bool:
     """Nothing new in `request` (once the earlier requests and the card's address / city are taken out): the model is
     repeating itself. « 10 sacs de tradi pour jeudi. Adresse : 3 rue des Lilas » after « 10 sacs de tradi pour jeudi »
-    → True; « et aussi du beurre » → False."""
+    → True; « et aussi du beurre » → False; « 15 kg au lieu de 10 » → False (a new number)."""
     if not before:
         return False
     said = words(request)
     new = said - words(" ".join(b.split(" · contact")[0].split(" · tél.")[0] for b in before)) - words(known)
+    if any(w.isdigit() for w in new):  # a new quantity (« 15 kg, au lieu de 10 ») is always news for the team
+        return False
     return not new or len(new) / max(1, len(said)) <= 0.25

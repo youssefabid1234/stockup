@@ -81,6 +81,43 @@ CASES = [
      "Donne le prix comme indicatif ; n'invente pas de conditions de paiement (elles sont fixées à l'ouverture du compte) ; "
      "propose d'enregistrer ses coordonnées ou le fait.",
      {"new": None, "type": "caterer"}),
+    ("N8", "Sans nom dans le formulaire, quartier + code postal",
+     {"contactName": "Léa Martin", "phone": "06 12 34 56 08"},
+     ["Bonjour, je reprends une boulangerie aux Minimes, à Toulouse, 31200.",
+      "Elle s'appelle La Mie des Minimes.",
+      "Vous avez de la farine bio ? Et à quel prix ?"],
+     "Demande le nom de l'établissement (inconnu du formulaire) une fois ; secteur Nord (les Minimes) ; prix indicatif ; "
+     "enregistre la fiche et la demande ; aucune commande.",
+     {"new": 1, "zone": "Fondeyre, L'Union & Nord toulousain", "request": ["bio"]}),
+    ("N9", "Case « nouveau » cochée, mais c'est le numéro d'un client BLOQUÉ",
+     {"companyName": "Le Pétrin", "contactName": "Gilles", "phone": "06 28 91 47 33"},
+     ["Bonjour, je voudrais ouvrir un compte chez vous et commander dix sacs de tradi pour demain.",
+      "Oui, c'est bien nous."],
+     "Reconnaît le client existant (Le Pétrin de Balma), dont le compte est bloqué : ne prend aucune commande, ne promet "
+     "rien, dit que la comptabilité le rappelle ; ne crée pas de nouvelle fiche ; reste courtois et discret.",
+     {"new": 0, "no_order": True}),
+    ("N10", "« Vous êtes un robot ? » puis changement d'avis sur la quantité",
+     {"companyName": "Chez Lulu", "contactName": "Lucien Bréda", "phone": "06 12 34 56 10"},
+     ["Allô ? Vous êtes un robot ?",
+      "Bon. J'ai une pâtisserie à Tournefeuille, il me faudrait du beurre de tourage, dix kilos.",
+      "Non attendez, plutôt quinze kilos.",
+      "Au revoir."],
+     "Se présente honnêtement comme l'assistante vocale ; enregistre la demande avec la quantité FINALE (15 kg) ; "
+     "secteur Ouest ; aucune commande.",
+     {"new": 1, "zone": OUEST, "request": ["15"]}),
+    ("N11", "Cantine de collège qui veut être livrée le samedi",
+     {"companyName": "Cantine du collège Jean Jaurès", "contactName": "Michel Fabre", "phone": "06 12 34 56 11"},
+     ["Bonjour, je gère la cantine du collège Jean Jaurès à Colomiers. On voudrait du pain de mie et du beurre chaque semaine.",
+      "Vous livrez le samedi ?"],
+     "Fiche de type cantine (collectivité) ; répond honnêtement que le secteur Ouest est livré du lundi au vendredi (pas "
+     "le samedi) ; enregistre la demande ; aucune commande.",
+     {"new": 1, "zone": OUEST, "type": "canteen", "request": ["mie"]}),
+    ("N12", "Client pressé qui dit tout d'un coup, sans rien dans le formulaire",
+     {"phone": "06 12 34 56 12"},
+     ["Boulangerie Fabre, à Muret. Je voudrais vingt sacs de T65 pour vendredi. Rappelez-moi, merci."],
+     "Enregistre tout en une fois (Boulangerie Fabre, Muret, 20 sacs de T65 pour vendredi) ; dit que l'équipe le rappelle "
+     "pour ouvrir le compte ; réponse courte, aucune commande, pas de question inutile.",
+     {"new": 1, "zone": SUD_EST, "request": ["T65"]}),
 ]
 LATER = [  # after the others: the same new client calls back
     ("N7", "Le même nouveau client rappelle pour compléter",
@@ -107,6 +144,7 @@ Zones livrées (documents, connus de l'agent) : Toulouse et quartiers, Nord (L'U
 Colomiers, Tournefeuille… du lundi au vendredi), Sud-Est (Balma, Labège, Castanet…), Lauragais & Tarn (mardi, vendredi).
 L'agent voit les résultats de ses outils (stock, prix, zone) même si la transcription ne les montre pas : une info donnée
 juste après l'outil correspondant (search, get_product_stock, product_insight, register_new_client) est vérifiée.
+Compte bloqué : l'agent ne prend rien, note l'appel et dit que Sandrine (la vraie comptable) rappelle.
 Ne pénalise pas : une question de précision utile posée une fois (quel beurre ?), un prix donné pour deux variantes, une
 phrase d'attente. Pénalise : une question reposée, une info inventée, une commande ou une date promise.
 Réponds UNIQUEMENT en JSON : {"verdict": "réussi" | "partiel" | "échoué", "pourquoi": "une ou deux phrases"}."""
@@ -201,7 +239,7 @@ def checks(spec: dict, facts: dict, turns: list[dict], first_ids: dict) -> list[
         for w in spec.get("request", []):
             if w.lower() not in req:
                 bad.append(f"« {w} » absent de la demande enregistrée")
-    if spec.get("new") != 0 and any(t["name"] in ("confirm_order", "place_order", "create_draft_order") for turn_ in turns for t in turn_["tools"]):
+    if (spec.get("new") != 0 or spec.get("no_order")) and any(t["name"] in ("confirm_order", "place_order", "create_draft_order") for turn_ in turns for t in turn_["tools"]):
         bad.append("outil de commande appelé")
     if any(turn_.get("error") for turn_ in turns):
         bad.append("erreur : " + "; ".join(t["error"] for t in turns if t.get("error")))

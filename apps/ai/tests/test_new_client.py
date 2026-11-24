@@ -166,3 +166,26 @@ def test_a_question_is_not_asked_twice_in_a_row():
     assert without_repeated_question(again, before) == "Non, rien n'est confirmé pour demain, l'équipe vous rappelle."
     other = "C'est noté. Vous êtes dans quelle ville ?"
     assert without_repeated_question(other, before) == other and without_repeated_question("Pour le beurre ?", before) == "Pour le beurre ?"
+
+
+def test_a_new_quantity_is_news_and_a_reworded_question_is_still_a_repeat():
+    from app.services.voice_reply import without_repeated_question
+
+    before = ["Beurre de tourage, 10 kg, type à préciser (AOP ou standard) · contact : Lucien"]
+    assert not nc.already_said("Beurre de tourage, 15 kg (modifié, au lieu de 10 kg), type à préciser (AOP ou standard).", before)
+    q1 = "C'est noté. Pour le beurre, c'est du beurre de tourage ou du beurre doux, et en quelle quantité par semaine ?"
+    q2 = "Non, pas le samedi. Pour le beurre, vous le voulez en tourage ou en beurre doux ?"
+    assert without_repeated_question(q2, q1) == "Non, pas le samedi."
+    assert without_repeated_question("C'est noté. Vous le préférez AOP ou standard ?", "Vous le voulez AOP Charentes-Poitou ou standard ?") == "C'est noté."
+    assert without_repeated_question("Et dans quelle ville ?", q1) == "Et dans quelle ville ?"
+
+
+async def test_the_client_list_is_read_fresh_on_every_call():
+    erp = FakeErp()
+    await nc._directory(erp)
+    CLIENTS.append({"id": "cli_0200", "name": "Tout Neuf", "status": "prospect", "contacts": [{"name": "Z", "phone": "06 01 01 01 01"}]})
+    try:
+        out = await register(erp, company_name="Autre", request="farine", phone="06 01 01 01 01")
+        assert out["clientId"] == "cli_0200" and not out["created"]  # seen at once, not after a cache expiry
+    finally:
+        CLIENTS.pop()
