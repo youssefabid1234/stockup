@@ -438,6 +438,23 @@ Mohamed Amine.
 - Suggestions (`voice_offers`) : nom en minuscule et tournures parlées (« Au fait, d'habitude vous prenez aussi la
   farine de gruau avec. Je vous en mets ? »).
 
+#### Ton de comptoir, clavier mécanique (Amine Khalil, retour d'écoute du 24/11)
+
+- **Clavier et souris enregistrés** : les sons synthétisés ne ressemblaient pas à un vrai clavier (deux essais écoutés).
+  L'équipe a choisi deux enregistrements : un clavier mécanique, dont deux passages de frappe continue (13 s) sont
+  découpés en 28 extraits de 0,45 s, et une souris (7 clics). Les deux sont mis au format de la voix (mono, 44,1 kHz,
+  128 kb/s, sans quoi le lecteur du navigateur peut décrocher) et baissés (−30 / −32 LUFS) pour rester derrière elle
+  (`assets/keyboard`, `assets/mouse`, recette ffmpeg dans leur README). Pendant l'attente : frappe dans l'ordre de
+  l'enregistrement (départ différent à chaque fois), un clic de souris tous les quatre extraits. La durée réelle des
+  extraits (0,496 s avec le rembourrage MP3) rythme l'envoi : jamais de clavier accumulé devant la réponse.
+- **Interjections** : « Okéééé, je regarde. », « Oké chef, une seconde. », « Hm hm, je regarde. » ; au milieu d'une
+  attente : « Hm hm… », « Hmmmm, voyons voir… », « Alors alors… ». « Çaaa marche » et « Ça roule » seulement **après** la
+  validation (« Çaaa marche, c'est validé ! ») : un accusé ne doit jamais sonner comme un oui avant vérification (règle
+  de Youssef, test `test_smart_ack`). Réclamations et remises gardent un ton sobre.
+- **Relecture familière et variée** : « Alors, c'est noté : 10 sacs de tradi, et vous serez livrés jeudi 26 novembre.
+  Pour vous ça sera… hmm, un total de 189 euros hors taxes. On part là-dessus ? » (5 débuts, 3 façons de dire le total,
+  3 questions ; même commande → mêmes mots). Même consigne pour Sonnet, un mot familier par phrase au plus.
+
 #### Idées 2 et 3 : l'heure du camion, la date courte (Amine Khalil)
 
 - **Heure de passage** (`tools/delivery_eta.py`) : « vous passez à quelle heure ? » → l'arrêt du client sur la tournée

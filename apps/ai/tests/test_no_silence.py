@@ -37,7 +37,9 @@ def test_typing_clips_are_short_and_varied():
     clips = {fillers.typing_clip(i)[0] for i in range(6)}
     assert len(clips) == 6  # six different rhythms, not one loop
     data, seconds = fillers.typing_clip(0)
-    assert data and seconds == fillers.TYPING_SECONDS <= 0.5
+    # the recorded clips: 0.45 s cut + the MP3 encoder's padding; the real length paces the typing (no drift)
+    assert data and fillers.TYPING_SECONDS <= seconds <= 0.55
+    assert fillers.recorded_keyboard() and fillers.recorded_mouse()  # the team's recordings ship with the code
 
 
 def test_mp3_seconds():

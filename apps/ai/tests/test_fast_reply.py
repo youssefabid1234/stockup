@@ -19,10 +19,13 @@ def test_off_by_default():
 
 def test_clean_order_is_read_back_directly(monkeypatch):
     monkeypatch.setenv("TEAM_FAST_REPLY", "1")
-    assert run("place_order", CLEAN) == ("C'est noté : 10 sacs de farine de blé T55 tradition française, et vous serez "
-                                         "livrés jeudi 26 novembre. Ça fait 189 euros hors taxes. Je vous la valide ?")
+    said = run("place_order", CLEAN)
+    assert any(said.startswith(o) for o in fast_reply.OPENERS)
+    assert "10 sacs de farine de blé T55 tradition française, et vous serez livrés jeudi 26 novembre." in said
+    assert "189 euros hors taxes" in said and any(said.endswith(a) for a in fast_reply.ASKS)
+    assert run("place_order", CLEAN) == said  # the same order: the same words (no flicker on a replay)
     franco = {**CLEAN, "totalHt": 37.8, "franco": "la commande fait 38 euros hors taxes : en dessous de 150 euros, il y a 12 euros de livraison"}
-    assert "Ça fait 37 euros 80 hors taxes, donc il y aura 12 euros de frais de livraison" in run("place_order", franco)
+    assert "Ça fait 37 euros 80 hors taxes, donc bon, il y aura 12 euros de frais de livraison" in run("place_order", franco)
     assert run("place_order", franco).endswith("Je vous la valide quand même ?")
 
 
@@ -42,16 +45,17 @@ def test_the_callers_words_and_tu(monkeypatch):
     two = {**CLEAN, "readback": "5 sacs de Farine de blé T55 tradition française, 2 pains de Levure fraîche ; livraison mercredi 25 novembre"}
     call = SimpleNamespace(name="place_order", arguments={"lines": [{"said": "tradi", "qty": 5}, {"said": "levure", "qty": 2}]})
     said = fast_reply.compose("voice", [call], [SimpleNamespace(name="place_order", ok=True, result=two)])
-    assert said.startswith("C'est noté : 5 sacs de tradi et 2 pains de levure, et vous serez livrés mercredi 25 novembre.")
+    assert "5 sacs de tradi et 2 pains de levure, et vous serez livrés mercredi 25 novembre." in said
     tu = [SimpleNamespace(role="assistant", content="Salut Thierry, qu'est-ce que je te mets ?")]
     said = fast_reply.compose("voice", [call], [SimpleNamespace(name="place_order", ok=True, result=two)], tu)
-    assert "et tu seras livré mercredi" in said and said.endswith("Je te la valide ?")
+    assert "et tu seras livré mercredi" in said and any(said.endswith(a) for a in fast_reply.ASKS_TU)
+    assert "vous" not in said
     edit = SimpleNamespace(name="place_order", arguments={"orderId": "ord_1", "lines": [{"said": "tradi", "qty": 12}]})
     assert "farine de blé T55" in fast_reply.compose("voice", [edit], [SimpleNamespace(name="place_order", ok=True, result=CLEAN)])
 
 
 def test_confirmation(monkeypatch):
     monkeypatch.setenv("TEAM_FAST_REPLY", "1")
-    assert run("confirm_order", {"confirmed": True}).startswith("C'est validé")
+    assert run("confirm_order", {"confirmed": True}) in fast_reply.DONE
     assert "déjà validée" in run("confirm_order", {"confirmed": True, "alreadyConfirmed": True, "next": "…"})
     assert run("confirm_order", {"confirmed": False, "next": "Pas de oui clair"}) is None
