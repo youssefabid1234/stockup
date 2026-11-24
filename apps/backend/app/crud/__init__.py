@@ -27,6 +27,9 @@ price_rules = CRUDBase(JsonTable("price_rules"), "Règle de prix")
 context_entries = CRUDBase(JsonTable("context_entries"), "Fiche de contexte")
 events = CRUDBase(JsonTable("events"), "Événement")  # the activity log
 
+offer_additions = CRUDBase(JsonTable("offer_additions"), "Ajout d’offre")
+outbound_attempts = CRUDBase(JsonTable("outbound_attempts"), "Appel sortant")
+
 # Data pack file name (seed/<key>.json) → CRUD. Missing files load as [].
 PACK: dict[str, CRUDBase] = {
     "products": products,

@@ -48,6 +48,7 @@ class Product(Schema):
     caliber: str | None = None  # "1-2 kg", "n°3"
     main_supplier_id: Id | None = None
     active: bool
+    launched_on: IsoDate | None = None
     tags: list[str] | None = None  # product groups, e.g. ["premium", "fetes"] — see TagDef
 
 
