@@ -21,6 +21,7 @@ class FakeErp:
                        "zone": "Toulouse centre & faubourgs"}
         self.orders: dict[str, dict] = {}
         self.calls: list[tuple[str, str]] = []
+        self.stock = {p["id"]: 999 for p in CATALOGUE}  # available, in the product's unit
 
     def _detail(self, oid):
         o = self.orders[oid]
@@ -35,6 +36,17 @@ class FakeErp:
             return {"today": "2026-11-24", "generatedAt": "2026-11-24T05:30:00.000Z"}
         if path == "/api/products":
             return CATALOGUE
+        if path.startswith("/api/products/") and path.endswith("/alternatives"):
+            pid = path.split("/")[3]
+            return [{"id": p["id"], "name": p["name"], "unit": p["unit"], "available": self.stock[p["id"]]}
+                    for p in CATALOGUE if p["id"] != pid and p["unit"] == next(c["unit"] for c in CATALOGUE if c["id"] == pid)]
+        if path.startswith("/api/products/"):
+            p = next(c for c in CATALOGUE if c["id"] == path.split("/")[3])
+            return {**p, "available": self.stock[p["id"]], "stock": {}}
+        if path == "/api/prices/resolve":
+            return {"price": 10.0, "listPrice": 10.0, "explanation": "catalogue"}
+        if path == "/api/price-rules":
+            return []
         if path.endswith("/usual"):
             return []
         if path == "/api/search":  # « tourage » alone: both tourages (ambiguous on purpose)
@@ -161,3 +173,32 @@ async def test_blocked_client_gets_no_order(place):
     erp = FakeErp(status="blocked")
     r = await place(ToolContext(erp=erp, actor="voice_agent"), "cli_0001", [line(said="tradi", qty=5)], "jeudi", None)
     assert r["blocked"] and not r["written"] and erp.orders == {}
+
+
+async def test_short_stock_writes_nothing_and_brings_the_substitute(place):
+    erp = FakeErp()
+    erp.stock["prd_0025"] = 4  # AOP: 4 kg left, 3 cartons = 30 kg asked
+    r = await place(ToolContext(erp=erp, actor="voice_agent"), "cli_0001",
+                    [line(said="tradi", qty=10), line(said="tourage AOP", qty=3, said_unit="cartons")], "jeudi", None)
+    assert r["written"] is False and not erp.orders and not any(m != "GET" for m, _ in erp.calls)
+    (short,) = r["short"]
+    assert short["productId"] == "prd_0025" and short["wanted"] == 30 and short["available"] == 4
+    assert short["alternatives"][0]["id"] == "prd_0026" and "remplaçant" in r["next"]
+
+
+async def test_short_stock_taken_anyway_when_the_caller_says_so(place):
+    erp = FakeErp()
+    erp.stock["prd_0025"] = 4
+    r = await place(ToolContext(erp=erp, actor="voice_agent"), "cli_0001", [line(said="tourage AOP", qty=3, said_unit="cartons")],
+                    "jeudi", None, True)
+    assert r["written"] is True and len(erp.orders) == 1
+
+
+async def test_only_the_increase_of_a_line_is_checked(place):
+    erp = FakeErp()
+    ctx = ToolContext(erp=erp, actor="voice_agent")
+    first = await place(ctx, "cli_0001", [line(said="tradi", qty=10)], "jeudi", None)
+    erp.stock["prd_0001"] = 3  # 10 already in the order: 12 = +2 → fine; then 16 = +4 > 3 → short
+    assert (await place(ctx, "cli_0001", [line(said="tradi", qty=12)], None, first["orderId"]))["written"] is True
+    r = await place(ctx, "cli_0001", [line(said="tradi", qty=16)], None, first["orderId"])
+    assert r["written"] is False and r["short"][0]["wanted"] == 4

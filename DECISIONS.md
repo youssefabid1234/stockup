@@ -51,8 +51,12 @@ Lecture :
   la commande change à chaque réplique (sous le franco, puis au-dessus) et où une autre livraison du jeudi existait déjà.
 - **Nos 4 échecs restants** (en voix) : 3 viennent de l'enchaînement des scénarios dans le même ERP (la commande Sarrailh
   de jeudi créée par S01 existe encore pour S02, S30 et S32 ; l'agent propose alors, à raison, d'y ajouter les
-  produits) ; 1 est un vrai défaut : sur S45 (stock insuffisant), `place_order` écrit la commande avant que le client
-  ait accepté le remplaçant.
+  produits) ; 1 était un vrai défaut : sur S45 (stock insuffisant), `place_order` écrivait la commande avant que le
+  client ait accepté le remplaçant. **Corrigé** : `place_order` vérifie le stock avant d'écrire ; s'il manque, rien n'est
+  écrit et l'outil renvoie ce qui reste et le meilleur remplaçant (ou la date de retour si le client refuse les
+  remplacements), dans le même appel. Rejeu : S45 PASS (poudre d'amande proposée, aucun brouillon dans l'ERP), S01, S04,
+  S40 PASS ; S05 11 répliques sur 12 (au tour 2, l'agent redonne le prix déjà lu au tour 1 sans rappeler d'outil :
+  prix juste, mais le scénario attend un outil).
 - « Interrupteurs éteints » n'est pas tout à fait le kit brut : la fiche choisie dans « Qui appelle ? » est toujours
   transmise à l'agent, et les règles vocales communes restent actives.
 
