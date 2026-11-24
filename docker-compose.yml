@@ -3,7 +3,12 @@
 name: voice-erp-kit
 
 x-common: &common
-  env_file: .env
+  # team 12 (Youssef): the team's defaults first (.env.example), then your .env on top. A switch the team added after
+  # your .env was created (e.g. TEAM_FILLERS=4, « zéro silence ») now applies without editing your .env; any line
+  # you set yourself still wins. (Before: a missing line meant « off », so the agent stayed silent while it worked.)
+  env_file:
+    - .env.example
+    - .env
   restart: unless-stopped
 
 services:
