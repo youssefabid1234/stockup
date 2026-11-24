@@ -19,6 +19,10 @@ Actor = Literal["ai_chat", "voice_agent"]
 class ErpError(Exception):
     """The ERP refused the request (its French message is given to the model) or is unreachable."""
 
+    def __init__(self, message: str, status: int | None = None):
+        super().__init__(message)
+        self.status = status
+
 
 _http: httpx.AsyncClient | None = None
 _http_loop: asyncio.AbstractEventLoop | None = None
@@ -78,7 +82,7 @@ class ErpClient:
             data = None
         if not res.is_success:
             message = ((data or {}).get("error") or {}).get("message") if isinstance(data, dict) else None
-            raise ErpError(message or f"ERP HTTP {res.status_code} sur {method} {path}")
+            raise ErpError(message or f"ERP HTTP {res.status_code} sur {method} {path}", status=res.status_code)
         return data
 
 

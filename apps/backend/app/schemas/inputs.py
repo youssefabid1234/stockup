@@ -179,6 +179,7 @@ class SupplierEventPatch(Input):
 
 
 class ProductPatch(Input):
+    launched_on: IsoDateStr | None = None
     price: Positive | None = None
     cost: NonNegative | None = None
     tags: list[NonEmpty] | None = None

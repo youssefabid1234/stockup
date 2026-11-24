@@ -1,5 +1,7 @@
 /** Produit — KPIs, lots (FEFO), supplier prices compared, recent movements, "Ajuster le stock" side panel. */
 import { useMemo, useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { api } from "@/lib/api";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { ArrowLeftRight, Boxes, Package, SlidersHorizontal, Truck } from "lucide-react";
 import type { ProductDetail, StockMovement } from "@kit/shared";
@@ -8,7 +10,7 @@ import { fmtPercent, fmtQty, UNIT_LABEL } from "@/lib/format";
 import { useProduct, useStockMovements, useSuppliers } from "@/lib/queries";
 import { EntityContext } from "@/pages/context/shared";
 import {
-  Badge, Button, DataTable, DateLabel, EmptyState, KeyValue, Money, Mono, Page, PageBody, PageHeader, Qty, Section, Skeleton,
+  Badge, Button, DataTable, DateLabel, DatePicker, EmptyState, KeyValue, Money, Mono, Page, PageBody, PageHeader, Qty, Section, Skeleton,
   Stat, StatGrid, useServerList, type Column,
 } from "@/ui";
 import { TagEditor } from "@/ui/tags";
@@ -17,7 +19,7 @@ import { AdjustStockPanel, ExpiryLabel, fefo, LotsTable, useToday } from "@/page
 
 export default function ProductDetailPage() {
   const { id = "" } = useParams();
-  const { data: p, isLoading, isError } = useProduct(id);
+  const { data: p, isLoading, isError, refetch } = useProduct(id);
 
   if (isLoading) return <DetailSkeleton />;
   if (isError || !p) {
@@ -28,10 +30,11 @@ export default function ProductDetailPage() {
       </Page>
     );
   }
-  return <ProductView p={p} />;
+  return <ProductView p={p} refresh={() => void refetch()} />;
 }
 
-function ProductView({ p }: { p: ProductDetail }) {
+function ProductView({ p, refresh }: { p: ProductDetail; refresh: () => void }) {
+  const launch = useMutation({ mutationFn: (value: string) => api.products.launch(p.id, value || null), onSuccess: refresh });
   const today = useToday();
   const [adjusting, setAdjusting] = useState(false);
   const { data: suppliers } = useSuppliers();
@@ -94,6 +97,8 @@ function ProductView({ p }: { p: ProductDetail }) {
                   { label: "Catégorie", value: categoryLabel(p.category) },
                   { label: "Unité", value: UNIT_LABEL[p.unit] ?? p.unit },
                   { label: "Calibre", value: p.caliber || "—" },
+                  { label: "Mise au catalogue", value: <DatePicker aria-label="Date de mise au catalogue" size="sm" value={p.launchedOn}
+                    placeholder="Non renseignée" clearable disabled={launch.isPending} onChange={(value) => launch.mutate(value)} /> },
                   { label: "Origine", value: p.origin || "—" },
                   { label: "Prix catalogue", value: <Money value={p.price} /> },
                   { label: "Coût de référence", value: <Money value={p.cost} /> },

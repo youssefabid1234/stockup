@@ -1,7 +1,10 @@
 """/api/products: catalogue with stock, detail, alternatives, edit (price, cost, tags…)."""
 
+from datetime import date
+
 from fastapi import APIRouter, Query
 
+from app.core.errors import validation_error
 from app.core.listing import ListDep, Page
 from app.dependencies import CtxDep, data
 from app.schemas.domain import Product
@@ -38,4 +41,12 @@ async def product_alternatives(id: str):
 
 @router.patch("/{id}", response_model=Product)
 async def update_product(id: str, ctx: CtxDep, body: ProductPatch | None = None):
-    return tags.update_product(ctx, id, data(body))
+    patch = data(body)
+    if body and "launched_on" in body.model_fields_set:
+        if body.launched_on:
+            try:
+                date.fromisoformat(body.launched_on)
+            except ValueError:
+                raise validation_error("launchedOn : date de lancement invalide") from None
+        patch["launchedOn"] = body.launched_on
+    return tags.update_product(ctx, id, patch)

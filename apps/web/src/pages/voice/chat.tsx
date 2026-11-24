@@ -43,7 +43,7 @@ export function ChatHeader(props: {
   handsFree: boolean;
   onToggleHandsFree: () => void;
   onStopPlayback: () => void;
-  onRestart: () => void;
+  onRestart?: () => void;
   onHangUp: () => void;
 }) {
   const { caller, activity, listening } = props;
@@ -81,7 +81,7 @@ export function ChatHeader(props: {
           <Ear size={16} strokeWidth={1.9} />
           <span className="hidden 2xl:inline">Mains libres</span>
         </button>
-        <RoundButton title="Recommencer l'appel" onClick={props.onRestart} icon={<RotateCcw size={17} strokeWidth={1.9} />} />
+        {props.onRestart ? <RoundButton title="Recommencer l'appel" onClick={props.onRestart} icon={<RotateCcw size={17} strokeWidth={1.9} />} /> : null}
         <button
           type="button"
           onClick={props.onHangUp}

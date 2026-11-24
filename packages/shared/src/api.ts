@@ -529,3 +529,28 @@ export interface ContextForEntity {
 }
 
 export type { ActivityEvent, Client, Invoice, Order, Payment, Product, PurchaseOrder, Route, RouteRun, StockLevel, Supplier };
+
+// Simulated outbound calls and the local SMS outbox.
+export interface OutboundTarget {
+  clientId: Id;
+  clientName: string;
+  offer: {
+    id: string;
+    productId: Id;
+    productName: string;
+    kind: "promo" | "new" | "usual";
+    unit: Product["unit"];
+    unitPrice: number;
+    purchaseCount: number;
+    validUntil?: IsoDate;
+  };
+}
+
+export interface OutboundAttempt extends OutboundTarget {
+  id: string;
+  status: "ringing" | "answered" | "missed" | "completed" | "cancelled";
+  startedAt: number;
+  deadline: number;
+  sms?: string;
+  reason?: string;
+}
