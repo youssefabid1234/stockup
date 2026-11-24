@@ -1,0 +1,24 @@
+{
+  "id": "S46",
+  "owner": "daycem",
+  "title": "Pâtisserie Lacombe-Viguier (« couvertures exclusivement ») : couverture blanche insuffisante → ne proposer qu'une couverture",
+  "why": "Intelligent : ce que la fiche impose (« Couvertures exclusivement… ») ou interdit n'est jamais proposé ; d'abord l'accord du client, jamais rien d'ajouté sans son oui.",
+  "client": "cli_0002",
+  "turns": [
+    {
+      "say": "Bonjour, Pâtisserie Lacombe-Viguier. Il me faudrait 150 kilos de couverture blanche pour samedi.",
+      "expect": {
+        "tools_none": ["confirm_order"],
+        "says_none": ["praliné", "pépites", "cacao", "bâtons", "inconnu", "substitution"]
+      }
+    },
+    {
+      "say": "Oui, qu'est-ce que vous avez à la place ?",
+      "expect": {
+        "tools_none": ["confirm_order"],
+        "says_any": ["couverture", "noir", "lait"],
+        "says_none": ["praliné", "pépites", "cacao", "bâtons"]
+      }
+    }
+  ]
+}

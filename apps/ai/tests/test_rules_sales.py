@@ -295,7 +295,8 @@ def test_same_use_code_names_no_product():
     """General for any data pack: the ranking code knows no product, only how names are written."""
     import inspect
 
-    code = "".join(inspect.getsource(f) for f in (name_match, has_same_use_substitute, rank_alternatives, rules_sales._name_words)).lower()
+    code = "".join(inspect.getsource(f) for f in (name_match, has_same_use_substitute, rank_alternatives, rules_sales._name_words,
+                                                  card_rules, allowed_by_card)).lower()
     for word in ["creme", "crème", "sucre", "farine", "chocolat", "beurre", "tourage", "oeuf", "œuf", "fraise", "citron", "prd_"]:
         assert word not in code, f"ranking code mentions {word!r}"
 
@@ -304,3 +305,90 @@ def test_the_family_word_is_enough_to_be_a_same_use_substitute():
     # it decides nothing in the RANKING (every butter has it), but it does say « same use » (audit: 82 % tourage)
     alts = _alts("Beurre doux AOP Charentes-Poitou (carton 10 × 1 kg)", "Beurre pâtissier 82 % (carton 10 kg)")
     assert has_same_use_substitute("prd_x", "Beurre de tourage 82 % (plaque 2 kg)", alts, substitutes={}) is True
+
+
+# ── T3 · what the client's card forbids (« jamais de… ») or imposes (« … uniquement ») is never proposed ──
+#
+# Real sentences of the cards (audit 24/11, list checked by Daycem): 29 cards. Real catalogue names.
+
+from app.agent.rules_sales import allowed_by_card, card_rules  # noqa: E402
+
+CREME_ONLY = "Précommandes de chocolat de Pâques en février. Crème 35 % uniquement, jamais d'épaisse. Livré mar. ven. Accepte les substitutions équivalentes si on prévient."  # c0053  # fmt: skip
+NO_FROZEN = "Ne veut pas de surgelé : tout est fait maison."  # c0074 and 9 others
+TRADITION_ONLY = "Farine de tradition du Lauragais uniquement."  # c0024 and 7 others
+COUVERTURES_ONLY = "Couvertures exclusivement Cacaos Garonne, origine Équateur et Pérou."  # c0002
+OVO_ONLY = "Ovoproduits liquides uniquement (HACCP)."  # c0082
+DELIVERY_NOTE = "Jamais de livraison ce jour-là."  # 18 CRM notes
+MAILS_NOTE = "Philippe ne lit pas les mails de relance."
+
+CREMES = ["Crème fraîche épaisse 30 % (seau 5 L)", "Œuf entier liquide pasteurisé (brique 1 L)", "Lait entier UHT (brique 1 L)"]
+SURGELES = ["Chocolatine pur beurre crue surgelée 75 g (carton 140)", "Croissant pur beurre cru surgelé 70 g (carton 150)",
+            "Assortiment mini-viennoiseries crues (carton 210)"]  # fmt: skip
+FARINES = ["Farine de blé T55 boulangère (sac 25 kg)", "Farine de blé T65 campagne (sac 25 kg)", "Farine bise T80 (sac 25 kg)"]
+CHOCOLATS = ["Chocolat de couverture noir 64 % (pistoles, sac 5 kg)", "Praliné noisette 50 % (seau 5 kg)",
+             "Pépites de chocolat noir cuisson (sac 5 kg)", "Cacao en poudre 22-24 % (sac 1 kg)"]  # fmt: skip
+
+
+def test_never_the_thick_cream_for_a_client_who_says_never():
+    ranked = rank_alternatives(_alts(*CREMES), CREME_ONLY, for_product_name="Crème liquide UHT 35 % (brique 1 L)", substitutes={})
+    assert not any("épaisse" in a["name"] for a in ranked)
+
+
+def test_cream_35_only_leaves_nothing_when_the_35_cream_is_missing():
+    assert rank_alternatives(_alts(*CREMES), CREME_ONLY, for_product_name="Crème liquide UHT 35 % (brique 1 L)", substitutes={}) == []
+    assert has_same_use_substitute("prd_x", "Crème liquide UHT 35 % (brique 1 L)", _alts(*CREMES), substitutes={},
+                                   preferences=CREME_ONLY) is False  # fmt: skip
+
+
+def test_no_frozen_product_for_a_client_who_wants_none_even_in_the_feminine():
+    ranked = rank_alternatives(_alts(*SURGELES), NO_FROZEN, for_product_name="Pain aux raisins cru surgelé 110 g (carton 80)", substitutes={})
+    assert _names(ranked) == ["Assortiment mini-viennoiseries crues (carton 210)"]
+
+
+def test_tradition_only_means_no_other_flour_when_the_tradition_is_missing():
+    missing = "Farine de blé T55 tradition française (sac 25 kg)"
+    alts = [{"id": "prd_0002", "name": FARINES[0], "unit": "piece", "available": 10}]
+    # even the substitute the docs name is not proposed: the card wins
+    assert rank_alternatives(alts, TRADITION_ONLY, for_product_id="prd_0001", for_product_name=missing,
+                             substitutes={"prd_0001": ["prd_0002"]}) == []  # fmt: skip
+    assert has_same_use_substitute("prd_0001", missing, alts, substitutes={"prd_0001": ["prd_0002"]}, preferences=TRADITION_ONLY) is False
+
+
+def test_an_only_rule_on_another_product_changes_nothing():
+    ranked = rank_alternatives(_alts(*CHOCOLATS), TRADITION_ONLY, for_product_name="Chocolat de couverture noir 70 % (pistoles, sac 5 kg)", substitutes={})
+    assert sorted(_names(ranked)) == sorted(CHOCOLATS)
+
+
+def test_couvertures_only_keeps_only_couvertures():
+    ranked = rank_alternatives(_alts(*CHOCOLATS), COUVERTURES_ONLY, for_product_name="Chocolat de couverture blanc 33 % (pistoles, sac 5 kg)", substitutes={})
+    assert _names(ranked) == ["Chocolat de couverture noir 64 % (pistoles, sac 5 kg)"]
+
+
+def test_ovoproducts_only_is_ignored_no_product_name_says_ovoproduct():
+    # known limit (docs/team/t3-ranking-audit.md): no false positive on the liquid cream or the vanilla extract
+    assert card_rules(OVO_ONLY) == [] or all(
+        allowed_by_card("Crème liquide UHT 35 % (brique 1 L)", n, card_rules(OVO_ONLY)) for n in CREMES)
+    alts = _alts("Œufs plein air calibre M (plateau de 30)", "Jaune d'œuf liquide pasteurisé (brique 1 L)")
+    assert len(rank_alternatives(alts, OVO_ONLY, for_product_name="Blanc d'œuf liquide pasteurisé (brique 1 L)", substitutes={})) == 2
+
+
+def test_sentences_about_delivery_or_mails_exclude_nothing():
+    ranked = rank_alternatives(_alts(*SURGELES), "", notes=[DELIVERY_NOTE, MAILS_NOTE],
+                               for_product_name="Pain aux raisins cru surgelé 110 g (carton 80)", substitutes={})  # fmt: skip
+    assert len(ranked) == 3
+
+
+def test_a_note_can_forbid_too():
+    ranked = rank_alternatives(_alts(*SURGELES), "", notes=[NO_FROZEN], for_product_name="Pain aux raisins cru surgelé 110 g", substitutes={})
+    assert len(ranked) == 1
+
+
+def test_substitution_sentences_are_left_to_substitution_policy():
+    assert card_rules("Jamais de substitution sur le beurre.") == []
+    assert card_rules("Refuse les substitutions : appeler avant toute modification.") == []
+
+
+def test_no_preferences_no_change():
+    alts = _alts(*CREMES)
+    assert rank_alternatives(alts, "", for_product_name="Crème liquide UHT 35 % (brique 1 L)", substitutes={}) != []
+    assert card_rules("") == []

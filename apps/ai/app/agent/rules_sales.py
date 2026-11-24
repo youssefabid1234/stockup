@@ -214,19 +214,25 @@ def _read_substitutes(folder: str) -> tuple[tuple[str, list[str]], ...]:
 # compare them, without the packaging (in parentheses), numbers and units. No product name lives in this code.
 
 _NAME_STOP = {"de", "du", "des", "la", "le", "les", "et", "en", "au", "aux", "pour", "avec", "sans", "cm", "mm", "kg",
-              "ml", "cl", "g", "l", "x"}  # fmt: skip
+              "ml", "cl", "g", "l", "x", "un", "une", "ce", "cet", "cette", "ces", "tout", "tous", "on", "il", "elle"}  # fmt: skip
 
 
-def _name_words(name: str) -> list[str]:
+def _name_words(name: str, *, percent: bool = False) -> list[str]:
     """Distinctive words of a product name, in order (the first one is usually the product itself).
-    « Pommes vertes bio (colis de 12) » → ["pomm", "vert", "bio"]: plural and feminine folded, packaging dropped."""
+    « Pommes vertes bio (colis de 12) » → ["pomm", "vert", "bio"]: plural and feminine folded, packaging dropped.
+    percent=True keeps « 35 % » as a word "35%" (the card rules: « … 35 % uniquement »)."""
     name = re.sub(r"\([^)]*\)", " ", (name or "").replace("œ", "oe").replace("Œ", "Oe"))
     out = []
-    for w in re.findall(r"[a-z0-9]+", _norm(name)):
+    for w in re.findall(r"\d+(?:[.,]\d+)?\s*%|[a-z0-9]+", _norm(name)):
+        if "%" in w:
+            if percent:
+                out.append(re.sub(r"\s+", "", w))
+            continue
         if w in _NAME_STOP or w.isdigit() or len(w) < 2:
             continue
         w = w[:-1] if w.endswith("s") and len(w) > 3 else w
-        w = w[:-1] if w.endswith("e") and len(w) > 3 else w
+        while w.endswith("e") and len(w) > 3:  # « surgelée » and « surgelé » meet
+            w = w[:-1]
         out.append(w)
     return out
 
@@ -244,24 +250,89 @@ def name_match(missing_name: str, candidate_name: str, others: list[str] | tuple
     return head + len((set(missing[1:]) - common) & cand)
 
 
+# ── T3 · what the client's card forbids (« jamais de… ») or imposes (« … uniquement ») is never proposed ────────────
+#
+# Audit 24/11: 29 of the 104 cards say it (« Ne veut pas de surgelé », « Crème 35 % uniquement, jamais d'épaisse »,
+# « Farine de tradition du Lauragais uniquement »…). Read by clause, matched on product-name words: a sentence whose
+# words are in no product name (« jamais de livraison ce jour-là ») excludes nothing. Substitution sentences stay with
+# substitution_policy. Known limits (no synonyms, no supplier/brand): docs/team/t3-ranking-audit.md.
+
+CardRule = tuple[Literal["interdit", "seulement"], str, frozenset[str]]  # kind, first word, words
+
+_FORBID = re.compile(
+    r"\b(?:jamais\s+(?:de\s+|d'|du\s+|des\s+)?|(?:ne veu(?:t|lent) )?pas\s+(?:de\s+|d'|du\s+|des\s+)|aucune?\s+)(?P<x>.+)$"
+)
+_ONLY_AFTER = re.compile(r"^(?P<x>.+?)\s+(?:uniquement|exclusivement)\b")
+_ONLY_BEFORE = re.compile(r"\b(?:uniquement|exclusivement)\s+(?P<x>.+)$")
+
+
+def card_rules(preferences: str, notes: list[str] | tuple[str, ...] = ()) -> list[CardRule]:
+    """The exclusions written on a card, clause by clause (split on . ; : ,).
+    « jamais de verte » → ("interdit", "vert", {"vert"}) ; « Pommes 20 % uniquement » → ("seulement", "pomm", {"pomm", "20%"})."""
+    found: list[CardRule] = []
+    for text in [preferences, *notes]:
+        for clause in re.split(r"[.;:,]", _norm(text or "")):
+            clause = clause.strip()
+            if not clause or "substitu" in clause:
+                continue
+            if m := _FORBID.search(clause):
+                kind = "interdit"
+            elif m := (_ONLY_AFTER.search(clause) or _ONLY_BEFORE.search(clause)):
+                kind = "seulement"
+            else:
+                continue
+            words = _name_words(m.group("x"), percent=True)
+            if words:
+                found.append((kind, words[0], frozenset(words)))
+    return found
+
+
+def allowed_by_card(missing_name: str, candidate_name: str, rules: list[CardRule]) -> bool:
+    """False when the card forbids this candidate:
+      « jamais de X »    the candidate's name holds every word of X
+      « X uniquement »   only when the missing product holds X's first word (the product family): the candidate
+                         must hold every word X shares with the missing product (family word and percentage)."""
+    cand = set(_name_words(candidate_name, percent=True))
+    missing = set(_name_words(missing_name, percent=True))
+    for kind, head, words in rules:
+        if kind == "interdit" and words <= cand:
+            return False
+        if kind == "seulement" and head in missing and not (words & missing) <= cand:
+            return False
+    return True
+
+
 def has_same_use_substitute(
-    product_id: str, product_name: str, alternatives: list[dict], *, substitutes: dict[str, list[str]] | None = None
+    product_id: str,
+    product_name: str,
+    alternatives: list[dict],
+    *,
+    substitutes: dict[str, list[str]] | None = None,
+    preferences: str = "",
+    notes: list[str] | tuple[str, ...] = (),
 ) -> bool:
-    """Is any alternative in stock a believable substitute: named by the docs, or sharing a distinctive word?
-    False → product_insight says so and the agent asks the caller instead of proposing lemons for strawberries.
+    """Is any alternative in stock a believable substitute (named by the docs, or sharing a distinctive word) that the
+    client's card does not forbid? False → product_insight says so and the agent asks the caller instead of proposing
+    lemons for strawberries, or a product the client's card rules out.
     No name → we can't tell: True (keep the previous behaviour)."""
     if not product_name:
         return True
     named = (doc_substitutes() if substitutes is None else substitutes).get(product_id, [])
+    rules = card_rules(preferences, notes)
     # no `others` here: the family word (shared by the whole list) is exactly what says « same use »
-    return any(a.get("id") in named or name_match(product_name, a.get("name") or "") > 0 for a in alternatives
-               if (a.get("available") or 0) > 0)  # fmt: skip
+    return any(
+        (a.get("id") in named or name_match(product_name, a.get("name") or "") > 0)
+        and allowed_by_card(product_name, a.get("name") or "", rules)
+        for a in alternatives
+        if (a.get("available") or 0) > 0
+    )
 
 
 def rank_alternatives(
     alternatives: list[dict],
-    preferences: str,  # kept for the interfaces.md §5 contract; refusing is decide_substitution's job, not ranking's
+    preferences: str,  # the card: what it forbids or imposes is dropped (card_rules); refusing is substitution_policy's job
     *,
+    notes: list[str] | tuple[str, ...] = (),  # CRM notes of the card: read like the preferences
     for_product_id: str | None = None,  # the missing product: to find its substitute in the docs
     for_category: str | None = None,  # its category: "same use"
     for_product_name: str | None = None,  # its name: names sharing distinctive words first (name_match)
@@ -269,7 +340,8 @@ def rank_alternatives(
     substitutes: dict[str, list[str]] | None = None,  # default: read from the docs (doc_substitutes)
 ) -> list[dict]:
     """
-    Order substitutes from best to worst. Never drops or changes one (the agent proposes the first, with consent):
+    Order substitutes from best to worst (the agent proposes the first, with consent). Drops only what the client's
+    card forbids or excludes (« jamais de … », « … uniquement »: card_rules); never changes one:
       1. in stock (available > 0)        2. named as substitute in the company docs
       3. same category (same use)        4. name sharing distinctive words with the missing product
       5. same unit                       6. active promo            7. then the ERP's own order
@@ -278,6 +350,9 @@ def rank_alternatives(
     if substitutes is None:
         substitutes = doc_substitutes() if for_product_id else {}
     named = substitutes.get(for_product_id or "", [])
+    rules = card_rules(preferences, notes)
+    if rules:
+        alternatives = [a for a in alternatives if allowed_by_card(for_product_name or "", a.get("name") or "", rules)]
     names = [a.get("name") or "" for a in alternatives]
 
     def key(item: tuple[int, dict]) -> tuple:

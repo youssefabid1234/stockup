@@ -19,15 +19,15 @@ crème liquide → œuf entier liquide, chocolat noir 64 % → chocolat blanc, f
 
 ## Résultat
 - 9 substituts des documents : **toujours premiers** (test).
-- **26 premiers choix changent** (ex. crème liquide → crème fraîche ; noir 64 % → noir 70 % ; sucre semoule → sucre
-  perlé ; blanc d'œuf → œuf entier ; T55 boulangère → T55 tradition ; pain aux raisins → croissant).
+- **27 premiers choix changent** (ex. crème liquide → crème fraîche ; noir 64 % → noir 70 % ; sucre semoule → sucre
+  perlé ; blanc d'œuf → œuf entier ; T55 boulangère → T55 tradition ; pain aux raisins → mini-viennoiseries).
 - **23 produits sans remplaçant de même usage** → l'agent demande (fruits frais, sel, vanille, eau de fleur
   d'oranger, nappage, praliné, cacao, emballages…).
-- Limites connues : baguette précuite → chocolatine et pâte feuilletée → croissant restent proposés (ils partagent
-  « surgelé » / « pur beurre ») ; quelques « demander » discutables (margarine de feuilletage, cerneaux de noix,
+- Limites connues : baguette précuite et purée de framboise → pâte feuilletée, pâte feuilletée → croissant restent
+  proposés (rien de mieux en stock dans la catégorie, et un mot commun suffit pour « même usage ») ; quelques « demander » discutables (margarine de feuilletage, cerneaux de noix,
   raisins secs). Le client garde toujours le dernier mot : aucun remplaçant n'est ajouté sans son « oui ».
 
-## Branchement (fichier de Youssef, en attente de son accord)
+## Branchement (fichier de Youssef, appliqué avec son accord ; exclusions ajoutées ensuite)
 `apps/ai/app/tools/insight.py` doit passer `for_product_name` et `for_unit` à `rank_alternatives` (sinon le point 1 est
 sans effet) et appeler `has_same_use_substitute` avant la 2e vague de prix (point 2). Patch prêt (311 tests verts avec
 le patch appliqué) :
@@ -132,11 +132,11 @@ le patch appliqué) :
 | prd_0052 | Fruits confits en cubes |  | Poudre d'amande blanche | — | aucun remplaçant de même usage → demander |
 | prd_0053 | Croissant pur beurre cru surgelé 70 g |  | Chocolatine pur beurre crue surgelée 75 g | Chocolatine pur beurre crue surgelée 75 g |  |
 | prd_0054 | Chocolatine pur beurre crue surgelée 75 g |  | Croissant pur beurre cru surgelé 70 g | Croissant pur beurre cru surgelé 70 g |  |
-| prd_0055 | Pain aux raisins cru surgelé 110 g |  | Pâte feuilletée pur beurre en plaques | Croissant pur beurre cru surgelé 70 g | changé |
+| prd_0055 | Pain aux raisins cru surgelé 110 g |  | Pâte feuilletée pur beurre en plaques | Assortiment mini-viennoiseries crues | changé |
 | prd_0056 | Assortiment mini-viennoiseries crues |  | Pain aux raisins cru surgelé 110 g | Pain aux raisins cru surgelé 110 g |  |
 | prd_0057 | Pâte feuilletée pur beurre en plaques |  | Pain aux raisins cru surgelé 110 g | Croissant pur beurre cru surgelé 70 g | changé |
-| prd_0058 | Baguette précuite surgelée 280 g |  | Purée de framboise surgelée | Chocolatine pur beurre crue surgelée 75 g | changé |
-| prd_0059 | Purée de framboise surgelée |  | Baguette précuite surgelée 280 g | Baguette précuite surgelée 280 g |  |
+| prd_0058 | Baguette précuite surgelée 280 g |  | Purée de framboise surgelée | Pâte feuilletée pur beurre en plaques | changé |
+| prd_0059 | Purée de framboise surgelée |  | Baguette précuite surgelée 280 g | Pâte feuilletée pur beurre en plaques | changé |
 | prd_0060 | Fraise Gariguette |  | Citron jaune | — | aucun remplaçant de même usage → demander |
 | prd_0061 | Framboise |  | Citron jaune | — | aucun remplaçant de même usage → demander |
 | prd_0062 | Citron jaune |  | Pomme Golden pâtissière | — | aucun remplaçant de même usage → demander |
@@ -168,3 +168,47 @@ quand le stock manque**, avec seulement une alerte :
 Même appel au premier tour de S05 (qui passe : ses contrôles ne l'interdisent pas). Proposition à Amine K. : si une
 ligne dépasse le stock disponible, ne rien écrire et renvoyer `next` = « produit en quantité insuffisante : propose
 d'abord avec product_insight ».
+
+## Exclusions écrites dans les fiches (« jamais de… », « … uniquement »)
+
+`card_rules` lit les préférences et les notes, phrase par phrase ; `rank_alternatives` retire ce que la fiche interdit
+et `has_same_use_substitute` ne compte pas ces produits (s'il ne reste rien → « rien d'équivalent », l'agent demande).
+Règle générale : une interdiction retire un produit dont le nom contient tous ses mots ; une obligation ne s'applique
+que si le produit manquant contient son premier mot (sa famille), et garde seulement les produits qui contiennent les
+mots qu'elle partage avec lui (pourcentages compris). Une phrase dont les mots ne sont dans aucun nom de produit
+(« jamais de livraison ce jour-là », « … ne lit pas les mails de relance ») n'a aucun effet.
+
+Liste vérifiée par Daycem (24/11), 29 fiches sur 104 :
+
+| Phrase | Fiches | Effet |
+|---|---|---|
+| « Ne veut pas de surgelé » | 10 | aucun produit surgelé (baguette précuite, chocolatine, croissant, pain aux raisins, purée de framboise) |
+| « jamais d'épaisse » | 7 | jamais la crème fraîche épaisse |
+| « Crème 35 % uniquement » | 7 (les mêmes) | si la crème liquide 35 % manque : rien → l'agent demande |
+| « Farine de tradition du Lauragais uniquement » | 8 | si la T55 tradition manque : rien (même pas le substitut des documents) → l'agent demande |
+| « Couvertures exclusivement Cacaos Garonne » | 1 | si une couverture manque : seulement une autre couverture |
+| « tourage AOP exclusivement » | 1 | si le tourage AOP manque : rien (ce client refuse déjà les remplacements) |
+| « Ovoproduits liquides uniquement » | 3 | ignorée (voir limites) |
+| « jamais de livraison ce jour-là » (notes) | 18 | aucun effet |
+
+### Limites connues (non codées)
+1. **Ovoproduits** (3 fiches : cuisine centrale, EHPAD, lycée) : « ovoproduit » n'apparaît dans aucun nom de produit,
+   donc la règle est ignorée ; si un œuf liquide manque, les œufs en coquille peuvent encore être proposés (l'agent
+   lit la fiche, mais rien ne le garantit). **Piste** : des synonymes tirés du glossaire de l'entreprise
+   (`DATA_DIR/context`, comme `doc_substitutes`) : « ovoproduits » = œuf entier / jaune / blanc d'œuf liquides.
+2. **Marque des couvertures** (1 fiche : « Couvertures exclusivement Cacaos Garonne, origine Équateur et Pérou ») :
+   la marque n'est pas dans les noms, seule la famille « couverture » est vérifiée. **Piste** : vérifier le fournisseur
+   du produit (`mainSupplierId` dans l'ERP) contre le nom du fournisseur cité par la fiche.
+
+### Test direct de `product_insight` (24/11, sans modèle, après `make reset`)
+Même demande, 1 500 L de crème liquide UHT 35 % (il en reste 1 320 L, il en manque 180), pour deux clients qui
+acceptent les remplacements :
+
+| Client | Fiche | Alternatives renvoyées | Note |
+|---|---|---|---|
+| Le Petit Four de Saint-Cyprien (cli_0053) | « Crème 35 % uniquement, jamais d'épaisse » | aucune | « Aucun produit en stock n'a le même usage. Annonce la rupture et demande au client ce qu'il souhaite, sans proposer de produit. » |
+| Le Pétrin de Colomiers (cli_0021) | aucune exclusion | crème fraîche épaisse 30 %, œuf entier liquide, blanc d'œuf liquide, lait entier, jaune d'œuf liquide | — |
+
+La crème épaisse, premier choix pour un client sans exclusion, n'est jamais proposée au client qui l'a exclue.
+(Cas construit : dans l'ERP du 24/11, aucun produit réellement en rupture ne touche une fiche à exclusion ; le
+scénario S46 utilise le cas réel le plus proche.)
