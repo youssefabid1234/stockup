@@ -17,6 +17,10 @@ On l'allume dans `.env` (à la racine) puis on redémarre le service IA (Ctrl-C 
 | `TEAM_ORDER_RULES=1` | règles « commande juste » dans le prompt | Amine Khalil |
 | `TEAM_SALES_RULES=1` | règles « bon vendeur » dans le prompt | Daycem |
 | `TEAM_FAST_MODEL=claude-haiku-5-5` | modèle de l'agent rapide | Youssef |
+| `TEAM_ROUTER=1` | réponses simples (« oui », « merci », « validez ») au modèle rapide, le reste au modèle principal | Amine Khalil |
+| `TEAM_SLIM_PROMPT=1` | prompt allégé : seulement les sections essentielles de `data/context` | Amine Khalil |
+| `TEAM_RECOMMENDATIONS=1` | suggestions personnalisées pendant l'appel (promo, nouveauté, achat habituel) | Mohamed Amine |
+| `TEAM_OUTBOUND_DEMO=1` | appels sortants simulés, page Voix (demande aussi `TEAM_RECOMMENDATIONS=1`) | Mohamed Amine |
 
 Une brique n'est allumée **par défaut sur `main`** (dans `.env.example`) que quand ses scénarios passent.
 
