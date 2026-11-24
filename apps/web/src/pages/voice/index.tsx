@@ -1,4 +1,5 @@
 import { OutboundCalls } from "./outbound";
+import { PlannedCalls } from "./planned";
 /**
  * Voix — two modes, switched in the header (?mode=command):
  *  - Appel (conversation): two-track push-to-talk lab on WS /ai/voice (below).
@@ -183,6 +184,7 @@ function CallMode({ modeSwitch }: { modeSwitch: ReactNode }) {
           />
         </section>
         <aside className="flex w-[280px] shrink-0 flex-col overflow-y-auto border-l border-border bg-card xl:w-[320px] 2xl:w-[380px]">
+          <PlannedCalls ready={connected} busy={!!v.caller} pending={v.callerPending} />
           <OutboundCalls ready={connected} busy={!!v.caller} pending={v.callerPending}
             onAnswer={(outboundId) => v.identifyCaller({ outboundId })}
             error={v.lastError?.startsWith("Impossible de décrocher") ? v.lastError : undefined} />
