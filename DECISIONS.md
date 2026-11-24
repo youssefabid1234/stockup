@@ -302,6 +302,33 @@ juge séparé) : 14/19 respectées, 2 partielles, 3 non (deux questions dans une
 mot douteux deviné par l'habitude). Page Appel : en-tête avec logo et chrono, fond « boulangerie », bulles, points
 « écrit… », détails ERP/latence repliés, réponses rapides selon la dernière question, micro rond ; clair et sombre.
 
+#### T3 · cache du prompt (vérifié) et T6 · réclamation + commande dans le même appel (Amine Khalil, reprise de Youssef)
+
+**T3, cache du prompt Anthropic** : sur le rejeu complet du 24/11 (21 scénarios, configuration du jury), 2 054 986 tokens
+lus depuis le cache contre 54 606 écrits et 260 non cachés : **97 % de l'entrée vient du cache** dès le 2e appel du
+modèle. La fiche du client reste en fin de prompt (elle change d'un appel à l'autre), le contexte statique devant.
+
+**T6, réclamation (idée 5, « SAV avec contexte stock »)** : deux outils (`tools/after_sales.py`, sous `TEAM_ORDER_RULES`),
+d'après le playbook (« toute réclamation est enregistrée avec la commande concernée », « avoir au-delà de 150 € HT
+validé par la direction ») :
+- `report_delivery_issue` retrouve la **vraie** livraison (la dernière partie avec ce produit), le prix payé et le
+  montant, et enregistre la réclamation avec la commande, le produit et le montant. Il renvoie les solutions permises :
+  relivraison gratuite avec la prochaine livraison (si le stock suit) ou avoir ; au-delà de 150 € HT, rien n'est promis.
+  Si le client dit « ce matin » et qu'il n'y a pas eu de livraison ce matin, rien n'est enregistré : l'agent fait
+  confirmer la bonne livraison ;
+- `settle_delivery_issue` applique le choix : ligne à 0 € sur la commande de l'appel (ou un brouillon pour la prochaine
+  livraison), ou avoir noté sur la réclamation pour l'ADV. `place_order` ne touche jamais la ligne offerte.
+
+Avant : sur S08, l'agent notait une réclamation sans la commande concernée, datait la livraison « de ce matin » alors que
+Sarrailh avait été livré le samedi 21/11, et proposait de **refaire payer** les deux sacs manquants par une nouvelle
+commande. Après (rejeu voix) : S08 PASS sur 3 répliques (« désolée… je peux vous les relivrer gratuitement jeudi, ou vous
+faire un avoir de 37 euros 78 » → une seule commande confirmée : 10 sacs payés + 2 sacs à 0 €, réclamation liée à la
+livraison du 21/11 avec son montant) ; S20 PASS (« je ne vois pas de livraison ce matin chez vous : la dernière date de
+samedi 21 novembre, c'est bien celle-là ? », rien d'enregistré). Nouveaux scénarios de Youssef : S20 (date dite
+fausse), S21 (appelant non identifié : l'agent demande qui appelle), S22 (plusieurs produits dont un en rupture : rien
+n'est écrit avant l'accord sur le 82 %, puis la commande entière en une fois) ; 7 répliques sur 7. Tests : 6 dans
+`test_after_sales.py`, suite complète 391 verts.
+
 ### Commande juste (Amine Khalil)
 
 **Mission** : ce qui finit dans l'ERP est exactement ce que le client voulait (bon produit, bonne quantité, bon jour,

@@ -1,0 +1,25 @@
+{
+  "id": "S21",
+  "owner": "youssef",
+  "title": "Appelant qui ne se nomme pas (« c'est moi, comme d'hab ») sans numéro reconnu : demander qui appelle",
+  "why": "Intelligent : sans client identifié, aucune commande n'est prise au hasard.",
+  "turns": [
+    {
+      "say": "Bonjour, c'est moi ! Comme d'hab pour jeudi s'il vous plaît.",
+      "expect": {
+        "tools_none": [
+          "place_order",
+          "create_draft_order",
+          "confirm_order"
+        ],
+        "says_any": [
+          "qui",
+          "nom",
+          "établissement",
+          "boulangerie",
+          "maison"
+        ]
+      }
+    }
+  ]
+}

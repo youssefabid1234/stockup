@@ -104,7 +104,8 @@ async def place_order(
 
     # 5. The write: a new draft, or the order in progress edited (one order per call)
     if order:
-        by_product = {line["productId"]: line for line in order["lines"]}
+        # a free line (0 €, complaint redelivery: after_sales.py) is never the line the caller is changing
+        by_product = {line["productId"]: line for line in order["lines"] if line.get("unitPrice") != 0}
         writes = []
         for product_id, qty in wanted:
             line = by_product.get(product_id)
@@ -137,7 +138,7 @@ async def shortages(ctx: ToolContext, client_id: str, wanted: list[tuple[str, fl
 
     from .insight import gather_insight
 
-    in_order = {line["productId"]: line.get("qty") or 0 for line in (order or {}).get("lines", [])}
+    in_order = {line["productId"]: line.get("qty") or 0 for line in (order or {}).get("lines", []) if line.get("unitPrice") != 0}
     extra = [(pid, qty - in_order.get(pid, 0)) for pid, qty in wanted if qty - in_order.get(pid, 0) > 0]
     if not extra:
         return []

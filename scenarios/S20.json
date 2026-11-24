@@ -1,0 +1,25 @@
+{
+  "id": "S20",
+  "owner": "youssef",
+  "title": "Réclamation sur « la livraison de ce matin » alors que la dernière date de samedi : ne rien inventer",
+  "why": "Intelligent : l'agent vérifie dans l'ERP au lieu de croire la date dite ; il fait confirmer la livraison avant d'enregistrer.",
+  "client": "cli_0001",
+  "turns": [
+    {
+      "say": "Bonjour c'est Nadine, Maison Sarrailh. La livraison de ce matin, il manquait deux sacs de tradi.",
+      "expect": {
+        "tools_any": [
+          "report_delivery_issue"
+        ],
+        "tools_none": [
+          "log_client_event",
+          "settle_delivery_issue",
+          "place_order"
+        ],
+        "says_any": [
+          "samedi"
+        ]
+      }
+    }
+  ]
+}
