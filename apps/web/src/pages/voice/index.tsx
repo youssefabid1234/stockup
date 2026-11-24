@@ -105,19 +105,28 @@ function CallMode({ modeSwitch }: { modeSwitch: ReactNode }) {
     };
   }, []);
 
-  // team 12 (Youssef): the caller said goodbye and Lucie has answered (her voice is over): hang up by itself.
+  // team 12 (Youssef): the call is over (the caller said goodbye, or Lucie closed with a goodbye and no question):
+  // hang up by itself as soon as her voice is over — and after 12 s at the latest, whatever the activity says.
   const goodbyeDone = useRef<number>();
   useEffect(() => {
     const last = v.turns[v.turns.length - 1];
-    if (!v.caller || !last || !last.agent.done || v.activity !== "idle" || goodbyeDone.current === last.id) return;
-    const callerBye = /\b(au revoir|bonne (?:journ[ée]e|soir[ée]e|fin de journ[ée]e|continuation)|[àa] (?:bient[ôo]t|plus|demain)|ciao|bye)\b/i.test(last.caller.text);
-    // Lucie's own call (outbound): she ends it herself, as soon as she has said goodbye
-    const lucieBye = !!v.caller.outboundId && /\bau revoir\s*[!.]?\s*$/i.test(last.agent.text.trim());
+    if (!v.caller || !last || !last.agent.done || goodbyeDone.current === last.id) return;
+    const callerBye = /\b(au revoir|adieu|bonne (?:journ[ée]e|soir[ée]e|fin de journ[ée]e|continuation|soirée)|[àa] (?:bient[ôo]t|plus|demain)|ciao|bye)\b/i.test(last.caller.text);
+    const said = last.agent.text.trim();
+    const lucieBye = !said.includes("?") && /\b(au revoir|belle journ[ée]e|bonne journ[ée]e|bonne soir[ée]e|bonne fin de journ[ée]e)\s*[!.]*\s*$/i.test(said);
     if (!callerBye && !lucieBye) return;
     goodbyeDone.current = last.id;
-    const t = window.setTimeout(() => vRef.current.endCall(), 1200);
-    return () => window.clearTimeout(t);
-  }, [v.turns, v.activity, v.caller]);
+    const started = Date.now();
+    const timer = window.setInterval(() => {
+      const busy = vRef.current.activity === "speaking" || vRef.current.activity === "thinking";
+      if (!vRef.current.caller) { window.clearInterval(timer); return; }
+      if ((!busy && Date.now() - started > 900) || Date.now() - started > 12000) {
+        window.clearInterval(timer);
+        vRef.current.endCall();
+      }
+    }, 300);
+    return () => window.clearInterval(timer);
+  }, [v.turns, v.caller]);
 
   const connected = v.conn === "ready";
   const ready = connected && !!v.caller; // team 12: no talking before the caller is identified

@@ -195,6 +195,7 @@ export function useVoiceSession() {
         turnHasAudio.current = true;
         if (m.mime !== MOCK_TTS_MIME) {
           stopPlayback();
+          const ducked = !!tentative.current; // team 12: a sound is being checked: the next sentence starts quieter
           const p: SegmentPlayer = new SegmentPlayer(m.mime, {
             onPlaying: () => { setActivity("speaking"); markPerceived(id); },
             onEnded: () => {
@@ -204,6 +205,7 @@ export function useVoiceSession() {
             },
           });
           player.current = p;
+          if (ducked) p.setVolume(0.2);
         }
         break;
       case "agent_answer_start":
@@ -316,7 +318,7 @@ export function useVoiceSession() {
   const startTalking = useCallback(async (opts?: { tentative?: boolean }) => {
     if (pressed.current || conn !== "ready" || !caller) return;
     pressed.current = true;
-    if (opts?.tentative && player.current) {
+    if (opts?.tentative) {
       // team 12 (Youssef): a sound while Lucie speaks: record it locally, lower her voice, decide in a moment
       const s = await ensureMic();
       if (!s || !pressed.current) { pressed.current = false; return; }
@@ -421,6 +423,7 @@ export function useVoiceSession() {
 
   /** Team 12: hang up: back to the caller ID form, fresh conversation. */
   const endCall = useCallback(() => {
+    tentative.current = null; // team 12: a sound being checked is dropped with the call
     // team 12 (Youssef): hanging up stops everything that costs: a recording in progress is dropped (no audio
     // reaches the STT any more), the mic is released (hands-free stops listening), the server cancels the running
     // turn (LLM + TTS) on "reset", and the agent's audio stops.
