@@ -146,7 +146,8 @@ def without_repeated_greeting(reply: str, contact: str | None) -> str:
         if name:
             names = "|".join(re.escape(part) for part in dict.fromkeys((name, *name.split())))
             address = rf"(?:{address})(?:\s+(?:{names}))?|{names}"
-    prefix = rf"^(?:bonjour|bonsoir)(?:[ ,]+(?:{address}))?(?:[.!?,…]+\s*|\s*$)"
+    greeting = r"(?:re-?bonjour|bonjour|bonsoir|salut|coucou|hello|allô|allo)"  # team 12: « Salut. » repeated (24/11)
+    prefix = rf"^{greeting}(?:[ ,]+(?:{address}))?(?:\s*[.!?,…]+\s*|\s*$)"  # « Madame ! » (French space)
     remaining = re.sub(prefix, "", reply, count=1, flags=re.I)
     if remaining != reply and remaining:
         return remaining[0].upper() + remaining[1:]
