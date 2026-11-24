@@ -329,6 +329,14 @@ fausse), S21 (appelant non identifié : l'agent demande qui appelle), S22 (plusi
 n'est écrit avant l'accord sur le 82 %, puis la commande entière en une fois) ; 7 répliques sur 7. Tests : 6 dans
 `test_after_sales.py`, suite complète 391 verts.
 
+**Plus de blanc, voix française (Youssef, 24/11 midi).** (1) Blancs de 1,8 à 4,5 s : un `.env` créé avant `TEAM_FILLERS=4`
+n'avait pas la ligne → phrases d'attente éteintes ; docker-compose lit maintenant `.env.example` puis `.env` (une ligne
+absente prend la valeur d'équipe) → premier son immédiat. (2) Mauvais français : la voix par défaut était « George »
+(anglaise) sur `eleven_flash_v2_5` ; nouvelle voix par défaut « Lucie » (française, service client) sur
+`eleven_v4_turbo` (1er octet mesuré ~200-370 ms contre ~210 ms), voix de secours si la clé n'a pas la voix, et
+`clients/french_speech.tts_text` lit les codes en mots (T55 → T 55, 82 % → 82 pour cent, 8,46 € → 8 euros 46, kg,
+HT, AOP épelé). Extraits comparatifs (4 voix × 3 modèles) générés pour choisir à l'oreille.
+
 ### Commande juste (Amine Khalil)
 
 **Mission** : ce qui finit dans l'ERP est exactement ce que le client voulait (bon produit, bonne quantité, bon jour,
