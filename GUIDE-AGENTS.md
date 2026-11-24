@@ -9,31 +9,31 @@ below start from `apps/ai/app/`.
 
 ## Contents
 
-1. [What is an agent?](#1-quest-ce-quun-agent-)
-2. [The harness](#2-le-harness)
-3. [The loop of Agent ](#3-la-boucle-de-lagent)
-4. [Tools](#4-les-outils)
-5. [The context and memory](#5-le-contexte-et-la-mémoire)
-6. [Models](#6-les-modèles)
-7. [Jev, decision model](#7-jev-le-modèle-de-décision)
-8. [Measure and improve ](#8-mesurer-et-améliorer)
-9. [Frequent traps](#9-pièges-fréquents)
-10. [To go further](#10-pour-aller-plus-loin)
+1. [What is an agent?](#1-what-is-an-agent)
+2. [The harness](#2-the-harness)
+3. [The loop of Agent ](#3-agents-loop)
+4. [Tools](#4-tools)
+5. [The context and memory](#5-context-and-memory)
+6. [Models](#6-models)
+7. [Jev, decision model](#7-jev-the-decision-model)
+8. [Measure and improve ](#8-measuring-and-improving)
+9. [Frequent traps](#9-common-traps)
+10. [To go further](#10-to-go-further)
 
 ## I want... → section
 
 | I want... | Section |
 |---|---|
-| understand what an agent is, quickly | [1](#1-quest-ce-quun-agent-) |
-| know which file does what in the AI service | [2](#2-le-harness) |
-| understand why a spin takes 3 model calls | [3](#3-la-boucle-de-lagent) |
-| write a new tool that works at the first stroke | [4](#4-les-outils) |
-| the agent knows the client better | [5](#5-le-contexte-et-la-mémoire) |
-| reduce cost and latency | [3](#3-la-boucle-de-lagent), [5.5](#55-le-cache-de-prompt), [6](#6-les-modèles), [7](#7-jev-le-modèle-de-décision) |
-| change model | [6](#6-les-modèles) |
-| decide "yes/no" or "what product" without LLM | [7](#7-jev-le-modèle-de-décision) |
-| prove that Mon agent is improving | [8](#8-mesurer-et-améliorer) |
-| Avoiding conventional mistakes | [9](#9-pièges-fréquents) |
+| understand what an agent is, quickly | [1](#1-what-is-an-agent) |
+| know which file does what in the AI service | [2](#2-the-harness) |
+| understand why a spin takes 3 model calls | [3](#3-agents-loop) |
+| write a new tool that works at the first stroke | [4](#4-tools) |
+| the agent knows the client better | [5](#5-context-and-memory) |
+| reduce cost and latency | [3](#3-agents-loop), [5.5](#55-quick-cache), [6](#6-models), [7](#7-jev-the-decision-model) |
+| change model | [6](#6-models) |
+| decide "yes/no" or "what product" without LLM | [7](#7-jev-the-decision-model) |
+| prove that Mon agent is improving | [8](#8-measuring-and-improving) |
+| Avoiding conventional mistakes | [9](#9-common-traps) |
 
 ---
 
@@ -138,7 +138,7 @@ with the same model get very different agents according to their harness. That's
 
 - The harness is yours: everything changes. The most profitable levers are often the prompt, the tools and what you want.
   is put in context, not the model.
-- Change one piece at a time and measure (section [8](#8-mesurer-et-améliorer)].
+- Change one piece at a time and measure (section [8](#8-measuring-and-improving)].
 
 ---
 
@@ -180,7 +180,7 @@ Real test with team keys (November 2026), Claude Sonnet 5.5, before prompt cache
 
 Almost everything comes from the prompt system (rules + company documents) returned to **each** step. Sonnet 5.5 a
 chosen the right tools, prices and dates each time: quality was not the problem, the volume was.
-Quick cache, now active for Anthropic, charges this prefix at reduced rate (section [5.5](#55-le-cache-de-prompt)]);
+Quick cache, now active for Anthropic, charges this prefix at reduced rate (section [5.5](#55-quick-cache)]);
 it does not reduce the number of steps.
 
 ### Advice
@@ -189,7 +189,7 @@ it does not reduce the number of steps.
   than a faster model.
 - Ask the model (in the prompt) to call ** at the same time** independent tools: the loop runs them
   already in parallel.
-- A composite tool (section [4](#4-les-outils)) replaces two or three steps.
+- A composite tool (section [4](#4-tools)) replaces two or three steps.
 - Don't go up `AGENT_MAX_STEPS` to hide a loop: if a turn exceeds 4–5 steps, it's a tool or a tool
   Missing prompt rule.
 
@@ -229,14 +229,14 @@ Consequence: A tool is conceived as a API for a colleague in a hurry who reads o
 
 **Ids rather than names**: the model finds the entity with `search` (fuzzy search), then works with the id.
 create no tool that takes a client name "as said" and guesses: the blurred search returns several
-and it is to the model (or Jev, section [7](#7-jev-le-modèle-de-décision)]) to ask "what?".
+and it is to the model (or Jev, section [7](#7-jev-the-decision-model)]) to ask "what?".
 
 ### Anti-patterns
 
 - A generic `query_erp(path)` tool: the model invents roads and reads huge raw ERP objects.
 - Send the complete ERP object "in case": thousands of tokens read at each step.
 - Two tools with almost identical descriptions: the model hesitates or alternates.
-- A tool that confirms an order without accepted summary (see [9](#9-pièges-fréquents)].
+- A tool that confirms an order without accepted summary (see [9](#9-common-traps)].
 - Send `{"ok": false}` without a message: the model doesn't know what to say.
 
 ### Mini example: from bad to good version
@@ -408,14 +408,14 @@ A single LLM customer is built (`get_llm_client()`, cached). To route, build a s
 
 - small model (Haiku) for simple tricks: "there is still bar?", "thank you, goodbye";
 - Large model (Sonnet / Opus) for trading, claims, multi-line orders;
-- the **routeur** may be a rule, or a decision Jev (section [7](#7-jev-le-modèle-de-décision)].
+- the **routeur** may be a rule, or a decision Jev (section [7](#7-jev-the-decision-model)].
 
 **Repli**: If the provider returns an error (quota, failure), `run_agent` issues an event `error`.
 catch this in the caller and restart the turn on another client.
 
 ### Advice
 
-- Compare models on **vos** scenarios (section [8](#8-mesurer-et-améliorer)), not on a print.
+- Compare models on **vos** scenarios (section [8](#8-measuring-and-improving)), not on a print.
 - Before changing a model, reduce the context and number of steps: it's often more gain.
 - The mock (`LLM_PROVIDER=mock`) calls only one tool per step: its latency does not say anything about the real model.
 
@@ -530,7 +530,7 @@ in a JSONL file from the caller.
 | **Id hallucinated** | `{"error": "… introuvable"}`, or worse: the wrong entity | always `search` first; tools that return useful ids; never id in an example of prompt that looks like a real one |
 | **Tool loop** | same tool called 3 times, then `GIVE_UP` | clear error message in the tool; rule "if the tool fails twice, tell the client"; composite tool |
 | **Huge tool outputs** | tokens that explode, slow responses | `pick`, cut lists, shortened texts |
-| **Prompt which inflates** | every turn slower and more expensive, rules ignored | context in retrival, cache of prompt intact ([5.5](#55-le-cache-de-prompt)), regular review of the `.md` |
+| **Prompt which inflates** | every turn slower and more expensive, rules ignored | context in retrival, cache of prompt intact ([5.5](#55-quick-cache)), regular review of the `.md` |
 | **Order confirmed without rereading** | `confirm_order` Called Before Customer Agreement | oral summary + explicit agreement (`VOICE_RULES`), or `is_yes` from Jev |
 | **Alerts ignored** | order confirmed for a blocked customer | ERP returns `warnings` but ** blocks nothing**: the prompt or a tool must refuse ([TECH 9](TECH.md#pieges)) |
 | **Customer preferences ignored** | proposed substitution to a client who refuses them | `get_context` on the client at the beginning of the call (or preloaded) |
