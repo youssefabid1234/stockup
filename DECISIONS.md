@@ -210,6 +210,14 @@ anciens outils), et sans consigne l'agent enregistrait la demande « premier arr
 (+2 s) : l'outil rappelle maintenant de **proposer** d'abord. Les échecs restants des scénarios ne viennent pas de
 l'outil (S05·2 attend get_price alors que quote_line d'Amine K. répond ; S05·1 a dit « quatre-vingt-deux » en
 lettres ; S40·4 redemande « commande séparée ou ajout ? »). `TEAM_PRODUCT_INSIGHT` passe à 1 dans `.env.example`.
+**Écoute robuste en mains libres (Youssef, 24/11).** Problème vu au test : en parlant en plusieurs fois, seul le dernier
+morceau comptait (un morceau coupé en pleine transcription était jeté). Maintenant : les morceaux non encore répondus
+(`Conversation.pending`) partent en UN message numéroté ; Soniox sépare les voix (`enable_speaker_diarization`) et
+donne une confiance par mot → `[appelant] … [autre voix] …` et `mot(?)` pour le modèle seulement (le texte affiché et
+relu reste brut) ; consigne « Écoute » en mode vocal. Vérifié en vrai : audio 2 voix → « [autre voix] Dis, tu veux un
+café ? » isolé et « T145(?) » (T55 mal entendu) marqué ; l'agent comprend « 10… non 12 » = 12, ignore le café,
+redemande la farine douteuse.
+
 ### Commande juste (Amine Khalil)
 
 **Mission** : ce qui finit dans l'ERP est exactement ce que le client voulait (bon produit, bonne quantité, bon jour,

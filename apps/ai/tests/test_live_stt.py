@@ -114,7 +114,7 @@ async def test_soniox_partials_arrive_while_streaming_then_finalize(soniox):
     await stream.aclose()
     await asyncio.wait_for(fake.closed.wait(), 2)  # socket closed once the final words are in
     assert fake.start == {
-        "model": "stt-rt-v6", "audio_format": "auto", "language_hints": ["fr"], "enable_endpoint_detection": True,
+        "model": "stt-rt-v6", "audio_format": "auto", "language_hints": ["fr"], "enable_endpoint_detection": True, "enable_speaker_diarization": True,
         "context": {"terms": ["Lemoine", "bar de ligne"]},
     }  # fmt: skip
     assert fake.frames == [b"webm0", b"webm1", b"webm2"]

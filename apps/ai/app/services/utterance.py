@@ -30,6 +30,8 @@ class Utterance:
         self.frames: list[bytes] = []
         self.queue: asyncio.Queue[bytes | None] = asyncio.Queue()  # frames for the live stream, None = end of audio
         self.live = asyncio.create_task(self._listen()) if stt.streams else None
+        self.partial = ""  # team 12 (Youssef): words heard so far (kept if the turn is interrupted)
+        self.annotated: str | None = None  # team 12: final transcript for the model (agent/listening.py)
 
     def feed(self, frame: bytes) -> None:
         self.frames.append(frame)
@@ -65,8 +67,9 @@ class Utterance:
         async with aclosing(self.stt.transcribe_stream(self._audio(), self.mime, hint)) as updates:  # type: ignore[type-var]
             async for update in updates:
                 if update.final:
+                    self.partial, self.annotated = update.text, update.annotated
                     return update.text
                 if update.text != shown:
-                    shown = update.text
+                    shown = self.partial = update.text
                     await self.on_partial(update)
         return shown or ""
