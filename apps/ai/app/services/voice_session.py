@@ -70,7 +70,14 @@ from app.tools import ErpClient, all_tools
 from . import fillers
 from .utterance import Utterance
 from .vocabulary import stt_hint
-from .voice_reply import one_question, spoken_reply, vary_closing, vary_opening, without_repeated_greeting
+from .voice_reply import (
+    one_question,
+    spoken_reply,
+    vary_closing,
+    vary_opening,
+    without_repeated_greeting,
+    without_repeated_question,
+)
 
 client_message = TypeAdapter(VoiceClientMessage)
 
@@ -219,7 +226,15 @@ class VoiceConnection:
             conv.used_closings = []
             conv.agent_opened = False
             greetings = fillers.OPENING_LINES if team_flags.no_silence() else CALL_GREETINGS  # mode 4: the agent opens
-            conv.opening_greeting = greetings[msg.contact_title] if opening_enabled else None
+            # team 12 (Youssef): greet the person on the phone by first name (prepared while the sheet loads, no delay)
+            first = (msg.contact_name or "").split()[0] if (msg.contact_name or "").strip() else ""
+            if msg.contact_title or not first:  # a civility sent by an older page: kept
+                personal = greetings[msg.contact_title]
+            elif team_flags.no_silence():
+                personal = f"Bonjour {first}, que puis-je faire pour vous ?"
+            else:
+                personal = f"Bonjour {first}."
+            conv.opening_greeting = personal if opening_enabled else None
         async with asyncio.TaskGroup() as preparation:
             if team_flags.no_silence() and not msg.resume and conv.opening_greeting:
                 # mode 4: say « Bonjour…, que puis-je faire pour vous ? » as soon as the clip is ready, while the
@@ -397,10 +412,15 @@ class VoiceConnection:
             # TEAM_ROUTER: « c'est bon, validez », « merci » → the fast model (2-3× faster); the rest → the main model
             # team 12 (Youssef): several pieces pending → route on the whole request, not just the last « merci »
             route_on = heard if len(conv.pending) == 1 else listening.merge_parts(conv.pending)
-            llm, model_used = pick_llm(route_on, get_llm_client(), get_fast_llm_client)
+            new_client = bool(conv.call_context and conv.call_context.is_new)
+            if new_client:  # team 12 (Youssef): a new client's « merci » still needs the main model (note what is pending)
+                llm, model_used = get_llm_client(), "principal"
+            else:
+                llm, model_used = pick_llm(route_on, get_llm_client(), get_fast_llm_client)
+            tools = [t for t in all_tools() if not (new_client and t.name in preload.NO_ORDER_FOR_NEW)]
             if model_used == "rapide":
                 print(f"[router] modèle rapide pour « {heard} »", flush=True)
-            async for ev in agent(working, llm=llm, tools=all_tools(), mode="voice", actor_name=conv.actor_name, **extra):
+            async for ev in agent(working, llm=llm, tools=tools, mode="voice", actor_name=conv.actor_name, **extra):
                 match ev:
                     case TextEvent(delta=delta) if delta.strip():
                         if timings.llm_first_token_ms is None:
@@ -417,6 +437,8 @@ class VoiceConnection:
                             spoken = without_repeated_greeting(spoken, contact)
                         spoken = vary_opening(spoken, conv.last_spoken)  # team 12 (Youssef): no « Parfait, » twice in a row
                         spoken = vary_closing(one_question(spoken), conv.used_closings)  # one question, varied closing
+                        if conv.call_context and conv.call_context.is_new:  # new client: a question is asked once
+                            spoken = without_repeated_question(spoken, conv.last_spoken)
                     case ErrorEvent(message=message):
                         await speaker.stop_waiting()
                         await self.send(VoiceErrorMessage(message=message))

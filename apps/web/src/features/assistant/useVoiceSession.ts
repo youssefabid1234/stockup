@@ -81,7 +81,12 @@ export function useVoiceSession() {
     audioMime.current = undefined;
     discardAudio.current = true;
     setTurns((ts) => [
-      ...ts.map((t) => (t.id === prev && !t.agent.done ? { ...t, agent: { ...t.agent, done: true, interrupted: true } } : t)),
+      // team 12 (Youssef): a caller piece cut before its final transcript (hands-free) never stays « Transcription… »:
+      // its words are kept (the server merges them into the next message) or, if nothing was heard, it disappears
+      ...ts
+        .filter((t) => !(t.id === prev && t.caller.status !== "final" && !t.caller.text.trim() && !t.agent.text))
+        .map((t) => (t.id === prev && t.caller.status !== "final" ? { ...t, caller: { ...t.caller, status: "final" as const } } : t))
+        .map((t) => (t.id === prev && !t.agent.done ? { ...t, agent: { ...t.agent, done: true, interrupted: true } } : t)),
       { id, caller, agent: { text: "", tools: [], done: false } },
     ]);
     return id;
@@ -161,6 +166,7 @@ export function useVoiceSession() {
       }
       case "nudge_said": {
         // team 12 (Youssef): hands-free, the caller was silent: the agent's short line (its audio follows)
+        releasedAt.current = undefined; // no « perceived latency » chip on a nudge (nobody released a key)
         const nid = newTurn({ text: "", at: Date.now(), status: "final", silent: true });
         patchTurn(nid, (t) => ({ ...t, agent: { ...t.agent, text: m.text, at: Date.now(), done: true } }));
         break;

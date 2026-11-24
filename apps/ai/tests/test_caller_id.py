@@ -53,10 +53,17 @@ async def test_unknown_phone_is_a_new_client():
     assert "NOUVEAU CLIENT" in text and "Ne crée et ne confirme AUCUNE commande" in text and "Camille" in text
 
 
-async def test_ticked_new_client_never_looks_up_the_erp():
-    erp = FakeErp()
-    cc = await caller_context(erp, is_new=True, company_name="Chez Paul", phone="05 61 21 33 47")
-    assert cc.is_new and erp.calls == []  # even with a phone that exists: the form said "nouveau client"
+async def test_ticked_new_client_with_a_known_phone_is_that_client():
+    cc = await caller_context(FakeErp(), is_new=True, company_name="Sarrailh", phone="05 61 21 33 47")
+    assert not cc.is_new and cc.client_id == "cli_0001"  # the box was ticked by mistake: no duplicate prospect
+
+
+async def test_ticked_new_client_with_an_unknown_phone_stays_new_and_keeps_the_form():
+    cc = await caller_context(FakeErp(), is_new=True, contact_name="Karim", phone="06 55 55 55 55")
+    text = render_for_prompt(cc)
+    assert cc.is_new and cc.company_name is None and "Établissement : pas encore connu" in text
+    cc = await caller_context(FakeErp(), is_new=True, company_name="Chez Paul", phone="06 55 55 55 55")
+    assert "Établissement (donné avant l'appel, ne le redemande pas) : Chez Paul" in render_for_prompt(cc)
 
 
 async def test_nothing_given_no_sheet():
