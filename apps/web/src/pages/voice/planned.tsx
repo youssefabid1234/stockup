@@ -1,6 +1,6 @@
 // Team 12 (Youssef) · Lucie's planned outbound calls (who, why, when), started by themselves when their time comes
 // (page open) or at once with « Appeler maintenant »; and the voice message she leaves when nobody answers.
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { CalendarClock, ExternalLink, Mic, PhoneOutgoing } from "lucide-react";
@@ -47,6 +47,8 @@ export function PlannedCalls({ ready, busy, pending }: { ready: boolean; busy: b
     .data?.enabled === true;
   const plan = useQuery({ queryKey: ["outbound-plan"], queryFn: api.outboundPlan.list, enabled, refetchInterval: 2000 });
   const fired = useRef(new Set<string>());
+  const [tick, setTick] = useState(0);
+  useEffect(() => { const t = window.setInterval(() => setTick((n) => n + 1), 1000); return () => window.clearInterval(t); }, []);
   const call = useMutation({
     mutationFn: api.outboundPlan.call,
     onSuccess(attempt) {
@@ -62,13 +64,14 @@ export function PlannedCalls({ ready, busy, pending }: { ready: boolean; busy: b
 
   // Lucie keeps her schedule: a planned call whose time has come starts by itself (only while this page is open).
   useEffect(() => {
+    void tick;
     if (!canCall) return;
     const due = calls.find((c) => c.status === "planned" && c.at * 1000 <= Date.now() && !fired.current.has(c.id));
     if (due) {
       fired.current.add(due.id);
       call.mutate(due.id);
     }
-  });
+  }, [tick, canCall, calls, call]);
 
   if (!enabled) return null;
   return (

@@ -7,7 +7,9 @@ Idempotent: the same attempt always gives the same message (the page may ask twi
 from __future__ import annotations
 
 import asyncio
+import json
 import time
+from pathlib import Path
 
 from fastapi import APIRouter
 from fastapi.responses import JSONResponse, Response
@@ -18,16 +20,26 @@ from app.services.outbound_message import compose, facts_of
 from app.tools.erp import ErpClient, enc
 
 router = APIRouter(prefix="/outbound", tags=["outbound"])
+STORE = Path("/tmp/lucie-voicemails")  # survives the dev auto-reload (never under app/: it would trigger one)
 MESSAGES: dict[str, dict] = {}
 AUDIO: dict[str, tuple[str, bytes]] = {}
+
+
+def _load(attempt_id: str) -> dict | None:
+    if attempt_id not in MESSAGES and (STORE / f"{attempt_id}.json").exists():
+        MESSAGES[attempt_id] = json.loads((STORE / f"{attempt_id}.json").read_text(encoding="utf-8"))
+        AUDIO[attempt_id] = (MESSAGES[attempt_id].get("mime", "audio/mpeg"), (STORE / f"{attempt_id}.mp3").read_bytes())
+    return MESSAGES.get(attempt_id)
+
+
 _locks: dict[str, asyncio.Lock] = {}
 
 
 @router.post("/voicemail/{attempt_id}")
 async def leave_voicemail(attempt_id: str):
     async with _locks.setdefault(attempt_id, asyncio.Lock()):
-        if attempt_id in MESSAGES:
-            return MESSAGES[attempt_id]
+        if known := _load(attempt_id):
+            return known
         erp = ErpClient("voice_agent", "Lucie")
         attempts = await erp.get("/api/outbound-demo/attempts")
         attempt = next((a for a in attempts if a.get("id") == attempt_id), None)
@@ -50,12 +62,18 @@ async def leave_voicemail(attempt_id: str):
             "contact": contact.get("name"), "phone": contact.get("phone"), "text": text, "source": source,
             "audioUrl": f"/ai/outbound/voicemail/{attempt_id}.mp3", "sentAt": time.time(),
         }  # fmt: skip
+        try:
+            STORE.mkdir(parents=True, exist_ok=True)
+            (STORE / f"{attempt_id}.mp3").write_bytes(audio)
+            (STORE / f"{attempt_id}.json").write_text(json.dumps({**MESSAGES[attempt_id], "mime": result.mime}), encoding="utf-8")
+        except OSError:
+            pass  # memory only
         return MESSAGES[attempt_id]
 
 
 @router.get("/voicemail/{attempt_id}.mp3")
 async def voicemail_audio(attempt_id: str):
-    if attempt_id not in AUDIO:
+    if attempt_id not in AUDIO and not _load(attempt_id):
         return JSONResponse(ErrorResponse.of("not_found", "Message vocal introuvable."), status_code=404)
     mime, audio = AUDIO[attempt_id]
     return Response(audio, media_type=mime)
