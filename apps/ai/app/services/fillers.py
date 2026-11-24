@@ -29,7 +29,11 @@ PHRASES = {
 # Mode 4 · « zéro silence » (TEAM_FILLERS=4): the agent opens the call, says one of these at once after each request,
 # then types on the keyboard without a gap until the first word of the real answer.
 # Default acknowledgement (no clear intent). No « Parfait » / « Ça marche »: they sound like a yes before the answer.
-ACK_PHRASES = ["Je regarde ça.", "Une seconde, je vérifie.", "Je vois ça tout de suite.", "Voyons ça."]
+ACK_PHRASES = ["Je regarde ça.", "Hmm, une seconde, je vérifie.", "Je vois ça tout de suite.", "Alors… voyons ça.",
+               "Hmm, je regarde."]  # team 12 (Amine K.): interjections, a person thinking out loud
+# a single « hmm » in the middle of a long wait (typing for HMM_AFTER s): Lucie thinking while she looks it up
+HMM_PHRASES = ["Hmm…", "Hmmm, voyons…", "Alors…"]
+HMM_AFTER = 1.6
 # team 12 (Youssef): the first words match what the caller asked (tested 24/11: « Parfait, je vais voir ça » before
 # refusing a discount sounded like a yes, and the same phrase came back on every turn). Neutral: never a promise.
 ACK_BY_INTENT = {
@@ -134,7 +138,7 @@ class FillerBank:
     async def warm_up(self, tts: TTSClient, voice: str | None = None) -> None:
         phrases_by_situation = PHRASES
         if team_flags.no_silence():
-            phrases_by_situation = {"ack": ACK_PHRASES, **{f"ack:{k}": v for k, v in ACK_BY_INTENT.items()}}
+            phrases_by_situation = {"ack": ACK_PHRASES, "hmm": HMM_PHRASES, **{f"ack:{k}": v for k, v in ACK_BY_INTENT.items()}}
         elif team_flags.fillers_mode() == 2:
             phrases_by_situation = {"fast_intro": [FAST_INTRO], "follow_up": PHRASES["follow_up"]}
         for situation, phrases in phrases_by_situation.items():
@@ -263,11 +267,18 @@ async def keep_typing(speaker, delay: float = 0.0) -> None:
     if delay:
         await asyncio.sleep(delay)
     loop = asyncio.get_running_loop()
-    stop_at = loop.time() + TYPING_MAX
+    started = loop.time()
+    stop_at = started + TYPING_MAX
     variant = 0
+    hummed = False
     while loop.time() < stop_at:
         if (wait := speaker.audio_until - loop.time() - TYPING_LEAD) > 0:
             await asyncio.sleep(wait)
+        if not hummed and loop.time() - started >= HMM_AFTER and (bank := getattr(speaker, "bank", None)):
+            hummed = True  # team 12 (Amine K.): one « hmm » when the wait gets long, then typing again
+            if (clip := bank.pick("hmm")) and clip.mime == "audio/mpeg":
+                await speaker.play_audio(clip.mime, clip.data, seconds=mp3_seconds(clip.data))
+                continue
         data, seconds = typing_clip(variant % 6)
         variant += 1
         await speaker.play_audio("audio/mpeg", data, seconds=seconds)

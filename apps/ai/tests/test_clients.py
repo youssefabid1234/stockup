@@ -321,7 +321,10 @@ async def test_elevenlabs_request_and_error():
     req = seen[0]
     assert req.url.path == "/v1/text-to-speech/YxrwjAKoUKULGd0g8K9Y/stream" and req.url.params["output_format"] == "mp3_44100_128"
     assert req.headers["xi-api-key"] == "xi"
-    assert json.loads(req.content) == {"text": "Bonjour", "model_id": "eleven_v4_turbo", "language_code": "fr"}  # team 12: new default model
+    assert json.loads(req.content) == {"text": "Bonjour", "model_id": "eleven_v4_turbo", "language_code": "fr",  # team 12: new default model
+                                       # team 12 (Amine K.): livelier delivery, chosen by ear (24/11)
+                                       "voice_settings": {"speed": 1.0, "stability": 0.4, "similarity_boost": 0.75,
+                                                          "style": 0.15, "use_speaker_boost": True}}
 
     http, _ = recorder(lambda _: httpx.Response(429, text="quota"))
     try:
