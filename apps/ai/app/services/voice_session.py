@@ -180,7 +180,7 @@ class VoiceConnection:
         agent (the caller was chosen explicitly). A new call starts a fresh history; `resume` (sent again by the page
         after a reconnect, e.g. the AI service reloaded) only restores the caller and keeps the conversation."""
         conv = self.conversation
-        opening_enabled = team_flags.fillers() and not team_flags.orchestrator()
+        opening_enabled = team_flags.fillers()
         if not msg.resume:
             conv.history = []
             conv.opening_greeting = CALL_GREETINGS[msg.contact_title] if opening_enabled else None
@@ -281,7 +281,7 @@ class VoiceConnection:
         greeted = False
         try:
             # The caller form prepared this clip. Play it before waiting for the final transcript.
-            if conv.opening_greeting and team_flags.fillers() and not team_flags.orchestrator():
+            if conv.opening_greeting and team_flags.fillers():
                 clip = self.greetings.get(conv.opening_greeting)
                 if clip and (utterance.frames if utterance is not None else (text or "").strip()):
                     speaker = Speaker(get_tts_client(), self.send, self.send_bytes, self.bank)
@@ -378,7 +378,6 @@ class Speaker:
         self.waiting_task: asyncio.Task | None = None
         self._audio_lock = asyncio.Lock()
         self.social_turn = False
-        self.clicked = False
         self.first_phrase = True
         self.buffer = ""
         self.sentences: asyncio.Queue[str | None] = asyncio.Queue()

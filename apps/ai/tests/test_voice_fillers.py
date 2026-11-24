@@ -6,6 +6,7 @@ from types import SimpleNamespace
 import pytest
 
 from app import team_flags
+from app.agent import orchestrator
 from app.agent.call_context import CallContext
 from app.clients.base import LLMText, TTSResult
 from app.clients.mock_speech import MockSTT
@@ -130,16 +131,21 @@ async def test_failed_turn_closes_waiting_audio(call, monkeypatch):
     assert conn.ws.events[-1]["type"] == "error"
 
 
-async def test_fast_agent_keeps_priority(call, monkeypatch):
-    conn, tts = call
+async def test_current_orchestrator_keeps_announcements_enabled(call, monkeypatch):
+    conn, _ = call
     monkeypatch.setenv("TEAM_ORCHESTRATOR", "1")
-    speaker = voice_session.Speaker(tts, conn.send, conn.send_bytes, conn.bank)
-    await fillers.on_turn_start(speaker, "Quel est le prix ?")
-    assert not speaker.started
-    speaker.push("Je vous écoute. ")
-    await fillers.on_tool_call(speaker, "search")
-    await speaker.finish()
-    assert [event for event in conn.ws.events if isinstance(event, bytes)] == ["Je vous écoute.".encode()]
+    reply = "Elle est à deux euros le kilo."
+
+    async def agent(messages, **kwargs):
+        yield ToolCallEvent(call=ToolCall(id="price", name="get_price", arguments={}))
+        yield TextEvent(delta=reply)
+        yield DoneEvent(message=ChatMessage(role="assistant", content=reply), ms=1)
+
+    monkeypatch.setattr(orchestrator, "run_agent", agent)
+    await conn.run_turn(conn.conversation, text="Quel est le prix ?")
+    clips = [event for event in conn.ws.events if isinstance(event, bytes)]
+    assert clips[0].decode() in fillers.PHRASES["thinking"]
+    assert clips[1:] == [reply.encode()]
 
 
 async def test_first_clause_starts_before_answer_ends(call):
@@ -271,7 +277,7 @@ def test_spoken_reply_removes_internal_preamble(raw, expected):
     assert spoken_reply(raw) == expected
 
 
-@pytest.mark.parametrize(("value", "enabled", "fast"), [("0", False, False), ("1", True, False), ("2", True, True)])
+@pytest.mark.parametrize(("value", "enabled", "fast"), [("0", False, False), ("1", True, False), ("2", True, True), ("3", True, True)])
 def test_waiting_modes_are_separate(monkeypatch, value, enabled, fast):
     monkeypatch.setenv("TEAM_FILLERS", value)
     assert team_flags.fillers() is enabled
@@ -343,7 +349,7 @@ async def test_fast_mode_reads_back_ambiguous_turn_while_agent_works(call, monke
     assert conn.ws.events[-1]["text"] == reply
 
 
-@pytest.mark.parametrize("call", ["2"], indirect=True)
+@pytest.mark.parametrize("call", ["2", "3"], indirect=True)
 async def test_fast_mode_cancels_the_restatement_when_answer_is_ready(call, monkeypatch):
     conn, _ = call
     started = asyncio.Event()
@@ -366,10 +372,13 @@ async def test_fast_mode_cancels_the_restatement_when_answer_is_ready(call, monk
     monkeypatch.setattr(voice_session, "run_agent", agent)
     await asyncio.wait_for(conn.run_turn(conn.conversation, text="Vous avez de la farine en stock ?"), timeout=2)
     assert cancelled.is_set()
-    assert [msg for msg in conn.ws.events if isinstance(msg, bytes)] == [b"Je vais voir.", reply.encode()]
+    clips = [msg for msg in conn.ws.events if isinstance(msg, bytes)]
+    announcements = [fillers.FAST_INTRO] if team_flags.fillers_mode() == 2 else fillers.PHRASES["thinking"]
+    assert clips[0].decode() in announcements
+    assert clips[1:] == [reply.encode()]
 
 
-@pytest.mark.parametrize("call", ["2"], indirect=True)
+@pytest.mark.parametrize("call", ["2", "3"], indirect=True)
 async def test_fast_mode_keeps_thanks_direct(call, monkeypatch):
     conn, _ = call
     calls = []
@@ -417,9 +426,11 @@ async def test_barge_in_cancels_fast_model_before_it_can_speak(call, monkeypatch
     await conn.interrupt()
 
 
-@pytest.mark.parametrize("call", ["0", "1", "2"], indirect=True)
-async def test_caller_form_prepares_first_greeting_before_transcription(call, monkeypatch):
+@pytest.mark.parametrize("call", ["0", "1", "2", "3"], indirect=True)
+@pytest.mark.parametrize("orchestrator_enabled", ["0", "1"])
+async def test_caller_form_prepares_first_greeting_before_transcription(call, monkeypatch, orchestrator_enabled):
     conn, tts = call
+    monkeypatch.setenv("TEAM_ORCHESTRATOR", orchestrator_enabled)
     greeted = team_flags.fillers()
     greeting = "Bonjour Madame."
     call_message = CallerMessage.model_validate({
@@ -450,6 +461,7 @@ async def test_caller_form_prepares_first_greeting_before_transcription(call, mo
 
     monkeypatch.setattr(voice_session.preload, "caller_context", load_sheet)
     monkeypatch.setattr(voice_session, "run_agent", agent)
+    monkeypatch.setattr(orchestrator, "run_agent", agent)
     await conn.set_caller(call_message)
     assert (greeting in tts.phrases) is greeted
     assert conn.ws.events[-1]["type"] == "caller_ready"
@@ -459,7 +471,7 @@ async def test_caller_form_prepares_first_greeting_before_transcription(call, mo
     if greeted:
         assert clips[0] == greeting.encode()
         assert clips[-1] == b"Il reste de la farine."
-        first_wait = [fillers.FAST_INTRO] if team_flags.fast_fillers() else fillers.PHRASES["thinking"]
+        first_wait = [fillers.FAST_INTRO] if team_flags.fillers_mode() == 2 else fillers.PHRASES["thinking"]
         assert clips[1].decode() in first_wait
     else:
         assert clips == [b"Bonjour Madame Sarrailh, il reste de la farine."]
@@ -486,3 +498,49 @@ async def test_caller_form_without_title_uses_a_neutral_greeting(call, monkeypat
     assert "Bonjour." in tts.phrases
     await conn.run_turn(conn.conversation, text="Bonjour.")
     assert [event for event in conn.ws.events if isinstance(event, bytes)] == [b"Bonjour.", "Je vous écoute.".encode()]
+
+
+@pytest.mark.parametrize("call", ["3"], indirect=True)
+async def test_combined_mode_plays_keyboard_while_restatement_is_prepared(call, monkeypatch):
+    conn, _ = call
+    for name in ("TEAM_ORCHESTRATOR", "TEAM_PRELOAD", "TEAM_ORDER_RULES", "TEAM_PRODUCT_INSIGHT", "TEAM_SALES_RULES"):
+        monkeypatch.setenv(name, "1")
+    monkeypatch.setattr(fillers, "FIRST_KEYBOARD_DELAY", 0)
+    monkeypatch.setattr(fillers, "FAST_RESTATEMENT_DELAY", 0)
+    keyboard = fillers.keyboard_click()
+    heard = "Je veux 10 kg de farine ou deux sacs."
+    recap = "Vous disiez : Je veux 10 kg de farine ou deux sacs."
+    reply = "Vous préférez quelle quantité ?"
+    preparing = asyncio.Event()
+    keyboard_played = asyncio.Event()
+    recap_played = asyncio.Event()
+    original_send = conn.ws.send_bytes
+
+    async def restatement(transcript):
+        assert transcript == heard
+        preparing.set()
+        await asyncio.wait_for(keyboard_played.wait(), timeout=1)
+        return recap
+
+    async def observe_audio(data):
+        await original_send(data)
+        if data == keyboard:
+            assert preparing.is_set()
+            keyboard_played.set()
+        elif data == recap.encode():
+            recap_played.set()
+
+    async def agent(messages, **kwargs):
+        yield ToolCallEvent(call=ToolCall(id="search", name="search", arguments={}))
+        await asyncio.wait_for(recap_played.wait(), timeout=2)
+        yield DoneEvent(message=ChatMessage(role="assistant", content=reply), ms=1)
+
+    monkeypatch.setattr(fillers, "fast_restatement", restatement)
+    monkeypatch.setattr(conn.ws, "send_bytes", observe_audio)
+    monkeypatch.setattr(orchestrator, "run_agent", agent)
+    await conn.run_turn(conn.conversation, text=heard)
+
+    clips = [msg for msg in conn.ws.events if isinstance(msg, bytes)]
+    assert clips[0].decode() in fillers.PHRASES["thinking"]
+    assert clips[1:] == [keyboard, recap.encode(), reply.encode()]
+    assert conn.ws.events[-1]["text"] == reply

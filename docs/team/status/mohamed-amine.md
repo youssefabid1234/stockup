@@ -17,7 +17,7 @@ Le chantier voix se trouve sur `mohamed-amine/voice-latency`. `TEAM_FILLERS=1` a
 
 ## Décisions à partager
 
-- **Youssef.** Tant que le routage commun reste à définir, la voix laisse l'orchestrateur prendre la parole dès que `TEAM_ORCHESTRATOR=1`. Une frappe reste possible sur une recherche effective avant toute parole du modèle. [Contrat entre les chantiers](../interfaces.md)
+- **Youssef.** L'orchestrateur actuel délègue à l'agent ERP. `TEAM_FILLERS` contrôle donc la salutation et les annonces, quel que soit l'état de `TEAM_ORCHESTRATOR`. La réponse finale interrompt l'attente. [Contrat entre les chantiers](../interfaces.md)
 - **Daycem.** Proposition pour les règles vocales lorsque `TEAM_FILLERS=1` et que la couche voix gère l'attente : « Donne directement le résultat de ta vérification. Le lecteur vocal se charge de faire patienter le client. »
 
 ## Essai au micro
@@ -42,11 +42,16 @@ La synthèse de la réponse utile commence après la fin de la génération du m
 
 Avec `TEAM_FILLERS=2`, « Je vais voir » ouvre l'attente. Le modèle rapide sélectionne un court passage de la transcription en parallèle avec l'agent ERP. La reprise utilise les mots du client. Une demande courte et ambiguë est reprise en entier pour garder les options et les négations. Une demande longue dont on risquerait de changer le sens reçoit « Un instant, je vérifie ». Dans les trois modes, seule la réponse finale de l'agent ERP est lue. La reprise en préparation est annulée si la réponse arrive ou si le client reprend la parole.
 
-Pour comparer, garder les mêmes fournisseurs et `TEAM_ORCHESTRATOR=0`. Relancer l'IA entre `TEAM_FILLERS=1` et `TEAM_FILLERS=2`. Tester « Dix kilos de farine ou deux sacs ? » pendant une vérification assez longue, puis « Merci » pour vérifier la réponse directe. Le mode 2 utilise le modèle `TEAM_FAST_MODEL` du même fournisseur que l'agent principal, sans appel ERP supplémentaire.
+Pour comparer, garder les mêmes fournisseurs et la même valeur de `TEAM_ORCHESTRATOR`. Relancer l'IA entre `TEAM_FILLERS=1` et `TEAM_FILLERS=2`. Tester « Dix kilos de farine ou deux sacs ? » pendant une vérification assez longue, puis « Merci » pour vérifier la réponse directe. Le mode 2 utilise le modèle `TEAM_FAST_MODEL` du même fournisseur que l'agent principal, sans appel ERP supplémentaire.
 
 
 ## Salutation du premier tour
 
-Le formulaire « Qui appelle ? » offre une civilité facultative. Avec les modes `1` et `2`, l'audio « Bonjour Madame », « Bonjour Monsieur » ou « Bonjour » est préparé pendant le chargement de la fiche. Le premier relâchement du micro déclenche cette salutation depuis le cache pendant la finalisation de la transcription. Pour une demande de stock ou de commande, l'annonce du mode sélectionné peut suivre. Une reconnexion ne rejoue pas la salutation déjà diffusée.
+Le formulaire « Qui appelle ? » offre une civilité facultative. Avec les modes `1`, `2` et `3`, l'audio « Bonjour Madame », « Bonjour Monsieur » ou « Bonjour » est préparé pendant le chargement de la fiche. Le premier relâchement du micro déclenche cette salutation depuis le cache pendant la finalisation de la transcription. Pour une demande de stock ou de commande, l'annonce du mode sélectionné peut suivre. Une reconnexion ne rejoue pas la salutation déjà diffusée.
 
-Pour comparer `0`, `1` et `2`, démarrer un nouvel appel après chaque redémarrage de l'IA, choisir la même civilité et jouer la même demande. Regarder « Perçu » après le relâchement. Les tests vérifient que la salutation est envoyée avant la transcription finale. L'objectif de 0,5 s reste à mesurer dans le navigateur.
+Pour comparer `0`, `1`, `2` et `3`, démarrer un nouvel appel après chaque redémarrage de l'IA, choisir la même civilité et jouer la même demande. Regarder « Perçu » après le relâchement. Les tests vérifient que la salutation est envoyée avant la transcription finale. L'objectif de 0,5 s reste à mesurer dans le navigateur.
+
+
+## Mode combiné
+
+`TEAM_FILLERS=3` utilise les annonces du mode 1, joue une courte rafale de clavier si la recherche dure et prépare la reprise du mode 2 en parallèle. Si aucune courte reprise fidèle n'est disponible, le lecteur utilise la relance neutre. Les sons qui restent en préparation sont annulés à l'arrivée de la réponse ou si le client reprend la parole. Les remerciements et salutations seuls gardent une réponse directe.
