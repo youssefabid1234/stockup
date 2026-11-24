@@ -163,3 +163,9 @@ L'agent d'origine croit la note et refuse à tort (vu en S03 et dans un test S1 
   sans outil. Questions : 1,8-2,0 s → 1,0-1,5 s ; le reste est inchangé. Mesures et échec de la v1 : DECISIONS.md.
 - Tests : `test_orchestrator.py` (7), suite complète 358 verts.
 - ⚠️ Tout le monde : si votre `.env` contient `TEAM_ORCHESTRATOR=0`, mettez `1` puis `docker compose up -d --force-recreate ai`.
+
+## Tâches de Youssef reprises (mar. 24/11, matin)
+- T3 vérifié : 97 % de l'entrée lue depuis le cache (rejeu complet).
+- T6 fait : `report_delivery_issue` + `settle_delivery_issue` (vraie livraison, montant, relivraison gratuite ou avoir,
+  > 150 € → direction). S08 réécrit sur les vraies données (livraison du samedi 21/11).
+- Scénarios S20, S21, S22 écrits. Rejeu voix S08 S20 S21 S22 : 7/7.

@@ -37,7 +37,8 @@ ORDER_RULES = """Règles « commande juste » (prise de commande au téléphone)
 - Avec le résultat de place_order (ou de review_order) : relis sa phrase « readback » (produits, quantités, jour) ; dis ses « alerts » et sa remarque « franco » s'il y en a, simplement, sans code technique ni chiffre interne. Si « askFirst » n'est pas vide, fais confirmer cette quantité inhabituelle. Si « duplicateDrafts » n'est pas vide (autres brouillons de l'agent pour ce client) : un brouillon « sameAsThis » est un doublon, abandonne-le (cancel_draft_order) sans en parler ; un autre (resté d'un appel précédent), relis son « readback » et pose une question fermée : « Il restait aussi … non validé : je l'ajoute à cette commande ? » (oui = ajout, non = annulation), puis fais-le. Ne laisse jamais deux commandes ouvertes par l'agent pour le même client. Si « sameDayOrders » n'est pas vide, le client a déjà une commande pour ce jour : pose UNE question fermée, à laquelle « oui » répond sans ambiguïté : « Vous avez déjà une livraison mercredi : je l'ajoute dedans ? » (oui = ajout, non = commande à part). Jamais « A ou B ? ». Puis attends sa réponse.
 - Prix : pour dire un prix ou un total, appelle quote_line et répète ses phrases « say » et « total » ; ne calcule jamais toi-même un prix au carton, à la plaque ou un total.
 - Dès que le client répond à ta relecture, appelle confirm_order tout de suite (sans tout revérifier) avec client_answer = sa réponse mot pour mot et read_back = ta relecture : un vérificateur décide si c'est un vrai oui. Si confirmed=false, suis « next » (ne dis pas que c'est validé). Si canConfirm=false, ne confirme pas et dis pourquoi.
-- Compte bloqué : ne prends aucune commande et ne promets rien ; ne donne aucun détail comptable interne ; dis que la comptabilité (Sandrine) le rappelle, et enregistre la demande avec log_client_event (type call)."""
+- Compte bloqué : ne prends aucune commande et ne promets rien ; ne donne aucun détail comptable interne ; dis que la comptabilité (Sandrine) le rappelle, et enregistre la demande avec log_client_event (type call).
+- Réclamation sur une livraison (manquant, abîmé, erreur, qualité) : report_delivery_issue d'abord (il retrouve la vraie livraison, le montant, et l'enregistre) ; s'il renvoie « next » sans l'avoir enregistrée, pose sa question. Excuse-toi en une phrase, propose ses options, puis settle_delivery_issue avec le choix du client (order_id = la commande en cours s'il y en a une). Ne fais jamais payer un manquant : jamais de commande payante pour le remplacer, jamais de geste au-delà de ce que l'outil propose."""
 
 
 def order_rules_section() -> str:
@@ -287,7 +288,8 @@ def review(order: dict, products: dict[str, dict], usual: list[dict], client_ord
     parts = []
     for line in order["lines"]:
         p = products.get(line["productId"]) or {}
-        parts.append(f"{say_quantity(line['qty'], line.get('unit') or p.get('unit'), p.get('caliber'))} de {short_name(line.get('productName') or p.get('name', ''))}")
+        free = " offerts (réclamation)" if line.get("unitPrice") == 0 else ""
+        parts.append(f"{say_quantity(line['qty'], line.get('unit') or p.get('unit'), p.get('caliber'))} de {short_name(line.get('productName') or p.get('name', ''))}{free}")
     when = french_day(date.fromisoformat(order["deliveryDate"][:10])) if order.get("deliveryDate") else None
     readback = ", ".join(parts) + (f" ; livraison {when}" if when else "")
 
