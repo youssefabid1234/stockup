@@ -8,7 +8,7 @@ import { ToolRow } from "@/features/assistant/tools";
 import type { Activity, VoiceTurn } from "@/features/assistant/useVoiceSession";
 import { TurnChips } from "./metrics";
 
-const clock = (at?: number) => (at ? new Date(at).toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit", second: "2-digit" }) : "");
+const clock = (at?: number) => (at ? new Date(at).toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit", second: "2-digit" }) : "");
 
 const GRID = "grid grid-cols-[64px_minmax(0,1fr)_minmax(0,1fr)] gap-x-4";
 
@@ -31,15 +31,15 @@ export function Timeline({ turns, activity, level }: { turns: VoiceTurn[]; activ
     >
       <div className={cn(GRID, "sticky top-0 z-10 border-b border-border bg-background px-5 py-2")}>
         <span />
-        <span className={cn(SECTION_LABEL, "flex items-center gap-1.5")}><Phone size={12} strokeWidth={1.75} />Appelant</span>
+        <span className={cn(SECTION_LABEL, "flex items-center gap-1.5")}><Phone size={12} strokeWidth={1.75} />Caller</span>
         <span className={cn(SECTION_LABEL, "flex items-center gap-1.5 text-violet")}><AudioLines size={12} strokeWidth={1.75} />Agent</span>
       </div>
       {turns.length === 0 ? (
         <EmptyState
           icon={AudioLines}
-          title="Jouez le client au téléphone"
-          description="Maintenez Espace (ou le gros bouton) pour parler, relâchez pour que l'agent réponde. Les commandes qu'il crée apparaissent à droite, en direct."
-          action={<span className="flex items-center gap-1.5 text-[12px] text-muted-foreground"><Kbd>Espace</Kbd> parler · <Kbd>Échap</Kbd> couper l'agent</span>}
+          title="Play the customer on the phone"
+          description="Keep Space (or the big button) to talk, release so the agent responds. The commands he creates appear on the right, live."
+          action={<span className="flex items-center gap-1.5 text-[12px] text-muted-foreground"><Kbd>Space</Kbd> Speak · <Kbd>Escape</Kbd> cut off the agent</span>}
         />
       ) : (
         <ol className="relative flex flex-col gap-3 px-5 py-4">
@@ -67,18 +67,18 @@ function TurnRows({ t, last, activity, level }: { t: VoiceTurn; last: boolean; a
             {c.status === "recording" ? (
               <span className="flex items-center gap-2">
                 <Dot tone="violet" pulse className="shrink-0" />
-                {c.text ? <LiveTranscript text={c.text} stable={c.stable} /> : <span className="text-violet">Parle…</span>}
+                {c.text ? <LiveTranscript text={c.text} stable={c.stable} /> : <span className="text-violet">Speak...</span>}
                 <LevelBars level={last ? level : 0} className="shrink-0" />
               </span>
             ) : c.status === "transcribing" ? (
               <span className="flex items-center gap-2 text-muted-foreground">
                 <Spinner size={12} className="shrink-0" />
-                {c.text ? <LiveTranscript text={c.text} stable={c.stable} /> : "Transcription…"}
+                {c.text ? <LiveTranscript text={c.text} stable={c.stable} /> : "Transcript..."}
               </span>
             ) : (
               <span className="flex items-start gap-1.5">
-                {c.typed ? <Keyboard size={12} strokeWidth={1.75} className="mt-[3px] shrink-0 text-muted-foreground" aria-label="tapé" /> : null}
-                <span>{c.text || <span className="text-muted-foreground">(rien entendu)</span>}</span>
+                {c.typed ? <Keyboard size={12} strokeWidth={1.75} className="mt-[3px] shrink-0 text-muted-foreground" aria-label="typed" /> : null}
+                <span>{c.text || <span className="text-muted-foreground">(Nothing heard)</span>}</span>
               </span>
             )}
           </div>
@@ -94,7 +94,7 @@ function TurnRows({ t, last, activity, level }: { t: VoiceTurn; last: boolean; a
           <div className="flex min-w-0 flex-col items-start gap-1.5">
             {a.tools.map((tool) => <ToolRow key={tool.id} t={tool} className="w-full" />)}
             {thinking ? (
-              <span className="flex h-8 items-center gap-2 text-[12px] text-violet"><Spinner size={12} />Réflexion…</span>
+              <span className="flex h-8 items-center gap-2 text-[12px] text-violet"><Spinner size={12} />Thinking...</span>
             ) : null}
             {a.text ? (
               <div
@@ -110,7 +110,7 @@ function TurnRows({ t, last, activity, level }: { t: VoiceTurn; last: boolean; a
             {a.error ? (
               <span className="flex items-start gap-1.5 text-[12px] text-destructive"><CircleAlert size={13} strokeWidth={1.75} className="mt-[2px] shrink-0" />{a.error}</span>
             ) : null}
-            {a.interrupted ? <span className="text-[11.5px] text-muted-foreground">Interrompu par l'appelant</span> : null}
+            {a.interrupted ? <span className="text-[11.5px] text-muted-foreground">Interrupted by the appellant</span> : null}
             <TurnChips t={t} />
           </div>
         </div>

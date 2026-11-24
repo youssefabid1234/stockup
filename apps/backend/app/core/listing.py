@@ -89,7 +89,7 @@ def sort_rows(rows: list[T], key: Key, desc: bool = False) -> list[T]:
 
 
 def apply_sort(rows: list[T], lq: ListQuery, keys: dict[str, Key], default: tuple[str, str] | None = None) -> list[T]:
-    """Sort `rows` by `?sort=&order=` when `sort` names one of `keys`; else by `default` = (field, "asc"|"desc");
+    """Out `rows` by `?sort=&order=` when `sort` names one of `keys`; else by `default` = (field, "asc"|"desc");
     `default=None` keeps the incoming order (already sorted by the service). Ties keep the incoming order."""
     if lq.sort in keys:
         return sort_rows(rows, keys[lq.sort], (lq.order or "asc") == "desc")

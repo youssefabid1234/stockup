@@ -42,42 +42,42 @@ const TONE_BADGE: Record<Tone, string> = {
 type StatusMap<K extends string> = Record<K, { label: string; tone: Tone }>;
 
 export const ORDER_STATUS: StatusMap<OrderStatus> = {
-  draft: { label: "Brouillon", tone: "muted" },
-  confirmed: { label: "Confirmée", tone: "info" },
-  prepared: { label: "Préparée", tone: "violet" },
-  delivered: { label: "Livrée", tone: "success" },
-  invoiced: { label: "Facturée", tone: "foreground" },
-  cancelled: { label: "Annulée", tone: "destructive" },
+  draft: { label: "Draft", tone: "muted" },
+  confirmed: { label: "Confirmed", tone: "info" },
+  prepared: { label: "Prepared", tone: "violet" },
+  delivered: { label: "Delivered", tone: "success" },
+  invoiced: { label: "Invoiced", tone: "foreground" },
+  cancelled: { label: "Cancelled", tone: "destructive" },
 };
 export const INVOICE_STATUS: StatusMap<InvoiceStatus> = {
-  draft: { label: "Brouillon", tone: "muted" },
-  issued: { label: "Émise", tone: "info" },
-  partially_paid: { label: "Partiellement payée", tone: "warning" },
-  paid: { label: "Payée", tone: "success" },
-  overdue: { label: "En retard", tone: "destructive" },
-  cancelled: { label: "Annulée", tone: "muted" },
+  draft: { label: "Draft", tone: "muted" },
+  issued: { label: "Issued", tone: "info" },
+  partially_paid: { label: "Partially paid", tone: "warning" },
+  paid: { label: "Paid", tone: "success" },
+  overdue: { label: "Overdue", tone: "destructive" },
+  cancelled: { label: "Cancelled", tone: "muted" },
 };
 export const PO_STATUS: StatusMap<PurchaseOrderStatus> = {
-  draft: { label: "Brouillon", tone: "muted" },
-  sent: { label: "Envoyée", tone: "info" },
-  partially_received: { label: "Reçue partiellement", tone: "warning" },
-  received: { label: "Reçue", tone: "success" },
-  cancelled: { label: "Annulée", tone: "destructive" },
+  draft: { label: "Draft", tone: "muted" },
+  sent: { label: "Sent", tone: "info" },
+  partially_received: { label: "Partially received", tone: "warning" },
+  received: { label: "Received", tone: "success" },
+  cancelled: { label: "Cancelled", tone: "destructive" },
 };
 export const CLIENT_STATUS: StatusMap<Client["status"]> = {
-  active: { label: "Actif", tone: "success" },
-  blocked: { label: "Bloqué", tone: "destructive" },
+  active: { label: "Active", tone: "success" },
+  blocked: { label: "Blocked", tone: "destructive" },
   prospect: { label: "Prospect", tone: "info" },
 };
 export const ROUTE_RUN_STATUS: StatusMap<RouteRun["status"]> = {
-  planned: { label: "Planifiée", tone: "muted" },
-  in_progress: { label: "En cours", tone: "info" },
-  done: { label: "Terminée", tone: "success" },
+  planned: { label: "Planned", tone: "muted" },
+  in_progress: { label: "In progress", tone: "info" },
+  done: { label: "Completed", tone: "success" },
 };
 export const STOP_STATUS: StatusMap<StopStatus> = {
-  pending: { label: "À livrer", tone: "muted" },
-  delivered: { label: "Livré", tone: "success" },
-  failed: { label: "Échec", tone: "destructive" },
+  pending: { label: "To be delivered", tone: "muted" },
+  delivered: { label: "Delivered", tone: "success" },
+  failed: { label: "Failed", tone: "destructive" },
 };
 
 export const STATUS = {

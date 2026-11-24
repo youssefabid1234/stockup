@@ -39,7 +39,7 @@ export function Switch({ checked, onChange, label, disabled }: { checked: boolea
 }
 
 /** Two-step delete without a modal: first click arms, second click deletes, blur/timeout disarms. */
-export function InlineConfirmDelete({ onConfirm, label = "Supprimer", pending, size = "sm", text }: {
+export function InlineConfirmDelete({ onConfirm, label = "Delete", pending, size = "sm", text }: {
   onConfirm: () => void; label?: string; pending?: boolean; size?: "sm" | "md"; text?: boolean;
 }) {
   const [armed, setArmed] = useState(false);
@@ -51,9 +51,9 @@ export function InlineConfirmDelete({ onConfirm, label = "Supprimer", pending, s
   if (armed) {
     return (
       <span className="inline-flex items-center gap-1" onClick={(e) => e.stopPropagation()}>
-        {text ? <Button size={size} variant="ghost" onMouseDown={(e) => e.preventDefault()} onClick={() => setArmed(false)}>Annuler</Button> : null}
-        <Button size={size} variant="danger" loading={pending} onClick={onConfirm} onBlur={() => setArmed(false)} autoFocus title="Cliquer à nouveau pour supprimer">
-          {text ? "Confirmer la suppression" : "Supprimer ?"}
+        {text ? <Button size={size} variant="ghost" onMouseDown={(e) => e.preventDefault()} onClick={() => setArmed(false)}>Cancel</Button> : null}
+        <Button size={size} variant="danger" loading={pending} onClick={onConfirm} onBlur={() => setArmed(false)} autoFocus title="Click again to delete">
+          {text ? "Confirm deletion" : "Delete?"}
         </Button>
       </span>
     );
@@ -74,18 +74,18 @@ export function InlineConfirmDelete({ onConfirm, label = "Supprimer", pending, s
 }
 
 export function validityLabel(r: Pick<PriceRule, "validFrom" | "validTo">, today = todayIso()) {
-  if (r.validTo && r.validTo < today) return { text: `Expirée le ${fmtDate(r.validTo)}`, muted: true };
-  if (r.validFrom && r.validFrom > today) return { text: `Dès le ${fmtDate(r.validFrom)}${r.validTo ? ` → ${fmtDate(r.validTo)}` : ""}`, muted: false, future: true };
+  if (r.validTo && r.validTo < today) return { text: `Expires on ${fmtDate(r.validTo)}`, muted: true };
+  if (r.validFrom && r.validFrom > today) return { text: `From ${fmtDate(r.validFrom)}${r.validTo ? ` → ${fmtDate(r.validTo)}` : ""}`, muted: false, future: true };
   if (r.validFrom && r.validTo) return { text: `${fmtDate(r.validFrom)} → ${fmtDate(r.validTo)}`, muted: false };
-  if (r.validTo) return { text: `Jusqu'au ${fmtDate(r.validTo)}`, muted: false };
-  if (r.validFrom) return { text: `Depuis le ${fmtDate(r.validFrom)}`, muted: false };
-  return { text: "Permanente", muted: true };
+  if (r.validTo) return { text: `Until ${fmtDate(r.validTo)}`, muted: false };
+  if (r.validFrom) return { text: `Since ${fmtDate(r.validFrom)}`, muted: false };
+  return { text: "Permanent", muted: true };
 }
 
 // ── Table ──
 
-const dayFmt = new Intl.DateTimeFormat("fr-FR", { day: "numeric", month: "short" });
-const monthFmt = new Intl.DateTimeFormat("fr-FR", { month: "short" });
+const dayFmt = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short" });
+const monthFmt = new Intl.DateTimeFormat("en-GB", { month: "short" });
 const dayOf = (d: string) => Number(d.slice(8, 10));
 /** "15 déc." (+ " 2027" when not the current year). */
 function shortDay(d: string, today: string) {
@@ -98,8 +98,8 @@ export function shortPeriod(from: string | undefined, to: string | undefined, to
     if (from.slice(0, 7) === to.slice(0, 7)) return `${dayOf(from)}–${dayOf(to)} ${monthFmt.format(parseDate(to))}${to.slice(0, 4) === today.slice(0, 4) ? "" : ` ${to.slice(0, 4)}`}`;
     return `${shortDay(from, today)} – ${shortDay(to, today)}`;
   }
-  if (to) return `jusqu'au ${shortDay(to, today)}`;
-  if (from) return `à partir du ${shortDay(from, today)}`;
+  if (to) return `until ${shortDay(to, today)}`;
+  if (from) return `from ${shortDay(from, today)}`;
   return "";
 }
 
@@ -112,22 +112,22 @@ export function ruleState(r: Pick<PriceRule, "active" | "validFrom" | "validTo">
 }
 const STATE_META: Record<RuleState, { tone: Tone; label: string }> = {
   active: { tone: "success", label: "Active" },
-  scheduled: { tone: "info", label: "Programmée" },
-  expired: { tone: "muted", label: "Expirée" },
-  inactive: { tone: "muted", label: "Désactivée" },
+  scheduled: { tone: "info", label: "Programm" },
+  expired: { tone: "muted", label: "Expires" },
+  inactive: { tone: "muted", label: "Disabled" },
 };
 
 /** "−5 %", "Coût +20 %", "12,15 €" */
 export function methodShort(m: PriceRuleMethod) {
   const n = (x: number) => String(x).replace(".", ",");
-  return m.kind === "fixed" ? fmtMoney(m.price) : m.kind === "discount_pct" ? `−${n(m.pct)} %` : `Coût +${n(m.pct)} %`;
+  return m.kind === "fixed" ? fmtMoney(m.price) : m.kind === "discount_pct" ? `−${n(m.pct)} %` : `Cost +${n(m.pct)} %`;
 }
 
 /** "dès 10 u. · 15–31 déc." or "expirée" — empty for a permanent rule without minimum. */
 function conditionsShort(r: PriceRule, today: string) {
-  if (r.validTo && r.validTo < today) return `expirée le ${shortDay(r.validTo, today)}`;
+  if (r.validTo && r.validTo < today) return `expired on ${shortDay(r.validTo, today)}`;
   const parts: string[] = [];
-  if (r.minQty) parts.push(`dès ${String(r.minQty).replace(".", ",")} u.`);
+  if (r.minQty) parts.push(`from ${String(r.minQty).replace(".", ",")} u.`);
   // A start date already passed says nothing once the rule runs: keep it only with an end date or when still to come.
   const p = r.validTo || (r.validFrom && r.validFrom > today) ? shortPeriod(r.validFrom, r.validTo, today) : "";
   if (p) parts.push(p);
@@ -143,10 +143,10 @@ export function RulesTable({ rules, loading, selectedId, onOpen, onCreate, filte
   filtered: boolean;
 }) {
   const toggle = useApiMutation((r: PriceRuleSummary) => api.priceRules.update(r.id, { active: !r.active }), {
-    success: (r) => (r.active ? `Règle « ${r.name} » activée` : `Règle « ${r.name} » désactivée`),
+    success: (r) => (r.active ? `Rule " ${r.name} » enabled` : `Rule " ${r.name} » disabled`),
     invalidate: [qk.pricing.all],
   });
-  const remove = useApiMutation((r: PriceRuleSummary) => api.priceRules.remove(r.id), { success: "Règle supprimée", invalidate: [qk.pricing.all] });
+  const remove = useApiMutation((r: PriceRuleSummary) => api.priceRules.remove(r.id), { success: "Rule deleted", invalidate: [qk.pricing.all] });
   const today = todayIso();
   const dim = (r: PriceRule) => ruleState(r, today) === "inactive" || ruleState(r, today) === "expired";
 
@@ -159,15 +159,15 @@ export function RulesTable({ rules, loading, selectedId, onOpen, onCreate, filte
       },
     },
     {
-      id: "name", header: "Règle", sortValue: (r) => r.name, className: "w-[38%] max-w-0",
+      id: "name", header: "Policy", sortValue: (r) => r.name, className: "w-[38%] max-w-0",
       cell: (r) => <span className={cn("block truncate", dim(r) ? "text-muted-foreground" : "font-medium")} title={r.note ? `${r.name}\n${r.note}` : r.name}>{r.name}</span>,
     },
     {
-      id: "scope", header: "Portée", sortValue: (r) => `${r.clientScopeLabel} ${r.productScopeLabel}`, className: "w-[34%] max-w-0",
+      id: "scope", header: "Scope", sortValue: (r) => `${r.clientScopeLabel} ${r.productScopeLabel}`, className: "w-[34%] max-w-0",
       cell: (r) => <ScopeCell r={r} dim={dim(r)} />,
     },
     {
-      id: "method", header: "Méthode", width: 112, numeric: true, sortValue: (r) => r.methodLabel,
+      id: "method", header: "Method", width: 112, numeric: true, sortValue: (r) => r.methodLabel,
       cell: (r) => <span className={cn("tabular-nums", dim(r) ? "text-muted-foreground" : "text-foreground")} title={r.methodLabel}>{methodShort(r.method)}</span>,
     },
     {
@@ -179,8 +179,8 @@ export function RulesTable({ rules, loading, selectedId, onOpen, onCreate, filte
       id: "actions", header: "", width: 92, align: "right", className: "py-0",
       cell: (r) => (
         <span className="flex items-center justify-end gap-1.5 opacity-0 transition-opacity focus-within:opacity-100 group-hover:opacity-100 group-aria-selected:opacity-100">
-          <Switch checked={r.active} label={r.active ? "Désactiver" : "Activer"} disabled={toggle.isPending} onChange={() => toggle.mutate(r)} />
-          <InlineConfirmDelete onConfirm={() => remove.mutate(r)} pending={remove.isPending} label="Supprimer la règle" />
+          <Switch checked={r.active} label={r.active ? "Disable" : "Enable"} disabled={toggle.isPending} onChange={() => toggle.mutate(r)} />
+          <InlineConfirmDelete onConfirm={() => remove.mutate(r)} pending={remove.isPending} label="Delete Rule" />
         </span>
       ),
     },
@@ -197,16 +197,16 @@ export function RulesTable({ rules, loading, selectedId, onOpen, onCreate, filte
       onRowClick={onOpen}
       defaultSort={{ id: "priority", dir: "desc" }}
       pageKey="rulesPage"
-      footer={rules ? `${rules.length} règle${rules.length > 1 ? "s" : ""} · ${active} en vigueur` : undefined}
+      footer={rules ? `${rules.length} rule${rules.length > 1 ? "s" : ""} · ${active} in force` : undefined}
       empty={
         filtered ? (
-          <EmptyState icon={Percent} title="Aucune règle ne correspond" description="Modifiez la recherche ou le filtre." />
+          <EmptyState icon={Percent} title="No rules match" description="Edit the search or filter." />
         ) : (
           <EmptyState
             icon={Percent}
-            title="Aucune règle de prix"
-            description="Une règle applique une remise, une marge ou un prix fixe à un groupe de clients sur un groupe de produits."
-            action={<Button size="sm" icon={Plus} onClick={onCreate}>Nouvelle règle</Button>}
+            title="No price rules"
+            description="A rule applies a discount, margin or fixed price to a group of customers over a group of products."
+            action={<Button size="sm" icon={Plus} onClick={onCreate}>New Rule</Button>}
           />
         )
       }
@@ -220,10 +220,10 @@ function ScopeCell({ r, dim }: { r: PriceRuleSummary; dim: boolean }) {
   const productTags = useTagDefs("product");
   const cs = r.clientScope, ps = r.productScope;
   const client = cs.kind === "tag" ? <ScopePart dot={clientTags.get(cs.tag)?.color ?? "gray"} label={clientTags.get(cs.tag)?.label ?? cs.tag} />
-    : cs.kind === "all" ? <ScopePart muted label="Tous les clients" /> : <ScopePart label={r.clientScopeLabel} />;
+    : cs.kind === "all" ? <ScopePart muted label="All customers" /> : <ScopePart label={r.clientScopeLabel} />;
   const product = ps.kind === "tag" ? <ScopePart dot={productTags.get(ps.tag)?.color ?? "gray"} label={productTags.get(ps.tag)?.label ?? ps.tag} />
     : ps.kind === "category" ? <ScopePart label={categoryLabel(ps.category)} />
-    : ps.kind === "all" ? <ScopePart muted label="tous les produits" /> : <ScopePart label={r.productScopeLabel} />;
+    : ps.kind === "all" ? <ScopePart muted label="all products" /> : <ScopePart label={r.productScopeLabel} />;
   const n = (c: number, u: string) => `${c} ${u}${c > 1 ? "s" : ""}`;
   return (
     <span
@@ -334,9 +334,9 @@ function previewPrice(m: PriceRuleMethod, p: Pick<ProductSummary, "price" | "cos
 }
 
 const METHOD_HINT: Record<MethodKind, string> = {
-  fixed: "Prix HT par unité, quel que soit le catalogue",
-  discount_pct: "Remise en % sur le prix catalogue",
-  markup_pct: "Marge en % ajoutée au coût d'achat",
+  fixed: "Price HT by unit, regardless of the catalogue",
+  discount_pct: "% discount on the catalogue price",
+  markup_pct: "Margin in % added at purchase cost",
 };
 
 export function RulePanel({ rule, prefill, onClose, onSaved }: {
@@ -363,11 +363,11 @@ export function RulePanel({ rule, prefill, onClose, onSaved }: {
   const [nameTouched, setNameTouched] = useState(!!rule);
   const autoName = useMemo(() => {
     const tagLabel = (scope: "client" | "product", id: string) => tagDefs?.find((t) => t.scope === scope && t.id === id)?.label ?? id;
-    const c = d.clientKind === "all" ? "Tous" : d.clientKind === "client" ? clientOptions.find((o) => o.value === d.clientId)?.label : d.clientTag && tagLabel("client", d.clientTag);
+    const c = d.clientKind === "all" ? "All" : d.clientKind === "client" ? clientOptions.find((o) => o.value === d.clientId)?.label : d.clientTag && tagLabel("client", d.clientTag);
     const p = d.productKind === "all" ? "tout" : d.productKind === "product" ? productOptions.find((o) => o.value === d.productId)?.label
       : d.productKind === "tag" ? d.productTag && tagLabel("product", d.productTag) : d.category && categoryLabel(d.category as ProductCategory).toLowerCase();
     const a = num(d.amount);
-    const m = Number.isNaN(a) ? "" : d.methodKind === "fixed" ? fmtMoney(a) : d.methodKind === "discount_pct" ? `-${show(a)} %` : `coût +${show(a)} %`;
+    const m = Number.isNaN(a) ? "" : d.methodKind === "fixed" ? fmtMoney(a) : d.methodKind === "discount_pct" ? `-${show(a)} %` : `cost +${show(a)} %`;
     if (!c || !p || !m) return "";
     return `${c} : ${m} sur ${p}`;
   }, [d, clientOptions, productOptions, tagDefs]);
@@ -400,30 +400,30 @@ export function RulePanel({ rule, prefill, onClose, onSaved }: {
   });
   const save = useApiMutation(
     (b: PriceRuleInput) => (rule ? api.priceRules.update(rule.id, b) : api.priceRules.create(b)),
-    { success: (r) => (rule ? `Règle « ${r.name} » enregistrée` : `Règle « ${r.name} » créée`), invalidate: [qk.pricing.all], onSuccess: (r) => onSaved?.(r) },
+    { success: (r) => (rule ? `Rule " ${r.name} » recorded` : `Rule " ${r.name} » created`), invalidate: [qk.pricing.all], onSuccess: (r) => onSaved?.(r) },
   );
-  const remove = useApiMutation(() => api.priceRules.remove(rule!.id), { success: "Règle supprimée", invalidate: [qk.pricing.all], onSuccess: onClose });
+  const remove = useApiMutation(() => api.priceRules.remove(rule!.id), { success: "Rule deleted", invalidate: [qk.pricing.all], onSuccess: onClose });
   const submit = (e: React.FormEvent) => { e.preventDefault(); if (valid) save.mutate(body()); };
 
   return (
     <SidePanel
       id="price-rule"
       width={520}
-      title={rule ? rule.name : "Nouvelle règle de prix"}
-      subtitle={rule ? `Créée le ${fmtDate(rule.createdAt)}` : "Remise, marge ou prix fixe pour un groupe de clients × un groupe de produits"}
+      title={rule ? rule.name : "New price rule"}
+      subtitle={rule ? `Created on ${fmtDate(rule.createdAt)}` : "Discount, margin or fixed price for a group of customers × a group of products"}
       onClose={onClose}
       footer={
         <>
           {rule ? <span className="mr-auto"><InlineConfirmDelete text onConfirm={() => remove.mutate()} pending={remove.isPending} /></span> : null}
-          <Button onClick={onClose}>Annuler</Button>
-          <Button variant="primary" type="submit" form="price-rule-form" loading={save.isPending} disabled={!valid}>{rule ? "Enregistrer" : "Créer la règle"}</Button>
+          <Button onClick={onClose}>Cancel</Button>
+          <Button variant="primary" type="submit" form="price-rule-form" loading={save.isPending} disabled={!valid}>{rule ? "Save" : "Create Rule"}</Button>
         </>
       }
     >
       <form id="price-rule-form" onSubmit={submit} className="flex flex-col gap-4">
         <div className="flex items-end gap-3">
-          <Field label="Nom" className="flex-1">
-            <Input value={d.name} onChange={(e) => { setNameTouched(true); set("name")(e.target.value); }} placeholder="Gastro : -8 % sur les crustacés" autoFocus={!rule} />
+          <Field label="Name" className="flex-1">
+            <Input value={d.name} onChange={(e) => { setNameTouched(true); set("name")(e.target.value); }} placeholder="Gastro: -8% on crustaceans" autoFocus={!rule} />
           </Field>
           <label className="flex h-8 items-center gap-2 text-[12.5px] text-secondary-foreground">
             <Switch checked={d.active} onChange={set("active")} label="Active" /> Active
@@ -431,37 +431,37 @@ export function RulePanel({ rule, prefill, onClose, onSaved }: {
         </div>
 
         <fieldset className="flex flex-col gap-2">
-          <legend className={cn(SECTION_LABEL, "mb-1.5")}>Clients</legend>
-          <Segmented<ClientKind> value={d.clientKind} onChange={set("clientKind")} options={[{ id: "all", label: "Tous" }, { id: "tag", label: "Groupe" }, { id: "client", label: "Un client" }]} className="self-start" />
-          {d.clientKind === "client" ? <Combobox value={d.clientId} onChange={set("clientId")} options={clientOptions} placeholder="Chercher un client…" /> : null}
+          <legend className={cn(SECTION_LABEL, "mb-1.5")}>Customers</legend>
+          <Segmented<ClientKind> value={d.clientKind} onChange={set("clientKind")} options={[{ id: "all", label: "All" }, { id: "tag", label: "Group" }, { id: "client", label: "A customer" }]} className="self-start" />
+          {d.clientKind === "client" ? <Combobox value={d.clientId} onChange={set("clientId")} options={clientOptions} placeholder="Look for a client..." /> : null}
           {d.clientKind === "tag" ? (
-            clientTags.length ? <Combobox value={d.clientTag} onChange={set("clientTag")} options={clientTags} placeholder="Choisir un groupe de clients…" />
-              : <p className="text-[12.5px] text-muted-foreground">Aucun groupe de clients. Créez-en un dans Groupes.</p>
+            clientTags.length ? <Combobox value={d.clientTag} onChange={set("clientTag")} options={clientTags} placeholder="Choose a group of clients..." />
+              : <p className="text-[12.5px] text-muted-foreground">No customer group. Create one in Groups.</p>
           ) : null}
         </fieldset>
 
         <fieldset className="flex flex-col gap-2">
-          <legend className={cn(SECTION_LABEL, "mb-1.5")}>Produits</legend>
+          <legend className={cn(SECTION_LABEL, "mb-1.5")}>Products</legend>
           <Segmented<ProductKind>
             value={d.productKind}
             onChange={set("productKind")}
-            options={[{ id: "all", label: "Tous" }, { id: "category", label: "Catégorie" }, { id: "tag", label: "Groupe" }, { id: "product", label: "Un produit" }]}
+            options={[{ id: "all", label: "All" }, { id: "category", label: "Category" }, { id: "tag", label: "Group" }, { id: "product", label: "A product" }]}
             className="self-start"
           />
-          {d.productKind === "product" ? <Combobox value={d.productId} onChange={set("productId")} options={productOptions} placeholder="Chercher un produit…" /> : null}
+          {d.productKind === "product" ? <Combobox value={d.productId} onChange={set("productId")} options={productOptions} placeholder="Search for a product..." /> : null}
           {d.productKind === "tag" ? (
-            productTags.length ? <Combobox value={d.productTag} onChange={set("productTag")} options={productTags} placeholder="Choisir un groupe de produits…" />
-              : <p className="text-[12.5px] text-muted-foreground">Aucun groupe de produits. Créez-en un dans Groupes.</p>
+            productTags.length ? <Combobox value={d.productTag} onChange={set("productTag")} options={productTags} placeholder="Choose a product group..." />
+              : <p className="text-[12.5px] text-muted-foreground">No product groups. Create one in Groups.</p>
           ) : null}
-          {d.productKind === "category" ? <Select value={d.category} onChange={set("category")} options={categoryOptions()} placeholder="Choisir une catégorie…" className="w-full" /> : null}
+          {d.productKind === "category" ? <Select value={d.category} onChange={set("category")} options={categoryOptions()} placeholder="Choose a category..." className="w-full" /> : null}
         </fieldset>
 
         <fieldset className="flex flex-col gap-2">
-          <legend className={cn(SECTION_LABEL, "mb-1.5")}>Prix</legend>
+          <legend className={cn(SECTION_LABEL, "mb-1.5")}>Price</legend>
           <Segmented<MethodKind>
             value={d.methodKind}
             onChange={set("methodKind")}
-            options={[{ id: "discount_pct", label: "Remise % catalogue" }, { id: "markup_pct", label: "Marge % sur coût" }, { id: "fixed", label: "Prix fixe" }]}
+            options={[{ id: "discount_pct", label: "Discount % catalogue" }, { id: "markup_pct", label: "Margin % on cost" }, { id: "fixed", label: "Fixed price" }]}
             className="self-start"
           />
           <div className="flex items-center gap-2">
@@ -477,22 +477,22 @@ export function RulePanel({ rule, prefill, onClose, onSaved }: {
         <fieldset className="flex flex-col gap-2">
           <legend className={cn(SECTION_LABEL, "mb-1.5")}>Conditions</legend>
           <div className="grid grid-cols-2 gap-3">
-            <Field label="Valable du"><DatePicker value={d.validFrom} onChange={set("validFrom")} max={d.validTo || undefined} clearable placeholder="Dès maintenant" presets={false} /></Field>
-            <Field label="Au" hint={!datesOk ? "La fin précède le début" : undefined}>
-              <DatePicker value={d.validTo} onChange={set("validTo")} min={d.validFrom || undefined} clearable placeholder="Sans fin" presets={[{ label: "Dans 7 j", days: 7 }, { label: "Dans 30 j", days: 30 }, { label: "Dans 90 j", days: 90 }]} />
+            <Field label="Valid for"><DatePicker value={d.validFrom} onChange={set("validFrom")} max={d.validTo || undefined} clearable placeholder="From now on" presets={false} /></Field>
+            <Field label="To" hint={!datesOk ? "The end precedes the beginning" : undefined}>
+              <DatePicker value={d.validTo} onChange={set("validTo")} min={d.validFrom || undefined} clearable placeholder="Endless" presets={[{ label: "In 7 days", days: 7 }, { label: "In 30 days", days: 30 }, { label: "90 days", days: 90 }]} />
             </Field>
-            <Field label="Quantité minimum" hint="Par ligne de commande">
-              <Input inputMode="decimal" value={d.minQty} onChange={(e) => set("minQty")(e.target.value)} placeholder="Aucune" className="num" />
+            <Field label="Minimum quantity" hint="By command line">
+              <Input inputMode="decimal" value={d.minQty} onChange={(e) => set("minQty")(e.target.value)} placeholder="None" className="num" />
             </Field>
-            <Field label="Priorité" hint="À spécificité égale, la plus haute gagne">
+            <Field label="Priority" hint="At equal specificity, the highest wins">
               <Input inputMode="numeric" value={d.priority} onChange={(e) => set("priority")(e.target.value)} className="num" />
             </Field>
           </div>
-          <Field label="Note"><Textarea rows={2} value={d.note} onChange={(e) => set("note")(e.target.value)} placeholder="Accord commercial, contexte…" /></Field>
+          <Field label="Note"><Textarea rows={2} value={d.note} onChange={(e) => set("note")(e.target.value)} placeholder="Trade agreement, context..." /></Field>
         </fieldset>
 
         <p className="text-[11.5px] leading-4 text-muted-foreground">
-          Ordre d'application : prix négocié du client, puis la règle la plus précise (client &gt; groupe de clients &gt; tous ; produit &gt; groupe ou catégorie &gt; tous), puis la priorité, puis la plus récente. Sinon, prix catalogue.
+          Order of application: negotiated price of the customer, then the most precise rule (client &gt; group of clients &gt; All; product &gt; group or category &gt; then priority, then the most recent. Otherwise, catalogue price.
         </p>
       </form>
     </SidePanel>
@@ -503,20 +503,20 @@ function Preview({ rows, total, method, hasScope }: { rows: ProductSummary[]; to
   return (
     <div className="rounded-[4px] border border-border">
       <div className="flex h-7 items-center justify-between border-b border-border bg-muted/40 px-2.5">
-        <span className={SECTION_LABEL}>Aperçu</span>
-        {total > 3 ? <span className="text-[11.5px] text-muted-foreground">3 exemples sur {total} produits</span> : null}
+        <span className={SECTION_LABEL}>Overview</span>
+        {total > 3 ? <span className="text-[11.5px] text-muted-foreground">3 examples on {total} products</span> : null}
       </div>
       {!hasScope || !rows.length ? (
-        <div className="px-2.5 py-3 text-[12.5px] text-muted-foreground">{hasScope ? "Aucun produit actif dans ce périmètre." : "Choisissez les produits pour voir les prix obtenus."}</div>
+        <div className="px-2.5 py-3 text-[12.5px] text-muted-foreground">{hasScope ? "No active products in this perimeter." : "Choose the products to see the prices obtained."}</div>
       ) : (
         <table className="w-full table-fixed text-[12.5px]">
           <colgroup><col /><col style={{ width: 84 }} /><col style={{ width: 100 }} /><col style={{ width: 70 }} /></colgroup>
           <thead>
             <tr className="text-[11px] text-muted-foreground">
-              <th className="px-2.5 py-1 text-left font-medium">Produit</th>
+              <th className="px-2.5 py-1 text-left font-medium">Product</th>
               <th className="px-2 py-1 text-right font-medium">Catalogue</th>
-              <th className="px-2 py-1 text-right font-medium">Nouveau prix</th>
-              <th className="px-2.5 py-1 text-right font-medium">Marge</th>
+              <th className="px-2 py-1 text-right font-medium">New price</th>
+              <th className="px-2.5 py-1 text-right font-medium">Margin</th>
             </tr>
           </thead>
           <tbody>

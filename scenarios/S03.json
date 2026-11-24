@@ -1,12 +1,12 @@
 {
   "id": "S03",
   "owner": "amine-khalil",
-  "title": "Client bloqué pour impayés : ne rien promettre",
-  "why": "Intelligent : ne jamais promettre une livraison à un compte bloqué",
+  "title": "A blocked account",
+  "why": "Explain the hold and record a message for accounts.",
   "client": "cli_0007",
   "turns": [
     {
-      "say": "Bonjour, c'est Le Pétrin de Balma, il me faudrait 5 sacs de tradi pour demain.",
+      "say": "Hello, this is Le Pétrin de Balma. I need 5 sacks of traditional flour for tomorrow.",
       "expect": {
         "tools_any": [
           "log_client_event"
@@ -15,11 +15,11 @@
           "confirm_order"
         ],
         "says_any": [
-          "comptab",
-          "bloqu",
+          "accounts",
+          "blocked",
+          "hold",
           "Sandrine",
-          "règlement",
-          "paiement"
+          "payment"
         ]
       }
     }

@@ -1,93 +1,93 @@
 # Au Pain de Guilhem (C0070, `cli_0070`)
 
-> Fiche persona pour jouer ce client au téléphone. L'historique complet est dans `seed/clientEvents.json` (filtrer sur `clientId: "cli_0070"`).
+> Personal data sheet to play this customer over the phone. The full history is in `seed/clientEvents.json` (filter on `clientId: "cli_0070"`).
 
 | | |
 |---|---|
-| Type | Commerce de détail (Boulangeries artisanales) — 8 rue Carnot, 31770 Colomiers |
-| Zone | Blagnac, Colomiers & Ouest — livré mon, wed |
-| Statut | **active** — en croissance |
-| Commercial | Karim Belkacem |
-| Client depuis | 03/02/2021 (5 ans) |
-| Paiement | 30 jours — prélèvement SEPA, aucun retard |
-| Encours | 13 008,55 € TTC (plafond 20 000 €) |
-| Tempérament | économe, loyal, fidèle — qualité ★☆☆, prix ★★★, risque de départ faible |
+| Type | Retail trade (Artisan bakeries) — 8 rue Carnot, 31770 Colomiers |
+| Area | Blagnac, Colomiers & Ouest — delivered Mon, Wed |
+| Status | **active** — growing |
+| Sales representative | Karim Belkacem |
+| Customer since | 03/02/2021 (5 years) |
+| Payment | 30 days — SEPA direct debit, no delay |
+| Outstanding balance | 13 008,55 € incl. VAT (ceiling 20 000 €) |
+| Temperament | economical, loyal, faithful — quality ★☆☆, price ★★★, risk of losing the customer low |
 
-## Qui ils sont
+## Who they are
 
-Boulangerie artisanale de Colomiers, deux fournées le matin, une à midi. Sofiane Leroux fait sa tradition sur poolish et tient à son tourage AOP pour les chocolatines.
+Colomiers artisan bakery, two ovens in the morning, one at noon. Sofiane Leroux makes its tradition on poolish and stands for its AOP laminating butter for the pains au chocolat.
 
-## Les personnes
+## People
 
-- **Sofiane Leroux** — Boulanger-patron · 06 27 93 79 30 · sofiane@painguilhem.fr
-  - Comment il/elle parle : Commande au plus juste, petites quantités.
-  - Tics : « Il y a une promo cette semaine ? » · « Vous avez des fins de lot ? »
-- **Maxime Aubert** — Boulangère (boutique et commandes) · 06 71 66 23 66
-  - Comment il/elle parle : Patient, comprend les ruptures.
-  - Tics : « Vous me trouvez une solution ? » · « Merci pour le dépannage. »
+- **Sofiane Leroux** — bakery owner · 06 27 93 79 30 · sofiane@painguilhem.fr
+  - How he/she speaks: Command at the fairest, small quantities.
+  - Tics: "There's a promo this week?" · "Do you have a lot?"
+- **Maxime Aubert** — Bakery (shop and orders) · 06 71 66 23 66
+  - How he/she speaks: Patient, understands ruptures.
+  - Tics: "Do you find me a solution?" · "Thank you for the troubleshooting."
 
-## Ce qu'ils achètent et comment
+## What they buy and how
 
-Commande deux fois par semaine, en général la veille entre 12h et 18h, surtout par téléphone et WhatsApp. Produits habituels : farine de blé T55 tradition française (sac 25 kg), levure fraîche boulangère (pain de 500 g), bâtons de chocolat boulanger 44 % (carton 1,6 kg, 300 bâtons), sacs à baguette kraft imprimés (carton 1000), sel fin de mer (sac 25 kg), farine de petit épeautre bio (sac 10 kg), farine de gruau T45 pâtissière (sac 25 kg), pépites de chocolat noir cuisson (sac 5 kg).
+Order twice a week, usually the day before between 12h and 18h, especially by telephone and WhatsApp. Regular products: Traditional French T55 wheat flour (25 kg sack), Fresh baker's yeast (500 g block), 44% baker's chocolate sticks (1.6 kg box, 300 sticks), Printed kraft baguette bags (box of 1,000), Fine sea salt (25 kg sack), Organic einkorn flour (10 kg sack), T45 strong pastry flour (25 kg sack), Heat-stable dark chocolate chips (5 kg bag).
 
-Sur les 90 derniers jours (24 commandes livrées) :
+On the last 90 days (24 orders delivered):
 
-| Produit | Volume 90 j | Lignes | Dernier prix |
+| Product | Volume 90 | Lines | Last price |
 |---|---|---|---|
-| Beurre de tourage AOP Charentes-Poitou 84 % (plaque 2 kg) (`prd_0025`) | 820,69 kg | 17 | 11,40 € |
-| Farine de gruau T45 pâtissière (sac 25 kg) (`prd_0003`) | 200,00 pièce | 11 | 22,56 € |
-| Farine de blé T55 tradition française (sac 25 kg) (`prd_0001`) | 198,00 pièce | 13 | 19,00 € |
-| Bâtons de chocolat boulanger 44 % (carton 1,6 kg, 300 bâtons) (`prd_0042`) | 208,00 colis | 13 | 13,90 € |
-| Farine de blé T65 campagne (sac 25 kg) (`prd_0004`) | 139,00 pièce | 13 | 18,19 € |
-| Sacs à baguette kraft imprimés (carton 1000) (`prd_0065`) | 97,00 colis | 13 | 22,00 € |
-| Chocolat de couverture noir 64 % (pistoles, sac 5 kg) (`prd_0038`) | 128,36 kg | 10 | 15,80 € |
-| Margarine de feuilletage (carton 10 kg) (`prd_0030`) | 443,67 kg | 12 | 3,80 € |
+| Charentes-Poitou AOP laminating butter, 84% (2 kg slab) (`prd_0025`) | 820,69 kg | 17 | 11,40 € |
+| T45 strong pastry flour (25 kg sack) (`prd_0003`) | 200,00 piece | 11 | 22,56 € |
+| Traditional French T55 wheat flour (25 kg sack) (`prd_0001`) | 198,00 piece | 13 | 19,00 € |
+| 44% baker's chocolate sticks (1.6 kg box, 300 sticks) (`prd_0042`) | 208,00 box | 13 | 13,90 € |
+| T65 country bread flour (25 kg sack) (`prd_0004`) | 139,00 piece | 13 | 18,19 € |
+| Printed kraft baguette bags (box of 1,000) (`prd_0065`) | 97,00 box | 13 | 22,00 € |
+| 64% dark couverture chocolate (buttons, 5 kg bag) (`prd_0038`) | 128,36 kg | 10 | 15,80 € |
+| Laminating margarine (10 kg box) (`prd_0030`) | 443,67 kg | 12 | 3,80 € |
 
-Fiche CRM : _Paye en LCR à 30 jours fin de mois. Ne veut pas de surgelé : tout est fait maison. Livré lun. mer. Accepte les substitutions équivalentes si on prévient._
+Form CRM : _Paye in LCR to 30 end of month days. Don't want to freeze: everything is homemade. Delivered Mon. Sea. Accept equivalent substitutions if you warn._
 
-## Ce qui les agace
+## What frustrates them
 
-- Un sac de farine déchiré
-- Être livré un jour de fermeture
+- A sack of torn flour
+- To be delivered one day of closing
 
-## Historique marquant
+## A brief history
 
-- **10/12/2023** · demande spéciale · Fêtes 2023 : réservation de volumes
-- **16/01/2024** · prix · Tarifs 2024
-- **22/01/2024** · livraison · Erreur de livraison
-- **06/07/2024** · note · Fermeture d'été 2024
-- **16/01/2025** · prix · Tarifs 2025
-- **26/02/2025** · livraison · Chaîne du froid
-- **07/04/2025** · qualité · Qualité : farine de blé T55 tradition française (sac 25 kg)
-- **23/07/2025** · note · Fermeture d'été 2025
-- **22/11/2025** · demande spéciale · Fêtes 2025 : réservation de volumes
-- **22/01/2026** · prix · Tarifs 2026
-- **30/07/2026** · note · Fermeture d'été 2026
-- **05/11/2026** · demande spéciale · Fêtes 2026 : réservation de volumes
+- **10/12/2023** · special request · Holidays 2023 : volume reservation
+- **16/01/2024** · prices · Rates 2024
+- **22/01/2024** · delivery · delivery error
+- **06/07/2024** · note · Summer closure 2024
+- **16/01/2025** · prices · Rates 2025
+- **26/02/2025** · delivery · Cold chain
+- **07/04/2025** · Quality · Quality : Traditional French T55 wheat flour (25 kg sack)
+- **23/07/2025** · note · Summer closure 2025
+- **22/11/2025** · special request · Holidays 2025 : volume reservation
+- **22/01/2026** · prices · Rates 2026
+- **30/07/2026** · note · Summer closure 2026
+- **05/11/2026** · special request · Holidays 2026 : volume reservation
 
-Historique complet : 35 événements (10 visite, 5 appel, 4 compliment, 4 prix, 4 demande spéciale, 3 note, 2 qualité, 2 livraison, 1 ouverture).
+Complete history: 35 events (10 visit, 5 call, 4 compliment, 4 price, 4 special request, 3 rating, 2 quality, 2 delivery, 1 opening).
 
-## Dossiers ouverts aujourd'hui
+## Files opened today
 
-- **05/11/2026 — Fêtes 2026 : réservation de volumes**
-  Sofiane veut réserver pour les fêtes : levure fraîche boulangère (pain de 500 g) et farine de gruau T45 pâtissière (sac 25 kg) en volume pour les 23-24 et 30-31/12. Sofiane : « Vous avez des fins de lot ? »
+- **05/11/2026 — Holidays 2026: volume reservation**
+  Sofiane wants to book for the parties: Fresh baker's yeast (500 g block) and T45 strong pastry flour (25 kg sack) in volume for the 23-24 and 30-31/12. Sofiane: "Do you have a lot for it?"
 
-## Comment leur parler
+## How to talk to them
 
-- Appeler après 13h, jamais pendant les fournées.
-- Rappeler les pré-commandes d'Épiphanie dès novembre.
+- Call after 13h, never during batches.
+- Call Epiphany pre-orders back in November.
 
-## Prix & groupe
+## Price & group
 
-Groupes : **Boulangeries** (`boulangeries`).
-Pas de prix négocié.
+Groups: **Boulangeries** (`boulangeries`).
+No negotiated prices.
 
-Règles de prix qui peuvent s'appliquer :
-- `prl_0001` Boulangeries : −4 % sur les farines dès 10 sacs
-- `prl_0006` Épiphanie 2027 : poudre d'amande −6 % dès 20 kg
-- `prl_0007` Épiphanie 2027 : couronnes et fèves −5 %
+Price rules that may apply:
+- `prl_0001` Bakeries: -4 % on flours from 10 bags
+- `prl_0006` Epiphany 2027: almond powder -6 % from 20 kg
+- `prl_0007` Epiphany 2027: crowns and beans -5 %
 
-Dernières notes CRM :
+Latest notes CRM:
 
-- 06/05/2025, Karim (commercial) : Change de levure si elle arrive tiède : vérifier le bac isotherme.
-- 02/01/2026, Karim (commercial) : Fermé le mercredi : jamais de livraison ce jour-là.
+- 06/05/2025, Karim (commercial): Yeast change if it arrives lukewarm: check the insulated bin.
+- 02/01/2026, Karim (commercial): Closed on Wednesday: never delivered on that day.

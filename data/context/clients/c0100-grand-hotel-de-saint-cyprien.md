@@ -1,75 +1,75 @@
 # Grand Hôtel de Saint-Cyprien (C0100, `cli_0100`)
 
-> Fiche persona pour jouer ce client au téléphone. L'historique complet est dans `seed/clientEvents.json` (filtrer sur `clientId: "cli_0100"`).
+> Personal data sheet to play this customer over the phone. The full history is in `seed/clientEvents.json` (filter on `clientId: "cli_0100"`).
 
 | | |
 |---|---|
-| Type | Hôtel (Hôtels (petit-déjeuner et restaurant)) — 80 allées Jean-Jaurès, 31500 Toulouse (Côte Pavée) |
-| Zone | Toulouse centre & faubourgs — livré wed, sat |
-| Statut | **active** — perdu (plus de commande), dernière livraison le 01/08/2026 |
-| Commercial | Marion Escudié |
-| Client depuis | 04/01/2017 (9 ans) |
-| Paiement | 45 jours — paie à l'échéance, sans histoire |
-| Encours | 0,00 € TTC (plafond 6 500 €) |
-| Tempérament | procédurier — qualité ★★☆, prix ★★☆, risque de départ élevé |
+| Type | Hotels (Breakfast and Restaurant) — 80 allées Jean-Jaurès, 31500 Toulouse (Côte Pavée) |
+| Area | Toulouse centre & suburbs — delivered Wed, Sat |
+| Status | **active** — lost (more order), last delivery on 01/08/2026 |
+| Sales representative | Marion Escudié |
+| Customer since | 04/01/2017 (9 years) |
+| Payment | 45 days — Pays on due date, without history |
+| Outstanding balance | 0,00 € incl. VAT (ceiling 6 500 €) |
+| Temperament | procedure — quality ★★☆, price ★★☆, high risk of losing the customer |
 
-## Qui ils sont
+## Who they are
 
-Hôtel de Toulouse (Côte Pavée), petit-déjeuner buffet avec mini-viennoiseries cuites sur place, restaurant de 60 couverts. Factures au mois validées par l'économat.
+Hôtel de Toulouse (Côte Pavée), buffet breakfast with mini-pastries cooked on site, restaurant of 60 cutlery. Monthly invoices validated by the economy.
 
-## Les personnes
+## People
 
 - **Laëtitia Hubert** — Chef de cuisine · 06 68 64 06 17
-  - Comment il/elle parle : Tout passe par bon de commande et numéro de marché, très formel.
-  - Tics : « Merci de mentionner le numéro de bon. » · « Je vous renvoie au bordereau de prix. »
-- **Service comptabilité** — Factures · factures@grandhotelsaintcyprien.fr
+  - How he/she speaks: Everything goes by order form and market number, very formal.
+  - Tics: "Thank you for mentioning the voucher number." · "I'll send you back to the prize voucher."
+- **Service comptabilité** — Bills · factures@grandhotelsaintcyprien.fr
 
-## Ce qu'ils achètent et comment
+## What they buy and how
 
-Commande deux fois par semaine, en général la veille entre 11h et 15h, surtout par e-mail et téléphone. Produits habituels : beurre demi-sel de baratte (motte 1 kg), lait entier UHT (brique 1 L), crème liquide UHT 35 % (brique 1 L), croissant pur beurre cru surgelé 70 g (carton 150), purée de framboise surgelée (barquette 1 kg), œuf entier liquide pasteurisé (brique 1 L), beurre pâtissier 82 % (carton 10 kg), pain aux raisins cru surgelé 110 g (carton 80).
+Order twice a week, usually the day before between 11h and 15h, especially via e-mail and telephone. Regular products: Lightly salted churned butter (1 kg block), Whole UHT milk (1 L carton), 35% UHT whipping cream (1 L carton), Frozen unbaked all-butter croissants, 70 g (box of 150), Frozen raspberry purée (1 kg tub), Pasteurised liquid whole egg (1 L carton), 82% pastry butter (10 kg box), Frozen unbaked raisin pastries, 110 g (box of 80).
 
-Fiche CRM : _Factures au mois avec numéro de bon interne. Mini-viennoiseries et beurre demi-sel en portion pour le buffet. Livré mer. sam. Accepte les substitutions équivalentes si on prévient._
+Fiche CRM: _Monthly measurements with internal voucher number. Mini-pastries and half-salt butter serving for buffet. Delivered sea. sam. Accept equivalent substitutions if notified._
 
-## Ce qui les agace
+## What frustrates them
 
-- Des minis cassées
-- Une facture sans numéro de bon
+- Minis broken
+- An invoice without a voucher number
 
-## Historique marquant
+## A brief history
 
-- **23/03/2024** · qualité · Qualité : œufs plein air calibre M (plateau de 30)
-- **28/03/2024** · avoir · Avoir qualité : œufs plein air calibre M (plateau de 30)
-- **26/12/2024** · demande spéciale · Fêtes 2024 : réservation de volumes
-- **21/01/2025** · prix · Tarifs 2025
-- **15/03/2025** · qualité · Qualité : œuf entier liquide pasteurisé (brique 1 L)
-- **28/09/2025** · carte · Carte d'automne
-- **21/01/2026** · prix · Tarifs 2026
-- **23/05/2026** · qualité · Qualité : lait entier UHT (brique 1 L)
-- **27/05/2026** · avoir · Avoir qualité : lait entier UHT (brique 1 L)
-- **17/07/2026** · risque de départ · Commandes en baisse
-- **17/09/2026** · note · Plus de commande depuis un mois
-- **26/09/2026** · carte · Carte d'automne
+- **23/03/2024** · Quality · Quality : Medium free-range eggs (tray of 30)
+- **28/03/2024** · Have quality : Medium free-range eggs (tray of 30)
+- **26/12/2024** · special request · Holidays 2024 : volume reservation
+- **21/01/2025** · prices · Rates 2025
+- **15/03/2025** · Quality · Quality : Pasteurised liquid whole egg (1 L carton)
+- **28/09/2025** · map · Autumn card
+- **21/01/2026** · prices · Rates 2026
+- **23/05/2026** · Quality · Quality : Whole UHT milk (1 L carton)
+- **27/05/2026** · Have quality : Whole UHT milk (1 L carton)
+- **17/07/2026** · risk of losing the customer · Lower orders
+- **17/09/2026** · note · More orders for a month
+- **26/09/2026** · map · Autumn card
 
-Historique complet : 41 événements (9 visite, 6 qualité, 6 demande spéciale, 5 compliment, 4 prix, 3 note, 2 avoir, 2 appel, 2 carte, 1 ouverture, 1 risque de départ).
+Full history: 41 events (9 visit, 6 quality, 6 special request, 5 compliment, 4 price, 3 rating, 2 have, 2 call, 2 card, 1 opening, 1 risk of losing the customer).
 
-## Dossiers ouverts aujourd'hui
+## Files opened today
 
-Aucun.
+None.
 
-## Comment leur parler
+## How to talk to them
 
-- Passer par le responsable des achats.
-- Être formel.
+- Go through the procurement manager.
+- Be formal.
 
-## Prix & groupe
+## Price & group
 
-Groupes : **Hôtellerie** (`hotellerie`), **Clients perdus** (`perdus`).
-Pas de prix négocié.
+Groups: **Hotel ** (`hotellerie`), **Lost customers** (`perdus`).
+No negotiated prices.
 
-Règles de prix qui peuvent s'appliquer :
-- `prl_0006` Épiphanie 2027 : poudre d'amande −6 % dès 20 kg
-- `prl_0007` Épiphanie 2027 : couronnes et fèves −5 %
+Price rules that may apply:
+- `prl_0006` Epiphany 2027: almond powder -6 % from 20 kg
+- `prl_0007` Epiphany 2027: crowns and beans -5 %
 
-Dernières notes CRM :
+Latest notes CRM:
 
-Aucune.
+None.

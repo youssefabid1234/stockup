@@ -32,7 +32,7 @@ def read_pack() -> tuple[Doc, str]:
     from .team_demo import add_team_demo_data
 
     added = add_team_demo_data(pack)
-    return pack, str(SEED_DIR) + (f" + démo équipe ({', '.join(added)})" if added else "")
+    return pack, str(SEED_DIR) + (f" + demo team ({', '.join(added)})" if added else "")
 
 
 def _context_entry(e: Doc) -> Doc:

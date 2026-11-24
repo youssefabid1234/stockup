@@ -12,9 +12,9 @@ class ElevenLabsTTS(TTSClient):
     def __init__(
         self,
         api_key: str,
-        model: str = "eleven_flash_v2_5",  # ~100 ms, French OK, cheapest; eleven_v4_turbo = same latency, more expressive
-        voice: str = "JBFqnCBsd6RMkjVDRZzb",  # a premade multilingual voice; pick a French one in your ElevenLabs library
-        language: str = "fr",
+        model: str = "eleven_flash_v2_5",  # ~100 ms, English supported, cheapest; eleven_v4_turbo = same latency, more expressive
+        voice: str = "JBFqnCBsd6RMkjVDRZzb",  # a premade multilingual voice; pick an English one in your ElevenLabs library
+        language: str = "en",
         http: httpx.AsyncClient | None = None,
     ):
         self.api_key, self.model, self.voice, self.language, self.http = api_key, model, voice, language, http

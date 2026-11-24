@@ -27,7 +27,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input({ s
 });
 
 /** <SearchInput value={q} onChange={setQ} placeholder="Rechercher…" /> — controlled, with clear button. */
-export function SearchInput({ value, onChange, placeholder = "Rechercher…", className, autoFocus }: {
+export function SearchInput({ value, onChange, placeholder = "Search...", className, autoFocus }: {
   value: string; onChange: (v: string) => void; placeholder?: string; className?: string; autoFocus?: boolean;
 }) {
   return (
@@ -42,7 +42,7 @@ export function SearchInput({ value, onChange, placeholder = "Rechercher…", cl
         className={cn(FIELD, "h-7 pl-7 pr-6 text-[12.5px]")}
       />
       {value ? (
-        <button type="button" aria-label="Effacer" onClick={() => onChange("")} className="absolute right-1.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground">
+        <button type="button" aria-label="Clear" onClick={() => onChange("")} className="absolute right-1.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground">
           <X size={12} strokeWidth={1.75} />
         </button>
       ) : null}
@@ -262,8 +262,8 @@ export function Select({
                 ref={filterRef}
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="Filtrer…"
-                aria-label="Filtrer les options"
+                placeholder="Filter..."
+                aria-label="Filter Options"
                 role="combobox"
                 aria-expanded
                 aria-controls={listId}
@@ -274,7 +274,7 @@ export function Select({
             </div>
           ) : null}
           <div ref={listRef} id={listId} role="listbox" aria-label={rest["aria-label"] ?? placeholder} className="p-1">
-            {items.length === 0 ? <div className="px-2 py-1.5 text-[12.5px] text-muted-foreground">Aucun résultat</div> : null}
+            {items.length === 0 ? <div className="px-2 py-1.5 text-[12.5px] text-muted-foreground">No results</div> : null}
             {items.map((o, i) => {
               const heading = o.group && o.group !== lastGroup ? o.group : null;
               lastGroup = o.group;

@@ -4,8 +4,8 @@ from app import crud
 from app.core.db import get_meta
 
 LEGACY = {
-    "whole_fish": "Poisson entier", "fillet": "Filets et transformés", "shellfish": "Coquillages", "crustacean": "Crustacés",
-    "frozen": "Surgelés", "produce": "Fruits et légumes", "dairy": "Crèmerie", "dry": "Épicerie",
+    "whole_fish": "Whole fish", "fillet": "Filets and processed", "shellfish": "Shellfish", "crustacean": "Crustaceans",
+    "frozen": "Frozen goods", "produce": "Fruit and vegetables", "dairy": "Dairy", "dry": "Dry goods",
 }
 
 

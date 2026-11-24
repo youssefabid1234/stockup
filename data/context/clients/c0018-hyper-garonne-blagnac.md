@@ -1,93 +1,93 @@
 # Hyper Garonne Blagnac (C0018, `cli_0018`)
 
-> Fiche persona pour jouer ce client au téléphone. L'historique complet est dans `seed/clientEvents.json` (filtrer sur `clientId: "cli_0018"`).
+> Personal data sheet to play this customer over the phone. The full history is in `seed/clientEvents.json` (filter on `clientId: "cli_0018"`).
 
 | | |
 |---|---|
-| Type | Grande surface (Rayons pain et terminaux de cuisson de supermarchés) — 74 cours de la Liberté, 31700 Blagnac |
-| Zone | Blagnac, Colomiers & Ouest — livré mon, tue, thu |
-| Statut | **active** — client régulier |
-| Commercial | Karim Belkacem |
-| Client depuis | 11/03/2008 (18 ans) |
-| Paiement | 30 jours — prélèvement SEPA, aucun retard |
-| Encours | 9 089,84 € TTC (plafond 14 500 €) |
-| Tempérament | négociateur — qualité ★★★, prix ★★★, risque de départ moyen |
+| Type | Large area (Bread Rays and Supermarket Cooking Terminals) — 74 cours de la Liberté, 31700 Blagnac |
+| Area | Blagnac, Colomiers & Ouest — delivered Mon, Tue, Thu |
+| Status | **active** — regular customer |
+| Sales representative | Karim Belkacem |
+| Customer since | 11/03/2008 (18 years) |
+| Payment | 30 days — SEPA direct debit, no delay |
+| Outstanding balance | 9 089,84 € incl. VAT (ceiling 14 500 €) |
+| Temperament | negotiator — quality ★★★, price ★★★, average risk of losing the customer |
 
-## Qui ils sont
+## Who they are
 
-Supermarché de Blagnac avec terminal de cuisson : baguettes précuites et viennoiseries crues cuites sur place toute la journée. Le chef de rayon commande par mail le matin.
+Blagnac Supermarket with cooking terminal: pre-cooked chopsticks and pastries raw cooked on site all day long. The head of the department orders by mail in the morning.
 
-## Les personnes
+## People
 
-- **Awa Rolland** — Chef de rayon boulangerie · 06 94 18 44 16 · awa@hypergaronneblagnac.fr
-  - Comment il/elle parle : Commence toujours par le prix, compare avec la concurrence.
-  - Tics : « À ce prix-là, je prends ailleurs. » · « Vous me faites un geste ? »
-- **Bernard Berger** — Directeur de magasin · 06 90 66 59 71
-  - Comment il/elle parle : Commence toujours par le prix, compare avec la concurrence.
-  - Tics : « Et si j'en prends le double ? » · « Vous me faites un geste ? »
-- **Bernard Cohen** — Responsable réception · 06 74 93 32 64
-  - Comment il/elle parle : Joue la surprise sur chaque tarif, finit par commander.
-  - Tics : « Vous êtes plus cher que votre voisin, là. » · « Et si j'en prends le double ? »
+- **Awa Rolland** — Head of bakery department · 06 94 18 44 16 · awa@hypergaronneblagnac.fr
+  - How he/she speaks: Always starts with the price, compares with the competition.
+  - Tics: "At this price, I take elsewhere." · "Do you make a move?"
+- **Bernard Berger** — Store manager · 06 90 66 59 71
+  - How he/she speaks: Always starts with the price, compares with the competition.
+  - Tics: "What if I take the double?" · "Do you make a move?"
+- **Bernard Cohen** — Head of Reception · 06 74 93 32 64
+  - How he/she speaks: Play surprise on each fare, end up ordering.
+  - Tics: "You're more expensive than your neighbor there." · "What if I take double?"
 
-## Ce qu'ils achètent et comment
+## What they buy and how
 
-Commande trois fois par semaine, en général la veille entre 10h et 16h, surtout par e-mail et portail web. Produits habituels : baguette précuite surgelée 280 g (carton 60), croissant pur beurre cru surgelé 70 g (carton 150), chocolatine pur beurre crue surgelée 75 g (carton 140), pain aux raisins cru surgelé 110 g (carton 80), fèves des rois en porcelaine (sachet de 100), couronnes des rois carton dorées (lot de 100), boîtes pâtissières blanches 20 cm (lot de 50), jaune d'œuf liquide pasteurisé (brique 1 L).
+Order three times a week, usually the day before between 10h and 16h, especially via e-mail and web portal. Regular products: Frozen part-baked baguettes, 280 g (box of 60), Frozen unbaked all-butter croissants, 70 g (box of 150), Frozen unbaked all-butter pains au chocolat, 75 g (box of 140), Frozen unbaked raisin pastries, 110 g (box of 80), Porcelain king cake charms (pack of 100), Gold cardboard king cake crowns (pack of 100), White cake boxes, 20 cm (pack of 50), Pasteurised liquid egg yolk (1 L carton).
 
-Sur les 90 derniers jours (28 commandes livrées) :
+On the last 90 days (28 orders delivered):
 
-| Produit | Volume 90 j | Lignes | Dernier prix |
+| Product | Volume 90 | Lines | Last price |
 |---|---|---|---|
-| Croissant pur beurre cru surgelé 70 g (carton 150) (`prd_0053`) | 218,00 colis | 14 | 50,63 € |
-| Chocolatine pur beurre crue surgelée 75 g (carton 140) (`prd_0054`) | 81,00 colis | 10 | 52,57 € |
-| Pain aux raisins cru surgelé 110 g (carton 80) (`prd_0055`) | 96,00 colis | 11 | 39,92 € |
-| Boîtes pâtissières blanches 20 cm (lot de 50) (`prd_0067`) | 210,00 colis | 16 | 14,12 € |
-| Baguette précuite surgelée 280 g (carton 60) (`prd_0058`) | 99,00 colis | 8 | 22,80 € |
-| Jaune d'œuf liquide pasteurisé (brique 1 L) (`prd_0036`) | 204,00 litre | 9 | 7,77 € |
+| Frozen unbaked all-butter croissants, 70 g (box of 150) (`prd_0053`) | 218,00 box | 14 | 50,63 € |
+| Frozen unbaked all-butter pains au chocolat, 75 g (box of 140) (`prd_0054`) | 81,00 box | 10 | 52,57 € |
+| Frozen unbaked raisin pastries, 110 g (box of 80) (`prd_0055`) | 96,00 box | 11 | 39,92 € |
+| White cake boxes, 20 cm (pack of 50) (`prd_0067`) | 210,00 box | 16 | 14,12 € |
+| Frozen part-baked baguettes, 280 g (box of 60) (`prd_0058`) | 99,00 box | 8 | 22,80 € |
+| Pasteurised liquid egg yolk (1 L carton) (`prd_0036`) | 204,00 liter | 9 | 7,77 € |
 
-Fiche CRM : _Commande par mail avec le numéro de commande magasin. Prix promo pour les opérations Épiphanie. Livré lun. mar. jeu. Accepte les substitutions équivalentes si on prévient._
+Fiche CRM : _Order by mail with the order number shop. Discount price for Epiphany operations. Delivered Mon. Mar. game. Accept equivalent substitutions if notified._
 
-## Ce qui les agace
+## What frustrates them
 
-- Cartons abîmés
-- Écart entre BL et facture
-- Livraison hors créneau de quai
+- Cartons damaged
+- Difference between BL and invoice
+- Delivery out of dock niche
 
-## Historique marquant
+## A brief history
 
-- **10/03/2025** · avoir · Avoir qualité : pain aux raisins cru surgelé 110 g (carton 80)
-- **15/04/2025** · livraison · Colis manquant
-- **05/08/2025** · qualité · Qualité : baguette précuite surgelée 280 g (carton 60)
-- **27/10/2025** · livraison · Livraison laissée devant la porte
-- **25/11/2025** · qualité · Qualité : croissant pur beurre cru surgelé 70 g (carton 150)
-- **26/11/2025** · avoir · Avoir qualité : croissant pur beurre cru surgelé 70 g (carton 150)
-- **08/01/2026** · prix · Tarifs 2026
-- **05/02/2026** · retour · Retour à la livraison : baguette précuite surgelée 280 g (carton 60)
-- **09/03/2026** · qualité · Qualité : chocolatine pur beurre crue surgelée 75 g (carton 140)
-- **19/10/2026** · qualité · Qualité : chocolatine pur beurre crue surgelée 75 g (carton 140)
-- **23/10/2026** · avoir · Avoir qualité : chocolatine pur beurre crue surgelée 75 g (carton 140)
-- **03/11/2026** · demande spéciale · Fêtes 2026 : réservation de volumes
+- **10/03/2025** · Have quality : Frozen unbaked raisin pastries, 110 g (box of 80)
+- **15/04/2025** · delivery · missing box
+- **05/08/2025** · Quality · Quality : Frozen part-baked baguettes, 280 g (box of 60)
+- **27/10/2025** · Delivery · Delivery left at the door
+- **25/11/2025** · Quality · Quality : Frozen unbaked all-butter croissants, 70 g (box of 150)
+- **26/11/2025** · Have quality : Frozen unbaked all-butter croissants, 70 g (box of 150)
+- **08/01/2026** · prices · Rates 2026
+- **05/02/2026** · back to delivery : Frozen part-baked baguettes, 280 g (box of 60)
+- **09/03/2026** · Quality · Quality : Frozen unbaked all-butter pains au chocolat, 75 g (box of 140)
+- **19/10/2026** · Quality · Quality : Frozen unbaked all-butter pains au chocolat, 75 g (box of 140)
+- **23/10/2026** · Have quality : Frozen unbaked all-butter pains au chocolat, 75 g (box of 140)
+- **03/11/2026** · special request · Holidays 2026 : volume reservation
 
-Historique complet : 65 événements (20 qualité, 16 visite, 8 compliment, 6 demande spéciale, 4 prix, 4 appel, 3 avoir, 2 livraison, 1 ouverture, 1 retour).
+Full history: 65 events (20 quality, 16 visit, 8 compliment, 6 special request, 4 price, 4 call, 3 have, 2 delivery, 1 opening, 1 back).
 
-## Dossiers ouverts aujourd'hui
+## Files opened today
 
-Aucun.
+None.
 
-## Comment leur parler
+## How to talk to them
 
-- Toujours rappeler le numéro de commande magasin.
-- Parler en cartons et en palettes.
+- Always call the store order number.
+- Talk in cartons and pallets.
 
-## Prix & groupe
+## Price & group
 
-Groupes : **GMS** (`gms`).
-Prix négociés (`clientPrices`, toujours prioritaires) : croissant pur beurre cru surgelé 70 g (carton 150) 50,63 € (liste 52,00) ; pain aux raisins cru surgelé 110 g (carton 80) 39,92 € (liste 41,00) ; boîtes pâtissières blanches 20 cm (lot de 50) 14,12 € (liste 14,50) ; jaune d'œuf liquide pasteurisé (brique 1 L) 7,69 € (liste 7,90) ; chocolatine pur beurre crue surgelée 75 g (carton 140) 52,57 € (liste 54,00) ; couronnes des rois carton dorées (lot de 100) 12,66 € (liste 13,00).
+Groups: **GMS** (`gms`).
+Negotiated prices (`clientPrices`, always priority): Frozen unbaked all-butter croissants, 70 g (box of 150) 50,63 € (list 52,00); Frozen unbaked raisin pastries, 110 g (box of 80) 39,92 € (list 41,00); White cake boxes, 20 cm (pack of 50) 14,12 € (list 14,50); Pasteurised liquid egg yolk (1 L carton) 7,69 € (list 7,90); Frozen unbaked all-butter pains au chocolat, 75 g (box of 140) 52,57 € (list 54,00); Gold cardboard king cake crowns (pack of 100) 12,66 € (list 13,00).
 
-Règles de prix qui peuvent s'appliquer :
-- `prl_0003` GMS : −5 % sur la viennoiserie crue
-- `prl_0006` Épiphanie 2027 : poudre d'amande −6 % dès 20 kg
-- `prl_0007` Épiphanie 2027 : couronnes et fèves −5 %
+Price rules that may apply:
+- `prl_0003` GMS: -5 % on raw pastry
+- `prl_0006` Epiphany 2027: almond powder -6 % from 20 kg
+- `prl_0007` Epiphany 2027: crowns and beans -5 %
 
-Dernières notes CRM :
+Latest notes CRM:
 
-Aucune.
+None.

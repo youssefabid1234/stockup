@@ -28,16 +28,16 @@ export default function PaymentsPage() {
   const columns: Column<PaymentSummary>[] = useMemo(() => [
     { id: "date", header: "Date", width: 120, sortKey: "date", cell: (p) => <DateLabel date={p.receivedAt} /> },
     {
-      id: "client", header: "Client", sortKey: "client",
+      id: "client", header: "Customer", sortKey: "client",
       cell: (p) => <Link to={`/clients/${p.clientId}`} className="truncate font-medium hover:underline">{p.clientName}</Link>,
     },
     { id: "method", header: "Mode", width: 120, muted: true, sortKey: "method", cell: (p) => PAYMENT_METHOD_LABEL[p.method] ?? p.method },
-    { id: "ref", header: "Référence", width: 180, hideBelow: 1000, sortKey: "ref", cell: (p) => (p.reference ? <span className="block w-0 min-w-full truncate" title={p.reference}><Mono>{p.reference}</Mono></span> : <span className="text-muted-foreground">—</span>) },
-    { id: "amount", header: "Montant", width: 120, numeric: true, sortKey: "amount", cell: (p) => <Money value={p.amount} className="font-medium" /> },
+    { id: "ref", header: "Reference", width: 180, hideBelow: 1000, sortKey: "ref", cell: (p) => (p.reference ? <span className="block w-0 min-w-full truncate" title={p.reference}><Mono>{p.reference}</Mono></span> : <span className="text-muted-foreground">—</span>) },
+    { id: "amount", header: "Amount", width: 120, numeric: true, sortKey: "amount", cell: (p) => <Money value={p.amount} className="font-medium" /> },
     {
-      id: "alloc", header: "Factures imputées", width: 300,
+      id: "alloc", header: "Charged invoices", width: 300,
       cell: (p) => p.allocations.length === 0 ? (
-        <span className="text-muted-foreground">Non imputé</span>
+        <span className="text-muted-foreground">Not imputed</span>
       ) : (
         // One line that never widens the column: the first two invoices, then "+N" (full list in its title).
         <span className="flex w-0 min-w-full items-center gap-2.5 overflow-hidden whitespace-nowrap">
@@ -63,19 +63,19 @@ export default function PaymentsPage() {
   return (
     <Page>
       <PageHeader
-        title="Paiements"
+        title="Payments"
         count={filtered ? undefined : data?.total}
         filters={
           <>
-            <SearchInput value={q} onChange={setQ} placeholder="Client, référence, facture…" />
-            <Select size="sm" value={method} onChange={(v) => setMethod(v as PaymentMethod | "")} placeholder="Tous les modes" options={METHOD_OPTIONS} />
+            <SearchInput value={q} onChange={setQ} placeholder="Customer, reference, invoice..." />
+            <Select size="sm" value={method} onChange={(v) => setMethod(v as PaymentMethod | "")} placeholder="All modes" options={METHOD_OPTIONS} />
           </>
         }
-        actions={<Button variant="primary" icon={Plus} onClick={() => setCreating(true)}>Enregistrer un paiement</Button>}
+        actions={<Button variant="primary" icon={Plus} onClick={() => setCreating(true)}>Save a payment</Button>}
       />
       <PageBody flush>
         {isError && !data ? (
-          <EmptyState icon={Wallet} title="Paiements indisponibles" description="L'API ne répond pas. Vérifiez que le serveur tourne sur le port 4000." action={<Button size="sm" onClick={() => refetch()}>Réessayer</Button>} />
+          <EmptyState icon={Wallet} title="Payments not available" description="TheAPI Check that the server is running on port 4000." action={<Button size="sm" onClick={() => refetch()}>Retry</Button>} />
         ) : (
           <DataTable
             columns={columns}
@@ -83,12 +83,12 @@ export default function PaymentsPage() {
             server={{ list, total: data?.total }}
             loading={isLoading}
             getRowId={(p) => p.id}
-            footer={rows ? <>{count} paiement{count > 1 ? "s" : ""}{filtered ? " · filtrés" : ""} · Total <Money value={total} className="font-medium text-foreground" /></> : undefined}
+            footer={rows ? <>{count} paiement{count > 1 ? "s" : ""}{filtered ? " · filtered" : ""} · Total <Money value={total} className="font-medium text-foreground" /></> : undefined}
             empty={
               filtered ? (
-                <EmptyState icon={Wallet} title="Aucun paiement ne correspond" description="Modifiez la recherche ou le mode." action={<Button size="sm" onClick={() => { setQ(""); setMethod(""); }}>Effacer les filtres</Button>} />
+                <EmptyState icon={Wallet} title="No payment is required" description="Change search or mode." action={<Button size="sm" onClick={() => { setQ(""); setMethod(""); }}>Clear Filters</Button>} />
               ) : (
-                <EmptyState icon={Wallet} title="Aucun paiement" description="Les encaissements clients apparaîtront ici." action={<Button size="sm" icon={Plus} onClick={() => setCreating(true)}>Enregistrer un paiement</Button>} />
+                <EmptyState icon={Wallet} title="No payment" description="Client receipts will appear here." action={<Button size="sm" icon={Plus} onClick={() => setCreating(true)}>Save a payment</Button>} />
               )
             }
           />

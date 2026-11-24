@@ -1,92 +1,92 @@
 # Hyper Garonne Ramonville-Saint-Agne (C0104, `cli_0104`)
 
-> Fiche persona pour jouer ce client au téléphone. L'historique complet est dans `seed/clientEvents.json` (filtrer sur `clientId: "cli_0104"`).
+> Personal data sheet to play this customer over the phone. The full history is in `seed/clientEvents.json` (filter on `clientId: "cli_0104"`).
 
 | | |
 |---|---|
-| Type | Grande surface (Rayons pain et terminaux de cuisson de supermarchés) — 80 bis rue Paul-Bert, 31520 Ramonville-Saint-Agne |
-| Zone | Balma, Labège & Sud toulousain — livré tue, thu, sat |
-| Statut | **active** — revenu après un départ à la concurrence |
-| Commercial | Karim Belkacem |
-| Client depuis | 28/05/2016 (10 ans) |
-| Paiement | 30 jours — prélèvement SEPA, aucun retard |
-| Encours | 21 957,64 € TTC (plafond 30 000 €) |
-| Tempérament | négociateur, procédurier, pressé — qualité ★☆☆, prix ★★★, risque de départ moyen |
+| Type | Large area (Bread Rays and Supermarket Cooking Terminals) — 80 bis rue Paul-Bert, 31520 Ramonville-Saint-Agne |
+| Area | Balma, Labège & Sud Toulousein — delivered Tue, Thu, Sat |
+| Status | **active** — income after competitive departure |
+| Sales representative | Karim Belkacem |
+| Customer since | 28/05/2016 (10 years) |
+| Payment | 30 days — SEPA direct debit, no delay |
+| Outstanding balance | 21 957,64 € incl. VAT (ceiling 30 000 €) |
+| Temperament | negotiator, procedural officer, pressed — quality ★☆☆, price ★★★, average risk of losing the customer |
 
-## Qui ils sont
+## Who they are
 
-Supermarché de Ramonville-Saint-Agne avec terminal de cuisson : baguettes précuites et viennoiseries crues cuites sur place toute la journée. Le chef de rayon commande par mail le matin.
+Ramonville-Saint-Agne Supermarket with cooking terminal: pre-cooked chopsticks and pastries raw cooked on site all day long. The head of the department orders by mail in the morning.
 
-## Les personnes
+## People
 
-- **Adrien Mercier** — Chef de rayon boulangerie · 06 53 48 22 42
-  - Comment il/elle parle : Phrases courtes, pas le temps, veut un récapitulatif en dix secondes.
-  - Tics : « Envoyez, envoyez. » · « Pareil que d'hab, go. »
-- **Christophe Guyot** — Directeur de magasin · 06 77 36 17 51
-  - Comment il/elle parle : Appelle entre deux services, raccroche vite.
-  - Tics : « Vite, j'ai pas le temps. » · « Pareil que d'hab, go. »
+- **Adrien Mercier** — Head of bakery department · 06 53 48 22 42
+  - How he/she speaks: Short phrases, not time, wants a summary in ten seconds.
+  - Tics: "Send, send." · "Same as usual, go."
+- **Christophe Guyot** — Store manager · 06 77 36 17 51
+  - How he/she speaks: Calls between two services, hang up fast.
+  - Tics: "Quickly, I don't have time." · "Same as usual, go."
 
-## Ce qu'ils achètent et comment
+## What they buy and how
 
-Commande trois fois par semaine, en général la veille entre 11h et 16h, surtout par e-mail et portail web. Produits habituels : baguette précuite surgelée 280 g (carton 60), chocolatine pur beurre crue surgelée 75 g (carton 140), sacs à baguette kraft imprimés (carton 1000), farine de gruau T45 pâtissière (sac 25 kg), boîtes pâtissières blanches 20 cm (lot de 50), œufs plein air calibre M (plateau de 30), pâte feuilletée pur beurre en plaques (carton 5 kg), fèves des rois en porcelaine (sachet de 100).
+Order three times a week, usually the day before between 11h and 16h, especially via e-mail and web portal. Regular products: Frozen part-baked baguettes, 280 g (box of 60), Frozen unbaked all-butter pains au chocolat, 75 g (box of 140), Printed kraft baguette bags (box of 1,000), T45 strong pastry flour (25 kg sack), White cake boxes, 20 cm (pack of 50), Medium free-range eggs (tray of 30), All-butter puff pastry sheets (5 kg box), Porcelain king cake charms (pack of 100).
 
-Sur les 90 derniers jours (35 commandes livrées) :
+On the last 90 days (35 orders delivered):
 
-| Produit | Volume 90 j | Lignes | Dernier prix |
+| Product | Volume 90 | Lines | Last price |
 |---|---|---|---|
-| Farine de gruau T45 pâtissière (sac 25 kg) (`prd_0003`) | 548,00 pièce | 19 | 23,57 € |
-| Chocolatine pur beurre crue surgelée 75 g (carton 140) (`prd_0054`) | 211,00 colis | 14 | 51,30 € |
-| Sacs à baguette kraft imprimés (carton 1000) (`prd_0065`) | 241,00 colis | 16 | 22,00 € |
-| Baguette précuite surgelée 280 g (carton 60) (`prd_0058`) | 185,00 colis | 13 | 22,80 € |
-| Pâte feuilletée pur beurre en plaques (carton 5 kg) (`prd_0057`) | 108,00 colis | 11 | 37,05 € |
-| Œufs plein air calibre M (plateau de 30) (`prd_0034`) | 472,00 colis | 21 | 8,34 € |
-| Boîtes pâtissières blanches 20 cm (lot de 50) (`prd_0067`) | 239,00 colis | 17 | 14,50 € |
-| Pain aux raisins cru surgelé 110 g (carton 80) (`prd_0055`) | 75,00 colis | 15 | 38,95 € |
+| T45 strong pastry flour (25 kg sack) (`prd_0003`) | 548,00 piece | 19 | 23,57 € |
+| Frozen unbaked all-butter pains au chocolat, 75 g (box of 140) (`prd_0054`) | 211,00 box | 14 | 51,30 € |
+| Printed kraft baguette bags (box of 1,000) (`prd_0065`) | 241,00 box | 16 | 22,00 € |
+| Frozen part-baked baguettes, 280 g (box of 60) (`prd_0058`) | 185,00 box | 13 | 22,80 € |
+| All-butter puff pastry sheets (5 kg box) (`prd_0057`) | 108,00 box | 11 | 37,05 € |
+| Medium free-range eggs (tray of 30) (`prd_0034`) | 472,00 box | 21 | 8,34 € |
+| White cake boxes, 20 cm (pack of 50) (`prd_0067`) | 239,00 box | 17 | 14,50 € |
+| Frozen unbaked raisin pastries, 110 g (box of 80) (`prd_0055`) | 75,00 box | 15 | 38,95 € |
 
-Fiche CRM : _Prix promo pour les opérations Épiphanie. Commande par mail avec le numéro de commande magasin. Livré mar. jeu. sam. Accepte les substitutions équivalentes si on prévient._
+Fiche CRM : _Promo price for Epiphany operations. Order by mail with the store order number. Delivered Tue. game. Sat. Accept equivalent substitutions if notified._
 
-## Ce qui les agace
+## What frustrates them
 
-- Écart entre BL et facture
-- Livraison hors créneau de quai
+- Difference between BL and invoice
+- Delivery out of dock niche
 
-## Historique marquant
+## A brief history
 
-- **10/12/2023** · demande spéciale · Fêtes 2023 : réservation de volumes
-- **08/01/2024** · prix · Tarifs 2024
-- **07/05/2024** · qualité · Qualité : semelles dorées rondes 28 cm (lot de 100)
-- **08/05/2024** · avoir · Avoir qualité : semelles dorées rondes 28 cm (lot de 100)
-- **24/11/2024** · risque de départ · Part chez Les Moulins Réunis du Midi
-- **29/05/2025** · regagné · Retour du client
-- **09/10/2025** · qualité · Qualité : baguette précuite surgelée 280 g (carton 60)
-- **12/10/2025** · avoir · Avoir qualité : baguette précuite surgelée 280 g (carton 60)
-- **08/01/2026** · prix · Tarifs 2026
-- **17/07/2026** · contact · Nouveau contact : Christophe Guyot
-- **15/09/2026** · contact · Nouveau contact : Christophe Guyot
-- **21/11/2026** · demande spéciale · Fêtes 2026 : réservation de volumes
+- **10/12/2023** · special request · Holidays 2023 : volume reservation
+- **08/01/2024** · prices · Rates 2024
+- **07/05/2024** · Quality · Quality : Round gold cake boards, 28 cm (pack of 100)
+- **08/05/2024** · Have quality : Round gold cake boards, 28 cm (pack of 100)
+- **24/11/2024** · risk of losing the customer · Share at Les Moulins Réunions du Midi
+- **29/05/2025** · returned · Customer return
+- **09/10/2025** · Quality · Quality : Frozen part-baked baguettes, 280 g (box of 60)
+- **12/10/2025** · Have quality : Frozen part-baked baguettes, 280 g (box of 60)
+- **08/01/2026** · prices · Rates 2026
+- **17/07/2026** · contact · New contact : Christophe Guyot
+- **15/09/2026** · contact · New contact : Christophe Guyot
+- **21/11/2026** · special request · Holidays 2026 : volume reservation
 
-Historique complet : 37 événements (10 visite, 6 compliment, 4 demande spéciale, 4 appel, 3 prix, 2 qualité, 2 avoir, 2 contact, 1 ouverture, 1 livraison, 1 risque de départ, 1 regagné).
+Full history: 37 events (10 visit, 6 compliment, 4 special request, 4 call, 3 price, 2 quality, 2 have, 2 contact, 1 opening, 1 delivery, 1 risk of losing the customer, 1 returned).
 
-## Dossiers ouverts aujourd'hui
+## Files opened today
 
-- **21/11/2026 — Fêtes 2026 : réservation de volumes**
-  Christophe veut réserver pour les fêtes : fèves des rois en porcelaine (sachet de 100) et œufs plein air calibre M (plateau de 30) en volume pour les 23-24 et 30-31/12. Christophe : « Pareil que d'hab, go. »
+- **21/11/2026 — Holidays 2026: volume reservation**
+  Christophe wants to book for the parties: Porcelain king cake charms (pack of 100) and Medium free-range eggs (tray of 30) in volume for the 23-24 and 30-31/12. Christophe: "Same as usual, go."
 
-## Comment leur parler
+## How to talk to them
 
-- Toujours rappeler le numéro de commande magasin.
-- Parler en cartons et en palettes.
+- Always call the store order number.
+- Talk in cartons and pallets.
 
-## Prix & groupe
+## Price & group
 
-Groupes : **GMS** (`gms`), **Grands comptes** (`grands-comptes`).
-Pas de prix négocié.
+Groups: **GMS** (`gms`), **Grand accounts** (`grands-comptes`).
+No negotiated prices.
 
-Règles de prix qui peuvent s'appliquer :
-- `prl_0003` GMS : −5 % sur la viennoiserie crue
-- `prl_0006` Épiphanie 2027 : poudre d'amande −6 % dès 20 kg
-- `prl_0007` Épiphanie 2027 : couronnes et fèves −5 %
+Price rules that may apply:
+- `prl_0003` GMS: -5 % on raw pastry
+- `prl_0006` Epiphany 2027: almond powder -6 % from 20 kg
+- `prl_0007` Epiphany 2027: crowns and beans -5 %
 
-Dernières notes CRM :
+Latest notes CRM:
 
-Aucune.
+None.

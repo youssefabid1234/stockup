@@ -5,7 +5,7 @@ Real life: while the AOP tourage is out, the wholesaler runs a short promotion o
 bakeries, to move stock. Here: one price rule created through the ERP API, so anyone (and the jury, after
 `make setup`) can recreate it in one command. FICTIONAL demo data, written in DECISIONS.md §5.
 
-    Rule: group « Boulangeries » × Beurre de tourage 82 % (prd_0026), −8 % on the list price,
+    Rule: Bakery group × Touring butter 82 % (prd_0026), −8 % on the list price,
           from the ERP business date (GET /api/meta → today) to the end of that month.
     Effect: 9,20 € → 8,46 €/kg for the bakeries without a negotiated price (a negotiated price always wins).
 
@@ -35,7 +35,7 @@ def build_demo_rule(today: date) -> dict:
     """The PriceRuleInput sent to POST /api/price-rules (pure: tested without the ERP)."""
     end = today.replace(day=calendar.monthrange(today.year, today.month)[1])
     return {
-        "name": f"Promo tourage 82 % : −{DISCOUNT_PCT:g} % jusqu'au {end:%d/%m}",
+        "name": f"82% laminating butter: {DISCOUNT_PCT:g}% off until {end:%d/%m}",
         "active": True,
         "priority": 0,
         "clientScope": {"kind": "tag", "tag": CLIENT_TAG},
@@ -43,7 +43,7 @@ def build_demo_rule(today: date) -> dict:
         "method": {"kind": "discount_pct", "pct": DISCOUNT_PCT},
         "validFrom": today.isoformat(),
         "validTo": end.isoformat(),
-        "note": "Données de démo (hackathon) : déstockage du tourage standard pendant la rupture du tourage AOP.",
+        "note": "Hackathon promotion on standard laminating butter while AOP butter is out of stock.",
     }
 
 
@@ -55,17 +55,17 @@ def main(check_only: bool) -> int:
         rules = rules.get("items", rules) if isinstance(rules, dict) else rules
         existing = next((r for r in rules if r.get("name") == rule["name"]), None)
         if existing:
-            print(f"promo de démo déjà là : {existing['id']} · {existing['name']}")
+            print(f"demo promotion already here: {existing['id']} · {existing['name']}")
         elif check_only:
-            print(f"promo de démo absente (à créer : {rule['name']})")
+            print(f"demo promo absent (to create : {rule['name']})")
             return 1
         else:
             res = erp.post("/api/price-rules", json=rule)
             res.raise_for_status()
-            print(f"promo de démo créée : {res.json()['id']} · {rule['name']}")
+            print(f"demo promo created : {res.json()['id']} · {rule['name']}")
         # check what the agent's get_price will see for a bakery without a negotiated price
         price = erp.get("/api/prices/resolve", params={"clientId": "cli_0021", "productId": PRODUCT_ID, "qty": 30}).json()
-        print(f"contrôle (Le Pétrin de Colomiers, 30 kg) : {price['price']} € — {price['explanation']}")
+        print(f"control (Le Pétrin de Colomiers, 30 kg) : {price['price']} € — {price['explanation']}")
         return 0
 
 

@@ -45,7 +45,7 @@ export function RevenueChart({ data, today, onPick }: { data: Point[]; today: st
   return (
     <div ref={ref} className="relative w-full" style={{ height: H }} onMouseLeave={() => setHover(null)}>
       {width > 0 ? (
-        <svg width={width} height={H} role="img" aria-label="Chiffre d'affaires des 30 derniers jours" className="block">
+        <svg width={width} height={H} role="img" aria-label="Turnover over last 30 days" className="block">
           {ticks.map((t) => (
             <g key={t}>
               <line x1={PAD.left} x2={width - PAD.right} y1={y(t)} y2={y(t)} stroke="hsl(var(--border))" strokeDasharray={t === 0 ? undefined : "2 3"} />

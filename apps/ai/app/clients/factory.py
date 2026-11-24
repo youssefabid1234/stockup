@@ -22,12 +22,12 @@ from .openai import OpenAILLM, OpenAISTT, OpenAITTS
 from .soniox import SonioxSTT
 
 DEFAULT_MODELS = {"openai": "gpt-4.1-mini", "anthropic": "claude-sonnet-5-5", "gemini": "gemini-2.5-flash"}
-# Speech defaults, all fine for French. STT_MODEL / TTS_MODEL / TTS_VOICE override them.
+# Speech defaults, all suitable for English. STT_MODEL / TTS_MODEL / TTS_VOICE override them.
 DEFAULT_STT_MODELS = {"openai": "gpt-4o-mini-transcribe", "deepgram": "nova-3", "soniox": "stt-rt-v6", "gradium": "default"}
 DEFAULT_TTS = {  # provider → (model, voice)
     "openai": ("gpt-4o-mini-tts", "alloy"),
     "elevenlabs": ("eleven_flash_v2_5", "JBFqnCBsd6RMkjVDRZzb"),  # premade multilingual voice
-    "gradium": ("default", "F7Iib4MAyHIRed0x"),  # Armand, flagship fr-FR voice
+    "gradium": ("default", "YTpq7expH9539ERJ"),  # English flagship voice
 }
 
 

@@ -1,40 +1,38 @@
 {
   "id": "S02",
   "owner": "amine-khalil",
-  "title": "« Comme d'hab » puis changement d'avis, puis validation",
-  "why": "Intelligent : panier habituel, modification d'une ligne (pas d'ajout), relecture",
+  "title": "The usual order with a change of quantity",
+  "why": "Use the usual basket and update the existing draft.",
   "client": "cli_0001",
   "turns": [
     {
-      "say": "Salut, c'est Nadine de chez Sarrailh. Comme d'habitude pour jeudi s'il vous plaît.",
+      "say": "Hi, Nadine from Sarrailh here. The usual for Thursday, please.",
       "expect": {
         "tools_none": [
           "confirm_order"
         ],
         "says_any": [
-          "farine",
-          "habitude",
-          "habituel",
-          "habituelle",
+          "flour",
+          "usual",
           "tradi",
-          "tradition"
+          "traditional"
         ]
       }
     },
     {
-      "say": "Ah non attendez, pour la tradi mettez-en 12 sacs.",
+      "say": "Actually, make that 12 sacks of traditional flour.",
       "expect": {
         "tools_none": [
           "confirm_order"
         ],
         "says_any": [
           "12",
-          "douze"
+          "twelve"
         ]
       }
     },
     {
-      "say": "C'est bon, validez.",
+      "say": "That's right, please confirm.",
       "expect": {
         "tools_any": [
           "confirm_order"

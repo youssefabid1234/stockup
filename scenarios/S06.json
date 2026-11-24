@@ -1,11 +1,11 @@
 {
   "id": "S06",
   "owner": "mohamed-amine",
-  "title": "Question simple : réponse en moins de 1,5 s",
-  "why": "Rapide : cible du jury (premier son < 1,5 s) ; échoue aujourd'hui (≈ 9 s), c'est l'objectif",
+  "title": "A quick stock enquiry",
+  "why": "Check fresh yeast availability.",
   "turns": [
     {
-      "say": "Bonjour, vous avez de la levure fraîche ce matin ?",
+      "say": "Hello, do you have any fresh yeast this morning?",
       "expect": {
         "tools_any": [
           "search",
@@ -13,7 +13,7 @@
           "product_insight"
         ],
         "says_any": [
-          "levure"
+          "yeast"
         ],
         "max_ms": 1500
       }

@@ -29,7 +29,7 @@ export function ExpiryLabel({ date, today, showDelta = true }: { date?: IsoDate 
   const d = daysUntil(date, today);
   if (!date || d === undefined) return <span className="text-muted-foreground">—</span>;
   const tone = d < 0 ? "text-destructive" : d <= EXPIRY_WARN_DAYS ? "text-warning" : "text-secondary-foreground";
-  const delta = d < 0 ? `périmé` : d === 0 ? "aujourd'hui" : `J+${d}`;
+  const delta = d < 0 ? `expired` : d === 0 ? "Today" : `J+${d}`;
   return (
     <span className={cn("inline-flex items-center gap-1.5", tone)}>
       <DateLabel date={date} />
@@ -44,18 +44,18 @@ export const fefo = (lots: Lot[]) => lots.filter((l) => l.qtyRemaining > 0).sort
 export function lotColumns(unit: Unit | string, today: IsoDate, supplierName?: (id?: Id) => string | undefined): Column<Lot>[] {
   return [
     { id: "lot", header: "Lot", width: 130, cell: (l) => <Mono>{l.id}</Mono> },
-    { id: "received", header: "Reçu le", width: 120, cell: (l) => <DateLabel date={l.receivedAt} className="text-muted-foreground" /> },
-    { id: "expires", header: "DLC", width: 150, cell: (l) => <ExpiryLabel date={l.expiresAt} today={today} /> },
-    ...(supplierName ? [{ id: "supplier", header: "Fournisseur", muted: true, cell: (l: Lot) => supplierName(l.supplierId) ?? "—" }] : []),
-    { id: "qtyReceived", header: "Reçu", width: 100, numeric: true, muted: true, cell: (l) => <Qty value={l.qtyReceived} unit={unit} /> },
-    { id: "qtyRemaining", header: "Restant", width: 100, numeric: true, cell: (l) => <Qty value={l.qtyRemaining} unit={unit} className="font-medium" /> },
+    { id: "received", header: "Received on", width: 120, cell: (l) => <DateLabel date={l.receivedAt} className="text-muted-foreground" /> },
+    { id: "expires", header: "Use-by date", width: 150, cell: (l) => <ExpiryLabel date={l.expiresAt} today={today} /> },
+    ...(supplierName ? [{ id: "supplier", header: "Supplier", muted: true, cell: (l: Lot) => supplierName(l.supplierId) ?? "—" }] : []),
+    { id: "qtyReceived", header: "Received", width: 100, numeric: true, muted: true, cell: (l) => <Qty value={l.qtyReceived} unit={unit} /> },
+    { id: "qtyRemaining", header: "Remaining", width: 100, numeric: true, cell: (l) => <Qty value={l.qtyRemaining} unit={unit} className="font-medium" /> },
   ];
 }
 
 /** Stock state of one level: rupture / bas / DLC proche / ok. */
 export function stockTone(available: number, low: boolean): { tone: "destructive" | "warning" | "success"; label: string } {
-  if (available <= 0) return { tone: "destructive", label: "Rupture" };
-  if (low) return { tone: "warning", label: "Stock bas" };
+  if (available <= 0) return { tone: "destructive", label: "Out of stock" };
+  if (low) return { tone: "warning", label: "Low stock" };
   return { tone: "success", label: "OK" };
 }
 
@@ -72,7 +72,7 @@ export function AdjustStockPanel({ productId, productName, unit, available, onCl
   const delta = !valid ? 0 : reason === "waste" || dir === "out" ? -n : n;
 
   const adjust = useApiMutation(api.stock.adjust, {
-    success: reason === "waste" ? "Perte enregistrée" : "Stock ajusté",
+    success: reason === "waste" ? "Registered loss" : "Adjusted stock",
     invalidate: [qk.stock.all, qk.products.all, qk.dashboard],
     onSuccess: onClose,
   });
@@ -84,35 +84,35 @@ export function AdjustStockPanel({ productId, productName, unit, available, onCl
 
   return (
     <SidePanel
-      title="Ajuster le stock"
+      title="Adjust Stock"
       subtitle={productName}
       onClose={onClose}
       footer={
         <>
-          <Button onClick={onClose}>Annuler</Button>
+          <Button onClick={onClose}>Cancel</Button>
           <Button variant="primary" type="submit" form="adjust-stock" loading={adjust.isPending} disabled={!valid}>
-            {reason === "waste" ? "Déclarer la perte" : "Enregistrer"}
+            {reason === "waste" ? "Report loss" : "Save"}
           </Button>
         </>
       }
     >
       <form id="adjust-stock" onSubmit={submit} className="flex flex-col gap-3.5">
-        <Field label="Motif">
-          <Segmented value={reason} onChange={setReason} options={[{ id: "adjustment", label: "Ajustement" }, { id: "waste", label: "Perte / casse" }]} />
+        <Field label="Reason">
+          <Segmented value={reason} onChange={setReason} options={[{ id: "adjustment", label: "Adjustment" }, { id: "waste", label: "Loss / break" }]} />
         </Field>
         {reason === "adjustment" ? (
-          <Field label="Sens">
-            <Segmented value={dir} onChange={setDir} options={[{ id: "in", label: "Entrée (+)" }, { id: "out", label: "Sortie (−)" }]} />
+          <Field label="Sense">
+            <Segmented value={dir} onChange={setDir} options={[{ id: "in", label: "Entry (+)" }, { id: "out", label: "Exit (−)" }]} />
           </Field>
         ) : null}
-        <Field label={`Quantité (${unit})`} hint={reason === "waste" ? "Retirée des lots en FEFO (DLC la plus proche d'abord)." : dir === "out" ? "Retirée des lots en FEFO." : "Crée un nouveau lot."}>
+        <Field label={`Quantity (${unit})`} hint={reason === "waste" ? "Removed from lots in FEFO (DLC the nearest first)." : dir === "out" ? "Removed from lots in FEFO." : "Create a new batch."}>
           <Input autoFocus inputMode="decimal" value={qty} onChange={(e) => setQty(e.target.value)} placeholder="0" className="num" />
         </Field>
         <Field label="Note">
-          <Textarea rows={3} value={note} onChange={(e) => setNote(e.target.value)} placeholder={reason === "waste" ? "Ex. : odeur, casse en chambre froide" : "Ex. : écart d'inventaire"} />
+          <Textarea rows={3} value={note} onChange={(e) => setNote(e.target.value)} placeholder={reason === "waste" ? "E.g.: smell, cold room break" : "Ex.: inventory variance"} />
         </Field>
         <div className="flex items-center justify-between rounded-[4px] border border-border bg-muted/40 px-3 py-2 text-[12.5px]">
-          <span className="text-muted-foreground">Disponible après</span>
+          <span className="text-muted-foreground">Available after</span>
           <span className="flex items-center gap-2">
             <Qty value={available} unit={unit} className="text-muted-foreground" />
             <span className="text-muted-foreground">→</span>

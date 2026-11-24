@@ -15,8 +15,8 @@ export function AssistantButton({ className }: { className?: string }) {
       type="button"
       onClick={shell.toggleAssistant}
       aria-pressed={assistantOpen}
-      aria-label={assistantOpen ? "Fermer l'assistant (⌘J)" : "Ouvrir l'assistant (⌘J)"}
-      title={assistantOpen ? "Fermer l'assistant (⌘J)" : "Ouvrir l'assistant (⌘J)"}
+      aria-label={assistantOpen ? "Close assistant (⌘J)" : "Open assistant (⌘J)"}
+      title={assistantOpen ? "Close assistant (⌘J)" : "Open assistant (⌘J)"}
       data-assistant-toggle
       className={cn(
         buttonClass({ variant: "ghost", size: "sm", iconOnly: assistantOpen }),

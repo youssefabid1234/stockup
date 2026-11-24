@@ -1,51 +1,51 @@
-# GUIDE-AGENTS.md — construire un bon agent avec le kit
+# GUIDE-AGENTS.md — build a good agent with the kit
 
-Un guide pour apprendre, pas une référence de code. Chaque section explique **l'idée**, montre **où elle vit dans le
-kit**, puis donne des **conseils** concrets. Pour le détail du code (lignes, signatures, extraits), suivez les liens
-vers [TECH.md](TECH.md) : ce guide ne le recopie pas.
+A guide to learning, not a code reference. Each section explains ** the idea**, shows ** where she lives in the
+kit**, then gives concrete **advices**. For the details of the code (lines, signatures, extracts), follow the links
+to [TECH.md](TECH.md): this guide does not copy it.
 
-Pré-requis : le kit tourne ([SETUP.md](SETUP.md)) et vous avez lu le défi ([BRIEF.md](BRIEF.md)). Les chemins de code
-ci-dessous partent de `apps/ai/app/`.
+Prerequisites: the kit runs ([SETUP.md](SETUP.md)) and you have read the challenge ([BRIEF.md](BRIEF.md)).
+below start from `apps/ai/app/`.
 
-## Sommaire
+## Contents
 
-1. [Qu'est-ce qu'un agent ?](#1-quest-ce-quun-agent-)
-2. [Le harness](#2-le-harness)
-3. [La boucle de l'agent](#3-la-boucle-de-lagent)
-4. [Les outils](#4-les-outils)
-5. [Le contexte et la mémoire](#5-le-contexte-et-la-mémoire)
-6. [Les modèles](#6-les-modèles)
-7. [Jev, le modèle de décision](#7-jev-le-modèle-de-décision)
-8. [Mesurer et améliorer](#8-mesurer-et-améliorer)
-9. [Pièges fréquents](#9-pièges-fréquents)
-10. [Pour aller plus loin](#10-pour-aller-plus-loin)
+1. [What is an agent?](#1-quest-ce-quun-agent-)
+2. [The harness](#2-le-harness)
+3. [The loop of Agent ](#3-la-boucle-de-lagent)
+4. [Tools](#4-les-outils)
+5. [The context and memory](#5-le-contexte-et-la-mémoire)
+6. [Models](#6-les-modèles)
+7. [Jev, decision model](#7-jev-le-modèle-de-décision)
+8. [Measure and improve ](#8-mesurer-et-améliorer)
+9. [Frequent traps](#9-pièges-fréquents)
+10. [To go further](#10-pour-aller-plus-loin)
 
-## Je veux… → section
+## I want... → section
 
-| Je veux… | Section |
+| I want... | Section |
 |---|---|
-| comprendre ce qu'est un agent, vite | [1](#1-quest-ce-quun-agent-) |
-| savoir quel fichier fait quoi dans le service IA | [2](#2-le-harness) |
-| comprendre pourquoi un tour prend 3 appels au modèle | [3](#3-la-boucle-de-lagent) |
-| écrire un nouvel outil qui marche du premier coup | [4](#4-les-outils) |
-| que l'agent connaisse mieux le client | [5](#5-le-contexte-et-la-mémoire) |
-| réduire le coût et la latence | [3](#3-la-boucle-de-lagent), [5.5](#55-le-cache-de-prompt), [6](#6-les-modèles), [7](#7-jev-le-modèle-de-décision) |
-| changer de modèle | [6](#6-les-modèles) |
-| décider « oui / non » ou « quel produit » sans LLM | [7](#7-jev-le-modèle-de-décision) |
-| prouver que mon agent s'améliore | [8](#8-mesurer-et-améliorer) |
-| éviter les erreurs classiques | [9](#9-pièges-fréquents) |
+| understand what an agent is, quickly | [1](#1-quest-ce-quun-agent-) |
+| know which file does what in the AI service | [2](#2-le-harness) |
+| understand why a spin takes 3 model calls | [3](#3-la-boucle-de-lagent) |
+| write a new tool that works at the first stroke | [4](#4-les-outils) |
+| the agent knows the client better | [5](#5-le-contexte-et-la-mémoire) |
+| reduce cost and latency | [3](#3-la-boucle-de-lagent), [5.5](#55-le-cache-de-prompt), [6](#6-les-modèles), [7](#7-jev-le-modèle-de-décision) |
+| change model | [6](#6-les-modèles) |
+| decide "yes/no" or "what product" without LLM | [7](#7-jev-le-modèle-de-décision) |
+| prove that Mon agent is improving | [8](#8-mesurer-et-améliorer) |
+| Avoiding conventional mistakes | [9](#9-pièges-fréquents) |
 
 ---
 
-## 1. Qu'est-ce qu'un agent ?
+## 1. What is an agent?
 
-### L'idée
+### The idea
 
-Un **LLM** est une fonction : du texte entre, du texte sort. Il ne sait rien de votre ERP, ne lit pas la base, ne
-crée pas de commande. Il prédit la suite la plus plausible, ce qui veut dire qu'il **invente** volontiers un prix ou un
-stock si on le laisse faire.
+A **LLM** is a function: text enters, text exits. It does not know anything about your ERP, does not read the database, does not
+creates no order. It predicts the most plausible sequel, which means that it **invents** willingly a price or a price
+stock if we let him do it.
 
-Un **agent**, c'est un LLM placé dans une boucle, avec des **outils** (des fonctions qu'il peut demander d'appeler) :
+A **Agent** is a LLM placed in a loop, with **tools** (functions it can ask to call):
 
 ```
    percevoir            décider                agir                 observer
@@ -56,47 +56,47 @@ Un **agent**, c'est un LLM placé dans une boucle, avec des **outils** (des fonc
                      jusqu'à ce que le modèle réponde sans outil
 ```
 
-Le modèle ne fait jamais l'action lui-même : il **demande** `get_price(clientId, productId)`, votre code l'exécute et
-lui rend le résultat. C'est ce qui le rend fiable (les chiffres viennent de l'ERP) et contrôlable (vous décidez quels
-outils existent et ce qu'ils renvoient).
+The model never does the action itself: it ** requests** `get_price(clientId, productId)`, your code executes it and
+makes it the result. This is what makes it reliable (the numbers come from the ERP) and controllable (you decide which
+tools exist and what they return).
 
-### Agent ou code simple ?
+### Agent or simple code?
 
-| Prenez un agent quand… | Prenez du code quand… |
+| Take an agent when... | Take some code when... |
 |---|---|
-| l'entrée est floue (« le loup comme d'hab', mais moins ») | l'entrée est structurée (un formulaire, un id) |
-| le chemin dépend de la réponse (rupture → alternative → accord du client) | le chemin est toujours le même |
-| il faut parler, reformuler, négocier | il faut calculer (prix, TVA, dates, unités) |
-| on accepte quelques centaines de ms et un coût par tour | chaque milliseconde ou centime compte |
+| the entrance is blurred ("the wolf as usual, but less") | the entry is structured (a form, an id) |
+| the path depends on the response (rupture → alternative → customer agreement) | the path is always the same |
+| we have to talk, reformulate, negotiate. | you have to calculate (price, VAT, dates, units) |
+| we accept a few hundred ms and a cost per turn | each millisecond or centime counts |
 
-Le bon design est presque toujours **mixte** : le modèle comprend et converse, le code calcule et l'ERP applique les
-règles. Dans le kit, aucune règle métier n'est dans l'agent : prix, stock et crédit sont calculés par le backend
+The good design is almost always **mixte**: the model includes and converses, the code calculates and the ERP applies the
+rules. In the kit, no business rules are in the agent: price, stock and credit are calculated by the backend
 (`apps/backend/app/services/`).
 
-### Dans le kit
+### In the kit
 
-- La boucle : `agent/loop.py` (`run_agent`).
-- Les outils : `tools/` (16 outils, décorateur `@tool`).
-- Le mock (`clients/mock_llm.py`) imite un agent sans clé : utile pour développer, inutile pour juger l'intelligence.
+- The loop: `agent/loop.py` (`run_agent`).
+- Tools: `tools/` (16 tools, `@tool` decorator).
+- The mock (`clients/mock_llm.py`) mimics a keyless agent: useful to develop, useless to judge intelligence.
 
-### Conseils
+### Advice
 
-- Avant de coder, écrivez l'appel idéal en dialogue (client / agent) et notez **quel outil** sert à chaque réplique.
-  Les répliques sans outil possible sont vos prochains outils.
-- Tout ce qui est déterministe (convertir « une demi-caisse », calculer « vendredi prochain ») : en code, pas dans le
+- Before encode, write the ideal call in dialog (client/agent) and note ** which tool** is used for each replica.
+  Replica without tools possible are your next tools.
+- All that is deterministic (convert "a half cash", calculate "next Friday") : in code, not in the
   prompt.
 
 ---
 
-## 2. Le harness
+## 2. The Harness
 
-### L'idée
+### The idea
 
-Le modèle n'est qu'une pièce. Le **harness** (harnais), c'est tout ce qu'il y a autour : la construction du prompt,
-le registre des outils, la boucle, l'historique, le streaming, la gestion des erreurs et les limites. Deux équipes
-avec le même modèle obtiennent des agents très différents selon leur harness. C'est là que vous gagnerez le plus.
+The model is only a piece. The **harness** (harness) is all around: the construction of the rapid,
+tools registry, loop, history, streaming, error management and boundaries.
+with the same model get very different agents according to their harness. That's where you'll gain the most.
 
-### Dans le kit
+### In the kit
 
 ```
          page Voix (WS /ai/voice)    assistant ⌘J (POST /ai/chat)    ⌥Espace (POST /ai/command)
@@ -125,123 +125,123 @@ avec le même modèle obtiennent des agents très différents selon leur harness
                                                          ERP API :4000 (règles métier)
 ```
 
-| Pièce du harness | Fichier | Détail |
+| Harness piece | File | Detail |
 |---|---|---|
-| assemblage du prompt | `agent/prompts.py` | [TECH 4.3](TECH.md#prompts) |
-| registre des outils | `tools/registry.py`, `tools/__init__.py` | [TECH 5.1](TECH.md#decorateur) |
-| boucle, erreurs, limite d'étapes | `agent/loop.py` | [TECH 4.4](TECH.md#boucle) |
-| historique | dépend du mode (navigateur, session vocale, aucun) | [TECH 4.4](TECH.md#boucle) |
-| streaming texte et voix | `clients/*.py`, `services/voice_session.py` | [TECH 4.5](TECH.md#latence), [4.6](TECH.md#session-voix) |
-| choix du fournisseur | `clients/factory.py`, `config.py` | [TECH 4.1](TECH.md#config-ia) |
+| assembly of the prompt | `agent/prompts.py` | [TECH 4.3](TECH.md#prompts) |
+| register of tools | `tools/registry.py`, `tools/__init__.py` | [TECH 5.1](TECH.md#decorateur) |
+| loop, errors, step limit | `agent/loop.py` | [TECH 4.4](TECH.md#boucle) |
+| historical background | depends on mode (navigator, voice session, none) | [TECH 4.4](TECH.md#boucle) |
+| streaming text and voice | `clients/*.py`, `services/voice_session.py` | [TECH 4.5](TECH.md#latence), [4.6](TECH.md#session-voix) |
+| choice of supplier | `clients/factory.py`, `config.py` | [TECH 4.1](TECH.md#config-ia) |
 
-### Conseils
+### Advice
 
-- Le harness est à vous : tout se modifie. Les leviers les plus rentables sont souvent le prompt, les outils et ce qui
-  est mis dans le contexte, pas le modèle.
-- Changez une pièce à la fois et mesurez (section [8](#8-mesurer-et-améliorer)).
+- The harness is yours: everything changes. The most profitable levers are often the prompt, the tools and what you want.
+  is put in context, not the model.
+- Change one piece at a time and measure (section [8](#8-mesurer-et-améliorer)].
 
 ---
 
-## 3. La boucle de l'agent
+## 3. Agent's loop
 
-### L'idée
+### The idea
 
-Un **tour** (ce que dit le client → ce que répond l'agent) contient une ou plusieurs **étapes**. Chaque étape est un
-appel complet au modèle, qui relit tout : prompt système, outils, historique et résultats d'outils déjà obtenus.
-Chaque étape en plus ajoute donc de la **latence** (un aller-retour réseau + génération) et du **coût** (tout le
-contexte est refacturé en entrée).
+A **tour** (as the client → says the agent answers) contains one or more ** steps**. Each step is a
+a complete call to the model, which reads everything: rapid system, tools, history and results of tools already obtained.
+Each step in addition adds **latency** (a network return + generation) and **cost** (all the
+context is rebilled as input).
 
-### Dans le kit, pas à pas (`agent/loop.py`)
+### In the kit, step by step (`agent/loop.py`)
 
-1. `run_agent` construit le prompt système une fois par tour (`build_system_prompt`) et une `LLMRequest` qui pointe
-   sur la liste `messages`.
-2. **Étape** : `llm.stream(request)` émet du texte (`LLMText`, streamé tout de suite vers l'UI ou le TTS), des appels
-   d'outils (`LLMToolCall`, des blocs `tool_use` chez Anthropic) et la consommation (`LLMUsage`).
-3. **Pas d'appel d'outil** → c'est la réponse finale : événement `done`, fin du tour.
-4. **Des appels** → le message `assistant` (avec ses `tool_calls`) est ajouté, puis **tous les outils demandés
-   tournent en parallèle** (`asyncio.gather`). Chaque résultat devient un message `tool` (JSON compact) et on revient
-   en 2.
-5. **Erreurs d'outil** : `execute_tool` ne lève jamais. Outil inconnu, arguments invalides, refus de l'ERP → le modèle
-   reçoit `{"error": "…"}` et peut expliquer ou réessayer.
-6. **Limite** : au-delà de `AGENT_MAX_STEPS` (8 par défaut), message `GIVE_UP`.
-7. **Annulation** : quand le client coupe la parole (barge-in) ou se déconnecte, la tâche asyncio est annulée et la
-   boucle s'arrête sans rien émettre. Une écriture ERP déjà partie reste faite.
+1. `run_agent` builds the quick system once per turn (`build_system_prompt`) and a `LLMRequest` that points
+   on list `messages`.
+2. **Step**: `llm.stream(request)` issues text (`LLMText`, streamed immediately to UI or TTS), calls
+   tools (`LLMToolCall`, `tool_use` blocks at Anthropic) and consumption (`LLMUsage`).
+3. **No tool call** → is the final answer: event `done`, end of round.
+4. **Calls** → message `assistant` (with its `tool_calls`) is added, then ** all the requested tools
+   turn in parallel** (`asyncio.gather`). Each result becomes a `tool` message (JSON compact) and we return
+   in 2.
+5. ** Tool Errors**: `execute_tool` never lifts. Unknown tool, invalid arguments, ERP → refusal model
+   receives `{"error": "…"}` and can explain or try again.
+6. **Limit**: beyond `AGENT_MAX_STEPS` (default 8), message `GIVE_UP`.
+7. **Cancellation**: When the client shuts down (barge-in) or disconnects, the asyncio task is cancelled and the
+   loop stops without issuing anything. A ERP write already left remains made.
 
-Détail ligne à ligne : [TECH 4.4](TECH.md#boucle).
+Line detail: [TECH 4.4](TECH.md#boucle).
 
-### Ce que coûte une étape (mesuré)
+### What a step costs (measured)
 
-Test réel avec les clés d'équipe (novembre 2026), Claude Sonnet 5.5, avant cache de prompt :
+Real test with team keys (November 2026), Claude Sonnet 5.5, before prompt cache:
 
-| Tour | Étapes | Tokens d'entrée |
+| Tower | Steps | Tokens |
 |---|---|---|
-| question de stock simple | 2 appels au modèle | ≈ 54 000 (≈ 27 000 par appel) |
-| prise de commande | plusieurs appels | ≈ 117 000 |
+| simple stock issue | 2 Model Calls | ≈ 54 000 (≈ 27 000 by call) |
+| command socket | several calls | ≈ 117 000 |
 
-Presque tout vient du prompt système (règles + documents de l'entreprise) renvoyé à **chaque** étape. Sonnet 5.5 a
-choisi les bons outils, prix et dates à chaque fois : la qualité n'était pas le problème, le volume l'était. Le
-cache de prompt, désormais actif pour Anthropic, fait payer ce préfixe à tarif réduit (section [5.5](#55-le-cache-de-prompt)) ;
-il ne réduit pas le nombre d'étapes.
+Almost everything comes from the prompt system (rules + company documents) returned to **each** step. Sonnet 5.5 a
+chosen the right tools, prices and dates each time: quality was not the problem, the volume was.
+Quick cache, now active for Anthropic, charges this prefix at reduced rate (section [5.5](#55-le-cache-de-prompt)]);
+it does not reduce the number of steps.
 
-### Conseils
+### Advice
 
-- Comptez les étapes de vos scénarios (événements `tool_call` dans le flux). Une étape de moins vaut souvent mieux
-  qu'un modèle plus rapide.
-- Demandez au modèle (dans le prompt) d'appeler **en même temps** les outils indépendants : la boucle les exécute
-  déjà en parallèle.
-- Un outil composite (section [4](#4-les-outils)) remplace deux ou trois étapes.
-- Ne montez pas `AGENT_MAX_STEPS` pour masquer une boucle : si un tour dépasse 4–5 étapes, c'est un outil ou une
-  règle de prompt qui manque.
+- Count the steps of your scenarios (`tool_call` events in the stream). One step less often is better
+  than a faster model.
+- Ask the model (in the prompt) to call ** at the same time** independent tools: the loop runs them
+  already in parallel.
+- A composite tool (section [4](#4-les-outils)) replaces two or three steps.
+- Don't go up `AGENT_MAX_STEPS` to hide a loop: if a turn exceeds 4–5 steps, it's a tool or a tool
+  Missing prompt rule.
 
 ---
 
-## 4. Les outils
+## 4. Tools
 
-### L'idée
+### The idea
 
-Pour le modèle, un outil n'est que trois choses : un **nom**, une **description** et un **schéma JSON** des
-paramètres. Il ne voit jamais votre code. Il décide d'appeler l'outil uniquement d'après la description, et remplit
-les arguments d'après le schéma. Puis il lit le résultat, en entier, à chaque étape suivante.
+For the model, a tool is only three things: a **nom**, a **description** and a **schema JSON** of the
+settings. It never sees your code. It decides to call the tool only according to the description, and fills in
+the arguments according to the diagram. Then it reads the result, in whole, at each next step.
 
-Conséquence : un outil se conçoit comme une API pour un collègue pressé qui lit seulement la doc.
+Consequence: A tool is conceived as a API for a colleague in a hurry who reads only the doc.
 
-### Dans le kit
+### In the kit
 
-- `@tool` (`tools/registry.py`) transforme une fonction `async` en outil : nom de la fonction → nom, docstring →
-  description, paramètres annotés → schéma (camelCase pour le modèle), `Field(description=…)` → description du
-  paramètre, `Literal[…]` → enum. Les arguments reçus sont validés par Pydantic. Détail : [TECH 5.1](TECH.md#decorateur).
-- Les 16 outils sont dans `tools/catalog.py`, `context.py`, `history.py`, `orders.py` ([TECH 5.2](TECH.md#outils)).
-- `curl -s localhost:4100/tools` montre exactement ce que le modèle reçoit.
+- `@tool` (`tools/registry.py`) converts a `async` function into a tool: name of the → function name, docstring →
+  description, annotated parameters → schema (camelCase for model), `Field(description=…)` → description of
+  parameter, `Literal[…]` → enum. The arguments received are validated by Pydantic. Detail: [TECH 5.1](TECH.md#decorateur).
+- The 16 tools are in `tools/catalog.py`, `context.py`, `history.py`, `orders.py` ([TECH 5.2](TECH.md#outils)).
+- `curl -s localhost:4100/tools` shows exactly what the model receives.
 
-### Écrire un bon outil
+### Write a good tool
 
-| Règle | Pourquoi | Exemple dans le kit |
+| Rule | Why? | Example in the kit |
 |---|---|---|
-| La description dit **quand** l'utiliser, et cite les outils voisins | le modèle choisit sur la description | `save_context` : « Pas pour une réclamation (utilise log_client_event) » |
-| Paramètres décrits avec un exemple d'id | moins d'arguments mal formés | `client_id: str = Field(description="ex. cli_0012")` |
-| `Literal` dès que les valeurs sont fermées | le modèle ne peut pas inventer une valeur | `search(types=…)`, `get_context(entity_type=…)` |
-| Sortie **petite** : seulement les champs utiles | chaque octet est relu à chaque étape, et en voix il reste dans l'historique | `pick(...)`, `[:5]`, `summarize_order`, `compact` |
-| Renvoyer les **ids** dont l'étape suivante a besoin | le modèle n'invente pas d'id s'il en a un sous les yeux | `search` renvoie `id` ; `summarize_order` renvoie `lineId` |
-| Un outil **composite** pour un enchaînement fréquent | un appel HTTP local coûte des ms, une étape modèle des centaines | `quote_product` dans [TECH 5.4](TECH.md#outil-composite) |
-| Écritures **sûres à rejouer** et en deux temps | le modèle réessaie après une erreur ; une confirmation ne s'annule pas | `create_draft_order` puis `confirm_order` |
-| Lever une exception avec un message français | le modèle lit `{"error": …}` et peut l'expliquer au client | `ErpError` (`tools/erp.py`) |
-| Pas de règle métier dans l'outil | une seule vérité : le backend | les prix viennent de `/api/prices/resolve` |
+| The description says **quand** use it, and quotes the neighbouring tools | the model chooses from the description | `save_context`: "Not for a claim (use log_client_event)" |
+| Parameters described with an id example | fewer ill-formed arguments | `client_id: str = Field(description="ex. cli_0012")` |
+| `Literal` as soon as the values are closed | the model cannot invent a value | `search(types=…)`, `get_context(entity_type=…)` |
+| Output **small**: only useful fields | each byte is reread at each step, and in voice it remains in the history | `pick(...)`, `[:5]`, `summarize_order`, `compact` |
+| Send back the **ids** that the next step needs | the model does not invent an id if it has one in front of the eyes | `search` returns `id`; `summarize_order` returns `lineId` |
+| A **composite** tool for frequent chaining | a local HTTP call costs ms, a model stage of hundreds | `quote_product` in [TECH 5.4](TECH.md#outil-composite) |
+| ** scripturessafe to play again** and in two steps | the model tries again after an error; a confirmation does not cancel | `create_draft_order` and then `confirm_order` |
+| Lift an exception with a French message | the model reads `{"error": …}` and can explain it to the customer | `ErpError` (`tools/erp.py`) |
+| No business rules in the tool | one truth: the backend | prices come from `/api/prices/resolve` |
 
-**Ids plutôt que noms** : le modèle trouve l'entité avec `search` (recherche floue), puis travaille avec l'id. Ne
-créez pas d'outil qui prend un nom de client « tel que dit » et devine : la recherche floue renvoie plusieurs
-candidats, et c'est au modèle (ou à Jev, section [7](#7-jev-le-modèle-de-décision)) de demander « lequel ? ».
+**Ids rather than names**: the model finds the entity with `search` (fuzzy search), then works with the id.
+create no tool that takes a client name "as said" and guesses: the blurred search returns several
+and it is to the model (or Jev, section [7](#7-jev-le-modèle-de-décision)]) to ask "what?".
 
 ### Anti-patterns
 
-- Un outil `query_erp(path)` générique : le modèle invente des routes et lit des objets ERP bruts énormes.
-- Renvoyer l'objet ERP complet « au cas où » : des milliers de tokens relus à chaque étape.
-- Deux outils aux descriptions presque identiques : le modèle hésite ou alterne.
-- Un outil qui confirme une commande sans récapitulatif accepté (voir [9](#9-pièges-fréquents)).
-- Renvoyer `{"ok": false}` sans message : le modèle ne sait pas quoi dire.
+- A generic `query_erp(path)` tool: the model invents roads and reads huge raw ERP objects.
+- Send the complete ERP object "in case": thousands of tokens read at each step.
+- Two tools with almost identical descriptions: the model hesitates or alternates.
+- A tool that confirms an order without accepted summary (see [9](#9-pièges-fréquents)].
+- Send `{"ok": false}` without a message: the model doesn't know what to say.
 
-### Mini-exemple : de la mauvaise à la bonne version
+### Mini example: from bad to good version
 
-Mauvais : description vague, objet brut, rien ne dit quand l'utiliser.
+Bad: vague description, raw object, nothing says when to use it.
 
 ```python
 @tool
@@ -251,7 +251,7 @@ async def client_info(ctx: ToolContext, name: str) -> dict:
     return await ctx.erp.get(f"/api/clients/{hits[0]['id']}")   # devine le 1er, renvoie tout
 ```
 
-Bon : prend un id, dit quand l'utiliser, renvoie peu.
+Okay: take an id, say when to use it, send it back little.
 
 ```python
 @tool
@@ -264,295 +264,295 @@ async def get_client_credit(ctx: ToolContext, client_id: str = Field(description
     return pick(c, "status", "outstanding", "overdue", "creditLimit", "paymentTermsDays")
 ```
 
-Puis l'importer dans `tools/__init__.py` et vérifier avec `curl -s localhost:4100/tools`. Pas à pas complet :
+Then import it into `tools/__init__.py` and check with `curl -s localhost:4100/tools`. Step by step:
 [TECH 5.3](TECH.md#ajouter-outil).
 
-### Conseils
+### Advice
 
-- Testez un outil seul avant de le donner au modèle : `await TOOLS["nom"].run({...}, ctx)` ([TECH 8](TECH.md#tester-sans-ui)).
-- Si le modèle n'appelle pas votre outil, réécrivez la description avant de toucher au prompt.
-- Une confirmation irréversible = un outil séparé + une règle de prompt explicite (`BASE_RULES` le fait déjà pour
+- Test a tool alone before giving it to the model: `await TOOLS["nom"].run({...}, ctx)` ([TECH 8](TECH.md#tester-sans-ui)).
+- If the template does not call your tool, rewrite the description before touching the prompt.
+- An irreversible confirmation = a separate tool + an explicit prompt rule (`BASE_RULES` already does it for
   `confirm_order`).
 
 ---
 
-## 5. Le contexte et la mémoire
+## 5. Context and memory
 
-### 5.1 L'idée : la fenêtre de contexte
+### 5.1 The idea: the context window
 
-Le modèle n'a pas de mémoire entre deux appels. Tout ce qu'il « sait » à une étape est dans la requête : prompt
-système + définitions d'outils + historique + résultats d'outils. Cette requête se mesure en **tokens** (≈ 3 à 4
-caractères en français) et elle a une taille maximale, la **fenêtre de contexte**. Bien avant la limite, un contexte
-trop gros coûte cher, ralentit le premier token et dilue l'attention : le modèle rate plus facilement la règle
-importante noyée au milieu.
+The model has no memory between two calls. All he "knows" at one step is in the query: prompt
+system + tool definitions + history + tool results. This query is measured in **tokens** () 3 to 4
+characters in French) and it has a maximum size, the ** context window**. Long before the limit, a context
+too big costs expensive, slows down the first token and dilutes attention: the model misses the rule more easily
+major drowned in the middle.
 
-### 5.2 Le prompt système du kit
+### 5.2 The kit's quick system
 
-`build_system_prompt(mode, actor_name)` (`agent/prompts.py`) assemble, à chaque tour :
+`build_system_prompt(mode, actor_name)` (`agent/prompts.py`) assembles at each tower:
 
-| Partie | Contenu |
+| Part | Content |
 |---|---|
-| `ROLE` | « assistant IA de l'ERP de {entreprise} », l'activité |
-| `BASE_RULES` | outils pour toute donnée, `search` d'abord, `get_price` pour un prix, contexte avant de répondre, brouillon puis confirmation explicite, alertes |
-| `MODE_RULES[mode]` | `CHAT_RULES` (markdown léger), `VOICE_RULES` (1–2 phrases, nombres en toutes lettres, récapituler), `COMMAND_RULES` (agir tout de suite, une phrase) |
-| date | `meta.today` de l'ERP, en français (les données ont leur propre date simulée) |
-| interlocuteur | `actor_name` |
-| contexte entreprise | **tous** les `DATA_DIR/context/*.md` du premier niveau, relus à chaque tour |
+| `ROLE` | "Assistant AI of the ERP of {company}", the activity |
+| `BASE_RULES` | tools for any data, `search` first, `get_price` for a price, context before responding, draft then explicit confirmation, alerts |
+| `MODE_RULES[mode]` | `CHAT_RULES` (light markdown), `VOICE_RULES` (1–2 sentences, numbers in all letters, summary), `COMMAND_RULES` (act immediately, one sentence) |
+| date | `meta.today` of the ERP, in French (the data have their own simulated date) |
+| Interlocutor | `actor_name` |
+| context | **tous** the `DATA_DIR/context/*.md` of the first level, read at each turn |
 
-Détail : [TECH 4.3](TECH.md#prompts).
+Detail: [TECH 4.3](TECH.md#prompts).
 
-### 5.3 L'historique, selon le mode
+### 5.3 History, by Mode
 
-| Mode | Qui garde l'historique |
+| Mode | Who keeps the history |
 |---|---|
-| `chat` | le navigateur, renvoyé en entier à chaque message |
-| `voice` | le service IA, en mémoire, coupé à ~40 messages (`trim` dans `services/voice_session.py`) |
-| `command` | personne : un seul message par requête |
+| `chat` | the browser, returned in full to each message |
+| `voice` | AI service, in memory, cut to ~40 messages (`trim` in `services/voice_session.py`) |
+| `command` | person: one message per request |
 
-`run_agent` **ajoute** ses messages à la liste qu'on lui passe : qui garde la liste garde la mémoire. Les résultats
-d'outils y restent aussi, d'où l'intérêt de sorties petites.
+`run_agent` ** adds ** messages to the list you pass: who keeps the list keeps the memory.
+tools remain there too, hence the interest of small outputs.
 
-### 5.4 Récupérer plutôt que tout charger
+### 5.4 Recover instead of loading everything
 
-Deux stratégies pour donner du savoir au modèle :
+Two strategies to provide knowledge to the model:
 
-- **Tout mettre dans le prompt** (stuffing) : c'est ce que fait le kit avec `DATA_DIR/context/*.md`. Simple, toujours
-  disponible, mais payé à chaque étape de chaque tour.
-- **Aller chercher ce qu'il faut** (retrieval) : la **table de contexte** de l'ERP, via trois outils de
+- ** Put it all in the prompt** (stuffing): this is what the kit does with `DATA_DIR/context/*.md`. Simple, always
+  available, but paid at each stage of each round.
+- **Go look for what is needed** (retrival): the ** contexttable** of the ERP, via three tools of
   `tools/context.py` :
-  - `get_context(entity_type, id)` : tout ce qu'on sait d'un client, fournisseur, produit ou rayon ;
-  - `search_context(query, …)` : recherche plein texte dans les fiches (règles, procédures) ;
-  - `save_context(…)` : mémoriser un fait durable appris pendant l'appel (mémoire long terme partagée avec l'équipe).
+  - `get_context(entity_type, id)`: everything you know about a customer, supplier, product or radius;
+  - `search_context(query, …)`: full text search in the sheets (rules, procedures);
+  - `save_context(…)`: Memorize a lasting fact learned during the call (long-term memory shared with the team).
 
-Les fiches `data/context/clients/` et `suppliers/` ne sont **pas** dans le prompt (seul le premier niveau l'est) :
-l'agent les voit via la table, s'il pense à appeler `get_context`.
+The `data/context/clients/` and `suppliers/` plugs are not **pas** in the prompt (only the first level is):
+the agent sees them via the table, if he thinks of calling `get_context`.
 
-### 5.5 Le cache de prompt
+### 5.5 Quick cache
 
-**L'idée.** D'une étape à l'autre, le début de la requête (outils + prompt système + début de l'historique) est
-identique. Le cache de prompt du fournisseur garde ce **préfixe** déjà traité : à l'appel suivant, les tokens en cache
-sont relus beaucoup plus vite et facturés à une fraction du prix normal (environ 10 % chez Anthropic ; l'écriture
-initiale coûte un peu plus qu'un token normal ; voir la page de prix du fournisseur). Le cache Anthropic utilisé ici
-dure 5 minutes.
+**The idea.** From one step to another, the start of the query (tools + quick system + start of history) is
+same. The supplier's prompt cache keeps this **prefix** already processed: at the following call, tokens cached
+are read much faster and billed at a fraction of the normal price (about 10 % at Anthropic; writing
+initial costs a little more than a normal token; see the supplier price page). The Anthropic cache used here
+lasts 5 minutes.
 
-**Dans le kit.** L'adaptateur `clients/anthropic.py` pose trois points de cache (`cache_control`) : sur le dernier
-outil, sur le prompt système et sur le dernier bloc de la conversation (`mark_last_block`). L'étape suivante du même
-tour (après un outil) et le tour suivant relisent donc tout le préfixe depuis le cache. Les autres fournisseurs gèrent
-leur cache à leur façon (ou pas) : regardez leur documentation.
+**In the kit.** The `clients/anthropic.py` adapter sets three cache points (`cache_control`): on the last one
+tool, on the prompt system and on the last block of the conversation (`mark_last_block`). The next step of the same
+turn (after a tool) and the next turn therefore reread the whole prefix from the cache. Other suppliers manage
+hide them in their own way (or not): look at their documentation.
 
-**Pourquoi ça compte ici.** ≈ 27 000 tokens d'entrée par appel, dont l'essentiel est le même préfixe ; un tour de
-commande en relit ≈ 117 000. Sans cache, vous payez ce préfixe plein tarif à chaque étape. Avec cache, la 2ᵉ étape
-d'un tour et les tours suivants d'un même appel le relisent presque gratuitement, et le premier token arrive plus tôt.
+**Why does it matter here?** 的 27 000 tokens per call, the essentials of which are the same prefix; a turn of
+117 000 relit command. Without cache, you pay this full price prefix at each step. With cache, the 2e step
+of a tower and the subsequent towers of the same call reread it almost for free, and the first token arrives earlier.
 
-**Ce qui casse le cache.** Le cache ne marche que sur un préfixe **identique octet pour octet**. Tout changement
-invalide ce qui suit :
+**What breaks the cache.** The cache only works on an identical ** prefix for byte**. Any change
+invalidate the following:
 
-- modifier un `.md` de `DATA_DIR/context/`, une règle de `prompts.py`, une description d'outil ;
-- ajouter, retirer ou réordonner des outils (chez Anthropic, l'ordre du préfixe est : outils, puis système, puis
-  messages) ;
-- mettre dans le prompt système quelque chose qui change à chaque tour (une heure, un compteur, la fiche du client
-  courant **avant** les règles stables) ;
-- changer de mode ou d'interlocuteur (`actor_name` est dans le prompt).
+- modify a `.md` from `DATA_DIR/context/`, a `prompts.py` rule, a tool description;
+- add, remove or reorder tools (in Anthropic, the order of the prefix is: tools, then system, then
+  messages);
+- put in the prompt system something that changes every turn (one hour, one meter, the customer's card)
+  current **before ** stable rules);
+- change mode or contact (`actor_name` is in the prompt).
 
-Mettez donc le stable en premier et le variable à la fin (dans les messages, ou en dernière partie du prompt).
+So put the stable first and the variable at the end (in the messages, or in the last part of the prompt).
 
-**Voir les hits.** Regardez `usage` dans l'événement `done` (champs `cache_read_input_tokens` et
-`cache_creation_input_tokens` en Python, `cacheReadInputTokens` / `cacheCreationInputTokens` dans le JSON de
-`/ai/chat`) ; `make chat` les affiche (« cache lu … / écrit … »). Les tokens lus en cache doivent être élevés dès la
-2ᵉ étape d'un tour ; s'ils restent à 0, quelque chose change dans votre préfixe. Attention : avec le cache,
-`input_tokens` ne compte plus que la partie **non** cachée (total = `input_tokens` + écrits + lus).
+**See hits.** Look at `usage` in event `done` (fields `cache_read_input_tokens` and
+`cache_creation_input_tokens` in Python, `cacheReadInputTokens` / `cacheCreationInputTokens` in JSON
+`/ai/chat`) ; `make chat` displays them ("cache read ... / written ..."). Tokens read in cache must be raised as soon as the
+2e step of a turn; if they stay at 0, something changes in your prefix. Be careful: with the cache,
+`input_tokens` only counts the hidden part **non** (total = `input_tokens` + written + read).
 
-### Conseils
+### Advice
 
-- Mesurez la taille de votre prompt avant de l'enrichir : chaque Ko ajouté est payé à chaque étape.
-- Préchargez ce qui est sûr d'être utile (la fiche du client identifié en début d'appel) **à la fin** du prompt, et
-  laissez le reste en retrieval.
-- Pour un long appel vocal, un résumé des tours anciens vaut mieux que 40 messages bruts.
-- Utilisez `save_context` pour ce qui doit survivre à l'appel (« livrer par la porte de service ») ; pas pour une
-  réclamation (`log_client_event`).
+- Measure the size of your prompt before enriching it: each added Ko is paid at each step.
+- Preload what is sure to be useful (the client's card identified at the beginning of the call) ** at the end** of the prompt, and
+  Leave the rest in retrieval.
+- For a long voice call, a summary of old tricks is better than 40 raw messages.
+- Use `save_context` for what must survive the call ("deliver through the service door"; not for a
+  claim (`log_client_event`).
 
 ---
 
-## 6. Les modèles
+## 6. Models
 
-### L'idée
+### The idea
 
-Trois curseurs : **intelligence**, **latence**, **coût**. Pour un agent vocal, la latence au premier mot compte autant
-que l'intelligence. Les modèles récents « réfléchissent » avant de répondre (raisonnement interne) : on ne règle plus
-la température, on règle **l'effort** de réflexion.
+Three sliders: ** intelligence**, **latency**, ** cost**. For a vocal agent, latency in the first word counts as much
+recent models "think" before responding (internal raisonment): we no longer settle
+the temperature, we regulate ** the reflection effort**.
 
-### Dans le kit
+### In the kit
 
-| Modèle Anthropic | Profil (`.env.example`) |
+| Model Anthropic | Profile (`.env.example`) |
 |---|---|
-| `claude-sonnet-5-5` | défaut, équilibré (`DEFAULT_MODELS` dans `clients/factory.py`) |
-| `claude-haiku-5-5` | le plus rapide, le moins cher |
-| `claude-opus-5-5` | le plus intelligent, le plus lent |
+| `claude-sonnet-5-5` | default, balanced (`DEFAULT_MODELS` in `clients/factory.py`) |
+| `claude-haiku-5-5` | fastest, cheapest |
+| `claude-opus-5-5` | smartest, slowest |
 
-Prix : le kit n'en donne pas, voir la page de prix du fournisseur. Coût d'un tour ≈ tokens d'entrée × prix d'entrée
-+ tokens de sortie × prix de sortie (+ tarif réduit pour les tokens lus en cache).
+Price: the kit does not give, see the price page of the supplier. Cost of a tour
++ output tokens × output price (+ reduced price for cached tokens).
 
-- **Changer de modèle** : dans `.env`, `LLM_PROVIDER=anthropic`, `LLM_MODEL=claude-haiku-5-5`, puis `make restart`
-  (Docker) ou relancer `make dev`. `GET /ai/health` affiche le modèle actif. Autres fournisseurs (OpenAI, Gemini, tout
-  endpoint compatible OpenAI) : [TECH 4.1](TECH.md#config-ia).
-- **Effort** : `LLM_EFFORT` (`low` par défaut, `medium`, `high`), envoyé par `clients/anthropic.py` en
-  `output_config.effort`. `low` garde la voix rapide ; montez-le pour un tour difficile.
-- **Streaming** : tous les clients streament ; le texte part vers le TTS phrase par phrase.
-- **Réflexion** : l'adaptateur Anthropic renvoie les blocs `thinking` avec le tour qui appelle des outils (exigé par
-  les modèles récents).
+- **Change of model**: in `.env`, `LLM_PROVIDER=anthropic`, `LLM_MODEL=claude-haiku-5-5`, then `make restart`
+  (Docker) or restart `make dev`. `GET /ai/health` displays the active model. Other suppliers (OpenAI, Gemini, all
+  OpenAI compatible endpoint): [TECH 4.1](TECH.md#config-ia).
+- **Effort**: `LLM_EFFORT` (default `low`, `medium`, `high`), sent by `clients/anthropic.py` in
+  `output_config.effort`. `low` keeps the voice fast; mount it for a tough ride.
+- **Streaming**: all clients stream; text goes to the TTS sentence by sentence.
+- **Reflection**: Anthropic adapter returns `thinking` blocks with the tower that calls for tools (required by
+  recent models).
 
-### Router entre modèles
+### Route between models
 
-Un seul client LLM est construit (`get_llm_client()`, mis en cache). Pour router, construisez-en un second avec
-`make_llm_client(LLMSettings(...))` et choisissez par tour :
+A single LLM customer is built (`get_llm_client()`, cached). To route, build a second one with
+`make_llm_client(LLMSettings(...))` and choose by turn:
 
-- petit modèle (Haiku) pour les tours simples : « il reste du bar ? », « merci, au revoir » ;
-- gros modèle (Sonnet / Opus) pour la négociation, les réclamations, les commandes à plusieurs lignes ;
-- le **routeur** peut être une règle, ou une décision Jev (section [7](#7-jev-le-modèle-de-décision)).
+- small model (Haiku) for simple tricks: "there is still bar?", "thank you, goodbye";
+- Large model (Sonnet / Opus) for trading, claims, multi-line orders;
+- the **routeur** may be a rule, or a decision Jev (section [7](#7-jev-le-modèle-de-décision)].
 
-**Repli** : si le fournisseur renvoie une erreur (quota, panne), `run_agent` émet un événement `error`. Vous pouvez
-rattraper ça dans l'appelant et relancer le tour sur un autre client.
+**Repli**: If the provider returns an error (quota, failure), `run_agent` issues an event `error`.
+catch this in the caller and restart the turn on another client.
 
-### Conseils
+### Advice
 
-- Comparez les modèles sur **vos** scénarios (section [8](#8-mesurer-et-améliorer)), pas sur une impression.
-- Avant de changer de modèle, réduisez le contexte et le nombre d'étapes : c'est souvent plus de gain.
-- Le mock (`LLM_PROVIDER=mock`) n'appelle qu'un outil par étape : ses latences ne disent rien du vrai modèle.
+- Compare models on **vos** scenarios (section [8](#8-mesurer-et-améliorer)), not on a print.
+- Before changing a model, reduce the context and number of steps: it's often more gain.
+- The mock (`LLM_PROVIDER=mock`) calls only one tool per step: its latency does not say anything about the real model.
 
 ---
 
-## 7. Jev, le modèle de décision
+## 7. Jev, the decision model
 
-### L'idée
+### The idea
 
-Jev (TypeSafe AI, modèle `jev-latest`) n'est **pas un LLM** : il n'écrit pas de texte. Vous lui donnez un **état**
-(une phrase ou du JSON) et des **questions typées** ; il renvoie, pour chacune, une décision **avec des
-probabilités**. La probabilité est son atout : quand il hésite, vous le savez, et l'agent peut demander au client au
-lieu de deviner.
+Jev (TypeSafe AI, model `jev-latest`) is **not a LLM**: it does not write any text. You give it a **stat**
+(one sentence or JSON) and **typed issues**; for each, it refers a ** decision with
+probabilities**. Probability is his asset: when he hesitates, you know, and the agent can ask the client at
+I guess so.
 
-| Type | Vous envoyez | Vous recevez |
+| Type | Sending | You receive |
 |---|---|---|
-| choix (`choose`) | des options `{id: description}` | `choice`, `confidence`, `probabilities` |
-| score (`score`) | des niveaux ordonnés | `score` (ex. 1,7), `confidence` |
-| oui / non (`yes_no`) | une affirmation à vérifier | probabilité de « oui », 0..1 |
-| plusieurs à la fois (`ask`) | un dict de questions | toutes les réponses en un appel |
+| choice (`choose`) | options `{id: description}` | `choice`, `confidence`, `probabilities` |
+| score (`score`) | orderly levels | `score` (e.g. 1,7), `confidence` |
+| yes/no (`yes_no`) | a statement to be verified | probability of "yes", 0..1 |
+| several at a time (`ask`) | a dictum of questions | all answers in one call |
 
-### Quand l'utiliser à la place d'un appel LLM
+### When to use it instead of a LLM call
 
-- **Quel produit le client voulait dire** parmi les résultats de `search` (« le bar de ligne », pas « le bar
-  d'élevage »).
-- **Confirmation oui / non** après un récapitulatif (« ouais vas-y » = oui ; « euh… plutôt le gros » = incertain).
-- **Routage d'intention** : commande, question de stock, réclamation, prix → quel prompt, quels outils, quel modèle.
-- **Scorer** : urgence, mécontentement, risque.
+- **What product the customer meant by ** among the results of `search` ("the line bar", not "the bar
+  breeding stock").
+- **Confirmation yes/no** after a summary ("yes go-y" = yes; "uh... rather the fat" = uncertain).
+- **Intent Routage**: order, stock question, claim, price → what fast, what tools, what model.
+- **Scorer**: emergency, discontent, risk.
 
-Gardez le LLM pour **parler** et pour les décisions ouvertes.
+Keep the LLM for ** speaker** and for open decisions.
 
-### Latence mesurée
+### Measured latency
 
-Test réel (novembre 2026) : `choose` ≈ 750 ms (752 ms, premier appel, à froid), `yes_no` ≈ 170 ms (168 ms). Plus
-rapide qu'une étape LLM avec 27 000 tokens de contexte, mais pas gratuit : mesurez-le dans votre parcours, et lancez-le
-**en parallèle** d'autre chose quand c'est possible.
+Real test (November 2026) : `choose` - 750 ms (752 ms, first call, cold), `yes_no` - 170 ms (168 ms).
+fast as a LLM step with 27 000 context tokens, but not free: measure it in your path, and launch it
+**in parallel** of other things when possible.
 
-### Dans le kit
+### In the kit
 
-- Client : `clients/jev.py` (`JevClient` : `ask`, `choose`, `score`, `yes_no` ; constructeurs de questions
+- Customer : `clients/jev.py` (`JevClient` : `ask`, `choose`, `score`, `yes_no`; question makers
   `choice_question`, `score_question`, `yes_no_question`).
-- Accès : `get_jev_client()` renvoie un `JevClient`, ou `None` si `JEV_API_KEY` est vide.
-- Exemples à copier : `agent/jev_examples.py`
-  - `pick_product(jev, utterance, candidates)` → l'id du produit, ou `None` si la confiance est < 0,6 ;
-  - `is_yes(jev, question, answer)` → `True` / `False` / `None` (≥ 0,8 oui, ≤ 0,2 non, sinon incertain).
-- **Rien dans l'agent par défaut n'appelle Jev** : à vous de le brancher. Format et usages :
+- Access: `get_jev_client()` returns a `JevClient`, or `None` if `JEV_API_KEY` is empty.
+- Examples to copy: `agent/jev_examples.py`
+  - `pick_product(jev, utterance, candidates)` → the product id, or `None` if confidence is < 0,6;
+  - `is_yes(jev, question, answer)` → `True` / `False` / `None` (≥ 0,8 yes, ≤ 0,2 no, if not uncertain).
+- **Nothing in the default agent calls Jev**: it's up to you to plug it in. Format and uses:
   [TECH 4.7](TECH.md#jev), [apps/ai/README.md, Jev](apps/ai/README.md#jev-decision-model).
 
-### Combiner Jev et le LLM : « Jev décide, le LLM parle »
+### Combine Jev and LLM: "Jev decides, LLM speaks"
 
-Deux façons simples :
+Two simple ways:
 
-1. **Dans un outil** : un outil composite appelle `search`, puis `pick_product` ; si Jev est sûr, il renvoie le
-   produit, sinon `{"ambiguous": true, "candidates": [...]}` et le LLM demande « lequel ? ».
-2. **Avant la boucle** : dans `services/voice_session.py`, quand la dernière question de l'agent était un
-   récapitulatif, `is_yes` sur la réponse du client ; si `True`, vous pouvez confirmer directement. Si `None`, laissez
-   le LLM reformuler.
+1. **In a ** tool: a composite tool calls `search`, then `pick_product`; if Jev is safe, it returns the
+   product, if not `{"ambiguous": true, "candidates": [...]}` and the LLM asks "what?".
+2. **Before loop**: in `services/voice_session.py`, when the agent's last question was a
+   summary, `is_yes` on the customer response; if `True`, you can confirm directly. If `None`, leave
+   the LLM reformulate.
 
-### Conseils
+### Advice
 
-- Décrivez les options (`{"prd_1": "Bar de ligne 1-2 kg, Bretagne"}`) plutôt que de donner des ids nus.
-- Fixez un seuil de confiance et gérez le cas « incertain » : c'est là que Jev rend l'agent plus sûr.
-- Gardez toujours le chemin sans Jev qui marche (`if jev:`) : la clé peut manquer.
+- Describe the options (`{"prd_1": "Bar de ligne 1-2 kg, Bretagne"}`) instead of giving naked ids.
+- Set a confidence threshold and manage the "uncertain" case: this is where Jev makes the agent safer.
+- Always keep the path without Jev running (`if jev:`): the key may be missing.
 
 ---
 
-## 8. Mesurer et améliorer
+## 8. Measuring and improving
 
-### L'idée
+### The idea
 
-Sans mesure, on « améliore » au hasard. Un agent se mesure sur trois axes, les mêmes que le jury : **réussite**
-(la bonne action dans l'ERP), **latence**, **coût**.
+Without measure, we "improve" at random. An agent is measured on three axes, the same as the jury: **resist**
+(the right action in ERP), **latency**, **cost**.
 
-### Ce que le kit mesure déjà
+### What the kit already measures
 
-| Mesure | Où la lire |
+| Measurement | Where to read it |
 |---|---|
-| tokens d'entrée, de sortie et de cache du tour | `usage` de l'événement `done` (`POST /ai/chat`, `make chat`) |
-| durée totale du tour | `ms` de l'événement `done` |
-| durée de chaque outil | `ms` de chaque `tool_result` |
-| latence vocale détaillée | `timings` de `agent_done` (voix) et de `done` (`/command`) : `sttMs`, `llmFirstTokenMs`, `llmTotalMs`, `ttsFirstByteMs`, `totalMs` |
-| ce que l'agent a écrit | le journal d'activité de l'ERP (en violet), `x-actor` |
+| tokens for the entrance, exit and cache of the tower | `usage` of Event `done` (`POST /ai/chat`, `make chat`) |
+| total duration of the round | `ms` of event `done` |
+| duration of each tool | `ms` of each `tool_result` |
+| Detailed vocal latency | `timings` of `agent_done` (voice) and `done` (`/command`): `sttMs`, `llmFirstTokenMs`, `llmTotalMs`, `ttsFirstByteMs`, `totalMs` |
+| what the agent wrote | the ERP activity log (purple), `x-actor` |
 
-Le service IA n'a pas de journalisation : si vous voulez un historique de mesures, écrivez chaque événement `done`
-dans un fichier JSONL depuis l'appelant.
+The AI service has no logging: if you want a measurement history, write each `done` event
+in a JSONL file from the caller.
 
-### Construire un jeu de scénarios
+### Build a scenario set
 
-1. Partez des documents de **votre** entreprise (`data/context/*.md`, fiches `clients/`) : chaque règle, préférence
-   ou litige est un scénario potentiel (« ce chef refuse les substitutions », « ce client est bloqué pour impayés »).
-2. Écrivez 5 à 10 scénarios : ce que dit le client, et le **résultat attendu dans l'ERP** (commande brouillon avec
-   telles lignes, aucune confirmation, une réclamation enregistrée…). Incluez des cas difficiles : client ambigu,
-   rupture, changement d'avis, client bloqué.
-3. Rejouez-les en texte (`make chat`, `curl /ai/chat`) : c'est plus rapide et reproductible que la voix. Gardez la voix
-   pour la latence et le naturel.
-4. Notez pour chacun : réussi oui/non, nombre d'étapes, tokens, `ms`. `make reset` remet l'ERP à zéro entre deux
-   passes.
+1. Leave documents from **your** company (`data/context/*.md`, `clients/` cards): each rule, preference
+   or litigation is a potential scenario ("this leader refuses substitutions", "this client is blocked for unpaid").
+2. Write 5 to 10 scenarios: what the customer says, and the ** result expected in the ERP** (command draft with
+   such lines, no confirmation, a registered claim...) Include difficult cases: ambiguous client,
+   rupture, change of mind, client blocked.
+3. Replay them in text (`make chat`, `curl /ai/chat`): it's faster and more reproducible than the voice.
+   for latency and naturalness.
+4. Note for each: pass yes/no, number of steps, tokens, `ms`. `make reset` resets the ERP to zero between two
+   Pass.
 
-### Itérer
+### Iterer
 
-- **Un changement à la fois**, puis rejouez **le scénario qui échoue** ; tout le jeu une fois à la fin.
-- Attaquez le pire des trois axes en premier.
-- Consignez chaque essai (gardé ou abandonné) dans `DECISIONS.md` avec ses mesures : le jury le lit.
-- Tests automatiques hors ligne : `apps/ai/tests/` ([TECH 8](TECH.md#tests)).
+- **A change at once**, then replay ** the scenario that fails**; the whole game once at the end.
+- Attack the worst of the three axes first.
+- Record each trial (guarded or abandoned) in `DECISIONS.md` with its measurements: the jury reads it.
+- Offline automatic tests: `apps/ai/tests/` ([TECH 8](TECH.md#tests)).
 
 ---
 
-## 9. Pièges fréquents
+## 9. Common traps
 
-| Piège | Symptôme | Parade |
+| Trap | Symptoms | Parade |
 |---|---|---|
-| **Id halluciné** | `{"error": "… introuvable"}`, ou pire : la mauvaise entité | toujours `search` d'abord ; outils qui renvoient les ids utiles ; jamais d'id dans un exemple de prompt qui ressemble à un vrai |
-| **Boucle d'outils** | même outil appelé 3 fois, puis `GIVE_UP` | message d'erreur clair dans l'outil ; règle « si l'outil échoue deux fois, dis-le au client » ; outil composite |
-| **Sorties d'outil énormes** | tokens qui explosent, réponses lentes | `pick`, listes coupées, textes raccourcis |
-| **Prompt qui gonfle** | chaque tour plus lent et plus cher, règles ignorées | contexte en retrieval, cache de prompt intact ([5.5](#55-le-cache-de-prompt)), revue régulière des `.md` |
-| **Commande confirmée sans relecture** | `confirm_order` appelé avant l'accord du client | récapitulatif oral + accord explicite (`VOICE_RULES`), ou `is_yes` de Jev |
-| **Alertes ignorées** | commande confirmée pour un client bloqué | l'ERP renvoie des `warnings` mais **ne bloque rien** : le prompt ou un outil doit refuser ([TECH 9](TECH.md#pieges)) |
-| **Préférences client ignorées** | substitution proposée à un client qui les refuse | `get_context` sur le client en début d'appel (ou préchargé) |
-| **Mauvaise date** | « demain » calculé sur la vraie date | utiliser `meta.today` (déjà dans le prompt) |
-| **Ids et markdown lus à voix haute** | « c, l, i, underscore… » | `VOICE_RULES` ; vérifier le texte de `agent_done` |
-| **Écriture faite malgré l'interruption** | le client a coupé, la ligne est quand même ajoutée | pas de rollback au barge-in : relire la commande en fin d'appel |
-| **Historique vocal perdu** | l'agent oublie tout après une sauvegarde de fichier | l'historique vocal est en mémoire ; le rechargement auto d'uvicorn le vide |
-| **Mesures en mock** | latences excellentes en dev, mauvaises en démo | mesurer avec les vraies clés |
+| **Id hallucinated** | `{"error": "… introuvable"}`, or worse: the wrong entity | always `search` first; tools that return useful ids; never id in an example of prompt that looks like a real one |
+| **Tool loop** | same tool called 3 times, then `GIVE_UP` | clear error message in the tool; rule "if the tool fails twice, tell the client"; composite tool |
+| **Huge tool outputs** | tokens that explode, slow responses | `pick`, cut lists, shortened texts |
+| **Prompt which inflates** | every turn slower and more expensive, rules ignored | context in retrival, cache of prompt intact ([5.5](#55-le-cache-de-prompt)), regular review of the `.md` |
+| **Order confirmed without rereading** | `confirm_order` Called Before Customer Agreement | oral summary + explicit agreement (`VOICE_RULES`), or `is_yes` from Jev |
+| **Alerts ignored** | order confirmed for a blocked customer | ERP returns `warnings` but ** blocks nothing**: the prompt or a tool must refuse ([TECH 9](TECH.md#pieges)) |
+| **Customer preferences ignored** | proposed substitution to a client who refuses them | `get_context` on the client at the beginning of the call (or preloaded) |
+| **Beautiful date** | "Tomorrow" calculated on the real date | use `meta.today` (already in the prompt) |
+| **Ids and markdown read aloud** | "c, l, i, underscore..." | `VOICE_RULES`; check the text of `agent_done` |
+| **Writing done despite interruption** | the customer has cut, the line is still added | no rollback at the barge-in : reread the command at the end of the call |
+| **Lost vocal history** | the agent forgets everything after a file backup | the voice history is in memory; the auto reload of uvicorn the vacuum |
+| **Mock** measurements | excellent latency in dev, bad demo | measuring with the real keys |
 
-Liste complète des limites vérifiées dans le code : [TECH 9](TECH.md#pieges).
+Complete list of limits verified in code: [TECH 9](TECH.md#pieges).
 
 ---
 
-## 10. Pour aller plus loin
+## 10. To go further
 
-- **Orchestrateur et agents spécialisés** : un agent principal qui délègue à un agent « commande », un agent
-  « réclamation », chacun avec moins d'outils et un prompt plus court.
-- **État de dialogue** : pour la prise de commande, un petit état structuré (client, lignes, date, confirmé ?) tenu
-  par le code, que le modèle lit et met à jour, plutôt que de tout reconstruire depuis l'historique.
-- **Planification** : faire écrire au modèle un plan court avant d'agir sur une demande complexe, puis l'exécuter.
-- **Évaluations automatiques** : rejouer les scénarios à chaque changement, et faire noter le naturel d'une réponse
-  par un modèle « juge » avec une grille fixe.
-- **Voix plus rapide** : STT en streaming (`transcribe_stream`, déjà implémenté pour Soniox et Deepgram), phrases
-  d'attente pendant les outils ([TECH 4.5](TECH.md#latence)).
-- **Mémoire** : résumer les appels passés d'un client dans la table de contexte avec `save_context`.
+- **Orchestrator and Specialized Agents**: A Principal Agent Delegating to an "Order" Agent, an Agent
+  "claim", each with fewer tools and a shorter prompt.
+- **Dialogue state**: for ordering, a small structured state (client, lines, date, confirmed?) held
+  by the code, which the model reads and updates, rather than reconstructing everything from history.
+- **Planning**: Have the template write a short plan before acting on a complex request, and then execute it.
+- **Automatic Evaluations**: Replay scenarios with each change, and note the nature of a response
+  by a "judge" model with a fixed grid.
+- ** Faster voice** : STT streaming (`transcribe_stream`, already implemented for Soniox and Deepgram), sentences
+  during tools ([TECH 4.5](TECH.md#latence)).
+- **Memory**: Summarize a client's calls in the context table with `save_context`.

@@ -1,51 +1,51 @@
-# Youssef – ⚡ « Plusieurs cerveaux en parallèle » (vitesse + architecture)
+# Youssef – "Multi-brain parallel" (speed + architecture)
 
-**Critères du jury** : Rapide (< 1,5 s) et Intelligent. **Conseil du CTO** : plusieurs agents à la fois.
-**Interrupteurs** : `TEAM_ORCHESTRATOR`, `TEAM_PRELOAD`, `TEAM_PRODUCT_INSIGHT`, `TEAM_FAST_MODEL`.
-**Branche** : `youssef/<sujet>`.
+** Selection criteria** : Quick (< 1,5 (s) and Intelligent. **Council of the CTO** : several agents at once.
+** Switches**: `TEAM_ORCHESTRATOR`, `TEAM_PRELOAD`, `TEAM_PRODUCT_INSIGHT`, `TEAM_FAST_MODEL`.
+**Branche**: `youssef/<sujet>`.
 
-## La vraie vie
-Lucie reconnaît Nadine dès le « Bonjour » et ouvre sa fiche (habitudes, préférences, compte) **une fois**. Pendant
-qu'elle parle avec Nadine, un collègue regarde le stock. Un seul coup d'œil à l'écran lui donne stock + prix + remplaçant.
-Aujourd'hui l'agent enchaîne les outils un par un (search → get_client → get_product_stock → get_price →
-find_alternatives) : 4 à 6 allers-retours ≈ 1 s chacun, avant de dire un mot.
+## Real Life
+Lucie recognizes Nadine from the "Hello" and opens her card (habits, preferences, account) ** once**. During
+she talks with Nadine, a colleague looks at the stock. A single glance at the screen gives her stock + price + replacement.
+Today the agent chain the tools one by one (search → get_client → get_product_stock → get_price →
+find_alternatives) : 4 to 6 round-trip ≈ 1 Each, before saying a word.
 
-## Tes fichiers
-| Fichier | Rôle |
+## Your files
+| File | Role |
 |---|---|
-| `apps/ai/app/agent/orchestrator.py` | **à toi** : agent rapide + agent cerveau |
-| `apps/ai/app/agent/call_context.py` | **à toi** : la fiche client préchargée (v0 qui marche déjà : fiche + contexte en parallèle) |
-| `apps/ai/app/tools/product_insight.py` | **à toi** : le super-outil |
-| `apps/ai/app/agent/loop.py` | partagé, fichier du kit : n'y touche que pour l'orchestration, en prévenant Mohamed Amine |
-| `scripts/run_scenarios.py` | **à toi** : le rejeu des scénarios (marche déjà, via /chat ou `--voice`) |
+| `apps/ai/app/agent/orchestrator.py` | **to you**: fast agent + brain agent |
+| `apps/ai/app/agent/call_context.py` | **à toi**: the preloaded customer data sheet (v0 that already works: plug + context in parallel) |
+| `apps/ai/app/tools/product_insight.py` | **to you**: the super tool |
+| `apps/ai/app/agent/loop.py` | shared, kit file: touch it only for orchestration, by warning Mohamed Amine |
+| `scripts/run_scenarios.py` | **to you**: the replay of scenarios (goes already, via /chat or `--voice`) |
 
-Lis d'abord : `apps/ai/README.md` (boucle, outils), `GUIDE-AGENTS.md` (outils, contexte, cache de prompt, modèles,
+Read first: `apps/ai/README.md` (loop, tools), `GUIDE-AGENTS.md` (tools, context, quick cache, models,
 Jev), `GUIDE-VOIX.md` §4.3-4.6, [interfaces.md](../interfaces.md) §1-3.
 
-## Tes tâches, dans l'ordre
-| # | Tâche | Fini quand |
+## Your tasks, in order
+| # | Task | No more when |
 |---|---|---|
-| T0 | Lancer `run_scenarios.py --only S01 S05` : noter le nombre d'outils appelés et les temps (baseline dans DECISIONS.md) | baseline notée |
-| T1 | **Super-outil** `product_insight` : produit + stock + prix client + remplaçants (stock, prix, promo) en un seul appel, en parallèle (`asyncio.gather`) ; test ; `TEAM_PRODUCT_INSIGHT=1` | S04/S05 : moins d'outils appelés, même résultat ; test `test_product_insight_…` vert |
-| T2 | **Fiche préchargée** : compléter `load_call_context` (stock des produits habituels, promos actives) ; la charger dès que le client est identifié (résultat de `get_client`, ou `search` avec un seul client) et la garder sur la `Conversation` ; `TEAM_PRELOAD=1` | à partir du 2e tour, plus d'appel à get_client / get_context ; `loaded_ms` < 300 |
-| T3 | **Cache de prompt** : vérifier que le gros contexte statique est lu depuis le cache Anthropic (`cache_read_input_tokens` dans `usage`) ; la fiche client reste à la fin | cache_read > 0 dès le 2e tour |
-| T4 | **Orchestrateur** : agent rapide (`get_fast_llm_client`, Haiku) en parallèle de l'agent cerveau ; tours simples (oui / non / merci / c'est tout) au rapide seul (Jev ou règles pour classer) ; jamais de contradiction, jamais de chiffre côté rapide ; `TEAM_ORCHESTRATOR=1` | S06 : premier texte < 1,5 s ; tous les scénarios toujours verts |
-| T5 | Mesures : à chaque sync, `run_scenarios.py` complet et une ligne dans le tableau de DECISIONS.md | tableau à jour |
-| T6 | (extension, après le cas 1) S08 : réclamation + commande dans le même appel | S08 vert |
+| T0 | Run `run_scenarios.py --only S01 S05`: Record the number of tools called and the times (baseline in DECISIONS.md) | baseline noted |
+| T1 | **Super tool** `product_insight` : product + stock + customer price + replacements (stock, price, promo) in one call, in parallel (`asyncio.gather`); test ; `TEAM_PRODUCT_INSIGHT=1` | S04/S05: fewer tools called, same result; green `test_product_insight_…` test |
+| T2 | **Preloaded sheet**: complete `load_call_context` (stock of usual products, active promotions); load it as soon as the customer is identified (result of `get_client`, or `search` with only one customer) and keep it on the `Conversation`; `TEAM_PRELOAD=1` | from the 2e turn, more call to get_client / get_context; `loaded_ms` < 300 |
+| T3 | **Cache of prompt**: check that the large static context is read from the Anthropic cache (`cache_read_input_tokens` in `usage`); the customer record remains at the end | cache_read > 0 from the 2th round |
+| T4 | **Orchestrator**: fast agent (`get_fast_llm_client`, Haiku) in parallel to the brain agent; simple tricks (yes / no / thank you / that's all) fast only (Jev or rules to rank); never contradiction, never number fast side; `TEAM_ORCHESTRATOR=1` | S06: first text < 1,5 s; all scenarios still green |
+| T5 | Measurements: at each sync, complete `run_scenarios.py` and one row in the table of DECISIONS.md | updated table |
+| T6 | (extension, after case 1) S08: claim + order in same call | S08 green |
 
-**Tes scénarios** (S20–S29, au moins 2) : par exemple un appel à plusieurs produits dont un en rupture, et un client
-qui ne se nomme pas (« c'est moi, comme d'hab ») → l'agent doit demander qui appelle.
+**Tes Scenarios** (S20–S29, at least 2): e.g. a call to several products including one broken, and one customer
+who does not name himself ("I am, as usual") → the agent must ask who is calling.
 
-## Avec qui te coordonner
-- **Mohamed Amine** : qui parle en premier (agent rapide ou phrase d'attente) → interfaces §1, à H+2.
-- **Daycem** : le format des remplaçants (`rank_alternatives`) et la promo de démo.
-- **Amine Khalil** : ce que sa partie lit dans la fiche (`CallContext`).
+## Who to coordinate with
+- **Mohamed Amine**: who speaks first (quick agent or waiting phrase) → interfaces §1, to H+2.
+- **Daycem**: the replacement format (`rank_alternatives`) and demo promo.
+- **Amine Khalil**: what its part reads in the plug (`CallContext`).
 
-## Pièges
-- Plus rapide mais faux ne gagne pas : rejouer **tous** les scénarios après chaque étape.
-- L'agent rapide n'a pas d'outils : il ne doit jamais affirmer un stock, un prix ou une date.
-- Le prompt grossit avec la fiche : la garder courte (top N entrées, corps tronqués).
+## Traps
+- Faster but fake doesn't win: replay **tous** scenarios after each step.
+- The Quick Agent does not have tools: he must never declare a stock, price or date.
+- The prompt gets bigger with the plug: keep it short (top N inputs, truncated bodies).
 
-## Le premier message à donner à ton IA de code
-> Lis AGENTS.md, docs/team/README.md, docs/team/interfaces.md et docs/team/tasks/youssef.md. Je suis Youssef.
-> Explique-moi T0 et T1 en mots simples, propose un plan, et attends mon accord avant de coder.
+## The first message to give to your AI code
+> Lis AGENTS.md, docs/team/README.md, docs/team/interfaces.md and docs/team/tasks/Youssef.md. I am Youssef.
+> Explain to me T0 and T1 in simple words, propose a plan, and wait for Mon chord before coding.

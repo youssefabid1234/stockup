@@ -7,7 +7,7 @@ import { Money, type Tone } from "@/ui";
 export type BucketId = keyof AgingBuckets;
 
 export const BUCKETS: { id: BucketId; label: string; short: string; bar: string; dot: string }[] = [
-  { id: "current", label: "Non échu", short: "Non échu", bar: "bg-success", dot: "bg-success" },
+  { id: "current", label: "Not due", short: "Not due", bar: "bg-success", dot: "bg-success" },
   { id: "d1_30", label: "1–30 j", short: "1–30", bar: "bg-warning/55", dot: "bg-warning/55" },
   { id: "d31_60", label: "31–60 j", short: "31–60", bar: "bg-warning", dot: "bg-warning" },
   { id: "d61_90", label: "61–90 j", short: "61–90", bar: "bg-destructive/65", dot: "bg-destructive/65" },
@@ -28,14 +28,14 @@ export function AgingStrip({ buckets, active, onSelect }: {
   return (
     <div className="flex min-w-0 flex-col gap-2.5 px-5 py-3">
       <div className="flex items-baseline gap-2 text-[12px] text-muted-foreground">
-        Balance âgée
+        Aged balance
         {active ? (
           <button type="button" onClick={() => onSelect("")} className="text-[11.5px] text-primary hover:underline">
-            Toutes les tranches
+            All tranches
           </button>
-        ) : <span className="text-[11.5px] text-muted-foreground/70">cliquer une tranche pour filtrer</span>}
+        ) : <span className="text-[11.5px] text-muted-foreground/70">click a slice to filter</span>}
       </div>
-      <div className="flex h-3 w-full gap-[2px] overflow-hidden rounded-[3px] bg-muted" role="group" aria-label="Balance âgée">
+      <div className="flex h-3 w-full gap-[2px] overflow-hidden rounded-[3px] bg-muted" role="group" aria-label="Aged balance">
         {total > 0
           ? BUCKETS.map((b) => {
               const v = buckets[b.id];
@@ -91,7 +91,7 @@ export function MiniAging({ buckets, className }: { buckets: AgingBuckets; class
   const total = sum(buckets);
   const tip = BUCKETS.filter((b) => buckets[b.id] > 0).map((b) => `${b.label} : ${fmtMoney(buckets[b.id])}`).join("\n");
   return (
-    <div title={tip || "Rien à encaisser"} className={cn("flex h-1.5 w-full gap-px overflow-hidden rounded-[2px] bg-muted", className)}>
+    <div title={tip || "Nothing to cash in"} className={cn("flex h-1.5 w-full gap-px overflow-hidden rounded-[2px] bg-muted", className)}>
       {total > 0
         ? BUCKETS.map((b) => buckets[b.id] > 0 ? <span key={b.id} className={b.bar} style={{ flexGrow: buckets[b.id], flexBasis: 0, minWidth: 2 }} /> : null)
         : null}
@@ -104,7 +104,7 @@ export const creditTone = (ratio: number): Tone => (ratio > 1 ? "destructive" : 
 const BAR_TONE: Record<string, string> = { success: "bg-foreground/35", warning: "bg-warning", destructive: "bg-destructive" };
 
 export function CreditUse({ row, className }: { row: Pick<ReceivableRow, "creditLimit" | "outstanding">; className?: string }) {
-  if (!row.creditLimit) return <span className="text-muted-foreground/60">Sans plafond</span>;
+  if (!row.creditLimit) return <span className="text-muted-foreground/60">Without ceiling</span>;
   const ratio = row.outstanding / row.creditLimit;
   const tone = creditTone(ratio);
   return (
@@ -121,6 +121,6 @@ export function CreditUse({ row, className }: { row: Pick<ReceivableRow, "credit
 
 export const RISK: Record<ReceivableRow["risk"], { label: string; tone: Tone; rank: number }> = {
   ok: { label: "OK", tone: "success", rank: 0 },
-  watch: { label: "À surveiller", tone: "warning", rank: 1 },
-  high: { label: "Élevé", tone: "destructive", rank: 2 },
+  watch: { label: "To be monitored", tone: "warning", rank: 1 },
+  high: { label: "High", tone: "destructive", rank: 2 },
 };

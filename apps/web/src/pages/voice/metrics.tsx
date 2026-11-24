@@ -7,12 +7,12 @@ import type { VoiceTurn } from "@/features/assistant/useVoiceSession";
 
 type Key = keyof TurnTimings | "perceivedMs";
 const METRICS: { key: Key; label: string; title: string }[] = [
-  { key: "sttMs", label: "STT", title: "Transcription de la parole de l'appelant" },
-  { key: "llmFirstTokenMs", label: "LLM 1er", title: "Premier token du modèle" },
-  { key: "llmTotalMs", label: "LLM", title: "Modèle, outils compris" },
-  { key: "ttsFirstByteMs", label: "TTS 1er", title: "Premier octet audio de la synthèse" },
-  { key: "totalMs", label: "Total", title: "Fin de parole de l'appelant → premier octet audio de l'agent (serveur)" },
-  { key: "perceivedMs", label: "Perçu", title: "Relâchement de la touche → l'agent parle dans le navigateur" },
+  { key: "sttMs", label: "STT", title: "Transcription of the appellant's speech" },
+  { key: "llmFirstTokenMs", label: "LLM 1er", title: "First token of the model" },
+  { key: "llmTotalMs", label: "LLM", title: "Model, including tools" },
+  { key: "ttsFirstByteMs", label: "TTS 1er", title: "First audio byte of the synthesis" },
+  { key: "totalMs", label: "Total", title: "Caller's end → first audio byte of the agent (server)" },
+  { key: "perceivedMs", label: "Perceived", title: "Release of the key → the agent speaks in the browser" },
 ];
 
 const value = (t: VoiceTurn, k: Key): number | undefined => (k === "perceivedMs" ? t.perceivedMs : t.timings?.[k]);
@@ -23,7 +23,7 @@ function tone(k: Key, ms: number) {
   return ms < 1500 ? "text-success" : ms < 3000 ? "text-warning" : "text-destructive";
 }
 
-export const fmtMs = (ms: number) => (ms < 1000 ? `${Math.round(ms)} ms` : `${(ms / 1000).toLocaleString("fr-FR", { minimumFractionDigits: 1, maximumFractionDigits: 1 })} s`);
+export const fmtMs = (ms: number) => (ms < 1000 ? `${Math.round(ms)} ms` : `${(ms / 1000).toLocaleString("en-GB", { minimumFractionDigits: 1, maximumFractionDigits: 1 })} s`);
 
 export function Chip({ label, ms, k, title, className }: { label: string; ms?: number; k: Key; title?: string; className?: string }) {
   return (
@@ -57,9 +57,9 @@ export function MetricsBar({ turns }: { turns: VoiceTurn[] }) {
     <div className="flex min-h-10 shrink-0 flex-wrap items-center gap-x-3 gap-y-1 border-b border-border px-5 py-1.5">
       <span className={cn(SECTION_LABEL, "flex items-center gap-1.5")}>
         <Gauge size={13} strokeWidth={1.75} />
-        Latence moyenne
+        Mean latency
       </span>
-      <span className="num text-[11.5px] text-muted-foreground">{measured.length ? `${measured.length} tour${measured.length > 1 ? "s" : ""}` : "aucun tour mesuré"}</span>
+      <span className="num text-[11.5px] text-muted-foreground">{measured.length ? `${measured.length} tour${measured.length > 1 ? "s" : ""}` : "no measured turn"}</span>
       <div className="flex min-w-0 flex-wrap items-center gap-1">
         {METRICS.map((m) => <Chip key={m.key} k={m.key} label={m.label} ms={avg(m.key)} title={m.title} />)}
       </div>

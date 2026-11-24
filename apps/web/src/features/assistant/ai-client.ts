@@ -18,9 +18,9 @@ export async function fetchAiHealth(signal?: AbortSignal): Promise<AiHealth> {
     res = await fetch(`${AI_BASE}/health`, { signal });
   } catch (e) {
     if ((e as Error).name === "AbortError") throw e;
-    throw new AiUnavailableError("Service IA injoignable");
+    throw new AiUnavailableError("Service IA unreachable");
   }
-  if (!res.ok) throw new AiUnavailableError(`Service IA injoignable (${res.status})`);
+  if (!res.ok) throw new AiUnavailableError(`Service IA unreachable (${res.status})`);
   return (await res.json()) as AiHealth;
 }
 
@@ -46,10 +46,10 @@ export async function streamChat(req: ChatRequest, onEvent: (e: ChatStreamEvent)
     });
   } catch (e) {
     if ((e as Error).name === "AbortError") throw e;
-    throw new AiUnavailableError("Service IA injoignable (localhost:4100)");
+    throw new AiUnavailableError("Service IA unreachable (localhost:4100)");
   }
   if (!res.ok || !res.body) {
-    let msg = `Service IA : erreur ${res.status}`;
+    let msg = `Service IA : error ${res.status}`;
     try {
       const j = await res.json();
       if (j?.error?.message) msg = j.error.message;

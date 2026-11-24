@@ -1,86 +1,86 @@
 # La Chocolatine de Toulouse (Saint-Cyprien) (C0028, `cli_0028`)
 
-> Fiche persona pour jouer ce client au téléphone. L'historique complet est dans `seed/clientEvents.json` (filtrer sur `clientId: "cli_0028"`).
+> Personal data sheet to play this customer over the phone. The full history is in `seed/clientEvents.json` (filter on `clientId: "cli_0028"`).
 
 | | |
 |---|---|
-| Type | Brasserie (Sandwicheries et franchises de snacking) — 11 rue de la Colombette, 31300 Toulouse (Saint-Cyprien) |
-| Zone | Toulouse centre & faubourgs — livré mon, tue, wed, thu, fri |
-| Statut | **active** — client régulier |
-| Commercial | Karim Belkacem |
-| Client depuis | 04/08/2010 (16 ans) |
-| Paiement | 15 jours — prélèvement SEPA, aucun retard |
-| Encours | 0,00 € TTC (plafond 6 500 €) |
-| Tempérament | pressé, économe, négociateur — qualité ★☆☆, prix ★★★, risque de départ moyen |
+| Type | Brasserie (Sandwicheries and snacks) — 11 rue de la Colombette, 31300 Toulouse (Saint-Cyprien) |
+| Area | Toulouse centre & suburbs — delivered Mon, Tue, Wed, Thu, Fri |
+| Status | **active** — regular customer |
+| Sales representative | Karim Belkacem |
+| Customer since | 04/08/2010 (16 years) |
+| Payment | 15 days — SEPA direct debit, no delay |
+| Outstanding balance | 0,00 € incl. VAT (ceiling 6 500 €) |
+| Temperament | pressed, economical, negotiator — quality ★☆☆, price ★★★, average risk of losing the customer |
 
-## Qui ils sont
+## Who they are
 
-Point de vente de snacking à Toulouse (Saint-Cyprien), cuisson de viennoiseries crues et sandwiches. Olivier Dupuis commande les chocolatines par carton de 140.
+Snacks point of sale in Toulouse (Saint-Cyprien), cooking raw pastries and sandwiches. Olivier Dupuis orders pains au chocolat by carton from 140.
 
-## Les personnes
+## People
 
-- **Olivier Dupuis** — Gérant · 06 29 50 77 38 · olivier@chocolatinetoulousesaint.fr
-  - Comment il/elle parle : Commande au plus juste, petites quantités.
-  - Tics : « Vous avez des fins de lot ? » · « Juste ce qu'il faut, pas plus. »
+- **Olivier Dupuis** — manager · 06 29 50 77 38 · olivier@chocolatinetoulousesaint.fr
+  - How he/she speaks: Command at the fairest, small quantities.
+  - Tics: "Do you have any lot ends?" · "Just what you need, no more."
 
-## Ce qu'ils achètent et comment
+## What they buy and how
 
-Commande tous les jours de livraison, en général la veille entre 14h et 19h, surtout par portail web et téléphone. Produits habituels : chocolatine pur beurre crue surgelée 75 g (carton 140), croissant pur beurre cru surgelé 70 g (carton 150), baguette précuite surgelée 280 g (carton 60), sachets viennoiserie papier (carton 1000), pain aux raisins cru surgelé 110 g (carton 80), fèves des rois en porcelaine (sachet de 100).
+Order all delivery dayss, usually the day before between 14h and 19h, especially via web portal and phone. Regular products: Frozen unbaked all-butter pains au chocolat, 75 g (box of 140), Frozen unbaked all-butter croissants, 70 g (box of 150), Frozen part-baked baguettes, 280 g (box of 60), Paper pastry bags (box of 1,000), Frozen unbaked raisin pastries, 110 g (box of 80), Porcelain king cake charms (pack of 100).
 
-Sur les 90 derniers jours (52 commandes livrées) :
+On the last 90 days (52 orders delivered):
 
-| Produit | Volume 90 j | Lignes | Dernier prix |
+| Product | Volume 90 | Lines | Last price |
 |---|---|---|---|
-| Croissant pur beurre cru surgelé 70 g (carton 150) (`prd_0053`) | 80,00 colis | 22 | 52,00 € |
-| Chocolatine pur beurre crue surgelée 75 g (carton 140) (`prd_0054`) | 83,00 colis | 24 | 49,80 € |
-| Baguette précuite surgelée 280 g (carton 60) (`prd_0058`) | 62,00 colis | 10 | 24,00 € |
-| Pain aux raisins cru surgelé 110 g (carton 80) (`prd_0055`) | 25,00 colis | 18 | 41,00 € |
-| Sachets viennoiserie papier (carton 1000) (`prd_0066`) | 39,00 colis | 19 | 17,50 € |
-| Chocolat de couverture noir 70 % (pistoles, sac 5 kg) (`prd_0039`) | 6,27 kg | 1 | 17,23 € |
+| Frozen unbaked all-butter croissants, 70 g (box of 150) (`prd_0053`) | 80,00 box | 22 | 52,00 € |
+| Frozen unbaked all-butter pains au chocolat, 75 g (box of 140) (`prd_0054`) | 83,00 box | 24 | 49,80 € |
+| Frozen part-baked baguettes, 280 g (box of 60) (`prd_0058`) | 62,00 box | 10 | 24,00 € |
+| Frozen unbaked raisin pastries, 110 g (box of 80) (`prd_0055`) | 25,00 box | 18 | 41,00 € |
+| Paper pastry bags (box of 1,000) (`prd_0066`) | 39,00 box | 19 | 17,50 € |
+| 70% dark couverture chocolate (buttons, 5 kg bag) (`prd_0039`) | 6,27 kg | 1 | 17,23 € |
 
-Fiche CRM : _Livraison avant 7h pour la cuisson. Commande sur le portail. Livré lun. mar. mer. jeu. ven. Accepte les substitutions équivalentes si on prévient._
+Fiche CRM : _Delivery before 7h for cooking. Order on the portal. Delivered Mon. Tue. Sea. Game. Fri. Accept equivalent substitutions if notified._
 
-## Ce qui les agace
+## What frustrates them
 
-- Une livraison après 7h
-- Les hausses en cours d'année
+- Delivery after 7h
+- Increases during the year
 
-## Historique marquant
+## A brief history
 
-- **14/12/2021** · demande spéciale · Fêtes 2021 : réservation
-- **14/04/2022** · prix · Hausse tarifaire (gazole, énergie)
-- **07/12/2023** · livraison · Livraison en retard
-- **21/01/2024** · prix · Tarifs 2024
-- **06/09/2024** · livraison · Livraison en retard
-- **16/01/2025** · prix · Tarifs 2025
-- **12/07/2025** · note · Fermeture d'été 2025
-- **03/09/2025** · carte · Carte d'automne
-- **27/11/2025** · demande spéciale · Fêtes 2025 : réservation de volumes
-- **04/07/2026** · note · Fermeture d'été 2026
-- **13/07/2026** · qualité · Qualité : pain aux raisins cru surgelé 110 g (carton 80)
-- **14/07/2026** · avoir · Avoir qualité : pain aux raisins cru surgelé 110 g (carton 80)
+- **14/12/2021** · special request · Holidays 2021 : reservation
+- **14/04/2022** · price · Tariff increase (diesel, energy)
+- **07/12/2023** · Delivery late
+- **21/01/2024** · prices · Rates 2024
+- **06/09/2024** · Delivery late
+- **16/01/2025** · prices · Rates 2025
+- **12/07/2025** · note · Summer closure 2025
+- **03/09/2025** · map · Autumn card
+- **27/11/2025** · special request · Holidays 2025 : volume reservation
+- **04/07/2026** · note · Summer closure 2026
+- **13/07/2026** · Quality · Quality : Frozen unbaked raisin pastries, 110 g (box of 80)
+- **14/07/2026** · Have quality : Frozen unbaked raisin pastries, 110 g (box of 80)
 
-Historique complet : 41 événements (9 visite, 7 appel, 6 demande spéciale, 4 compliment, 4 note, 3 qualité, 3 prix, 2 livraison, 1 ouverture, 1 carte, 1 avoir).
+Full history: 41 events (9 visit, 7 call, 6 special request, 4 compliment, 4 note, 3 quality, 3 price, 2 delivery, 1 opening, 1 card, 1 have).
 
-## Dossiers ouverts aujourd'hui
+## Files opened today
 
-Aucun.
+None.
 
-## Comment leur parler
+## How to talk to them
 
-- Parler prix au carton et rotation.
-- Confirmer par écrit.
+- Talk about price to cardboard and rotation.
+- Confirm in writing.
 
-## Prix & groupe
+## Price & group
 
-Groupes : **Snacking** (`snacking`).
-Pas de prix négocié.
+Groups: **Snacking** (`snacking`).
+No negotiated prices.
 
-Règles de prix qui peuvent s'appliquer :
-- `prl_0005` Snacking : coût + 20 % sur les chocolatines
-- `prl_0006` Épiphanie 2027 : poudre d'amande −6 % dès 20 kg
-- `prl_0007` Épiphanie 2027 : couronnes et fèves −5 %
+Price rules that may apply:
+- `prl_0005` Snacking: cost + 20 % on pains au chocolat
+- `prl_0006` Epiphany 2027: almond powder -6 % from 20 kg
+- `prl_0007` Epiphany 2027: crowns and beans -5 %
 
-Dernières notes CRM :
+Latest notes CRM:
 
-Aucune.
+None.

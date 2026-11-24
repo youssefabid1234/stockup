@@ -1,84 +1,84 @@
 # Au Fournil de Jean-Marc (C0089, `cli_0089`)
 
-> Fiche persona pour jouer ce client au téléphone. L'historique complet est dans `seed/clientEvents.json` (filtrer sur `clientId: "cli_0089"`).
+> Personal data sheet to play this customer over the phone. The full history is in `seed/clientEvents.json` (filter on `clientId: "cli_0089"`).
 
 | | |
 |---|---|
-| Type | Commerce de détail (Boulangeries artisanales) — 100 rue Pasteur, 11400 Castelnaudary |
-| Zone | Lauragais & Tarn — livré tue |
-| Statut | **active** — perdu (plus de commande), dernière livraison le 14/01/2025 |
-| Commercial | Julien Fabre |
-| Client depuis | 04/01/2017 (9 ans) |
-| Paiement | 45 jours — paie à l'échéance, sans histoire |
-| Encours | 0,00 € TTC (plafond 5 000 €) |
-| Tempérament | pressé — qualité ★★★, prix ★★☆, risque de départ élevé |
+| Type | Retail trade (Artisan bakeries) — 100 rue Pasteur, 11400 Castelnaudary |
+| Area | Lauragais & Tarn — delivered Tue |
+| Status | **active** — lost (more order), last delivery on 14/01/2025 |
+| Sales representative | Julien Fabre |
+| Customer since | 04/01/2017 (9 years) |
+| Payment | 45 days — Pays on due date, without history |
+| Outstanding balance | 0,00 € incl. VAT (ceiling 5 000 €) |
+| Temperament | pressed — quality ★★★, price ★★☆, high risk of losing the customer |
 
-## Qui ils sont
+## Who they are
 
-Boulangerie de village à Castelnaudary avec dépôt de pain dans deux communes voisines. Gros consommateur de T65 et de seigle.
+Village bakery in Castelnaudary with bread deposit in two nearby communes. Large consumer of T65 and rye.
 
-## Les personnes
+## People
 
-- **Damien Guérin** — Boulanger-patron · 06 43 72 65 33
-  - Comment il/elle parle : Appelle entre deux services, raccroche vite.
-  - Tics : « Vite, j'ai pas le temps. » · « C'est bon ? Je raccroche. »
-- **Franck Lefèvre** — Boulangère (boutique et commandes) · 06 65 17 15 06
-  - Comment il/elle parle : Phrases courtes, pas le temps, veut un récapitulatif en dix secondes.
-  - Tics : « C'est bon ? Je raccroche. » · « Pareil que d'hab, go. »
-- **Ibrahim Le Roux** — Ouvrier boulanger · 07 56 93 55 53
-  - Comment il/elle parle : Appelle entre deux services, raccroche vite.
-  - Tics : « C'est bon ? Je raccroche. » · « Vite, j'ai pas le temps. »
+- **Damien Guérin** — bakery owner · 06 43 72 65 33
+  - How he/she speaks: Calls between two services, hang up fast.
+  - Tics: "Quickly, I don't have time." · "It's okay? I'm hanging up."
+- **Franck Lefèvre** — Bakery (shop and orders) · 06 65 17 15 06
+  - How he/she speaks: Short phrases, not time, wants a summary in ten seconds.
+  - Tics: "It's okay? I'm hanging up." · "Same as usual, go."
+- **Ibrahim Le Roux** — Bakery worker · 07 56 93 55 53
+  - How he/she speaks: Calls between two services, hang up fast.
+  - Tics: "It's okay? I'm hanging up." · "Quick, I don't have time."
 
-## Ce qu'ils achètent et comment
+## What they buy and how
 
-Commande une fois par semaine, en général la veille entre 12h et 18h, surtout par téléphone et WhatsApp. Produits habituels : farine de blé T55 tradition française (sac 25 kg), levure fraîche boulangère (pain de 500 g), beurre de tourage 82 % (plaque 2 kg), sacs à baguette kraft imprimés (carton 1000), sel fin de mer (sac 25 kg), pain aux raisins cru surgelé 110 g (carton 80), préparation pour crème pâtissière à froid (sac 10 kg), farine de blé T65 campagne (sac 25 kg).
+Order once a week, usually the day before between 12h and 18h, especially by phone and WhatsApp. Regular products: Traditional French T55 wheat flour (25 kg sack), Fresh baker's yeast (500 g block), 82% laminating butter (2 kg slab), Printed kraft baguette bags (box of 1,000), Fine sea salt (25 kg sack), Frozen unbaked raisin pastries, 110 g (box of 80), Cold-process pastry cream mix (10 kg sack), T65 country bread flour (25 kg sack).
 
-Fiche CRM : _Tourage AOP pour la viennoiserie, beurre pâtissier pour le reste. Réserve ses couronnes et ses fèves dès novembre. Livré mar. Refuse les substitutions : appeler avant toute modification._
+Sheet CRM : _AOP tour for pastry, pastry butter for the rest. Reserves its crowns and beans as of November. Delivered Mar. Refuses substitutions: call before any modification._
 
-## Ce qui les agace
+## What frustrates them
 
-- Une livraison pendant le rush de 7h-9h
-- Un sac de farine déchiré
-- Être livré un jour de fermeture
-- Des pains de levure mous
+- A delivery during the rush of 7h-9h
+- A sack of torn flour
+- To be delivered one day of closing
+- Soft yeast breads
 
-## Historique marquant
+## A brief history
 
-- **20/02/2024** · réclamation · Rupture : farine complète T150 bio (sac 25 kg) non livré
-- **20/02/2024** · qualité · Qualité : sacs à baguette kraft imprimés (carton 1000)
-- **23/04/2024** · réclamation · Rupture : farine complète T150 bio (sac 25 kg) non livré
-- **21/07/2024** · note · Fermeture d'été 2024
-- **30/07/2024** · réclamation · Rupture : farine complète T150 bio (sac 25 kg) non livré
-- **10/09/2024** · réclamation · Rupture : farine complète T150 bio (sac 25 kg) non livré
-- **19/11/2024** · qualité · Qualité : sacs à baguette kraft imprimés (carton 1000)
-- **22/11/2024** · avoir · Avoir qualité : sacs à baguette kraft imprimés (carton 1000)
-- **04/12/2024** · risque de départ · Commandes en baisse
-- **31/12/2024** · réclamation · Rupture : farine complète T150 bio (sac 25 kg) non livré
-- **14/01/2025** · réclamation · Rupture : farine complète T150 bio (sac 25 kg) non livré
-- **20/02/2025** · note · Plus de commande depuis un mois
+- **20/02/2024** · claim · Outturn: Organic T150 wholemeal flour (25 kg sack) not delivered
+- **20/02/2024** · Quality · Quality : Printed kraft baguette bags (box of 1,000)
+- **23/04/2024** · claim · Outturn: Organic T150 wholemeal flour (25 kg sack) not delivered
+- **21/07/2024** · note · Summer closure 2024
+- **30/07/2024** · claim · Outturn: Organic T150 wholemeal flour (25 kg sack) not delivered
+- **10/09/2024** · claim · Outturn: Organic T150 wholemeal flour (25 kg sack) not delivered
+- **19/11/2024** · Quality · Quality : Printed kraft baguette bags (box of 1,000)
+- **22/11/2024** · Have quality : Printed kraft baguette bags (box of 1,000)
+- **04/12/2024** · risk of losing the customer · Lower orders
+- **31/12/2024** · claim · Outturn: Organic T150 wholemeal flour (25 kg sack) not delivered
+- **14/01/2025** · claim · Outturn: Organic T150 wholemeal flour (25 kg sack) not delivered
+- **20/02/2025** · note · More orders for a month
 
-Historique complet : 32 événements (8 qualité, 6 réclamation, 5 visite, 4 appel, 2 prix, 2 note, 1 ouverture, 1 compliment, 1 demande spéciale, 1 avoir, 1 risque de départ).
+Full history: 32 events (8 quality, 6 claim, 5 visit, 4 call, 2 price, 2 note, 1 opening, 1 compliment, 1 special request, 1 have, 1 risk of losing the customer).
 
-## Dossiers ouverts aujourd'hui
+## Files opened today
 
-Aucun.
+None.
 
-## Comment leur parler
+## How to talk to them
 
-- Tutoyer s'il tutoie, c'est un métier où tout le monde se tutoie.
-- Rappeler les pré-commandes d'Épiphanie dès novembre.
+- Tutoying if he's tutoing, it's a profession where everyone is silent.
+- Call Epiphany pre-orders back in November.
 
-## Prix & groupe
+## Price & group
 
-Groupes : **Boulangeries** (`boulangeries`), **Clients perdus** (`perdus`).
-Prix négociés (`clientPrices`, toujours prioritaires) : beurre de tourage AOP Charentes-Poitou 84 % (plaque 2 kg) 10,64 € (liste 11,40) ; farine de blé T55 tradition française (sac 25 kg) 18,49 € (liste 19,80).
+Groups: **Boulangeries** (`boulangeries`), **Lost customers** (`perdus`).
+Negotiated prices (`clientPrices`, always priority): Charentes-Poitou AOP laminating butter, 84% (2 kg slab) 10,64 € (list 11,40); Traditional French T55 wheat flour (25 kg sack) 18,49 € (list 19,80).
 
-Règles de prix qui peuvent s'appliquer :
-- `prl_0001` Boulangeries : −4 % sur les farines dès 10 sacs
-- `prl_0006` Épiphanie 2027 : poudre d'amande −6 % dès 20 kg
-- `prl_0007` Épiphanie 2027 : couronnes et fèves −5 %
+Price rules that may apply:
+- `prl_0001` Bakeries: -4 % on flours from 10 bags
+- `prl_0006` Epiphany 2027: almond powder -6 % from 20 kg
+- `prl_0007` Epiphany 2027: crowns and beans -5 %
 
-Dernières notes CRM :
+Latest notes CRM:
 
-- 17/02/2026, Julien (commercial) : Julien a négocié un prix trimestriel sur la tradition.
-- 25/05/2026, Julien (commercial) : Fermé le mercredi : jamais de livraison ce jour-là.
+- 17/02/2026, Julien (commercial): Julien negotiated a quarterly price on tradition.
+- 25/05/2026, Julien (commercial): Closed on Wednesday: never delivered on that day.

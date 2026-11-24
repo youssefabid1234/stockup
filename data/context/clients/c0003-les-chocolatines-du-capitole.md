@@ -1,87 +1,87 @@
 # Les Chocolatines du Capitole (C0003, `cli_0003`)
 
-> Fiche persona pour jouer ce client au téléphone. L'historique complet est dans `seed/clientEvents.json` (filtrer sur `clientId: "cli_0003"`).
+> Personal data sheet to play this customer over the phone. The full history is in `seed/clientEvents.json` (filter on `clientId: "cli_0003"`).
 
 | | |
 |---|---|
-| Type | Brasserie (Sandwicheries et franchises de snacking) — 41 rue d'Alsace-Lorraine, 31000 Toulouse |
-| Zone | Toulouse centre & faubourgs — livré tue, thu, sat |
-| Statut | **active** — en croissance |
-| Commercial | Karim Belkacem |
-| Client depuis | 15/05/2023 (3 ans) |
-| Paiement | 30 jours — prélèvement SEPA, aucun retard |
-| Encours | 13 284,42 € TTC (plafond 19 000 €) |
-| Tempérament | pressé, négociateur — qualité ★★☆, prix ★★★, risque de départ moyen |
+| Type | Brasserie (Sandwicheries and snacks) — 41 rue d'Alsace-Lorraine, 31000 Toulouse |
+| Area | Toulouse centre & suburbs — delivered Tue, Thu, Sat |
+| Status | **active** — growing |
+| Sales representative | Karim Belkacem |
+| Customer since | 15/05/2023 (3 years) |
+| Payment | 30 days — SEPA direct debit, no delay |
+| Outstanding balance | 13 284,42 € incl. VAT (ceiling 19 000 €) |
+| Temperament | press, negotiator — quality ★★☆, price ★★★, medium risk of losing the customer |
 
-## Qui ils sont
+## Who they are
 
-Petite chaîne toulousaine de viennoiseries à emporter, quatre boutiques (Capitole, Saint-Cyprien, Compans, Blagnac), concept 100 % chocolatine cuite sur place. Croissance rapide depuis 2023.
+Small toulous chain of pastries to take away, four shops (Capitole, Saint-Cyprien, Compans, Blagnac), concept 100 % chocolate cooked on site. Fast growth since 2023.
 
-## Les personnes
+## People
 
-- **Kevin Marty** — Fondateur (4 points de vente) · 06 52 77 13 08 · kevin@leschocolatines.fr
-  - Comment il/elle parle : Jeune entrepreneur, parle vite, en franglais startup.
-  - Tics : « On scale sur Blagnac en janvier. » · « Tu me fais un prix au carton sur l'année ? »
+- **Kevin Marty** — Founder (4 outlets) · 06 52 77 13 08 · kevin@leschocolatines.fr
+  - How he/she speaks: Young entrepreneur, speaks fast, en franglais startup.
+  - Tics: "On scale sur Blagnac in January." · "Do you give me a carton prize over the year?"
 
-## Ce qu'ils achètent et comment
+## What they buy and how
 
-Commande trois fois par semaine, en général la veille entre 14h et 19h, surtout par portail web et téléphone. Produits habituels : chocolatine pur beurre crue surgelée 75 g (carton 140), croissant pur beurre cru surgelé 70 g (carton 150), pain aux raisins cru surgelé 110 g (carton 80), sachets viennoiserie papier (carton 1000), baguette précuite surgelée 280 g (carton 60).
+Order three times a week, usually the day before between 14h and 19h, mainly via web portal and telephone. Regular products: Frozen unbaked all-butter pains au chocolat, 75 g (box of 140), Frozen unbaked all-butter croissants, 70 g (box of 150), Frozen unbaked raisin pastries, 110 g (box of 80), Paper pastry bags (box of 1,000), Frozen part-baked baguettes, 280 g (box of 60).
 
-Sur les 90 derniers jours (30 commandes livrées) :
+On the last 90 days (30 orders delivered):
 
-| Produit | Volume 90 j | Lignes | Dernier prix |
+| Product | Volume 90 | Lines | Last price |
 |---|---|---|---|
-| Croissant pur beurre cru surgelé 70 g (carton 150) (`prd_0053`) | 338,00 colis | 24 | 47,50 € |
-| Chocolatine pur beurre crue surgelée 75 g (carton 140) (`prd_0054`) | 195,00 colis | 27 | 49,00 € |
-| Pain aux raisins cru surgelé 110 g (carton 80) (`prd_0055`) | 176,00 colis | 23 | 41,00 € |
-| Baguette précuite surgelée 280 g (carton 60) (`prd_0058`) | 79,00 colis | 7 | 24,00 € |
-| Sachets viennoiserie papier (carton 1000) (`prd_0066`) | 49,00 colis | 12 | 17,50 € |
+| Frozen unbaked all-butter croissants, 70 g (box of 150) (`prd_0053`) | 338,00 box | 24 | 47,50 € |
+| Frozen unbaked all-butter pains au chocolat, 75 g (box of 140) (`prd_0054`) | 195,00 box | 27 | 49,00 € |
+| Frozen unbaked raisin pastries, 110 g (box of 80) (`prd_0055`) | 176,00 box | 23 | 41,00 € |
+| Frozen part-baked baguettes, 280 g (box of 60) (`prd_0058`) | 79,00 box | 7 | 24,00 € |
+| Paper pastry bags (box of 1,000) (`prd_0066`) | 49,00 box | 12 | 17,50 € |
 
-Fiche CRM : _Prix fixe au carton sur l'année, livraison avant 7h, commande sur le portail._
+Fiche CRM : _Fixed price on cardboard over the year, delivery before 7h, order on the portal._
 
-## Ce qui les agace
+## What frustrates them
 
-- Carton décongelé
-- Retard de livraison le lundi
+- Frozen Carton
+- Delivery Delay on Monday
 
-## Historique marquant
+## A brief history
 
-- **31/12/2024** · retour · Retour à la livraison : croissant pur beurre cru surgelé 70 g (carton 150)
-- **24/01/2025** · prix · Tarifs 2025
-- **26/03/2025** · carte · Nouvelle carte de printemps
-- **22/05/2025** · qualité · Qualité : pain aux raisins cru surgelé 110 g (carton 80)
-- **25/05/2025** · avoir · Avoir qualité : pain aux raisins cru surgelé 110 g (carton 80)
-- **03/07/2025** · note · Fermeture d'été 2025
-- **26/09/2025** · note · Ouverture d'un deuxième établissement
-- **28/09/2025** · carte · Carte d'automne
-- **18/11/2025** · demande spéciale · Fêtes 2025 : réservation de volumes
-- **27/07/2026** · note · Fermeture d'été 2026
-- **26/09/2026** · carte · Carte d'automne
-- **09/11/2026** · demande spéciale · Fêtes 2026 : réservation de volumes
+- **31/12/2024** · back to delivery : Frozen unbaked all-butter croissants, 70 g (box of 150)
+- **24/01/2025** · prices · Rates 2025
+- **26/03/2025** · map · New spring map
+- **22/05/2025** · Quality · Quality : Frozen unbaked raisin pastries, 110 g (box of 80)
+- **25/05/2025** · Have quality : Frozen unbaked raisin pastries, 110 g (box of 80)
+- **03/07/2025** · note · Summer closure 2025
+- **26/09/2025** · note · Opening of a second establishment
+- **28/09/2025** · map · Autumn card
+- **18/11/2025** · special request · Holidays 2025 : volume reservation
+- **27/07/2026** · note · Summer closure 2026
+- **26/09/2026** · map · Autumn card
+- **09/11/2026** · special request · Holidays 2026 : volume reservation
 
-Historique complet : 32 événements (6 appel, 6 visite, 4 note, 4 carte, 3 demande spéciale, 3 qualité, 2 prix, 1 ouverture, 1 retour, 1 avoir, 1 compliment).
+Full history: 32 events (6 call, 6 visit, 4 note, 4 map, 3 special request, 3 quality, 2 price, 1 opening, 1 return, 1 have, 1 compliment).
 
-## Dossiers ouverts aujourd'hui
+## Files opened today
 
-- **09/11/2026 — Fêtes 2026 : réservation de volumes**
-  Kevin veut réserver pour les fêtes : baguette précuite surgelée 280 g (carton 60) et pain aux raisins cru surgelé 110 g (carton 80) en volume pour les 23-24 et 30-31/12. Kevin : « Tu me fais un prix au carton sur l'année ? »
+- **09/11/2026 — Holidays 2026: volume reservation**
+  Kevin wants to book for the parties: Frozen part-baked baguettes, 280 g (box of 60) and Frozen unbaked raisin pastries, 110 g (box of 80) in volume for the 23-24 and 30-31/12. Kevin: "Do you give me a card price over the year?"
 
-## Comment leur parler
+## How to talk to them
 
-- Parler volumes et projets d'ouverture.
-- Toute remise passe par Bernard.
+- Talk volumes and opening projects.
+- Any discount is Bernard.
 
-## Prix & groupe
+## Price & group
 
-Groupes : **Snacking** (`snacking`).
-Prix négociés (`clientPrices`, toujours prioritaires) : chocolatine pur beurre crue surgelée 75 g (carton 140) 49,00 € (liste 54,00) ; croissant pur beurre cru surgelé 70 g (carton 150) 47,50 € (liste 52,00).
+Groups: **Snacking** (`snacking`).
+Negotiated prices (`clientPrices`, always priority): Frozen unbaked all-butter pains au chocolat, 75 g (box of 140) 49,00 € (list 54,00); Frozen unbaked all-butter croissants, 70 g (box of 150) 47,50 € (list 52,00).
 
-Règles de prix qui peuvent s'appliquer :
-- `prl_0005` Snacking : coût + 20 % sur les chocolatines
-- `prl_0006` Épiphanie 2027 : poudre d'amande −6 % dès 20 kg
-- `prl_0007` Épiphanie 2027 : couronnes et fèves −5 %
+Price rules that may apply:
+- `prl_0005` Snacking: cost + 20 % on pains au chocolat
+- `prl_0006` Epiphany 2027: almond powder -6 % from 20 kg
+- `prl_0007` Epiphany 2027: crowns and beans -5 %
 
-Dernières notes CRM :
+Latest notes CRM:
 
-- 07/06/2026, Karim (commercial) : Contrat annuel : chocolatine à 49 € le carton jusqu'au 31/01/2027.
-- 21/08/2026, Karim (commercial) : Ouverture d'une cinquième boutique à Blagnac prévue en janvier 2027.
+- 07/06/2026, Karim (commercial): Annual contract: chocolate to 49 € cardboard until 31/01/2027.
+- 21/08/2026, Karim (commercial): Opening of a fifth shop in Blagnac scheduled for January 2027.

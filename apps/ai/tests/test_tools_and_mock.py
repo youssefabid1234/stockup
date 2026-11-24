@@ -13,15 +13,15 @@ def test_schema_of_a_new_tool():
     @tool(name="demo_tool")
     async def demo(ctx: ToolContext, client_id: str = Field(description="ex. cli_1"), limit: float | None = None) -> dict:
         """
-        Première ligne.
-        Deuxième ligne.
+        First line.
+        Line two.
         """
         return {"client_id": client_id, "limit": limit}
 
     try:
         assert demo.info.to_wire() == {
             "name": "demo_tool",
-            "description": "Première ligne. Deuxième ligne.",
+            "description": "First line. Line two.",
             "parameters": {
                 "type": "object",
                 "properties": {"clientId": {"type": "string", "description": "ex. cli_1"}, "limit": {"type": "number"}},
@@ -41,9 +41,9 @@ async def test_tool_validates_arguments():
     try:
         assert await demo_add.run({"qty": 2}, ctx=None) == 3
         try:
-            await demo_add.run({"qty": "beaucoup"}, ctx=None)
+            await demo_add.run({"qty": "many"}, ctx=None)
         except ValueError as e:
-            assert str(e).startswith("Arguments invalides : qty:")
+            assert str(e).startswith("Invalid arguments: qty:")
         else:
             raise AssertionError("expected a validation error")
     finally:
@@ -56,20 +56,20 @@ def test_nested_model_is_inlined():
     assert schema["properties"]["lines"]["items"]["required"] == ["productId", "qty"]
 
 
-def test_french_formatting():
-    assert fr_num(45.52) == "45,52"
+def test_english_formatting():
+    assert fr_num(45.52) == "45.52"
     assert fr_num(4) == "4"
-    assert fr_num(1234.5) == "1 234,5"
+    assert fr_num(1234.5) == "1,234.5"
     assert fr_num(2.005) == "2"  # 2.005 is 2.00499… in binary, like JavaScript
-    assert fr_day("2026-11-25") == "le mercredi 25 novembre"
+    assert fr_day("2026-11-25") == "Wednesday 25 November"
 
 
 def test_mock_understanding():
-    assert extract_query("Bonjour, il vous reste du bar ?") == "bar"
-    assert detect_intent("je voudrais 4 kg de bar de ligne") == "line"
-    assert parse_line("je voudrais 4 kg de bar de ligne pour demain").qty == 4
-    assert parse_line("deux douzaines d'huîtres").product == "huîtres"
-    assert command_client("crée une pré-commande pour Lemoine, 4 kilos de bar pour jeudi") == "lemoine"
-    assert command_date("pour jeudi", "… (2026-11-24) …") == "2026-11-26"
-    assert command_date("pour mardi", "… (2026-11-24) …") == "2026-12-01"  # never today
-    assert date.fromisoformat(command_date("demain", "(2026-11-24)")) == date(2026, 11, 25)
+    assert extract_query("Hello, do you have any sea bass?") == "sea bass"
+    assert detect_intent("I'd like 4 kg of sea bass") == "line"
+    assert parse_line("I'd like 4 kg of sea bass for tomorrow.").qty == 4
+    assert parse_line("two dozen oysters").product == "oysters"
+    assert command_client("creates a pre-order for Lemoine, 4 kilos of bar for Thursday") == "lemoine"
+    assert command_date("for Thursday", "… (2026-11-24) …") == "2026-11-26"
+    assert command_date("for Tuesday", "… (2026-11-24) …") == "2026-12-01"  # never today
+    assert date.fromisoformat(command_date("tomorrow", "(2026-11-24)")) == date(2026, 11, 25)

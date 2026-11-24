@@ -1,93 +1,93 @@
 # Boulangerie Moreau (C0045, `cli_0045`)
 
-> Fiche persona pour jouer ce client au téléphone. L'historique complet est dans `seed/clientEvents.json` (filtrer sur `clientId: "cli_0045"`).
+> Personal data sheet to play this customer over the phone. The full history is in `seed/clientEvents.json` (filter on `clientId: "cli_0045"`).
 
 | | |
 |---|---|
-| Type | Commerce de détail (Boulangeries artisanales) — 16 rue Gambetta, 31240 L'Union |
-| Zone | Fondeyre, L'Union & Nord toulousain — livré wed, sat |
-| Statut | **active** — client régulier |
-| Commercial | Julien Fabre |
-| Client depuis | 23/02/2013 (13 ans) |
-| Paiement | 30 jours — prélèvement SEPA, aucun retard |
-| Encours | 11 474,57 € TTC (plafond 16 000 €) |
-| Tempérament | loyal, bavard, fidèle — qualité ★★☆, prix ★☆☆, risque de départ faible |
+| Type | Retail trade (Artisan bakeries) — 16 rue Gambetta, 31240 L'Union |
+| Area | Fondeyre, L'Union & Nord Toulousein — delivered Wed, Sat |
+| Status | **active** — regular customer |
+| Sales representative | Julien Fabre |
+| Customer since | 23/02/2013 (13 years) |
+| Payment | 30 days — SEPA direct debit, no delay |
+| Outstanding balance | 11 474,57 € incl. VAT (ceiling 16 000 €) |
+| Temperament | loyal, talkative, faithful — quality ★★☆, price ★☆☆, risk of losing the customer low |
 
-## Qui ils sont
+## Who they are
 
-Boulangerie artisanale de L'Union, deux fournées le matin, une à midi. Youssef Cassagne fait sa tradition sur poolish et tient à son tourage AOP pour les chocolatines.
+The Union's artisan bakery, two ovens in the morning, one at noon. Youssef Cassagne makes its tradition on poolish and stands for its AOP laminating butter for the pains au chocolat.
 
-## Les personnes
+## People
 
-- **Youssef Cassagne** — Boulanger-patron · 06 36 58 68 53 · youssef@boulangeriemoreau.fr
-  - Comment il/elle parle : Raconte sa vie, parle des clients, du temps, du foot.
-  - Tics : « Et ta famille, ça va ? » · « Bon, je te raconte pas ma journée. »
+- **Youssef Cassagne** — bakery owner · 06 36 58 68 53 · Youssef@boulangeriemoreau.fr
+  - How he/she speaks: Tells his/her life, talks about customers, time, football.
+  - Tics: "What's up with your family?" · "Well, I'm not telling you about my day."
 
-## Ce qu'ils achètent et comment
+## What they buy and how
 
-Commande deux fois par semaine, en général la veille entre 13h et 17h, surtout par téléphone et WhatsApp. Produits habituels : farine de blé T55 tradition française (sac 25 kg), levure fraîche boulangère (pain de 500 g), beurre de tourage 82 % (plaque 2 kg), bâtons de chocolat boulanger 44 % (carton 1,6 kg, 300 bâtons), sacs à baguette kraft imprimés (carton 1000), sel fin de mer (sac 25 kg), mélange multicéréales graines (sac 25 kg), chocolat de couverture noir 64 % (pistoles, sac 5 kg).
+Order twice a week, usually the day before between 13h and 17h, especially by telephone and WhatsApp. Regular products: Traditional French T55 wheat flour (25 kg sack), Fresh baker's yeast (500 g block), 82% laminating butter (2 kg slab), 44% baker's chocolate sticks (1.6 kg box, 300 sticks), Printed kraft baguette bags (box of 1,000), Fine sea salt (25 kg sack), Multigrain seed mix (25 kg sack), 64% dark couverture chocolate (buttons, 5 kg bag).
 
-Sur les 90 derniers jours (24 commandes livrées) :
+On the last 90 days (24 orders delivered):
 
-| Produit | Volume 90 j | Lignes | Dernier prix |
+| Product | Volume 90 | Lines | Last price |
 |---|---|---|---|
-| Beurre de tourage 82 % (plaque 2 kg) (`prd_0026`) | 726,94 kg | 10 | 9,32 € |
-| Farine de blé T55 tradition française (sac 25 kg) (`prd_0001`) | 336,00 pièce | 15 | 19,00 € |
-| Farine de gruau T45 pâtissière (sac 25 kg) (`prd_0003`) | 220,00 pièce | 17 | 22,44 € |
-| Farine de blé T65 campagne (sac 25 kg) (`prd_0004`) | 152,00 pièce | 10 | 18,23 € |
-| Bâtons de chocolat boulanger 44 % (carton 1,6 kg, 300 bâtons) (`prd_0042`) | 177,00 colis | 13 | 13,82 € |
-| Chocolat de couverture noir 64 % (pistoles, sac 5 kg) (`prd_0038`) | 135,88 kg | 9 | 15,68 € |
-| Chocolat de couverture lait 38 % (pistoles, sac 5 kg) (`prd_0040`) | 126,10 kg | 9 | 15,22 € |
-| Sacs à baguette kraft imprimés (carton 1000) (`prd_0065`) | 74,00 colis | 15 | 22,00 € |
+| 82% laminating butter (2 kg slab) (`prd_0026`) | 726,94 kg | 10 | 9,32 € |
+| Traditional French T55 wheat flour (25 kg sack) (`prd_0001`) | 336,00 piece | 15 | 19,00 € |
+| T45 strong pastry flour (25 kg sack) (`prd_0003`) | 220,00 piece | 17 | 22,44 € |
+| T65 country bread flour (25 kg sack) (`prd_0004`) | 152,00 piece | 10 | 18,23 € |
+| 44% baker's chocolate sticks (1.6 kg box, 300 sticks) (`prd_0042`) | 177,00 box | 13 | 13,82 € |
+| 64% dark couverture chocolate (buttons, 5 kg bag) (`prd_0038`) | 135,88 kg | 9 | 15,68 € |
+| 38% milk couverture chocolate (buttons, 5 kg bag) (`prd_0040`) | 126,10 kg | 9 | 15,22 € |
+| Printed kraft baguette bags (box of 1,000) (`prd_0065`) | 74,00 box | 15 | 22,00 € |
 
-Fiche CRM : _Farine de tradition du Lauragais uniquement. Paye en LCR à 30 jours fin de mois. Livré mer. sam. Refuse les substitutions : appeler avant toute modification._
+Form CRM : _Farine Lauragais only. Pay in LCR to 30 end of month days. Delivered sea. sam. Refuses substitutions: call before any modification._
 
-## Ce qui les agace
+## What frustrates them
 
-- Une livraison pendant le rush de 7h-9h
-- Les hausses du beurre annoncées le jour même
-- Être livré un jour de fermeture
-- Un sac de farine déchiré
+- A delivery during the rush of 7h-9h
+- The increases in butter announced the same day
+- To be delivered one day of closing
+- A sack of torn flour
 
-## Historique marquant
+## A brief history
 
-- **30/05/2024** · avoir · Avoir qualité : crème liquide UHT 35 % (brique 1 L)
-- **12/06/2024** · qualité · Qualité : beurre de tourage 82 % (plaque 2 kg)
-- **16/06/2024** · avoir · Avoir qualité : beurre de tourage 82 % (plaque 2 kg)
-- **11/07/2024** · note · Fermeture d'été 2024
-- **12/12/2024** · demande spéciale · Fêtes 2024 : réservation de volumes
-- **06/01/2025** · prix · Tarifs 2025
-- **05/04/2025** · qualité · Qualité : sacs à baguette kraft imprimés (carton 1000)
-- **06/04/2025** · avoir · Avoir qualité : sacs à baguette kraft imprimés (carton 1000)
-- **18/07/2025** · note · Fermeture d'été 2025
-- **19/12/2025** · demande spéciale · Fêtes 2025 : réservation de volumes
-- **27/05/2026** · qualité · Qualité : mélange multicéréales graines (sac 25 kg)
-- **07/11/2026** · demande spéciale · Fêtes 2026 : réservation de volumes
+- **30/05/2024** · Have quality : 35% UHT whipping cream (1 L carton)
+- **12/06/2024** · Quality · Quality : 82% laminating butter (2 kg slab)
+- **16/06/2024** · Have quality : 82% laminating butter (2 kg slab)
+- **11/07/2024** · note · Summer closure 2024
+- **12/12/2024** · special request · Holidays 2024 : volume reservation
+- **06/01/2025** · prices · Rates 2025
+- **05/04/2025** · Quality · Quality : Printed kraft baguette bags (box of 1,000)
+- **06/04/2025** · Have quality : Printed kraft baguette bags (box of 1,000)
+- **18/07/2025** · note · Summer closure 2025
+- **19/12/2025** · special request · Holidays 2025 : volume reservation
+- **27/05/2026** · Quality · Quality : Multigrain seed mix (25 kg sack)
+- **07/11/2026** · special request · Holidays 2026 : volume reservation
 
-Historique complet : 44 événements (11 visite, 8 qualité, 7 appel, 6 demande spéciale, 4 avoir, 3 prix, 2 note, 1 ouverture, 1 livraison, 1 compliment).
+Full history: 44 events (11 visit, 8 quality, 7 call, 6 special request, 4 have, 3 price, 2 note, 1 opening, 1 delivery, 1 compliment).
 
-## Dossiers ouverts aujourd'hui
+## Files opened today
 
-- **07/11/2026 — Fêtes 2026 : réservation de volumes**
-  Youssef veut réserver pour les fêtes : chocolat de couverture lait 38 % (pistoles, sac 5 kg) et farine de gruau T45 pâtissière (sac 25 kg) en volume pour les 23-24 et 30-31/12. Youssef : « Et ta famille, ça va ? »
+- **07/11/2026 — Holidays 2026: volume reservation**
+  Youssef wants to book for the holidays: 38% milk couverture chocolate (buttons, 5 kg bag) and T45 strong pastry flour (25 kg sack) in volume for the 23-24 and 30-31/12. Youssef: "What's up with your family?"
 
-## Comment leur parler
+## How to talk to them
 
-- Tutoyer s'il tutoie, c'est un métier où tout le monde se tutoie.
-- Appeler après 13h, jamais pendant les fournées.
+- Tutoying if he's tutoing, it's a profession where everyone is silent.
+- Call after 13h, never during batches.
 
-## Prix & groupe
+## Price & group
 
-Groupes : **Boulangeries** (`boulangeries`).
-Pas de prix négocié.
+Groups: **Boulangeries** (`boulangeries`).
+No negotiated prices.
 
-Règles de prix qui peuvent s'appliquer :
-- `prl_0001` Boulangeries : −4 % sur les farines dès 10 sacs
-- `prl_0006` Épiphanie 2027 : poudre d'amande −6 % dès 20 kg
-- `prl_0007` Épiphanie 2027 : couronnes et fèves −5 %
+Price rules that may apply:
+- `prl_0001` Bakeries: -4 % on flours from 10 bags
+- `prl_0006` Epiphany 2027: almond powder -6 % from 20 kg
+- `prl_0007` Epiphany 2027: crowns and beans -5 %
 
-Dernières notes CRM :
+Latest notes CRM:
 
-- 29/07/2025, Julien (commercial) : Youssef fait 600 galettes et 300 couronnes pour l'Épiphanie : réserver poudre d'amande et feuilletage.
-- 08/02/2026, Julien (commercial) : Julien a négocié un prix trimestriel sur la tradition.
-- 07/07/2026, Julien (commercial) : Ne veut aucune substitution sans être prévenu : si un produit manque, appeler Youssef avant le départ du camion.
+- 29/07/2025, Julien (commercial): Youssef makes 600 cakes and 300 crowns for Epiphany: reserve almond powder and leafing.
+- 08/02/2026, Julien (commercial): Julien negotiated a quarterly price on tradition.
+- 07/07/2026, Julien (commercial): Does not want any substitution without being warned: if a product is missing, call Youssef before the truck leaves.

@@ -5,7 +5,7 @@ One Jev call per client card (10 cards = 10 calls), no LLM, no ERP write. The ex
 hand BEFORE the run, from what the card really says. Decision rule: p(yes) >= 0.8 -> "oui", <= 0.2 -> "non", else
 "demander" (ask the caller).
 
-    v1: state = CRM line + « Ce qui les agace » + latest CRM notes; generic question about butter
+    v1: state = CRM line + "What's annoying them" + last CRM notes; generic question about butter
     v2: v1 + the « Qui ils sont » paragraph; precise question about the requested product (beurre de tourage AOP)
 
 Run inside the ai container (needs JEV_API_KEY):
@@ -26,23 +26,23 @@ from app.clients import get_jev_client
 CARDS = Path("/data/context/clients")
 
 QUESTIONS = {
-    1: "Ce client accepte-t-il qu'on lui livre un autre beurre (un remplacement) quand le beurre qu'il commande manque ?",
-    2: "Ce client accepte-t-il un autre produit à la place du beurre de tourage AOP, quand celui-ci manque ?",
+    1: "Does this customer accept another butter (a replacement) when the butter he orders is missing?",
+    2: "Does this customer accept another product instead of the butter AOPWhen does this one miss?",
 }
-YES = "La fiche dit qu'il accepte les remplacements pour ce produit, au moins s'il est prévenu."
-NO = "La fiche dit qu'il refuse les remplacements (en général ou sur ce produit)."
+YES = "The card says he accepts replacements for this product, at least if he is notified."
+NO = "The card says he refuses replacements (usually or on this product)."
 
 # (card prefix, expected answer), set by hand before the runs.
 CASES = [
     ("c0001", "non"),       # « Jamais de substitution sur le beurre »
-    ("c0021", "oui"),       # « Accepte les substitutions équivalentes si on prévient »
+    ("c0021", "oui"),       # "Accept equivalent substitutions if notified"
     ("c0097", "non"),       # « Refuse les substitutions : appeler avant toute modification »
-    ("c0102", "demander"),  # accepte en général mais tient à son tourage AOP : pas évident pour un beurre
-    ("c0100", "oui"),       # accepte si on prévient (beurre demi-sel)
+    ("c0102", "demander"),  # generally accepts but insists on his turning AOP : not obvious for a butter
+    ("c0100", "oui"),       # accepts if you warn (half-salt butter)
     ("c0039", "non"),       # refuse (beurre demi-sel)
     ("c0002", "demander"),  # refuse les substitutions d'origine sur la couverture ; rien sur le beurre
     ("c0012", "demander"),  # refuse les substitutions de couverture ; rien sur le beurre
-    ("c0007", "oui"),       # « aucune substitution sans être prévenu » : au téléphone il est prévenu
+    ("c0007", "oui"),       # "no substitution without being warned": on the phone he is warned
     ("c0010", "demander"),  # prospect, rien sur les remplacements
 ]
 
@@ -62,11 +62,11 @@ def card_state(prefix: str, version: int) -> dict:
     notes = re.search(r"Dernières notes CRM :\n(.*?)(?=\n## |\Z)", text, re.S)
     state = {
         "fiche_crm": crm.group(1) if crm else "",
-        "ce_qui_les_agace": _bullets(_section(text, "Ce qui les agace")),
+        "ce_qui_les_agace": _bullets(_section(text, "What frustrates them")),
         "notes": _bullets(notes.group(1)) if notes else [],
     }
     if version >= 2:
-        who = _section(text, "Qui ils sont")
+        who = _section(text, "Who they are")
         state["qui_ils_sont"] = next((p for p in who.split("\n\n") if not p.startswith("**")), "").strip()
     return state
 
@@ -74,7 +74,7 @@ def card_state(prefix: str, version: int) -> dict:
 async def main(version: int) -> None:
     jev = get_jev_client()
     if jev is None:
-        sys.exit("JEV_API_KEY vide : pas de client Jev")
+        sys.exit("JEV_API_KEY empty: no Jev client")
     rows = []
     for prefix, truth in CASES:
         t0 = time.perf_counter()
@@ -82,10 +82,10 @@ async def main(version: int) -> None:
         ms = int((time.perf_counter() - t0) * 1000)
         got = "oui" if p >= 0.8 else "non" if p <= 0.2 else "demander"
         rows.append((truth, got, ms))
-        print(f"{prefix}  vérité={truth:9} jev={got:9} p(oui)={p:.2f}  {ms} ms  {'OK' if got == truth else 'FAUX'}", flush=True)
+        print(f"{prefix}  truth={truth:9} jev={got:9} p(yes)={p:.2f}  {ms} ms  {'OK' if got == truth else 'FAUX'}", flush=True)
     good = sum(t == g for t, g, _ in rows)
     times = [ms for *_, ms in rows]
-    print(f"\nv{version} : {good}/{len(rows)} bonnes réponses · temps moyen {sum(times) // len(times)} ms"
+    print(f"\nv{version} : {good}/{len(rows)} good answers · average time {sum(times) // len(times)} ms"
           f" · min {min(times)} · max {max(times)}")
 
 

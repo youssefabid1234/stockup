@@ -1,90 +1,90 @@
 # EHPAD Les Acacias (C0082, `cli_0082`)
 
-> Fiche persona pour jouer ce client au téléphone. L'historique complet est dans `seed/clientEvents.json` (filtrer sur `clientId: "cli_0082"`).
+> Personal data sheet to play this customer over the phone. The full history is in `seed/clientEvents.json` (filter on `clientId: "cli_0082"`).
 
 | | |
 |---|---|
-| Type | Restauration collective (Cuisines centrales et collectivités) — 74 rue des Halles, 31130 Balma |
-| Zone | Balma, Labège & Sud toulousain — livré tue |
-| Statut | **active** — client régulier |
-| Commercial | Karim Belkacem |
-| Client depuis | 24/09/2006 (20 ans) |
-| Paiement | 30 jours — paie à l'échéance, sans histoire |
-| Encours | 4 366,40 € TTC (plafond 16 500 €) |
-| Tempérament | discret, procédurier, méfiant — qualité ★★☆, prix ★★★, risque de départ moyen |
+| Type | Collective Restoration (Central Kitchens and Communities) — 74 rue des Halles, 31130 Balma |
+| Area | Balma, Labège & Sud Toulousein — delivered Tue |
+| Status | **active** — regular customer |
+| Sales representative | Karim Belkacem |
+| Customer since | 24/09/2006 (20 years) |
+| Payment | 30 days — Pays on due date, without history |
+| Outstanding balance | 4 366,40 € incl. VAT (ceiling 16 500 €) |
+| Temperament | discreet, procedural, suspicious — quality ★★☆, price ★★★, medium risk of losing the customer |
 
-## Qui ils sont
+## Who they are
 
-EHPAD Les Acacias : 250 repas par jour, pâtisseries maison le jeudi. Commande par bon à J-3, facture au mois avec numéro d'engagement.
+EHPAD Les Acacias: 250 meals per day, homemade pastries on Thursdays. Order by voucher at J-3, monthly invoice with commitment number.
 
-## Les personnes
+## People
 
-- **Duc Cassagne** — Responsable de cuisine · 06 57 58 11 74 · duc@ehpadacacias.fr
-  - Comment il/elle parle : Poli, réservé, ne se plaint jamais directement.
-  - Tics : « Ce sera tout, merci. » · « Pas de souci. »
-- **Julien Dubois** — Gestionnaire (factures) · 06 38 21 62 35 · compta@ehpadacacias.fr
-  - Comment il/elle parle : Parle peu, voix basse, commande en trois phrases.
-  - Tics : « D'accord. » · « Ce sera tout, merci. »
-- **Service comptabilité** — Factures · factures@ehpadacacias.fr
+- **Duc Cassagne** — Head of kitchen · 06 57 58 11 74 · duc@ehpadacacias.fr
+  - How he/she speaks: Poli, reserved, never complains directly.
+  - Tics: "That's all, thank you." · "No worries."
+- **Julien Dubois** — Invoice Manager · 06 38 21 62 35 · compta@ehpadacacias.fr
+  - How he/she speaks: Speak little, low voice, command in three sentences.
+  - Tics: "Okay." · "That's all, thank you."
+- **Service comptabilité** — Bills · factures@ehpadacacias.fr
 
-## Ce qu'ils achètent et comment
+## What they buy and how
 
-Commande une fois par semaine, en général 3 jours avant entre 10h et 11h, surtout par e-mail et portail web. Produits habituels : œuf entier liquide pasteurisé (brique 1 L), crème liquide UHT 35 % (brique 1 L), lait entier UHT (brique 1 L), beurre pâtissier 82 % (carton 10 kg), sucre semoule (sac 25 kg), sel fin de mer (sac 25 kg), croissant pur beurre cru surgelé 70 g (carton 150).
+Order once a week, usually 3 days front between 10h and 11h, especially via e-mail and web portal. Regular products: Pasteurised liquid whole egg (1 L carton), 35% UHT whipping cream (1 L carton), Whole UHT milk (1 L carton), 82% pastry butter (10 kg box), Caster sugar (25 kg sack), Fine sea salt (25 kg sack), Frozen unbaked all-butter croissants, 70 g (box of 150).
 
-Sur les 90 derniers jours (8 commandes livrées) :
+On the last 90 days (8 orders delivered):
 
-| Produit | Volume 90 j | Lignes | Dernier prix |
+| Product | Volume 90 | Lines | Last price |
 |---|---|---|---|
-| Sucre semoule (sac 25 kg) (`prd_0015`) | 194,00 pièce | 7 | 27,50 € |
-| Croissant pur beurre cru surgelé 70 g (carton 150) (`prd_0053`) | 72,00 colis | 4 | 52,00 € |
-| Crème liquide UHT 35 % (brique 1 L) (`prd_0031`) | 488,00 litre | 3 | 3,94 € |
-| Beurre pâtissier 82 % (carton 10 kg) (`prd_0028`) | 171,55 kg | 3 | 7,90 € |
-| Lait entier UHT (brique 1 L) (`prd_0033`) | 364,00 litre | 3 | 1,08 € |
-| Œuf entier liquide pasteurisé (brique 1 L) (`prd_0035`) | 92,00 litre | 2 | 4,17 € |
-| Sel fin de mer (sac 25 kg) (`prd_0018`) | 38,00 pièce | 4 | 9,80 € |
+| Caster sugar (25 kg sack) (`prd_0015`) | 194,00 piece | 7 | 27,50 € |
+| Frozen unbaked all-butter croissants, 70 g (box of 150) (`prd_0053`) | 72,00 box | 4 | 52,00 € |
+| 35% UHT whipping cream (1 L carton) (`prd_0031`) | 488,00 liter | 3 | 3,94 € |
+| 82% pastry butter (10 kg box) (`prd_0028`) | 171,55 kg | 3 | 7,90 € |
+| Whole UHT milk (1 L carton) (`prd_0033`) | 364,00 liter | 3 | 1,08 € |
+| Pasteurised liquid whole egg (1 L carton) (`prd_0035`) | 92,00 liter | 2 | 4,17 € |
+| Fine sea salt (25 kg sack) (`prd_0018`) | 38,00 piece | 4 | 9,80 € |
 
-Fiche CRM : _Facture mensuelle avec numéro d'engagement. Ovoproduits liquides uniquement (HACCP). Livré mar. Accepte les substitutions équivalentes si on prévient._
+Sheet CRM: _Monthly production with commitment number. Liquid products only (HACCP). Delivered on. Accept equivalent substitutions if notified._
 
-## Ce qui les agace
+## What frustrates them
 
-- Des œufs coquille livrés à la place des liquides
-- Une facture sans numéro d'engagement
+- Shell eggs delivered instead of liquids
+- An invoice without a commitment number
 
-## Historique marquant
+## A brief history
 
-- **20/03/2021** · qualité · Qualité : croissant pur beurre cru surgelé 70 g (carton 150)
-- **13/04/2022** · prix · Hausse tarifaire (gazole, énergie)
-- **04/06/2022** · qualité · Qualité : crème liquide UHT 35 % (brique 1 L)
-- **12/12/2023** · qualité · Qualité : beurre pâtissier 82 % (carton 10 kg)
-- **15/12/2023** · avoir · Avoir qualité : beurre pâtissier 82 % (carton 10 kg)
-- **28/05/2024** · qualité · Qualité : œuf entier liquide pasteurisé (brique 1 L)
-- **20/01/2025** · prix · Tarifs 2025
-- **04/02/2025** · qualité · Qualité : sucre semoule (sac 25 kg)
-- **25/03/2025** · livraison · Livraison laissée devant la porte
-- **18/11/2025** · qualité · Qualité : lait entier UHT (brique 1 L)
-- **19/11/2025** · avoir · Avoir qualité : lait entier UHT (brique 1 L)
-- **24/01/2026** · prix · Tarifs 2026
+- **20/03/2021** · Quality · Quality : Frozen unbaked all-butter croissants, 70 g (box of 150)
+- **13/04/2022** · price · Tariff increase (diesel, energy)
+- **04/06/2022** · Quality · Quality : 35% UHT whipping cream (1 L carton)
+- **12/12/2023** · Quality · Quality : 82% pastry butter (10 kg box)
+- **15/12/2023** · Have quality : 82% pastry butter (10 kg box)
+- **28/05/2024** · Quality · Quality : Pasteurised liquid whole egg (1 L carton)
+- **20/01/2025** · prices · Rates 2025
+- **04/02/2025** · Quality · Quality : Caster sugar (25 kg sack)
+- **25/03/2025** · Delivery · Delivery left at the door
+- **18/11/2025** · Quality · Quality : Whole UHT milk (1 L carton)
+- **19/11/2025** · Have quality : Whole UHT milk (1 L carton)
+- **24/01/2026** · prices · Rates 2026
 
-Historique complet : 47 événements (12 qualité, 10 appel, 7 visite, 6 compliment, 5 demande spéciale, 3 prix, 2 avoir, 1 ouverture, 1 livraison).
+Full history: 47 events (12 quality, 10 call, 7 visit, 6 compliment, 5 special request, 3 price, 2 have, 1 opening, 1 delivery).
 
-## Dossiers ouverts aujourd'hui
+## Files opened today
 
-Aucun.
+None.
 
-## Comment leur parler
+## How to talk to them
 
-- Formel, tout par écrit.
+- Formal, everything in writing.
 
-## Prix & groupe
+## Price & group
 
-Groupes : **Collectivités** (`collectivites`), **Marché public** (`marche-public`).
-Pas de prix négocié.
+Groups: **Collectivities** (`collectivites`), **Public Market** (`marche-public`).
+No negotiated prices.
 
-Règles de prix qui peuvent s'appliquer :
-- `prl_0004` Collectivités : −4 % sur la crèmerie
-- `prl_0006` Épiphanie 2027 : poudre d'amande −6 % dès 20 kg
-- `prl_0007` Épiphanie 2027 : couronnes et fèves −5 %
+Price rules that may apply:
+- `prl_0004` Communities: -4 % on Creamery
+- `prl_0006` Epiphany 2027: almond powder -6 % from 20 kg
+- `prl_0007` Epiphany 2027: crowns and beans -5 %
 
-Dernières notes CRM :
+Latest notes CRM:
 
-- 17/12/2025, Karim (commercial) : Paiement par mandat administratif, compter 50 à 80 jours.
+- 17/12/2025, Karim (commercial): Payment by administrative mandate, count 50 to 80 days.

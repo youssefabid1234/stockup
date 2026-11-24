@@ -47,7 +47,7 @@ def test_mp3_seconds():
 async def test_request_gets_an_acknowledgement_then_typing_without_gap(mode4):
     sent: list[bytes] = []
     sp = speaker_with_bank(sent)
-    await fillers.on_turn_start(sp, "Il me faudrait dix sacs de tradi pour jeudi.")
+    await fillers.on_turn_start(sp, "I need ten sacks of traditional flour for Thursday.")
     assert sp.acknowledged and sent[0] == b"\xff" * 16000  # « D'accord, je regarde ça » at once
     await asyncio.sleep(1.4)  # the ack plays 1 s, then typing must follow
     await sp.stop_waiting()
@@ -60,7 +60,7 @@ async def test_request_gets_an_acknowledgement_then_typing_without_gap(mode4):
 async def test_social_turn_gets_no_phrase_only_late_typing(mode4):
     sent: list[bytes] = []
     sp = speaker_with_bank(sent)
-    await fillers.on_turn_start(sp, "Merci, au revoir.")
+    await fillers.on_turn_start(sp, "Thank you, goodbye.")
     assert not sp.acknowledged and sent == []
     await asyncio.sleep(fillers.SOCIAL_TYPING_DELAY + 0.1)
     await sp.stop_waiting()
@@ -70,7 +70,7 @@ async def test_social_turn_gets_no_phrase_only_late_typing(mode4):
 async def test_confirmation_gets_no_phrase(mode4):
     sent: list[bytes] = []
     sp = speaker_with_bank(sent)
-    await fillers.on_turn_start(sp, "C'est bon, validez.")  # was « Très bien, je vérifie » : useless and slow
+    await fillers.on_turn_start(sp, "That's right, please confirm.")  # was « Très bien, je vérifie » : useless and slow
     assert not sp.acknowledged and sent == []
     await sp.stop_waiting()
 
@@ -78,7 +78,7 @@ async def test_confirmation_gets_no_phrase(mode4):
 async def test_typing_stops_when_cancelled(mode4):
     sent: list[bytes] = []
     sp = speaker_with_bank(sent)
-    await fillers.on_turn_start(sp, "C'est combien le sac ?")
+    await fillers.on_turn_start(sp, "How much is a sack?")
     await asyncio.sleep(0.2)
     await sp.stop_waiting()
     count = len(sent)
@@ -90,7 +90,7 @@ async def test_other_modes_untouched(monkeypatch):
     monkeypatch.setenv("TEAM_FILLERS", "1")
     sent: list[bytes] = []
     sp = speaker_with_bank(sent)
-    await fillers.on_turn_start(sp, "Merci, au revoir.")
+    await fillers.on_turn_start(sp, "Thank you, goodbye.")
     assert sp.waiting_task is None and sent == []
 
 
@@ -118,5 +118,5 @@ async def test_agent_opens_the_call(mode4):
 
 
 def test_opening_lines_ask_what_the_caller_wants():
-    assert fillers.OPENING_LINES["madame"] == "Bonjour Madame, que puis-je faire pour vous ?"
-    assert all("que puis-je faire pour vous" in line for line in fillers.OPENING_LINES.values())
+    assert fillers.OPENING_LINES["madame"] == "Hello, ma'am. How can I help you?"
+    assert all("how can i help you" in line.lower() for line in fillers.OPENING_LINES.values())

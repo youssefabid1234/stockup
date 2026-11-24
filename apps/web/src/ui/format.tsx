@@ -41,7 +41,7 @@ export function DateLabel({ date, format = "short", className }: { date?: string
   if (!date) return <span className={cn("text-muted-foreground", className)}>—</span>;
   const txt = format === "long" ? fmtDateLong(date) : format === "datetime" ? fmtDateTime(date) : format === "relative" ? fmtRelative(date) : fmtDate(date);
   return (
-    <time dateTime={date} title={parseDate(date).toLocaleString("fr-FR")} className={cn("num whitespace-nowrap", className)}>
+    <time dateTime={date} title={parseDate(date).toLocaleString("en-GB")} className={cn("num whitespace-nowrap", className)}>
       {txt}
     </time>
   );

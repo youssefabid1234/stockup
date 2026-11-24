@@ -10,16 +10,16 @@ export function InvoiceSection({ order }: { order: OrderDetail }) {
   const inv = order.invoice;
   if (!inv) return null;
   return (
-    <Section title="Facture">
+    <Section title="Invoice">
       <Link to={`/invoices/${inv.id}`} className="flex items-center gap-3 rounded-[6px] border border-border bg-card px-3 py-2.5 transition-colors hover:bg-muted/50">
         <FileText size={15} strokeWidth={1.75} className="text-muted-foreground" />
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2"><Mono>{inv.number}</Mono><StatusDot kind="invoice" value={inv.status} /></div>
-          <div className="mt-0.5 text-[11.5px] text-muted-foreground">Émise <DateLabel date={inv.issuedAt} /> · échéance <DateLabel date={inv.dueDate} /></div>
+          <div className="mt-0.5 text-[11.5px] text-muted-foreground">Issued <DateLabel date={inv.issuedAt} /> · maturity <DateLabel date={inv.dueDate} /></div>
         </div>
         <div className="text-right">
           <Money value={inv.totalTtc} className="font-medium" />
-          {inv.balance > 0 ? <div className="text-[11.5px] text-muted-foreground">reste <Money value={inv.balance} tone={inv.daysOverdue > 0 ? "destructive" : undefined} /></div> : <div className="text-[11.5px] text-success">soldée</div>}
+          {inv.balance > 0 ? <div className="text-[11.5px] text-muted-foreground">reste <Money value={inv.balance} tone={inv.daysOverdue > 0 ? "destructive" : undefined} /></div> : <div className="text-[11.5px] text-success">closed</div>}
         </div>
       </Link>
     </Section>
@@ -32,13 +32,13 @@ export function RouteSection({ order }: { order: OrderDetail }) {
   const stop = run?.stops.find((s) => s.orderId === order.id);
 
   return (
-    <Section title="Tournée" actions={<Link to="/routes" className="inline-flex items-center gap-1 text-[12px] text-muted-foreground hover:text-foreground">Tournées<ArrowUpRight size={12} /></Link>}>
+    <Section title="Delivery route" actions={<Link to="/routes" className="inline-flex items-center gap-1 text-[12px] text-muted-foreground hover:text-foreground">Delivery routes<ArrowUpRight size={12} /></Link>}>
       {isLoading ? (
         <Skeleton className="h-14 w-full" />
       ) : !run ? (
         <div className="flex items-center gap-2 rounded-[6px] border border-dashed border-border px-3 py-3 text-[12.5px] text-muted-foreground">
           <Truck size={14} strokeWidth={1.75} />
-          {order.status === "draft" ? "Affectée à une tournée à la confirmation." : order.status === "cancelled" ? "Commande annulée." : "Pas encore planifiée sur une tournée."}
+          {order.status === "draft" ? "Alleged to a round of confirmation." : order.status === "cancelled" ? "Order cancelled." : "Not yet scheduled on a tour."}
         </div>
       ) : (
         <div className="rounded-[6px] border border-border bg-card px-3 py-2.5">
@@ -51,10 +51,10 @@ export function RouteSection({ order }: { order: OrderDetail }) {
             className="mt-2"
             labelWidth={100}
             items={[
-              { label: "Départ", value: <><DateLabel date={run.date} /> · {run.route.departureTime}</> },
-              { label: "Chauffeur", value: run.route.driver },
-              { label: "Véhicule", value: run.route.vehicle },
-              ...(stop ? [{ label: "Arrêt", value: <span className="inline-flex items-center gap-2"><span className="num">n° {stop.seq} / {run.stops.length}</span>{stop.eta ? <span className="num text-muted-foreground">ETA {stop.eta}</span> : null}<StatusDot kind="stop" value={stop.status} /></span> }] : []),
+              { label: "Departure", value: <><DateLabel date={run.date} /> · {run.route.departureTime}</> },
+              { label: "Driver", value: run.route.driver },
+              { label: "Vehicle", value: run.route.vehicle },
+              ...(stop ? [{ label: "Judgment", value: <span className="inline-flex items-center gap-2"><span className="num">n° {stop.seq} / {run.stops.length}</span>{stop.eta ? <span className="num text-muted-foreground">ETA {stop.eta}</span> : null}<StatusDot kind="stop" value={stop.status} /></span> }] : []),
               { label: "Charge", value: <span className="num">{fmtQty(run.totalWeightKg, "kg")} / {fmtQty(run.route.capacityKg, "kg")}</span> },
             ]}
           />

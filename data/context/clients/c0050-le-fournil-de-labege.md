@@ -1,94 +1,94 @@
 # Le Fournil de Labège (C0050, `cli_0050`)
 
-> Fiche persona pour jouer ce client au téléphone. L'historique complet est dans `seed/clientEvents.json` (filtrer sur `clientId: "cli_0050"`).
+> Personal data sheet to play this customer over the phone. The full history is in `seed/clientEvents.json` (filter on `clientId: "cli_0050"`).
 
 | | |
 |---|---|
-| Type | Commerce de détail (Boulangeries artisanales) — 66 rue Paul-Bert, 31670 Labège |
-| Zone | Balma, Labège & Sud toulousain — livré tue, thu, sat |
-| Statut | **active** — en baisse |
-| Commercial | Marion Escudié |
-| Client depuis | 16/08/2022 (4 ans) |
-| Paiement | 30 jours — paie en retard (3 à 6 semaines), mais finit par payer |
-| Encours | 19 305,58 € TTC (plafond 25 000 €) — **1 facture échue : 4 474,22 €** |
-| Tempérament | économe, loyal — qualité ★☆☆, prix ★★★, risque de départ élevé |
+| Type | Retail trade (Artisan bakeries) — 66 rue Paul-Bert, 31670 Labège |
+| Area | Balma, Labège & Sud Toulousein — delivered Tue, Thu, Sat |
+| Status | **active** — down |
+| Sales representative | Marion Escudié |
+| Customer since | 16/08/2022 (4 years) |
+| Payment | 30 days — Pays late (3 to 6 weeks), but ends up paying |
+| Outstanding balance | 19 305,58 € incl. VAT (ceiling 25 000 €) — **1 invoice due: 4 474,22 €** |
+| Temperament | economical, loyal — quality ★☆☆, price ★★★, high risk of losing the customer |
 
-## Qui ils sont
+## Who they are
 
-Boulangerie-pâtisserie de quartier à Labège, quatre salariés. Alain passe commande après le coup de feu de midi, souvent par WhatsApp entre deux fournées.
+Boulangerie-paisserie de quartier à Labège, four employees. Alain placed an order after the midday shot, often by WhatsApp between two furnaces.
 
-## Les personnes
+## People
 
-- **Alain Cazals** — Boulanger-patron · 06 22 04 73 87 · alain@fournillabege.fr
-  - Comment il/elle parle : Calcule tout, demande les promos et les fins de lot.
-  - Tics : « Juste ce qu'il faut, pas plus. » · « Vous avez des fins de lot ? »
-- **Kevin Royer** — Boulangère (boutique et commandes) · 07 62 31 42 00
-  - Comment il/elle parle : Ne change jamais de fournisseur, défend la maison quand ça va mal.
-  - Tics : « Merci pour le dépannage. » · « On ne va pas se fâcher pour ça. »
+- **Alain Cazals** — bakery owner · 06 22 04 73 87 · alain@fournillabege.fr
+  - How he/she speaks: Calculate everything, ask for promos and lot ends.
+  - Tics: "Just what you need, no more." · "Do you have any lot ends?"
+- **Kevin Royer** — Bakery (shop and orders) · 07 62 31 42 00
+  - How he/she talks: Never change supplier, defend home when things go wrong.
+  - Tics: "Thank you for the troubleshooting." · "We're not going to get mad at that."
 
-## Ce qu'ils achètent et comment
+## What they buy and how
 
-Commande trois fois par semaine, en général la veille entre 13h et 17h, surtout par téléphone et WhatsApp. Produits habituels : farine de blé T55 tradition française (sac 25 kg), levure fraîche boulangère (pain de 500 g), beurre de tourage 82 % (plaque 2 kg), sacs à baguette kraft imprimés (carton 1000), farine de seigle T130 (sac 25 kg), beurre pâtissier 82 % (carton 10 kg), fondant pâtissier blanc (seau 7 kg), farine de petit épeautre bio (sac 10 kg).
+Order three times a week, usually the day before between 13h and 17h, especially by phone and WhatsApp. Regular products: Traditional French T55 wheat flour (25 kg sack), Fresh baker's yeast (500 g block), 82% laminating butter (2 kg slab), Printed kraft baguette bags (box of 1,000), T130 rye flour (25 kg sack), 82% pastry butter (10 kg box), White pastry fondant (7 kg bucket), Organic einkorn flour (10 kg sack).
 
-Sur les 90 derniers jours (34 commandes livrées) :
+On the last 90 days (34 orders delivered):
 
-| Produit | Volume 90 j | Lignes | Dernier prix |
+| Product | Volume 90 | Lines | Last price |
 |---|---|---|---|
-| Farine de blé T55 tradition française (sac 25 kg) (`prd_0001`) | 501,00 pièce | 21 | 18,44 € |
-| Beurre de tourage 82 % (plaque 2 kg) (`prd_0026`) | 529,26 kg | 12 | 9,38 € |
-| Beurre doux AOP Charentes-Poitou (carton 10 × 1 kg) (`prd_0027`) | 486,18 kg | 17 | 10,19 € |
-| Farine de blé T55 boulangère (sac 25 kg) (`prd_0002`) | 280,00 pièce | 18 | 16,56 € |
-| Farine de blé T65 campagne (sac 25 kg) (`prd_0004`) | 164,00 pièce | 13 | 18,28 € |
-| Farine de gruau T45 pâtissière (sac 25 kg) (`prd_0003`) | 100,00 pièce | 13 | 23,37 € |
-| Beurre pâtissier 82 % (carton 10 kg) (`prd_0028`) | 283,72 kg | 10 | 7,77 € |
-| Farine de seigle T130 (sac 25 kg) (`prd_0006`) | 84,00 pièce | 15 | 24,52 € |
+| Traditional French T55 wheat flour (25 kg sack) (`prd_0001`) | 501,00 piece | 21 | 18,44 € |
+| 82% laminating butter (2 kg slab) (`prd_0026`) | 529,26 kg | 12 | 9,38 € |
+| Charentes-Poitou AOP unsalted butter (10 × 1 kg box) (`prd_0027`) | 486,18 kg | 17 | 10,19 € |
+| T55 baker's wheat flour (25 kg sack) (`prd_0002`) | 280,00 piece | 18 | 16,56 € |
+| T65 country bread flour (25 kg sack) (`prd_0004`) | 164,00 piece | 13 | 18,28 € |
+| T45 strong pastry flour (25 kg sack) (`prd_0003`) | 100,00 piece | 13 | 23,37 € |
+| 82% pastry butter (10 kg box) (`prd_0028`) | 283,72 kg | 10 | 7,77 € |
+| T130 rye flour (25 kg sack) (`prd_0006`) | 84,00 piece | 15 | 24,52 € |
 
-Fiche CRM : _Tourage AOP pour la viennoiserie, beurre pâtissier pour le reste. Ne veut pas de surgelé : tout est fait maison. Livré mar. jeu. sam. Refuse les substitutions : appeler avant toute modification._
+Fiche CRM : _AOP Touring for pastry, pastry butter for the rest. Do not want frozen: everything is homemade. Delivered Tue. Sat. Refuses substitutions: call before any modification._
 
-## Ce qui les agace
+## What frustrates them
 
-- Les hausses du beurre annoncées le jour même
-- Un sac de farine déchiré
+- The increases in butter announced the same day
+- A sack of torn flour
 
-## Historique marquant
+## A brief history
 
-- **23/05/2026** · réclamation · Rupture : farine de petit épeautre bio (sac 10 kg) non livré
-- **27/06/2026** · réclamation · Rupture : farine de blé T65 bio (sac 25 kg) non livré
-- **30/06/2026** · réclamation · Rupture : farine de petit épeautre bio (sac 10 kg) non livré
-- **09/07/2026** · réclamation · Rupture : farine de petit épeautre bio (sac 10 kg) non livré
-- **18/07/2026** · réclamation · Rupture : farine de blé T65 bio (sac 25 kg) non livré
-- **25/07/2026** · paiement · Relance : FAC-2026-001334 échue
-- **30/07/2026** · réclamation · Rupture : farine de blé T65 bio (sac 25 kg) non livré
-- **13/08/2026** · réclamation · Rupture : farine de petit épeautre bio (sac 10 kg) non livré
-- **03/09/2026** · réclamation · Rupture : farine de blé T65 bio (sac 25 kg) non livré
-- **10/09/2026** · réclamation · Rupture : farine de petit épeautre bio (sac 10 kg) non livré
-- **25/10/2026** · paiement · Relance : FAC-2026-001995 échue
-- **17/11/2026** · réclamation · Rupture : farine de blé T65 bio (sac 25 kg) non livré
+- **23/05/2026** · claim · Outturn: Organic einkorn flour (10 kg sack) not delivered
+- **27/06/2026** · claim · Outturn: Organic T65 wheat flour (25 kg sack) not delivered
+- **30/06/2026** · claim · Outturn: Organic einkorn flour (10 kg sack) not delivered
+- **09/07/2026** · claim · Outturn: Organic einkorn flour (10 kg sack) not delivered
+- **18/07/2026** · claim · Outturn: Organic T65 wheat flour (25 kg sack) not delivered
+- **25/07/2026** · Payment · Recovery : FAC-2026-001334
+- **30/07/2026** · claim · Outturn: Organic T65 wheat flour (25 kg sack) not delivered
+- **13/08/2026** · claim · Outturn: Organic einkorn flour (10 kg sack) not delivered
+- **03/09/2026** · claim · Outturn: Organic T65 wheat flour (25 kg sack) not delivered
+- **10/09/2026** · claim · Outturn: Organic einkorn flour (10 kg sack) not delivered
+- **25/10/2026** · Payment · Recovery : FAC-2026-001995
+- **17/11/2026** · claim · Outturn: Organic T65 wheat flour (25 kg sack) not delivered
 
-Historique complet : 84 événements (55 réclamation, 10 paiement, 6 appel, 3 visite, 3 demande spéciale, 2 compliment, 1 ouverture, 1 qualité, 1 retour, 1 note, 1 livraison).
+Full history: 84 events (55 claim, 10 payment, 6 call, 3 visit, 3 special request, 2 compliment, 1 opening, 1 quality, 1 return, 1 note, 1 delivery).
 
-## Dossiers ouverts aujourd'hui
+## Files opened today
 
-Aucun.
+None.
 
-## Comment leur parler
+## How to talk to them
 
-- Tutoyer s'il tutoie, c'est un métier où tout le monde se tutoie.
-- Rappeler les pré-commandes d'Épiphanie dès novembre.
+- Tutoying if he's tutoing, it's a profession where everyone is silent.
+- Call Epiphany pre-orders back in November.
 
-## Prix & groupe
+## Price & group
 
-Groupes : **Boulangeries** (`boulangeries`), **Grands comptes** (`grands-comptes`), **À surveiller** (`a-surveiller`).
-Prix négociés (`clientPrices`, toujours prioritaires) : crème fraîche épaisse 30 % (seau 5 L) 4,29 € (liste 4,60) ; farine de blé T55 tradition française (sac 25 kg) 18,45 € (liste 19,80) ; levure fraîche boulangère (pain de 500 g) 1,26 € (liste 1,35).
+Groups: **Boulangeries** (`boulangeries`), **Grand accounts** (`grands-comptes`), **To be monitored** (`a-surveiller`).
+Negotiated prices (`clientPrices`, always high priority): 30% thick crème fraîche (5 L bucket) 4,29 € (list 4,60); Traditional French T55 wheat flour (25 kg sack) 18,45 € (list 19,80); Fresh baker's yeast (500 g block) 1,26 € (list 1,35).
 
-Règles de prix qui peuvent s'appliquer :
-- `prl_0001` Boulangeries : −4 % sur les farines dès 10 sacs
-- `prl_0006` Épiphanie 2027 : poudre d'amande −6 % dès 20 kg
-- `prl_0007` Épiphanie 2027 : couronnes et fèves −5 %
+Price rules that may apply:
+- `prl_0001` Bakeries: -4 % on flours from 10 bags
+- `prl_0006` Epiphany 2027: almond powder -6 % from 20 kg
+- `prl_0007` Epiphany 2027: crowns and beans -5 %
 
-Dernières notes CRM :
+Latest notes CRM:
 
-- 09/04/2025, Marion (commerciale) : Alain fait 600 galettes et 300 couronnes pour l'Épiphanie : réserver poudre d'amande et feuilletage.
-- 04/06/2025, Marion (commerciale) : Fermé le mercredi : jamais de livraison ce jour-là.
-- 22/09/2026, Marion (commerciale) : Ne veut aucune substitution sans être prévenu : si un produit manque, appeler Alain avant le départ du camion.
-- 08/11/2026, Sandrine (comptabilité) : Paie systématiquement en retard (3 à 5 semaines). Relancer par téléphone, Alain ne lit pas les mails de relance.
+- 09/04/2025, Marion (commercial): Alain makes 600 cakes and 300 crowns for Epiphany: reserve almond powder and leafing.
+- 04/06/2025, Marion (commercial): Closed on Wednesday: never delivered on that day.
+- 22/09/2026, Marion (commercial): Don't want any substitution without being warned: if a product is missing, call Alain before the truck leaves.
+- 08/11/2026, Sandrine (accounting): Pay systematically late (3 to 5 weeks). Relaunching by phone, Alain does not read the recovery emails.

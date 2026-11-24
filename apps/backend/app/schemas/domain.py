@@ -44,7 +44,7 @@ class Product(Schema):
     cost: float  # reference purchase cost €/unit HT
     vat_rate: float  # 0.055 for food in France
     shelf_life_days: int
-    origin: str | None = None  # "Bretagne", "Écosse"
+    origin: str | None = None  # "Bretagne", "Scotland"
     caliber: str | None = None  # "1-2 kg", "n°3"
     main_supplier_id: Id | None = None
     active: bool
@@ -60,7 +60,7 @@ ClientStatus = Literal["active", "blocked", "prospect"]
 
 class Contact(Schema):
     name: str
-    role: str | None = None  # "Chef", "Gérant", "Acheteur"
+    role: str | None = None  # "Chief", "Manager", "Buyer"
     phone: str | None = None
     email: str | None = None
 
@@ -178,7 +178,7 @@ class OrderLine(Schema):
     qty: float
     unit_price: float  # € HT, resolved from ClientPrice / rules / Product.price at creation
     prepared_qty: float | None = None  # actual weight/quantity picked
-    note: str | None = None  # "bien frais", "sans tête"
+    note: str | None = None  # "well fresh," "headless"
     substitute_for: Id | None = None  # productId this line replaces
 
 
@@ -288,7 +288,7 @@ class Route(Schema):
     """A recurring delivery route (tournée)."""
 
     id: Id
-    name: str  # "Tournée Paris Ouest"
+    name: str  # "Paris West Tour"
     zone: str
     driver: str
     vehicle: str  # "Camion frigo 12 m³"
@@ -310,7 +310,7 @@ class RouteStop(Schema):
 
 
 class RouteRunBase(Schema):
-    """One route on one date."""
+    """One road on one date."""
 
     id: Id
     route_id: Id
@@ -340,7 +340,7 @@ class ActivityEvent(Schema):
     type: str  # "order.created", "order.confirmed", "payment.recorded", ...
     entity: ActivityEntity
     entity_id: Id
-    summary: str  # French sentence: "Commande CMD-… confirmée pour Le Bistrot du Port"
+    summary: str  # English sentence: "Command CMD-...confirmed for the Port Bistrot"
 
 
 # ───────────────────────── Client / supplier history ─────────────────────────
@@ -362,14 +362,14 @@ class ClientEvent(Schema):
     client_id: Id
     at: IsoDateTime
     type: ClientEventType
-    title: str  # "Réclamation : langoustines arrivées mortes"
+    title: str  # "Claim: Norway lobsters who have arrived dead"
     description: str
     channel: EventChannel | None = None
     author: str  # "Sophie (commerciale)", "Agent vocal"
     severity: Severity | None = None
     status: IssueStatus | None = None  # for issues
     resolved_at: IsoDateTime | None = None
-    resolution: str | None = None  # "Avoir de 84 € accordé, lot remplacé le lendemain"
+    resolution: str | None = None  # "Additional €84, lot replaced the next day"
     order_id: Id | None = None
     invoice_id: Id | None = None
     product_ids: list[Id] | None = None
@@ -491,7 +491,7 @@ class PriceRule(Schema):
     """
 
     id: Id  # "prl_0001"
-    name: str  # "Gastro : -8 % sur les crustacés"
+    name: str  # "Gastro: -8% on crustaceans"
     active: bool
     priority: int  # tie-breaker, higher wins
     client_scope: PriceRuleClientScope
@@ -540,6 +540,6 @@ class Meta(Schema):
     today: IsoDate
     currency: Literal["EUR"]
     generated_at: IsoDateTime
-    trade: str | None = None  # "fruits et légumes", from DATA_DIR/stats.json when present
-    region: str | None = None  # "Lyon et Rhône"
+    trade: str | None = None  # Fruit and vegetables, from DATA_DIR/stats.json when present
+    region: str | None = None  # "Lyon and Rhone"
     categories: list[Category] | None = None  # product categories of the pack, with French labels

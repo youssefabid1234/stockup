@@ -1,49 +1,49 @@
-# Les contrats entre nos 4 chantiers
+# Contracts between our 4 yards
 
-> Chacun code dans **ses** fichiers. Ces contrats disent ce que chacun donne aux autres et attend d'eux. On ne les
-> change **qu'après l'avoir dit dans le groupe** (et prévenu la personne concernée). Le code de référence est indiqué.
+> Each code in **ses** files. These contracts tell what each one gives to others and expect from them.
+> changes ** only after having said it in group** (and notified the data subject). The reference code is indicated.
 
-## 0. Les interrupteurs (`apps/ai/app/team_flags.py`)
+## 0. Switches (`apps/ai/app/team_flags.py`)
 
-Chaque brique est **éteinte par défaut** : tant qu'elle est éteinte, le kit se comporte exactement comme à l'origine.
-On l'allume dans `.env` (à la racine) puis on redémarre le service IA (Ctrl-C dans son terminal, relancer).
+Every brick is ** Defaultly Off** : while it's off, the kit behaves exactly as originally.
+It is lit in `.env` (at the root) and restarted the AI service (Ctrl-C in its terminal, restart).
 
-| Interrupteur | Brique | Propriétaire |
+| Switch | carton | Owner |
 |---|---|---|
-| `TEAM_FILLERS=1` | phrases d'attente + bruit de clavier | Mohamed Amine |
-| `TEAM_ORCHESTRATOR=1` | agent rapide + agent cerveau en parallèle | Youssef |
-| `TEAM_PRELOAD=1` | fiche client préchargée | Youssef |
-| `TEAM_PRODUCT_INSIGHT=1` | super-outil produit (enregistré au démarrage) | Youssef |
-| `TEAM_ORDER_RULES=1` | règles « commande juste » dans le prompt | Amine Khalil |
-| `TEAM_SALES_RULES=1` | règles « bon vendeur » dans le prompt | Daycem |
-| `TEAM_FAST_MODEL=claude-haiku-5-5` | modèle de l'agent rapide | Youssef |
+| `TEAM_FILLERS=1` | Waiting phrases + keyboard noise | Mohamed Amine |
+| `TEAM_ORCHESTRATOR=1` | fast agent + parallel brain agent | Youssef |
+| `TEAM_PRELOAD=1` | preloaded customer form | Youssef |
+| `TEAM_PRODUCT_INSIGHT=1` | super-product tool (recorded on startup) | Youssef |
+| `TEAM_ORDER_RULES=1` | rules "just command" in the prompt | Amine Khalil |
+| `TEAM_SALES_RULES=1` | "Good seller" rules in the prompt | Daycem |
+| `TEAM_FAST_MODEL=claude-haiku-5-5` | Quick Agent Model | Youssef |
 
-Une brique n'est allumée **par défaut sur `main`** (dans `.env.example`) que quand ses scénarios passent.
+A brick is not lit ** default on `main`** (in `.env.example`) that when his scenarios pass.
 
-## 1. Voix ↔ tour de parole (Mohamed Amine ↔ Youssef)
+## 1. Votes in the ballot (Mohamed Amine - Youssef)
 
-Fichier : `apps/ai/app/services/voice_session.py` (Mohamed Amine) appelle, dans cet ordre, pour chaque tour :
+File: `apps/ai/app/services/voice_session.py` (Mohamed Amine) calls, in this order, for each round:
 
-1. `await fillers.on_turn_start(speaker, heard)` juste après la transcription finale (t0 + quelques ms)
-2. l'agent : `run_voice_turn(...)` (orchestrateur de Youssef) si `TEAM_ORCHESTRATOR=1`, sinon `run_agent(...)` du kit
-3. `await fillers.on_tool_call(speaker, tool_name)` à chaque appel d'outil
+1. `await fillers.on_turn_start(speaker, heard)` just after the final transcription (t0 + a few ms)
+2. the agent: `run_voice_turn(...)` (orchestrator of Youssef) if `TEAM_ORCHESTRATOR=1`, otherwise `run_agent(...)` of the kit
+3. `await fillers.on_tool_call(speaker, tool_name)` at each tool call
 
-**Règle anti-chevauchement** : si l'agent rapide de Youssef parle déjà (texte qui arrive en < 700 ms), aucune phrase
-d'attente. Proposition : l'orchestrateur expose `expects_tools(heard) -> bool` (Jev ou mots-clés) ; `on_turn_start`
-ne joue une phrase d'attente que si `True`. À trancher entre vous deux à H+2, puis noter ici.
+**** anti-skinning rule: if the Youssef fast agent already speaks (text that arrives in < 700 ms), no sentence
+Proposal: the orchestrator exhibits `expects_tools(heard) -> bool` (Jev or keywords); `on_turn_start`
+only plays a waiting sentence if `True`. To be decided between you two at H+2, then note here.
 
-**`Speaker`** (dans voice_session.py) : Mohamed Amine ajoute `async play_audio(mime, data)` pour jouer un son
-préenregistré dans le même segment audio que la réponse.
+**`Speaker`** (in voice_session.py): Mohamed Amine adds `async play_audio(mime, data)` to play a sound
+pre-recorded in the same audio segment as the answer.
 
-## 2. Fiche client et super-outil (Youssef → Amine Khalil, Daycem)
+## 2. Customer details and super tool (Youssef → Amine Khalil, Daycem)
 
-**`CallContext`** (`apps/ai/app/agent/call_context.py`) : la fiche du client au téléphone, chargée une fois.
-Champs (le contrat) : `client_id, name, status, blocked, delivery_days, preferences, contacts, usual[UsualItem],
+**`CallContext`** (`apps/ai/app/agent/call_context.py`): the customer's card on the phone, loaded once.
+Fields (contract): `client_id, name, status, blocked, delivery_days, preferences, contacts, usual[UsualItem],
 outstanding, credit_limit, open_issues, notes, context_entries[{kind,title,body}], active_promos, loaded_ms`.
-Elle est ajoutée **à la fin** du prompt (`render_for_prompt`). Amine K. et Daycem peuvent s'appuyer dessus dans leurs
-règles (« d'après la fiche du client au téléphone… »).
+It is added ** to the end** of the prompt (`render_for_prompt`). Amine K. and Daycem can lean on it in their
+rules ("according to the customer's card on the phone...").
 
-**`product_insight(client_id, product_id, qty)`** (`apps/ai/app/tools/product_insight.py`) renvoie :
+**`product_insight(client_id, product_id, qty)`** (`apps/ai/app/tools/product_insight.py`) returns:
 
 ```json
 {
@@ -58,40 +58,40 @@ règles (« d'après la fiche du client au téléphone… »).
 }
 ```
 
-`substitution` et `alternatives` seulement si le produit manque (sinon `alternatives: []`). Les `alternatives` sont
-triées par `rules_sales.rank_alternatives` (Daycem), vides si le client refuse (`substitution_policy` de Daycem).
-Promo = règle de prix **datée** appliquée sous le prix catalogue. Logique : `apps/ai/app/tools/insight.py` (testable
-sans l'interrupteur) ; consigne ajoutée au prompt quand l'interrupteur est allumé (`product_insight_section`).
+`substitution` and `alternatives` only if the product is missing (otherwise `alternatives: []`). The `alternatives` are
+sorted by `rules_sales.rank_alternatives` (Daycem), empty if client refuses (`substitution_policy` of Daycem).
+Promo = price rule **dated** applied under the catalogue price. Logic : `apps/ai/app/tools/insight.py` (testable
+without the switch); instructions added to the prompt when the switch is on (`product_insight_section`).
 
-## 3. Orchestrateur (Youssef)
+## 3. Orchestrator (Youssef)
 
-`run_voice_turn(messages, *, llm, tools, mode, actor_name, call_context)` : **même contrat que `run_agent`** (mêmes
-événements `text`, `tool_call`, `tool_result`, `done`, `error`, et il ajoute les messages à `messages`). La voix ne voit
-pas la différence. L'agent rapide **ne dit jamais** un chiffre, un stock, un prix ou une promesse : seul l'agent cerveau
-le fait (« ne jamais inventer »).
+`run_voice_turn(messages, *, llm, tools, mode, actor_name, call_context)`: ** same contract as `run_agent`** (same
+events `text`, `tool_call`, `tool_result`, `done`, `error`, and he adds the messages to `messages`).
+The fast agent ** never says ** a number, stock, price or promise: only the brain agent
+the fact ("never invent").
 
-## 4. Règles « commande juste » (Amine Khalil)
+## 4. Fair Order Rules (Amine Khalil)
 
-`apps/ai/app/agent/rules_order.py` : `ORDER_RULES` (texte) inséré dans le prompt par `order_rules_section()` en modes
-voix et chat (pas en mode commande). Fonctions déterministes testées (`next_delivery_date`, `sacks_from_words`).
-Les règles de prix, stock et crédit restent dans le backend : lire les `warnings` de la commande (`client_blocked`,
-`no_route`…) au lieu de les recoder.
+`apps/ai/app/agent/rules_order.py`: `ORDER_RULES` (text) inserted in the prompt by `order_rules_section()` in modes
+voice and chat (not in command mode).Deterministic functions tested (`next_delivery_date`, `sacks_from_words`).
+Price, stock and credit rules remain in the backend: read the order's `warnings` (`client_blocked`,
+`no_route`...) instead of recode them.
 
-## 5. Règles « bon vendeur » (Daycem)
+## 5. Good seller rules (Daycem)
 
-`apps/ai/app/agent/rules_sales.py` : `SALES_RULES` (texte) inséré par `sales_rules_section()`. Fonctions
-`refuses_substitution(preferences, product_name)` et `rank_alternatives(alternatives, preferences)` utilisées par
-`product_insight` (Youssef). Promo de démo : créée par l'API (`POST /api/price-rules`) par `scripts/setup_demo_data.py`,
-parce que `data/seed/` n'est pas dans git.
+`apps/ai/app/agent/rules_sales.py`: `SALES_RULES` (text) inserted by `sales_rules_section()`.
+`refuses_substitution(preferences, product_name)` and `rank_alternatives(alternatives, preferences)` used by
+`product_insight` (Youssef). Demo promo: created by API (`POST /api/price-rules`) by `scripts/setup_demo_data.py`,
+because `data/seed/` is not in git.
 
-## 6. Prompt : un seul fichier partagé, chacun sa ligne
+## 6. Prompt: One shared file, each with its own line
 
-`apps/ai/app/agent/prompts.py` assemble : rôle → règles du kit → règles du mode → **règles commande (Amine K.)** →
-**règles vente (Daycem)** → date → contexte entreprise (gros, statique, mis en cache) → **fiche client (Youssef,
-dynamique)**. Personne ne réécrit `prompts.py` : chacun édite **son** module. Si `VOICE_RULES` ou `BASE_RULES` du kit
-doivent changer, on en parle d'abord (Amine K. tranche pour la commande, Daycem pour le ton).
+`apps/ai/app/agent/prompts.py` assemblage: role → rules of the kit → rules of the mode → **control rules (Amine K.)** →
+**Rules of Sale (Daycem)** → date → company context (big, static, cached) → **customer profile (Youssef,
+**. Nobody rewrites `prompts.py`: each edits **son** module. If `VOICE_RULES` or `BASE_RULES` of the kit
+we have to change, we talk about it first (Amine K. slice for the command, Daycem for the tone).
 
-## 7. Scénarios (tous)
+## 7. Scenarios (all)
 
-`scenarios/S*.json` + `scripts/run_scenarios.py` (Youssef). Numéros réservés : Mohamed Amine S10–S19, Youssef S20–S29,
-Amine Khalil S30–S39, Daycem S40–S49. Format : [scenarios/README.md](../../scenarios/README.md).
+`scenarios/S*.json` + `scripts/run_scenarios.py` (Youssef). Reserved numbers: Mohamed Amine S10–S19, Youssef S20–S29,
+Amine Khalil S30–S39, Daycem S40–S49. Format: [scenarios/README.md](../../scenarios/README.md).

@@ -1,64 +1,64 @@
 # Hôtel Garonne Saint-Pierre (C0010, `cli_0010`)
 
-> Fiche persona pour jouer ce client au téléphone. L'historique complet est dans `seed/clientEvents.json` (filtrer sur `clientId: "cli_0010"`).
+> Personal data sheet to play this customer over the phone. The full history is in `seed/clientEvents.json` (filter on `clientId: "cli_0010"`).
 
 | | |
 |---|---|
-| Type | Hôtel (Hôtels (petit-déjeuner et restaurant)) — 15 quai de la Daurade, 31000 Toulouse |
-| Zone | Toulouse centre & faubourgs — livré wed, sat |
-| Statut | **prospect** — nouveau client |
-| Commercial | Marion Escudié |
-| Client depuis | 27/10/2026 (0 an) |
-| Paiement | 45 jours (conditions proposées) |
-| Encours | 0,00 € TTC (plafond 8 000 €) |
-| Tempérament | exigeant, procédurier, pressé — qualité ★★★, prix ★★☆, risque de départ faible |
+| Type | Hotels (Breakfast and Restaurant) — 15 quai de la Daurade, 31000 Toulouse |
+| Area | Toulouse centre & suburbs — delivered Wed, Sat |
+| Status | **prospect** — new customer |
+| Sales representative | Marion Escudié |
+| Customer since | 27/10/2026 (0 year) |
+| Payment | 45 days (proposed conditions) |
+| Outstanding balance | 0,00 € incl. VAT (ceiling 8 000 €) |
+| Temperament | demanding, procedural, pressed — quality ★★★, price ★★☆, risk of losing the customer low |
 
-## Qui ils sont
+## Who they are
 
-Hôtel 4 étoiles de 70 chambres sur les quais, buffet petit-déjeuner de 150 couverts. Mécontent de son fournisseur actuel (BOF Sud-Ouest) sur la régularité.
+Hotel 4 stars 70 rooms on the docks, buffet breakfast of 150 cutlery. Discontented by its current supplier (BOF South-West) on regularity.
 
-## Les personnes
+## People
 
-- **Inès Doumergue** — Responsable des achats · 05 34 41 70 00 · achats@hotel-garonne-sp.fr
-  - Comment il/elle parle : Professionnelle, compare trois devis, vouvoie.
-  - Tics : « Pouvez-vous m'envoyer vos tarifs viennoiserie ? »
+- **Inès Doumergue** — Head of Procurement · 05 34 41 70 00 · achats@hotel-garonne-sp.fr
+  - How he/she speaks: Professional, compares three quotes, vousvoie.
+  - Tics: "Can you send me your pastry prices?"
 
-## Ce qu'ils achètent et comment
+## What they buy and how
 
-Commande deux fois par semaine, en général la veille entre 10h et 16h, surtout par e-mail et téléphone. Produits habituels : assortiment mini-viennoiseries crues (carton 210), beurre demi-sel de baratte (motte 1 kg), crème liquide UHT 35 % (brique 1 L), lait entier UHT (brique 1 L).
+Order twice a week, usually the day before between 10h and 16h, especially via e-mail and telephone. Regular products: Assorted unbaked mini pastries (box of 210), Lightly salted churned butter (1 kg block), 35% UHT whipping cream (1 L carton), Whole UHT milk (1 L carton).
 
-Fiche CRM : _Cherche des mini-viennoiseries pur beurre livrées trois fois par semaine avant 7h._
+Fiche CRM : _Search for pure butter mini-pastries delivered three times a week before 7h._
 
-## Ce qui les agace
+## What frustrates them
 
-- Des minis cassées
-- Une facture sans numéro de bon
+- Minis broken
+- An invoice without a voucher number
 
-## Historique marquant
+## A brief history
 
-- **27/10/2026** · note · Premier contact : fiche prospect créée
+- **27/10/2026** · note · First contact : prospect sheet created
 
-Historique complet : 2 événements (1 note, 1 visite).
+Full history: 2 events (1 note, 1 visit).
 
-## Dossiers ouverts aujourd'hui
+## Files opened today
 
-- **01/11/2026 — Rendez-vous de présentation**
-  Marion présente la maison et laisse la mercuriale. Inès compare avec Pâtiss'Occitanie, son fournisseur actuel. Inès : « Pouvez-vous m'envoyer vos tarifs viennoiserie ? »
+- **01/11/2026 — Presentation appointment**
+  Marion presents the house and leaves the mercurial. Inès compares with Pâtiss'Occitanie, its current supplier. Inès: "Can you send me your pastries prices?"
 
-## Comment leur parler
+## How to talk to them
 
-- Être formel.
-- Passer par le responsable des achats.
+- Be formal.
+- Go through the procurement manager.
 
-## Prix & groupe
+## Price & group
 
-Groupes : aucun (prix liste).
-Pas de prix négocié.
+Groups: none (price list).
+No negotiated prices.
 
-Règles de prix qui peuvent s'appliquer :
-- `prl_0006` Épiphanie 2027 : poudre d'amande −6 % dès 20 kg
-- `prl_0007` Épiphanie 2027 : couronnes et fèves −5 %
+Price rules that may apply:
+- `prl_0006` Epiphany 2027: almond powder -6 % from 20 kg
+- `prl_0007` Epiphany 2027: crowns and beans -5 %
 
-Dernières notes CRM :
+Latest notes CRM:
 
-Aucune.
+None.

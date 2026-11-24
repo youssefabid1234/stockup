@@ -8,9 +8,9 @@ TEAM_PRODUCT_INSIGHT, read when tools are registered (restart needed). See docs/
 | Switch                 | Owner          | Brick                                                        |
 |------------------------|----------------|--------------------------------------------------------------|
 | TEAM_FILLERS           | Mohamed Amine  | services/fillers.py: classic (1), fast restatement (2), combined (3), no silence (4) |
-| TEAM_ORCHESTRATOR      | Youssef        | agent/orchestrator.py: fast "speaker" agent + "brain" agent  |
-| TEAM_PRELOAD           | Youssef        | agent/call_context.py: client sheet loaded once, in parallel |
-| TEAM_PRODUCT_INSIGHT   | Youssef        | tools/product_insight.py: stock + price + substitutes + promo |
+| TEAM_ORCHESTRATOR      - Youssef agent/orchestrator.py: fast "speaker" agent + "brain" agent  |
+| TEAM_PRELOAD           - Youssef agent/call_context.py: client sheet loaded once, in parallel |
+| TEAM_PRODUCT_INSIGHT   - Youssef tools/product_insight.py: stock + price + substitutes + promo |
 | TEAM_ORDER_RULES       | Amine Khalil   | agent/rules_order.py: jargon, usual, readback, checks         |
 | TEAM_SALES_RULES       | Daycem         | agent/rules_sales.py: preferences, consent, persuasion, tone  |
 """

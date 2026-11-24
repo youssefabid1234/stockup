@@ -2,7 +2,7 @@
 
 Read this first, then the files it points to. It applies to Claude Code, Cursor, Codex and any other coding agent.
 
-## Team 12 – règles d'équipe
+## Team 12 – Team Rules
 
 > These team rules come first. Then read the team plan [docs/team/README.md](docs/team/README.md), the contracts
 > [docs/team/interfaces.md](docs/team/interfaces.md) and **your human's task sheet** in [docs/team/tasks/](docs/team/tasks/)

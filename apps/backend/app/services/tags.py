@@ -10,7 +10,7 @@ from app.core.db import Doc, transactional
 from app.core.errors import bad_request, conflict, not_found
 from app.core.utils import fmt_eur, locale_cmp, sort_by
 
-SCOPE_FR = {"client": "clients", "supplier": "fournisseurs", "product": "produits"}
+SCOPE_FR = {"client": "clients", "supplier": "fournisseurs", "product": "products"}
 
 
 def _entities_of(scope: str) -> list[Doc]:
@@ -42,15 +42,15 @@ def check_tags(scope: str, tags: list[str] | None, existing: list[str] | None = 
     """400 if a tag is not defined for that scope (tags already on the entity are tolerated)."""
     for t in tags or []:
         if t not in (existing or []) and not crud.tags.get(f"{scope}|{t}"):
-            raise bad_request("unknown_tag", f"Groupe inconnu ({scope}) : {t}")
+            raise bad_request("unknown_tag", f"Unknown group ({scope}) : {t}")
 
 
 @transactional
 def create_tag(ctx: Ctx, tag: Doc) -> Doc:
     if crud.tags.get(f"{tag['scope']}|{tag['id']}"):
-        raise conflict("tag_exists", f"Le groupe {tag['id']} existe déjà")
+        raise conflict("tag_exists", f"The group {tag['id']} already exists")
     crud.tags.put(tag)
-    log_event(ctx, "tag.created", tag["scope"], tag["id"], f"Nouveau groupe de {SCOPE_FR[tag['scope']]} : {tag['label']}")
+    log_event(ctx, "tag.created", tag["scope"], tag["id"], f"New group of {SCOPE_FR[tag['scope']]} : {tag['label']}")
     return tag
 
 
@@ -58,9 +58,9 @@ def create_tag(ctx: Ctx, tag: Doc) -> Doc:
 def update_tag(ctx: Ctx, scope: str, id: str, patch: Doc) -> Doc:
     tag = crud.tags.get(f"{scope}|{id}")
     if not tag:
-        raise not_found("Groupe", f"{scope}/{id}")
+        raise not_found("Group", f"{scope}/{id}")
     updated = crud.tags.put({**tag, **patch})
-    log_event(ctx, "tag.updated", scope, id, f"Groupe de {SCOPE_FR[scope]} « {updated['label']} » modifié")
+    log_event(ctx, "tag.updated", scope, id, f"Group of {SCOPE_FR[scope]} « {updated['label']} » amended")
     return updated
 
 
@@ -69,13 +69,13 @@ def delete_tag(ctx: Ctx, scope: str, id: str) -> Doc:
     """Delete a tag def and remove it from every entity of that scope. Rules targeting it stop matching."""
     tag = crud.tags.get(f"{scope}|{id}")
     if not tag:
-        raise not_found("Groupe", f"{scope}/{id}")
+        raise not_found("Group", f"{scope}/{id}")
     crud.tags.delete(f"{scope}|{id}")
     table = {"client": crud.clients, "supplier": crud.suppliers, "product": crud.products}[scope]
     for e in table.all():
         if id in (e.get("tags") or []):
             table.put({**e, "tags": [t for t in e["tags"] if t != id]})
-    log_event(ctx, "tag.deleted", scope, id, f"Groupe de {SCOPE_FR[scope]} « {tag['label']} » supprimé")
+    log_event(ctx, "tag.deleted", scope, id, f"Group of {SCOPE_FR[scope]} « {tag['label']} » deleted")
     return {"ok": True}
 
 
@@ -88,11 +88,11 @@ def update_product(ctx: Ctx, id: str, patch: Doc) -> Doc:
     p = crud.products.require(id)
     check_tags("product", patch.get("tags"), p.get("tags"))
     updated = crud.products.put({**p, **patch})
-    summary = f"Produit {p['name']} modifié ({', '.join(patch)})"
+    summary = f"Product {p['name']} amended ({', '.join(patch)})"
     if "price" in patch and patch["price"] != p["price"]:
-        summary = f"Prix catalogue de {p['name']} : {fmt_eur(p['price'])} → {fmt_eur(patch['price'])}"
+        summary = f"Catalogue price of {p['name']} : {fmt_eur(p['price'])} → {fmt_eur(patch['price'])}"
     elif "tags" in patch:
-        summary = f"Groupes de {p['name']} : {_labels('product', patch['tags'])}"
+        summary = f"Groups of {p['name']} : {_labels('product', patch['tags'])}"
     log_event(ctx, "product.price_changed" if "price" in patch else "product.updated", "product", id, summary)
     return updated
 
@@ -103,9 +103,9 @@ def update_supplier(ctx: Ctx, id: str, patch: Doc) -> Doc:
     check_tags("supplier", patch.get("tags"), s.get("tags"))
     updated = crud.suppliers.put({**s, **patch})
     if "tags" in patch:
-        summary = f"Groupes du fournisseur {s['name']} : {_labels('supplier', patch['tags'])}"
+        summary = f"Provider groups {s['name']} : {_labels('supplier', patch['tags'])}"
     else:
-        summary = f"Fournisseur {s['name']} modifié ({', '.join(patch)})"
+        summary = f"Supplier {s['name']} amended ({', '.join(patch)})"
     log_event(ctx, "supplier.updated", "supplier", id, summary)
     return updated
 

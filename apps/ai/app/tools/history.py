@@ -32,13 +32,13 @@ def open_first(events: list[dict]) -> list[dict]:
 
 
 Severity = Literal["low", "medium", "high"]
-LIMIT = Field(None, description="Nombre max d'événements (défaut 20)")
+LIMIT = Field(None, description="Max number of events (default 20)")
 
 # ── Clients ──
 
 CLIENT_TYPES = (
-    "complaint, quality_issue, delivery_issue, return, credit_note, dispute, late_payment, payment_plan, price_negotiation, "
-    "special_request, menu_change, contact_change, compliment, churn_risk, won_back, call, visit, onboarding, note"
+    "complaint, quality_issue, delivery_issue, return, credit_note, fight, late_payment, payment_plan, price_negotiation, "
+    "special_request, menu_change, contact_change, compliments, churn_risk, won_back, call, visit, onboarding, note"
 )
 ClientEventType = Literal[
     "complaint", "quality_issue", "delivery_issue", "return", "dispute", "late_payment", "special_request",
@@ -50,12 +50,12 @@ ClientEventType = Literal[
 async def get_client_history(
     ctx: ToolContext,
     client_id: str = Field(description="ex. cli_0012"),
-    types: list[str] | None = Field(None, description=f"Optionnel : filtrer par type ({CLIENT_TYPES})"),
+    types: list[str] | None = Field(None, description=f"Optional: Filter by type ({CLIENT_TYPES})"),
     limit: float | None = LIMIT,
 ) -> list[dict]:
     """
-    Historique de la relation avec un client (peut couvrir des années) : réclamations, retours, litiges, retards de paiement, appels, visites…
-    Problèmes ouverts en premier, puis du plus récent au plus ancien. À consulter avant de parler à un client mécontent ou pour savoir « ce qui s'est passé ».
+    History of the relationship with a customer (can cover years): claims, returns, disputes, late payment, calls, visits...
+    Problems opened first, then from the latest to the oldest. To consult before talking to a discontented client or to know "what happened".
     Client relationship history, open issues first.
     """
     n = min(int(limit or 20), 500)
@@ -69,15 +69,15 @@ async def log_client_event(
     ctx: ToolContext,
     client_id: str,
     type: ClientEventType,
-    title: str = Field(description="Ligne courte en français, ex. « Réclamation : colis abîmé à la livraison »"),
-    description: str | None = Field(None, description="Ce qui s'est passé, en français, peut citer le client"),
+    title: str = Field(description="Short line in English, e.g. \"Claim: parcel damaged on delivery\""),
+    description: str | None = Field(None, description="What happened in English can be cited as the client"),
     severity: Severity | None = None,
-    order_id: str | None = Field(None, description="Optionnel : commande concernée (ord_…)"),
+    order_id: str | None = Field(None, description="Optional: command concerned (or_...)"),
 ) -> dict:
     """
-    Enregistre un événement dans l'historique du client, ex. une réclamation pendant l'appel (« le colis est arrivé abîmé »).
+    Record an event in the customer's history, e.g. a complaint during the call ("the package has arrived damaged").
     Les réclamations, problèmes qualité/livraison, retours, litiges sont créés « ouverts » pour être traités par l'équipe.
-    Reformule fidèlement ce que dit le client, sans promettre de geste commercial. Record a client event (e.g. a complaint).
+    Rewords exactly what the customer says, without promising any commercial gesture. Record a client event (e.g. a complacent).
     """
     body = {"type": type, "title": title, "description": description, "severity": severity, "orderId": order_id}
     event = await ctx.erp.post(f"/api/clients/{enc(client_id)}/events", without_none(body))
@@ -87,7 +87,7 @@ async def log_client_event(
 # ── Suppliers ──
 
 SUPPLIER_TYPES = (
-    "quality_issue, delivery_issue, shortage, return, credit_note, dispute, price_change, price_negotiation, invoice_issue, "
+    "quality_issue, delivery_issue, shortage, return, credit_note, fight, price_change, price_negotiation, invoice_issue, "
     "payment, contract, certification, contact_change, compliment, call, visit, onboarding, note"
 )
 SupplierEventType = Literal[
@@ -99,12 +99,12 @@ SupplierEventType = Literal[
 async def get_supplier_history(
     ctx: ToolContext,
     supplier_id: str = Field(description="ex. sup_0003"),
-    types: list[str] | None = Field(None, description=f"Optionnel : filtrer par type ({SUPPLIER_TYPES})"),
+    types: list[str] | None = Field(None, description=f"Optional: Filter by type ({SUPPLIER_TYPES})"),
     limit: float | None = LIMIT,
 ) -> list[dict]:
     """
-    Historique de la relation avec un fournisseur : problèmes qualité, retards, ruptures, hausses de prix, litiges, contrats…
-    Problèmes ouverts en premier, puis du plus récent au plus ancien. Supplier relationship history, open issues first.
+    History of the relationship with a supplier: quality problems, delays, breaks, price increases, disputes, contracts...
+    Problems opened first, then from the latest to the oldest. Supplier relationship history, open issues first.
     """
     n = min(int(limit or 20), 500)
     # sort=open: open issues first, then newest first; only the first n come back (the API pages its lists).
@@ -117,14 +117,14 @@ async def log_supplier_event(
     ctx: ToolContext,
     supplier_id: str,
     type: SupplierEventType,
-    title: str = Field(description="Ligne courte en français, ex. « Produit livré non conforme »"),
+    title: str = Field(description="Short line in English, e.g. \"Product delivered not compliant\""),
     description: str | None = None,
     severity: Severity | None = None,
-    purchase_order_id: str | None = Field(None, description="Optionnel : commande fournisseur concernée (po_…)"),
+    purchase_order_id: str | None = Field(None, description="Optional: relevant supplier order (po_...)"),
 ) -> dict:
     """
-    Enregistre un événement dans l'historique d'un fournisseur, ex. un lot de mauvaise qualité, une livraison incomplète, une rupture.
-    Les problèmes sont créés « ouverts ». Record a supplier event (quality issue, shortage, price change…).
+    Record an event in a supplier's history, e.g., poor quality batch, incomplete delivery, failure.
+    The problems are created "open". Record a beg event (quality issue, shortage, price change...).
     """
     body = {"type": type, "title": title, "description": description, "severity": severity, "purchaseOrderId": purchase_order_id}
     event = await ctx.erp.post(f"/api/suppliers/{enc(supplier_id)}/events", without_none(body))

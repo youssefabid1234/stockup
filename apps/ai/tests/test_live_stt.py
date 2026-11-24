@@ -25,7 +25,7 @@ from app.services import command, utterance, vocabulary, voice_session
 from app.services.utterance import Utterance
 from app.tools.erp import ErpClient
 
-WORDS = ["Il", " vous", " reste", " du", " bar", " ?"]
+WORDS = ["Do", " you", " have", " du", " bar", " ?"]
 
 # ── fake Soniox server ──
 
@@ -101,28 +101,28 @@ async def test_soniox_partials_arrive_while_streaming_then_finalize(soniox):
     fake = await soniox()
     queue: asyncio.Queue = asyncio.Queue()
     updates = []
-    stream = fake.stt().transcribe_stream(live(queue), "audio/webm", hint="Lemoine, bar de ligne")
+    stream = fake.stt().transcribe_stream(live(queue), "audio/webm", hint="Lemoine, line-caught bass")
     for i in range(3):  # three frames, each answered BEFORE the end of the audio
         await queue.put(b"webm%d" % i)
         updates.append(await anext(stream))
-    assert [u.text for u in updates] == ["Il", "Il vous", "Il vous reste"]
-    assert [u.stable for u in updates] == ["", "Il", "Il vous"] and not any(u.final for u in updates)
+    assert [u.text for u in updates] == ["Do", "Do you", "Do you have"]
+    assert [u.stable for u in updates] == ["", "Do", "Do you"] and not any(u.final for u in updates)
 
     await queue.put(None)  # key released → finalize → <fin>
     last = await anext(stream)
-    assert last == STTUpdate("Il vous reste", final=True, stable="Il vous reste")
+    assert last == STTUpdate("Do you have", final=True, stable="Do you have")
     await stream.aclose()
     await asyncio.wait_for(fake.closed.wait(), 2)  # socket closed once the final words are in
     assert fake.start == {
-        "model": "stt-rt-v6", "audio_format": "auto", "language_hints": ["fr"], "enable_endpoint_detection": True, "enable_speaker_diarization": True,
-        "context": {"terms": ["Lemoine", "bar de ligne"]},
+        "model": "stt-rt-v6", "audio_format": "auto", "language_hints": ["en"], "enable_endpoint_detection": True, "enable_speaker_diarization": True,
+        "context": {"terms": ["Lemoine", "line-caught bass"]},
     }  # fmt: skip
     assert fake.frames == [b"webm0", b"webm1", b"webm2"]
 
 
 async def test_soniox_whole_recording_uses_the_same_path(soniox):
     fake = await soniox()
-    assert await fake.stt().transcribe(b"x" * 10, "audio/webm") == "Il"  # one chunk = one word in the fake
+    assert await fake.stt().transcribe(b"x" * 10, "audio/webm") == "Do"  # one chunk = one word in the fake
 
 
 async def test_soniox_error_message_is_a_provider_error(soniox):
@@ -185,8 +185,8 @@ async def test_utterance_streams_and_finalizes(soniox):
     for f in (b"a", b"b"):
         u.feed(f)
     await asyncio.sleep(0.2)
-    assert partials == ["Il", "Il vous"]  # shown while the key is still down
-    assert await u.text() == "Il vous"
+    assert partials == ["Do", "Do you"]  # shown while the key is still down
+    assert await u.text() == "Do you"
 
 
 class Recorder(STTClient):
@@ -199,7 +199,7 @@ class Recorder(STTClient):
 
     async def transcribe(self, audio, mime, hint=None):
         self.batch.append(audio)
-        return "texte complet"
+        return "full text"
 
     async def transcribe_stream(self, audio, mime, hint=None):
         async for _ in audio:
@@ -222,7 +222,7 @@ async def test_utterance_falls_back_to_the_whole_recording_when_live_breaks():
     u = Utterance(stt, "audio/webm", None, no_partial)
     u.feed(b"ab")
     u.feed(b"cd")
-    assert await u.text() == "texte complet" and stt.batch == [b"abcd"]
+    assert await u.text() == "full text" and stt.batch == [b"abcd"]
 
 
 async def test_utterance_falls_back_when_the_final_words_never_come(monkeypatch):
@@ -230,7 +230,7 @@ async def test_utterance_falls_back_when_the_final_words_never_come(monkeypatch)
     stt = Recorder("hang")
     u = Utterance(stt, "audio/webm", None, no_partial)
     u.feed(b"ab")
-    assert await u.text() == "texte complet" and u.live.cancelled()
+    assert await u.text() == "full text" and u.live.cancelled()
 
 
 async def test_utterance_without_streaming_transcribes_at_the_end():
@@ -240,7 +240,7 @@ async def test_utterance_without_streaming_transcribes_at_the_end():
     stt = Batch("fail")
     u = Utterance(stt, "audio/webm", None, no_partial)
     u.feed(b"ab")
-    assert u.live is None and await u.text() == "texte complet"
+    assert u.live is None and await u.text() == "full text"
 
 
 # ── WS /voice and WS /voice/command with the mock STT (partials offline) ──
@@ -260,7 +260,7 @@ async def say_ok(messages, **kwargs):
 @pytest.fixture
 def app(monkeypatch):
     for mod in (voice_session, command):
-        monkeypatch.setattr(mod, "get_stt_client", lambda: MockSTT("un deux trois quatre", chunks_per_word=1))
+        monkeypatch.setattr(mod, "get_stt_client", lambda: MockSTT("one two three four", chunks_per_word=1))
         monkeypatch.setattr(mod, "get_tts_client", lambda: MockTTS())
         monkeypatch.setattr(mod, "get_llm_client", lambda: FakeLLM())
         monkeypatch.setattr(mod, "run_agent", say_ok)
@@ -291,12 +291,12 @@ def test_voice_ws_sends_partials_then_the_final_transcript(app):
             ws.send_bytes(b"frame%d" % i)
             partials.append(ws.receive_json())  # arrives before audio_end
         assert partials == [
-            {"type": "transcript", "track": "caller", "text": "un", "final": False, "stable": ""},
-            {"type": "transcript", "track": "caller", "text": "un deux", "final": False, "stable": "un"},
+            {"type": "transcript", "track": "caller", "text": "one", "final": False, "stable": ""},
+            {"type": "transcript", "track": "caller", "text": "one two", "final": False, "stable": "one"},
         ]
         ws.send_json({"type": "audio_end"})
         msgs = receive_until(ws, "agent_done")
-        assert msgs[0] == {"type": "transcript", "track": "caller", "text": "un deux trois quatre", "final": True}
+        assert msgs[0] == {"type": "transcript", "track": "caller", "text": "one two three four", "final": True}
         assert msgs[-1]["timings"]["sttMs"] < 500
 
 
@@ -304,11 +304,11 @@ def test_command_ws_streams_partials_then_the_command_events(app):
     with app.websocket_connect("/voice/command") as ws:
         ws.send_json({"type": "audio_start", "mime": "audio/webm"})
         ws.send_bytes(b"frame")
-        assert ws.receive_json() == {"type": "transcript", "text": "un", "ms": 0, "final": False, "stable": ""}
+        assert ws.receive_json() == {"type": "transcript", "text": "one", "ms": 0, "final": False, "stable": ""}
         ws.send_json({"type": "audio_end"})
         msgs = receive_until(ws, "done")
         assert [m["type"] for m in msgs] == ["transcript", "text", "done"]
-        assert msgs[0]["text"] == "un deux trois quatre" and msgs[0]["final"] is True
+        assert msgs[0]["text"] == "one two three four" and msgs[0]["final"] is True
 
 
 # ── vocabulary ──
@@ -323,19 +323,19 @@ async def test_company_terms_from_the_erp(monkeypatch):
     def handler(req: httpx.Request) -> httpx.Response:
         seen.append((req.url.path, req.url.params.get("limit")))
         if req.url.path == "/api/products":
-            return httpx.Response(200, json=[{"name": "Bar de ligne 1-2 kg", "aliases": ["loup", "Bar"]}, {"name": "Turbot, sauvage"}])
-        return httpx.Response(200, json=[{"name": "Lemoine"}, {"name": "LOUP"}])
+            return httpx.Response(200, json=[{"name": "Line-caught bass 1-2 kg", "aliases": ["bass", "Bar"]}, {"name": "Wild, turbot"}])
+        return httpx.Response(200, json=[{"name": "Lemoine"}, {"name": "BASS"}])
 
     erp = ErpClient("voice_agent", base_url="http://erp", http=httpx.AsyncClient(transport=httpx.MockTransport(handler)))
-    assert await vocabulary.company_terms(erp) == ["Lemoine", "LOUP", "Bar de ligne 1-2 kg", "Turbot sauvage", "Bar"]
+    assert await vocabulary.company_terms(erp) == ["Lemoine", "BASS", "Line-caught bass 1-2 kg", "Wild turbot", "Bar"]
     assert sorted(seen) == [("/api/clients", "500"), ("/api/products", "500")]
     vocabulary.reset_cache()
 
 
 async def test_stt_hint_merges_the_callers_hint_but_not_for_the_mock(monkeypatch):
     async def terms():
-        return ["Lemoine", "loup"]
+        return ["Lemoine", "bass"]
 
     monkeypatch.setattr(vocabulary, "company_terms", terms)
-    assert await vocabulary.stt_hint("soniox", "cèpes") == "cèpes, Lemoine, loup"
-    assert await vocabulary.stt_hint("mock", "il vous reste des cèpes ?") == "il vous reste des cèpes ?"
+    assert await vocabulary.stt_hint("soniox", "porcini") == "porcini, Lemoine, bass"
+    assert await vocabulary.stt_hint("mock", "do you have any porcini ?") == "do you have any porcini ?"

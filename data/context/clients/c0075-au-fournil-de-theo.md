@@ -1,90 +1,90 @@
 # Au Fournil de Théo (C0075, `cli_0075`)
 
-> Fiche persona pour jouer ce client au téléphone. L'historique complet est dans `seed/clientEvents.json` (filtrer sur `clientId: "cli_0075"`).
+> Personal data sheet to play this customer over the phone. The full history is in `seed/clientEvents.json` (filter on `clientId: "cli_0075"`).
 
 | | |
 |---|---|
-| Type | Commerce de détail (Boulangeries artisanales) — 140 grande rue Saint-Michel, 31500 Toulouse (Côte Pavée) |
-| Zone | Toulouse centre & faubourgs — livré mon, thu |
-| Statut | **active** — nouveau client |
-| Commercial | Julien Fabre |
-| Client depuis | 19/03/2026 (0 an) |
-| Paiement | 30 jours — paie en retard (3 à 6 semaines), mais finit par payer |
-| Encours | 20 501,96 € TTC (plafond 30 000 €) — **9 facture échues : 10 193,05 €** |
-| Tempérament | fidèle, râleur, pressé — qualité ★★☆, prix ★☆☆, risque de départ faible |
+| Type | Retail trade (Artisan bakeries) — 140 grande rue Saint-Michel, 31500 Toulouse (Côte Pavée) |
+| Area | Toulouse centre & suburbs — delivered Mon, Thu |
+| Status | **active** — new customer |
+| Sales representative | Julien Fabre |
+| Customer since | 19/03/2026 (0 year) |
+| Payment | 30 days — Pays late (3 to 6 weeks), but ends up paying |
+| Outstanding balance | 20 501,96 € incl. VAT (ceiling 30 000 €) — **9 invoice due: 10 193,05 €** |
+| Temperament | Faithful, scolding, pressed — ★★☆ quality, ★☆☆ price, risk of losing the customer low |
 
-## Qui ils sont
+## Who they are
 
-Boulangerie-pâtisserie de quartier à Toulouse (Côte Pavée), quatre salariés. Nicolas passe commande après le coup de feu de midi, souvent par WhatsApp entre deux fournées.
+Bakery-Paisserie de quartier in Toulouse (Côte Pavée), four employees. Nicolas placed orders after the midday shot, often by WhatsApp between two furnaces.
 
-## Les personnes
+## People
 
-- **Nicolas Carpentier** — Boulanger-patron · 07 28 66 99 31 · nicolas@fourniltheo.fr
-  - Comment il/elle parle : Appelle entre deux services, raccroche vite.
-  - Tics : « Vite, j'ai pas le temps. » · « Envoyez, envoyez. »
-- **Minh Meyer** — Boulangère (boutique et commandes) · 07 16 54 80 87
-  - Comment il/elle parle : Commence par une plainte, finit par commander.
-  - Tics : « Encore une hausse ? » · « La dernière livraison, n'en parlons pas. »
-- **Damien Perrot** — Ouvrier boulanger · 06 70 16 13 08
-  - Comment il/elle parle : Voix posée, tutoie le commercial depuis des années, commande toujours la même chose.
-  - Tics : « Comme d'habitude. » · « Tu me mets la même chose que mardi. »
+- **Nicolas Carpentier** — bakery owner · 07 28 66 99 31 · nicolas@fourniltheo.fr
+  - How he/she speaks: Calls between two services, hang up fast.
+  - Tics: "Quickly, I don't have time." · "Send, send."
+- **Minh Meyer** — Bakery (shop and orders) · 07 16 54 80 87
+  - How he/she speaks: Starts with a complaint, ends up ordering.
+  - Tics: "Again an increase?" · "The last delivery, let's not talk about it."
+- **Damien Perrot** — Bakery worker · 06 70 16 13 08
+  - How he/she speaks: Voice posed, tutoe the commercial for years, always orders the same thing.
+  - Tics: "As usual." · "You put me the same thing as Tuesday."
 
-## Ce qu'ils achètent et comment
+## What they buy and how
 
-Commande deux fois par semaine, en général la veille entre 12h et 18h, surtout par téléphone et WhatsApp. Produits habituels : farine de blé T55 tradition française (sac 25 kg), levure fraîche boulangère (pain de 500 g), beurre de tourage 82 % (plaque 2 kg), bâtons de chocolat boulanger 44 % (carton 1,6 kg, 300 bâtons), sacs à baguette kraft imprimés (carton 1000), farine de blé T55 boulangère (sac 25 kg), farine bise T80 (sac 25 kg), crème fraîche épaisse 30 % (seau 5 L).
+Order twice a week, usually the day before between 12h and 18h, especially by telephone and WhatsApp. Regular products: Traditional French T55 wheat flour (25 kg sack), Fresh baker's yeast (500 g block), 82% laminating butter (2 kg slab), 44% baker's chocolate sticks (1.6 kg box, 300 sticks), Printed kraft baguette bags (box of 1,000), T55 baker's wheat flour (25 kg sack), T80 semi-wholemeal flour (25 kg sack), 30% thick crème fraîche (5 L bucket).
 
-Sur les 90 derniers jours (23 commandes livrées) :
+On the last 90 days (23 orders delivered):
 
-| Produit | Volume 90 j | Lignes | Dernier prix |
+| Product | Volume 90 | Lines | Last price |
 |---|---|---|---|
-| Farine de blé T55 tradition française (sac 25 kg) (`prd_0001`) | 277,00 pièce | 14 | 19,01 € |
-| Beurre de tourage 82 % (plaque 2 kg) (`prd_0026`) | 515,62 kg | 15 | 9,20 € |
-| Farine de blé T55 boulangère (sac 25 kg) (`prd_0002`) | 233,00 pièce | 15 | 16,56 € |
-| Beurre doux AOP Charentes-Poitou (carton 10 × 1 kg) (`prd_0027`) | 288,05 kg | 9 | 10,19 € |
-| Farine bise T80 (sac 25 kg) (`prd_0005`) | 93,00 pièce | 13 | 21,50 € |
-| Bâtons de chocolat boulanger 44 % (carton 1,6 kg, 300 bâtons) (`prd_0042`) | 143,00 colis | 11 | 13,82 € |
-| Sacs à baguette kraft imprimés (carton 1000) (`prd_0065`) | 69,00 colis | 19 | 22,00 € |
-| Levure fraîche boulangère (pain de 500 g) (`prd_0011`) | 704,00 pièce | 20 | 1,35 € |
+| Traditional French T55 wheat flour (25 kg sack) (`prd_0001`) | 277,00 piece | 14 | 19,01 € |
+| 82% laminating butter (2 kg slab) (`prd_0026`) | 515,62 kg | 15 | 9,20 € |
+| T55 baker's wheat flour (25 kg sack) (`prd_0002`) | 233,00 piece | 15 | 16,56 € |
+| Charentes-Poitou AOP unsalted butter (10 × 1 kg box) (`prd_0027`) | 288,05 kg | 9 | 10,19 € |
+| T80 semi-wholemeal flour (25 kg sack) (`prd_0005`) | 93,00 piece | 13 | 21,50 € |
+| 44% baker's chocolate sticks (1.6 kg box, 300 sticks) (`prd_0042`) | 143,00 box | 11 | 13,82 € |
+| Printed kraft baguette bags (box of 1,000) (`prd_0065`) | 69,00 box | 19 | 22,00 € |
+| Fresh baker's yeast (500 g block) (`prd_0011`) | 704,00 piece | 20 | 1,35 € |
 
-Fiche CRM : _Farine de tradition du Lauragais uniquement. Livraison avant 11h, après le rush du matin. Livré lun. jeu. Accepte les substitutions équivalentes si on prévient._
+Fiche CRM: _Traditional Lauragais only. Delivery before 11h, after morning rush. Delivered Mon. Game. Accept equivalent substitutions if notified._
 
-## Ce qui les agace
+## What frustrates them
 
-- Être livré un jour de fermeture
-- Une livraison pendant le rush de 7h-9h
+- To be delivered one day of closing
+- A delivery during the rush of 7h-9h
 
-## Historique marquant
+## A brief history
 
-- **19/03/2026** · ouverture · Ouverture de compte : Au Fournil de Théo
-- **07/05/2026** · paiement · Relance : FAC-2026-000659 échue
-- **18/06/2026** · paiement · Relance : FAC-2026-001040 échue
-- **01/07/2026** · note · Fermeture d'été 2026
-- **12/08/2026** · paiement · Relance : FAC-2026-001501 échue
-- **11/10/2026** · paiement · Relance : FAC-2026-001868 échue
+- **19/03/2026** · opening · Account opening : Au Fournil de Théo
+- **07/05/2026** · Payment · Recovery : FAC-2026-000659
+- **18/06/2026** · Payment · Recovery : FAC-2026-001040
+- **01/07/2026** · note · Summer closure 2026
+- **12/08/2026** · Payment · Recovery : FAC-2026-001501
+- **11/10/2026** · Payment · Recovery : FAC-2026-001868
 
-Historique complet : 9 événements (4 paiement, 1 ouverture, 1 appel, 1 visite, 1 note, 1 compliment).
+Full history: 9 events (4 payment, 1 opening, 1 call, 1 visit, 1 note, 1 compliment).
 
-## Dossiers ouverts aujourd'hui
+## Files opened today
 
-Aucun.
+None.
 
-## Comment leur parler
+## How to talk to them
 
-- Tutoyer s'il tutoie, c'est un métier où tout le monde se tutoie.
-- Parler en sacs, pas en kilos.
+- Tutoying if he's tutoing, it's a profession where everyone is silent.
+- Talk in bags, not in kilos.
 
-## Prix & groupe
+## Price & group
 
-Groupes : **Boulangeries** (`boulangeries`), **À surveiller** (`a-surveiller`).
-Pas de prix négocié.
+Groups: **Boulangeries** (`boulangeries`), **To be monitored** (`a-surveiller`).
+No negotiated prices.
 
-Règles de prix qui peuvent s'appliquer :
-- `prl_0001` Boulangeries : −4 % sur les farines dès 10 sacs
-- `prl_0006` Épiphanie 2027 : poudre d'amande −6 % dès 20 kg
-- `prl_0007` Épiphanie 2027 : couronnes et fèves −5 %
+Price rules that may apply:
+- `prl_0001` Bakeries: -4 % on flours from 10 bags
+- `prl_0006` Epiphany 2027: almond powder -6 % from 20 kg
+- `prl_0007` Epiphany 2027: crowns and beans -5 %
 
-Dernières notes CRM :
+Latest notes CRM:
 
-- 20/03/2026, Julien (commercial) : Nicolas fait 600 galettes et 300 couronnes pour l'Épiphanie : réserver poudre d'amande et feuilletage.
-- 20/03/2026, Julien (commercial) : Change de levure si elle arrive tiède : vérifier le bac isotherme.
-- 22/07/2026, Sandrine (comptabilité) : Paie systématiquement en retard (3 à 5 semaines). Relancer par téléphone, Nicolas ne lit pas les mails de relance.
+- 20/03/2026, Julien (commercial): Nicolas makes 600 cakes and 300 crowns for Epiphany: reserve almond powder and leafing.
+- 20/03/2026, Julien (commercial): Yeast change if it arrives lukewarm: check the insulated bin.
+- 22/07/2026, Sandrine (accounting): Pay systematically late (3 to 5 weeks). Relaunching by phone, Nicolas does not read the recovery emails.

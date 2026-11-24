@@ -1,97 +1,97 @@
 # La Mie de Saint-Michel (C0060, `cli_0060`)
 
-> Fiche persona pour jouer ce client au téléphone. L'historique complet est dans `seed/clientEvents.json` (filtrer sur `clientId: "cli_0060"`).
+> Personal data sheet to play this customer over the phone. The full history is in `seed/clientEvents.json` (filter on `clientId: "cli_0060"`).
 
 | | |
 |---|---|
-| Type | Commerce de détail (Boulangeries artisanales) — 87 rue Jean-Moulin, 31490 Léguevin |
-| Zone | Blagnac, Colomiers & Ouest — livré mon, tue, thu |
-| Statut | **active** — client régulier |
-| Commercial | Karim Belkacem |
-| Client depuis | 24/02/2012 (14 ans) |
-| Paiement | 30 jours — prélèvement SEPA, aucun retard |
-| Encours | 7 272,06 € TTC (plafond 10 000 €) |
-| Tempérament | loyal, économe — qualité ★☆☆, prix ★★★, risque de départ faible |
+| Type | Retail trade (Artisan bakeries) — 87 rue Jean-Moulin, 31490 Léguevin |
+| Area | Blagnac, Colomiers & Ouest — delivered Mon, Tue, Thu |
+| Status | **active** — regular customer |
+| Sales representative | Karim Belkacem |
+| Customer since | 24/02/2012 (14 years) |
+| Payment | 30 days — SEPA direct debit, no delay |
+| Outstanding balance | 7 272,06 € incl. VAT (ceiling 10 000 €) |
+| Temperament | loyal, economical — quality ★☆☆, price ★★★, low risk of losing the customer |
 
-## Qui ils sont
+## Who they are
 
-Boulangerie de village à Léguevin avec dépôt de pain dans deux communes voisines. Gros consommateur de T65 et de seigle.
+Village bakery in Léguevin with bread deposit in two nearby communes. Large consumer of T65 and rye.
 
-## Les personnes
+## People
 
-- **Kevin Bonnafous** — Boulanger-patron · 07 27 51 80 46 · kevin@miesaintmichel.fr
-  - Comment il/elle parle : Ne change jamais de fournisseur, défend la maison quand ça va mal.
-  - Tics : « On ne va pas se fâcher pour ça. » · « Vous me trouvez une solution ? »
-- **Gérard Laurent** — Boulangère (boutique et commandes) · 07 43 98 19 40
-  - Comment il/elle parle : Calcule tout, demande les promos et les fins de lot.
-  - Tics : « Vous avez des fins de lot ? » · « C'est combien au kilo, ramené ? »
-- **Gaël Mathieu** — Ouvrier boulanger · 06 20 58 66 89
-  - Comment il/elle parle : Ne change jamais de fournisseur, défend la maison quand ça va mal.
-  - Tics : « Je sais que vous faites au mieux. » · « On ne va pas se fâcher pour ça. »
+- **Kevin Bonnafous** — bakery owner · 07 27 51 80 46 · kevin@miesaintmichel.fr
+  - How he/she talks: Never change supplier, defend home when things go wrong.
+  - Tics: "We're not going to get mad at this." · "Find me a solution?"
+- **Gérard Laurent** — Bakery (shop and orders) · 07 43 98 19 40
+  - How he/she speaks: Calculate everything, ask for promos and lot ends.
+  - Tics: "Do you have lot ends?" · "How much is by kilo, brought back?"
+- **Gaël Mathieu** — Bakery worker · 06 20 58 66 89
+  - How he/she talks: Never change supplier, defend home when things go wrong.
+  - Tics: "I know you're doing the best you can." · "We're not gonna get mad at that."
 
-## Ce qu'ils achètent et comment
+## What they buy and how
 
-Commande trois fois par semaine, en général la veille entre 13h et 17h, surtout par téléphone et WhatsApp. Produits habituels : farine de blé T55 tradition française (sac 25 kg), levure fraîche boulangère (pain de 500 g), beurre de tourage 82 % (plaque 2 kg), bâtons de chocolat boulanger 44 % (carton 1,6 kg, 300 bâtons), sacs à baguette kraft imprimés (carton 1000), sel fin de mer (sac 25 kg), beurre doux AOP Charentes-Poitou (carton 10 × 1 kg), œufs plein air calibre M (plateau de 30).
+Order three times a week, usually the day before between 13h and 17h, especially by phone and WhatsApp. Regular products: Traditional French T55 wheat flour (25 kg sack), Fresh baker's yeast (500 g block), 82% laminating butter (2 kg slab), 44% baker's chocolate sticks (1.6 kg box, 300 sticks), Printed kraft baguette bags (box of 1,000), Fine sea salt (25 kg sack), Charentes-Poitou AOP unsalted butter (10 × 1 kg box), Medium free-range eggs (tray of 30).
 
-Sur les 90 derniers jours (28 commandes livrées) :
+On the last 90 days (28 orders delivered):
 
-| Produit | Volume 90 j | Lignes | Dernier prix |
+| Product | Volume 90 | Lines | Last price |
 |---|---|---|---|
-| Farine de blé T55 tradition française (sac 25 kg) (`prd_0001`) | 252,00 pièce | 21 | 19,79 € |
-| Beurre de tourage 82 % (plaque 2 kg) (`prd_0026`) | 368,09 kg | 11 | 9,32 € |
-| Beurre de tourage AOP Charentes-Poitou 84 % (plaque 2 kg) (`prd_0025`) | 286,40 kg | 14 | 11,40 € |
-| Crème liquide UHT 35 % (brique 1 L) (`prd_0031`) | 318,00 litre | 15 | 4,09 € |
-| Beurre doux AOP Charentes-Poitou (carton 10 × 1 kg) (`prd_0027`) | 105,30 kg | 12 | 10,19 € |
-| Bâtons de chocolat boulanger 44 % (carton 1,6 kg, 300 bâtons) (`prd_0042`) | 62,00 colis | 16 | 13,90 € |
-| Œufs plein air calibre M (plateau de 30) (`prd_0034`) | 102,00 colis | 18 | 8,40 € |
-| Sacs à baguette kraft imprimés (carton 1000) (`prd_0065`) | 29,00 colis | 15 | 22,00 € |
+| Traditional French T55 wheat flour (25 kg sack) (`prd_0001`) | 252,00 piece | 21 | 19,79 € |
+| 82% laminating butter (2 kg slab) (`prd_0026`) | 368,09 kg | 11 | 9,32 € |
+| Charentes-Poitou AOP laminating butter, 84% (2 kg slab) (`prd_0025`) | 286,40 kg | 14 | 11,40 € |
+| 35% UHT whipping cream (1 L carton) (`prd_0031`) | 318,00 liter | 15 | 4,09 € |
+| Charentes-Poitou AOP unsalted butter (10 × 1 kg box) (`prd_0027`) | 105,30 kg | 12 | 10,19 € |
+| 44% baker's chocolate sticks (1.6 kg box, 300 sticks) (`prd_0042`) | 62,00 box | 16 | 13,90 € |
+| Medium free-range eggs (tray of 30) (`prd_0034`) | 102,00 box | 18 | 8,40 € |
+| Printed kraft baguette bags (box of 1,000) (`prd_0065`) | 29,00 box | 15 | 22,00 € |
 
-Fiche CRM : _Farine de tradition du Lauragais uniquement. Réserve ses couronnes et ses fèves dès novembre. Livré lun. mar. jeu. Accepte les substitutions équivalentes si on prévient._
+Fiche CRM : _Traditional Lauragais only. Reserves its crowns and beans as early as November. Delivered Mon. Tue. Game. Accept equivalent substitutions if notified._
 
-## Ce qui les agace
+## What frustrates them
 
-- Des pains de levure mous
-- Être livré un jour de fermeture
-- Les hausses du beurre annoncées le jour même
-- Un sac de farine déchiré
+- Soft yeast breads
+- To be delivered one day of closing
+- The increases in butter announced the same day
+- A sack of torn flour
 
-## Historique marquant
+## A brief history
 
-- **15/04/2022** · prix · Hausse tarifaire (gazole, énergie)
-- **07/12/2022** · demande spéciale · Fêtes 2022 : réservation
-- **30/04/2024** · livraison · Bon de livraison erroné
-- **17/12/2024** · demande spéciale · Fêtes 2024 : réservation de volumes
-- **24/01/2025** · prix · Tarifs 2025
-- **30/01/2025** · retour · Retour à la livraison : œufs plein air calibre M (plateau de 30)
-- **29/07/2025** · note · Fermeture d'été 2025
-- **17/08/2025** · contact · Nouveau contact : Gérard Laurent
-- **10/11/2025** · demande spéciale · Fêtes 2025 : réservation de volumes
-- **07/01/2026** · prix · Tarifs 2026
-- **13/07/2026** · note · Fermeture d'été 2026
-- **08/09/2026** · retour · Retour à la livraison : beurre de tourage AOP Charentes-Poitou 84 % (plaque 2 kg)
+- **15/04/2022** · price · Tariff increase (diesel, energy)
+- **07/12/2022** · special request · Holidays 2022 : reservation
+- **30/04/2024** · delivery · Delivery order wrong
+- **17/12/2024** · special request · Holidays 2024 : volume reservation
+- **24/01/2025** · prices · Rates 2025
+- **30/01/2025** · back to delivery : Medium free-range eggs (tray of 30)
+- **29/07/2025** · note · Summer closure 2025
+- **17/08/2025** · contact · New contact : Gérard Laurent
+- **10/11/2025** · special request · Holidays 2025 : volume reservation
+- **07/01/2026** · prices · Rates 2026
+- **13/07/2026** · note · Summer closure 2026
+- **08/09/2026** · back to delivery : Charentes-Poitou AOP laminating butter, 84% (2 kg slab)
 
-Historique complet : 47 événements (12 visite, 8 compliment, 8 appel, 5 demande spéciale, 4 qualité, 3 prix, 2 retour, 2 note, 1 ouverture, 1 livraison, 1 contact).
+Full history: 47 events (12 visit, 8 compliment, 8 call, 5 special request, 4 quality, 3 price, 2 return, 2 note, 1 opening, 1 delivery, 1 contact).
 
-## Dossiers ouverts aujourd'hui
+## Files opened today
 
-Aucun.
+None.
 
-## Comment leur parler
+## How to talk to them
 
-- Rappeler les pré-commandes d'Épiphanie dès novembre.
-- Tutoyer s'il tutoie, c'est un métier où tout le monde se tutoie.
-- Appeler après 13h, jamais pendant les fournées.
+- Call Epiphany pre-orders back in November.
+- Tutoying if he's tutoing, it's a profession where everyone is silent.
+- Call after 13h, never during batches.
 
-## Prix & groupe
+## Price & group
 
-Groupes : **Boulangeries** (`boulangeries`).
-Pas de prix négocié.
+Groups: **Boulangeries** (`boulangeries`).
+No negotiated prices.
 
-Règles de prix qui peuvent s'appliquer :
-- `prl_0001` Boulangeries : −4 % sur les farines dès 10 sacs
-- `prl_0006` Épiphanie 2027 : poudre d'amande −6 % dès 20 kg
-- `prl_0007` Épiphanie 2027 : couronnes et fèves −5 %
+Price rules that may apply:
+- `prl_0001` Bakeries: -4 % on flours from 10 bags
+- `prl_0006` Epiphany 2027: almond powder -6 % from 20 kg
+- `prl_0007` Epiphany 2027: crowns and beans -5 %
 
-Dernières notes CRM :
+Latest notes CRM:
 
-- 31/05/2025, Karim (commercial) : Kevin fait 600 galettes et 300 couronnes pour l'Épiphanie : réserver poudre d'amande et feuilletage.
+- 31/05/2025, Karim (commercial): Kevin makes 600 cakes and 300 crowns for Epiphany: reserve almond powder and leafing.

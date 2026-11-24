@@ -40,7 +40,7 @@ function OrderView({ order }: { order: OrderDetail }) {
   return (
     <Page>
       <PageHeader
-        breadcrumb={[{ label: "Commandes", to: "/orders" }]}
+        breadcrumb={[{ label: "Orders", to: "/orders" }]}
         title={<span className="font-mono text-[13.5px]">{order.number}</span>}
         meta={<><StatusDot kind="order" value={order.status} /><SourceLabel source={order.source} /></>}
         actions={<LifecycleActions order={order} onConfirmed={setConfirmWarnings} />}
@@ -51,14 +51,14 @@ function OrderView({ order }: { order: OrderDetail }) {
             <DocumentKpis
               doc={doc}
               products={products}
-              partnerHint={<>{order.client.zone || "—"}{order.client.status === "blocked" ? <span className="ml-1.5 text-destructive">· bloqué</span> : null}</>}
-              dateHint={doc.headerEditable ? undefined : order.deliveredAt ? <>Livrée <DateLabel date={order.deliveredAt} format="datetime" /></> : undefined}
-              createdHint={<>{order.createdBy}{order.confirmedAt ? <> · confirmée <DateLabel date={order.confirmedAt} format="relative" /></> : null}</>}
+              partnerHint={<>{order.client.zone || "—"}{order.client.status === "blocked" ? <span className="ml-1.5 text-destructive">· blocked</span> : null}</>}
+              dateHint={doc.headerEditable ? undefined : order.deliveredAt ? <>Delivered <DateLabel date={order.deliveredAt} format="datetime" /></> : undefined}
+              createdHint={<>{order.createdBy}{order.confirmedAt ? <> · confirmed <DateLabel date={order.confirmedAt} format="relative" /></> : null}</>}
             />
           }
           main={<>
             {order.status !== "cancelled" ? (
-              <WarningList warnings={warnings} note={confirmWarnings?.length ? "retour de la confirmation" : undefined} onDismiss={confirmWarnings ? () => setConfirmWarnings(null) : undefined} />
+              <WarningList warnings={warnings} note={confirmWarnings?.length ? "return of confirmation" : undefined} onDismiss={confirmWarnings ? () => setConfirmWarnings(null) : undefined} />
             ) : null}
             <LinesTable doc={doc} products={products} onAlternatives={(l) => setAltLineId(l.id)} />
             <DocumentNote doc={doc} />
@@ -81,13 +81,13 @@ function LifecycleActions({ order, onConfirmed }: { order: OrderDetail; onConfir
   const navigate = useNavigate();
   const inv = [qk.orders.all, qk.dashboard, qk.stock.all, qk.products.all, qk.clients.all, qk.routeRuns.all, qk.invoices.all];
   const confirm = useApiMutation(api.orders.confirm, {
-    success: (d) => `Commande ${d.number} confirmée`, invalidate: inv,
+    success: (d) => `Order ${d.number} confirmed`, invalidate: inv,
     onSuccess: (d) => onConfirmed(d.warnings.length ? d.warnings : null),
   });
-  const prepare = useApiMutation((id: Id) => api.orders.prepare(id), { success: "Commande préparée", invalidate: inv, onSuccess: () => onConfirmed(null) });
-  const deliver = useApiMutation(api.orders.deliver, { success: "Commande livrée", invalidate: inv, onSuccess: () => onConfirmed(null) });
-  const invoice = useApiMutation(api.orders.invoice, { success: (i) => `Facture ${i.number} émise`, invalidate: inv });
-  const cancel = useApiMutation(api.orders.cancel, { success: "Commande annulée", invalidate: inv, onSuccess: () => onConfirmed(null) });
+  const prepare = useApiMutation((id: Id) => api.orders.prepare(id), { success: "Prepared order", invalidate: inv, onSuccess: () => onConfirmed(null) });
+  const deliver = useApiMutation(api.orders.deliver, { success: "Order delivered", invalidate: inv, onSuccess: () => onConfirmed(null) });
+  const invoice = useApiMutation(api.orders.invoice, { success: (i) => `Invoice ${i.number} Issued`, invalidate: inv });
+  const cancel = useApiMutation(api.orders.cancel, { success: "Order cancelled", invalidate: inv, onSuccess: () => onConfirmed(null) });
   const [armCancel, setArmCancel] = useArm();
 
   const busy = confirm.isPending || prepare.isPending || deliver.isPending || invoice.isPending || cancel.isPending;
@@ -99,27 +99,27 @@ function LifecycleActions({ order, onConfirmed }: { order: OrderDetail; onConfir
       {s === "draft" || s === "confirmed" ? (
         <Button variant="danger" icon={Ban} disabled={busy && !cancel.isPending} loading={cancel.isPending}
           onClick={() => (armCancel ? cancel.mutate(order.id) : setArmCancel(true))}>
-          {armCancel ? "Confirmer l'annulation" : "Annuler"}
+          {armCancel ? "Confirm Cancellation" : "Cancel"}
         </Button>
       ) : null}
       {s === "confirmed" ? (
-        <Button icon={Truck} disabled={busy} loading={deliver.isPending} onClick={() => deliver.mutate(order.id)}>Livrer</Button>
+        <Button icon={Truck} disabled={busy} loading={deliver.isPending} onClick={() => deliver.mutate(order.id)}>Deliver</Button>
       ) : null}
       {s === "draft" ? (
-        <Button variant="primary" icon={CheckCircle2} disabled={busy || empty} title={empty ? "Ajoutez au moins une ligne" : undefined}
-          loading={confirm.isPending} onClick={() => confirm.mutate(order.id)}>Confirmer</Button>
+        <Button variant="primary" icon={CheckCircle2} disabled={busy || empty} title={empty ? "Add at least one line" : undefined}
+          loading={confirm.isPending} onClick={() => confirm.mutate(order.id)}>Confirm</Button>
       ) : null}
       {s === "confirmed" ? (
-        <Button variant="primary" icon={PackageCheck} disabled={busy} loading={prepare.isPending} onClick={() => prepare.mutate(order.id)}>Préparer</Button>
+        <Button variant="primary" icon={PackageCheck} disabled={busy} loading={prepare.isPending} onClick={() => prepare.mutate(order.id)}>Prepare</Button>
       ) : null}
       {s === "prepared" ? (
-        <Button variant="primary" icon={Truck} disabled={busy} loading={deliver.isPending} onClick={() => deliver.mutate(order.id)}>Livrer</Button>
+        <Button variant="primary" icon={Truck} disabled={busy} loading={deliver.isPending} onClick={() => deliver.mutate(order.id)}>Deliver</Button>
       ) : null}
       {s === "delivered" ? (
-        <Button variant="primary" icon={FileText} disabled={busy} loading={invoice.isPending} onClick={() => invoice.mutate(order.id)}>Facturer</Button>
+        <Button variant="primary" icon={FileText} disabled={busy} loading={invoice.isPending} onClick={() => invoice.mutate(order.id)}>Invoice</Button>
       ) : null}
       {s === "invoiced" && order.invoice ? (
-        <Button icon={FileText} onClick={() => navigate(`/invoices/${order.invoice!.id}`)}>Voir la facture</Button>
+        <Button icon={FileText} onClick={() => navigate(`/invoices/${order.invoice!.id}`)}>See invoice</Button>
       ) : null}
     </>
   );

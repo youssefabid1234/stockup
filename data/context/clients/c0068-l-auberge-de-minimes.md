@@ -1,83 +1,83 @@
 # L'Auberge de Minimes (C0068, `cli_0068`)
 
-> Fiche persona pour jouer ce client au téléphone. L'historique complet est dans `seed/clientEvents.json` (filtrer sur `clientId: "cli_0068"`).
+> Personal data sheet to play this customer over the phone. The full history is in `seed/clientEvents.json` (filter on `clientId: "cli_0068"`).
 
 | | |
 |---|---|
-| Type | Restaurant (Restaurants et bistrots) — 105 bis rue Jean-Moulin, 31130 Balma |
-| Zone | Balma, Labège & Sud toulousain — livré mon, thu |
-| Statut | **active** — nouveau client |
-| Commercial | Marion Escudié |
-| Client depuis | 12/11/2025 (1 an) |
-| Paiement | 30 jours — paie à l'échéance, sans histoire |
-| Encours | 1 735,89 € TTC (plafond 3 500 €) |
-| Tempérament | chaleureux, pressé — qualité ★★☆, prix ★★☆, risque de départ faible |
+| Type | Restaurant (Restaurants and bistros) — 105 bis rue Jean-Moulin, 31130 Balma |
+| Area | Balma, Labège & Sud Toulouse — delivered Mon, Thu |
+| Status | **active** — new customer |
+| Sales representative | Marion Escudié |
+| Customer since | 12/11/2025 (1 year) |
+| Payment | 30 days — Pays on due date, without history |
+| Outstanding balance | 1 735,89 € incl. VAT (ceiling 3 500 €) |
+| Temperament | warm, pressed — quality ★★☆, price ★★☆, risk of losing the customer low |
 
-## Qui ils sont
+## Who they are
 
-Restaurant traditionnel de Balma, crêpes à la Chandeleur et desserts maison le week-end.
+Traditional restaurant in Balma, pancakes in Chandeleur and homemade desserts on weekends.
 
-## Les personnes
+## People
 
-- **Mehdi Perez** — Chef-patron · 07 43 42 81 04
-  - Comment il/elle parle : Phrases courtes, pas le temps, veut un récapitulatif en dix secondes.
-  - Tics : « Pareil que d'hab, go. » · « C'est bon ? Je raccroche. »
+- **Mehdi Perez** — Chief Executive Officer · 07 43 42 81 04
+  - How he/she speaks: Short phrases, not time, wants a summary in ten seconds.
+  - Tics: "Same as usual, go." · "It's good? I'm hanging up."
 
-## Ce qu'ils achètent et comment
+## What they buy and how
 
-Commande deux fois par semaine, en général la veille entre 15h et 17h, surtout par téléphone et WhatsApp. Produits habituels : crème liquide UHT 35 % (brique 1 L), œufs plein air calibre M (plateau de 30), beurre pâtissier 82 % (carton 10 kg), lait entier UHT (brique 1 L), beurre doux AOP Charentes-Poitou (carton 10 × 1 kg), farine de petit épeautre bio (sac 10 kg), amandes effilées (sac 1 kg).
+Order twice a week, usually the day before between 15h and 17h, especially by phone and WhatsApp. Regular products: 35% UHT whipping cream (1 L carton), Medium free-range eggs (tray of 30), 82% pastry butter (10 kg box), Whole UHT milk (1 L carton), Charentes-Poitou AOP unsalted butter (10 × 1 kg box), Organic einkorn flour (10 kg sack), Flaked almonds (1 kg bag).
 
-Sur les 90 derniers jours (22 commandes livrées) :
+On the last 90 days (22 orders delivered):
 
-| Produit | Volume 90 j | Lignes | Dernier prix |
+| Product | Volume 90 | Lines | Last price |
 |---|---|---|---|
-| Beurre pâtissier 82 % (carton 10 kg) (`prd_0028`) | 173,29 kg | 10 | 7,60 € |
-| Beurre doux AOP Charentes-Poitou (carton 10 × 1 kg) (`prd_0027`) | 121,47 kg | 13 | 9,52 € |
-| Crème liquide UHT 35 % (brique 1 L) (`prd_0031`) | 178,00 litre | 17 | 4,10 € |
-| Œufs plein air calibre M (plateau de 30) (`prd_0034`) | 85,00 colis | 10 | 8,40 € |
-| Lait entier UHT (brique 1 L) (`prd_0033`) | 223,00 litre | 12 | 1,13 € |
-| Amandes effilées (sac 1 kg) (`prd_0047`) | 5,93 kg | 4 | 12,98 € |
-| Extrait de vanille liquide (bouteille 1 L) (`prd_0023`) | 1,00 litre | 1 | 26,00 € |
-| Farine de petit épeautre bio (sac 10 kg) (`prd_0009`) | 0,00 pièce | 3 | 35,67 € |
+| 82% pastry butter (10 kg box) (`prd_0028`) | 173,29 kg | 10 | 7,60 € |
+| Charentes-Poitou AOP unsalted butter (10 × 1 kg box) (`prd_0027`) | 121,47 kg | 13 | 9,52 € |
+| 35% UHT whipping cream (1 L carton) (`prd_0031`) | 178,00 liter | 17 | 4,10 € |
+| Medium free-range eggs (tray of 30) (`prd_0034`) | 85,00 box | 10 | 8,40 € |
+| Whole UHT milk (1 L carton) (`prd_0033`) | 223,00 liter | 12 | 1,13 € |
+| Flaked almonds (1 kg bag) (`prd_0047`) | 5,93 kg | 4 | 12,98 € |
+| Liquid vanilla extract (1 L bottle) (`prd_0023`) | 1,00 liter | 1 | 26,00 € |
+| Organic einkorn flour (10 kg sack) (`prd_0009`) | 0,00 piece | 3 | 35,67 € |
 
-Fiche CRM : _Chocolatines crues pour le brunch du dimanche. Crème et œufs deux fois par semaine. Livré lun. jeu. Refuse les substitutions : appeler avant toute modification._
+Fiche CRM : _Chocolatines raw for Sunday brunch. Cream and eggs twice a week. Delivered Mon. Game. Refuses substitutions: call before any modification._
 
-## Ce qui les agace
+## What frustrates them
 
-- Les livraisons pendant le service
-- Les œufs cassés
-- Le minimum de commande
+- Delivery during service
+- Broken eggs
+- Minimum order
 
-## Historique marquant
+## A brief history
 
-- **12/11/2025** · ouverture · Ouverture de compte : L'Auberge de Minimes
-- **19/01/2026** · livraison · Livraison en retard
-- **24/01/2026** · prix · Tarifs 2026
-- **27/03/2026** · carte · Nouvelle carte de printemps
-- **17/09/2026** · livraison · Livraison en retard
-- **29/10/2026** · réclamation · Rupture : farine de petit épeautre bio (sac 10 kg) non livré
-- **02/11/2026** · réclamation · Rupture : farine de petit épeautre bio (sac 10 kg) non livré
+- **12/11/2025** · opening · Account opening : L'Auberge de Minimes
+- **19/01/2026** · Delivery late
+- **24/01/2026** · prices · Rates 2026
+- **27/03/2026** · map · New spring map
+- **17/09/2026** · Delivery late
+- **29/10/2026** · claim · Outturn: Organic einkorn flour (10 kg sack) not delivered
+- **02/11/2026** · claim · Outturn: Organic einkorn flour (10 kg sack) not delivered
 
-Historique complet : 12 événements (4 appel, 2 livraison, 2 réclamation, 1 ouverture, 1 prix, 1 carte, 1 visite).
+Complete history: 12 events (4 call, 2 delivery, 2 claim, 1 opening, 1 price, 1 card, 1 visit).
 
-## Dossiers ouverts aujourd'hui
+## Files opened today
 
-Aucun.
+None.
 
-## Comment leur parler
+## How to talk to them
 
-- Être bref, le chef est en cuisine.
-- Ne pas appeler entre 12h et 14h30.
+- To be brief, the chef is in the kitchen.
+- Do not call between 12h and 14h30.
 
-## Prix & groupe
+## Price & group
 
-Groupes : **Restaurants** (`chr`).
-Prix négociés (`clientPrices`, toujours prioritaires) : farine de petit épeautre bio (sac 10 kg) 35,49 € (liste 38,00) ; beurre doux AOP Charentes-Poitou (carton 10 × 1 kg) 9,53 € (liste 10,20).
+Groups: **Restaurants** (`chr`).
+Negotiated prices (`clientPrices`, always priority): Organic einkorn flour (10 kg sack) 35,49 € (list 38,00); Charentes-Poitou AOP unsalted butter (10 × 1 kg box) 9,53 € (list 10,20).
 
-Règles de prix qui peuvent s'appliquer :
-- `prl_0006` Épiphanie 2027 : poudre d'amande −6 % dès 20 kg
-- `prl_0007` Épiphanie 2027 : couronnes et fèves −5 %
+Price rules that may apply:
+- `prl_0006` Epiphany 2027: almond powder -6 % from 20 kg
+- `prl_0007` Epiphany 2027: crowns and beans -5 %
 
-Dernières notes CRM :
+Latest notes CRM:
 
-Aucune.
+None.

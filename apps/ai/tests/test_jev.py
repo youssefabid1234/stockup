@@ -36,15 +36,15 @@ def sent(seen: list[httpx.Request]) -> dict:
 
 async def test_choose_request_and_answer():
     jev, seen = fake_jev({"q": {"type": "choice", "choice": "prd_2", "confidence": 0.91, "probabilities": {"prd_1": 0.09, "prd_2": 0.91}}})
-    d = await jev.choose("5 kilos de bar de ligne", "Quel produit ?", {"prd_1": "Bar d'élevage", "prd_2": "Bar de ligne"})
+    d = await jev.choose("5 kilos de line-caught bass", "Quel produit ?", {"prd_1": "Farmed sea bass", "prd_2": "Line-caught bass"})
 
     req = seen[0]
     assert req.method == "POST" and str(req.url) == "https://jev.test/v1/systemone"
     assert req.headers["authorization"] == "Bearer test-key"
     assert sent(seen) == {
         "model": "jev-latest",
-        "state": "5 kilos de bar de ligne",
-        "questions": {"q": {"type": "choice", "instructions": "Quel produit ?", "criteria": {"prd_1": "Bar d'élevage", "prd_2": "Bar de ligne"}}},
+        "state": "5 kilos de line-caught bass",
+        "questions": {"q": {"type": "choice", "instructions": "Quel produit ?", "criteria": {"prd_1": "Farmed sea bass", "prd_2": "Line-caught bass"}}},
     }
     assert (d.choice, d.confidence, d.probabilities) == ("prd_2", 0.91, {"prd_1": 0.09, "prd_2": 0.91})
 
@@ -77,7 +77,7 @@ async def test_raw_ask_several_questions_one_call():
 
 async def test_http_error_is_a_provider_error():
     jev, _ = fake_jev(status=401, body='{"detail":"Invalid API key"}')
-    with pytest.raises(ProviderError, match=r"jev HTTP 401.*clé API refusée"):
+    with pytest.raises(ProviderError, match=r"jev HTTP 401.*API key rejected"):
         await jev.yes_no("x", "y")
 
 
@@ -88,14 +88,14 @@ def test_factory_none_without_key():
 
 
 async def test_example_pick_product_and_is_yes():
-    hits = [{"type": "product", "id": "prd_1", "label": "Bar d'élevage", "sublabel": "Grèce"}, {"type": "product", "id": "prd_2", "label": "Bar de ligne"}]
+    hits = [{"type": "product", "id": "prd_1", "label": "Farmed sea bass", "sublabel": "Greece"}, {"type": "product", "id": "prd_2", "label": "Line-caught bass"}]
     jev, seen = fake_jev({"q": {"type": "choice", "choice": "prd_2", "confidence": 0.9, "probabilities": {"prd_1": 0.1, "prd_2": 0.9}}})
-    assert await pick_product(jev, "du bar de ligne", hits) == "prd_2"
-    assert sent(seen)["questions"]["q"]["criteria"] == {"prd_1": "Bar d'élevage — Grèce", "prd_2": "Bar de ligne"}
+    assert await pick_product(jev, "du line-caught bass", hits) == "prd_2"
+    assert sent(seen)["questions"]["q"]["criteria"] == {"prd_1": "Farmed sea bass — Greece", "prd_2": "Line-caught bass"}
 
     jev, _ = fake_jev({"q": {"type": "choice", "choice": "prd_2", "confidence": 0.52, "probabilities": {"prd_1": 0.48, "prd_2": 0.52}}})
-    assert await pick_product(jev, "du bar", hits) is None  # too close: let the LLM ask
+    assert await pick_product(jev, "sea bass", hits) is None  # too close: let the LLM ask
 
     jev, seen = fake_jev({"q": {"type": "noul", "noul": 0.5}})
     assert await pick_product(jev, "x", hits[:1]) == "prd_1" and not seen  # one candidate: no call
-    assert await is_yes(jev, "Je vous mets 5 kg ?", "euh") is None
+    assert await is_yes(jev, "Je you mets 5 kg ?", "euh") is None

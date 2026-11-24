@@ -5,9 +5,9 @@ TTS  POST https://api.gradium.ai/api/speech/tts  {text, voice_id, output_format,
      → NDJSON stream: {"type": "audio", "audio": <base64>} … ({"type": "text"} timestamps, {"type": "error"}).
      Gradium has no mp3 output (wav / pcm / ogg-opus), and the web player streams mp3, so we ask for raw PCM
      (48 kHz, 16-bit mono) and encode it to mp3 chunk by chunk: the first audio still leaves after ~one chunk.
-     The voice sets the language: pick a French voice (default Armand, a flagship fr-FR voice).
+     The voice sets the language: select an English voice by default.
 
-STT  POST https://api.gradium.ai/api/speech/asr?json_config={"language": "fr", …}  raw audio body
+STT  POST https://api.gradium.ai/api/speech/asr?json_config={"language": "en", …}  raw audio body
      → NDJSON: {"type": "text", "text": "…"} per segment, {"type": "end_text"}, maybe {"type": "error"}.
      Accepts wav, raw pcm and Ogg/Opus only: the browser's WebM/Opus is re-wrapped into Ogg (audio.py, no re-encoding).
      Safari's audio/mp4 (AAC) is not accepted.
@@ -32,7 +32,7 @@ PCM_RATE = 48000  # output_format "pcm" = 48 kHz, 16-bit signed little-endian mo
 class GradiumTTS(TTSClient):
     name = "gradium"
 
-    def __init__(self, api_key: str, model: str = "default", voice: str = "F7Iib4MAyHIRed0x", http: httpx.AsyncClient | None = None):
+    def __init__(self, api_key: str, model: str = "default", voice: str = "YTpq7expH9539ERJ", http: httpx.AsyncClient | None = None):
         self.api_key, self.model, self.voice, self.http = api_key, model, voice, http
 
     def build_body(self, text: str, voice: str | None) -> dict:
@@ -50,7 +50,7 @@ class GradiumTTS(TTSClient):
 
 
 async def mp3_chunks(res: httpx.Response) -> AsyncIterator[bytes]:
-    """Gradium's NDJSON audio messages (base64 PCM) → mp3 bytes as they arrive."""
+    """Gradium's NDJSON audio messages (base64) PCM) → mp3 bytes as they arrive."""
     mp3 = Mp3Encoder(PCM_RATE)
     try:
         async for line in res.aiter_lines():
@@ -71,7 +71,7 @@ async def mp3_chunks(res: httpx.Response) -> AsyncIterator[bytes]:
 class GradiumSTT(STTClient):
     name = "gradium"
 
-    def __init__(self, api_key: str, model: str = "default", language: str = "fr", http: httpx.AsyncClient | None = None):
+    def __init__(self, api_key: str, model: str = "default", language: str = "en", http: httpx.AsyncClient | None = None):
         self.api_key, self.model, self.language, self.http = api_key, model, language, http
 
     def build_config(self, hint: str | None) -> dict:

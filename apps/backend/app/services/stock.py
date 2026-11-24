@@ -243,15 +243,15 @@ def adjust_stock(ctx: Ctx, input: Doc) -> Doc:
     product = crud.products.require(input["productId"])
     qty = -abs(input["qty"]) if input["reason"] == "waste" else input["qty"]
     if qty == 0:
-        raise bad_request("invalid_qty", "La quantité doit être différente de 0")
+        raise bad_request("invalid_qty", "The quantity must be different from 0")
     ref = {"refType": "manual", "note": input.get("note")}
     if qty > 0:
         add_lot(product, qty, input["reason"], ref)
     else:
         missing = consume_fefo(product["id"], -qty, input["reason"], ref)
         qty = -round3(-qty - missing)
-    label = "Perte" if input["reason"] == "waste" else "Ajustement"
+    label = "Waste" if input["reason"] == "waste" else "Adjustment"
     sign = "+" if qty > 0 else ""
     log_event(ctx, f"stock.{input['reason']}", "stock", product["id"],
-              f"{label} de stock : {sign}{js_str(qty)} {product['unit']} de {product['name']}")  # fmt: skip
+              f"{label} de stock : {sign}{js_str(qty)} {product['unit']} of {product['name']}")  # fmt: skip
     return stock_level(product["id"])

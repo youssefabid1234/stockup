@@ -1,5 +1,5 @@
 """Global fuzzy search (accent/case-insensitive, token-based) — what the voice agent uses to turn
-"c'est la poissonnerie Lemoine" or "le loup pour le bistrot" into a client id and a product id.
+"it's the Lemoine fish shop" or "the wolf for the bistro" into a client id and a product id.
 
 Query and fields are normalised (lowercase, no accents/punctuation), split into tokens, and French
 fillers/stopwords are dropped ("bonjour c'est la …", "je voudrais … pour …"). Each candidate has a few
@@ -25,13 +25,13 @@ MIN_SCORE = 35
 # Fillers and stopwords never used to match (spoken French: greetings, articles, order verbs, units, days).
 STOPWORDS = set(
     (
-        "a au aux avec c ce ces cet cette d de des du en et est etes il elle j je l la le les leur m ma me mes moi mon "
-        "n ne nous on ou par pas pour qu que qui s sa se ses son sur t ta te tes toi ton tu un une vous y "
-        "c est cest ici voila oui non bon ben euh alors donc aussi encore svp stp merci bonjour bonsoir salut allo "
-        "voudrais voudrait veux veut vouloir aimerais faudrait faut faire mettre mets mettez ajouter ajoute ajoutez "
-        "commander commande prendre prends prenez avoir ai as avez peux pouvez pourriez please "
-        "kg kilo kilos kilogramme kilogrammes g gr gramme grammes pce pces piece pieces douz douzaine douzaines litre litres "
-        "demain aujourd hui ce soir matin apres midi"
+        "a to the with these this d of from in and is it she I l l it theirs m me me me my "
+        "n n n n n us or by not so that who his se is his son on t t t t you t t t you one you y "
+        "This is here here is yes no good well so also please please thank you good evening hi allo "
+        "would want to want to want would have to have put add add add "
+        "order order take take take have ai as can may please "
+        "kg kg kg kg kg kg g gr gram grams pce pce pce ccds douz dozen dozen liters "
+        "tomorrow today tonight morning after noon"
     ).split(" ")
 )
 # Spoken/written abbreviations expanded before matching.
@@ -112,7 +112,7 @@ def _best(qc: list[str], fields: list[tuple[str | None, float]]) -> int:
     return js_round(s)
 
 
-UNIT_SHORT = {"kg": "kg", "piece": "pce", "box": "colis", "dozen": "douz.", "liter": "L"}
+UNIT_SHORT = {"kg": "kg", "piece": "pc", "box": "box", "dozen": "doz.", "liter": "L"}
 
 
 def _price_label(price: float, unit: str) -> str:
@@ -142,7 +142,7 @@ def search(raw_query: str, types: list[str] | None = None, limit: int = 20) -> l
             if phone_q:
                 phones = [(re.sub(r"\D", "", ct["phone"])[-9:] if ct.get("phone") else None, 0.9) for ct in c["contacts"]]
                 phone_score = _best(phone_q, phones)
-            blocked = " · bloqué" if c["status"] == "blocked" else ""
+            blocked = " · blocked" if c["status"] == "blocked" else ""
             push({"type": "client", "id": c["id"], "label": c["name"], "sublabel": f"{c['code']} · {c['city']}{blocked}",
                   "score": max(_best(qc, fields), phone_score)})  # fmt: skip
     if "product" in want:

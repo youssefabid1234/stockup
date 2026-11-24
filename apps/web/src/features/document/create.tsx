@@ -26,7 +26,7 @@ export function useCreateDocument(kind: DocKind) {
       return { id: d.id, number: d.number };
     },
     {
-      success: (d) => (kind === "sale" ? `Pré-commande ${d.number} créée` : `Commande d'achat ${d.number} créée`),
+      success: (d) => (kind === "sale" ? `Pre-order ${d.number} established` : `Purchase order ${d.number} established`),
       invalidate: kind === "sale" ? [qk.orders.all, qk.dashboard] : [qk.purchaseOrders.all, qk.suppliers.all],
       onSuccess: (d) => navigate(`${KIND[kind].detailPath}/${d.id}`),
     },
@@ -71,8 +71,8 @@ function PartnerPicker({ kind, anchorRef, onClose }: { kind: DocKind; anchorRef:
     }
     const f = fold(dq.trim());
     return (suppliers.data ?? []).filter((s) => !f || fold(`${s.name} ${s.city} ${(s.tags ?? []).join(" ")}`).includes(f))
-      .sort((a, b) => a.name.localeCompare(b.name, "fr")).slice(0, 40)
-      .map((s) => ({ id: s.id, name: s.name, detail: [s.city, `délai ${s.leadTimeDays} j`, s.minOrderAmount ? `min. ${s.minOrderAmount.toLocaleString("fr-FR")} €` : ""].filter(Boolean).join(" · ") }));
+      .sort((a, b) => a.name.localeCompare(b.name, "en")).slice(0, 40)
+      .map((s) => ({ id: s.id, name: s.name, detail: [s.city, `deadline ${s.leadTimeDays} j`, s.minOrderAmount ? `min. ${s.minOrderAmount.toLocaleString("en-GB")} €` : ""].filter(Boolean).join(" · ") }));
   }, [sale, clients.data, suppliers.data, dq]);
   const loading = sale ? clients.isLoading && !clients.data : suppliers.isLoading && !suppliers.data;
 
@@ -96,7 +96,7 @@ function PartnerPicker({ kind, anchorRef, onClose }: { kind: DocKind; anchorRef:
       <div ref={popRef} className="flex flex-col">
         <div className="border-b border-border px-3 pb-2 pt-2.5">
           <div className="mb-1.5 text-[11.5px] text-muted-foreground">
-            {sale ? "Choisissez le client : la commande est créée en pré-commande." : "Choisissez le fournisseur : la commande est créée en brouillon."}
+            {sale ? "Choose the customer: the order is created in pre-order." : "Choose the supplier: the order is created in draft."}
           </div>
           <div className="relative">
             <Search size={13} strokeWidth={1.75} className="pointer-events-none absolute left-2 top-1/2 -translate-y-1/2 text-muted-foreground" />
@@ -106,8 +106,8 @@ function PartnerPicker({ kind, anchorRef, onClose }: { kind: DocKind; anchorRef:
               role="combobox"
               aria-expanded
               aria-controls="partner-picker-list"
-              aria-label={sale ? "Rechercher un client" : "Rechercher un fournisseur"}
-              placeholder={sale ? "Nom, code, ville…" : "Nom, ville, groupe…"}
+              aria-label={sale ? "Search for a client" : "Find a Supplier"}
+              placeholder={sale ? "Name, code, city..." : "Name, city, group..."}
               onChange={(e) => setQ(e.target.value)}
               onKeyDown={(e) => {
                 if (e.key === "ArrowDown") { e.preventDefault(); setActive((a) => Math.min(a + 1, options.length - 1)); }
@@ -123,7 +123,7 @@ function PartnerPicker({ kind, anchorRef, onClose }: { kind: DocKind; anchorRef:
         {loading ? (
           <div className="flex justify-center py-5 text-muted-foreground"><Spinner /></div>
         ) : options.length === 0 ? (
-          <div className="px-3 py-4 text-center text-[12.5px] text-muted-foreground">{sale ? "Aucun client" : "Aucun fournisseur"} ne correspond.</div>
+          <div className="px-3 py-4 text-center text-[12.5px] text-muted-foreground">{sale ? "No customer" : "No supplier"} I don't think it's a match.</div>
         ) : (
           <ul ref={listRef} id="partner-picker-list" role="listbox" className="max-h-[320px] overflow-auto py-1">
             {options.map((o, i) => (
@@ -151,7 +151,7 @@ function PartnerPicker({ kind, anchorRef, onClose }: { kind: DocKind; anchorRef:
           </ul>
         )}
         <div className="border-t border-border px-3 py-1.5 text-[11px] text-muted-foreground">
-          ↑↓ pour naviguer · Entrée pour créer · Échap pour fermer
+          ↑ю to navigate · Enter to create · Escape to close
         </div>
       </div>
     </AnchoredPopover>

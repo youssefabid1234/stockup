@@ -141,21 +141,21 @@ def test_mp3_encoder_handles_odd_chunks():
 async def test_soniox_start_request_tokens_and_end_frame():
     ws = FakeWS(
         [
-            {"tokens": [{"text": "Il", "is_final": True}, {"text": " vous", "is_final": False}], "final_audio_proc_ms": 300},
-            {"tokens": [{"text": " vous reste", "is_final": True}, {"text": " du", "is_final": False}]},
-            {"tokens": [{"text": " du bar ?", "is_final": True}, {"text": "<fin>", "is_final": True}]},
+            {"tokens": [{"text": "Do", "is_final": True}, {"text": " you", "is_final": False}], "final_audio_proc_ms": 300},
+            {"tokens": [{"text": " you have", "is_final": True}, {"text": " du", "is_final": False}]},
+            {"tokens": [{"text": " sea bass?", "is_final": True}, {"text": "<fin>", "is_final": True}]},
         ],
         end=FINALIZE,
     )
     seen: dict = {}
     stt = SonioxSTT("sx", connect=fake_connect(ws, seen))
-    text = await stt.transcribe(b"WEBM" * 10, "audio/webm;codecs=opus", hint="Lemoine, bar de ligne ,")
-    assert text == "Il vous reste du bar ?"
+    text = await stt.transcribe(b"WEBM" * 10, "audio/webm;codecs=opus", hint="Lemoine, line-caught bass ,")
+    assert text == "Do you have sea bass?"
     assert seen["url"] == "wss://stt-rt.soniox.com/transcribe-websocket" and seen["headers"] == {"Authorization": "Bearer sx"}
     assert json.loads(ws.sent[0]) == {
-        "model": "stt-rt-v6", "audio_format": "auto", "language_hints": ["fr"], "enable_endpoint_detection": True,
+        "model": "stt-rt-v6", "audio_format": "auto", "language_hints": ["en"], "enable_endpoint_detection": True,
         "enable_speaker_diarization": True,
-        "context": {"terms": ["Lemoine", "bar de ligne"]},
+        "context": {"terms": ["Lemoine", "line-caught bass"]},
     }  # fmt: skip
     assert ws.sent[1:] == [b"WEBM" * 10, FINALIZE] and ws.closed  # audio as binary frames, then finalize
 
@@ -164,8 +164,8 @@ async def test_soniox_stream_partials_then_final():
     ws = FakeWS(
         [
             {"tokens": [{"text": "Bon", "is_final": False}]},
-            {"tokens": [{"text": "Bonjour", "is_final": True}, {"text": "<end>", "is_final": True}, {"text": " il", "is_final": False}]},
-            {"tokens": [{"text": " il", "is_final": True}, {"text": "<fin>", "is_final": True}]},
+            {"tokens": [{"text": "Hello", "is_final": True}, {"text": "<end>", "is_final": True}, {"text": " there", "is_final": False}]},
+            {"tokens": [{"text": " there", "is_final": True}, {"text": "<fin>", "is_final": True}]},
         ],
         end=FINALIZE,
     )
@@ -173,8 +173,8 @@ async def test_soniox_stream_partials_then_final():
     updates = [u async for u in stt.transcribe_stream(once(b"a", b"b"), "audio/webm")]
     assert updates == [
         STTUpdate("Bon"),
-        STTUpdate("Bonjour il", stable="Bonjour"),  # <end> is a pause marker, not text
-        STTUpdate("Bonjour il", final=True, stable="Bonjour il"),
+        STTUpdate("Hello there", stable="Hello"),  # <end> is a pause marker, not text
+        STTUpdate("Hello there", final=True, stable="Hello there"),
     ]
     assert ws.sent[1:] == [b"a", b"b", FINALIZE]
 
@@ -183,7 +183,7 @@ async def test_soniox_error_response():
     ws = FakeWS([{"tokens": [], "error_code": 401, "error_type": "unauthenticated", "error_message": "Invalid API key."}], end=FINALIZE)
     with pytest.raises(ProviderError) as e:
         await SonioxSTT("bad", connect=fake_connect(ws, {})).transcribe(b"x", "audio/webm")
-    assert "soniox stt HTTP 401" in str(e.value) and "clé API refusée" in str(e.value)
+    assert "soniox stt HTTP 401" in str(e.value) and "API key rejected" in str(e.value)
 
 
 # ── Deepgram live ──
@@ -195,7 +195,7 @@ def dg_result(text: str, is_final: bool) -> dict:
 
 async def test_deepgram_live_url_and_updates():
     ws = FakeWS(
-        [dg_result("il vous", False), dg_result("il vous reste", True), dg_result("du bar", False), dg_result("du bar ?", True),
+        [dg_result("do you", False), dg_result("do you have", True), dg_result("sea bass", False), dg_result("sea bass?", True),
          {"type": "Metadata", "request_id": "r", "duration": 1.2}],
         end=json.dumps({"type": "CloseStream"}),
     )  # fmt: skip
@@ -203,27 +203,27 @@ async def test_deepgram_live_url_and_updates():
     stt = DeepgramSTT("dg", connect=fake_connect(ws, seen))
     updates = [u async for u in stt.transcribe_stream(once(b"chunk"), "audio/webm;codecs=opus", hint="Lemoine")]
     assert [u.text for u in updates] == [
-        "il vous",
-        "il vous reste",
-        "il vous reste du bar",
-        "il vous reste du bar ?",
-        "il vous reste du bar ?",
+        "do you",
+        "do you have",
+        "do you have sea bass",
+        "do you have sea bass?",
+        "do you have sea bass?",
     ]
     assert updates[-1].final and not any(u.final for u in updates[:-1])
     url = urlparse(seen["url"])
     assert (url.scheme, url.netloc, url.path) == ("wss", "api.deepgram.com", "/v1/listen")
     assert parse_qs(url.query) == {
-        "model": ["nova-3"], "language": ["fr"], "smart_format": ["true"], "keyterm": ["Lemoine"], "interim_results": ["true"],
+        "model": ["nova-3"], "language": ["en"], "smart_format": ["true"], "keyterm": ["Lemoine"], "interim_results": ["true"],
     }  # fmt: skip
     assert seen["headers"] == {"Authorization": "Token dg"} and ws.sent == [b"chunk", '{"type": "CloseStream"}']
 
 
 async def test_default_transcribe_stream_uses_transcribe():
-    reply = {"results": {"channels": [{"alternatives": [{"transcript": "Bonjour"}]}]}}
+    reply = {"results": {"channels": [{"alternatives": [{"transcript": "Hello"}]}]}}
     http, seen = recorder(lambda _: httpx.Response(200, json=reply))
     # the base-class fallback (buffer, then transcribe()), exercised through Deepgram's REST call
     updates = [u async for u in STTClient.transcribe_stream(DeepgramSTT("dg", http=http), once(b"a", b"b"), "audio/webm")]
-    assert updates == [STTUpdate("Bonjour", final=True, stable="Bonjour")] and seen[0].content == b"ab"
+    assert updates == [STTUpdate("Hello", final=True, stable="Hello")] and seen[0].content == b"ab"
 
 
 # ── Gradium ──
@@ -244,16 +244,16 @@ async def test_gradium_tts_request_and_mp3_stream():
     frames = [pcm[i : i + 7680] for i in range(0, len(pcm), 7680)]  # 80 ms chunks, as documented
     http, seen = recorder(
         lambda _: ndjson(
-            *[{"type": "audio", "audio": base64.b64encode(f).decode()} for f in frames], {"type": "text", "text": "Bonjour", "start_s": 0.1}
+            *[{"type": "audio", "audio": base64.b64encode(f).decode()} for f in frames], {"type": "text", "text": "Hello", "start_s": 0.1}
         )
     )
-    result = await GradiumTTS("gk", http=http).synthesize("Bonjour.")
+    result = await GradiumTTS("gk", http=http).synthesize("Hello.")
     out = b"".join([c async for c in result.chunks])
     assert result.mime == "audio/mpeg" and out[:2] in (b"\xff\xfb", b"\xff\xfa")
     req = seen[0]
     assert str(req.url) == "https://api.gradium.ai/api/speech/tts" and req.headers["x-api-key"] == "gk"
     assert json.loads(req.content) == {
-        "text": "Bonjour.", "voice_id": "F7Iib4MAyHIRed0x", "model_name": "default", "output_format": "pcm", "only_audio": False,
+        "text": "Hello.", "voice_id": "YTpq7expH9539ERJ", "model_name": "default", "output_format": "pcm", "only_audio": False,
     }  # fmt: skip
 
 
@@ -261,7 +261,7 @@ async def test_gradium_tts_errors():
     http, _ = recorder(lambda _: httpx.Response(500, text="error from server 1008: API key is revoked or expired"))
     with pytest.raises(ProviderError) as e:
         await GradiumTTS("bad", http=http).synthesize("x")
-    assert "gradium tts HTTP 500" in str(e.value) and "clé API refusée" in str(e.value)
+    assert "gradium tts HTTP 500" in str(e.value) and "API key rejected" in str(e.value)
 
     http, _ = recorder(lambda _: ndjson({"type": "error", "message": "Session is too long, please upgrade your plan.", "code": 1008}))
     result = await GradiumTTS("gk", http=http).synthesize("x")
@@ -273,20 +273,20 @@ async def test_gradium_stt_converts_webm_and_parses_ndjson():
     reply = "\n".join(
         json.dumps(m)
         for m in [
-            {"type": "text", "text": "Il vous reste", "start_s": 0.2},
-            {"type": "text", "text": " du bar ?", "start_s": 1.0},
+            {"type": "text", "text": "Do you have", "start_s": 0.2},
+            {"type": "text", "text": " sea bass?", "start_s": 1.0},
             {"type": "end_text", "stop_s": 1.6},
         ]
     )
     http, seen = recorder(lambda _: httpx.Response(200, text=reply, headers={"content-type": "application/x-ndjson"}))
-    text = await GradiumSTT("gk", http=http).transcribe(webm_sample(), "audio/webm;codecs=opus", hint="Lemoine, bar de ligne")
-    assert text == "Il vous reste du bar ?"
+    text = await GradiumSTT("gk", http=http).transcribe(webm_sample(), "audio/webm;codecs=opus", hint="Lemoine, line-caught bass")
+    assert text == "Do you have sea bass?"
     req = seen[0]
     assert req.url.path == "/api/speech/asr" and req.headers["x-api-key"] == "gk" and req.headers["content-type"] == "audio/ogg"
     assert req.url.params["model"] == "default"
     assert json.loads(req.url.params["json_config"]) == {
-        "language": "fr",
-        "keywords": {"words": ["Lemoine", "bar", "de", "ligne"], "boost": 3},
+        "language": "en",
+        "keywords": {"words": ["Lemoine", "line-caught", "bass"], "boost": 3},
     }
     assert req.content == webm_to_ogg(webm_sample())
 
@@ -294,9 +294,9 @@ async def test_gradium_stt_converts_webm_and_parses_ndjson():
 async def test_gradium_stt_formats():
     assert GradiumSTT.prepare(b"OggS..", "audio/ogg;codecs=opus") == (b"OggS..", "audio/ogg")
     assert GradiumSTT.prepare(b"RIFF..", "audio/wav") == (b"RIFF..", "audio/wav")
-    with pytest.raises(ProviderError, match="format audio non supporté"):
+    with pytest.raises(ProviderError, match="unsupported audio format"):
         GradiumSTT.prepare(b"....", "audio/mp4")  # Safari
-    with pytest.raises(ProviderError, match="format audio non supporté"):
+    with pytest.raises(ProviderError, match="unsupported audio format"):
         GradiumSTT.prepare(b"garbage", "audio/webm")
 
     http, _ = recorder(lambda _: httpx.Response(200, text='{"type": "error", "message": "boom"}\n'))
@@ -307,18 +307,18 @@ async def test_gradium_stt_formats():
 # ── factory ──
 
 
-def test_factory_builds_the_four_speech_providers_with_french_defaults():
+def test_factory_builds_the_four_speech_providers_with_english_defaults():
     stt = lambda p, **kw: make_stt_client(
-        STTSettings(provider=p, api_key=kw.get("key", "k"), model=kw.get("model", ""), language="fr", mock_text="")
+        STTSettings(provider=p, api_key=kw.get("key", "k"), model=kw.get("model", ""), language="en", mock_text="")
     )
-    tts = lambda p, **kw: make_tts_client(TTSSettings(provider=p, api_key="k", model="", voice=kw.get("voice", ""), language="fr"))
+    tts = lambda p, **kw: make_tts_client(TTSSettings(provider=p, api_key="k", model="", voice=kw.get("voice", ""), language="en"))
 
     assert (type(stt("deepgram")).__name__, stt("deepgram").model) == ("DeepgramSTT", "nova-3")
     assert (type(stt("soniox")).__name__, stt("soniox").model) == ("SonioxSTT", "stt-rt-v6")
     assert (type(stt("gradium")).__name__, stt("gradium").model) == ("GradiumSTT", "default")
     assert stt("soniox", model="stt-rt-v5").model == "stt-rt-v5"
     assert (type(tts("elevenlabs")).__name__, tts("elevenlabs").model) == ("ElevenLabsTTS", "eleven_flash_v2_5")
-    assert (type(tts("gradium")).__name__, tts("gradium").voice) == ("GradiumTTS", "F7Iib4MAyHIRed0x")
+    assert (type(tts("gradium")).__name__, tts("gradium").voice) == ("GradiumTTS", "YTpq7expH9539ERJ")
     assert tts("gradium", voice="0fvH6XAKvA748v2v").voice == "0fvH6XAKvA748v2v"
     with pytest.raises(ConfigError, match="STT_API_KEY"):
         stt("soniox", key="")

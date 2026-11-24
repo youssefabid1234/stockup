@@ -53,35 +53,35 @@ export default function PricesPage() {
   return (
     <Page>
       <PageHeader
-        title="Prix"
+        title="Price"
         tabs={
           <Tabs<Tab>
             value={t}
             onChange={switchTab}
             items={[
-              { id: "matrix", label: "Matrice" },
-              { id: "rules", label: "Règles", count: rules?.length },
-              { id: "negotiated", label: "Prix négociés", count: negotiated?.length },
-              { id: "sim", label: "Simulateur" },
+              { id: "matrix", label: "Matrix" },
+              { id: "rules", label: "Rules", count: rules?.length },
+              { id: "negotiated", label: "Negotiated prices", count: negotiated?.length },
+              { id: "sim", label: "Simulator" },
             ]}
           />
         }
         filters={
-          t === "matrix" ? <><SearchInput value={q} onChange={setQ} placeholder="Produit, SKU…" /><MatrixFilters /></>
-          : t === "rules" ? <SearchInput value={q} onChange={setQ} placeholder="Règle, groupe, produit…" />
+          t === "matrix" ? <><SearchInput value={q} onChange={setQ} placeholder="Product, SKU…" /><MatrixFilters /></>
+          : t === "rules" ? <SearchInput value={q} onChange={setQ} placeholder="Rule, group, product..." />
           : t === "negotiated" ? (
             <>
-              <SearchInput value={q} onChange={setQ} placeholder="Client, produit…" />
-              <Combobox value={cpClient} onChange={setCpClient} options={clientOptions} placeholder="Tous les clients" size="sm" width={220} clearable />
-              <Combobox value={cpTag} onChange={setCpTag} options={clientTags} placeholder="Tous les groupes de clients" size="sm" width={220} clearable />
-              <Combobox value={cpProduct} onChange={setCpProduct} options={productOptions} placeholder="Tous les produits" size="sm" width={240} clearable />
+              <SearchInput value={q} onChange={setQ} placeholder="Customer, product..." />
+              <Combobox value={cpClient} onChange={setCpClient} options={clientOptions} placeholder="All customers" size="sm" width={220} clearable />
+              <Combobox value={cpTag} onChange={setCpTag} options={clientTags} placeholder="All client groups" size="sm" width={220} clearable />
+              <Combobox value={cpProduct} onChange={setCpProduct} options={productOptions} placeholder="All products" size="sm" width={240} clearable />
             </>
           )
           : null
         }
         actions={
-          t === "rules" ? <Button variant="primary" icon={Plus} onClick={() => setRuleSel("new")}>Nouvelle règle</Button>
-          : t === "negotiated" ? <Button variant="primary" icon={Plus} onClick={() => setAdding("1")}>Nouveau prix négocié</Button>
+          t === "rules" ? <Button variant="primary" icon={Plus} onClick={() => setRuleSel("new")}>New Rule</Button>
+          : t === "negotiated" ? <Button variant="primary" icon={Plus} onClick={() => setAdding("1")}>New negotiated price</Button>
           : null
         }
       />

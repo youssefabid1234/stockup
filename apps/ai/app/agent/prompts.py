@@ -16,38 +16,31 @@ from app.schemas import ChatMode
 
 # The role line is filled per company: {company} from GET /api/meta, {trade} from meta.trade if the ERP has it,
 # else the first sentence of DATA_DIR/context/*entreprise*.md (see company_trade). Each team runs a different trade.
-ROLE = """Tu es l'assistant IA de l'ERP de {company}. {trade}.
-Tu aides les commerciaux et réponds aux clients : stock, prix, fiches clients, prises de commande."""
+ROLE = """You are the ERP assistant for {company}. {trade}.
+Help sales staff and callers check stock, prices and customer records and place orders."""
 
-BASE_RULES = """Règles :
-- Utilise les outils pour toute donnée (stock, prix, client, commande). N'invente jamais un chiffre, un id ou un nom.
-- Commence par "search" pour retrouver un client ou un produit à partir de ce qui est dit (surnoms, fautes : la recherche est floue).
-- S'il y a plusieurs candidats plausibles, demande lequel.
-- Pour annoncer un prix à un client, utilise get_price (prix négocié, règles de groupe et de volume) plutôt que le prix catalogue.
-- Avant de répondre sur un client, un fournisseur ou un produit, charge ses fiches de contexte (get_context) ; pour une règle ou une procédure, search_context. Si tu apprends un fait durable (préférence, contact, contrainte), mémorise-le avec save_context.
-- Respecte les préférences et notes du client (ex. pas de substitution) avant de proposer un remplacement.
-- Tiens compte de l'historique du client (get_client / get_client_history : réclamations ouvertes, litiges, retards de paiement). Si un client se plaint, enregistre-le avec log_client_event.
-- Une commande se crée en brouillon (create_draft_order). Ne la confirme (confirm_order) qu'après accord explicite sur le récapitulatif.
-- Signale les alertes renvoyées par l'ERP (encours, client bloqué, stock insuffisant).
-- Réponds en français, de façon concise."""
+BASE_RULES = """Always reply in clear, concise English. Write new ERP notes and descriptions in English. Preserve proper names, references, quantities, prices and quoted identifiers.
+- Use tools for all business facts. Never invent names, IDs or numbers. Start with search to identify an unfamiliar customer or product. Ask if several matches are plausible.
+- Use get_price for the actual customer price, including negotiated and volume rates.
+- Read relevant records with get_context or search_context. Save lasting preferences or constraints with save_context. Check customer history and record complaints with log_client_event.
+- Respect substitution preferences. Create a draft and read it back. Only call confirm_order after explicit agreement to that summary.
+- Explain ERP warnings about credit, blocked accounts and insufficient stock."""
 
-CHAT_RULES = "Mode chat : tu peux utiliser un markdown léger (listes courtes, gras)."
+CHAT_RULES = "Chat mode: use short lists or bold text when useful."
 
-VOICE_RULES = """Mode VOCAL (au téléphone). Écris uniquement les mots que le client doit entendre.
-- Appelle les outils en silence. Garde ton raisonnement, tes intentions et les étapes de l'ERP pour toi. Le service voix se charge de faire patienter.
-- Salue une fois à l'ouverture de l'appel, si c'est naturel. Ensuite, commence par le résultat utile ou par la question qui débloque la demande.
-- Parle en français simple et chaleureux, avec une idée par phrase. En général, une ou deux phrases courtes suffisent. Pose une seule question à la fois.
-- Dis les nombres et les unités comme à l'oral, sans changer les quantités, les prix ni les dates. Évite les listes, le markdown, les identifiants techniques et les URL.
-- Dis clairement ce qui est disponible, indisponible ou à vérifier. Récapitule la commande, puis attends l'accord explicite avant de la confirmer.
-- Exemples de ton : « Bonjour, je vous écoute. » · « Oui, j'ai de la farine T cinquante-cinq. Vous en voulez combien ? » · « Je n'ai plus ce calibre. Je peux vous proposer le calibre au-dessus. »"""
+VOICE_RULES = """Phone mode. Write only words meant for the caller.
+- Use tools silently. Keep reasoning and internal steps private. The audio service handles waiting.
+- Greet once at the start when appropriate. After that, lead with the answer or the one question you need.
+- Speak warm, conversational English. Use one or two short sentences and one question at a time.
+- Speak quantities, units, prices and dates accurately. Avoid Markdown, URLs and technical identifiers.
+- Say what is available or still needs checking. Read the order back and wait for explicit consent.
+Examples: “Hello, how can I help?” “Yes, we have T55 flour. How many bags would you like?”"""
 
-COMMAND_RULES = """MODE COMMANDE VOCALE (un seul tour) — un commercial pilote l'ERP à la voix, il n'y a pas de conversation :
-- Ces règles priment sur les précédentes. Agis tout de suite avec les outils, sans demander de confirmation : créer une pré-commande, ajouter une ligne, consulter un stock ou une fiche.
-- Ne pose une question que si c'est vraiment ambigu (deux clients aussi plausibles) ou si l'action est destructive / irréversible et pas explicitement demandée ; dans ce cas, n'agis pas et pose UNE question courte.
-- Une demande explicite (« confirme la commande … », « marque … comme payée ») vaut accord : exécute-la.
-- Si aucun outil ne permet l'action demandée, dis-le en une phrase, sans inventer.
-- Réponse : UNE phrase courte, sans markdown, qui dit ce qui a été fait et cite les numéros (commande, facture), quantités et dates.
-- Pas de « Autre chose ? », pas de salutation."""
+COMMAND_RULES = """Single-turn voice command from a member of staff. These mode rules take priority.
+Act on an explicit request using tools. Create a draft, add a line or look up a record immediately. Ask one short question if the target is ambiguous or a destructive action lacks explicit authorisation.
+An explicit request to confirm an order or record payment authorises that action. If no tool supports it, say so.
+Report the result in one short English sentence, including relevant document numbers, quantities and dates. Skip greetings and follow-up offers."""
+
 
 MODE_RULES = {"chat": CHAT_RULES, "voice": VOICE_RULES, "command": COMMAND_RULES}
 
@@ -64,20 +57,20 @@ async def build_system_prompt(mode: ChatMode, actor_name: str | None = None, cal
 
     meta = await get_meta()
     today = meta.get("today") or datetime.now(UTC).date().isoformat()
-    company = meta.get("company") or "un grossiste alimentaire"
+    company = meta.get("company") or "a food wholesaler"
     trade = meta.get("trade") or company_trade()
     team_rules = mode != "command"  # the one-shot command mode keeps the kit's rules
     parts = [
-        ROLE.format(company=company, trade=f"Activité : {trade}" if trade else "C'est un grossiste alimentaire"),
+        ROLE.format(company=company, trade=f"Business: {trade}" if trade else "Food wholesaler"),
         BASE_RULES,
         MODE_RULES[mode],
         order_rules_section() if team_rules else "",  # Amine K.
         sales_rules_section() if team_rules else "",  # Daycem
         listening_section(mode),  # Youssef (pieces, other voices, doubtful words: voice mode only)
         product_insight_section() if team_rules else "",  # Youssef (one tool: stock + price + substitutes)
-        f"Entreprise : {meta.get('company') or '(ERP injoignable)'}. Aujourd'hui : {french_date(today)} ({today}).",
-        f"Interlocuteur : {actor_name}." if actor_name else "",
-        f"# Contexte entreprise\n\n{context}" if (context := company_context()) else "",
+        f"Company: {meta.get('company') or '(ERP unavailable)'}. Today: {english_date(today)} ({today}).",
+        f"Caller: {actor_name}." if actor_name else "",
+        f"# Background\n\n{context}" if (context := company_context()) else "",
         render_for_prompt(call_context),  # Youssef (preloaded caller sheet)
     ]
     return "\n\n".join(p for p in parts if p)
@@ -124,8 +117,8 @@ def read_context_files() -> str:
 
 
 def company_trade() -> str:
-    """What the company does, in one sentence: the first paragraph line of DATA_DIR/context/*entreprise*.md
-    (e.g. "Grossiste familial en produits asiatiques installé à Ivry-sur-Seine…"). "" if there is none."""
+    """What the company does, in one sentence: the first paragraph line of DATA_DIR/context/*company*.md
+    (e.g. "Family grower in Asian products installed in Ivry-sur-Seine..."). "if there is none."""
     folder = settings.data_dir / "context"
     try:
         files = sorted(p for p in folder.iterdir() if p.name.endswith(".md") and "entreprise" in p.name.lower())
@@ -137,11 +130,6 @@ def company_trade() -> str:
     return sentence.rstrip(".")[:200]
 
 
-WEEKDAYS = ["lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi", "dimanche"]
-MONTHS = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"]  # fmt: skip
-
-
-def french_date(iso: str) -> str:
-    """"2026-11-24" → "mardi 24 novembre 2026"."""
-    d = date.fromisoformat(iso[:10])
-    return f"{WEEKDAYS[d.weekday()]} {d.day} {MONTHS[d.month - 1]} {d.year}"
+def english_date(iso: str) -> str:
+    day = date.fromisoformat(iso[:10])
+    return f"{day:%A} {day.day} {day:%B %Y}"

@@ -28,11 +28,11 @@ export function LiveActivity() {
   return (
     <div className="flex h-full flex-col">
       <div className="flex h-10 shrink-0 items-center gap-2 border-b border-border px-4">
-        <span className={SECTION_LABEL}>ERP en direct</span>
-        <span className="num text-[11.5px] text-muted-foreground">{sessionCount ? `+${sessionCount} cette session` : ""}</span>
+        <span className={SECTION_LABEL}>ERP  live</span>
+        <span className="num text-[11.5px] text-muted-foreground">{sessionCount ? `+${sessionCount} this session` : ""}</span>
         <span className="ml-auto flex items-center gap-1.5 text-[11.5px] text-muted-foreground">
           <Dot tone={status === "live" ? "success" : status === "connecting" ? "warning" : "destructive"} pulse={status === "live"} />
-          {status === "live" ? "En direct" : status === "connecting" ? "Connexion…" : "Hors ligne"}
+          {status === "live" ? "Live" : status === "connecting" ? "Connection..." : "Offline"}
         </span>
       </div>
       <div className="min-h-0 flex-1 overflow-y-auto">
@@ -44,8 +44,8 @@ export function LiveActivity() {
           <EmptyState
             compact
             icon={Activity}
-            title="Aucune écriture de l'agent vocal"
-            description="Demandez une pré-commande : elle apparaît ici dès que l'agent l'écrit dans l'ERP."
+            title="No writing of the vocal agent"
+            description="Ask for a pre-order: it appears here as soon as the agent writes it in the ERP."
           />
         ) : (
           <ol>{events.map((e) => <Row key={e.id} e={e} fresh={fresh.has(e.id)} />)}</ol>

@@ -1,37 +1,37 @@
-# Une journée chez Le Fournil Occitan
+# One day at Le Fournil Occitan
 
-## Convention « maintenant » du pack
+## "Now" package convention
 
-Le pack est figé au **mardi 24/11/2026 à 06h30** (heure de Paris). Les commandes du jour sont préparées, confirmées ou encore en brouillon ; les camions ne sont pas partis. Les commandes de demain arrivent encore. L'historique couvre trois ans.
+The pack is frozen at **mardi 24/11/2026 in 06h30** (Paris time). Orders of the day are prepared, confirmed or in draft; trucks have not left. Orders of tomorrow are still coming. The history covers three years.
 
-## Le cycle de 24 heures
+## The 24 hours cycle
 
-- **05:00** — Rémi ouvre le quai : réception des camions (minoterie, beurre, surgelés) et contrôle des températures.
-- **05:30** — Lucie prend le standard : les boulangers appellent après la première fournée pour un dépannage de levure ou de farine.
-- **06:00** — Fin de préparation des tournées ; les bacs surgelés sont chargés en dernier.
-- **06:30** — Départ des premières tournées. **C'est l'heure « maintenant » du pack.**
-- **07:00** — Livraisons des boulangeries et pâtisseries de 7h à 12h (après le coup de feu du matin).
-- **09:00** — Les commerciaux sont en clientèle ; Thierry compare les cours du beurre et de la farine.
-- **13:00** — Les boulangers passent leurs commandes de l'après-midi (téléphone, WhatsApp, portail).
-- **15:00** — Thierry passe les commandes fournisseurs pour le lendemain ou le surlendemain.
-- **17:00** — Clôture des commandes pour la tournée du lendemain matin ; préparation de nuit des tournées longues.
+- **05:00** — Rémi opens the dock: reception of trucks (milling, butter, frozen) and temperature control.
+- **05:30** — Lucie takes the standard: bakers call after the first batch for yeast or flour troubleshooting.
+- **06:00** — Tour preparation finish; frozen bins are last loaded.
+- **06:30** — Start of the first tours. **This is the "now" time of the pack.**
+- **07:00** — Bakeries and pastries from 7h to 12h (after the morning shot).
+- **09:00** — Salespeople are in business; Thierry compares the prices of butter and flour.
+- **13:00** — Bakers place their afternoon orders (telephone, WhatsApp, portal).
+- **15:00** — Thierry places supplier orders for the next day or the next day.
+- **17:00** — Close of orders for the next morning tour; night preparation for long tours.
 
-## Heures limites de commande
+## Order cutoffs
 
-- Commande avant 17h pour une livraison le lendemain matin (tournées de Toulouse et de la périphérie).
-- Tournée Lauragais-Tarn (mardi et vendredi) : commande la veille avant 12h.
-- Dépannage de levure et de farine le jour même : possible jusqu'à 9h si la tournée n'est pas partie, sinon retrait au dépôt.
-- Épiphanie : pré-commandes de poudre d'amande, feuilletage, couronnes et fèves avant le 15 décembre.
-- Collectivités : bon de commande à J-3 avant 12h.
+- Order before 17h for delivery the next morning (turns of Toulouse and the periphery).
+- Turn Lauragais-Tarn (Tuesday and Friday): Order the day before 12h.
+- Troubleshooting of yeast and flour on the same day: possible up to 9h if the tour is not gone, otherwise withdrawal at the depot.
+- Epiphany: pre-order almond powder, leafing, crowns and beans before the 15 December.
+- Communities: order form to J-3 before 12h.
 
-## Qui appelle quand
+## Who calls when
 
-- Les commerciaux (Julien, Marion, Karim) prennent les commandes de leur portefeuille en journée.
-- Pas de standard de nuit : les messages laissés le soir sont traités à l'ouverture.
-- Les commandes par e-mail et WhatsApp arrivent en brouillon et sont confirmées par l'ADV ou le commercial.
+- Commercials (Julien, Marion, Karim) take orders from their portfolio during the day.
+- No night standard: messages left in the evening are processed at the opening.
+- Orders by e-mail and WhatsApp arrive in draft and are confirmed by the ADV or the commercial.
 
-## Facturation
+## Invoicing
 
-- Facture à la livraison, à la semaine (le lundi, pour la semaine écoulée) ou au mois (le 1er) selon le client.
-- `overdue` n'est jamais stocké : une facture émise ou partiellement payée après son échéance est en retard.
-- Les retours et refus à la livraison sont déduits de la facture (ligne préparée diminuée).
+- Invoice on delivery, on weekdays (Mondays, for the past week) or month (1er) depending on the customer.
+- `overdue` is never stored: an invoice issued or partially paid after its due date is late.
+- Returns and refusal of delivery are deducted from the invoice (deducted line).

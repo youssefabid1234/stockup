@@ -9,9 +9,9 @@ from .registry import ToolArgs, ToolContext, tool
 
 class OrderLine(ToolArgs):
     product_id: str
-    qty: float = Field(description="Quantité dans l'unité du produit (kg, pièce, caisse…)")
-    note: str | None = Field(None, description="ex. « livrer avant 7 h », « bien mûr »")
-    substitute_for: str | None = Field(None, description="productId remplacé, si c'est une substitution")
+    qty: float = Field(description="Quantity in the unit of the product (kg, piece, box...)")
+    note: str | None = Field(None, description="e.g. \"deliver before 7 a.m.\", \"well mature\"")
+    substitute_for: str | None = Field(None, description="productId replaced, if it is a substitution")
 
     def to_erp(self) -> dict:
         return self.model_dump(by_alias=True, exclude_none=True)
@@ -39,12 +39,12 @@ def summarize_order(o: dict) -> dict:
 async def create_draft_order(
     ctx: ToolContext,
     client_id: str,
-    delivery_date: str | None = Field(None, description="YYYY-MM-DD, optionnel"),
+    delivery_date: str | None = Field(None, description="YYYY-MM-DD, optional"),
     lines: list[OrderLine] | None = None,
     note: str | None = None,
 ) -> dict:
     """
-    Crée une pré-commande (brouillon) pour un client, avec ou sans lignes. Prix résolus par l'ERP (prix client > catalogue).
+    Creates a pre-order (bruillon) for a customer, with or without lines. Price solved by the customerERP (prix client > catalogue).
     Create a draft order. Delivery date defaults to the client's next delivery day.
     """
     body = {
@@ -62,11 +62,11 @@ async def add_order_line(
     ctx: ToolContext,
     order_id: str,
     product_id: str,
-    qty: float = Field(description="Quantité dans l'unité du produit (kg, pièce, caisse…)"),
-    note: str | None = Field(None, description="ex. « livrer avant 7 h », « bien mûr »"),
-    substitute_for: str | None = Field(None, description="productId remplacé, si c'est une substitution"),
+    qty: float = Field(description="Quantity in the unit of the product (kg, piece, box...)"),
+    note: str | None = Field(None, description="e.g. \"deliver before 7 a.m.\", \"well mature\""),
+    substitute_for: str | None = Field(None, description="productId replaced, if it is a substitution"),
 ) -> dict:
-    """Ajoute une ligne à une commande brouillon ou confirmée. Add a line to an order."""
+    """Add a line to a draft or confirmed command. Add a line to an order."""
     line = OrderLine(product_id=product_id, qty=qty, note=note, substitute_for=substitute_for)
     return summarize_order(await ctx.erp.post(f"/api/orders/{enc(order_id)}/lines", line.to_erp()))
 
@@ -74,7 +74,7 @@ async def add_order_line(
 @tool
 async def confirm_order(ctx: ToolContext, order_id: str) -> dict:
     """
-    Confirme une commande : réserve le stock et l'affecte à une tournée. Renvoie des alertes (encours, stock…).
+    Confirms an order: reserves the stock and assigns it to a tour. Returns alerts (in progress, stock...).
     Only after the caller explicitly agreed to the recap.
     """
     return summarize_order(await ctx.erp.post(f"/api/orders/{enc(order_id)}/confirm"))
@@ -82,5 +82,5 @@ async def confirm_order(ctx: ToolContext, order_id: str) -> dict:
 
 @tool
 async def get_order(ctx: ToolContext, order_id: str) -> dict:
-    """Détail d'une commande (lignes, statut, total, alertes). Order detail."""
+    """Detail of an order (lines, status, total, alerts). Order detail."""
     return summarize_order(await ctx.erp.get(f"/api/orders/{enc(order_id)}"))

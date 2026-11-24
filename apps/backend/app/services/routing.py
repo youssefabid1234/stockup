@@ -158,7 +158,7 @@ def plan_day(ctx: Ctx, date: str) -> list[Doc]:
             crud.route_runs.put({**run, "stops": _resequence(stops, crud.routes.require(run["routeId"]))})
 
     log_event(ctx, "route_run.planned", "route_run", date,
-              f"Tournées du {date} planifiées : {len(touched)} tournée(s), {planned} nouvel(s) arrêt(s)")  # fmt: skip
+              f"Turns of {date} Planned: {len(touched)} tour(s), {planned} new stop(s)")  # fmt: skip
     return list_route_runs(date)
 
 
@@ -170,9 +170,9 @@ def reorder_stops(ctx: Ctx, run_id: str, order_ids: list[str]) -> Doc:
     by_order = {s["orderId"]: s for s in run["stops"]}
     for oid in order_ids:
         if oid not in by_order:
-            raise bad_request("unknown_stop", f"La commande {oid} n'est pas sur cette tournée")
+            raise bad_request("unknown_stop", f"The order {oid} is not on this tour")
     listed = [by_order[oid] for oid in order_ids]
     rest = [s for s in run["stops"] if s["orderId"] not in order_ids]
     updated = crud.route_runs.put({**run, "stops": _resequence([*listed, *rest], route)})
-    log_event(ctx, "route_run.reordered", "route_run", run["id"], f"Ordre des arrêts modifié sur {route['name']} du {run['date']}")
+    log_event(ctx, "route_run.reordered", "route_run", run["id"], f"Order of judgments modified on {route['name']} du {run['date']}")
     return route_run_detail(updated)

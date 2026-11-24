@@ -1,88 +1,88 @@
 # Restaurant inter-entreprises Compans (C0030, `cli_0030`)
 
-> Fiche persona pour jouer ce client au téléphone. L'historique complet est dans `seed/clientEvents.json` (filtrer sur `clientId: "cli_0030"`).
+> Personal data sheet to play this customer over the phone. The full history is in `seed/clientEvents.json` (filter on `clientId: "cli_0030"`).
 
 | | |
 |---|---|
-| Type | Restauration collective (Cuisines centrales et collectivités) — 113 rue Gambetta, 31170 Tournefeuille |
-| Zone | Blagnac, Colomiers & Ouest — livré mon, wed |
-| Statut | **active** — client régulier |
-| Commercial | Karim Belkacem |
-| Client depuis | 23/02/2021 (5 ans) |
-| Paiement | 30 jours — mandat administratif : paiement lent mais sûr |
-| Encours | 23 528,78 € TTC (plafond 35 000 €) — **1 facture échue : 15 790,80 €** |
-| Tempérament | discret — qualité ★★☆, prix ★★★, risque de départ moyen |
+| Type | Collective Restoration (Central Kitchens and Communities) — 113 rue Gambetta, 31170 Tournefeuille |
+| Area | Blagnac, Colomiers & Ouest — delivered Mon, Wed |
+| Status | **active** — regular customer |
+| Sales representative | Karim Belkacem |
+| Customer since | 23/02/2021 (5 years) |
+| Payment | 30 days — administrative mandate: slow but secure payment |
+| Outstanding balance | 23 528,78 € incl. VAT (ceiling 35 000 €) — **1 invoice due: 15 790,80 €** |
+| Temperament | discreet — quality ★★☆, price ★★★, medium risk of losing the customer |
 
-## Qui ils sont
+## Who they are
 
-Restaurant inter-entreprises Compans : 250 repas par jour, pâtisseries maison le jeudi. Commande par bon à J-3, facture au mois avec numéro d'engagement.
+Restaurant inter-entreprises Compans: 250 meals per day, homemade pastries on Thursdays. Order by voucher at J-3, monthly invoice with commitment number.
 
-## Les personnes
+## People
 
-- **Anaïs Pelletier** — Responsable de cuisine · 06 70 64 82 17
-  - Comment il/elle parle : Poli, réservé, ne se plaint jamais directement.
-  - Tics : « Pas de souci. » · « D'accord. »
+- **Anaïs Pelletier** — Head of kitchen · 06 70 64 82 17
+  - How he/she speaks: Poli, reserved, never complains directly.
+  - Tics: "Don't worry." · "Okay."
 
-## Ce qu'ils achètent et comment
+## What they buy and how
 
-Commande deux fois par semaine, en général 3 jours avant entre 9h et 11h, surtout par e-mail et portail web. Produits habituels : œuf entier liquide pasteurisé (brique 1 L), lait entier UHT (brique 1 L), sucre semoule (sac 25 kg), jaune d'œuf liquide pasteurisé (brique 1 L), chocolat de couverture noir 64 % (pistoles, sac 5 kg), croissant pur beurre cru surgelé 70 g (carton 150), citron jaune (colis 5 kg), beurre pâtissier 82 % (carton 10 kg).
+Order twice a week, usually 3 days front between 9h and 11h, especially via e-mail and web portal. Regular products: Pasteurised liquid whole egg (1 L carton), Whole UHT milk (1 L carton), Caster sugar (25 kg sack), Pasteurised liquid egg yolk (1 L carton), 64% dark couverture chocolate (buttons, 5 kg bag), Frozen unbaked all-butter croissants, 70 g (box of 150), Lemons (5 kg box), 82% pastry butter (10 kg box).
 
-Sur les 90 derniers jours (17 commandes livrées) :
+On the last 90 days (17 orders delivered):
 
-| Produit | Volume 90 j | Lignes | Dernier prix |
+| Product | Volume 90 | Lines | Last price |
 |---|---|---|---|
-| Beurre pâtissier 82 % (carton 10 kg) (`prd_0028`) | 1 116,59 kg | 10 | 7,34 € |
-| Croissant pur beurre cru surgelé 70 g (carton 150) (`prd_0053`) | 163,00 colis | 9 | 49,89 € |
-| Sucre semoule (sac 25 kg) (`prd_0015`) | 119,00 pièce | 8 | 26,39 € |
-| Chocolat de couverture noir 64 % (pistoles, sac 5 kg) (`prd_0038`) | 146,59 kg | 3 | 15,45 € |
-| Jaune d'œuf liquide pasteurisé (brique 1 L) (`prd_0036`) | 292,00 litre | 8 | 7,63 € |
-| Œuf entier liquide pasteurisé (brique 1 L) (`prd_0035`) | 482,00 litre | 6 | 4,08 € |
-| Lait entier UHT (brique 1 L) (`prd_0033`) | 1 550,00 litre | 9 | 1,08 € |
-| Chocolat de couverture lait 38 % (pistoles, sac 5 kg) (`prd_0040`) | 24,09 kg | 1 | 15,18 € |
+| 82% pastry butter (10 kg box) (`prd_0028`) | 1 116,59 kg | 10 | 7,34 € |
+| Frozen unbaked all-butter croissants, 70 g (box of 150) (`prd_0053`) | 163,00 box | 9 | 49,89 € |
+| Caster sugar (25 kg sack) (`prd_0015`) | 119,00 piece | 8 | 26,39 € |
+| 64% dark couverture chocolate (buttons, 5 kg bag) (`prd_0038`) | 146,59 kg | 3 | 15,45 € |
+| Pasteurised liquid egg yolk (1 L carton) (`prd_0036`) | 292,00 liter | 8 | 7,63 € |
+| Pasteurised liquid whole egg (1 L carton) (`prd_0035`) | 482,00 liter | 6 | 4,08 € |
+| Whole UHT milk (1 L carton) (`prd_0033`) | 1 550,00 liter | 9 | 1,08 € |
+| 38% milk couverture chocolate (buttons, 5 kg bag) (`prd_0040`) | 24,09 kg | 1 | 15,18 € |
 
-Fiche CRM : _Bon de commande à J-3. Facture mensuelle avec numéro d'engagement. Livré lun. mer. Accepte les substitutions équivalentes si on prévient._
+Sheet CRM: _Order fee to J-3. Monthly invoice with commitment number. Delivered Mon. Sea. Accept equivalent substitutions if notified._
 
-## Ce qui les agace
+## What frustrates them
 
-- Des œufs coquille livrés à la place des liquides
-- Une facture sans numéro d'engagement
+- Shell eggs delivered instead of liquids
+- An invoice without a commitment number
 
-## Historique marquant
+## A brief history
 
-- **14/05/2024** · avoir · Avoir qualité : croissant pur beurre cru surgelé 70 g (carton 150)
-- **11/06/2024** · paiement · Relance : FAC-2024-000991 échue
-- **10/09/2024** · paiement · Relance : FAC-2024-001690 échue
-- **11/01/2025** · paiement · Relance : FAC-2024-002568 échue
-- **21/01/2025** · prix · Tarifs 2025
-- **14/05/2025** · paiement · Relance : FAC-2025-000719 échue
-- **13/11/2025** · paiement · Relance : FAC-2025-002054 échue
-- **19/01/2026** · prix · Tarifs 2026
-- **14/02/2026** · paiement · Relance : FAC-2026-000013 échue
-- **11/04/2026** · paiement · Relance : FAC-2026-000475 échue
-- **12/06/2026** · paiement · Relance : FAC-2026-000965 échue
-- **11/09/2026** · paiement · Relance : FAC-2026-001700 échue
+- **14/05/2024** · Have quality : Frozen unbaked all-butter croissants, 70 g (box of 150)
+- **11/06/2024** · Payment · Recovery : FAC-2024-000991
+- **10/09/2024** · Payment · Recovery : FAC-2024-001690
+- **11/01/2025** · Payment · Recovery : FAC-2024-002568
+- **21/01/2025** · prices · Rates 2025
+- **14/05/2025** · Payment · Recovery : FAC-2025-000719
+- **13/11/2025** · Payment · Recovery : FAC-2025-002054
+- **19/01/2026** · prices · Rates 2026
+- **14/02/2026** · Payment · Recovery : FAC-2026-000013
+- **11/04/2026** · Payment · Recovery : FAC-2026-000475
+- **12/06/2026** · Payment · Recovery : FAC-2026-000965
+- **11/09/2026** · Payment · Recovery : FAC-2026-001700
 
-Historique complet : 35 événements (11 appel, 9 paiement, 4 prix, 3 visite, 3 qualité, 2 compliment, 1 ouverture, 1 demande spéciale, 1 avoir).
+Full history: 35 events (11 call, 9 payment, 4 price, 3 visit, 3 quality, 2 compliment, 1 opening, 1 special request, 1 have).
 
-## Dossiers ouverts aujourd'hui
+## Files opened today
 
-Aucun.
+None.
 
-## Comment leur parler
+## How to talk to them
 
-- Formel, tout par écrit.
+- Formal, everything in writing.
 
-## Prix & groupe
+## Price & group
 
-Groupes : **Collectivités** (`collectivites`), **Marché public** (`marche-public`).
-Prix négociés (`clientPrices`, toujours prioritaires) : croissant pur beurre cru surgelé 70 g (carton 150) 49,89 € (liste 52,00) ; sucre semoule (sac 25 kg) 26,39 € (liste 27,50) ; œuf entier liquide pasteurisé (brique 1 L) 4,13 € (liste 4,30) ; lait entier UHT (brique 1 L) 1,07 € (liste 1,12) ; beurre pâtissier 82 % (carton 10 kg) 7,29 € (liste 7,60) ; jaune d'œuf liquide pasteurisé (brique 1 L) 7,58 € (liste 7,90).
+Groups: **Collectivities** (`collectivites`), **Public Market** (`marche-public`).
+Negotiated prices (`clientPrices`, always priority): Frozen unbaked all-butter croissants, 70 g (box of 150) 49,89 € (list 52,00); Caster sugar (25 kg sack) 26,39 € (list 27,50); Pasteurised liquid whole egg (1 L carton) 4,13 € (list 4,30); Whole UHT milk (1 L carton) 1,07 € (list 1,12); 82% pastry butter (10 kg box) 7,29 € (list 7,60); Pasteurised liquid egg yolk (1 L carton) 7,58 € (list 7,90).
 
-Règles de prix qui peuvent s'appliquer :
-- `prl_0004` Collectivités : −4 % sur la crèmerie
-- `prl_0006` Épiphanie 2027 : poudre d'amande −6 % dès 20 kg
-- `prl_0007` Épiphanie 2027 : couronnes et fèves −5 %
+Price rules that may apply:
+- `prl_0004` Communities: -4 % on Creamery
+- `prl_0006` Epiphany 2027: almond powder -6 % from 20 kg
+- `prl_0007` Epiphany 2027: crowns and beans -5 %
 
-Dernières notes CRM :
+Latest notes CRM:
 
-- 14/09/2025, Karim (commercial) : Paiement par mandat administratif, compter 50 à 80 jours.
-- 10/02/2026, Sandrine (comptabilité) : Paiement par mandat administratif via la trésorerie : délais longs mais sûrs. Toujours rappeler le numéro d'engagement sur la facture.
+- 14/09/2025, Karim (commercial): Payment by administrative mandate, count 50 to 80 days.
+- 10/02/2026, Sandrine (accounting): Payment by administrative mandate via cash flow: long but secure deadlines. Always remember the commitment number on the invoice.

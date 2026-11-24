@@ -23,21 +23,21 @@ export default function DashboardPage() {
   return (
     <Page>
       <PageHeader
-        title="Accueil"
+        title="Home"
         meta={
           <span className="flex items-center gap-2 text-[12px] text-muted-foreground">
             {d ? <span className="capitalize">{fmtDateLong(d.today)}</span> : null}
             <span className="flex items-center gap-1.5">
               <Dot tone={status === "live" ? "success" : status === "connecting" ? "warning" : "destructive"} pulse={status === "live"} />
-              {status === "live" ? "En direct" : status === "connecting" ? "Connexion…" : "Hors ligne"}
+              {status === "live" ? "Live" : status === "connecting" ? "Connection..." : "Offline"}
             </span>
           </span>
         }
-        actions={<Button variant="primary" icon={Plus} onClick={() => navigate("/orders?new=1")}>Nouvelle commande</Button>}
+        actions={<Button variant="primary" icon={Plus} onClick={() => navigate("/orders?new=1")}>New order</Button>}
       />
       <PageBody flush>
         {isError && !d ? (
-          <EmptyState icon={TrendingUp} title="Tableau de bord indisponible" description="L'API ne répond pas. Vérifiez que le serveur tourne sur le port 4000." action={<Button size="sm" onClick={() => refetch()}>Réessayer</Button>} />
+          <EmptyState icon={TrendingUp} title="Dashboard not available" description="TheAPI Check that the server is running on port 4000." action={<Button size="sm" onClick={() => refetch()}>Retry</Button>} />
         ) : (
           <>
             <Kpis d={d} loading={isLoading} />
@@ -64,16 +64,16 @@ function Kpis({ d, loading }: { d?: Dashboard; loading: boolean }) {
   const v = (node: ReactNode) => (loading || !d ? <Skeleton className="mt-1 h-5 w-20" /> : node);
   return (
     <StatGrid className="md:grid-cols-3 xl:grid-cols-6 [&>*:nth-child(-n+3)]:border-b [&>*]:border-border xl:[&>*]:border-b-0">
-      <Stat icon={Euro} label="CA du jour" value={v(<Money value={d?.revenueToday} compact />)} hint="Livraisons du jour, HT" onClick={() => navigate("/orders?date=today")} />
-      <Stat icon={TrendingUp} label="CA du mois" value={v(<Money value={d?.revenueMonth} compact />)} hint="Depuis le 1er, HT" onClick={() => navigate("/invoices")} />
-      <Stat icon={ShoppingCart} label="Commandes du jour" value={v(<span className="num">{d?.ordersToday}</span>)} hint="Livraison aujourd'hui" onClick={() => navigate("/orders?date=today")} />
+      <Stat icon={Euro} label="CA Agenda" value={v(<Money value={d?.revenueToday} compact />)} hint="Today's deliveries, HT" onClick={() => navigate("/orders?date=today")} />
+      <Stat icon={TrendingUp} label="CA of the month" value={v(<Money value={d?.revenueMonth} compact />)} hint="Depuis le 1er, HT" onClick={() => navigate("/invoices")} />
+      <Stat icon={ShoppingCart} label="Orders of the day" value={v(<span className="num">{d?.ordersToday}</span>)} hint="Delivery today" onClick={() => navigate("/orders?date=today")} />
       <Stat
-        icon={ClipboardList} label="Pré-commandes à traiter" value={v(<span className="num">{d?.draftOrders}</span>)}
-        tone={d && d.draftOrders > 0 ? "violet" : undefined} hint="À confirmer" onClick={() => navigate("/orders?status=draft")}
+        icon={ClipboardList} label="Pre-orders to be processed" value={v(<span className="num">{d?.draftOrders}</span>)}
+        tone={d && d.draftOrders > 0 ? "violet" : undefined} hint="To be confirmed" onClick={() => navigate("/orders?status=draft")}
       />
-      <Stat icon={Truck} label="À livrer aujourd'hui" value={v(<span className="num">{d?.toDeliverToday}</span>)} hint="Confirmées ou préparées" onClick={() => navigate("/orders?date=today")} />
+      <Stat icon={Truck} label="To deliver today" value={v(<span className="num">{d?.toDeliverToday}</span>)} hint="Confirmed or prepared" onClick={() => navigate("/orders?date=today")} />
       <Stat
-        icon={AlertTriangle} label="Impayés en retard" value={v(<Money value={d?.overdueInvoicesAmount} compact />)}
+        icon={AlertTriangle} label="Late payments" value={v(<Money value={d?.overdueInvoicesAmount} compact />)}
         tone={d && d.overdueInvoicesAmount > 0 ? "destructive" : undefined}
         hint={d ? `${d.overdueInvoicesCount} facture${d.overdueInvoicesCount > 1 ? "s" : ""}` : undefined}
         onClick={() => navigate("/invoices?status=overdue")}
@@ -88,11 +88,11 @@ function RevenueSection({ d }: { d?: Dashboard }) {
   const days = d?.revenueByDay.filter((x) => x.revenue > 0).length ?? 0;
   return (
     <Section
-      title="Chiffre d'affaires · 30 jours"
+      title="Turnover · 30 days"
       actions={d ? (
         <span className="flex items-center gap-3 text-[12px] text-muted-foreground">
           <span>Total <Money value={total} compact className="font-medium text-foreground" /></span>
-          <span>Moyenne <Money value={days ? total / days : 0} compact className="font-medium text-foreground" /> / jour livré</span>
+          <span>Average <Money value={days ? total / days : 0} compact className="font-medium text-foreground" /> / day delivered</span>
         </span>
       ) : null}
     >
@@ -101,7 +101,7 @@ function RevenueSection({ d }: { d?: Dashboard }) {
           d.revenueByDay.length ? (
             <RevenueChart data={d.revenueByDay} today={d.today} onPick={(date) => navigate(`/orders?date=${date}`)} />
           ) : (
-            <EmptyState compact icon={TrendingUp} title="Pas encore de chiffre d'affaires" />
+            <EmptyState compact icon={TrendingUp} title="No turnover yet" />
           )
         ) : (
           <Skeleton className="mb-2 h-[164px] w-full" />
@@ -130,7 +130,7 @@ function TopClients({ d }: { d?: Dashboard }) {
   const top = d?.topClients.slice(0, 7) ?? [];
   const max = Math.max(1, ...top.map((c) => c.revenue));
   return (
-    <Section title="Top clients · 30 j" actions={<SeeAll to="/clients" />}>
+    <Section title="Top customers · 30 d" actions={<SeeAll to="/clients" />}>
       {!d ? <ListSkeleton /> : top.length === 0 ? <EmptyLine icon={Users} text="Aucune vente sur la période." /> : (
         <ListFrame>
           {top.map((c, i) => (
@@ -156,7 +156,7 @@ function TopClients({ d }: { d?: Dashboard }) {
 function LowStock({ d }: { d?: Dashboard }) {
   const rows = d?.lowStock.slice().sort((a, b) => a.available - b.available).slice(0, 7) ?? [];
   return (
-    <Section title="Stock bas" count={d?.lowStock.length} actions={<SeeAll to="/stock" />}>
+    <Section title="Low stock" count={d?.lowStock.length} actions={<SeeAll to="/stock" />}>
       {!d ? <ListSkeleton /> : rows.length === 0 ? <EmptyLine icon={PackageX} text="Aucun produit sous le seuil." /> : (
         <ListFrame>
           {rows.map((p) => (
@@ -181,7 +181,7 @@ function daysBetween(from: string, to: string) {
 function Expiring({ d }: { d?: Dashboard }) {
   const rows = d?.expiringSoon.slice().sort((a, b) => a.expiresAt.localeCompare(b.expiresAt)).slice(0, 7) ?? [];
   return (
-    <Section title="DLC proches" count={d?.expiringSoon.length} actions={<SeeAll to="/stock" />}>
+    <Section title="DLC close" count={d?.expiringSoon.length} actions={<SeeAll to="/stock" />}>
       {!d ? <ListSkeleton /> : rows.length === 0 ? <EmptyLine icon={CalendarClock} text="Aucun lot proche de sa date limite." /> : (
         <ListFrame>
           {rows.map((l) => {
@@ -193,7 +193,7 @@ function Expiring({ d }: { d?: Dashboard }) {
                   <span className="min-w-0 flex-1 truncate">{l.name}</span>
                   <Qty value={l.qtyRemaining} className="shrink-0 text-muted-foreground" />
                   <span className={cn("num w-[62px] shrink-0 text-right", urgent ? "font-medium text-warning" : "text-muted-foreground")} title={fmtDateLong(l.expiresAt)}>
-                    {n < 0 ? "dépassée" : n === 0 ? "auj." : n === 1 ? "demain" : `J+${n}`}
+                    {n < 0 ? "exceeded" : n === 0 ? "auj." : n === 1 ? "demain" : `J+${n}`}
                   </span>
                 </Link>
               </li>
@@ -206,7 +206,7 @@ function Expiring({ d }: { d?: Dashboard }) {
 }
 
 function SeeAll({ to }: { to: string }) {
-  return <Link to={to} className="inline-flex items-center gap-1 text-[12px] text-muted-foreground hover:text-foreground">Voir<ArrowUpRight size={12} /></Link>;
+  return <Link to={to} className="inline-flex items-center gap-1 text-[12px] text-muted-foreground hover:text-foreground">See<ArrowUpRight size={12} /></Link>;
 }
 
 function LiveActivity() {
@@ -214,7 +214,7 @@ function LiveActivity() {
   const events = (data ?? []).slice(0, 14);
   return (
     <aside className="min-w-0">
-      <Section title="Activité en direct" actions={<SeeAll to="/activity" />}>
+      <Section title="Live activity" actions={<SeeAll to="/activity" />}>
         {isLoading ? <ListSkeleton /> : events.length === 0 ? (
           <EmptyLine icon={Activity} text="Les commandes, paiements et appels de l'agent vocal s'afficheront ici en temps réel." />
         ) : (

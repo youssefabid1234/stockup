@@ -2,16 +2,16 @@
 Mock LLM — deterministic, no key, no network. Lets the whole stack demo offline.
 
 It understands a handful of French intents and drives real tool calls against the ERP:
-  "Bonjour, c'est la Poissonnerie Lemoine"   → search          → the client is now "the caller"
+  "Hello, it's the Poissonnerie Lemoine" → search → the client is now "the caller"
   "il reste du bar ?"                        → search(product) → get_product_stock
-  "infos sur le Bistrot du Port"             → search(client)  → get_client
-  "une commande pour le Bistrot…"            → search(client)  → create_draft_order
-  "je voudrais 4 kg de bar de ligne"         → search(product) → create_draft_order with the line for the caller
+  "infos about the Bistrot du Port" → search(client) → get_client
+  "a command for the Bistrot..." → search(client) → create_draft_order
+  "I would like 4 kg of line bar" → search(product) → create_draft_order with the line for the caller
                                                (or add_order_line when an order is already open in the conversation)
-  "confirme la commande"                     → confirm_order (last order id seen in the conversation)
+  "confirms the order" → confirm_order (last order id seen in the conversation)
   anything else                              → search(everything)
-Command mode (system prompt says "MODE COMMANDE", single stateless turn), see decide_command():
-  "crée une pré-commande pour Lemoine, 4 kilos de bar pour jeudi" → search(client) → search(product) → create_draft_order
+Command mode (system prompt says "Single-turn voice command", single stateless turn), see decide_command():
+  "creates a pre-order for Lemoine, 4 kilos of bar for Thursday" → search(client) → search(product) → create_draft_order
   "montre-moi le stock de turbot"                                → search(product) → get_product_stock
 
 Greetings and fillers are stripped before searching. Each step looks at what already happened since the
@@ -39,60 +39,35 @@ from .http import new_call_id
 A = re.ASCII
 AI = re.ASCII | re.IGNORECASE
 
-STOPWORDS = set(
-    """bonjour bonsoir salut allo allô hello merci svp stp oui non euh ben bon alors voilà voila est-ce que qu quoi quel quelle quels quelles
-   il elle ils on vous nous je j tu me m moi c ce s n est suis ici part
-   le la les l un une des du de d au aux a à et ou pour avec sur dans en y cet cette ces mon ma mes votre vos son sa ses
-   reste restent encore avez as ai a-t-il dispo disponible disponibles stock stocks combien
-   info infos information informations fiche client clients donne donnez montre montrez dis dites
-   commande commander commandes crée créer cree creer faire fais passe passer nouvelle nouveau prends prendre voudrais voudrait veux
-   aimerais faut faudrait mets mettez mettre ajoute ajoutez ajouter rajoute rajoutez
-   confirme confirmer valide valider kg kilo kilos s'il plaît plait c'est chez demain aujourd hui matin soir""".split()
-)
-
-GREETING = re.compile(r"^\s*(bonjour|bonsoir|salut|all[oô]|hello)\b", AI)
-# "c'est la Poissonnerie Lemoine", "ici le Bistrot du Port", "de la part de …", "je suis …"
-IDENTIFY = re.compile(r"\b(c['’]est|ici|de la part|je suis|je t[eé]l[eé]phone)\b", AI)
-
-NUMBER_WORDS = {"deux": 2, "trois": 3, "quatre": 4, "cinq": 5, "six": 6, "sept": 7, "huit": 8, "neuf": 9, "dix": 10, "douze": 12, "quinze": 15, "vingt": 20}  # fmt: skip
+STOPWORDS = set("""hi hello good morning afternoon thanks please yes no would could can do does did
+    you your we our me my i d like need want order create draft open for the a an any some of in
+    have has stock available availability left how much many is are show tell about customer client
+    record file details tomorrow today delivery on to here from this it's it s and add put down
+    kg kilos kilograms grams litres liters blocks bags boxes sacks units""".split())
+GREETING = re.compile(r"^\s*(?:hi|hello|good (?:morning|afternoon|evening))\b", AI)
+IDENTIFY = re.compile(r"\b(?:this is|calling from|I'm|I am|speaking)\b", AI)
+NUMBER_WORDS = dict(zip("one two three four five six seven eight nine ten".split(), range(1, 11)))
+NUMBER_WORDS.update(twelve=12, fifteen=15, twenty=20)
 NUMBER = rf"\d+(?:[.,]\d+)?|{'|'.join(NUMBER_WORDS)}"
-UNITS = "kg|kilos?|kilogrammes?|pi[eè]ces?|pces?|douzaines?|colis|caisses?|cagettes?|bottes?|litres?|barquettes?"
-# "4 kg de bar de ligne pour demain" → qty "4", product "bar de ligne pour demain"
-QTY_LINE = re.compile(rf"\b({NUMBER})\s*(?:{UNITS})?\s+(?:de\s+|d['’]\s*)?(.+)", AI)
-# The product phrase stops at "pour demain", "livré …", punctuation…
-PRODUCT_END = re.compile(r"\s(?:pour|livr|à livrer|svp|s'il)\b|[,.;!?]", A)
-
-ORDER_VERB = re.compile(r"\b(voudrais|voudrait|veux|faut|faudrait|aimerais|mets|mettez|mettre|ajoute|ajoutez|rajoute|prends|prendre|command|il me|donnez|envoyez)", A)  # fmt: skip
+UNITS = r"kg|kilograms?|kilos?|grams?|pieces?|units?|dozens?|boxes|box|cartons?|sacks?|bags?|bunches|litres?|liters?|packs?|blocks?|slabs?"
+QTY_LINE = re.compile(rf"\b({NUMBER})\s*(?:{UNITS})?\s+(?:of\s+)?(.+)", AI)
+PRODUCT_END = re.compile(r"\s(?:for|deliver\w*|please|on)\b|[,.;!?]", AI)
+ORDER_VERB = re.compile(r"\b(?:want|need|take|add|order|like|give|put|send)\b", AI)
 WITH_UNIT = re.compile(rf"\b({NUMBER})\s*({UNITS})\b", AI)
-
-UNIT_FR = {"kg": "kg", "piece": "pièce(s)", "box": "colis", "dozen": "douzaine(s)", "liter": "L"}
-WEEKDAYS = ["dimanche", "lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi"]  # JavaScript order: Sunday = 0
-MONTHS = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"]  # fmt: skip
-
-
-# ── French formatting, as said on the phone ──
-
+UNIT_FR = {"kg": "kg", "piece": "pieces", "box": "boxes", "dozen": "dozen", "liter": "L"}
+WEEKDAYS = "sunday monday tuesday wednesday thursday friday saturday".split()
 
 def fr_num(n: Any) -> str:
-    """44.52 → "44,52", 1234.5 → "1 234,5" (at most 2 decimals)."""
-    if isinstance(n, bool) or not isinstance(n, int | float):
+    if isinstance(n, bool) or not isinstance(n, (float, int)):
         return str(n)
-    d = Decimal(repr(n)).quantize(Decimal("0.01"), ROUND_HALF_EVEN)
-    integer, _, decimals = f"{abs(d):f}".partition(".")
-    decimals = decimals.rstrip("0")
-    grouped = f"{int(integer):,}".replace(",", " ")  # French thousands separator: narrow no-break space
-    return ("-" if d < 0 else "") + grouped + (f",{decimals}" if decimals else "")
-
+    rounded = Decimal(repr(n)).quantize(Decimal("0.01"), ROUND_HALF_EVEN)
+    return f"{rounded:,.2f}".rstrip("0").rstrip(".")
 
 def fr_day(iso: Any) -> str:
-    """"2026-11-25" → "le mercredi 25 novembre"."""
-    if not isinstance(iso, str) or not re.match(r"^\d{4}-\d{2}-\d{2}", iso, A):
-        return f"le {iso}"
-    d = date.fromisoformat(iso[:10])
-    return f"le {WEEKDAYS[(d.weekday() + 1) % 7]} {d.day} {MONTHS[d.month - 1]}"
-
-
-# ── Understanding the user's sentence ──
+    if not isinstance(iso, str) or not re.match(r"^\d{4}-\d{2}-\d{2}", iso):
+        return str(iso)
+    day = date.fromisoformat(iso[:10])
+    return f"{day:%A} {day.day} {day:%B}"
 
 
 @dataclass
@@ -102,7 +77,7 @@ class Line:
 
 
 def parse_line(text: str) -> Line | None:
-    """"je voudrais 4 kg de bar de ligne pour demain" → Line(qty=4, product="bar ligne")."""
+    """"I would like 4 kg of line bar for tomorrow" → Line(qty=4, product="bar line")."""
     m = QTY_LINE.search(text.lower())
     if not m:
         return None
@@ -117,16 +92,16 @@ def detect_intent(text: str) -> str:
     t = text.lower()
     if re.search(r"\b(confirm|valid)", t, A):
         return "confirm"
-    if re.search(r"\b(reste|stock|dispo|combien)", t, A):
+    if re.search(r"\b(stock|available|left|how much|how many|do you have)", t, A):
         return "stock"
-    # A quantity + product, said with an order verb ("je voudrais 4 kg de …") or with a unit ("et deux douzaines d'huîtres").
+    # A quantity + product, said with an order verb ("I would like 4 kg of ...") or with a unit ("and two dozen oysters").
     if parse_line(t) and (ORDER_VERB.search(t) or WITH_UNIT.search(t)):
         return "line"
-    if "command" in t:
+    if "order" in t:
         return "order"
-    if re.search(r"\b(client|fiche|infos?|habitude)", t, A):
+    if re.search(r"\b(client|customer|profile|usual|info)", t, A):
         return "client"
-    if re.search(r"^(bonjour|salut|allo|allô|hello)[\s,!.]*$", t.strip(), A):
+    if re.search(r"^(hi|hello|good morning|good afternoon)[\s,!.]*$", t.strip(), A):
         return "greeting"
     return "search"
 
@@ -198,14 +173,14 @@ def find_last_order(messages: list[ChatMessage], editable_only: bool = False) ->
 
 def warnings(order: Any) -> str:
     w = [x.get("message") for x in (order.get("warnings") or [])] if isinstance(order, dict) else []
-    return f" Attention : {' ; '.join(map(str, w))}." if w else ""
+    return f" Attention: {' ; '.join(map(str, w))}." if w else ""
 
 
 def describe_line(line: dict | None, fallback: str) -> str:
     """{qty: 4, unit: "kg", productName: "Bar"} → "4 kg de Bar"."""
     if not line:
         return fallback
-    return f"{fr_num(line.get('qty'))} {UNIT_FR.get(line.get('unit'), line.get('unit'))} de {line.get('productName')}"
+    return f"{fr_num(line.get('qty'))} {UNIT_FR.get(line.get('unit'), line.get('unit'))} of {line.get('productName')}"
 
 
 def call(name: str, args: dict) -> ToolCall:
@@ -226,16 +201,16 @@ def decide(messages: list[ChatMessage]) -> ToolCall | str:
     query = extract_query(user_text)
 
     if error := error_of(last):
-        return f"Désolé, je n'arrive pas à obtenir l'information : {error}"
+        return f"Sorry, I can't get the information: {error}"
 
     if intent == "greeting":
-        return "Bonjour ! Je vous écoute : un client, un produit, une commande ?"
+        return "Hello! How can I help you with a customer, a product or an order?"
 
     if intent == "confirm":
         if not last:
             order = find_last_order(messages)
-            return call("confirm_order", {"orderId": order["id"]}) if order else "Je ne vois pas de commande en cours à confirmer."
-        return f"C'est confirmé : commande {last.data.get('number')}.{warnings(last.data)}"
+            return call("confirm_order", {"orderId": order["id"]}) if order else "I don't see any orders in progress to confirm."
+        return f"It's confirmed: order {last.data.get('number')}.{warnings(last.data)}"
 
     if intent == "line":
         line = parse_line(user_text)
@@ -243,12 +218,12 @@ def decide(messages: list[ChatMessage]) -> ToolCall | str:
         client = find_caller(before)
         if not last:
             if not order and not client:
-                return "Pour quel client est-ce ? Dites-moi le nom de l'établissement."
+                return "Which business are you calling from?"
             return call("search", {"query": line.product, "types": ["product"]})
         if last.name == "search":
             top = first(last.data)
             if not top:
-                return f"Je n'ai pas trouvé de produit pour « {line.product} »."
+                return f"I did not find a product for “{line.product}”."
             new_line = {"productId": top["id"], "qty": line.qty}
             if order:
                 return call("add_order_line", {"orderId": order["id"], **new_line})
@@ -259,22 +234,22 @@ def decide(messages: list[ChatMessage]) -> ToolCall | str:
             # Only the alerts about the line just added (the others were already said).
             own = [w for w in d.get("warnings") or [] if not added or w.get("productId") == added.get("productId")]
             return (
-                f"C'est noté : {describe_line(added, 'la ligne')} sur la commande {d.get('number')} (brouillon) "
-                f"pour {d.get('client')}, livraison {fr_day(d.get('deliveryDate'))}.{warnings({'warnings': own})} Autre chose ?"
+                f"Added {describe_line(added, 'the item')} to draft order {d.get('number')} "
+                f"for {d.get('client')}, for delivery on {fr_day(d.get('deliveryDate'))}.{warnings({'warnings': own})} Anything else?"
             )
 
     if not last:
         if not query:
             if GREETING.search(user_text):
-                return "Bonjour ! Je vous écoute : un client, un produit, une commande ?"
-            return "Pouvez-vous préciser le client ou le produit ?"
+                return "Hello! How can I help you with a customer, a product or an order?"
+            return "Can you specify the customer or product?"
         types = ["product"] if intent == "stock" else ["client"] if intent in ("client", "order") else None
         return call("search", {"query": query, **({"types": types} if types else {})})
 
     if last.name == "search":
         hits = last.data if isinstance(last.data, list) else []
         if not hits:
-            return f"Je n'ai rien trouvé pour « {query} »."
+            return f"I didn't find anything for “{query}”."
         top = hits[0]
         if intent == "stock" and top["type"] == "product":
             return call("get_product_stock", {"productId": top["id"]})
@@ -283,32 +258,32 @@ def decide(messages: list[ChatMessage]) -> ToolCall | str:
         if intent == "order" and top["type"] == "client":
             return call("create_draft_order", {"clientId": top["id"]})
         if top["type"] == "client" and (GREETING.search(user_text) or IDENTIFY.search(user_text)):
-            hello = "Bonjour" if GREETING.search(user_text) else "Très bien"
-            return f"{hello}, {top['label']} ! Je vous écoute, que puis-je faire pour vous ?"
-        return f"J'ai trouvé : {', '.join(h['label'] for h in hits[:3])}."
+            hello = "Hello" if GREETING.search(user_text) else "All right"
+            return f"{hello}, {top['label']} How can I help?"
+        return f"I found: {', '.join(h['label'] for h in hits[:3])}."
 
     d = last.data if isinstance(last.data, dict) else {}
     match last.name:
         case "get_product_stock":
-            expiry = f", prochaine DLC {fr_day(d['nextExpiry'])}" if d.get("nextExpiry") else ""
-            return f"{d.get('name')} : {fr_num(d.get('available'))} {UNIT_FR.get(d.get('unit'), d.get('unit'))} disponibles{expiry}."
+            expiry = f", next expiry {fr_day(d['nextExpiry'])}" if d.get("nextExpiry") else ""
+            return f"{d.get('name')} : {fr_num(d.get('available'))} {UNIT_FR.get(d.get('unit'), d.get('unit'))} available{expiry}."
         case "get_client":
             usual = [u.get("productName") for u in (d.get("usual") or [])[:3]]
-            habits = f" D'habitude : {', '.join(usual)}." if usual else ""
-            return f"{d.get('name')}, à {d.get('city')}.{habits}"
+            habits = f" Usually: {', '.join(usual)}." if usual else ""
+            return f"{d.get('name')}, in {d.get('city')}.{habits}"
         case "create_draft_order":
             return (
-                f"C'est noté : commande {d.get('number')} créée en brouillon pour {d.get('client')}, "
-                f"livraison {fr_day(d.get('deliveryDate'))}. Que voulez-vous ajouter ?"
+                f"Draft order {d.get('number')} created for {d.get('client')}, "
+                f"for delivery on {fr_day(d.get('deliveryDate'))}. What do you want to add?"
             )
         case _:
-            return "C'est fait."
+            return "It's done."
 
 
 # ── Command mode (single turn, act-first) ──
 
-NOT_A_CLIENT = re.compile(rf"^({'|'.join(WEEKDAYS)}|demain|aujourd|ce |cette |la semaine|le \d)", AI)
-FOR_WHOM = re.compile(r"\bpour\s+(.+?)(?=\s*[,;.]|\s+\d|\s+pour\b|\s+livr|$)", AI)
+NOT_A_CLIENT = re.compile(rf"^({'|'.join(WEEKDAYS)}|tomorrow|today|this |next |the \d)", AI)
+FOR_WHOM = re.compile(r"\bfor\s+(.+?)(?=\s*[,;.]|\s+\d|\s+for\b|\s+deliver|$)", AI)
 
 
 def command_client(text: str) -> str | None:
@@ -327,7 +302,7 @@ def command_date(text: str, system: str) -> str | None:
         return None
     d = date.fromisoformat(today[1])
     t = text.lower()
-    if re.search(r"\bdemain\b", t, A):
+    if re.search(r"\btomorrow\b", t, A):
         return (d + timedelta(days=1)).isoformat()
     wd = next((i for i, w in enumerate(WEEKDAYS) if re.search(rf"\b{w}\b", t, A)), -1)
     if wd < 0:
@@ -342,7 +317,7 @@ def decide_command(messages: list[ChatMessage], system: str, tool_names: list[st
     results = results_after(messages, last_user)
     last = results[-1] if results else None
     if error := error_of(last):
-        return f"Échec : {error}"
+        return f"Failed: {error}"
 
     line = parse_line(user_text)
     client = command_client(user_text)
@@ -352,12 +327,12 @@ def decide_command(messages: list[ChatMessage], system: str, tool_names: list[st
             return call("search", {"query": client, "types": ["client"]})
         if last.name == "search" and len(searches) == 1:
             if not first(searches[0].data):
-                return f"Je ne trouve pas le client « {client} »."
+                return f"I can't find the client “{client}”."
             return call("search", {"query": line.product, "types": ["product"]})
         if last.name == "search":
             c, p = first(searches[0].data), first(searches[1].data)
             if not p:
-                return f"Je ne trouve pas le produit « {line.product} »."
+                return f"I can't find the product “{line.product}”."
             delivery_date = command_date(user_text, system)
             return call(
                 "create_draft_order",
@@ -369,29 +344,29 @@ def decide_command(messages: list[ChatMessage], system: str, tool_names: list[st
             )
         if last.name == "create_draft_order":
             d = last.data
-            what = describe_line((d.get("lines") or [None])[0], "la commande")
-            return f"Pré-commande {d.get('number')} créée pour {d.get('client')} : {what}, livraison {fr_day(d.get('deliveryDate'))}.{warnings(d)}"
+            what = describe_line((d.get("lines") or [None])[0], "the command")
+            return f"Pre-order {d.get('number')} created for {d.get('client')} : {what}, delivery {fr_day(d.get('deliveryDate'))}.{warnings(d)}"
 
-    if re.search("factur", user_text, re.I) and re.search("pay|régl|regl", user_text, re.I):
-        if any(re.search("pay|paid|paiement", n, re.I) for n in tool_names):
-            return "Le mode démo (mock) ne sait pas encore enregistrer un paiement : branchez un vrai LLM."
-        return "Je ne peux pas encore marquer une facture comme payée : aucun outil de paiement n'est branché."
+    if re.search("invoice", user_text, re.I) and re.search("pay", user_text, re.I):
+        if any(re.search("pay|paid", n, re.I) for n in tool_names):
+            return "Demo mode (mock) doesn't know how to save a payment yet: plug in a real one LLM."
+        return "I can't mark an invoice as paid yet: no payment tool is connected."
 
     # Everything else: the conversational state machine, on a cleaned-up sentence, with command-style endings.
-    cleaned = re.sub(r"\b(montre|montrez|affiche|affichez|ouvre|ouvrez|donne|donnez)(-moi|-nous)?\b", " ", user_text, flags=AI)
-    cleaned = re.sub(r"pr[ée]-?commande", "commande", cleaned, flags=re.I)
+    cleaned = re.sub(r"\b(show|display|open|give)(?: me| us)?\b", " ", user_text, flags=AI)
+    cleaned = re.sub(r"pre-?order", "order", cleaned, flags=re.I)
     following = decide([*messages[:last_user], ChatMessage(role="user", content=cleaned), *messages[last_user + 1 :]])
     if isinstance(following, str):
-        return re.sub(r"\s*(Autre chose|Que voulez-vous ajouter|Je vous écoute[^?]*)\s*\?$", "", following).strip()
+        return re.sub(r"\s*(Anything else|What do you want to add|How can I help[^?]*)\s*\?$", "", following).strip()
     return following
 
 
 class MockLLM(LLMClient):
     provider = "mock"
-    model = "mock-fr-intents"
+    model = "mock-en-intents"
 
     async def stream(self, req: LLMRequest) -> AsyncIterator[LLMEvent]:
-        if "MODE COMMANDE" in req.system:
+        if "Single-turn voice command" in req.system:
             step = decide_command(req.messages, req.system, [t.name for t in req.tools])
         else:
             step = decide(req.messages)

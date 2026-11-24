@@ -83,7 +83,7 @@ export function ContextPanel({ entry, onClose }: { entry: ContextEntrySummary; o
   const [body, setBody] = useState(entry.body);
   const [tags, setTags] = useState((entry.tags ?? []).join(", "));
   const update = useApiMutation((patch: Partial<ContextEntryInput>) => api.context.update(entry.id, patch), { invalidate: [qk.context.all] });
-  const remove = useApiMutation(() => api.context.remove(entry.id), { success: "Fiche supprimée", invalidate: [qk.context.all], onSuccess: onClose });
+  const remove = useApiMutation(() => api.context.remove(entry.id), { success: "Deleted form", invalidate: [qk.context.all], onSuccess: onClose });
 
   const commit = () => {
     const patch: Partial<ContextEntryInput> = {};
@@ -104,36 +104,36 @@ export function ContextPanel({ entry, onClose }: { entry: ContextEntrySummary; o
       footer={
         <>
           <span className="mr-auto flex min-w-0 items-center gap-1.5 text-[11.5px] text-muted-foreground">
-            <SourceMark source={entry.source} /> · modifiée <DateLabel date={entry.updatedAt} format="relative" />
-            {update.isPending ? " · enregistrement…" : ""}
+            <SourceMark source={entry.source} /> · modified <DateLabel date={entry.updatedAt} format="relative" />
+            {update.isPending ? " · registration..." : ""}
           </span>
-          <InlineConfirmDelete text onConfirm={() => remove.mutate()} pending={remove.isPending} label="Supprimer" />
+          <InlineConfirmDelete text onConfirm={() => remove.mutate()} pending={remove.isPending} label="Delete" />
         </>
       }
     >
       <div className="flex flex-col gap-4">
         <div className={cn("flex flex-col gap-3", ai && "rounded-[4px] border-l-2 border-violet/60 pl-3")}>
-          <Field label="Titre">
+          <Field label="Title">
             <Input value={title} onChange={(e) => setTitle(e.target.value)} onBlur={commit} onKeyDown={(e) => e.key === "Enter" && e.currentTarget.blur()} />
           </Field>
           <div className="grid grid-cols-2 gap-3">
-            <Field label="Genre">
+            <Field label="Gender">
               <Select value={entry.kind} onChange={(kind) => kind !== entry.kind && update.mutate({ kind: kind as ContextKind })} options={KIND_OPTIONS} className="w-full" />
             </Field>
-            <Field label="Mots-clés" hint="Séparés par des virgules">
-              <Input value={tags} onChange={(e) => setTags(e.target.value)} onBlur={commit} placeholder="substitution, appel" />
+            <Field label="Keywords" hint="Separated by commas">
+              <Input value={tags} onChange={(e) => setTags(e.target.value)} onBlur={commit} placeholder="substitution, appeal" />
             </Field>
           </div>
           <MarkdownEditor
-            label="Contenu"
-            hint="Markdown : listes, **gras**, tableaux, liens. Enregistré automatiquement. L'aperçu est ce que lit l'agent."
+            label="Content"
+            hint="Markdown: lists, **gras**, tables, links. Recorded automatically. Preview is what the agent reads."
             value={body}
             onChange={setBody}
             onCommit={commit}
           />
         </div>
         <div className="text-[11.5px] text-muted-foreground">
-          Identifiant <Mono>{entry.id}</Mono>{entry.entityId ? <> · <Mono>{entry.entityId}</Mono></> : null} · créée <DateLabel date={entry.createdAt} format="relative" />
+          Identifier <Mono>{entry.id}</Mono>{entry.entityId ? <> · <Mono>{entry.entityId}</Mono></> : null} · created <DateLabel date={entry.createdAt} format="relative" />
         </div>
       </div>
     </SidePanel>
@@ -157,7 +157,7 @@ export function NewContextPanel({ defaults, lockTarget, onClose, onCreated }: {
   const [tags, setTags] = useState("");
   const options = useEntityOptions(scope);
   const create = useApiMutation(api.context.create, {
-    success: (e) => `Fiche « ${e.title} » ajoutée`,
+    success: (e) => `Form " ${e.title} » added`,
     invalidate: [qk.context.all],
     onSuccess: (e) => { onCreated?.(e); onClose(); },
   });
@@ -172,35 +172,35 @@ export function NewContextPanel({ defaults, lockTarget, onClose, onCreated }: {
   return (
     <SidePanel
       id="context"
-      title="Nouvelle fiche de contexte"
-      subtitle={lockTarget ? `${CONTEXT_SCOPE_LABEL[scope]} · ${lockTarget.label}` : "Ce que les agents doivent savoir"}
+      title="New context sheet"
+      subtitle={lockTarget ? `${CONTEXT_SCOPE_LABEL[scope]} · ${lockTarget.label}` : "What agents need to know"}
       onClose={onClose}
       footer={
         <>
-          <Button onClick={onClose}>Annuler</Button>
-          <Button variant="primary" type="submit" form="new-context" loading={create.isPending} disabled={!ok}>Ajouter</Button>
+          <Button onClick={onClose}>Cancel</Button>
+          <Button variant="primary" type="submit" form="new-context" loading={create.isPending} disabled={!ok}>Add</Button>
         </>
       }
     >
       <form id="new-context" onSubmit={submit} className="flex flex-col gap-3.5">
         {lockTarget ? null : (
           <div className="grid grid-cols-2 gap-3">
-            <Field label="Concerne">
+            <Field label="Subject">
               <Select value={scope} onChange={(v) => { setScope(v as ContextScope); setEntityId(""); }} options={SCOPE_OPTIONS} className="w-full" />
             </Field>
             {needsEntity ? (
               <Field label={CONTEXT_SCOPE_LABEL[scope]}>
-                <Select value={entityId} onChange={setEntityId} options={options} placeholder="Choisir…" filterable className="w-full" />
+                <Select value={entityId} onChange={setEntityId} options={options} placeholder="Choose..." filterable className="w-full" />
               </Field>
             ) : <div />}
           </div>
         )}
-        <Field label="Titre"><Input autoFocus value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Livraison par la porte de service" /></Field>
+        <Field label="Title"><Input autoFocus value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Delivery by service door" /></Field>
         <div className="grid grid-cols-2 gap-3">
-          <Field label="Genre"><Select value={kind} onChange={(v) => setKind(v as ContextKind)} options={KIND_OPTIONS} className="w-full" /></Field>
-          <Field label="Mots-clés"><Input value={tags} onChange={(e) => setTags(e.target.value)} placeholder="livraison, accès" /></Field>
+          <Field label="Gender"><Select value={kind} onChange={(v) => setKind(v as ContextKind)} options={KIND_OPTIONS} className="w-full" /></Field>
+          <Field label="Keywords"><Input value={tags} onChange={(e) => setTags(e.target.value)} placeholder="Delivery, access" /></Field>
         </div>
-        <MarkdownEditor label="Contenu" hint="1 à 5 lignes, markdown." value={body} onChange={setBody} defaultMode="raw" placeholder="- Le chauffeur passe par la cour, code 4821." />
+        <MarkdownEditor label="Content" hint="1 à 5 lignes, markdown." value={body} onChange={setBody} defaultMode="raw" placeholder="- The driver goes through the court, code 4821." />
       </form>
     </SidePanel>
   );
@@ -263,14 +263,14 @@ export function EntityContext({ scope, id, label, layout = "section", newOpen, o
 
   const own = (
     <Section
-      title="Ce que l'agent sait"
+      title="What the agent knows"
       count={data?.entries.length}
-      actions={newOpen === undefined ? <Button size="sm" variant="ghost" icon={Plus} onClick={() => setLocalNew(true)}>Ajouter</Button> : undefined}
+      actions={newOpen === undefined ? <Button size="sm" variant="ghost" icon={Plus} onClick={() => setLocalNew(true)}>Add</Button> : undefined}
     >
       {isLoading && !data ? (
         <div className="flex flex-col gap-2">{[0, 1, 2].map((i) => <Skeleton key={i} className="h-14 w-full" />)}</div>
       ) : !data?.entries.length ? (
-        <EmptyState compact icon={BookOpen} title="Aucune fiche de contexte" description="Ajoutez ce qu'un agent doit savoir avant d'en parler." />
+        <EmptyState compact icon={BookOpen} title="No background information" description="Add what an agent needs to know before he talks about it." />
       ) : (
         <ul className="overflow-hidden rounded-[4px] border border-border">
           {learnedFirst(data.entries).map((e) => <EntryBlock key={e.id} e={e} onOpen={() => setSel(e.id)} />)}
@@ -279,12 +279,12 @@ export function EntityContext({ scope, id, label, layout = "section", newOpen, o
     </Section>
   );
   const related = data?.related.length ? (
-    <Section title="Fiches liées" count={data.related.length}>
+    <Section title="Related forms" count={data.related.length}>
       <ul className="overflow-hidden rounded-[4px] border border-border">
         {data.related.map((e) => <EntryBlock key={e.id} e={e} onOpen={() => setSel(e.id)} showEntity clamp />)}
       </ul>
       <Link to={`/context?q=${encodeURIComponent(id)}`} className="mt-2 inline-block text-[12.5px] text-primary hover:underline">
-        Chercher « {id} » dans tout le contexte →
+        Search for " {id} » in all context →
       </Link>
     </Section>
   ) : null;
@@ -294,7 +294,7 @@ export function EntityContext({ scope, id, label, layout = "section", newOpen, o
       {layout === "tab" ? (
         <div className="grid grid-cols-1 gap-8 px-5 py-5 xl:grid-cols-[minmax(0,1fr)_380px]">
           <div className="min-w-0">{own}</div>
-          <aside className="min-w-0">{related ?? <p className="pt-8 text-[12.5px] text-muted-foreground">Aucune fiche liée.</p>}</aside>
+          <aside className="min-w-0">{related ?? <p className="pt-8 text-[12.5px] text-muted-foreground">No linked files.</p>}</aside>
         </div>
       ) : (
         <div className="flex flex-col gap-5">{own}{related}</div>
@@ -314,9 +314,9 @@ export function ContextSummary({ data, onOpen, max = 6 }: { data?: ContextForEnt
   const entries = data?.entries ?? [];
   return (
     <Section
-      title="Ce que l'agent sait"
+      title="What the agent knows"
       count={entries.length}
-      actions={<Button size="sm" variant="ghost" icon={BookOpen} onClick={onOpen}>Tout voir</Button>}
+      actions={<Button size="sm" variant="ghost" icon={BookOpen} onClick={onOpen}>See all</Button>}
     >
       {entries.length ? (
         <ul className="flex flex-col divide-y divide-border overflow-hidden rounded-[4px] border border-border">
@@ -338,10 +338,10 @@ export function ContextSummary({ data, onOpen, max = 6 }: { data?: ContextForEnt
         </ul>
       ) : (
         <button type="button" onClick={onOpen} className="w-full rounded-[4px] border border-dashed border-border px-3 py-3 text-left text-[12.5px] text-muted-foreground hover:border-border-hover">
-          Aucune fiche. Ajouter ce que l'agent doit savoir…
+          No records. Add what the agent needs to know...
         </button>
       )}
-      {entries.length > max ? <div className="mt-1.5 text-[12px] text-muted-foreground">+ {entries.length - max} autres fiches</div> : null}
+      {entries.length > max ? <div className="mt-1.5 text-[12px] text-muted-foreground">+ {entries.length - max} Other forms</div> : null}
     </Section>
   );
 }

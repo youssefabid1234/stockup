@@ -52,7 +52,7 @@ export default function HistoryPage() {
       "clientId" in ev
         ? api.clientEvents.update(ev.id, { status: "resolved", ...(resolution ? { resolution } : {}) })
         : api.supplierEvents.update(ev.id, { status: "resolved", ...(resolution ? { resolution } : {}) }),
-    { success: "Événement résolu", invalidate: [qk.history.all, qk.clients.all, qk.suppliers.all] },
+    { success: "Event resolved", invalidate: [qk.history.all, qk.clients.all, qk.suppliers.all] },
   );
 
   // Stats over the whole filtered set (Page extras), not just the page.
@@ -69,33 +69,33 @@ export default function HistoryPage() {
   return (
     <Page>
       <PageHeader
-        title="Historique"
+        title="Background"
         tabs={
           <Tabs
             value={kind}
             onChange={(k) => setKind(k)}
             items={[
-              { id: "client" as const, label: "Clients", count: allClients.data?.total },
-              { id: "supplier" as const, label: "Fournisseurs", count: allSuppliers.data?.total },
+              { id: "client" as const, label: "Customers", count: allClients.data?.total },
+              { id: "supplier" as const, label: "Suppliers", count: allSuppliers.data?.total },
             ]}
           />
         }
         filters={
           <>
-            <SearchInput value={q} onChange={setQ} placeholder="Titre, description…" />
-            <DatePicker size="sm" value={from} onChange={setFrom} max={to || undefined} placeholder="Du" clearable presets={[{ label: "−30 j", days: -30 }, { label: "−1 an", days: -365 }]} aria-label="Du" className="w-[120px]" />
-            <DatePicker size="sm" value={to} onChange={setTo} min={from || undefined} placeholder="Au" clearable presets={[{ label: "Aujourd'hui", days: 0 }]} aria-label="Au" className="w-[120px]" />
+            <SearchInput value={q} onChange={setQ} placeholder="Title, description..." />
+            <DatePicker size="sm" value={from} onChange={setFrom} max={to || undefined} placeholder="From" clearable presets={[{ label: "−30 j", days: -30 }, { label: "−1 an", days: -365 }]} aria-label="From" className="w-[120px]" />
+            <DatePicker size="sm" value={to} onChange={setTo} min={from || undefined} placeholder="To" clearable presets={[{ label: "Today", days: 0 }]} aria-label="To" className="w-[120px]" />
           </>
         }
       />
       <PageBody flush>
         <StatGrid className="md:grid-cols-4">
-          <Stat label="Événements" value={<span className="num">{stats.total}</span>} hint={filtered ? "Selon les filtres" : kind === "client" ? "Tous les clients" : "Tous les fournisseurs"} />
-          <Stat label="Ouverts" value={<span className="num">{stats.open}</span>} tone={stats.open ? "warning" : undefined} hint="À traiter"
+          <Stat label="Events" value={<span className="num">{stats.total}</span>} hint={filtered ? "Depending on the filters" : kind === "client" ? "All customers" : "All suppliers"} />
+          <Stat label="Open" value={<span className="num">{stats.open}</span>} tone={stats.open ? "warning" : undefined} hint="To be processed"
             onClick={() => setStatus(status === "open" ? "" : "open")} />
-          <Stat label="Réclamations & qualité" value={<span className="num">{stats.issues}</span>}
+          <Stat label="Claims & quality" value={<span className="num">{stats.issues}</span>}
             onClick={() => setFamily(family === "issues" ? "" : "issues")} />
-          <Stat label="Montants en jeu" value={fmtMoney(stats.amount, { compact: true })} hint="Avoirs, litiges, dettes" />
+          <Stat label="Amounts involved" value={fmtMoney(stats.amount, { compact: true })} hint="Assets, disputes, debts" />
         </StatGrid>
         <div className="px-5 py-4">
           <div className="mb-3 flex flex-wrap items-center gap-2">
@@ -104,7 +104,7 @@ export default function HistoryPage() {
               className="ml-auto"
               value={(status || "all") as "all" | "open" | "resolved"}
               onChange={(v) => setStatus(v === "all" ? "" : v)}
-              options={[{ id: "all", label: "Tous" }, { id: "open", label: "Ouverts" }, { id: "resolved", label: "Résolus" }]}
+              options={[{ id: "all", label: "All" }, { id: "open", label: "Open" }, { id: "resolved", label: "Solved" }]}
             />
           </div>
           <EventTimeline
@@ -120,9 +120,9 @@ export default function HistoryPage() {
             empty={
               <EmptyState
                 icon={History}
-                title={filtered ? "Aucun événement ne correspond" : "Aucun historique"}
-                description={filtered ? "Modifiez les filtres ou la période." : "Les appels, réclamations, retours et négociations apparaîtront ici."}
-                action={filtered ? <Button size="sm" onClick={reset}>Effacer les filtres</Button> : undefined}
+                title={filtered ? "No event matching" : "No history"}
+                description={filtered ? "Change filters or period." : "Appeals, claims, returns and negotiations will appear here."}
+                action={filtered ? <Button size="sm" onClick={reset}>Clear Filters</Button> : undefined}
               />
             }
           />

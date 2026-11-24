@@ -3,24 +3,24 @@ import type { Actor, ClientType, ContextKind, ContextScope, ContextSource, Order
 
 export const CLIENT_TYPE_LABEL: Record<ClientType, string> = {
   restaurant: "Restaurant",
-  brasserie: "Brasserie",
-  fishmonger: "Poissonnerie",
-  canteen: "Restauration collective",
-  supermarket: "Grande surface",
-  caterer: "Traiteur",
-  hotel: "Hôtel",
+  brasserie: "Brewery",
+  fishmonger: "Fishmonger",
+  canteen: "Collective restoration",
+  supermarket: "Supermarket",
+  caterer: "Caterer",
+  hotel: "Hotel",
 };
 
 /** Product category labels: per company, filled from meta.categories at boot (see clock.ts). Legacy ids as fallback. */
 export const CATEGORY_LABEL: Record<ProductCategory, string> = {
-  whole_fish: "Poisson entier",
-  fillet: "Filets",
-  shellfish: "Coquillages",
-  crustacean: "Crustacés",
-  frozen: "Surgelés",
-  produce: "Fruits & légumes",
-  dairy: "Crèmerie",
-  dry: "Épicerie",
+  whole_fish: "Whole fish",
+  fillet: "Nets",
+  shellfish: "Shellfish",
+  crustacean: "Crustaceans",
+  frozen: "Frozen goods",
+  produce: "Fruit & vegetables",
+  dairy: "Dairy",
+  dry: "Dry goods",
 };
 let categoryOrder: ProductCategory[] = Object.keys(CATEGORY_LABEL);
 /** Replace the labels with the data pack's categories (id → label). */
@@ -38,63 +38,63 @@ export const categoryIds = (): ProductCategory[] => categoryOrder;
 export const categoryOptions = () => categoryOrder.map((value) => ({ value, label: categoryLabel(value) }));
 
 export const SOURCE_LABEL: Record<OrderSource, string> = {
-  phone: "Téléphone",
+  phone: "Phone",
   voice_agent: "Agent vocal",
   email: "E-mail",
   whatsapp: "WhatsApp",
-  manual: "Saisie",
+  manual: "Manual entry",
   web: "Web",
 };
 
 export const PAYMENT_METHOD_LABEL: Record<PaymentMethod, string> = {
-  transfer: "Virement",
-  card: "Carte",
-  cheque: "Chèque",
-  cash: "Espèces",
-  direct_debit: "Prélèvement",
+  transfer: "Bank transfer",
+  card: "Card",
+  cheque: "Cheque",
+  cash: "Cash",
+  direct_debit: "Direct debit",
 };
 
 export const MOVEMENT_REASON_LABEL: Record<StockMovementReason, string> = {
-  receipt: "Réception",
-  sale: "Vente",
-  adjustment: "Ajustement",
-  waste: "Perte",
-  return: "Retour",
+  receipt: "Receipt",
+  sale: "Sale",
+  adjustment: "Adjustment",
+  waste: "Waste",
+  return: "Back",
 };
 
 export const WEEKDAY_LABEL: Record<Weekday, string> = {
-  mon: "lun.", tue: "mar.", wed: "mer.", thu: "jeu.", fri: "ven.", sat: "sam.", sun: "dim.",
+  mon: "Mon", tue: "Tue", wed: "Wed", thu: "Thu", fri: "Fri", sat: "Sat", sun: "Sun",
 };
 export const WEEKDAYS: Weekday[] = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"];
 
 export const ACTOR_LABEL: Record<Actor, string> = {
-  user: "Utilisateur",
+  user: "User",
   ai_chat: "Assistant IA",
   voice_agent: "Agent vocal",
-  system: "Système",
+  system: "System",
 };
 
 // ── Context table ──
 export const CONTEXT_SCOPE_LABEL: Record<ContextScope, string> = {
-  company: "Entreprise",
-  client: "Client",
-  supplier: "Fournisseur",
-  product: "Produit",
-  category: "Rayon",
+  company: "Company",
+  client: "Customer",
+  supplier: "Supplier",
+  product: "Product",
+  category: "Department",
 };
 export const CONTEXT_KIND_LABEL: Record<ContextKind, string> = {
-  policy: "Règle",
-  procedure: "Procédure",
-  preference: "Préférence",
-  fact: "Fait",
-  relationship: "Relation",
-  pricing: "Prix",
-  logistics: "Logistique",
-  risk: "Vigilance",
+  policy: "Policy",
+  procedure: "Procedure",
+  preference: "Preference",
+  fact: "Done",
+  relationship: "Relationship",
+  pricing: "Price",
+  logistics: "Logistics",
+  risk: "Risk",
 };
 export const CONTEXT_SOURCE_LABEL: Record<ContextSource, string> = {
   seed: "Data pack",
-  user: "Utilisateur",
+  user: "User",
   ai_chat: "Assistant IA",
   voice_agent: "Agent vocal",
 };

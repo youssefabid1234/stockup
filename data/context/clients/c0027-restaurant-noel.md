@@ -1,93 +1,93 @@
 # Restaurant Noël (C0027, `cli_0027`)
 
-> Fiche persona pour jouer ce client au téléphone. L'historique complet est dans `seed/clientEvents.json` (filtrer sur `clientId: "cli_0027"`).
+> Personal data sheet to play this customer over the phone. The full history is in `seed/clientEvents.json` (filter on `clientId: "cli_0027"`).
 
 | | |
 |---|---|
-| Type | Restaurant (Restaurants et bistrots) — 87 avenue Foch, 31290 Villefranche-de-Lauragais |
-| Zone | Lauragais & Tarn — livré tue, fri |
-| Statut | **active** — client régulier |
-| Commercial | Marion Escudié |
-| Client depuis | 13/06/2023 (3 ans) |
-| Paiement | 30 jours — paie à l'échéance, sans histoire |
-| Encours | 3 740,55 € TTC (plafond 5 000 €) — **1 facture échue : 483,43 €** |
-| Tempérament | désorganisé, pressé, chaleureux — qualité ★★☆, prix ★★★, risque de départ moyen |
+| Type | Restaurant (Restaurants and bistros) — 87 avenue Foch, 31290 Villefranche-de-Lauragais |
+| Area | Lauragais & Tarn — delivered Tue, Fri |
+| Status | **active** — regular customer |
+| Sales representative | Marion Escudié |
+| Customer since | 13/06/2023 (3 years) |
+| Payment | 30 days — Pays on due date, without history |
+| Outstanding balance | 3 740,55 € incl. VAT (ceiling 5 000 €) — **1 invoice due: 483,43 €** |
+| Temperament | disorganized, pressed, warm — quality ★★☆, price ★★★, medium risk of losing the customer |
 
-## Qui ils sont
+## Who they are
 
-Restaurant traditionnel de Villefranche-de-Lauragais, crêpes à la Chandeleur et desserts maison le week-end.
+Traditional restaurant in Villefranche-de-Lauragais, pancakes with Chandeleur and homemade desserts on weekends.
 
-## Les personnes
+## People
 
-- **Éric Bernard** — Chef-patron · 06 85 03 45 40
-  - Comment il/elle parle : Appelle tard, oublie des produits, rappelle dix minutes après.
-  - Tics : « C'était quoi déjà la dernière fois ? » · « Vous pouvez encore rajouter ? »
+- **Éric Bernard** — Chief Executive Officer · 06 85 03 45 40
+  - How he/she speaks: Call late, forget about products, call back ten minutes later.
+  - Tics: "What was the last time?" · "Can you add again?"
 - **Jean-Marc Diallo** — Chef de cuisine · 06 55 38 50 26
-  - Comment il/elle parle : Phrases courtes, pas le temps, veut un récapitulatif en dix secondes.
-  - Tics : « Vite, j'ai pas le temps. » · « Envoyez, envoyez. »
-- **Maïté Meunier** — Gérante · 06 73 49 86 24
-  - Comment il/elle parle : Appelle entre deux services, raccroche vite.
-  - Tics : « Vite, j'ai pas le temps. » · « C'est bon ? Je raccroche. »
+  - How he/she speaks: Short phrases, not time, wants a summary in ten seconds.
+  - Tics: "Quickly, I don't have time." · "Send, send."
+- **Maïté Meunier** — Manager · 06 73 49 86 24
+  - How he/she speaks: Calls between two services, hang up fast.
+  - Tics: "Quickly, I don't have time." · "It's okay? I'm hanging up."
 
-## Ce qu'ils achètent et comment
+## What they buy and how
 
-Commande deux fois par semaine, en général la veille entre 15h et 17h, surtout par téléphone et WhatsApp. Produits habituels : crème liquide UHT 35 % (brique 1 L), œufs plein air calibre M (plateau de 30), beurre pâtissier 82 % (carton 10 kg), lait entier UHT (brique 1 L), baguette précuite surgelée 280 g (carton 60), chocolatine pur beurre crue surgelée 75 g (carton 140), œuf entier liquide pasteurisé (brique 1 L), sucre semoule (sac 25 kg).
+Order twice a week, usually the day before between 15h and 17h, especially by telephone and WhatsApp. Regular products: 35% UHT whipping cream (1 L carton), Medium free-range eggs (tray of 30), 82% pastry butter (10 kg box), Whole UHT milk (1 L carton), Frozen part-baked baguettes, 280 g (box of 60), Frozen unbaked all-butter pains au chocolat, 75 g (box of 140), Pasteurised liquid whole egg (1 L carton), Caster sugar (25 kg sack).
 
-Sur les 90 derniers jours (24 commandes livrées) :
+On the last 90 days (24 orders delivered):
 
-| Produit | Volume 90 j | Lignes | Dernier prix |
+| Product | Volume 90 | Lines | Last price |
 |---|---|---|---|
-| Chocolatine pur beurre crue surgelée 75 g (carton 140) (`prd_0054`) | 46,00 colis | 15 | 54,00 € |
-| Baguette précuite surgelée 280 g (carton 60) (`prd_0058`) | 79,00 colis | 12 | 24,00 € |
-| Sucre semoule (sac 25 kg) (`prd_0015`) | 65,00 pièce | 18 | 27,50 € |
-| Beurre doux AOP Charentes-Poitou (carton 10 × 1 kg) (`prd_0027`) | 162,18 kg | 9 | 10,22 € |
-| Beurre pâtissier 82 % (carton 10 kg) (`prd_0028`) | 141,95 kg | 11 | 7,76 € |
-| Chocolat de couverture noir 70 % (pistoles, sac 5 kg) (`prd_0039`) | 46,06 kg | 5 | 17,23 € |
-| Crème liquide UHT 35 % (brique 1 L) (`prd_0031`) | 164,00 litre | 13 | 4,10 € |
-| Œufs plein air calibre M (plateau de 30) (`prd_0034`) | 69,00 colis | 10 | 8,34 € |
+| Frozen unbaked all-butter pains au chocolat, 75 g (box of 140) (`prd_0054`) | 46,00 box | 15 | 54,00 € |
+| Frozen part-baked baguettes, 280 g (box of 60) (`prd_0058`) | 79,00 box | 12 | 24,00 € |
+| Caster sugar (25 kg sack) (`prd_0015`) | 65,00 piece | 18 | 27,50 € |
+| Charentes-Poitou AOP unsalted butter (10 × 1 kg box) (`prd_0027`) | 162,18 kg | 9 | 10,22 € |
+| 82% pastry butter (10 kg box) (`prd_0028`) | 141,95 kg | 11 | 7,76 € |
+| 70% dark couverture chocolate (buttons, 5 kg bag) (`prd_0039`) | 46,06 kg | 5 | 17,23 € |
+| 35% UHT whipping cream (1 L carton) (`prd_0031`) | 164,00 liter | 13 | 4,10 € |
+| Medium free-range eggs (tray of 30) (`prd_0034`) | 69,00 box | 10 | 8,34 € |
 
-Fiche CRM : _Chocolatines crues pour le brunch du dimanche. Crème et œufs deux fois par semaine. Livré mar. ven. Refuse les substitutions : appeler avant toute modification._
+Fiche CRM : _Chocolatines raw for Sunday brunch. Cream and eggs twice a week. Delivered Mar. Fri. Refuses substitutions: call before any modification._
 
-## Ce qui les agace
+## What frustrates them
 
-- Le minimum de commande
-- Les œufs cassés
+- Minimum order
+- Broken eggs
 
-## Historique marquant
+## A brief history
 
-- **26/04/2024** · qualité · Qualité : chocolatine pur beurre crue surgelée 75 g (carton 140)
-- **28/04/2024** · avoir · Avoir qualité : chocolatine pur beurre crue surgelée 75 g (carton 140)
-- **02/07/2024** · note · Fermeture d'été 2024
-- **09/07/2024** · qualité · Qualité : œuf entier liquide pasteurisé (brique 1 L)
-- **06/01/2025** · prix · Tarifs 2025
-- **04/04/2025** · qualité · Qualité : chocolatine pur beurre crue surgelée 75 g (carton 140)
-- **08/04/2025** · avoir · Avoir qualité : chocolatine pur beurre crue surgelée 75 g (carton 140)
-- **13/09/2025** · carte · Carte d'automne
-- **20/01/2026** · prix · Tarifs 2026
-- **20/03/2026** · qualité · Qualité : beurre pâtissier 82 % (carton 10 kg)
-- **24/04/2026** · livraison · Colis manquant
-- **22/09/2026** · carte · Carte d'automne
+- **26/04/2024** · Quality · Quality : Frozen unbaked all-butter pains au chocolat, 75 g (box of 140)
+- **28/04/2024** · Have quality : Frozen unbaked all-butter pains au chocolat, 75 g (box of 140)
+- **02/07/2024** · note · Summer closure 2024
+- **09/07/2024** · Quality · Quality : Pasteurised liquid whole egg (1 L carton)
+- **06/01/2025** · prices · Rates 2025
+- **04/04/2025** · Quality · Quality : Frozen unbaked all-butter pains au chocolat, 75 g (box of 140)
+- **08/04/2025** · Have quality : Frozen unbaked all-butter pains au chocolat, 75 g (box of 140)
+- **13/09/2025** · map · Autumn card
+- **20/01/2026** · prices · Rates 2026
+- **20/03/2026** · Quality · Quality : 82% pastry butter (10 kg box)
+- **24/04/2026** · delivery · missing box
+- **22/09/2026** · map · Autumn card
 
-Historique complet : 25 événements (5 qualité, 5 appel, 3 visite, 3 prix, 3 carte, 2 avoir, 1 ouverture, 1 note, 1 compliment, 1 livraison).
+Complete history: 25 events (5 quality, 5 call, 3 visit, 3 price, 3 card, 2 have, 1 opening, 1 note, 1 compliment, 1 delivery).
 
-## Dossiers ouverts aujourd'hui
+## Files opened today
 
-Aucun.
+None.
 
-## Comment leur parler
+## How to talk to them
 
-- Ne pas appeler entre 12h et 14h30.
-- Être bref, le chef est en cuisine.
+- Do not call between 12h and 14h30.
+- To be brief, the chef is in the kitchen.
 
-## Prix & groupe
+## Price & group
 
-Groupes : **Restaurants** (`chr`).
-Pas de prix négocié.
+Groups: **Restaurants** (`chr`).
+No negotiated prices.
 
-Règles de prix qui peuvent s'appliquer :
-- `prl_0006` Épiphanie 2027 : poudre d'amande −6 % dès 20 kg
-- `prl_0007` Épiphanie 2027 : couronnes et fèves −5 %
+Price rules that may apply:
+- `prl_0006` Epiphany 2027: almond powder -6 % from 20 kg
+- `prl_0007` Epiphany 2027: crowns and beans -5 %
 
-Dernières notes CRM :
+Latest notes CRM:
 
-Aucune.
+None.

@@ -49,11 +49,11 @@ export default function ActivityPage() {
   return (
     <Page>
       <PageHeader
-        title="Activité"
+        title="Activity"
         meta={
           <span className="flex items-center gap-1.5 text-[12px] text-muted-foreground">
             <Dot tone={status === "live" ? "success" : status === "connecting" ? "warning" : "destructive"} pulse={status === "live"} />
-            {status === "live" ? "En direct" : status === "connecting" ? "Connexion…" : "Hors ligne"}
+            {status === "live" ? "Live" : status === "connecting" ? "Connection..." : "Offline"}
           </span>
         }
         tabs={
@@ -61,13 +61,13 @@ export default function ActivityPage() {
             value={who as Filter}
             onChange={setWho}
             items={[
-              { id: "", label: "Tout", count: counts ? (counts.ai ?? 0) + (counts.user ?? 0) : undefined },
-              { id: "ai", label: "IA & voix", count: counts?.ai },
-              { id: "user", label: "Équipe", count: counts?.user },
+              { id: "", label: "All", count: counts ? (counts.ai ?? 0) + (counts.user ?? 0) : undefined },
+              { id: "ai", label: "IA & Voice", count: counts?.ai },
+              { id: "user", label: "Team", count: counts?.user },
             ]}
           />
         }
-        filters={<Select size="sm" value={entity} onChange={setEntity} placeholder="Tous les objets" options={ENTITY_OPTIONS} />}
+        filters={<Select size="sm" value={entity} onChange={setEntity} placeholder="All objects" options={ENTITY_OPTIONS} />}
       />
       <PageBody flush>
         {isLoading ? (
@@ -75,12 +75,12 @@ export default function ActivityPage() {
             <div key={i} className="flex h-11 items-center gap-3 border-b border-border px-5"><Skeleton className="h-6 w-6 rounded-full" /><Skeleton className="h-3 w-[40%]" /><Skeleton className="ml-auto h-3 w-12" /></div>
           ))}</div>
         ) : isError && !data ? (
-          <EmptyState icon={Activity} title="Journal indisponible" description="L'API ne répond pas." action={<Button size="sm" onClick={() => refetch()}>Réessayer</Button>} />
+          <EmptyState icon={Activity} title="Journal unavailable" description="TheAPI Don't answer." action={<Button size="sm" onClick={() => refetch()}>Retry</Button>} />
         ) : events.length === 0 ? (
           <EmptyState
             icon={Activity}
-            title={counts && (counts.ai ?? 0) + (counts.user ?? 0) ? "Aucun événement pour ce filtre" : "Aucune activité pour l'instant"}
-            description="Chaque écriture (commande, paiement, réception…) apparaît ici en temps réel — y compris celles de l'agent vocal."
+            title={counts && (counts.ai ?? 0) + (counts.user ?? 0) ? "No event for this filter" : "No activity at present"}
+            description="Every writing (order, payment, receipt...) appears here in real time — including those of the voice agent."
           />
         ) : (
           <div ref={pg.anchorRef}>
@@ -90,7 +90,7 @@ export default function ActivityPage() {
                 <ol>{g.map((e) => <EventRow key={e.id} e={e} fresh={e.at > mountedAt.current} />)}</ol>
               </section>
             ))}
-            <Pagination pagination={pg} sticky>{total} événement{total > 1 ? "s" : ""}</Pagination>
+            <Pagination pagination={pg} sticky>{total} event{total > 1 ? "s" : ""}</Pagination>
           </div>
         )}
       </PageBody>

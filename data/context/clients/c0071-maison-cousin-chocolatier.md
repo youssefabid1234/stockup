@@ -1,91 +1,91 @@
 # Maison Cousin Chocolatier (C0071, `cli_0071`)
 
-> Fiche persona pour jouer ce client au téléphone. L'historique complet est dans `seed/clientEvents.json` (filtrer sur `clientId: "cli_0071"`).
+> Personal data sheet to play this customer over the phone. The full history is in `seed/clientEvents.json` (filter on `clientId: "cli_0071"`).
 
 | | |
 |---|---|
-| Type | Commerce de détail (Pâtisseries, chocolatiers et salons de thé) — 57 rue du Moulin, 31400 Toulouse (Saint-Michel) |
-| Zone | Toulouse centre & faubourgs — livré mon, thu |
-| Statut | **active** — en croissance |
-| Commercial | Marion Escudié |
-| Client depuis | 15/01/2011 (15 ans) |
-| Paiement | 45 jours — en retard sur les factures d'été, régularise à l'automne |
-| Encours | 10 337,47 € TTC (plafond 16 000 €) — **2 facture échues : 2 458,85 €** |
-| Tempérament | chaleureux, perfectionniste, exigeant — qualité ★★★, prix ★★☆, risque de départ faible |
+| Type | Retail trade (Passeries, chocolate makers and tea shops) — 57 rue du Moulin, 31400 Toulouse (Saint-Michel) |
+| Area | Toulouse centre & suburbs — delivered Mon, Thu |
+| Status | **active** — growing |
+| Sales representative | Marion Escudié |
+| Customer since | 15/01/2011 (15 years) |
+| Payment | 45 days — late on summer invoices, regularised in autumn |
+| Outstanding balance | 10 337,47 € incl. VAT (ceiling 16 000 €) — **2 invoice due: 2 458,85 €** |
+| Temperament | warm, perfectionist, demanding — quality ★★★, price ★★☆, low risk of losing the customer |
 
-## Qui ils sont
+## Who they are
 
-Chocolatier-pâtissier à Toulouse (Saint-Michel) : moulages de Pâques, bûches et ballotins de Noël représentent la moitié de son chiffre.
+Chocolate-pastry shop in Toulouse (Saint-Michel): Easter moulds, logs and Christmas ballotins account for half of its figure.
 
-## Les personnes
+## People
 
-- **Xavier Germain** — Chef pâtissier-gérant · 06 16 91 78 30
-  - Comment il/elle parle : Ton sec, va droit au but, vérifie chaque quantité.
-  - Tics : « C'est noté où, ça ? » · « Vous me relisez la commande ? »
+- **Xavier Germain** — Pastry chef-manager · 06 16 91 78 30
+  - How he/she speaks: Your dry, go straight to the goal, check each quantity.
+  - Tics: "Where's that?" · "Do you read me the order again?"
 
-## Ce qu'ils achètent et comment
+## What they buy and how
 
-Commande deux fois par semaine, en général la veille entre 14h et 19h, surtout par téléphone et WhatsApp. Produits habituels : chocolat de couverture noir 64 % (pistoles, sac 5 kg), crème liquide UHT 35 % (brique 1 L), beurre doux AOP Charentes-Poitou (carton 10 × 1 kg), poudre d'amande blanche (sac 5 kg), boîtes pâtissières blanches 20 cm (lot de 50), pépites de chocolat noir cuisson (sac 5 kg), sacs à baguette kraft imprimés (carton 1000), sel fin de mer (sac 25 kg).
+Order twice a week, usually the day before between 14h and 19h, especially by telephone and WhatsApp. Regular products: 64% dark couverture chocolate (buttons, 5 kg bag), 35% UHT whipping cream (1 L carton), Charentes-Poitou AOP unsalted butter (10 × 1 kg box), Ground blanched almonds (5 kg bag), White cake boxes, 20 cm (pack of 50), Heat-stable dark chocolate chips (5 kg bag), Printed kraft baguette bags (box of 1,000), Fine sea salt (25 kg sack).
 
-Sur les 90 derniers jours (19 commandes livrées) :
+On the last 90 days (19 orders delivered):
 
-| Produit | Volume 90 j | Lignes | Dernier prix |
+| Product | Volume 90 | Lines | Last price |
 |---|---|---|---|
-| Farine de blé T55 tradition française (sac 25 kg) (`prd_0001`) | 154,00 pièce | 10 | 19,87 € |
-| Beurre doux AOP Charentes-Poitou (carton 10 × 1 kg) (`prd_0027`) | 184,68 kg | 13 | 10,20 € |
-| Farine de gruau T45 pâtissière (sac 25 kg) (`prd_0003`) | 63,00 pièce | 11 | 23,50 € |
-| Sacs à baguette kraft imprimés (carton 1000) (`prd_0065`) | 59,00 colis | 14 | 22,00 € |
-| Poudre d'amande blanche (sac 5 kg) (`prd_0046`) | 99,23 kg | 10 | 11,81 € |
-| Chocolat de couverture noir 64 % (pistoles, sac 5 kg) (`prd_0038`) | 67,85 kg | 7 | 15,68 € |
-| Bâtons de chocolat boulanger 44 % (carton 1,6 kg, 300 bâtons) (`prd_0042`) | 58,00 colis | 13 | 13,82 € |
-| Crème liquide UHT 35 % (brique 1 L) (`prd_0031`) | 131,00 litre | 6 | 4,09 € |
+| Traditional French T55 wheat flour (25 kg sack) (`prd_0001`) | 154,00 piece | 10 | 19,87 € |
+| Charentes-Poitou AOP unsalted butter (10 × 1 kg box) (`prd_0027`) | 184,68 kg | 13 | 10,20 € |
+| T45 strong pastry flour (25 kg sack) (`prd_0003`) | 63,00 piece | 11 | 23,50 € |
+| Printed kraft baguette bags (box of 1,000) (`prd_0065`) | 59,00 box | 14 | 22,00 € |
+| Ground blanched almonds (5 kg bag) (`prd_0046`) | 99,23 kg | 10 | 11,81 € |
+| 64% dark couverture chocolate (buttons, 5 kg bag) (`prd_0038`) | 67,85 kg | 7 | 15,68 € |
+| 44% baker's chocolate sticks (1.6 kg box, 300 sticks) (`prd_0042`) | 58,00 box | 13 | 13,82 € |
+| 35% UHT whipping cream (1 L carton) (`prd_0031`) | 131,00 liter | 6 | 4,09 € |
 
-Fiche CRM : _Crème 35 % uniquement, jamais d'épaisse. Toujours la même couverture, même origine. Livré lun. jeu. Refuse les substitutions : appeler avant toute modification._
+CRM card: _35 % card only, never thick. Always the same cover, same origin. Delivered Mon. Game. Refuses substitutions: call before any modification._
 
-## Ce qui les agace
+## What frustrates them
 
-- Une substitution de couverture
-- Un chocolat blanchi à la livraison
-- Des fraises abîmées
+- A cover substitution
+- A white chocolate on delivery
+- Chilled strawberries
 
-## Historique marquant
+## A brief history
 
-- **18/01/2026** · prix · Tarifs 2026
-- **25/06/2026** · qualité · Qualité : beurre doux AOP Charentes-Poitou (carton 10 × 1 kg)
-- **27/06/2026** · avoir · Avoir qualité : beurre doux AOP Charentes-Poitou (carton 10 × 1 kg)
-- **14/07/2026** · note · Fermeture d'été 2026
-- **03/08/2026** · livraison · Livraison en retard
-- **11/08/2026** · paiement · Relance : FAC-2026-001341 échue
-- **14/09/2026** · qualité · Qualité : sacs à baguette kraft imprimés (carton 1000)
-- **19/09/2026** · avoir · Avoir qualité : sacs à baguette kraft imprimés (carton 1000)
-- **01/10/2026** · paiement · Relance : FAC-2026-001752 échue
-- **22/10/2026** · qualité · Qualité : beurre doux AOP Charentes-Poitou (carton 10 × 1 kg)
-- **27/10/2026** · avoir · Avoir qualité : beurre doux AOP Charentes-Poitou (carton 10 × 1 kg)
-- **21/11/2026** · demande spéciale · Fêtes 2026 : réservation de volumes
+- **18/01/2026** · prices · Rates 2026
+- **25/06/2026** · Quality · Quality : Charentes-Poitou AOP unsalted butter (10 × 1 kg box)
+- **27/06/2026** · Have quality : Charentes-Poitou AOP unsalted butter (10 × 1 kg box)
+- **14/07/2026** · note · Summer closure 2026
+- **03/08/2026** · Delivery late
+- **11/08/2026** · Payment · Recovery : FAC-2026-001341
+- **14/09/2026** · Quality · Quality : Printed kraft baguette bags (box of 1,000)
+- **19/09/2026** · Have quality : Printed kraft baguette bags (box of 1,000)
+- **01/10/2026** · Payment · Recovery : FAC-2026-001752
+- **22/10/2026** · Quality · Quality : Charentes-Poitou AOP unsalted butter (10 × 1 kg box)
+- **27/10/2026** · Have quality : Charentes-Poitou AOP unsalted butter (10 × 1 kg box)
+- **21/11/2026** · special request · Holidays 2026 : volume reservation
 
-Historique complet : 73 événements (19 qualité, 13 visite, 8 demande spéciale, 7 appel, 6 compliment, 6 avoir, 5 paiement, 3 prix, 3 note, 2 livraison, 1 ouverture).
+Full history: 73 events (19 quality, 13 visit, 8 special request, 7 call, 6 compliment, 6 have, 5 payment, 3 price, 3 note, 2 delivery, 1 opening).
 
-## Dossiers ouverts aujourd'hui
+## Files opened today
 
-- **21/11/2026 — Fêtes 2026 : réservation de volumes**
-  Xavier veut réserver pour les fêtes : boîtes pâtissières blanches 20 cm (lot de 50) et chocolat de couverture noir 64 % (pistoles, sac 5 kg) en volume pour les 23-24 et 30-31/12. Xavier : « C'est noté où, ça ? »
+- **21/11/2026 — Holidays 2026: volume reservation**
+  Xavier wants to book for the parties: White cake boxes, 20 cm (pack of 50) and 64% dark couverture chocolate (buttons, 5 kg bag) in volume for the 23-24 and 30-31/12. Xavier: "Where's that noted?"
 
-## Comment leur parler
+## How to talk to them
 
-- Prévenir des hausses du cacao à l'avance.
-- Ne jamais substituer une couverture sans accord.
+- Prevent cocoa increases in advance.
+- never substitute a cover without agreement.
 
-## Prix & groupe
+## Price & group
 
-Groupes : **Pâtisseries** (`patisseries`).
-Pas de prix négocié.
+Groups: **Passeries** (`patisseries`).
+No negotiated prices.
 
-Règles de prix qui peuvent s'appliquer :
-- `prl_0002` Pâtisseries : −5 % sur le chocolat dès 20 kg
-- `prl_0006` Épiphanie 2027 : poudre d'amande −6 % dès 20 kg
-- `prl_0007` Épiphanie 2027 : couronnes et fèves −5 %
+Price rules that may apply:
+- `prl_0002` Pastries: -5 % on chocolate from 20 kg
+- `prl_0006` Epiphany 2027: almond powder -6 % from 20 kg
+- `prl_0007` Epiphany 2027: crowns and beans -5 %
 
-Dernières notes CRM :
+Latest notes CRM:
 
-- 06/04/2025, Marion (commerciale) : Veut ses pistoles stockées à moins de 18 °C, vérifier le camion l'été.
-- 28/08/2025, Marion (commerciale) : Xavier prépare 800 kg de moulages pour Pâques : précommande en février.
+- 06/04/2025, Marion (commercial): Wants its pistoles stored at less than 18 °C, check the truck in the summer.
+- 28/08/2025, Marion (commercial): Xavier prepares 800 kg of mouldings for Easter: pre-order in February.

@@ -1,11 +1,11 @@
 # Voice ERP kit
 
-> **Pour le jury · Équipe 12 · Le Fournil Occitan (le standard téléphonique)**
-> 1. Remettez le dossier `data/` du zip à côté du `Makefile` (`data/seed/` n'est pas dans git), et votre `.env` (clés) à la racine.
-> 2. `make setup` → http://localhost:5173, page **Voix**. Nos réglages (`TEAM_*`) sont ajoutés au `.env` s'ils manquent ; la promo de démo est recréée à chaque remise à zéro de l'ERP.
-> 3. Choisissez **« Qui appelle ? »** (le client, comme l'affichage du numéro), puis **« Démarrer l'appel »** ; maintenez Espace pour parler.
-> 4. À essayer : Le Pétrin de Colomiers, « 3 cartons de tourage AOP pour lundi » (rupture → tourage 82 % en promo) ; Maison Sarrailh, même demande (refuse tout remplaçant).
-> 5. Nos choix et nos mesures : [DECISIONS.md](DECISIONS.md).
+> **For the jury · Team 12 · Le Fournil Occitan (the telephone standard)**
+> 1. Put the `data/` folder of the zip next to the `Makefile` (`data/seed/` is not in git), and your `.env` (keys) to the root.
+> 2. `make setup` → http://localhost:5173, page **Voix**. Our settings (`TEAM_*`) are added to the `.env` if they are missing; the demo promo is recreated every time you reset the ERP.
+> 3. Choose **"Who calls?"** (the client, like the number display), then **"Start Call"**; hold Space to speak.
+> 4. To be tried: Le Pétrin de Colomiers, "3 cartons of AOP laminating butter for Monday" (break → laminating butter 82 % on promo); Maison Sarrailh, same request (refuse all replacements).
+> 5. Our choices and measurements: [DECISIONS.md](DECISIONS.md).
 
 A small but complete ERP for a food wholesaler, an AI service that reads and writes it through tools, and a
 push-to-talk voice harness. Built for the Stockline voice hackathon: make the voice agent **smart, fast and natural**.
@@ -16,26 +16,26 @@ troubleshooting). **The challenge: [BRIEF.md](BRIEF.md)** (French). How the food
 hood and how to extend it: [TECH.md](TECH.md) (French). Using a coding agent? Point it at [AGENTS.md](AGENTS.md). This
 README covers the architecture, the configuration and how to extend the kit.
 
-### Quelle doc lire ?
+### What doc read?
 
-| Doc | À lire quand… |
+| Doc | To read when... |
 |---|---|
 | [GLOSSAIRE.md](GLOSSAIRE.md) | un mot technique vous échappe (Docker, port, token, STT, WebSocket…) |
-| [FAQ.md](FAQ.md) | vous avez une question pratique : où coder, comment tester, clés, coûts, livrables |
-| [SETUP.md](SETUP.md) | vous installez et lancez le kit, ou quelque chose ne démarre pas |
-| [BRIEF.md](BRIEF.md) | vous voulez savoir ce qu'on attend de vous : le défi, les livrables, le jury |
-| [METIER.md](METIER.md) | vous ne connaissez pas le métier de grossiste alimentaire ou son vocabulaire |
-| [ERP.md](ERP.md) | vous cherchez ce que fait l'ERP : pages, cycles de vie, règles métier, aide-mémoire de l'API |
-| [TECH.md](TECH.md) | vous codez : comment marchent l'ERP, le service IA, les outils `@tool`, la voix et le web, et comment les étendre |
-| [GUIDE-VOIX.md](GUIDE-VOIX.md) | vous voulez un agent vocal plus rapide et plus naturel : métriques, mesures du kit, techniques et où les brancher |
-| [GUIDE-AGENTS.md](GUIDE-AGENTS.md) | vous découvrez les agents LLM, ou voulez rendre le vôtre plus smart, rapide et moins cher : concepts, où ils vivent dans le kit, conseils |
-| [AGENTS.md](AGENTS.md) | vous donnez le projet à un agent de code (Claude Code, Cursor, Codex…) |
-| [DESIGN.md](DESIGN.md) | vous modifiez l'interface web |
+| [FAQ.md](FAQ.md) | you have a practical question: where to code, how to test, keys, costs, deliverables |
+| [SETUP.md](SETUP.md) | you install and launch the kit, or something doesn't start |
+| [BRIEF.md](BRIEF.md) | you want to know what is expected of you: challenge, deliverables, jury |
+| [METIER.md](METIER.md) | you do not know the trade of food wholesaler or his vocabulary |
+| [ERP.md](ERP.md) | you are looking for what the ERP does: pages, life cycles, business rules, aide-memoire of the API |
+| [TECH.md](TECH.md) | you code: how the ERP, the AI service, the `@tool` tools, the voice and the web work, and how to extend them |
+| [GUIDE-VOIX.md](GUIDE-VOIX.md) | you want a faster and more natural voice agent: metrics, kit measurements, techniques and where to connect them |
+| [GUIDE-AGENTS.md](GUIDE-AGENTS.md) | you discover agents LLM, or want to make yours smarter, faster and cheaper: concepts, where they live in the kit, tips |
+| [AGENTS.md](AGENTS.md) | you give the project to a code agent (Claude Code, Cursor, Codex...) |
+| [DESIGN.md](DESIGN.md) | you modify the web interface |
 
 Everything runs offline out of the box: with the `mock` providers the LLM, speech-to-text and text-to-speech are
 deterministic fakes that still call the real ERP. Add your keys when you are ready.
 
-| Part | Path | Stack | Port |
+| Share | Path | Stack | Port |
 |---|---|---|---|
 | ERP backend | `apps/backend` | Python 3.12 · FastAPI · SQLite | 4000 |
 | AI service (LLM / STT / TTS, agent, chat, voice) | `apps/ai` | Python 3.12 · FastAPI · httpx | 4100 |
@@ -129,7 +129,7 @@ One turn = **system prompt + conversation → model → (tools in parallel → m
 
 | Mode | Where | Style |
 |---|---|---|
-| `chat` | Assistant panel (⌘J) | short markdown answers |
+| `chat` | Panel Assistant () | short markdown answers |
 | `voice` | **Voix** page, `WS /voice` | 1–2 spoken sentences, numbers said out loud |
 | `command` | ⌥Space anywhere | acts immediately, one-line answer, can open a page |
 
@@ -189,7 +189,7 @@ ai_chat · voice_agent.
 - **Voix** page (`/voice`): hold **Space** to talk as the caller, release to send (or type). Shows the transcript,
   streamed answer, tool calls, per-turn timings (STT, first LLM token, first audio byte, total) and the ERP changes live.
   Talking while the agent speaks interrupts it.
-- **⌥Space** anywhere: one-shot voice command ("crée une commande pour l'Écume, 5 kilos de bar").
+- **的Space** anywhere: one-shot voice command ("creates an order for the Ecumen, 5 kilos of bar").
 - **Live transcription**: the audio is streamed to the STT while the key is down (Soniox, Deepgram; the mock simulates it),
   so the caller's words appear as they are spoken (grey italic = provisional) and the final text is ready right after the
   release. Client / product names from the ERP are sent as STT vocabulary. See TECH.md « Transcription en direct ».

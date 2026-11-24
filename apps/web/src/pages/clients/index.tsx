@@ -23,9 +23,9 @@ import {
 } from "@/ui";
 
 const STATUS_TABS = [
-  { id: "", label: "Tous" },
-  { id: "active", label: "Actifs" },
-  { id: "blocked", label: "Bloqués" },
+  { id: "", label: "All" },
+  { id: "active", label: "Active" },
+  { id: "blocked", label: "Blocked" },
   { id: "prospect", label: "Prospects" },
 ] as const;
 type StatusTab = (typeof STATUS_TABS)[number]["id"];
@@ -34,7 +34,7 @@ const TYPE_OPTIONS = Object.entries(CLIENT_TYPE_LABEL).map(([value, label]) => (
 
 const COLUMNS: Column<ClientSummary>[] = [
   {
-    id: "name", header: "Client", sortKey: "name",
+    id: "name", header: "Customer", sortKey: "name",
     cell: (c) => (
       <span className="flex min-w-0 items-center gap-2">
         <span className="truncate font-medium">{c.name}</span>
@@ -43,16 +43,16 @@ const COLUMNS: Column<ClientSummary>[] = [
     ),
   },
   { id: "type", header: "Type", width: 170, hideBelow: 1300, muted: true, sortKey: "type", cell: (c) => CLIENT_TYPE_LABEL[c.type] ?? c.type },
-  { id: "tags", header: "Groupe", width: 170, sortKey: "tags", cell: (c) => <TagList scope="client" tags={c.tags} max={2} fit empty={<span className="text-muted-foreground/60">—</span>} /> },
-  { id: "zone", header: "Zone", width: 150, hideBelow: 1000, sortKey: "zone", cell: (c) => c.zone || "—" },
-  { id: "rep", header: "Commercial", width: 140, hideBelow: 1400, muted: true, sortKey: "rep", cell: (c) => c.salesRep || "—" },
-  { id: "outstanding", header: "Encours", width: 120, numeric: true, sortKey: "outstanding", cell: (c) => <Money value={c.outstanding} zeroMuted /> },
+  { id: "tags", header: "Group", width: 170, sortKey: "tags", cell: (c) => <TagList scope="client" tags={c.tags} max={2} fit empty={<span className="text-muted-foreground/60">—</span>} /> },
+  { id: "zone", header: "Area", width: 150, hideBelow: 1000, sortKey: "zone", cell: (c) => c.zone || "—" },
+  { id: "rep", header: "Sales representative", width: 140, hideBelow: 1400, muted: true, sortKey: "rep", cell: (c) => c.salesRep || "—" },
+  { id: "outstanding", header: "Outstanding balance", width: 120, numeric: true, sortKey: "outstanding", cell: (c) => <Money value={c.outstanding} zeroMuted /> },
   {
-    id: "overdue", header: "En retard", width: 120, numeric: true, sortKey: "overdue",
+    id: "overdue", header: "Overdue", width: 120, numeric: true, sortKey: "overdue",
     cell: (c) => <Money value={c.overdue} zeroMuted tone={c.overdue > 0 ? "destructive" : undefined} />,
   },
-  { id: "last", header: "Dernière cde", width: 130, hideBelow: 1000, sortKey: "last", cell: (c) => <DateLabel date={c.lastOrderAt} className="text-secondary-foreground" /> },
-  { id: "status", header: "Statut", width: 110, sortKey: "status", cell: (c) => <StatusDot kind="client" value={c.status} /> },
+  { id: "last", header: "Last year's report", width: 130, hideBelow: 1000, sortKey: "last", cell: (c) => <DateLabel date={c.lastOrderAt} className="text-secondary-foreground" /> },
+  { id: "status", header: "Status", width: 110, sortKey: "status", cell: (c) => <StatusDot kind="client" value={c.status} /> },
 ];
 
 export default function ClientsPage() {
@@ -87,7 +87,7 @@ export default function ClientsPage() {
   return (
     <Page>
       <PageHeader
-        title="Clients"
+        title="Customers"
         tabs={
           <Tabs<StatusTab>
             value={status as StatusTab}
@@ -97,17 +97,17 @@ export default function ClientsPage() {
         }
         filters={
           <>
-            <SearchInput value={q} onChange={setQ} placeholder="Nom, code, ville…" />
-            <Select size="sm" value={type} onChange={setType} placeholder="Tous les types" options={TYPE_OPTIONS} />
-            <Select size="sm" value={zone} onChange={setZone} placeholder="Toutes les zones" options={zones} />
-            <Select size="sm" value={tag} onChange={setTag} placeholder="Tous les groupes" options={tagOptions} aria-label="Groupe" />
+            <SearchInput value={q} onChange={setQ} placeholder="Name, code, city..." />
+            <Select size="sm" value={type} onChange={setType} placeholder="All types" options={TYPE_OPTIONS} />
+            <Select size="sm" value={zone} onChange={setZone} placeholder="All areas" options={zones} />
+            <Select size="sm" value={tag} onChange={setTag} placeholder="All groups" options={tagOptions} aria-label="Group" />
           </>
         }
-        actions={<Button variant="primary" icon={Plus} onClick={() => setCreating(true)}>Nouveau client</Button>}
+        actions={<Button variant="primary" icon={Plus} onClick={() => setCreating(true)}>New customer</Button>}
       />
       <PageBody flush>
         {isError && !data ? (
-          <EmptyState icon={Users} title="Clients indisponibles" description="L'API ne répond pas. Vérifiez que le serveur tourne sur le port 4000." action={<Button size="sm" onClick={() => refetch()}>Réessayer</Button>} />
+          <EmptyState icon={Users} title="Customers not available" description="TheAPI Check that the server is running on port 4000." action={<Button size="sm" onClick={() => refetch()}>Retry</Button>} />
         ) : (
           <DataTable
             columns={COLUMNS}
@@ -116,12 +116,12 @@ export default function ClientsPage() {
             loading={isLoading}
             getRowId={(c) => c.id}
             onRowClick={(c) => navigate(`/clients/${c.id}`)}
-            footer={data ? `${total} client${total > 1 ? "s" : ""}${filtered ? " · filtrés" : ""}` : undefined}
+            footer={data ? `${total} client${total > 1 ? "s" : ""}${filtered ? " · filtered" : ""}` : undefined}
             empty={
               filtered ? (
-                <EmptyState icon={Users} title="Aucun client ne correspond" description="Modifiez la recherche ou les filtres." action={<Button size="sm" onClick={reset}>Effacer les filtres</Button>} />
+                <EmptyState icon={Users} title="No customer matches" description="Change the search or filters." action={<Button size="sm" onClick={reset}>Clear Filters</Button>} />
               ) : (
-                <EmptyState icon={Users} title="Aucun client" description="Les clients du data pack apparaîtront ici." action={<Button size="sm" icon={Plus} onClick={() => setCreating(true)}>Nouveau client</Button>} />
+                <EmptyState icon={Users} title="No customer" description="The customers of the data pack will appear here." action={<Button size="sm" icon={Plus} onClick={() => setCreating(true)}>New customer</Button>} />
               )
             }
           />
@@ -137,7 +137,7 @@ function NewClientPanel({ zones, onClose }: { zones: string[]; onClose: () => vo
   const [form, setForm] = useState({ name: "", type: "restaurant" as ClientType, zone: zones[0] ?? "", city: "", address: "", salesRep: "" });
   const set = (k: keyof typeof form) => (v: string) => setForm((f) => ({ ...f, [k]: v }));
   const create = useApiMutation(api.clients.create, {
-    success: (c) => `Client ${c.name} créé`,
+    success: (c) => `Customer ${c.name} established`,
     invalidate: [qk.clients.all],
     onSuccess: (c) => { onClose(); navigate(`/clients/${c.id}`); },
   });
@@ -145,29 +145,29 @@ function NewClientPanel({ zones, onClose }: { zones: string[]; onClose: () => vo
 
   return (
     <SidePanel
-      title="Nouveau client"
+      title="New customer"
       subtitle="Créé en statut prospect"
       onClose={onClose}
       footer={
         <>
-          <Button onClick={onClose}>Annuler</Button>
-          <Button variant="primary" type="submit" form="new-client" loading={create.isPending} disabled={!form.name.trim()}>Créer</Button>
+          <Button onClick={onClose}>Cancel</Button>
+          <Button variant="primary" type="submit" form="new-client" loading={create.isPending} disabled={!form.name.trim()}>Create</Button>
         </>
       }
     >
       <form id="new-client" onSubmit={submit} className="flex flex-col gap-3.5">
-        <Field label="Nom"><Input autoFocus value={form.name} onChange={(e) => set("name")(e.target.value)} placeholder="Le Bistrot du Port" /></Field>
+        <Field label="Name"><Input autoFocus value={form.name} onChange={(e) => set("name")(e.target.value)} placeholder="The Port Bistrot" /></Field>
         <div className="grid grid-cols-2 gap-3">
           <Field label="Type"><Select value={form.type} onChange={set("type")} options={TYPE_OPTIONS} className="w-full" /></Field>
-          <Field label="Zone de livraison">
+          <Field label="Delivery area">
             {zones.length ? <Select value={form.zone} onChange={set("zone")} options={zones.map((z) => ({ value: z, label: z }))} className="w-full" />
               : <Input value={form.zone} onChange={(e) => set("zone")(e.target.value)} />}
           </Field>
         </div>
-        <Field label="Adresse"><Input value={form.address} onChange={(e) => set("address")(e.target.value)} /></Field>
+        <Field label="Address"><Input value={form.address} onChange={(e) => set("address")(e.target.value)} /></Field>
         <div className="grid grid-cols-2 gap-3">
-          <Field label="Ville"><Input value={form.city} onChange={(e) => set("city")(e.target.value)} /></Field>
-          <Field label="Commercial"><Input value={form.salesRep} onChange={(e) => set("salesRep")(e.target.value)} /></Field>
+          <Field label="City"><Input value={form.city} onChange={(e) => set("city")(e.target.value)} /></Field>
+          <Field label="Sales representative"><Input value={form.salesRep} onChange={(e) => set("salesRep")(e.target.value)} /></Field>
         </div>
       </form>
     </SidePanel>

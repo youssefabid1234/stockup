@@ -13,7 +13,7 @@ export interface ComboOption { value: string; label: string; sub?: string; dot?:
 const norm = (s: string) => s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
 
 /** Text input that filters a list in a popover; shows the chosen label when closed. */
-export function Combobox({ value, onChange, options, placeholder = "Choisir…", size = "md", clearable, className, autoFocus, width }: {
+export function Combobox({ value, onChange, options, placeholder = "Choose...", size = "md", clearable, className, autoFocus, width }: {
   value: string;
   onChange: (v: string) => void;
   options: ComboOption[];
@@ -64,7 +64,7 @@ export function Combobox({ value, onChange, options, placeholder = "Choisir…",
       {clearable && value ? (
         <button
           type="button"
-          aria-label="Effacer"
+          aria-label="Clear"
           onMouseDown={(e) => e.preventDefault()}
           onClick={() => onChange("")}
           className="absolute inset-y-0 right-1.5 my-auto grid size-5 place-items-center rounded-[3px] text-muted-foreground hover:bg-muted hover:text-foreground"
@@ -97,7 +97,7 @@ export function Combobox({ value, onChange, options, placeholder = "Choisir…",
               </div>
             );
           })}
-          {!list.length ? <div className="px-2.5 py-2 text-[12.5px] text-muted-foreground">Aucun résultat</div> : null}
+          {!list.length ? <div className="px-2.5 py-2 text-[12.5px] text-muted-foreground">No results</div> : null}
         </div>
       </AnchoredPopover>
     </div>
@@ -105,7 +105,7 @@ export function Combobox({ value, onChange, options, placeholder = "Choisir…",
 }
 
 /** Multi-select with search (popover checklist). Trigger: "Choisir…" / "3 clients". `max` disables the rest once reached. */
-export function MultiCombobox({ value, onChange, options, placeholder = "Choisir…", unit, max, width = 240 }: {
+export function MultiCombobox({ value, onChange, options, placeholder = "Choose...", unit, max, width = 240 }: {
   value: string[];
   onChange: (v: string[]) => void;
   options: ComboOption[];
@@ -140,7 +140,7 @@ export function MultiCombobox({ value, onChange, options, placeholder = "Choisir
       <input
         ref={inputRef}
         value={open ? q : summary}
-        placeholder={open ? "Chercher…" : placeholder}
+        placeholder={open ? "Look..." : placeholder}
         onFocus={() => setOpen(true)}
         onBlur={() => { setOpen(false); setQ(""); }}
         onChange={(e) => { setQ(e.target.value); setOpen(true); }}
@@ -158,7 +158,7 @@ export function MultiCombobox({ value, onChange, options, placeholder = "Choisir
           <div className="flex h-7 items-center justify-between border-b border-border px-2.5 text-[11.5px] text-muted-foreground">
             <span>{value.length} / {max} {unit[1]}</span>
             {value.length ? (
-              <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => onChange([])} className="hover:text-foreground">Tout retirer</button>
+              <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => onChange([])} className="hover:text-foreground">Remove all</button>
             ) : null}
           </div>
         ) : null}
@@ -187,7 +187,7 @@ export function MultiCombobox({ value, onChange, options, placeholder = "Choisir
               </button>
             );
           })}
-          {!list.length ? <div className="px-2.5 py-2 text-[12.5px] text-muted-foreground">Aucun résultat</div> : null}
+          {!list.length ? <div className="px-2.5 py-2 text-[12.5px] text-muted-foreground">No results</div> : null}
         </div>
       </AnchoredPopover>
     </div>
@@ -216,8 +216,8 @@ export function useTagOptions(scope: TagScope): ComboOption[] {
 // ── Cells ──
 
 export const SOURCE_META: Record<PriceSource, { label: string; tone: Tone }> = {
-  client_price: { label: "Négocié", tone: "violet" },
-  rule: { label: "Règle", tone: "info" },
+  client_price: { label: "Negotiated", tone: "violet" },
+  rule: { label: "Policy", tone: "info" },
   list: { label: "Catalogue", tone: "muted" },
 };
 
@@ -225,9 +225,9 @@ export const SOURCE_META: Record<PriceSource, { label: string; tone: Tone }> = {
 export function SourceLabel({ source, ruleName, className }: { source: PriceSource; ruleName?: string; className?: string }) {
   const m = SOURCE_META[source];
   return (
-    <span className={cn("inline-flex min-w-0 items-center gap-1.5 text-[12.5px] text-secondary-foreground", className)} title={ruleName ? `Règle « ${ruleName} »` : m.label}>
+    <span className={cn("inline-flex min-w-0 items-center gap-1.5 text-[12.5px] text-secondary-foreground", className)} title={ruleName ? `Rule " ${ruleName} »` : m.label}>
       <Dot tone={m.tone} />
-      <span className="truncate">{source === "rule" && ruleName ? <>Règle <span className="text-muted-foreground">« {ruleName} »</span></> : m.label}</span>
+      <span className="truncate">{source === "rule" && ruleName ? <>Policy <span className="text-muted-foreground">« {ruleName} »</span></> : m.label}</span>
     </span>
   );
 }
@@ -278,7 +278,7 @@ export function PriceInput({ value, onCommit, className, tone }: { value: number
       <input
         inputMode="decimal"
         value={draft}
-        aria-label="Prix négocié"
+        aria-label="Negotiated price"
         onFocus={(e) => { focused.current = true; e.currentTarget.select(); }}
         onBlur={() => { focused.current = false; commit(); }}
         onChange={(e) => setDraft(e.target.value)}

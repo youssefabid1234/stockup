@@ -236,7 +236,7 @@ def create_client(ctx: Ctx, input: Doc) -> Doc:
     }
     check_tags("client", input.get("tags"))
     crud.clients.put(client)
-    log_event(ctx, "client.created", "client", client["id"], f"Nouveau client {client['name']} ({client['code']})")
+    log_event(ctx, "client.created", "client", client["id"], f"New customer {client['name']} ({client['code']})")
     return client
 
 
@@ -245,11 +245,11 @@ def update_client(ctx: Ctx, id: str, patch: Doc) -> Doc:
     client = crud.clients.require(id)
     check_tags("client", patch.get("tags"), client.get("tags"))
     updated = crud.clients.put({**client, **patch})
-    summary = f"Fiche client {client['name']} modifiée ({', '.join(patch)})"
+    summary = f"Customer profile {client['name']} amended ({', '.join(patch)})"
     if "tags" in patch and len(patch) == 1:
-        summary = f"Groupes de {client['name']} : {', '.join(tag_label('client', t) for t in patch['tags']) or 'aucun'}"
+        summary = f"Groups of {client['name']} : {', '.join(tag_label('client', t) for t in patch['tags']) or 'aucun'}"
     if patch.get("status") and patch["status"] != client["status"]:
-        summary = f"Client {client['name']} bloqué" if patch["status"] == "blocked" else f"Client {client['name']} passé en {patch['status']}"
+        summary = f"Customer {client['name']} blocked" if patch["status"] == "blocked" else f"Customer {client['name']} past {patch['status']}"
     log_event(ctx, "client.updated", "client", id, summary)
     return updated
 
@@ -258,5 +258,5 @@ def update_client(ctx: Ctx, id: str, patch: Doc) -> Doc:
 def add_client_note(ctx: Ctx, id: str, text: str, author: str) -> Doc:
     client = crud.clients.require(id)
     updated = crud.clients.put({**client, "notes": [*client["notes"], {"at": now(), "author": author, "text": text}]})
-    log_event(ctx, "client.note_added", "client", id, f"Note ajoutée sur {client['name']} : « {text[:80]} »")
+    log_event(ctx, "client.note_added", "client", id, f"Note added on {client['name']} : « {text[:80]} »")
     return updated

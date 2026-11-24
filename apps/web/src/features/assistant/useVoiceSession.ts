@@ -112,8 +112,8 @@ export function useVoiceSession() {
     if (!synth || !text.trim()) { setActivity("idle"); return; }
     stopPlayback();
     const u = new SpeechSynthesisUtterance(text);
-    u.lang = "fr-FR";
-    const fr = synth.getVoices().find((v) => v.lang?.toLowerCase().startsWith("fr"));
+    u.lang = "en-GB";
+    const fr = synth.getVoices().find((v) => v.lang?.toLowerCase().startsWith("en"));
     if (fr) u.voice = fr;
     u.rate = 1.08;
     u.onstart = () => { setActivity("speaking"); markPerceived(id); };
@@ -203,7 +203,7 @@ export function useVoiceSession() {
         currentTurn.current = undefined;
         break;
       case "error":
-        if (quietEmpty.current && m.message.startsWith("Rien entendu")) {
+        if (quietEmpty.current && m.message.startsWith("Not heard.")) {
           // team 12: hands-free picked up a noise, not a sentence: forget it silently
           quietEmpty.current = false;
           if (id != null) setTurns((ts) => ts.filter((t) => t.id !== id));

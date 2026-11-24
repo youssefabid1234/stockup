@@ -12,7 +12,7 @@ in parallel, so the model gets everything in one round-trip instead of 4 to 6.
 
 A promo = the price the ERP applies to this client comes from a price rule with an end date (validTo) and is below the
 list price (e.g. Daycem's demo rule « Promo tourage 82 % : −8 % jusqu'au 30/11 »). Nothing is invented: no rule, no
-promo (SALES_RULES: « Ne cite une promotion que si l'ERP en renvoie une »).
+promo (SALES_RULES"Does not mention a promotion unless theERP returns one).
 """
 
 from __future__ import annotations
@@ -29,10 +29,8 @@ RULES_TTL = 60.0  # seconds: price rules change rarely (Daycem's setup script, t
 _rules: tuple[float, dict[str, dict]] | None = None
 
 # Added to the system prompt when TEAM_PRODUCT_INSIGHT is on (prompts.py): the model must know to prefer the tool.
-PRODUCT_INSIGHT_RULE = """Outil produit (prime sur les règles qui citent get_product_stock, get_price ou find_alternatives) :
-- Produit demandé : appelle product_insight UNE seule fois (client, produit, quantité dans l'unité du produit). Il donne déjà le stock, les arrivages attendus (incoming), le prix de CE client avec son explication et sa promo, et, si ça manque, les remplaçants classés (le premier est le meilleur) avec LEUR prix client et LEUR promo.
-- Ensuite, n'appelle ni get_product_stock, ni get_price, ni find_alternatives, ni un second product_insight pour ce produit ou ses remplaçants : tout est dans la réponse. Un nouveau product_insight seulement pour un AUTRE produit ou une autre quantité.
-- « substitution » : refuse = annonce la rupture, ne propose aucun autre produit ; accepte = propose le premier remplaçant ; demander ou inconnu = demande d'abord s'il veut un autre produit."""
+PRODUCT_INSIGHT_RULE = """For product enquiries use product_insight once with customer, product and selling quantity.
+Use its stock, arrivals, customer price and any applicable promotion. For a shortage, read the substitution policy and ranked alternatives. A refusal means no alternative should be offered. Ask before substituting."""
 
 
 def product_insight_section() -> str:
@@ -84,7 +82,7 @@ def promo_of(resolved: dict | None, rules: dict[str, dict]) -> dict | None:
 def _volume_hint(resolved: dict) -> str | None:
     """A volume rule that would give a better price (like get_price's betterPriceWithVolume): worth telling."""
     for c in resolved.get("candidates") or []:
-        if c.get("source") == "rule" and (c.get("reason") or "").startswith("à partir de") and c["price"] < resolved["price"]:
+        if c.get("source") == "rule" and (c.get("reason") or "").startswith("from") and c["price"] < resolved["price"]:
             return f"{_num(c['price'])} € {c['reason']}"
     return None
 
@@ -123,7 +121,7 @@ async def gather_insight(erp, client_id: str, product_id: str, qty: float | None
             "available": available,
             "clientPrice": price.get("price") if price else None,
             "listPrice": price.get("listPrice") if price else product.get("price"),
-            "priceExplanation": price.get("explanation") if price else "prix client indisponible (ERP)",
+            "priceExplanation": price.get("explanation") if price else "Customer price unavailable (ERP)",
         },
         "inStock": in_stock,
     }
@@ -147,8 +145,8 @@ async def gather_insight(erp, client_id: str, product_id: str, qty: float | None
     if out["substitution"] == "refuse":
         out["alternatives"] = []  # Daycem's rule: announce the shortage, offer no other product
         out["note"] = (
-            "Ce client refuse les remplacements pour ce produit : annonce la rupture, ne propose aucun autre produit. "
-            "Tu peux PROPOSER de noter sa demande pour le premier arrivage, mais n'enregistre rien avant son accord."
+            "This customer refuses to replace this product: announces the break, does not offer any other product. "
+            "You can PROPOSER to note his request for the first arrival, but do not record anything until he agrees."
         )
         return out
 

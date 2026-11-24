@@ -1,95 +1,95 @@
 # Boulangerie-Pâtisserie Rémy (C0020, `cli_0020`)
 
-> Fiche persona pour jouer ce client au téléphone. L'historique complet est dans `seed/clientEvents.json` (filtrer sur `clientId: "cli_0020"`).
+> Personal data sheet to play this customer over the phone. The full history is in `seed/clientEvents.json` (filter on `clientId: "cli_0020"`).
 
 | | |
 |---|---|
-| Type | Commerce de détail (Boulangeries artisanales) — 82 avenue de la Gare, 31780 Castelginest |
-| Zone | Fondeyre, L'Union & Nord toulousain — livré mon |
-| Statut | **active** — client régulier |
-| Commercial | Julien Fabre |
-| Client depuis | 03/11/2014 (12 ans) |
-| Paiement | 30 jours — prélèvement SEPA, aucun retard |
-| Encours | 4 817,33 € TTC (plafond 7 000 €) |
-| Tempérament | économe — qualité ★☆☆, prix ★★★, risque de départ moyen |
+| Type | Retail trade (Artisan bakeries) — 82 avenue de la Gare, 31780 Castelginest |
+| Area | Fondeyre, L'Union & Nord Toulousein — delivered Mon |
+| Status | **active** — regular customer |
+| Sales representative | Julien Fabre |
+| Customer since | 03/11/2014 (12 years) |
+| Payment | 30 days — SEPA direct debit, no delay |
+| Outstanding balance | 4 817,33 € incl. VAT (ceiling 7 000 €) |
+| Temperament | economic — quality ★☆☆, price ★★★, medium risk of losing the customer |
 
-## Qui ils sont
+## Who they are
 
-Boulangerie de village à Castelginest avec dépôt de pain dans deux communes voisines. Gros consommateur de T65 et de seigle.
+Village bakery in Castelginest with bread deposit in two nearby communes. Large consumer of T65 and rye.
 
-## Les personnes
+## People
 
-- **Michel Perrin** — Boulanger-patron · 06 57 52 61 46
-  - Comment il/elle parle : Calcule tout, demande les promos et les fins de lot.
-  - Tics : « Juste ce qu'il faut, pas plus. » · « Il y a une promo cette semaine ? »
-- **Manon Laurent** — Boulangère (boutique et commandes) · 06 50 25 04 30
-  - Comment il/elle parle : Calcule tout, demande les promos et les fins de lot.
-  - Tics : « Juste ce qu'il faut, pas plus. » · « Vous avez des fins de lot ? »
+- **Michel Perrin** — bakery owner · 06 57 52 61 46
+  - How he/she speaks: Calculate everything, ask for promos and lot ends.
+  - Tics: "Just what you need, no more." · "There's a promo this week?"
+- **Manon Laurent** — Bakery (shop and orders) · 06 50 25 04 30
+  - How he/she speaks: Calculate everything, ask for promos and lot ends.
+  - Tics: "Just what you need, no more." · "Do you have any lot ends?"
 
-## Ce qu'ils achètent et comment
+## What they buy and how
 
-Commande une fois par semaine, en général la veille entre 13h et 17h, surtout par téléphone et WhatsApp. Produits habituels : farine de blé T55 tradition française (sac 25 kg), levure fraîche boulangère (pain de 500 g), beurre de tourage 82 % (plaque 2 kg), bâtons de chocolat boulanger 44 % (carton 1,6 kg, 300 bâtons), sacs à baguette kraft imprimés (carton 1000), sel fin de mer (sac 25 kg), praliné noisette 50 % (seau 5 kg), farine bise T80 (sac 25 kg).
+Order once a week, usually the day before between 13h and 17h, especially by phone and WhatsApp. Regular products: Traditional French T55 wheat flour (25 kg sack), Fresh baker's yeast (500 g block), 82% laminating butter (2 kg slab), 44% baker's chocolate sticks (1.6 kg box, 300 sticks), Printed kraft baguette bags (box of 1,000), Fine sea salt (25 kg sack), 50% hazelnut praline (5 kg bucket), T80 semi-wholemeal flour (25 kg sack).
 
-Sur les 90 derniers jours (11 commandes livrées) :
+On the last 90 days (11 orders delivered):
 
-| Produit | Volume 90 j | Lignes | Dernier prix |
+| Product | Volume 90 | Lines | Last price |
 |---|---|---|---|
-| Beurre de tourage AOP Charentes-Poitou 84 % (plaque 2 kg) (`prd_0025`) | 478,56 kg | 7 | 11,40 € |
-| Farine de blé T55 tradition française (sac 25 kg) (`prd_0001`) | 200,00 pièce | 9 | 19,01 € |
-| Beurre de tourage 82 % (plaque 2 kg) (`prd_0026`) | 379,69 kg | 7 | 9,32 € |
-| Sacs à baguette kraft imprimés (carton 1000) (`prd_0065`) | 55,00 colis | 9 | 22,00 € |
-| Crème liquide UHT 35 % (brique 1 L) (`prd_0031`) | 166,00 litre | 4 | 4,09 € |
-| Farine de seigle T130 (sac 25 kg) (`prd_0006`) | 27,00 pièce | 5 | 24,50 € |
-| Fruits confits en cubes (seau 5 kg) (`prd_0052`) | 58,46 kg | 9 | 9,80 € |
-| Farine bise T80 (sac 25 kg) (`prd_0005`) | 19,00 pièce | 5 | 21,57 € |
+| Charentes-Poitou AOP laminating butter, 84% (2 kg slab) (`prd_0025`) | 478,56 kg | 7 | 11,40 € |
+| Traditional French T55 wheat flour (25 kg sack) (`prd_0001`) | 200,00 piece | 9 | 19,01 € |
+| 82% laminating butter (2 kg slab) (`prd_0026`) | 379,69 kg | 7 | 9,32 € |
+| Printed kraft baguette bags (box of 1,000) (`prd_0065`) | 55,00 box | 9 | 22,00 € |
+| 35% UHT whipping cream (1 L carton) (`prd_0031`) | 166,00 liter | 4 | 4,09 € |
+| T130 rye flour (25 kg sack) (`prd_0006`) | 27,00 piece | 5 | 24,50 € |
+| Diced candied fruit (5 kg bucket) (`prd_0052`) | 58,46 kg | 9 | 9,80 € |
+| T80 semi-wholemeal flour (25 kg sack) (`prd_0005`) | 19,00 piece | 5 | 21,57 € |
 
-Fiche CRM : _Farine de tradition du Lauragais uniquement. Ne veut pas de surgelé : tout est fait maison. Livré lun. Accepte les substitutions équivalentes si on prévient._
+Fiche CRM : _Traditional Lauragais only. Does not want frozen: everything is homemade. Delivered Mon. Accept equivalent substitutions if you warn._
 
-## Ce qui les agace
+## What frustrates them
 
-- Être livré un jour de fermeture
-- Les hausses du beurre annoncées le jour même
-- Des pains de levure mous
-- Un sac de farine déchiré
+- To be delivered one day of closing
+- The increases in butter announced the same day
+- Soft yeast breads
+- A sack of torn flour
 
-## Historique marquant
+## A brief history
 
-- **14/12/2015** · demande spéciale · Fêtes 2015 : réservation
-- **05/12/2019** · demande spéciale · Fêtes 2019 : réservation
-- **25/06/2021** · qualité · Qualité : sel fin de mer (sac 25 kg)
-- **05/04/2022** · prix · Hausse tarifaire (gazole, énergie)
-- **13/03/2023** · qualité · Qualité : sel fin de mer (sac 25 kg)
-- **10/12/2023** · demande spéciale · Fêtes 2023 : réservation de volumes
-- **23/01/2024** · prix · Tarifs 2024
-- **15/07/2024** · note · Fermeture d'été 2024
-- **19/01/2025** · prix · Tarifs 2025
-- **14/04/2025** · livraison · Erreur de livraison
-- **23/01/2026** · prix · Tarifs 2026
-- **02/11/2026** · demande spéciale · Fêtes 2026 : réservation de volumes
+- **14/12/2015** · special request · Holidays 2015 : reservation
+- **05/12/2019** · special request · Holidays 2019 : reservation
+- **25/06/2021** · Quality · Quality : Fine sea salt (25 kg sack)
+- **05/04/2022** · price · Tariff increase (diesel, energy)
+- **13/03/2023** · Quality · Quality : Fine sea salt (25 kg sack)
+- **10/12/2023** · special request · Holidays 2023 : volume reservation
+- **23/01/2024** · prices · Rates 2024
+- **15/07/2024** · note · Summer closure 2024
+- **19/01/2025** · prices · Rates 2025
+- **14/04/2025** · delivery · delivery error
+- **23/01/2026** · prices · Rates 2026
+- **02/11/2026** · special request · Holidays 2026 : volume reservation
 
-Historique complet : 36 événements (9 visite, 7 appel, 6 compliment, 4 demande spéciale, 4 prix, 3 qualité, 1 ouverture, 1 note, 1 livraison).
+Full history: 36 events (9 visit, 7 call, 6 compliment, 4 special request, 4 price, 3 quality, 1 opening, 1 note, 1 delivery).
 
-## Dossiers ouverts aujourd'hui
+## Files opened today
 
-Aucun.
+None.
 
-## Comment leur parler
+## How to talk to them
 
-- Parler en sacs, pas en kilos.
-- Tutoyer s'il tutoie, c'est un métier où tout le monde se tutoie.
-- Rappeler les pré-commandes d'Épiphanie dès novembre.
+- Talk in bags, not in kilos.
+- Tutoying if he's tutoing, it's a profession where everyone is silent.
+- Call Epiphany pre-orders back in November.
 
-## Prix & groupe
+## Price & group
 
-Groupes : **Boulangeries** (`boulangeries`).
-Pas de prix négocié.
+Groups: **Boulangeries** (`boulangeries`).
+No negotiated prices.
 
-Règles de prix qui peuvent s'appliquer :
-- `prl_0001` Boulangeries : −4 % sur les farines dès 10 sacs
-- `prl_0006` Épiphanie 2027 : poudre d'amande −6 % dès 20 kg
-- `prl_0007` Épiphanie 2027 : couronnes et fèves −5 %
+Price rules that may apply:
+- `prl_0001` Bakeries: -4 % on flours from 10 bags
+- `prl_0006` Epiphany 2027: almond powder -6 % from 20 kg
+- `prl_0007` Epiphany 2027: crowns and beans -5 %
 
-Dernières notes CRM :
+Latest notes CRM:
 
-- 26/06/2025, Julien (commercial) : Julien a négocié un prix trimestriel sur la tradition.
-- 27/05/2026, Julien (commercial) : Michel fait 600 galettes et 300 couronnes pour l'Épiphanie : réserver poudre d'amande et feuilletage.
+- 26/06/2025, Julien (commercial): Julien negotiated a quarterly price on tradition.
+- 27/05/2026, Julien (commercial): Michel makes 600 cakes and 300 crowns for Epiphany: reserve almond powder and leafing.

@@ -22,7 +22,7 @@ import { AnchoredPopover } from "./popover";
 export type TagColor = NonNullable<TagDef["color"]>;
 export const TAG_COLORS: TagColor[] = ["green", "teal", "amber", "blue", "rose", "violet", "gray"];
 export const TAG_COLOR_LABEL: Record<TagColor, string> = {
-  green: "Vert", teal: "Turquoise", amber: "Ambre", blue: "Bleu", rose: "Rose", violet: "Violet", gray: "Gris",
+  green: "Green", teal: "Turkey", amber: "Amber", blue: "Blue", rose: "Rose", violet: "Violet", gray: "Grey",
 };
 /** Tag color → token class for the 6px dot. */
 export const TAG_DOT: Record<TagColor, string> = {
@@ -34,7 +34,7 @@ export const TAG_DOT: Record<TagColor, string> = {
   violet: "bg-violet",
   gray: "bg-muted-foreground/50",
 };
-export const TAG_SCOPE_LABEL: Record<TagScope, string> = { client: "Clients", product: "Produits", supplier: "Fournisseurs" };
+export const TAG_SCOPE_LABEL: Record<TagScope, string> = { client: "Customers", product: "Products", supplier: "Suppliers" };
 
 /** "Restaurants gastro" → "restaurants-gastro" (API slug rule: a-z, 0-9, -). */
 export function tagSlug(label: string, taken: string[] = []): string {
@@ -97,7 +97,7 @@ function ChipView({ tag, id, onRemove, onClick, className, title }: ChipProps) {
         <span
           role="button"
           tabIndex={-1}
-          aria-label={`Retirer ${label}`}
+          aria-label={`Remove ${label}`}
           onClick={(e) => { e.stopPropagation(); onRemove(); }}
           className="grid size-4 place-items-center rounded-[2px] text-muted-foreground hover:bg-muted hover:text-foreground"
         >
@@ -139,7 +139,7 @@ export function TagList({ scope, tags, max, empty, className, fit }: {
  * Inline add/remove of groups. Either controlled (`onChange`) or self-saving (`entityId`: PATCH the entity's tags).
  * `onChange` may return a promise; the editor shows the new value optimistically.
  */
-export function TagEditor({ scope, value, onChange, entityId, disabled, className, addLabel = "Groupe" }: {
+export function TagEditor({ scope, value, onChange, entityId, disabled, className, addLabel = "Group" }: {
   scope: TagScope;
   value?: string[];
   onChange?: (tags: string[]) => unknown;
@@ -242,7 +242,7 @@ export function TagEditor({ scope, value, onChange, entityId, disabled, classNam
           {addLabel}
         </button>
       )}
-      <AnchoredPopover anchorRef={anchorRef} open={open} matchWidth={false} width={260} maxHeight={300} role="dialog" aria-label="Groupes">
+      <AnchoredPopover anchorRef={anchorRef} open={open} matchWidth={false} width={260} maxHeight={300} role="dialog" aria-label="Groups">
         <div ref={popRef} className="flex flex-col">
           <div className="flex items-center gap-1.5 border-b border-border px-2.5">
             <Search size={13} strokeWidth={1.75} className="text-muted-foreground" />
@@ -251,7 +251,7 @@ export function TagEditor({ scope, value, onChange, entityId, disabled, classNam
               value={q}
               onChange={(e) => setQ(e.target.value)}
               onKeyDown={onKey}
-              placeholder="Chercher ou créer un groupe…"
+              placeholder="Search or create a group..."
               className="h-8 w-full bg-transparent text-[13px] outline-none placeholder:text-muted-foreground/70"
             />
           </div>
@@ -278,7 +278,7 @@ export function TagEditor({ scope, value, onChange, entityId, disabled, classNam
             })}
             {!options.length && !canCreate && (
               <div className="px-2.5 py-2 text-[12.5px] text-muted-foreground">
-                {defsList?.length ? "Aucun groupe trouvé" : "Aucun groupe : tapez un nom pour en créer un"}
+                {defsList?.length ? "No group found" : "No group: type a name to create one"}
               </div>
             )}
             {canCreate && (
@@ -294,7 +294,7 @@ export function TagEditor({ scope, value, onChange, entityId, disabled, classNam
                 )}
               >
                 <Plus size={13} strokeWidth={2} />
-                <span className="truncate">Créer le groupe « {q.trim()} »</span>
+                <span className="truncate">Create the group " {q.trim()} »</span>
               </button>
             )}
           </div>
@@ -307,7 +307,7 @@ export function TagEditor({ scope, value, onChange, entityId, disabled, classNam
 /** Row of color swatches (groups page). */
 export function TagColorPicker({ value, onChange }: { value?: TagDef["color"]; onChange: (c: TagColor) => void }) {
   return (
-    <div className="flex items-center gap-1" role="radiogroup" aria-label="Couleur">
+    <div className="flex items-center gap-1" role="radiogroup" aria-label="Colour">
       {TAG_COLORS.map((c) => (
         <button
           key={c}

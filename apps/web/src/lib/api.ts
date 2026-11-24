@@ -53,26 +53,26 @@ async function request<T>(method: string, path: string, body?: unknown, opts: Re
       method,
       headers: {
         ...(body !== undefined ? { "content-type": "application/json" } : {}),
-        ...(method !== "GET" ? { "x-actor": "user", "x-actor-name": "Moi" } : {}),
+        ...(method !== "GET" ? { "x-actor": "user", "x-actor-name": "Me" } : {}),
       },
       body: body !== undefined ? JSON.stringify(body) : undefined,
       signal: opts.signal,
     });
   } catch (e) {
     if ((e as Error).name === "AbortError") throw e;
-    const err = new ApiRequestError(0, "network", "API injoignable (localhost:4000)");
-    if (!opts.silent) toast.error("Connexion impossible", err.message);
+    const err = new ApiRequestError(0, "network", "API unreachable (localhost:4000)");
+    if (!opts.silent) toast.error("Connection impossible", err.message);
     throw err;
   }
   if (!res.ok) {
     let code = `http_${res.status}`;
-    let message = res.statusText || "Erreur";
+    let message = res.statusText || "Error";
     try {
       const j = await res.json();
       if (j?.error) ({ code, message } = j.error);
     } catch { /* not JSON */ }
     const err = new ApiRequestError(res.status, code, message);
-    if (!opts.silent) toast.error(method === "GET" ? "Chargement impossible" : "Action refusée", message);
+    if (!opts.silent) toast.error(method === "GET" ? "Unable to load" : "Action denied", message);
     throw err;
   }
   if (res.status === 204) return undefined as T;

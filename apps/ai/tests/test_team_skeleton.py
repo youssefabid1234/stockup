@@ -35,8 +35,8 @@ def sheet(**kw) -> CallContext:
         client_id="cli_0001",
         name="Maison Sarrailh",
         delivery_days=["tue", "thu", "sat"],
-        preferences="Jamais de substitution sur le beurre",
-        usual=[UsualItem("prd_0001", "Farine tradition", "sac", avg_qty=10, available=40)],
+        preferences="Never substitute butter",
+        usual=[UsualItem("prd_0001", "Flour tradition", "sac", avg_qty=10, available=40)],
     )
     return CallContext(**{**base, **kw})
 
@@ -47,7 +47,7 @@ def test_all_switches_off_by_default():
 
 async def test_prompt_unchanged_when_switches_off(offline_prompt):
     text = await prompts.build_system_prompt("voice")
-    assert "CONTEXTE" in text and "Client au téléphone" not in text
+    assert "CONTEXTE" in text and "Customer on the phone" not in text
 
 
 async def test_rules_sections_appear_only_when_switched_on(offline_prompt, monkeypatch):
@@ -64,14 +64,14 @@ async def test_rules_sections_appear_only_when_switched_on(offline_prompt, monke
 
 async def test_call_context_goes_last_in_the_prompt(offline_prompt):
     text = await prompts.build_system_prompt("voice", call_context=sheet())
-    assert text.index("CONTEXTE") < text.index("Client au téléphone : Maison Sarrailh")
+    assert text.index("CONTEXTE") < text.index("Customer on the phone: Maison Sarrailh")
 
 
 def test_render_call_context():
     assert render_for_prompt(None) == ""
     text = render_for_prompt(sheet())
-    assert "Jamais de substitution sur le beurre" in text and "mardi, jeudi, samedi" in text and "stock 40" in text
-    assert "COMPTE BLOQUÉ" in render_for_prompt(sheet(status="blocked"))
+    assert "Never substitute butter" in text and "Tuesday, Thursday, Saturday" in text and "stock 40" in text
+    assert "BLOCKED ACCOUNT" in render_for_prompt(sheet(status="blocked"))
 
 
 async def test_orchestrator_delegates_to_the_kit_loop(monkeypatch):
@@ -116,7 +116,7 @@ async def test_load_call_context_reads_client_and_context_in_parallel():
                 return {"id": "cli_0001", "name": "Maison Sarrailh", "status": "active", "deliveryDays": ["tue"],
                         "preferences": "AOP", "usual": [{"productId": "prd_0001", "productName": "Tradi", "unit": "sac", "avgQty": 10}],
                         "notes": [{"at": "2026-06-02T00:00:00Z", "author": "Julien", "text": "Allocation AOP"}]}  # fmt: skip
-            return {"entries": [{"kind": "risk", "title": "Ce qui les agace", "body": "Une substitution sur le tourage"}]}
+            return {"entries": [{"kind": "risk", "title": "What frustrates them", "body": "A substitution on the tour"}]}
 
     cc = await cc_mod.load_call_context(FakeErp(), "cli_0001")
     assert cc.name == "Maison Sarrailh" and cc.usual[0].avg_qty == 10 and cc.context_entries[0]["kind"] == "risk"

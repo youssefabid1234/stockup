@@ -1,40 +1,35 @@
 {
   "id": "S41",
   "owner": "daycem",
-  "title": "Le Pétrin de Muret demande 10 % de remise : aucune remise accordée ni promise, demande proposée au gérant",
-  "why": "Intelligent : le standard ne peut pas accorder de remise (05-prix-et-credit.md) ; l'agent rappelle le prix et la valeur, propose de transmettre au gérant et l'enregistre vraiment (log_client_event) quand le client accepte.",
+  "title": "Customer requests a discount",
+  "why": "Route the request to the authorised manager and record it after consent.",
   "client": "cli_0019",
   "turns": [
     {
-      "say": "Bonjour, c'est Marco, Le Pétrin de Muret. Pour mes 20 sacs de tradi de vendredi, vous pouvez me faire 10 % ?",
+      "say": "Hello, it's Marco from Le Pétrin de Muret. Could you give me 10% off my 20 sacks of traditional flour for Friday?",
       "expect": {
         "tools_none": [
           "confirm_order"
         ],
         "says_any": [
           "Bernard",
-          "gérant"
+          "manager"
         ],
         "says_none": [
-          "je vous accorde",
-          "je t'accorde",
-          "je vous fais une remise",
-          "je te fais une remise",
-          "je vous fais un geste",
-          "je te fais un geste",
-          "va pour",
-          "c'est d'accord pour les",
-          "je m'aligne",
-          "on s'aligne",
-          "je vous l'aligne",
-          "je te l'aligne",
-          "je peux descendre",
-          "je descends"
+          "I'll give you",
+          "I can give you",
+          "I'll grant",
+          "I'll match",
+          "we'll match",
+          "I can go down",
+          "I'll lower",
+          "I'll knock off",
+          "you've got a deal"
         ]
       }
     },
     {
-      "say": "Oui, transmettez-lui, merci.",
+      "say": "Yes, please pass it on. Thanks.",
       "expect": {
         "tools_any": [
           "log_client_event"
@@ -43,20 +38,15 @@
           "confirm_order"
         ],
         "says_none": [
-          "je vous accorde",
-          "je t'accorde",
-          "je vous fais une remise",
-          "je te fais une remise",
-          "je vous fais un geste",
-          "je te fais un geste",
-          "va pour",
-          "c'est d'accord pour les",
-          "je m'aligne",
-          "on s'aligne",
-          "je vous l'aligne",
-          "je te l'aligne",
-          "je peux descendre",
-          "je descends"
+          "I'll give you",
+          "I can give you",
+          "I'll grant",
+          "I'll match",
+          "we'll match",
+          "I can go down",
+          "I'll lower",
+          "I'll knock off",
+          "you've got a deal"
         ]
       }
     }

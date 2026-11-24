@@ -1,7 +1,7 @@
 """
 Chat with the agent in the terminal — the same agent as POST /chat and WS /voice.
 
-    uv run python -m app.cli            (chat mode)
+    uv run python -m app.cli (chat mode)
     uv run python -m app.cli --voice    (short spoken-style answers)
 
 Commands: /reset clears the conversation, /exit quits.
@@ -28,19 +28,19 @@ async def main() -> None:
     print(dim(f"llm={llm.provider}:{llm.model} mode={mode} — /reset, /exit"))
     while True:
         try:
-            line = (await asyncio.to_thread(input, "\nvous › ")).strip()
+            line = (await asyncio.to_thread(input, "\nyou › ")).strip()
         except (EOFError, KeyboardInterrupt):
             break
         if line == "/exit":
             break
         if line == "/reset":
             messages = []
-            print(dim("(conversation effacée)"))
+            print(dim("(scratching)"))
             continue
         if not line:
             continue
         messages.append(ChatMessage(role="user", content=line))
-        print("agent › ", end="", flush=True)
+        print("Agent › ", end="", flush=True)
         async for ev in run_agent(messages, llm=llm, tools=all_tools(), mode=mode, actor_name="CLI"):
             match ev:
                 case TextEvent(delta=delta):
@@ -50,10 +50,10 @@ async def main() -> None:
                 case ToolResultEvent(ok=ok, ms=ms, result=result):
                     print(dim(f"  ← {'ok' if ok else 'ERREUR'} {ms}ms {json.dumps(result, ensure_ascii=False)[:160]}"))
                 case DoneEvent(ms=ms, usage=usage):
-                    cache = f", cache lu {usage.cache_read_input_tokens} / écrit {usage.cache_creation_input_tokens or 0}" if usage.cache_read_input_tokens is not None else ""
+                    cache = f", cache read {usage.cache_read_input_tokens} / écrit {usage.cache_creation_input_tokens or 0}" if usage.cache_read_input_tokens is not None else ""
                     print(dim(f"\n  ({ms}ms, {usage.input_tokens or 0}→{usage.output_tokens or 0} tokens{cache})"))
                 case ErrorEvent(message=message):
-                    print(f"\n[erreur] {message}")
+                    print(f"\n[error] {message}")
 
 
 if __name__ == "__main__":

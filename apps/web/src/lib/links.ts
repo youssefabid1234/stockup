@@ -18,6 +18,6 @@ export function entityPath(entity: ActivityEvent["entity"], id: Id): string | un
 }
 
 export const ENTITY_LABEL: Record<ActivityEvent["entity"], string> = {
-  client: "Client", supplier: "Fournisseur", product: "Produit", stock: "Stock", order: "Commande",
-  purchase_order: "Achat", invoice: "Facture", payment: "Paiement", route_run: "Tournée", context: "Contexte",
+  client: "Customer", supplier: "Supplier", product: "Product", stock: "Stock", order: "Order",
+  purchase_order: "Purchase", invoice: "Invoice", payment: "Payment", route_run: "Delivery route", context: "Context",
 };
