@@ -425,6 +425,19 @@ Mohamed Amine.
   `eleven_v4_turbo`** (même phrase : 6,35 s à 1,0, 6,43 s à 1,2) ; il marche sur `eleven_turbo_v2_5` (−26 %) et
   `eleven_flash_v2_5`. Trois extraits écoutés : l'équipe garde **v4** pour son français.
 
+#### Phrases plus humaines (Amine Khalil, retour d'écoute du 24/11)
+
+- « Salut. » redit par l'agent après son propre bonjour : le filtre de salutation ne connaissait que « bonjour » et
+  ne s'appliquait qu'à la 1re réponse. Il couvre maintenant salut, coucou, re-bonjour, allô, sur toute réponse après
+  l'ouverture de l'appel.
+- Relecture : « …livrés mercredi 25 novembre, plus 12 euros de livraison. » sonnait comme une liste. Réponse directe
+  et consigne de Sonnet suivent maintenant le même modèle : les mots du client, « et vous serez livrés … », le total
+  dans sa propre phrase, puis une question (tutoiement gardé si l'appel est au « tu »). Avant / après, même appel :
+  « Je vous note 10 sacs de farine de blé T55 tradition française, livraison jeudi 26 novembre, pour 189 euros hors
+  taxes. » → « C'est noté : 10 sacs de tradi, et vous serez livrés jeudi 26 novembre. Ça fait 189 euros hors taxes. »
+- Suggestions (`voice_offers`) : nom en minuscule et tournures parlées (« Au fait, d'habitude vous prenez aussi la
+  farine de gruau avec. Je vous en mets ? »).
+
 #### Idées 2 et 3 : l'heure du camion, la date courte (Amine Khalil)
 
 - **Heure de passage** (`tools/delivery_eta.py`) : « vous passez à quelle heure ? » → l'arrêt du client sur la tournée

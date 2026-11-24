@@ -219,12 +219,13 @@ class CallOffers:
             return reply, None
         offer = offers[0]
         product = short_name(offer["productName"])
+        product = product[:1].lower() + product[1:]  # team 12 (Amine K.): a name inside a spoken sentence
         if offer["kind"] == "promo":
-            line = f"Au fait, il y a une promo sur le produit {product}, que vous prenez régulièrement. Je vous donne le prix ?"
+            line = f"Au fait, petite info : il y a une promo en ce moment sur {product}, que vous prenez souvent. Je vous donne le prix ?"
         elif offer["kind"] == "new":
-            line = f"Au fait, on vient de référencer {product}, dans la même gamme que vos achats habituels. Je vous en parle ?"
+            line = f"Au fait, on vient de rentrer {product}, dans la gamme de ce que vous prenez. Je vous en dis deux mots ?"
         else:
-            line = f"Vous prenez aussi souvent {product} avec cette commande. Vous souhaitez en ajouter ?"
+            line = f"Au fait, d'habitude vous prenez aussi {product} avec. Je vous en mets ?"
         return f"{cleaned} {line}".strip(), offer
 
     async def _requested_offer(self, request: str) -> Handled:

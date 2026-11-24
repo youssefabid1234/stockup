@@ -22,7 +22,38 @@ def _lower_names(readback: str) -> str:
     return re.sub(r"\b(de |d')([A-ZÉÈ])(?=[a-zéèêàç])", lambda m: m.group(1) + m.group(2).lower(), readback)
 
 
-def compose(mode: str, calls: list, results: list) -> str | None:
+_TU = re.compile(r"\b(?:tu|toi|ton|ta|tes|te)\b|\bt'", re.I)
+
+
+def _says_tu(messages: list | None) -> bool:
+    """The agent already says « tu » to this caller (Daycem's tone rules: « Salut Thierry »): keep it."""
+    for m in reversed(messages or []):
+        if getattr(m, "role", None) == "assistant" and (m.content or "").strip():
+            return bool(_TU.search(m.content))
+    return False
+
+
+def _de(word: str) -> str:
+    return "d'" if word[:1].lower() in "aeiouyéèêàh" else "de "
+
+
+def _items(readback_items: str, call) -> str:
+    """The products as the CALLER said them when the order is new and each line maps one to one (« 5 sacs de tradi »
+    rather than « 5 sacs de farine de blé T55 tradition française ») ; else the catalogue names."""
+    parts = [p.strip() for p in readback_items.split(", ") if p.strip()]
+    args = getattr(call, "arguments", None) or {}
+    lines = args.get("lines") or []
+    if args.get("orderId") or args.get("order_id") or len(lines) != len(parts) or not all(li.get("said") for li in lines):
+        return _lower_names(readback_items)
+    out = []
+    for part, line in zip(parts, lines, strict=True):
+        quantity = part.split(" de ", 1)[0].split(" d'", 1)[0]  # « 5 sacs », « 30 kilos » : the converted quantity
+        said = line["said"].strip()
+        out.append(f"{quantity} {_de(said)}{said}")
+    return ", ".join(out[:-1]) + (" et " if len(out) > 1 else "") + out[-1]
+
+
+def compose(mode: str, calls: list, results: list, messages: list | None = None) -> str | None:
     """The reply to say without a second model call, or None (the model writes it, as before)."""
     if not team_flags.fast_reply() or mode != "voice" or len(calls) != 1 or len(results) != 1:
         return None
@@ -30,6 +61,7 @@ def compose(mode: str, calls: list, results: list) -> str | None:
     res = r.result if r.ok and isinstance(r.result, dict) else None
     if not res:
         return None
+    tu = _says_tu(messages)
     if r.name == "place_order":
         if not res.get("written") or res.get("canConfirm") is not True or any(res.get(k) for k in _NOT_CLEAN):
             return None
@@ -38,13 +70,19 @@ def compose(mode: str, calls: list, results: list) -> str | None:
             return None
         from app.agent.rules_order import fr_money
 
-        said = _lower_names(readback).replace(" ; livraison ", ", livraison ")
-        if res.get("franco"):
-            return f"Je vous note {said}. Attention, {res['franco']}. Je vous la valide quand même ?"
-        total = f", pour {fr_money(res['totalHt'])} hors taxes" if res.get("totalHt") else ""
-        return f"Je vous note {said}{total}. Je vous la valide ?"
+        items, _, day = readback.partition(" ; livraison ")
+        said = _items(items, calls[0])
+        when = (f", et tu seras livré {day}" if tu else f", et vous serez livrés {day}") if day else ""
+        ask = "Je te la valide ?" if tu else "Je vous la valide ?"
+        total = res.get("totalHt")
+        if res.get("franco") and total:
+            return (f"C'est noté : {said}{when}. Ça fait {fr_money(total)} hors taxes, donc il y aura 12 euros de frais "
+                    f"de livraison : c'est offert à partir de 150 euros. {ask[:-2]} quand même ?")
+        money = f" Ça fait {fr_money(total)} hors taxes." if total else ""
+        return f"C'est noté : {said}{when}.{money} {ask}"
     if r.name == "confirm_order" and res.get("confirmed") is True:
+        other = "Il te faut autre chose ?" if tu else "Il vous faut autre chose ?"
         if res.get("alreadyConfirmed"):
-            return "C'est bon, elle était déjà validée et vos changements y sont. Il vous faut autre chose ?"
-        return "C'est validé, merci ! Il vous faut autre chose ?"
+            return f"C'est bon, elle était déjà validée et les changements y sont. {other}"
+        return f"C'est validé, merci ! {other}"
     return None

@@ -410,7 +410,8 @@ class VoiceConnection:
         working: list[ChatMessage] | None = None
         committed = False
         speaker: Speaker | None = None
-        greeted = conv.agent_opened  # mode 4: the agent opened the call, its first reply must not say « Bonjour » again
+        # mode 4: the agent opened the call; and any later reply of the call: never « Bonjour » / « Salut » again
+        greeted = conv.agent_opened or any(m.role == "assistant" for m in conv.history)
         conv.agent_opened = False
         try:
             # The caller form prepared this clip. Play it before waiting for the final transcript.

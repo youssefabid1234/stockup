@@ -43,3 +43,13 @@ def test_codes_are_never_said_early_and_the_end_is_said_once():
     said, rest = run(["Votre commande CMD-2026-007543 est validée. ", "Bonne journée !"],
                      "Votre commande est validée. Bonne journée !")
     assert said == ["Votre commande est validée."] and rest == "Bonne journée !"
+
+
+
+def test_no_second_greeting_salut_included():
+    from app.services.voice_reply import without_repeated_greeting
+
+    assert without_repeated_greeting("Salut. On n'est pas livrés le jeudi chez toi.", "Thierry Escaich") == "On n'est pas livrés le jeudi chez toi."
+    assert without_repeated_greeting("Salut Thierry, je regarde.", "Thierry Escaich") == "Je regarde."
+    assert without_repeated_greeting("Re-bonjour Madame ! C'est noté.", None) == "C'est noté."
+    assert without_repeated_greeting("Salutations distinguées", None) == "Salutations distinguées"

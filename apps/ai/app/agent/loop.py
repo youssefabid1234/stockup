@@ -106,7 +106,7 @@ async def run_agent(
             if team_flags.preload() and call_context is None and (client_id := preload.identify_client(messages)):
                 preload.prefetch(ctx.erp, client_id)
             # team 12 (Amine K., vitesse): a clean order / confirmation result is said as is, no 2nd model call
-            if direct := fast_reply.compose(mode, calls, results):
+            if direct := fast_reply.compose(mode, calls, results, messages):
                 message = ChatMessage(role="assistant", content=direct)
                 messages.append(message)
                 yield TextEvent(delta=f" {direct}" if said_something else direct)
