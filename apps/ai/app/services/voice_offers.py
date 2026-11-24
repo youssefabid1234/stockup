@@ -214,7 +214,7 @@ class CallOffers:
             return Handled("Pouvez-vous me préciser la quantité et le conditionnement pour ce produit ?")
         if re.fullmatch(r"(?:j en prends|je prends|ajoutez en|mettez m en|mettez moi|je vous en prends)", text):
             return Handled("Quelle quantité souhaitez-vous pour ce produit ?")
-        if re.match(r"^(?:oui|d accord|ok)\b", text):
+        if re.match(r"^(?:oui|d accord|ok)\b", text) and len(text.split()) <= 3:  # team 12: « oui bonjour, vous avez… » is a new request
             return Handled("Souhaitez-vous modifier la commande ou en savoir plus sur cette offre ?")
         if re.search(r"\b(?:validez|confirmez) (?:la commande|le panier)\b", text):
             self.pending = None
