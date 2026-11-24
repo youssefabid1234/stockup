@@ -353,6 +353,24 @@ export function useVoiceSession() {
 
   /** Team 12: hang up: back to the caller ID form, fresh conversation. */
   const endCall = useCallback(() => {
+    // team 12 (Youssef): hanging up stops everything that costs: a recording in progress is dropped (no audio
+    // reaches the STT any more), the mic is released (hands-free stops listening), the server cancels the running
+    // turn (LLM + TTS) on "reset", and the agent's audio stops.
+    pressed.current = false;
+    const rec = recorder.current;
+    recorder.current = undefined;
+    if (rec && rec.state !== "inactive") {
+      rec.ondataavailable = null;
+      rec.onstop = null;
+      try { rec.stop(); } catch { /* already stopped */ }
+    }
+    if (raf.current) cancelAnimationFrame(raf.current);
+    setLevel(0);
+    stream.current?.getTracks().forEach((t) => t.stop());
+    stream.current = undefined;
+    analyser.current = undefined;
+    void audioCtx.current?.close().catch(() => undefined);
+    audioCtx.current = undefined;
     stopPlayback();
     send({ type: "reset" });
     currentTurn.current = undefined;

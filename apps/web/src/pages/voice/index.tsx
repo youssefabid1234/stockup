@@ -48,8 +48,8 @@ function CallMode({ modeSwitch }: { modeSwitch: ReactNode }) {
   vRef.current = v;
   const [text, setText] = useState("");
   const spaceDown = useRef(false);
-  // team 12 (Youssef): hands-free = talk like on the phone (no key), on by default, remembered per browser
-  const [handsFree, setHandsFree] = useState(() => { try { return localStorage.getItem("voice.handsFree") !== "0"; } catch { return true; } });
+  // team 12 (Youssef): hands-free = talk like on the phone (no key); OFF by default (Space) to save credits while testing, turn it on for the demo; remembered per browser
+  const [handsFree, setHandsFree] = useState(() => { try { return localStorage.getItem("voice.handsFree") === "1"; } catch { return false; } });
   const toggleHandsFree = () => setHandsFree((on) => { try { localStorage.setItem("voice.handsFree", on ? "0" : "1"); } catch { /* private mode */ } return !on; });
   const listening = useHandsFree(v, handsFree && v.conn === "ready" && !!v.caller, spaceDown);
 
