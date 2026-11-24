@@ -189,3 +189,13 @@ async def test_the_client_list_is_read_fresh_on_every_call():
         assert out["clientId"] == "cli_0200" and not out["created"]  # seen at once, not after a cache expiry
     finally:
         CLIENTS.pop()
+
+
+def test_a_question_turned_into_a_statement_is_still_remembered():
+    from app.services.voice_reply import asked_questions, one_question, without_repeated_question
+
+    first = "C'est noté. Pour le beurre, vous le voulez de tourage ou autre chose ? Et dans quelle ville êtes-vous livrée ?"
+    asked = asked_questions(first)
+    assert len(asked) == 2 and one_question(first).count("?") == 1
+    again = "Balma est livrée du lundi au samedi. Pour le beurre, vous le voulez de tourage ou plutôt un beurre doux ?"
+    assert without_repeated_question(again, asked) == "Balma est livrée du lundi au samedi."

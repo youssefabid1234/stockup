@@ -53,18 +53,25 @@ _ASK_FILLER = {"vous", "pour", "c'est", "est-ce", "votre", "vos", "voulez", "ave
                "une", "par", "que", "qui", "plutôt", "plutot", "aussi", "alors", "donc", "bien", "est"}
 
 
+def asked_questions(reply: str | None) -> list[str]:
+    """Every question of a reply, as written by the model (one_question later keeps only the last one)."""
+    return [s.strip() for s in _SENTENCES.findall(reply or "") if s.rstrip().endswith("?")]
+
+
 def _question_words(reply: str | None) -> set[str]:
-    asks = [s for s in _SENTENCES.findall(reply or "") if s.rstrip().endswith("?")]
+    asks = asked_questions(reply)
     return {w for w in _key(asks[-1]).split() if len(w) >= 3 and w not in _ASK_FILLER} if asks else set()
 
 
-def without_repeated_question(reply: str, previous: str | None) -> str:
+def without_repeated_question(reply: str, previous: str | list[str] | None) -> str:
     """Team 12 (Youssef), new clients: the question of the previous reply asked again (« Pour le beurre, c'est du tourage
     ou du doux ? » after the caller let it go) is dropped, the rest is said. Measured in new_client_test N2/N5 (24/11):
     asked twice although the prompt says once (the caller's request is already noted « à préciser »)."""
-    now, before = _question_words(reply), _question_words(previous)
+    now = _question_words(reply)
+    # previous: the questions asked in the previous reply (all of them), or that reply's text
+    befores = [_question_words(q) for q in previous] if isinstance(previous, list) else [_question_words(previous)]
     # the same question reworded (« …tourage ou du doux, et en quelle quantité ? » → « …en tourage ou en doux ? »)
-    if not now or not before or len(now & before) / min(len(now), len(before)) < 0.6:
+    if not now or not any(b and len(now & b) / min(len(now), len(b)) >= 0.6 for b in befores):
         return reply
     parts = _SENTENCES.findall(reply)
     kept = "".join(p for p in parts if not p.rstrip().endswith("?")).strip()

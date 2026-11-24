@@ -78,6 +78,7 @@ from .voice_reply import (
     vary_closing,
     vary_opening,
     without_repeated_greeting,
+    asked_questions,
     without_repeated_question,
 )
 
@@ -100,6 +101,7 @@ class Conversation:
     # into one message so a new piece never makes the agent forget the previous ones (agent/listening.py)
     pending: list[str] = field(default_factory=list)
     last_spoken: str | None = None  # team 12 (Youssef): the previous reply, so the next one opens differently
+    last_asked: list[str] = field(default_factory=list)  # team 12 (Youssef): every question of the previous reply
     used_closings: list[str] = field(default_factory=list)  # team 12: validation questions already asked
 
 
@@ -198,6 +200,7 @@ class VoiceConnection:
                 self.conversation.history = []
                 self.conversation.pending = []
                 self.conversation.used_closings = []
+                self.conversation.last_asked = []
                 self.conversation.opening_greeting = None
                 await self.open(self.conversation.id)
             case CallerMessage():  # team 12 (Youssef): caller ID form, before the call
@@ -253,6 +256,7 @@ class VoiceConnection:
             conv.history = []
             conv.pending = []  # team 12 (Youssef): a new call starts with nothing pending
             conv.used_closings = []
+            conv.last_asked = []
             conv.agent_opened = False
             greetings = fillers.OPENING_LINES if team_flags.no_silence() else CALL_GREETINGS  # mode 4: the agent opens
             # team 12 (Youssef): greet the person on the phone by first name (prepared while the sheet loads, no delay)
@@ -399,6 +403,7 @@ class VoiceConnection:
         t0 = time.perf_counter()  # end of caller speech
         timings = TurnTimings()
         heard, spoken = "", ""
+        asked: list[str] = []  # team 12 (Youssef): the questions of this reply
         history_size = len(conv.history)
         working: list[ChatMessage] | None = None
         committed = False
@@ -497,9 +502,10 @@ class VoiceConnection:
                                 contact = conv.call_context.caller_contact if conv.call_context else None
                                 spoken = without_repeated_greeting(spoken, contact)
                             spoken = vary_opening(spoken, conv.last_spoken)  # team 12 (Youssef): no « Parfait, » twice in a row
+                            asked = asked_questions(spoken)  # before one_question turns the earlier ones into statements
                             spoken = vary_closing(one_question(spoken), conv.used_closings)  # one question, varied closing
                             if new_client:
-                                spoken = without_repeated_question(spoken, conv.last_spoken)
+                                spoken = without_repeated_question(spoken, conv.last_asked or conv.last_spoken)
                         case ErrorEvent(message=message):
                             await speaker.stop_waiting()
                             await self.send(VoiceErrorMessage(message=message))
@@ -510,6 +516,8 @@ class VoiceConnection:
             committed = True
             conv.pending = []  # team 12: answered
             conv.last_spoken = spoken or conv.last_spoken
+            if spoken:
+                conv.last_asked = asked or asked_questions(spoken)
 
             # Only the completed reply goes to the caller. Text emitted before a tool call may be internal notes.
             if spoken:
