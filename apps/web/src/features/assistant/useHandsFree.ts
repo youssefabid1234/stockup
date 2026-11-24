@@ -73,7 +73,7 @@ export function useHandsFree(target: HandsFreeTarget, enabled: boolean, spaceDow
         }
         if (ev === "start" && !owns.current) {
           owns.current = true;
-          if (t.activity === "speaking" && t.confirmTalking) {
+          if ((t.activity === "speaking" || t.activity === "thinking") && t.confirmTalking) {
             check = { at: now, loud: 0, level: Math.max(0.02, rms * 0.5) };
             void t.startTalking({ tentative: true });
           } else void t.startTalking();
