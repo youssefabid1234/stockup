@@ -1,93 +1,93 @@
 # Pause Gourmande Toulouse (Saint-Michel) (C0049, `cli_0049`)
 
-> Fiche persona pour jouer ce client au téléphone. L'historique complet est dans `seed/clientEvents.json` (filtrer sur `clientId: "cli_0049"`).
+> Customer profile for phone role-play. The full history is in `seed_en/clientEvents.json` (filter on `clientId: "cli_0049"`).
 
 | | |
 |---|---|
-| Type | Brasserie (Sandwicheries et franchises de snacking) — 117 rue d'Alsace-Lorraine, 31400 Toulouse (Saint-Michel) |
-| Zone | Toulouse centre & faubourgs — livré mon, wed, fri |
-| Statut | **active** — client régulier |
-| Commercial | Karim Belkacem |
-| Client depuis | 14/10/2011 (15 ans) |
-| Paiement | 30 jours — prélèvement SEPA, aucun retard |
-| Encours | 7 471,67 € TTC (plafond 11 000 €) |
-| Tempérament | économe — qualité ★☆☆, prix ★★★, risque de départ moyen |
+| Type | Brasserie (Sandwicheries and snacks) — 117 rue d'Alsace-Lorraine, 31400 Toulouse (Saint-Michel) |
+| Area | Toulouse centre & suburbs — delivered Mon, Wed, Fri |
+| Status | **active** — regular customer |
+| Sales representative | Karim Belkacem |
+| Customer since | 14/10/2011 (15 years) |
+| Payment | 30 days — SEPA direct debit, no delay |
+| Outstanding balance | 7 471,67 € incl. VAT (ceiling 11 000 €) |
+| Temperament | economic — quality ★☆☆, price ★★★, medium risk of losing the customer |
 
-## Qui ils sont
+## Who they are
 
-Point de vente de snacking à Toulouse (Saint-Michel), cuisson de viennoiseries crues et sandwiches. Xavier Lecomte commande les chocolatines par carton de 140.
+Snacks point of sale in Toulouse (Saint-Michel), cooking raw pastries and sandwiches. Xavier Lecomte orders pains au chocolat by carton from 140.
 
-## Les personnes
+## People
 
-- **Xavier Lecomte** — Gérant · 06 87 62 34 61 · xavier@pausegourmandetoulousesa.fr
-  - Comment il/elle parle : Calcule tout, demande les promos et les fins de lot.
-  - Tics : « Juste ce qu'il faut, pas plus. » · « Vous avez des fins de lot ? »
-- **Céline Chevalier** — Responsable de point de vente · 06 11 33 21 84
-  - Comment il/elle parle : Commande au plus juste, petites quantités.
-  - Tics : « C'est combien au kilo, ramené ? » · « Il y a une promo cette semaine ? »
+- **Xavier Lecomte** — manager · 06 87 62 34 61 · xavier@pausegourmandetoulousesa.fr
+  - Speaking style: Calculate everything, ask for promos and lot ends.
+  - Typical phrases: "Just what you need, no more." · "Do you have any lot ends?"
+- **Céline Chevalier** — Point of sale manager · 06 11 33 21 84
+  - Speaking style: Command at the fairest, small quantities.
+  - Typical phrases: "How much is a kilo brought back?" · "Is there a promo this week?"
 
-## Ce qu'ils achètent et comment
+## What they buy and how
 
-Commande trois fois par semaine, en général la veille entre 14h et 19h, surtout par portail web et téléphone. Produits habituels : croissant pur beurre cru surgelé 70 g (carton 150), baguette précuite surgelée 280 g (carton 60), sachets viennoiserie papier (carton 1000), lait entier UHT (brique 1 L), semelles dorées rondes 28 cm (lot de 100), crème fraîche épaisse 30 % (seau 5 L), fèves des rois en porcelaine (sachet de 100), pâte feuilletée pur beurre en plaques (carton 5 kg).
+Order three times a week, usually the day before between 14h and 19h, mainly via web portal and telephone. Regular products: Raw frozen all-butter croissant 70 g (carton of 150), Frozen par-baked baguette 280 g (carton of 60), Paper viennoiserie bags (carton of 1000), Whole UHT milk (1 L carton), Gold round cake boards 28 cm (pack of 100), Thick crème fraîche 30% (5 L tub), Porcelain king cake charms (pack of 100), All-butter puff pastry sheets (5 kg carton).
 
-Sur les 90 derniers jours (30 commandes livrées) :
+Over the last 90 days (30 orders delivered):
 
-| Produit | Volume 90 j | Lignes | Dernier prix |
+| Product | 90-day volume | Lines | Last price |
 |---|---|---|---|
-| Croissant pur beurre cru surgelé 70 g (carton 150) (`prd_0053`) | 131,00 colis | 18 | 52,00 € |
-| Baguette précuite surgelée 280 g (carton 60) (`prd_0058`) | 210,00 colis | 19 | 24,00 € |
-| Pâte feuilletée pur beurre en plaques (carton 5 kg) (`prd_0057`) | 88,00 colis | 11 | 39,00 € |
-| Semelles dorées rondes 28 cm (lot de 100) (`prd_0070`) | 180,00 colis | 17 | 9,80 € |
-| Lait entier UHT (brique 1 L) (`prd_0033`) | 897,00 litre | 16 | 1,12 € |
-| Sachets viennoiserie papier (carton 1000) (`prd_0066`) | 56,00 colis | 20 | 17,50 € |
-| Crème fraîche épaisse 30 % (seau 5 L) (`prd_0032`) | 201,00 litre | 16 | 4,59 € |
-| Chocolatine pur beurre crue surgelée 75 g (carton 140) (`prd_0054`) | 3,00 colis | 1 | 49,80 € |
+| Raw frozen all-butter croissant 70 g (carton of 150) (`prd_0053`) | 131,00 box | 18 | 52,00 € |
+| Frozen par-baked baguette 280 g (carton of 60) (`prd_0058`) | 210,00 box | 19 | 24,00 € |
+| All-butter puff pastry sheets (5 kg carton) (`prd_0057`) | 88,00 box | 11 | 39,00 € |
+| Gold round cake boards 28 cm (pack of 100) (`prd_0070`) | 180,00 box | 17 | 9,80 € |
+| Whole UHT milk (1 L carton) (`prd_0033`) | 897,00 liter | 16 | 1,12 € |
+| Paper viennoiserie bags (carton of 1000) (`prd_0066`) | 56,00 box | 20 | 17,50 € |
+| Thick crème fraîche 30% (5 L tub) (`prd_0032`) | 201,00 liter | 16 | 4,59 € |
+| Raw frozen all-butter pain au chocolat 75 g (carton of 140) (`prd_0054`) | 3,00 box | 1 | 49,80 € |
 
-Fiche CRM : _Veut un prix au carton fixe sur l'année. Livraison avant 7h pour la cuisson. Livré lun. mer. ven. Refuse les substitutions : appeler avant toute modification._
+CRM record : _Vests a fixed carton price on the year. Delivery before 7h for cooking. Delivered Mon. Fri. Fri. Refuses substitutions: call before any modification._
 
-## Ce qui les agace
+## What frustrates them
 
-- Une livraison après 7h
-- Les hausses en cours d'année
-- Un carton décongelé
+- Delivery after 7h
+- Increases during the year
+- Frozen Cardboard
 
-## Historique marquant
+## A brief history
 
-- **24/04/2024** · livraison · Bon de livraison erroné
-- **24/07/2024** · note · Fermeture d'été 2024
-- **02/09/2024** · qualité · Qualité : crème fraîche épaisse 30 % (seau 5 L)
-- **05/09/2024** · avoir · Avoir qualité : crème fraîche épaisse 30 % (seau 5 L)
-- **07/12/2024** · demande spéciale · Fêtes 2024 : réservation de volumes
-- **02/03/2025** · carte · Nouvelle carte de printemps
-- **03/09/2025** · livraison · Colis manquant
-- **22/10/2025** · retour · Retour à la livraison : croissant pur beurre cru surgelé 70 g (carton 150)
-- **20/12/2025** · demande spéciale · Fêtes 2025 : réservation de volumes
-- **22/01/2026** · prix · Tarifs 2026
-- **26/06/2026** · qualité · Qualité : semelles dorées rondes 28 cm (lot de 100)
-- **07/11/2026** · demande spéciale · Fêtes 2026 : réservation de volumes
+- **24/04/2024** · delivery · Delivery order wrong
+- **24/07/2024** · note · Summer closure 2024
+- **02/09/2024** · Quality · Quality : Thick crème fraîche 30% (5 L tub)
+- **05/09/2024** · Have quality : Thick crème fraîche 30% (5 L tub)
+- **07/12/2024** · special request · Holidays 2024 : volume reservation
+- **02/03/2025** · map · New spring map
+- **03/09/2025** · delivery · missing box
+- **22/10/2025** · back to delivery : Raw frozen all-butter croissant 70 g (carton of 150)
+- **20/12/2025** · special request · Holidays 2025 : volume reservation
+- **22/01/2026** · prices · Rates 2026
+- **26/06/2026** · Quality · Quality : Gold round cake boards 28 cm (pack of 100)
+- **07/11/2026** · special request · Holidays 2026 : volume reservation
 
-Historique complet : 43 événements (11 visite, 8 appel, 5 demande spéciale, 5 qualité, 3 note, 3 prix, 2 carte, 2 livraison, 1 ouverture, 1 compliment, 1 avoir, 1 retour).
+Full history: 43 events (11 visit, 8 call, 5 special request, 5 quality, 3 rating, 3 price, 2 card, 2 delivery, 1 opening, 1 compliment, 1 having, 1 back).
 
-## Dossiers ouverts aujourd'hui
+## Open cases
 
-- **07/11/2026 — Fêtes 2026 : réservation de volumes**
-  Céline veut réserver pour les fêtes : crème fraîche épaisse 30 % (seau 5 L) et fèves des rois en porcelaine (sachet de 100) en volume pour les 23-24 et 30-31/12. Céline : « C'est combien au kilo, ramené ? »
+- **07/11/2026 — Holidays 2026: volume reservation**
+  Céline wants to book for the parties: Thick crème fraîche 30% (5 L tub) and Porcelain king cake charms (pack of 100) in volume for the 23-24 and 30-31/12. Céline: "How much is by kilo, brought back?"
 
-## Comment leur parler
+## How to talk to them
 
-- Parler prix au carton et rotation.
-- Confirmer par écrit.
+- Talk about price to cardboard and rotation.
+- Confirm in writing.
 
-## Prix & groupe
+## Price & group
 
-Groupes : **Snacking** (`snacking`).
-Pas de prix négocié.
+Groups: **Snacking** (`snacking`).
+No negotiated prices.
 
-Règles de prix qui peuvent s'appliquer :
-- `prl_0005` Snacking : coût + 20 % sur les chocolatines
-- `prl_0006` Épiphanie 2027 : poudre d'amande −6 % dès 20 kg
-- `prl_0007` Épiphanie 2027 : couronnes et fèves −5 %
+Price rules that may apply:
+- `prl_0005` Snacking: cost + 20 % on pains au chocolat
+- `prl_0006` Epiphany 2027: almond powder -6 % from 20 kg
+- `prl_0007` Epiphany 2027: crowns and beans -5 %
 
-Dernières notes CRM :
+Latest notes CRM:
 
-Aucune.
+None.

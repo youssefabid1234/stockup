@@ -30,7 +30,7 @@ _STOP = {"le", "la", "les", "de", "des", "du", "un", "une", "et", "a", "au", "au
 def entity_label(entity_type: str, id: str | None = None) -> str | None:
     """Name of the entity an entry is about, or None if it does not exist."""
     if entity_type == "company":
-        return "Entreprise"
+        return "Company"
     if not id:
         return None
     if entity_type == "category":
@@ -46,12 +46,12 @@ def _check_target(entity_type: str, entity_id: str | None) -> None:
     """400 unless the pair is valid (company: no entityId; others: an existing id)."""
     if entity_type == "company":
         if entity_id:
-            raise bad_request("invalid_entity", "Une fiche « entreprise » ne se rattache à aucune entité (entityId interdit)")
+            raise bad_request("invalid_entity", "A \"business\" sheet does not relate to any entity (entityId (prohibited)")
         return
     if not entity_id:
-        raise bad_request("invalid_entity", f"entityId requis pour une fiche « {entity_type} »")
+        raise bad_request("invalid_entity", f"entityId required for a form \" {entity_type} »")
     if not entity_label(entity_type, entity_id):
-        raise bad_request("invalid_entity", f"Entité inconnue ({entity_type}) : {entity_id}")
+        raise bad_request("invalid_entity", f"Unknown entity ({entity_type}) : {entity_id}")
 
 
 def context_summary(e: Doc, score: float | None = None) -> Doc:
@@ -136,7 +136,7 @@ def context_for(entity_type: str, id: str) -> Doc:
     entries, plus related ones (product → its category; supplier → the categories it sells;
     any entity → company / category entries whose body cites its id, e.g. "cli_0004")."""
     if entity_type == "company":
-        return {"entityType": entity_type, "id": "", "label": "Entreprise", "entries": list_context(entity_type="company"), "related": []}
+        return {"entityType": entity_type, "id": "", "label": "Company", "entries": list_context(entity_type="company"), "related": []}
     _check_target(entity_type, id)
     entries = list_context(entity_type=entity_type, entity_id=id)
     related_categories: set[str] = set()
@@ -174,7 +174,7 @@ def _clean_tags(tags: list[str] | None) -> list[str] | None:
 
 def _about(e: Doc) -> str:
     if e["entityType"] == "company":
-        return "l'entreprise"
+        return "the enterprise"
     return entity_label(e["entityType"], e.get("entityId")) or str(e.get("entityId"))
 
 
@@ -196,7 +196,7 @@ def create_context(ctx: Ctx, input: Doc) -> Doc:
         "updatedAt": at,
     }
     crud.context_entries.put(entry)
-    log_event(ctx, "context.created", "context", entry["id"], f"Contexte ajouté pour {_about(entry)} : « {entry['title']} »")
+    log_event(ctx, "context.created", "context", entry["id"], f"Context added for {_about(entry)} : « {entry['title']} »")
     return entry
 
 
@@ -230,9 +230,9 @@ def update_context(ctx: Ctx, id: str, patch: Doc) -> Doc:
         if tags:
             updated["tags"] = tags
     if not updated["title"] or not updated["body"]:
-        raise bad_request("invalid_context", "Titre et contenu requis")
+        raise bad_request("invalid_context", "Title and content required")
     crud.context_entries.put(updated)
-    log_event(ctx, "context.updated", "context", id, f"Contexte modifié pour {_about(updated)} : « {updated['title']} »")
+    log_event(ctx, "context.updated", "context", id, f"Revised context for {_about(updated)} : « {updated['title']} »")
     return updated
 
 
@@ -240,5 +240,5 @@ def update_context(ctx: Ctx, id: str, patch: Doc) -> Doc:
 def delete_context(ctx: Ctx, id: str) -> Doc:
     cur = crud.context_entries.require(id)
     crud.context_entries.delete(id)
-    log_event(ctx, "context.deleted", "context", id, f"Contexte supprimé pour {_about(cur)} : « {cur['title']} »")
+    log_event(ctx, "context.deleted", "context", id, f"Background deleted for {_about(cur)} : « {cur['title']} »")
     return {"ok": True}

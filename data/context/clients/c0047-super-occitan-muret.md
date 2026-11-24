@@ -1,95 +1,95 @@
 # Super Occitan Muret (C0047, `cli_0047`)
 
-> Fiche persona pour jouer ce client au téléphone. L'historique complet est dans `seed/clientEvents.json` (filtrer sur `clientId: "cli_0047"`).
+> Customer profile for phone role-play. The full history is in `seed_en/clientEvents.json` (filter on `clientId: "cli_0047"`).
 
 | | |
 |---|---|
-| Type | Grande surface (Rayons pain et terminaux de cuisson de supermarchés) — 60 bis impasse des Artisans, 31600 Muret |
-| Zone | Balma, Labège & Sud toulousain — livré mon, thu |
-| Statut | **active** — revenu après un départ à la concurrence |
-| Commercial | Karim Belkacem |
-| Client depuis | 11/08/2022 (4 ans) |
-| Paiement | 30 jours — prélèvement SEPA, aucun retard |
-| Encours | 14 728,47 € TTC (plafond 18 000 €) |
-| Tempérament | procédurier — qualité ★★☆, prix ★★☆, risque de départ faible |
+| Type | Large area (Bread Rays and Supermarket Cooking Terminals) — 60 bis impasse des Artisans, 31600 Muret |
+| Area | Balma, Labège & Sud Toulouse — delivered Mon, Thu |
+| Status | **active** — income after competitive departure |
+| Sales representative | Karim Belkacem |
+| Customer since | 11/08/2022 (4 years) |
+| Payment | 30 days — SEPA direct debit, no delay |
+| Outstanding balance | 14 728,47 € incl. VAT (ceiling 18 000 €) |
+| Temperament | procedure — quality ★★☆, price ★★☆, risk of losing the customer low |
 
-## Qui ils sont
+## Who they are
 
-Supermarché de Muret avec terminal de cuisson : baguettes précuites et viennoiseries crues cuites sur place toute la journée. Le chef de rayon commande par mail le matin.
+Supermarket of Muret with cooking terminal: pre-cooked chopsticks and pastries raw cooked on site all day long. The head of department orders by mail in the morning.
 
-## Les personnes
+## People
 
-- **Florian Escaich** — Chef de rayon boulangerie · 07 71 24 23 63
-  - Comment il/elle parle : Cite les règles, les clauses, les bons de livraison.
-  - Tics : « Il me faut ça par écrit. » · « Conformément au contrat… »
-- **Grégory Marie** — Directeur de magasin · 06 61 84 24 80
-  - Comment il/elle parle : Cite les règles, les clauses, les bons de livraison.
-  - Tics : « Je vous renvoie au bordereau de prix. » · « Merci de mentionner le numéro de bon. »
-- **Vincent Carré** — Responsable réception · 07 32 07 48 10
-  - Comment il/elle parle : Cite les règles, les clauses, les bons de livraison.
-  - Tics : « Il me faut ça par écrit. » · « Conformément au contrat… »
+- **Florian Escaich** — Head of bakery department · 07 71 24 23 63
+  - Speaking style: Cite the rules, the clauses, the delivery notes.
+  - Typical phrases: "I need this in writing." · "In accordance with the contract..."
+- **Grégory Marie** — Store manager · 06 61 84 24 80
+  - Speaking style: Cite the rules, the clauses, the delivery notes.
+  - Typical phrases: "I'll return you to the price list." · "Thank you for mentioning the voucher number."
+- **Vincent Carré** — Head of Reception · 07 32 07 48 10
+  - Speaking style: Cite the rules, the clauses, the delivery notes.
+  - Typical phrases: "I need this in writing." · "In accordance with the contract..."
 
-## Ce qu'ils achètent et comment
+## What they buy and how
 
-Commande deux fois par semaine, en général la veille entre 11h et 15h, surtout par e-mail et portail web. Produits habituels : baguette précuite surgelée 280 g (carton 60), croissant pur beurre cru surgelé 70 g (carton 150), chocolatine pur beurre crue surgelée 75 g (carton 140), assortiment mini-viennoiseries crues (carton 210), fèves des rois en porcelaine (sachet de 100), boîtes pâtissières blanches 20 cm (lot de 50), crème liquide UHT 35 % (brique 1 L), améliorant de panification (sac 10 kg).
+Order twice a week, usually the day before between 11h and 15h, especially via e-mail and web portal. Regular products: Frozen par-baked baguette 280 g (carton of 60), Raw frozen all-butter croissant 70 g (carton of 150), Raw frozen all-butter pain au chocolat 75 g (carton of 140), Assorted raw mini viennoiseries (carton of 210), Porcelain king cake charms (pack of 100), White pastry boxes 20 cm (pack of 50), UHT liquid cream 35% (1 L carton), Bread improver (10 kg bag).
 
-Sur les 90 derniers jours (21 commandes livrées) :
+Over the last 90 days (21 orders delivered):
 
-| Produit | Volume 90 j | Lignes | Dernier prix |
+| Product | 90-day volume | Lines | Last price |
 |---|---|---|---|
-| Croissant pur beurre cru surgelé 70 g (carton 150) (`prd_0053`) | 168,00 colis | 10 | 49,40 € |
-| Chocolatine pur beurre crue surgelée 75 g (carton 140) (`prd_0054`) | 124,00 colis | 10 | 51,30 € |
-| Baguette précuite surgelée 280 g (carton 60) (`prd_0058`) | 268,00 colis | 8 | 22,80 € |
-| Crème liquide UHT 35 % (brique 1 L) (`prd_0031`) | 879,00 litre | 8 | 4,10 € |
-| Boîtes pâtissières blanches 20 cm (lot de 50) (`prd_0067`) | 148,00 colis | 8 | 14,50 € |
-| Assortiment mini-viennoiseries crues (carton 210) (`prd_0056`) | 43,00 colis | 6 | 43,70 € |
-| Améliorant de panification (sac 10 kg) (`prd_0014`) | 12,00 pièce | 4 | 28,00 € |
-| Farine bise T80 (sac 25 kg) (`prd_0005`) | 11,00 pièce | 1 | 21,59 € |
+| Raw frozen all-butter croissant 70 g (carton of 150) (`prd_0053`) | 168,00 box | 10 | 49,40 € |
+| Raw frozen all-butter pain au chocolat 75 g (carton of 140) (`prd_0054`) | 124,00 box | 10 | 51,30 € |
+| Frozen par-baked baguette 280 g (carton of 60) (`prd_0058`) | 268,00 box | 8 | 22,80 € |
+| UHT liquid cream 35% (1 L carton) (`prd_0031`) | 879,00 liter | 8 | 4,10 € |
+| White pastry boxes 20 cm (pack of 50) (`prd_0067`) | 148,00 box | 8 | 14,50 € |
+| Assorted raw mini viennoiseries (carton of 210) (`prd_0056`) | 43,00 box | 6 | 43,70 € |
+| Bread improver (10 kg bag) (`prd_0014`) | 12,00 piece | 4 | 28,00 € |
+| T80 bise flour (25 kg bag) (`prd_0005`) | 11,00 piece | 1 | 21,59 € |
 
-Fiche CRM : _Prix promo pour les opérations Épiphanie. Livraison au quai avant 8h. Livré lun. jeu. Accepte les substitutions équivalentes si on prévient._
+CRM record : _Promo price for Epiphany operations. Delivery to the dock before 8h. Delivered Mon. Game. Accept equivalent substitutions if notified._
 
-## Ce qui les agace
+## What frustrates them
 
-- Livraison hors créneau de quai
-- Cartons abîmés
-- Écart entre BL et facture
+- Delivery out of dock niche
+- Cartons damaged
+- Difference between BL and invoice
 
-## Historique marquant
+## A brief history
 
-- **01/12/2024** · avoir · Avoir qualité : améliorant de panification (sac 10 kg)
-- **30/12/2024** · qualité · Qualité : croissant pur beurre cru surgelé 70 g (carton 150)
-- **04/01/2025** · avoir · Avoir qualité : croissant pur beurre cru surgelé 70 g (carton 150)
-- **13/01/2025** · prix · Tarifs 2025
-- **12/04/2025** · risque de départ · Part chez Comptoir Toulousain du Fournil
-- **28/07/2025** · regagné · Retour du client
-- **18/12/2025** · livraison · Chaîne du froid
-- **08/01/2026** · prix · Tarifs 2026
-- **02/03/2026** · qualité · Qualité : améliorant de panification (sac 10 kg)
-- **20/07/2026** · livraison · Colis manquant
-- **24/09/2026** · qualité · Qualité : chocolatine pur beurre crue surgelée 75 g (carton 140)
-- **12/11/2026** · livraison · Livraison en retard
+- **01/12/2024** · Have quality : Bread improver (10 kg bag)
+- **30/12/2024** · Quality · Quality : Raw frozen all-butter croissant 70 g (carton of 150)
+- **04/01/2025** · Have quality : Raw frozen all-butter croissant 70 g (carton of 150)
+- **13/01/2025** · prices · Rates 2025
+- **12/04/2025** · risk of losing the customer · Share at Comptoir Toulosain du Fournil
+- **28/07/2025** · returned · Customer return
+- **18/12/2025** · delivery · Cold chain
+- **08/01/2026** · prices · Rates 2026
+- **02/03/2026** · Quality · Quality : Bread improver (10 kg bag)
+- **20/07/2026** · delivery · missing box
+- **24/09/2026** · Quality · Quality : Raw frozen all-butter pain au chocolat 75 g (carton of 140)
+- **12/11/2026** · Delivery late
 
-Historique complet : 32 événements (7 qualité, 6 appel, 4 visite, 4 livraison, 3 avoir, 2 demande spéciale, 2 prix, 1 ouverture, 1 compliment, 1 risque de départ, 1 regagné).
+Full history: 32 events (7 quality, 6 call, 4 visit, 4 delivery, 3 have, 2 special request, 2 price, 1 opening, 1 compliment, 1 risk of losing the customer, 1 returned).
 
-## Dossiers ouverts aujourd'hui
+## Open cases
 
-Aucun.
+None.
 
-## Comment leur parler
+## How to talk to them
 
-- Parler en cartons et en palettes.
-- Toujours rappeler le numéro de commande magasin.
+- Talk in cartons and pallets.
+- Always call the store order number.
 
-## Prix & groupe
+## Price & group
 
-Groupes : **GMS** (`gms`).
-Pas de prix négocié.
+Groups: **GMS** (`gms`).
+No negotiated prices.
 
-Règles de prix qui peuvent s'appliquer :
-- `prl_0003` GMS : −5 % sur la viennoiserie crue
-- `prl_0006` Épiphanie 2027 : poudre d'amande −6 % dès 20 kg
-- `prl_0007` Épiphanie 2027 : couronnes et fèves −5 %
+Price rules that may apply:
+- `prl_0003` GMS: -5 % on raw pastry
+- `prl_0006` Epiphany 2027: almond powder -6 % from 20 kg
+- `prl_0007` Epiphany 2027: crowns and beans -5 %
 
-Dernières notes CRM :
+Latest notes CRM:
 
-Aucune.
+None.

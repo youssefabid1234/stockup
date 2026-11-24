@@ -7,8 +7,8 @@ bakeries. That rule is FICTIONAL demo data (DECISIONS.md §5). data/seed/ is not
 scripts/setup_demo_data.py. Here it is added to the pack itself, each time the pack is read, so the jury gets it
 after `make setup` with nothing else to run.
 
-Same rule as scripts/setup_demo_data.py (same name, so that script says « déjà là »): group « Boulangeries » ×
-Beurre de tourage 82 % (prd_0026), −8 % on the list price, from the business date to the end of that month.
+Same rule as scripts/setup_demo_data.py (same name, so that script says "already there"): group "Boulangeries" ×
+Butter 82% (prd_0026), −8 % on the list price, from the business date to the end of that month.
 Skipped if the pack lacks the product or the tag (another company's pack), or if the rule is already there.
 """
 
@@ -25,19 +25,11 @@ DISCOUNT_PCT = 8.0
 RULE_ID = "prl_0900"  # far from the seed's ids; new rules created in the ERP continue after it
 
 
-def english() -> bool:
-    """The English data pack is loaded (SEED_DIR_NAME=seed_en): name the rule in English too."""
-    from .config import SEED_DIR
-
-    return SEED_DIR.name.endswith("_en")
-
-
 def demo_price_rule(today: date) -> Doc:
     end = today.replace(day=calendar.monthrange(today.year, today.month)[1])
     return {
         "id": RULE_ID,
-        "name": (f"Promo 82% laminating butter: −{DISCOUNT_PCT:g}% until {end:%d/%m}" if english()
-                 else f"Promo tourage 82 % : −{DISCOUNT_PCT:g} % jusqu'au {end:%d/%m}"),
+        "name": f"82% laminating butter: {DISCOUNT_PCT:g}% off until {end:%d/%m}",
         "active": True,
         "priority": 0,
         "clientScope": {"kind": "tag", "tag": CLIENT_TAG},
@@ -45,8 +37,7 @@ def demo_price_rule(today: date) -> Doc:
         "method": {"kind": "discount_pct", "pct": DISCOUNT_PCT},
         "validFrom": today.isoformat(),
         "validTo": end.isoformat(),
-        "note": ("Demo data (hackathon): clearing standard laminating butter while the AOP one is out of stock." if english()
-                 else "Données de démo (hackathon) : déstockage du tourage standard pendant la rupture du tourage AOP."),
+        "note": "Hackathon demo promotion on standard laminating butter while AOP butter is out of stock.",
         "createdAt": f"{today.isoformat()}T06:00:00.000Z",
     }
 

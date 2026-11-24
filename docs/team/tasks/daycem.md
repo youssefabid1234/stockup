@@ -1,54 +1,54 @@
-# Daycem – 🧠 « Le bon vendeur » (intelligence commerciale + naturel)
+# Daycem – "The Good Seller" (Commercial Intelligence + Natural)
 
-**Critères du jury** : Intelligent (« propose des alternatives, sait que ce chef refuse les substitutions ») et Naturel.
-C'est la scène que le CTO veut voir : un client qui préfère un produit en rupture → l'agent voit un remplaçant
-disponible, **en promotion**, le propose et **argumente** — mais seulement si le client accepte les remplacements.
-**Interrupteur** : `TEAM_SALES_RULES`. **Branche** : `daycem/<sujet>`.
+**Journal Criteria**: Intelligent ("proposes alternatives, knows that this leader refuses substitutions") and Natural.
+This is the scene the CTO wants to see: a customer who prefers a broken product → the agent sees a replacement
+available, **in promotion**, offers it and **argument** — but only if the customer accepts the replacements.
+**Interruptor**: `TEAM_SALES_RULES`. **Branche**: `daycem/<sujet>`.
 
-## La vraie vie
-- **Le Pétrin de Colomiers** (accepte les substitutions si on prévient) demande du tourage AOP, en rupture jusqu'à fin
-  novembre. Lucie : « L'AOP est en rupture jusqu'à la fin du mois. J'ai le tourage 82 %, 9 euros 20 le kilo au lieu
-  de 11 euros 40, et il est en promo cette semaine ; pour vos croissants il feuillette très bien. Je vous en mets 3
-  cartons ? » Elle attend le « oui ».
-- **Maison Sarrailh** demande la même chose. Lucie sait que Guy « préfère manquer » : elle annonce la rupture et la date
-  de retour, **sans** proposer de remplaçant.
-- **Boulangerie Escaich** compare les prix (« Garonne Boulange me la fait à 18 la tradi ») : Lucie ne fait pas de remise
-  (seul Bernard au-delà de 5 %), mais met en avant le prix négocié, la qualité Lauragais, et propose de transmettre.
+## Real Life
+- **Le Pétrin de Colomiers** (accepts substitutions if notified) requests AOP laminating butter, broken to end
+  November. Lucie: "AOP is broken until the end of the month. I have laminating butter 82 %, 9 euros 20 per kilo instead of
+  11 euros 40, and it's on a promo this week; for your croissants it leaves very well. I'll put you 3
+  She's waiting for the "yes."
+- **Maison Sarrailh** asks the same thing. Lucie knows that Guy "prefers to miss": it announces the break and the date
+  back, **sans** propose a replacement.
+- **Boulangerie Escaich** compares prices ("Garonne Boulange me does it to 18 the tradi") : Lucie does not make a discount
+  (only Bernard beyond 5 %), but highlights the negotiated price, Lauragais quality, and proposes to transmit.
 
-## Tes fichiers
-| Fichier | Rôle |
+## Your files
+| File | Role |
 |---|---|
-| `apps/ai/app/agent/rules_sales.py` | **à toi** : `SALES_RULES` (texte du prompt) + `refuses_substitution`, `rank_alternatives` |
-| `apps/ai/tests/test_team_todo.py` | ta section « Daycem » : enlève les `@TODO` et fais passer |
-| `scripts/setup_demo_data.py` | **à toi** : crée la promo de démo par l'API (data/seed n'est pas dans git) |
+| `apps/ai/app/agent/rules_sales.py` | **to you** : `SALES_RULES` (text of the prompt) + `refuses_substitution`, `rank_alternatives` |
+| `apps/ai/tests/test_team_todo.py` | your "Daycem" section: remove the `@TODO`s and pass through |
+| `scripts/setup_demo_data.py` | **to you** : creates demo promo by the API (data/seed is not in git) |
 
-Lis d'abord : `data/context/04-playbook-clients.md` (« Substitutions : jamais sans accord »), `05-prix-et-credit.md`
-(remises, règles de prix), les fiches `data/context/clients/` de Sarrailh (c0001), Escaich (c0006), Pétrin de Colomiers
-(c0021), La Gerbe d'Or (c0013) : sections « Ce qui les agace », « Comment leur parler », [interfaces.md](../interfaces.md) §5.
+Read first: `data/context/04-playbook-clients.md` ("Substitutions: never without agreement"), `05-prix-et-credit.md`
+(remises, price rules), `data/context/clients/` cards from Sarrailh (c0001), Escaich (c0006), Petron de Colomiers
+(c0021), La Gerbe d'Or (c0013): sections "What's annoying them", "How to talk to them", [interfaces.md](../interfaces.md) §5.
 
-## Tes tâches, dans l'ordre
-| # | Tâche | Fini quand |
+## Your tasks, in order
+| # | Task | No more when |
 |---|---|---|
-| T0 | `run_scenarios.py --owner daycem` (S04, S05) : noter ce qui échoue | baseline notée dans ton statut |
-| T1 | `SALES_RULES` v1 : lire les préférences avant tout remplaçant ; refus → annoncer rupture + date de retour, rien d'autre ; sinon UN remplaçant argumenté (usage, prix, promo) puis demander l'accord ; pas de remise au téléphone ; `TEAM_SALES_RULES=1` | S04 et S05 verts |
-| T2 | **Naturel** : ne jamais dire à voix haute son raisonnement (défaut vu sur S03 : « Le compte est bloqué ; je ne prends pas de commande, je note le message. Bonjour… ») ; chiffres et unités à l'oral ; ton selon la fiche (tutoiement, « appeler Nadine, pas Guy ») ; avec Mohamed Amine : plus de « je regarde » dit par le modèle quand les phrases d'attente sont actives | à l'écoute sur S01-S05 : on dirait une personne |
-| T3 | `refuses_substitution` + `rank_alternatives` + tests ; brancher dans `product_insight` avec Youssef | tests verts |
-| T4 | **Promo de démo** : `scripts/setup_demo_data.py` crée une règle de prix (ex. tourage 82 % −8 % jusqu'au 30/11) via `POST /api/price-rules` ; vérifier que `get_price` la voit ; l'écrire dans DECISIONS.md (données modifiées, assumé) | S05 : l'agent cite la promo |
-| T5 | Négociation (Escaich) : pas de remise, valoriser, proposer de transmettre à Bernard (événement `price_negotiation`) | un scénario S4x vert |
+| T0 | `run_scenarios.py --owner daycem` (S04, S05): Note what fails | baseline noted in your status |
+| T1 | `SALES_RULES` v1 : read the preferences before any replacement; → refusal to announce break + return date, nothing else; otherwise UN substitute argumented (use, price, promo) then request the agreement ; no delivery on the phone ; `TEAM_SALES_RULES=1` | Green S04 and S05 |
+| T2 | **Naturel**: never say aloud his reasoning (default seen on S03: "The account is blocked; I don't take orders, I write down the message. Hello..."); numbers and units in the speech; tone according to the form (tutoi, "call Nadine, not Guy"; with Mohamed Amine: more "I look" said by the model when waiting sentences are active | listening on S01-S05: it looks like a person |
+| T3 | `refuses_substitution` + `rank_alternatives` + tests; plug into `product_insight` with Youssef | green tests |
+| T4 | **Demo promo**: `scripts/setup_demo_data.py` creates a price rule (e.g. laminating butter 82 % -8 % to 30/11) via `POST /api/price-rules`; check that `get_price` sees it; write it in DECISIONS.md (changed, assumed data) | S05: Agent quotes promo |
+| T5 | Negotiation (Escaich): no discount, value, propose to transmit to Bernard (event `price_negotiation`) | a green S4x scenario |
 
-**Tes scénarios** (S40–S49, au moins 2) : La Gerbe d'Or (refuse les substitutions) demande un produit en rupture ;
-Escaich négocie le prix de la tradi.
+**Tes scenarios** (S40–S49, at least 2): La Gerbe d'Or (refuses substitutions) requires a broken product;
+Escaich negotiates the price of the trade.
 
-## Avec qui te coordonner
-- **Amine Khalil** : lui = ce qui est commandé et validé ; toi = comment on vend et comment on parle.
-- **Youssef** : le format de `product_insight` et le classement des remplaçants.
-- **Mohamed Amine** : le ton des phrases d'attente.
+## Who to coordinate with
+- **Amine Khalil**: he = what is ordered and validated; you = how we sell and how we talk.
+- **Youssef**: the format of `product_insight` and the ranking of replacements.
+- **Mohamed Amine**: the tone of the waiting phrases.
 
-## Pièges
-- Jamais de remplacement **ajouté** à la commande sans un « oui » explicite (`substitute_for` dans `add_order_line`).
-- Une promo n'est citée que si l'ERP la renvoie (jamais inventée).
-- Rester bref : 1 à 2 phrases par réplique ; l'argument tient en une phrase.
+## Traps
+- Never replace **Added** to the command without an explicit "yes" (`substitute_for` in `add_order_line`).
+- A promo is only mentioned if the ERP returns it (never invented).
+- Stay brief: 1 to 2 sentences per reply; the argument is in one sentence.
 
-## Le premier message à donner à ton IA de code
-> Lis AGENTS.md, docs/team/README.md, docs/team/interfaces.md et docs/team/tasks/daycem.md. Je suis Daycem.
-> Explique-moi T0 et T1 en mots simples, propose un plan, et attends mon accord avant de coder.
+## The first message to give to your AI code
+> Lis AGENTS.md, docs/team/README.md, docs/team/interfaces.md and docs/team/tasks/Daycem.md. I am Daycem.
+> Explain to me T0 and T1 in simple words, propose a plan, and wait for Mon chord before coding.

@@ -40,13 +40,13 @@ const addMonthsIso = (iso: string, n: number) => {
 const clampIso = (iso: string, min?: string, max?: string) => (min && iso < min ? min : max && iso > max ? max : iso);
 const inRange = (iso: string, min?: string, max?: string) => !(min && iso < min) && !(max && iso > max);
 
-/* ── fr-FR labels ─────────────────────────────────────────────────────────────────────────────────────────────── */
-const fMonth = new Intl.DateTimeFormat("fr-FR", { month: "long", year: "numeric", timeZone: "UTC" });
-const fShort = new Intl.DateTimeFormat("fr-FR", { weekday: "short", day: "numeric", month: "short", timeZone: "UTC" });
-const fShortY = new Intl.DateTimeFormat("fr-FR", { weekday: "short", day: "numeric", month: "short", year: "numeric", timeZone: "UTC" });
-const fFull = new Intl.DateTimeFormat("fr-FR", { weekday: "long", day: "numeric", month: "long", year: "numeric", timeZone: "UTC" });
-const fNarrow = new Intl.DateTimeFormat("fr-FR", { weekday: "narrow", timeZone: "UTC" });
-const fLongDay = new Intl.DateTimeFormat("fr-FR", { weekday: "long", timeZone: "UTC" });
+/* ── en-GB labels ─────────────────────────────────────────────────────────────────────────────────────────────── */
+const fMonth = new Intl.DateTimeFormat("en-GB", { month: "long", year: "numeric", timeZone: "UTC" });
+const fShort = new Intl.DateTimeFormat("en-GB", { weekday: "short", day: "numeric", month: "short", timeZone: "UTC" });
+const fShortY = new Intl.DateTimeFormat("en-GB", { weekday: "short", day: "numeric", month: "short", year: "numeric", timeZone: "UTC" });
+const fFull = new Intl.DateTimeFormat("en-GB", { weekday: "long", day: "numeric", month: "long", year: "numeric", timeZone: "UTC" });
+const fNarrow = new Intl.DateTimeFormat("en-GB", { weekday: "narrow", timeZone: "UTC" });
+const fLongDay = new Intl.DateTimeFormat("en-GB", { weekday: "long", timeZone: "UTC" });
 // 2024-01-01 is a Monday.
 const WEEKDAYS = Array.from({ length: 7 }, (_, i) => {
   const d = new Date(Date.UTC(2024, 0, 1 + i));
@@ -84,9 +84,9 @@ const isValidIso = (iso: string) => {
 /** `days` = offset from business today; `value` = fixed ISO date. */
 export type DatePreset = { label: string; days: number } | { label: string; value: string };
 export const DEFAULT_DATE_PRESETS: DatePreset[] = [
-  { label: "Aujourd'hui", days: 0 },
-  { label: "Demain", days: 1 },
-  { label: "+7 j", days: 7 },
+  { label: "Today", days: 0 },
+  { label: "Tomorrow", days: 1 },
+  { label: "+7 days", days: 7 },
 ];
 const presetIso = (p: DatePreset, today: string) => ("value" in p ? p.value : addDaysIso(today, p.days));
 
@@ -117,7 +117,7 @@ export interface DatePickerProps {
 const POP_W = 260;
 
 export function DatePicker({
-  value, onChange, min, max, placeholder = "Choisir une date", size = "md", variant = "field",
+  value, onChange, min, max, placeholder = "Select a date", size = "md", variant = "field",
   presets = DEFAULT_DATE_PRESETS, clearable, disabled, className, id, autoFocus, children, ...aria
 }: DatePickerProps) {
   const today = businessToday();
@@ -231,7 +231,7 @@ export function DatePicker({
       autoFocus={autoFocus}
       aria-haspopup="dialog"
       aria-expanded={open}
-      aria-label={aria["aria-label"] ?? "Choisir une date"}
+      aria-label={aria["aria-label"] ?? "Select a date"}
       title={current ? cap(fFull.format(utc(current))) : undefined}
       onClick={() => (open ? close() : openPicker())}
       className={cn(
@@ -270,7 +270,7 @@ export function DatePicker({
       {clearable && current && !disabled ? (
         <button
           type="button"
-          aria-label="Effacer la date"
+          aria-label="Clear Date"
           onClick={() => onChange("")}
           className="absolute right-1.5 top-1/2 flex h-4 w-4 -translate-y-1/2 items-center justify-center rounded-[3px] text-muted-foreground hover:bg-muted hover:text-foreground"
         >
@@ -287,7 +287,7 @@ export function DatePicker({
         <div
           ref={popRef}
           role="dialog"
-          aria-label="Choisir une date"
+          aria-label="Select a date"
           onKeyDown={onKey}
           style={{ top: pos?.top ?? -9999, left: pos?.left ?? -9999, width: POP_W, opacity: pos ? 1 : 0 }}
           className={cn(
@@ -301,13 +301,13 @@ export function DatePicker({
               ref={inputRef}
               value={typed}
               onChange={(e) => setTyped(e.target.value)}
-              placeholder="JJ/MM ou JJ/MM/AAAA"
-              aria-label="Saisir une date"
+              placeholder="JJ/MM or JJ/MM/AAAA"
+              aria-label="Enter Date"
               className="num h-full min-w-0 flex-1 bg-transparent text-[12.5px] text-foreground outline-none placeholder:text-muted-foreground/60"
             />
             {typed ? (
               <span className={cn("shrink-0 text-[11.5px]", parsedOk ? "text-muted-foreground" : "text-destructive/80")}>
-                {parsedOk ? fmtPickerDate(parsedOk, today) : parsed ? "Hors limites" : "Date invalide"}
+                {parsedOk ? fmtPickerDate(parsedOk, today) : parsed ? "Out of bounds" : "Invalid date"}
               </span>
             ) : (
               <span className="shrink-0 text-[11px] text-muted-foreground/70">↵ valider</span>
@@ -318,8 +318,8 @@ export function DatePicker({
           <div className="flex items-center justify-between px-3 pb-1 pt-2.5">
             <span className="text-[13px] font-medium" aria-live="polite">{monthLabel}</span>
             <div className="flex items-center gap-0.5">
-              <NavBtn label="Mois précédent" disabled={prevDisabled} onClick={() => move(addMonthsIso(cursor, -1))}><ChevronLeft size={14} strokeWidth={1.75} /></NavBtn>
-              <NavBtn label="Mois suivant" disabled={nextDisabled} onClick={() => move(addMonthsIso(cursor, 1))}><ChevronRight size={14} strokeWidth={1.75} /></NavBtn>
+              <NavBtn label="Previous month" disabled={prevDisabled} onClick={() => move(addMonthsIso(cursor, -1))}><ChevronLeft size={14} strokeWidth={1.75} /></NavBtn>
+              <NavBtn label="Next month" disabled={nextDisabled} onClick={() => move(addMonthsIso(cursor, 1))}><ChevronRight size={14} strokeWidth={1.75} /></NavBtn>
             </div>
           </div>
 
@@ -397,7 +397,7 @@ export function DatePicker({
                   onClick={() => { onChange(""); close(); }}
                   className="ml-auto h-6 rounded-[4px] px-2 text-[12px] text-muted-foreground hover:bg-muted hover:text-foreground"
                 >
-                  Effacer
+                  Clear
                 </button>
               ) : null}
             </div>

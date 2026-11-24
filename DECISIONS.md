@@ -1,309 +1,302 @@
-# DECISIONS – Équipe 12 · Le Fournil Occitan
+# DECISIONS – Team 12 · Le Fournil Occitan
 
-> Livrable lu par le jury : le problème choisi et pourquoi, nos choix techniques, ce qui a marché ou pas, nos mesures.
-> Chacun ajoute ses choix **au fil de l'eau** (quoi, pourquoi, essayé et abandonné), dans sa section.
+> Deliverable read by the jury: the problem chosen and why, our technical choices, what worked or not, our measurements.
+> Each adds its ** choices to the ** waterline (what, why, tried and abandoned), in its section.
 
-## 1. Le problème choisi : le standard téléphonique
+## 1. The problem chosen: the telephone standard
 
-**Qui** : Lucie, seule au standard de 5h30 à 13h, et les trois commerciaux qui saisissent 71 % des commandes à la main.
-**Quand** : surtout entre 12h et 15h (pic à 13h : 4 755 commandes sur 3 ans), quand les boulangers passent leurs
-commandes après le coup de feu du matin.
-**Ce que ça coûte aujourd'hui** : 45 % des commandes arrivent par téléphone (11 231 / 24 769) et sont toutes retapées
-dans l'ERP ; une erreur (10 kg au lieu de 10 sacs, un remplacement non accepté, une livraison promise un jour de
-fermeture) se paie tout de suite sur des produits qui périssent.
-**Pourquoi la voix** : un boulanger a les mains dans la farine à 13h ; il appelle, il ne tape pas.
-**Ce que l'agent change** : il prend la commande pendant l'appel, vérifie stock et compte, propose et argumente un
-remplaçant seulement si le client les accepte, relit, et la commande est dans l'ERP à la fin de l'appel.
-Extension prévue : réclamations et questions dans le même appel.
+**Qui**: Lucie, the only one at the standard from 5h30 to 13h, and the three salesmen who seize 71 % from the hand controls.
+**When**: especially between 12h and 15h (pic to 13h: 4 755 orders over 3 years), when bakers pass their
+orders after the morning shot.
+**What it costs today**: 45 % orders arrive by phone (11 231 / 24 769) and are all re-typed
+in the ERP; one error (10 kg instead of 10 bags, one replacement not accepted, one delivery promised one day of
+(a) is immediately paid for products which perish.
+**Why the voice**: a baker has his hands in the flour at 13h; he calls, he doesn't type.
+**What the agent changes**: it takes the order during the call, checks stock and account, proposes and argues a
+replacing only if the client accepts them, rereads them, and the command is in the ERP at the end of the call.
+Planned extension: claims and issues in the same appeal.
 
-## 2. Architecture (résumé)
+## 2. Architecture (summary)
 
-Agent de base du kit + 6 briques activables (`TEAM_*`) : phrases d'attente et bruit de clavier, agents en parallèle
-(rapide + cerveau), fiche client préchargée, super-outil produit, règles « commande juste », règles « bon vendeur ».
-Détail : `docs/team/README.md`.
+Kit base agent + 6 activable bricks (`TEAM_*`): waiting phrases and keyboard noise, agents in parallel
+(fast + brain), preloaded customer plug, super-product tool, "just order" rules, "good seller" rules.
+Detail: `docs/team/README.md`.
 
-## 3. Mesures
+## 3. Measures
 
-Médiane et pire cas sur nos scénarios (`scripts/run_scenarios.py`, `--voice` pour les temps vocaux). t0 = relâchement
-de la touche Espace (push-to-talk).
+Median and worst case on our scenarios (`scripts/run_scenarios.py`, `--voice` for vocal times). t0 = relaxation
+the Space key (push-to-talk).
 
-| Version | sttMs | llmFirstTokenMs | ttsFirstByteMs | totalMs | perceivedMs | Scénarios réussis | Coût / appel |
+| Version | sttMs | llmFirstTokenMs | ttsFirstByteMs | totalMs | perceivedMs | Successful scenarios | Cost/call |
 |---|---|---|---|---|---|---|---|
-| Kit d'origine | | | | | | | |
+| Original kit | | | | | | | |
 | + … | | | | | | | |
 
-**Silence entendu par l'appelant** (mar. 24/11 02h00, Maison Sarrailh, 4 répliques : commande, « oui mais mettez-en
-douze », prix, « c'est bon, validez » ; vraies clés, WS `/voice` en texte (ajouter ~0,3-0,5 s de transcription au
-micro) ; le flux MP3 reçu est rejoué comme le navigateur, durées lues dans les en-têtes MP3 et vérifiées avec ffprobe) :
+**Silence heard by the caller** (mar. 24/11 02h00, Maison Sarrailh, 4 replicas: command, "yes but put it on
+12", price, "it's good, validate"; true keys, WS `/voice` in text (add ~0,3-0,5 s transcription to the
+the received MP3 stream is replayed as the browser, durations read in the MP3 headers and checked with ffprobe):
 
-| Réglage | L'agent ouvre l'appel | 1er son après la phrase (médiane / pire) | Réponse utile prête | Silence entendu avant la fin de la réponse |
+| Adjustment | Agent opens the call | 1er sound after sentence (median / worse) | Useful ready answer | Silence heard before the end of the reply |
 |---|---|---|---|---|
-| `TEAM_FILLERS=0` (kit) | non | 3,0 s / 5,0 s | 2,2–4,8 s | tout ce temps (2,3–5,0 s) |
-| `TEAM_FILLERS=3` | non (« Bonjour » joué après la 1re phrase) | 0,0 s / 0,8 s | 2,1–4,3 s | jusqu'à 1,4–1,9 s d'un bloc |
-| **`TEAM_FILLERS=4` (défaut)** · configuration du jury | **oui, 0,3 s** après le formulaire | **0,0 s / 0,0 s** | 2,8–6,3 s | **0,0 s** |
-| **+ `TEAM_ROUTER=1` (défaut)** · accusé ciblé + Haiku pour les répliques simples | oui, 0,4 s | 0,0 s / 0,4 s | « c'est bon, validez » **2,2 s** (2,6–3,3 s sur Sonnet) ; « merci, au revoir » **0,7 s** | **0,0 s** |
+| `TEAM_FILLERS=0` (kit) | No | 3,0 s / 5,0 s | 2,2–4,8 s | all this time (2,3–5,0 s) |
+| `TEAM_FILLERS=3` | no ("Hello" played after the 1re sentence) | 0,0 s / 0,8 s | 2,1–4,3 s | up to 1,4–1,9 s of a block |
+| **`TEAM_FILLERS=4` (default)** · Jury configuration | **yes, 0,3 s** after the form | **0,0 s / 0,0 s** | 2,8–6,3 s | **0,0 s** |
+| **+ `TEAM_ROUTER=1` (default)** · Targeted accused + Haiku for single replicas | yes, 0,4 s | 0,0 s / 0,4 s | **2,2 s** (2,6–3,3 s on Sonnet); "thank you, goodbye" **0,7 s** | **0,0 s** |
 
-**Routage du modèle** (`agent/router.py`, `TEAM_ROUTER`) : une réplique faite uniquement de confirmation ou de politesse
-(« c'est bon, validez », « oui », « parfait », « merci, au revoir ») part sur le modèle rapide (Haiku, `TEAM_FAST_MODEL`),
-tout le reste (produit, quantité, prix, changement d'avis, réclamation) sur Sonnet. Mesuré avec nos réglages : premier mot
-0,45–0,57 s (Haiku) contre 1,19–1,33 s (Sonnet). La confirmation reste vérifiée par Jev (accord 0,94 en 190 ms sur
-Haiku). Ces répliques ne déclenchent plus « Très bien, je vérifie » (inutile et lent) : l'accusé n'est dit que si l'agent
-doit chercher quelque chose. Les codes ERP (« CMD-2026-007543 », `prd_…`) sont retirés du texte prononcé, quel que soit le
-modèle (Haiku en avait lu un). Rejeu `--voice` : S01, S30, S31, S32, S33 PASS ; S02 PASS 2 fois sur 3 (la 3e, le modèle
-rapide demande la quantité de gruau restée floue au tour 1 au lieu de confirmer : il n'invente pas).
+**Routage of model** (`agent/router.py`, `TEAM_ROUTER`): a replica made solely of confirmation or politeness
+("it's good, validate", "yes", "perfect", "thank you, goodbye") leaves on the fast model (Haiku, `TEAM_FAST_MODEL`),
+all the rest (product, quantity, price, change of mind, complaint) on Sonnet. Measured with our settings: first word
+0,45–0,57 s (Haiku) versus 1,19–1,33 s (Sonnet). Confirmation remains verified by Jev (accord 0,94 in 190 ms on
+Haiku). These lines no longer trigger "Very good, I check" (useless and slow): the accused is only said if the agent
+Codes ERP ("CMD-2026-007543", `prd_…`) are removed from the pronounced text, regardless of the
+Replay `--voice`: S01, S30, S31, S32, S33 PASS; S02 PASS 2 times on 3 (3e, model
+fast asks for the amount of strong flour left blurred at the 1 tower instead of confirming: it does not invent).
 
-Premier relevé (23/11, via /chat, sans audio) : S03 (client bloqué) PASS, 6 099 ms, premier mot à 4 092 ms ; défaut
-noté : l'agent prononce son raisonnement (« Le compte est bloqué ; je ne prends pas de commande… »).
+First reading (23/11, via /chat, without audio): S03 (client blocked) PASS, 6 099 ms, first word at 4 092 ms; default
+Note: the agent pronounces his reasoning ("The account is blocked; I do not take orders...").
 
-## 4. Choix par chantier
+## 4. Selection by construction site
 
-### Vitesse et voix (Mohamed Amine)
+### Speed and voice (Mohamed Amine)
 
-- Deux annonces très courtes sont préparées à l'ouverture avec la voix configurée. De courtes rafales de trois frappes sont générées en mémoire et espacées pendant les recherches longues. Une seule relance orale reprend la quantité et le produit entendus si la demande est claire, ou dit « Un instant, je vérifie ». Les sons suivants sont annulés quand la réponse est prête ou si le client interrompt l'agent. Les sons partagent le segment interruptible de la réponse. Le premier son et le premier octet de synthèse de la réponse utile sont chronométrés séparément.
-- Si la transcription ne suffit pas à détecter une demande de recherche, le premier appel ERP confirmé peut déclencher l'annonce. La voix garde le jargon de base si l'ERP est indisponible. Les tests d'intégration couvrent aussi l'arrêt de l'audio après une erreur et les annonces répétées.
-- L'orchestrateur actuel délègue à l'agent ERP. Les annonces restent actives selon `TEAM_FILLERS` et la réponse finale annule l'attente. Le mode 3 ajoute le clavier pendant la préparation de la reprise rapide. Le ton et la consigne contre les doublons sont proposés à Daycem dans le [suivi](docs/team/status/mohamed-amine.md).
-- Rejeu local via WebSocket, données de démonstration et trois fournisseurs simulés, avec et sans `TEAM_FILLERS` : **3 répliques sur 10** passent dans les deux configurations. S06 et les deux répliques de S10 passent. S01 et S05 échouent sur leurs attentes métier. Sur S11, le modèle simulé lance une recherche sur « merci ». Un test d'intégration vérifie que même dans ce cas la voix ne joue ni annonce ni clavier. Les mesures de référence au micro, le délai perçu et le premier tour ElevenLabs restent à relever sur le pack du Fournil.
-- T7 facultatif est reporté. Espace fournit un point de départ reproductible pour mesurer le délai et interrompre l'agent pendant la démo.
-- **Mode 4 « zéro silence » (repris par Amine Khalil, mar. 24/11 02h00), défaut de l'équipe.** Mesure de départ : en mode 3
-  l'agent ne parlait pas en premier et laissait des blancs de 1,4 à 1,9 s (le clavier attendait 1,4 s puis revenait
-  toutes les 2,2 s). Ce qui change : (1) **l'agent ouvre l'appel** dès le formulaire « Qui appelle ? » (« Bonjour
-  Madame, que puis-je faire pour vous ? », synthétisé pendant le chargement de la fiche, joué dès qu'il est prêt :
-  0,2–0,3 s), et sa première réponse ne redit pas « Bonjour » ; (2) **accusé immédiat** à chaque demande (« D'accord,
-  je regarde ça », « Ok, je vois ça », « Très bien, je vérifie », préparés à l'ouverture) — rien sur « oui » / « merci » ;
-  (3) **clavier continu** : clips de 0,45 s (6 rythmes différents) envoyés juste avant que l'audio déjà envoyé ne
-  s'épuise (le navigateur joue un seul flux et ne cale jamais), arrêtés au premier octet audio de la réponse (pas à son
-  texte : le temps de synthèse est couvert aussi) ; au plus 0,6 s de clavier encore en file à ce moment. Résultat :
-  0,0 s de silence entendu sur les 4 répliques (tableau §3). Les modes 1-3 sont inchangés.
-- Tests : `tests/test_no_silence.py` (8 tests) ; `tests/conftest.py` remet `TEAM_FILLERS` à zéro pour chaque test (la
-  suite donnait des résultats différents selon le `.env` de chacun) : 232 tests passent avec `TEAM_FILLERS` 0, 1, 3 et 4.
+- Two very short announcements are prepared at the opening with the configured voice. Short gusts of three strokes are generated in memory and spaced during long searches. Only one oral restart resumes the quantity and product heard if the request is clear, or says "One moment, I check". The following sounds are cancelled when the answer is ready or if the client interrupts the agent. The sounds share the interruptible segment of the response. The first sound and the first synthesis byte of the useful response are timed separately.
+- If the transcription is not enough to detect a search request, the first confirmed ERP call can trigger the ad. The voice keeps the basic jargon if the ERP is unavailable. Integration tests also cover audio shutdown after an error and repeated ads.
+- The current orchestrator delegates to the agent ERP. The ads remain active according to `TEAM_FILLERS` and the final answer cancels the wait. The mode 3 adds the keyboard during the preparation of the quick recovery. The tone and the instruction against duplicates are offered to Daycem in the [follow](docs/team/status/mohamed-amine.md).
+- Local replay via WebSocket, demo data and three simulated suppliers, with and without `TEAM_FILLERS`: **3 replicas on 10** pass in both configurations. S06 and the two replicas of S10 pass. S01 and S05 fail on their business expectations. On S11, the simulated model launches a search on "thank you". An integration test checks that even in this case the voice does not play an ad or keyboard. The microphone reference measurements, the perceived delay and the first round ElevenLabs remain to be noted on the pack of the Fournil.
+- T7 optional is postponed. Space provides a reproducible starting point to measure the delay and interrupt the agent during demo.
+- **Mode 4 "zero silence" (taken by Amine Khalil, Mar. 24/11 02h00), team failure.** Start measurement: in 3 mode
+  the agent did not speak first and left blanks from 1,4 to 1,9 s (the keyboard was waiting for 1,4 s then returning
+  all 2,2 (s) What changes : (1) **the agent opens the call** from the "Who calls?" form ("Hello
+  Ma'am, what can I do for you?", synthesized during the loading of the file, played as soon as it is ready:
+  0,2–0,3 s), and its first answer does not say "Hello" again; (2) ** immediate accused** on each request ("Agreed,
+  I look at this," "Okay, I see that," "Very good, I check," prepared for opening) — nothing about "yes" / "thank you";
+  (3) **Continuous keyboard**: clips from 0,45 s (6 different rhythms) sent just before the audio already sent
+  runs out (the browser plays a single stream and never stalls), stopped at the first audio byte of the answer (not to sound)
+  text : the synthesis time is covered also) ; at most 0,6 s keyboard still in line at this time. Result :
+  0,0 s of silence heard on the 4 replicas (table §3). The 1-3 modes are unchanged.
+- Tests: `tests/test_no_silence.py` (8 tests); `tests/conftest.py` resets `TEAM_FILLERS` to zero for each test (the
+  follow-up gave different results depending on the `.env` of each): 232 tests pass with `TEAM_FILLERS` 0, 1, 3 and 4.
 
-### Plusieurs agents, fiche préchargée, super-outil (Youssef)
+### Several agents, preloaded plug, super tool (Youssef)
 
-**T3 / T4 · Prompt allégé (`TEAM_SLIM_PROMPT=1`, défaut ; repris par Amine Khalil, mar. 24/11 03h00).** Chaque appel au
-modèle relisait ≈ 34 400 tokens (le cache Anthropic marche : presque tout est « cache lu »). Décomposition : contexte
-entreprise 55 % (les 6 `data/context/*.md`, surtout les tableaux du catalogue), schémas des 25 outils ≈ 24 %, règles et
-fiche client le reste. Le catalogue (alias, prix, DLC) est déjà donné à la demande par les outils (`search`,
-`resolve_product`, `product_insight`, `quote_line`) et la fiche client couvre statut, habitudes et encours.
-`agent/context_digest.py` garde, extraites des mêmes fichiers à chaque tour : règles de la maison, situation du jour,
-équipe, heures limites, facturation, alias ambigus, substitutions habituelles, saisonnalité, prise de commande, clients
-bloqués, réclamations, prix / règles de prix / crédit, tournées. Contexte 39 016 → 13 996 caractères (−64 %).
+**T3 / T4 · Lightened prompt (`TEAM_SLIM_PROMPT=1`, defect; taken from Amine Khalil, mar. 24/11 03h00).** Each call to the
+model was rereading 34 400 tokens (the Anthropic cache works: almost everything is "cache read").
+company 55 % (the 6 `data/context/*.md`, especially the catalogue tables), diagrams of the 25 tools 24 %, rules and
+the rest. The catalogue (alias, prices, shelf life) is already given on request by the tools (`search`,
+`resolve_product`, `product_insight`, `quote_line`) and the customer profile covers status, habits and stock.
+`agent/context_digest.py` keeps, extracted from the same files at each turn: house rules, day situation,
+team, time limits, billing, ambiguous aliases, usual substitutions, seasonality, order taking, customers
+Blocked, claims, prices / price rules / credit, touring. Background 39 016 → 13 996 characters (−64 %).
 
-| Mesure (`/chat`, Sarrailh, 4 répliques, 3 appels, médianes) | Prompt complet | Allégé |
+| Measurement (`/chat`, Sarrailh, 4 replicas, 3 calls, medians) | Full prompt | Alleged |
 |---|---|---|
-| Tokens relus par appel modèle | ≈ 34 400 | **≈ 21 600 (−37 %)** |
-| Commande · « mettez-en douze » · prix · « validez » | 7,2 · 4,6 · 3,5 · 4,0 s | **6,4 · 4,1 · 3,1 · 3,5 s** |
-| Somme des 4 répliques | 19,3 s | **17,1 s (−11 %)** |
-| Commande juste dans l'ERP | 3/3 | 3/3 |
+| Tokens read by model call | ≈ 34 400 | **≈ 21 600 (−37 %)** |
+| Ordering · « put in twelve » · price · « confirm » | 7,2 · 4,6 · 3,5 · 4,0 s | **6,4 · 4,1 · 3,1 · 3,5 s** |
+| Sum of the 4 replicas | 19,3 s | **17,1 s (−11 %)** |
+| Command just in the ERP | 3/3 | 3/3 |
 
-Le gain de temps est modeste parce que le cache rend la relecture rapide : le temps vient surtout des tokens écrits
-(200 à 430 par réplique : appels d'outils + phrase) et du nombre d'allers-retours. Le gain de **coût** est net (−37 % de
-tokens lus). Scénarios (`/chat`) : S01, S05 (3/4, attente `get_price`), S30, S31, S32, S33 PASS ; S03 PASS après mise à
-jour de l'attente (la fiche préchargée rend `search` inutile) ; S02 instable **avec les deux prompts** (1 réussite
-complète sur 3 dans les deux cas : « comme d'hab » + rupture AOP) — avec le prompt allégé l'agent ouvre 2 fois sur 3 par
-la rupture plutôt que par le panier habituel. Règle ajoutée : nommer le produit comme le client (« tradi »), jamais le nom
-catalogue (sans le glossaire, l'agent disait « farine T cinquante-cinq tradition française »).
+Time saving is modest because the cache makes the rereading fast: time comes mainly from the tokens written
+(200 to 430 per replica: tool calls + sentence) and the number of return trips. The gain of **cost** is net (−37 % of
+Scripts (`/chat`): S01, S05 (3/4, waiting `get_price`), S30, S31, S32, S33 PASS; S03 PASS after setting to
+day of waiting (preloaded sheet makes `search` useless); S02 unstable **with both prompts** (1 success)
+complete on 3 in both cases: "as usual" + rupture AOP) — with the quick lightened agent opens 2 times on 3 by
+the break rather than the usual basket. Rule added: name the product as the customer ("traded"), never the name
+catalogue (without the glossary, the agent said "Floor T fifty-five French tradition").
 
-**T4 · Un seul aller-retour pour une commande (`place_order`, mar. 24/11 03h40).** Le temps ne venait plus de la relecture
-du prompt (cache) mais du nombre d'allers-retours modèle ↔ outils : « dix sacs de tradi pour jeudi » coûtait 3 à 4 appels
-au modèle (jour + produit, puis brouillon, puis relecture, puis la phrase). `tools/order_place.py` fait cette chaîne
-déterministe dans le code : jour (`delivery_answer`), produits (alias du catalogue, sinon Jev avec les habitudes du
-client), unités (« 3 cartons » de tourage → 30 kg ; 1,6 sac → on demande, jamais d'arrondi), écriture (nouveau
-brouillon, ou commande en cours modifiée : quantité, ligne à 0 retirée, autre jour), relecture (`review`). Rien n'est
-écrit si le jour est impossible, le produit ambigu ou le compte bloqué : « next » dit quoi demander.
+**T4 · One round trip for an order (`place_order`, Mar. 24/11 03h40).** Time was no longer from the rereading
+quick (cache) but number of round-trips model tools: "Ten bags of tradi for Thursday" cost 3 to 4 calls
+to the model (day + product, then draft, then reread, then sentence). `tools/order_place.py` makes this chain
+deterministic in the code : day (`delivery_answer`), products (alias of the catalog, otherwise Jev with the habits of the
+customer), units ("3 cartons" of laminating butter → 30 kg; 1,6 sack → one asks, never rounded), writing (new
+draft, or modified current order: quantity, line to 0 removed, other day), reread (`review`). Nothing is
+written if the day is impossible, the ambiguous product or the account blocked: "next" says what to ask.
 
-| Mesure (`/chat`, Sarrailh, 3 appels, médianes) | Prompt complet | Prompt allégé | **+ `place_order`** |
+| Measurement (`/chat`, Sarrailh, 3 calls, median) | Full prompt | Lightweight prompt | **+ `place_order`** |
 |---|---|---|---|
-| Commande · « mettez-en douze » · prix · « validez » | 7,2 · 4,6 · 3,5 · 4,0 s | 6,4 · 4,1 · 3,1 · 3,5 s | **3,6 · 3,4 · 3,2 · 3,6 s** |
-| Somme des 4 répliques | 19,3 s | 17,1 s | **13,8 s (−29 %)** |
-| Tokens lus pour la commande (1re réplique) | 137 416 | 86 488 | **43 934 (−68 %)** |
-| Commande juste dans l'ERP | 3/3 | 3/3 | 3/3 |
+| Ordering · « put in twelve » · price · « confirm » | 7,2 · 4,6 · 3,5 · 4,0 s | 6,4 · 4,1 · 3,1 · 3,5 s | **3,6 · 3,4 · 3,2 · 3,6 s** |
+| Sum of the 4 replicas | 19,3 s | 17,1 s | **13,8 s (−29 %)** |
+| Tokens read for command (1re replica) | 137 416 | 86 488 | **43 934 (−68 %)** |
+| Command just in the ERP | 3/3 | 3/3 | 3/3 |
 
-En vocal (configuration du jury, mode 4, routage) : réponse à la commande prête en 3,7 s (6,1–6,3 s avant), validation
-2,0 s, au revoir 0,6 s, 0,0 s de silence. Scénarios (`/chat`, `--reset`) : S01 S02 S03 S04 S05 S30 S31 S32 S33 S40 tous
-PASS, une seule commande ouverte à chaque fois (S05 4/4 pour la première fois). Les attentes des scénarios acceptent
-maintenant `place_order` là où elles demandaient `create_draft_order` / `update_order_line` / `review_order`, et
-`quote_line` là où elles demandaient `get_price` ; S05/S40 acceptent « quatre-vingt-deux ».
+In voice (board configuration, 4 mode, routing): response to command ready in 3,7 s (6,1–6,3 s before), validation
+2,0 s, goodbye 0,6 s, 0,0 s of silence. (`/chat`, `--reset`) : S01 S02 S03 S04 S05 S30 S31 S32 S33 S40 all
+PASS, one command opened each time (S05 4/4 for the first time). Scenario expectations accept
+now `place_order` where they requested `create_draft_order` / `update_order_line` / `review_order`, and
+`quote_line` where they requested `get_price`; S05/S40 accept "eighty-two".
 
-**Mesure de départ (T0, lun. 23/11 23h, `TEAM_ORDER_RULES=1`, autres briques éteintes).**
-`totalMs` = fin de parole du client → premier octet audio de l'agent (`--voice`, phrase tapée donc sans STT) ; c'est la
-métrique du jury. Via /chat (sans audio) on mesure le tour complet : le texte n'arrivant qu'à la fin, c'est presque
-la même chose (S01·1 : 7 286 ms /chat, 6 883 ms voix).
+**Start measurement (T0, Mon. 23/11 23h, `TEAM_ORDER_RULES=1`, other bricks extinguished).**
+`totalMs` = end of client → first audio byte of agent (`--voice`, sentence typed without STT); this is the
+metric of the jury. Via /chat (without audio) we measure the full turn: the text only arriving at the end, it is almost
+the same thing (S01·1 : 7 286 ms /chat, 6 883 ms voice).
 
-| Scénario · réplique | Outils appelés (un par un) | /chat | `--voice` totalMs | Résultat |
+| Scenario · reply | Tools called (one by one) | /chat | `--voice` totalMs | Result |
 |---|---|---|---|---|
-| S01·1 « 10 sacs de tradi pour jeudi » | search, get_context, check_delivery_date, get_product_stock, create_draft_order | 7 286 ms | 6 883 ms (LLM 6 739 + TTS 144) | PASS |
-| S01·2 « oui, validez » | confirm_order | 2 377 ms | 3 340 ms | PASS |
-| S05·1 « 3 cartons de tourage AOP » | search, get_client, get_context, get_product_stock, check_delivery_date | 7 928 ms | – | PASS |
-| S05·2 « il est à combien, le 82 ? » | get_price | 4 856 ms | – | PASS |
-| S05·3 / S05·4 | aucun | 2 116 / 1 942 ms | – | FAIL (note « Fermé le mercredi ») |
+| S01·1 "10 Tradi Bags for Thursday" | search, get_context, check_delivery_date, get_product_stock, create_draft_order | 7 286 ms | 6 883 ms (LLM 6 739 + TTS 144) | PASS |
+| S01·2 "Yes, confirm" | confirm_order | 2 377 ms | 3 340 ms | PASS |
+| S05·1 "3 cartons of AOP laminating butter" | search, get_client, get_context, get_product_stock, check_delivery_date | 7 928 ms | – | PASS |
+| S05·2 "How much is the 82?" | get_price | 4 856 ms | – | PASS |
+| S05·3 / S05·4 | none | 2 116 / 1 942 ms | – | FAIL (note "Closed Wednesday") |
 
-Lecture : les répliques lentes (7-8 s) sont celles où le modèle enchaîne 5 outils, un par un ; la voix (TTS) ne pèse que
-≈ 0,15 s. Cibles : moins d'allers-retours (super-outil, fiche préchargée) et un premier son plus tôt (agent rapide,
-phrases d'attente de Mohamed Amine).
+Play: slow replicas (7-8 s) are those where the model chain 5 tools, one by one; the voice (TTS) weighs only
+≈ 0,15 s. Targets: less round-trips (super tool, preloaded plug) and earlier sound (faster agent),
+Mohamed Amine waiting phrases).
 
-**T2 · Fiche client préchargée (`TEAM_PRELOAD`, lun. 23/11 23h50).** Dès que le client est identifié (get_client, ou
-une recherche qui ne renvoie qu'un client), sa fiche (statut, jours de livraison ERP, préférences, panier habituel
-**avec le stock**, encours, notes) est chargée en arrière-plan, en parallèle, puis ajoutée à la fin du prompt des
-répliques suivantes (« n'appelle plus get_client ni get_context »). Les notes « Fermé le <jour> » sont retirées
-quand l'ERP livre ce jour (décision : l'ERP et l'historique font foi).
+**T2 · Preloaded customer form (`TEAM_PRELOAD`, Mon. 23/11 23h50).** As soon as the customer is identified (get_client, or
+a search that only returns a customer), its card (status, delivery days ERP, preferences, usual shopping cart
+**with stock**, stock, notes) is loaded in the background, in parallel, then added at the end of the prompt
+The following replicas ("no longer calls get_client or get_context"). The notes "Closed the <day>" are removed
+when the ERP delivers today (decision: ERP and history are true).
 
-Mesure via /chat, `--reset`, `TEAM_ORDER_RULES=1`, 9 répliques (S01, S02, S05) :
+Measurement via /chat, `--reset`, `TEAM_ORDER_RULES=1`, 9 replicas (S01, S02, S05):
 
-| | Interrupteur éteint | Allumé |
+| | Switch off | Lighted |
 |---|---|---|
-| Répliques réussies | 9/9 | 9/9 |
-| 1re réplique de chaque appel | 7,6 · 5,7 · 4,7 s | 6,9 · 6,2 · 5,5 s (identique : fiche pas encore connue) |
-| Répliques suivantes (médiane) | 2,7 s | 4,4 s (bruit ±1-2 s, pas de gain mesurable) |
-| S02 « mettez-en 12 » | recrée un brouillon et relit **tout** l'habituel (11 lignes) | **modifie la ligne** et relit 1 ligne |
-| S05 (note « Fermé le mercredi ») | ne parle pas du mercredi | demande « vous êtes bien ouvert mercredi ? » (lu via get_context au 1er tour, avant la fiche) |
+| Successful replicas | 9/9 | 9/9 |
+| 1re replica of each call | 7,6 · 5,7 · 4,7 s | 6,9 · 6,2 · 5,5 s (identical: not yet known) |
+| Next replicas (median) | 2,7 s | 4,4 s (noise ±1-2 s, no measurable gain) |
+| S02 "put in 12" | recreates a draft and rereads **tout** the usual (11 lines) | ** modifies the line** and rereads 1 line |
+| S05 (note "Closed Wednesday") | Don't talk about Wednesday | asks "You are well open Wednesday?" (read via get_context on the 1er round, before the card) |
 
-Lecture : avec l'historique complet (outil de rejeu corrigé), l'agent **ne recherchait déjà plus le client** après le 1er
-tour : la fiche n'enlève donc pas d'appel aux tours suivants. **Le temps se perd au 1er tour** (4 à 6 appels d'outils
-avant que le client soit connu). La fiche reste **désactivée par défaut** ; prochaine étape : identifier le client
-dès le début du 1er tour (fiche en parallèle de la réflexion) et le super-outil produit.
+Reading: With the full history (corrected replay tool), the agent **ne was already looking more for the client** after the 1er
+turn: the plug does not remove a call to the following turns. **Time is lost at the 1er turn** (4 to 6 tool calls)
+before the customer is known). The file remains **deactivated by default**; next step: identify the customer
+from the beginning of the 1er round (fiche in parallel to the reflection) and the super-tool produced.
 
-**Identification avant l'appel (« Qui appelle ? », mar. 24/11 0h20).** Vraie vie : le numéro WhatsApp / téléphone
-s'affiche, le standard connaît le client avant de décrocher. Démo : sur la page Voix, un formulaire obligatoire (client
-choisi dans la liste de l'ERP, recherche par nom / ville / téléphone, contact au téléphone ; ou « Nouveau client ») puis
-« Démarrer l'appel » : la fiche est chargée (≈ 0,5 s) **avant** le premier mot et donnée à l'agent dès la 1re réplique.
-Nouveau client (provisoire) : l'agent prend la demande sans rien confirmer, l'équipe valide le compte.
+**Identification before the call ("Who calls?", Mar. 24/11 0h20).** True life: WhatsApp number / telephone
+The standard is displayed, the customer knows the standard before picking up. Demo: on the Voice page, a mandatory form (client)
+selected from the list of the ERP, search by name / city / phone, contact on the phone; or "New customer") then
+"Start the call": the file is loaded (-) 0,5 s) **avant** the first word and given to the agent from the 1re replica.
+New (temporary) client: the agent takes the request without confirming anything, the team validates the account.
 
-Mesure via /chat, `--reset`, `TEAM_ORDER_RULES=1`, client du scénario annoncé avant l'appel :
+Measurement via /chat, `--reset`, `TEAM_ORDER_RULES=1`, pre-call scenario client:
 
-| 1re réplique | Sans (TEAM_PRELOAD=0) | Avec l'appelant annoncé |
+| 1re replica | Without (TEAM_PRELOAD=0) | With the announced caller |
 |---|---|---|
-| S01 « 10 sacs de tradi pour jeudi » | 6 outils, **7,7 s** | 3 outils (date, brouillon, relecture), **3,5 s** |
-| S01 en **voix** (fin de parole → 1er son) | **6,9 s** (T0) | **3,9 s** (LLM 3,75 + TTS 0,16) |
-| S02 « comme d'hab pour jeudi » | 4 outils, 5,6 s | 1 outil, **3,9 s** |
-| S05 « 3 cartons de tourage AOP » | 4 outils, 5,4 s | 2 outils, 4,7 s |
-| S05 réplique 3 (note « Fermé le mercredi ») | demande « mercredi vous convient ? » | ne parle plus du mercredi (note filtrée) |
+| S01 "10 Tradi Bags for Thursday" | 6 tools, **7,7 s** | 3 tools (date, draft, rereading), **3,5 s** |
+| S01 in **voix** (end of speech → 1er sound) | **6,9 s** (T0) | **3,9 s** (LLM 3,75 + TTS 0,16) |
+| S02 "as usual for Thursday" | 4 tools, 5,6 s | 1 tool, **3,9 s** |
+| S05 "3 cartons of AOP laminating butter" | 4 tools, 5,4 s | 2 tools, 4,7 s |
+| S05 replica 3 (note "Closed Wednesday") | asks "Wednesday is right for you?" | no longer speaks of Wednesday (filtered note) |
 
-Lecture : la 1re réplique perd 2 à 4 s et 2 à 3 allers-retours (plus de recherche du client ni de sa fiche) ; la voix
-passe de 6,9 à 3,9 s. Les répliques suivantes ne changent pas (bruit ±1-2 s). `TEAM_PRELOAD` passe à 1 dans
+Reading: the 1re replica loses 2 to 4 s and 2 to 3 round-trips (no more searching for the customer or his card); voice
+6,9 to 3,9 s. The following replicas do not change (noise ±1-2 s). `TEAM_PRELOAD` changes to 1 in
 `.env.example`.
 
-**Outil de rejeu corrigé** : en /chat il renvoie maintenant l'historique complet (outils appelés + résultats) comme la
-page Voix ; avant, l'agent oubliait son brouillon et recommençait (S01·2 : 6 outils, 9,4 s → 1 outil, 2,4 s).
+** fixed game tool**: in /chat it now returns the complete history (tools called + results) as the
+Voice page; before, the agent forgot his draft and started again (S01·2: 6 tools, 9,4 s → 1 tool, 2,4 s).
 
-**T1 · Super-outil produit (`TEAM_PRODUCT_INSIGHT`, mar. 24/11 1h30).** Vraie vie : un coup d'œil à l'écran de Lucie
-suffit. `product_insight(client, produit, quantité)` lit en parallèle le produit (stock, arrivages), le prix de CE
-client, les remplaçants de l'ERP, la fiche et les règles de prix ; si le produit manque, il calcule le prix client de
-chaque remplaçant (en parallèle), dit si le client accepte un remplacement (`substitution_policy` de Daycem) et classe
-les remplaçants (`rank_alternatives` de Daycem : le substitut des documents d'abord). **Promo** = le prix appliqué vient
-d'une règle **datée** (validTo) et est sous le prix catalogue : jamais inventée (une remise de groupe permanente n'est
-pas une promo). Client qui refuse : aucun remplaçant renvoyé.
+**T1 · Super product tool (`TEAM_PRODUCT_INSIGHT`, mar. 24/11 1h30).** True life: a glance at the screen of Lucie
+`product_insight(client, produit, quantité)` reads in parallel the product (stock, arrivals), the price of CE
+customer, substitutes for the ERP, the price sheet and rules; if the product is missing, it calculates the customer price of the
+each replacement (in parallel), says if the customer accepts a replacement (`substitution_policy` of Daycem) and class
+the replacements (`rank_alternatives` of Daycem: the substitute documents first). **Promo** = the price applied comes
+a **dated ** (validTo) rule and is below the catalogue price: never invented (a permanent group discount is not
+not a promotion). Client who refuses: no substitute returned.
 
-Mesure via /chat, ERP remis à zéro puis promo de démo recréée (`setup_demo_data.py`), `TEAM_ORDER_RULES`,
-`TEAM_PRELOAD`, `TEAM_SALES_RULES` = 1, 1re réplique, 2 essais (3 pour S04 après correction) :
+Measurement via /chat, ERP reset and then demo promo recreated (`setup_demo_data.py`), `TEAM_ORDER_RULES`,
+`TEAM_PRELOAD`, `TEAM_SALES_RULES` = 1, 1re replica, 2 tests (3 for S04 after correction):
 
-| 1re réplique | Éteint | Allumé |
+| 1re replica | Turn off | Lighted |
 |---|---|---|
-| S04 Sarrailh, AOP en rupture, refuse les remplacements | 2 outils · 3,8 / 4,3 s | 2 outils · 3,6 / 3,5 / 3,5 s, 3/3 PASS |
-| S05 Pétrin de Colomiers, AOP en rupture | 5 puis 3 outils · 6,6 / 5,8 s | 2 outils (product_insight, date) · 2,8 / 4,9 s |
-| S40 scène de démo (promo) | 3 outils · 4,2 / 4,3 s | 2 outils · 3,9 / 2,9 s |
-| S40 en **voix** (totalMs) | – | 4,6 s |
+| S04 Sarrailh, AOP in rupture, refuses replacements | 2 tools · 3,8 / 4,3 s | 2 tools · 3,6 / 3,5 / 3,5 s, 3/3 PASS |
+| S05 Colomier Petrin, AOP in rupture | 5 and 3 tools · 6,6 / 5,8 s | 2 tools (product_insight, date) · 2,8 / 4,9 s |
+| S40 demo scene (promo) | 3 tools · 4,2 / 4,3 s | 2 tools · 3,9 / 2,9 s |
+| S40 in **voix** (totalMs) | – | 4,6 s |
 
-Lecture : 1 à 3 allers-retours de moins ; médiane S05 6,2 → 3,9 s, S40 4,3 → 3,4 s, S04 4,1 → 3,5 s. Avec l'outil,
-l'agent cite la promo exacte (8,46 €/kg, −8 % jusqu'au 30/11) dans les 4 premières répliques S05/S40. Deux pièges
-corrigés pendant la mesure : les notes CRM de l'ERP sont des objets (l'outil plantait, l'agent repassait par les
-anciens outils), et sans consigne l'agent enregistrait la demande « premier arrivage » de Sarrailh sans son accord
-(+2 s) : l'outil rappelle maintenant de **proposer** d'abord. Les échecs restants des scénarios ne viennent pas de
-l'outil (S05·2 attend get_price alors que quote_line d'Amine K. répond ; S05·1 a dit « quatre-vingt-deux » en
-lettres ; S40·4 redemande « commande séparée ou ajout ? »). `TEAM_PRODUCT_INSIGHT` passe à 1 dans `.env.example`.
-**Écoute robuste en mains libres (Youssef, 24/11).** Problème vu au test : en parlant en plusieurs fois, seul le dernier
-morceau comptait (un morceau coupé en pleine transcription était jeté). Maintenant : les morceaux non encore répondus
-(`Conversation.pending`) partent en UN message numéroté ; Soniox sépare les voix (`enable_speaker_diarization`) et
-donne une confiance par mot → `[appelant] … [autre voix] …` et `mot(?)` pour le modèle seulement (le texte affiché et
-relu reste brut) ; consigne « Écoute » en mode vocal. Vérifié en vrai : audio 2 voix → « [autre voix] Dis, tu veux un
-café ? » isolé et « T145(?) » (T55 mal entendu) marqué ; l'agent comprend « 10… non 12 » = 12, ignore le café,
-redemande la farine douteuse.
+Play: 1 to 3 return less; median S05 6,2 → 3,9 s, S40 4,3 → 3,4 s, S04 4,1 → 3,5 s. With the tool,
+the agent quotes the exact promo (8,46 €/kg, -8 % until 30/11) in the first 4 replicas S05/S40. Two traps
+corrected during measurement: notes CRM of the ERP are objects (the tool was crashing, the agent was ironed by the
+old tools), and without instructions the agent recorded the "first arrival" request of Sarrailh without his consent
+(+2 s) : the tool now reminds **propose** first. The remaining failures of the scenarios do not come from
+the tool (S05·2 waits for get_price while quote_line of Amine K. responds; S05·1 said "eighty-two" in
+letters; S40·4 requests "separate order or addition?". `TEAM_PRODUCT_INSIGHT` moves to 1 in `.env.example`.
+** Robust Hands-Free Listening (Youssef, 24/11).** Test Problem: Speaking multiple times, only the last one
+piece counted (a piece cut in full transcription was thrown away). Now: the pieces not yet answered
+(`Conversation.pending`) depart in numbered UN message; Soniox separates the voices (`enable_speaker_diarization`) and
+gives a word-based confidence → `[appelant] … [autre voix] …` and `mot(?)` for the model only (text displayed and
+relu remains raw); sets "Listen" in vocal mode. Verified in real: audio 2 voice → " [other voice] Say, you want a
+coffee ?" isolated and "T145(?)" (T55 misunderstood) marked; the agent includes "10... no 12" = 12, ignores coffee,
+Ask for the dubious flour again.
 
-**Données de l'ERP en anglais (Youssef, 24/11 nuit).** `data/seed_en/` (dans git, ~75 Mo, 24,6 Mo max par fichier)
-= `data/seed` traduit par `scripts/translate_seed.py` avec la clé de l'équipe : catalogue + glossaire produits par
-Claude Sonnet 5.5, le reste (historique, notes de contexte, préférences…) par Claude Haiku 5.5, textes uniques
-seulement, en parallèle (~3 min, coût < 1 $) ; lignes de facture par règle (« (BL n du jj/mm) » → « (DN n of dd/mm) »).
-Gardés tels quels : ID, nombres, dates, codes (`beurres`, `price_negotiation`), noms d'entreprises et de personnes,
-adresses, villes. Contrôles : structure identique (0 différence d'ID ou de nombre), 23 176 champs traduits, 1 seul resté
-en français (une liste de noms d'entreprises). L'ERP lit l'anglais avec `SEED_DIR_NAME=seed_en` ; la promo de démo
-prend alors un nom anglais. Glossaire : `data/seed_en/GLOSSARY.md`.
+**English ERP pack (Youssef).** The translated pack in `data/seed_en/` preserves IDs, numbers, codes, dates and registered names. The team validated 23,176 translated fields and recorded the catalogue terms in `data/seed_en/GLOSSARY.md`.
 
-### Commande juste (Amine Khalil)
+### Order accuracy (Amine Khalil)
 
-**Mission** : ce qui finit dans l'ERP est exactement ce que le client voulait (bon produit, bonne quantité, bon jour,
-rien de validé sans son accord). Interrupteur `TEAM_ORDER_RULES` (allumé par défaut dans `.env.example`). Code :
-`agent/rules_order.py` (règles + fonctions déterministes), `tools/delivery.py`, `tools/order_review.py`,
-`tools/order_edit.py`. Principe directeur : **le modèle parle, le code calcule** (dates, unités, prix, alertes).
+**Mission**: what ends up in the ERP is exactly what the customer wanted (good product, good quantity, good day,
+`TEAM_ORDER_RULES` switch (set by default in `.env.example`). Code:
+`agent/rules_order.py` (rules + deterministic functions), `tools/delivery.py`, `tools/order_review.py`,
+`tools/order_edit.py`. Guideline: **The model speaks, the code calculates** (dates, units, prices, alerts).
 
-**Point de départ (T0, kit seul, lun. 23/11 22h20, /chat)** : S01 PASS mais l'agent « pense tout haut » avant de
-saluer (« Jeudi est bien un jour de livraison… ») et revérifie 6 outils avant de confirmer (9,4 s) ; **S02 FAIL**
-(« comme d'hab » = la dernière commande lue en entière, aucun brouillon, ne confirme jamais) ; S03 PASS mais affirme
-« vous êtes fermé mercredi » (faux), cite une règle comptable interne et ne prend pas le message.
+**Start point (T0, kit only, Mon. 23/11 22h20, /chat)**: S01 PASS but the agent "thinks out loud" before
+greet ("Thursday is a delivery day...") and recheck 6 tools before confirming (9,4 s); **S02 FAIL**
+("as usual" = the last command read in full, no draft, never confirms); S03 PASS but says
+"You are closed on Wednesday" (false), quotes an internal accounting rule and does not take the message.
 
-**Décisions**
+**Decisions**
 
-| # | Décision | Pourquoi |
+| # | Decision | Why? |
 |---|---|---|
-| D1 | **Les jours de livraison de l'ERP font foi** ; les notes « Fermé le mercredi » sont ignorées, seul le client peut annoncer une fermeture | 9 clients ont cette note alors que l'ERP les livre le mercredi, et l'historique le confirme (ex. Pétrin de Muret : 10 livraisons le mercredi après la note ; Au Fournil de Philippe n'est livré que le mercredi). L'agent d'origine refusait ou déplaçait à tort (S05 livré lundi 30/11). Youssef retire aussi ces notes de la fiche préchargée. |
-| D2 | **Dates calculées par le code** (`next_delivery_date`, outil `check_delivery_date`) | Jours du client, heure limite 17h, Lauragais-Tarn la veille avant 12h, tournée partie à 6h30 : un calendrier, pas une intuition. « mercredi » pour Sarrailh → « pas livré le mercredi, prochain jour : jeudi 26 novembre ». |
-| D3 | **Une seule commande par appel** : outils `update_order_line`, `remove_order_line`, `change_delivery_date`, `cancel_draft_order` | Le kit ne savait qu'ajouter des lignes : au « finalement vingt », l'agent créait une 2e commande et laissait le brouillon à 200 sacs dans l'ERP (vu sur S31). |
-| D4 | **Relecture calculée avant confirmation** (`review_order`) | Phrase de relecture prête à dire, alertes ERP traduites pour le client (bloqué, plafond, pas de tournée, « il n'en reste que… » ; jamais de chiffre comptable ni de marge), franco 150 € HT (12 € sinon), quantité ≥ 5× l'habitude à faire confirmer, `canConfirm`. L'ERP renvoie des alertes mais ne bloque rien. |
-| D5 | **Garde-fou doublons** dans `review_order` (`duplicateDrafts`, `sameDayOrders`) | Un brouillon oublié par l'agent à côté de la bonne commande peut être confirmé par l'ADV → double livraison. Doublon identique → abandonné ; brouillon différent → relu au client qui choisit ; brouillons WhatsApp / e-mail jamais annulés. |
-| D6 | **Prix calculés par le code** (outil `quote_line`) | À l'écoute d'un enregistrement de S05, l'agent calculait de tête et se corrigeait en direct (« 92 euros la plaque… pardon, 18 euros 40 »). Le prix client vient de l'ERP (`/api/prices/resolve`) ; le code fait conditionnements et multiplications (« 9 euros 20 le kilo, soit 92 euros le carton de 10 kilos ; 276 euros hors taxes pour 30 kilos »). |
-| D8 | **Jev décide les deux petites décisions risquées** (`tools/order_jev.py`) : « est-ce un vrai oui ? » avant `confirm_order` (qui garde son nom : les scénarios de l'équipe marchent tels quels) et « quel produit ? » pour un mot ambigu (`resolve_product`) | Recommandé par le CTO. Calibré sur 12 vraies réponses : « oui c'est bon », « bon d'accord » → accord 0,89–0,96 ; « oui mais mettez-en quatre », « et rajoutez du seigle », « attendez », « c'est combien ? » → accord ≤ 0,14. Seuils : ≥ 0,8 confirme, ≤ 0,3 ne confirme pas, entre les deux → redemander. 159–196 ms par décision en appel réel. Produits : nom exact du catalogue d'abord (sans modèle), sinon Jev avec les habitudes du client (« tourage » → AOP chez Sarrailh 0,82 ; demande AOP / 82 % / margarine au Pétrin de Colomiers 0,28) ; sous 0,6 l'agent demande. Sans clé Jev : comportement du kit. |
-| D7 | **Règles courtes et impératives** (`ORDER_RULES`, ~12 lignes) plutôt qu'un long texte | Le prompt est relu à chaque étape : chaque règle répond à un défaut observé (ne pas penser tout haut, unités, « chocolatine », « comme d'hab » = panier habituel résumé, confirmer directement au « oui », compte bloqué = message enregistré avec `log_client_event`). |
+| D1 | **The delivery days of the ERP are authentic**; the notes "Closed on Wednesday" are ignored, only the customer can announce a closure | 9 customers have this note while the ERP delivers them on Wednesdays, and the history confirms it (e.g. Muret Petrin: 10 deliveries on Wednesdays after the note; Au Fournil de Philippe is only delivered on Wednesdays). The original agent refused or wrongly moved (S05 delivered Monday 30/11). Youssef also removes these notes from the preloaded sheet. |
+| D2 | **Dates calculated by code** (`next_delivery_date`, tool `check_delivery_date`) | Customer days, time limit 17h, Lauragais-Tarn the day before 12h, toured part of 6h30: a calendar, not an intuition. "Wednesday" for Sarrailh → "not delivered on Wednesday, next day: Thursday 26 November". |
+| D3 | **One single command per call**: tools `update_order_line`, `remove_order_line`, `change_delivery_date`, `cancel_draft_order` | The kit only knew how to add lines: in the "final twenty", the agent created a 2e command and left the draft to 200 bags in the ERP (see S31). |
+| D4 | **Ready calculated before confirmation** (`review_order`) | Ready-to-say rereading phrase, translated ERP alerts for the customer (blocked, ceiling, no tour, "there are only..."; never an accounting figure or margin), franco 150 € excl. VAT (12 € otherwise), quantity ≥ 5× the habit to be confirmed, `canConfirm`. The ERP returns alerts but does not block anything. |
+| D5 | **Doubl guarantee** in `review_order` (`duplicateDrafts`, `sameDayOrders`) | A draft forgotten by the agent next to the correct order can be confirmed by the ADV → double delivery. Identical duplicate → abandoned; different draft → reread to the customer who chooses; drafts WhatsApp / e-mail never cancelled. |
+| D6 | **Prices calculated by code** (tool `quote_line`) | When listening to a S05 recording, the agent calculated his head and corrected himself live ("92 euros the slab... pardon, 18 euros 40"). The customer price comes from the ERP (`/api/prices/resolve`); the code makes packaging and multiplications ("9 euros 20 per kilo, that is 92 euros the carton of 10 kilos; 276 euros excluding taxes for 30 kilos"). |
+| D8 | **Jev decides the two small risky decisions** (`tools/order_jev.py`): "Is it a real yes?" before `confirm_order` (which keeps its name: the scenarios of the team work as they do) and "what product?" for an ambiguous word (`resolve_product`) | Recommended by the CTO. Calibrated on 12 true answers: "yes it is good", "good deal" → 0,89–0,96 chord; "yes but put four", "and add rye", "wait", "how much?" → chord ≤ 0,14. Thresholds: ≥ 0,8 confirms, ≤ 0,3 does not confirm, between the two → reapply. 159–196 ms per decision on real appeal. Products: exact name of catalog first (without model), otherwise Jev with customer habits ("laminating butter" → AOP at Sarrailh 0,82; request AOP / 82 % / margarine at Petrin de Colomiers 0,28); under 0,6 the agent asks. Without key Jev: behavior of kit. |
+| D7 | **Short and mandatory rules** (`ORDER_RULES`, ~12 lines) rather than long text | The prompt is reread at each step: each rule responds to an observed defect (do not think aloud, units, "chocolatine", "as usual" = usual shopping basket summarized, confirm directly to the "yes", account blocked = message recorded with `log_client_event`). |
 
-**Mesures** (scénarios rejoués avec les vraies clés ; `--voice` = vrai chemin vocal, temps = fin de la phrase → 1er octet audio)
+**Measurements** (scenarios replayed with real keys; `--voice` = real voice path, time = end of sentence → 1er audio byte)
 
-| Scénario | Kit seul | Avec `TEAM_ORDER_RULES=1` | Dans l'ERP après l'appel |
+| Scenario | Kit only | With `TEAM_ORDER_RULES=1` | In the ERP after call |
 |---|---|---|---|
-| S01 commande simple | PASS · 11,1 s / 9,4 s | PASS · 7,4 s / 2,6 s (`--voice`) | 1 commande confirmée |
-| S02 comme d'hab + « mettez-en 12 » | **FAIL** 2/3 | PASS 3/3 · confirmation 3,4 s | 1 commande, 12 tradi |
-| S03 client bloqué | PASS (affirmations fausses) | PASS · message enregistré, rien promis | aucune commande |
-| S05 rupture AOP → 82 % | **FAIL** 2/4 (livré lundi, brouillon non confirmé) | PASS 4/4 | 1 commande, mercredi 25/11 |
-| S30 sous le franco | – | PASS 3/3 (« 12 euros de livraison… il manque 147 euros ») | 1 commande, 153,90 € |
-| S31 « 200 sacs » au lieu de 20 | – | PASS 3/3 (« vous dites bien deux cents ? ») | 1 commande, 20 sacs |
-| S32 modifier + retirer une ligne | – | PASS 3/3 | 1 commande, 15 tradi, sans seigle |
-| Brouillon oublié simulé (200 tradi) | – | relu au client puis annulé à sa demande | 1 confirmée + 1 annulée |
-| S33 « oui mais mettez-en douze » (avec Jev) | – | PASS 3/3 · ligne modifiée, confirmation validée par Jev (accord 0,95) | 1 commande, 12 tradi |
+| S01 simple command | PASS · 11,1 s / 9,4 s | PASS · 7,4 s / 2,6 s (`--voice`) | 1 confirmed command |
+| S02 as usual + "put in 12" | **FAIL** 2/3 | PASS 3/3 · confirmation 3,4 s | 1 order, 12 tradi |
+| S03 customer blocked | PASS (false statements) | PASS · registered message, nothing promised | no orders |
+| S05 rupture AOP → 82 % | **FAIL** 2/4 (issued Monday, draft unconfirmed) | PASS 4/4 | 1 order, Wednesday 25/11 |
+| S30 under Franco | – | PASS 3/3 ("12 euros delivery... 147 euros missing") | 1 command, 153,90 € |
+| S31 "200 bags" instead of 20 | – | PASS 3/3 ("You say two cents?") | 1 order, 20 bags |
+| S32 modify + remove a line | – | PASS 3/3 | 1 order, 15 tradi, without rye |
+| Simulated forgotten draft (200 tradi) | – | reread to the customer and then cancelled at his request | 1 confirmed + 1 cancelled |
+| S33 "Yes but put in twelve" (with Jev) | – | PASS 3/3 · modified line, confirmed by Jev (accord 0,95) | 1 order, 12 tradi |
 
-Avec Jev (mar. 24/11, 00h50, `--voice`, remise à zéro avant chaque scénario) : S02, S30, S31, S32, S33 PASS ; S05 3/4
-(tour 2 : l'agent donne le prix avec `quote_line`, le scénario attend `get_price`) ; 8 confirmations sur 8 validées par
-Jev en 159–196 ms ; une seule commande juste dans l'ERP à chaque appel.
+With Jev (Mars. 24/11, 00h50, `--voice`, reset before each scenario): S02, S30, S31, S32, S33 PASS; S05 3/4
+(round 2: the agent gives the price with `quote_line`, the scenario awaits `get_price`); 8 confirmations on 8 validated by
+Jev in 159–196 ms; one command just in the ERP at each call.
 
-S05 enregistré en audio (client = 2e voix ElevenLabs, agent = vraie réponse) : 68 s → 56 s d'appel après D6, prix
-juste du premier coup. Tests : 28 tests sur la commande juste (`test_rules_order.py` + `test_team_todo.py`) ; la
-suite complète de l'équipe passe (151 tests au mar. 24/11 01h00), interrupteur allumé ou éteint.
+S05 recorded in audio (client = 2e voice ElevenLabs, agent = true answer): 68 s → 56 s call after D6, price
+Just the first shot. Tests: 28 tests on the right command (`test_rules_order.py` + `test_team_todo.py`); the
+full crew suite passes (151 tests at Mar. 24/11 01h00), switch turned on or off.
 
-**Ce qui n'a pas marché / limites**
-- Le script de rejeu en mode `/chat` ne rejouait que le texte : l'agent perdait l'id du brouillon et en recréait un
-  (faux doublons sur S05 chez Daycem). Corrigé par Youssef (historique complet) ; nos garde-fous couvrent aussi ce cas.
-- La relecture d'un « comme d'hab » complet (9 produits) reste longue à l'oral.
-- Les temps restent de 2 à 9 s par réplique selon le nombre d'outils : le gros du gain vient des chantiers de
-  Mohamed Amine et Youssef (phrases d'attente, fiche préchargée, agent rapide).
-- Mes tests ne couvrent ni la transcription (texte envoyé directement) ni l'écoute de la voix : à valider au micro.
-### Bon vendeur (Daycem)
+**What hasn't worked / limits**
+- The `/chat` mode replay script only played the text: the agent lost the draft's id and recreated one
+  (false duplicates on S05 at Daycem). Corrected by Youssef (full history); our safeguards also cover this case.
+- The rereading of a complete "as usual" (9 products) remains long in the oral.
+- The times remain from 2 to 9 s per replica depending on the number of tools: the bulk of the gain comes from the construction sites of the
+  Mohamed Amine and Youssef (waiting phrases, preloaded plug, fast agent).
+- My tests do not cover the transcription (text sent directly) or listening to the voice: to be validated by the microphone.
+### Good seller (Daycem)
 
-## 5. Données modifiées pour la démo
+## 5. Edited data for demo
 
-**Promo de démo sur le tourage 82 % (Daycem, T4), assumée et fictive.** Créée par l'API de l'ERP avec
-`scripts/setup_demo_data.py`, parce que `data/seed/` n'est pas dans git :
+**Promo demo on the laminating butter 82 % (Daycem, T4), assumed and fictional.** Created by the API of the ERP with
+`scripts/setup_demo_data.py`, because `data/seed/` is not in git:
 
-- règle de prix `Promo tourage 82 % : −8 % jusqu'au 30/11` : groupe « Boulangeries » × Beurre de tourage 82 %
-  (`prd_0026`), −8 % sur le prix catalogue, du jour de l'ERP (24/11) à la fin du mois ; la note de la règle dit que
-  ce sont des données de démo ;
-- effet : 9,20 € → **8,46 €/kg** pour les boulangeries sans prix négocié (ex. Le Pétrin de Colomiers). Un prix négocié
-  gagne toujours (La Gerbe d'Or reste à 8,82 €) ; les autres clients restent à 9,20 € ;
-- pourquoi : la scène de démo « rupture du tourage AOP → remplaçant **en promo**, argumenté, avec accord ». L'agent ne
-  cite la promo que parce que `get_price` la renvoie (règle « jamais de promo inventée ») ;
-- **automatique depuis le 24/11 (Youssef)** : l'ERP l'ajoute lui-même à chaque chargement des données (1er démarrage,
-  `make reset`, bouton de remise à zéro, `run_scenarios.py --reset`) : `apps/backend/app/core/team_demo.py`, même
-  règle, id `prl_0900`. Avant, chaque remise à zéro l'effaçait et la scène de démo tombait (vu pendant les mesures T1).
-  Le script de Daycem reste utilisable (il répond « déjà là »).
+- price rule `Promo tourage 82 % : −8 % jusqu'au 30/11`: Bakery group × 82% laminating butter
+  (`prd_0026`), -8 % on the catalogue price, from the day of the ERP (24/11) to the end of the month; the note of the rule says that
+  It's demo data;
+- effect: 9,20 € → **8,46 €/kg** for bakeries without negotiated price (e.g. Le Pétrin de Colomiers). A negotiated price
+  still wins (La Gerbe d'Or remains at 8,82 €); other customers remain at 9,20 €;
+- Why: the demo scene "breaks the AOP laminating butter → replacing **in promo**, argued, with agreement".
+  quotes the promo that because `get_price` returns it (rule "never invented promo") ;
+- **automatic from 24/11 (Youssef)**: the ERP adds it itself to each data load (1er start,
+  `make reset`, reset button, `run_scenarios.py --reset`): `apps/backend/app/core/team_demo.py`, whether or not
+  rule, id `prl_0900`. Before, every reset erased it and the demo scene fell (see during the T1 measurements).
+  The Daycem script remains usable (it answers "already there").
 
-**Prêt pour le jury (Youssef, 24/11).** Testé sur un clone neuf avec seulement `data/seed/` remis en place et une base
-vide : `make setup` échouait (« Permission denied » : les scripts `.sh` étaient enregistrés non exécutables depuis
-Windows) → corrigé dans git. `make setup` ajoute aussi au `.env` les interrupteurs `TEAM_*` qui manquent (valeurs de
-`.env.example`, sans toucher une ligne existante), pour qu'un `.env` venu d'ailleurs n'éteigne pas nos briques. Résultat :
-ERP + promo (8,46 €), 7 interrupteurs, outils de l'équipe enregistrés, site et agent qui répondent.
+**Ready for the jury (Youssef, 24/11).** Tested on a new clone with only `data/seed/` reset and a base
+empty: `make setup` failed ("Permission Denied": `.sh` scripts were not executable since
+Windows) → fixed in git. `make setup` also adds to `.env` the missing `TEAM_*` switches (values of
+`.env.example`, without touching an existing line), so that a `.env` from elsewhere does not turn off our bricks.
+ERP + promo (8,46 €), 7 switches, registered team tools, site and agent responding.
 
-## 6. Ce qui n'a pas marché / abandonné
+## 6. What didn't work / gave up

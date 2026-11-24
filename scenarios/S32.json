@@ -1,12 +1,12 @@
 {
   "id": "S32",
   "owner": "amine-khalil",
-  "title": "Changement d'avis après le brouillon : modifier une ligne et en retirer une, sans 2e commande",
-  "why": "Intelligent : « finalement 15 » et « enlevez le seigle » modifient la commande en cours (une seule commande dans l'ERP)",
+  "title": "Change a quantity and remove a line",
+  "why": "Apply both changes to the same order.",
   "client": "cli_0001",
   "turns": [
     {
-      "say": "Bonjour, Nadine de chez Sarrailh. Dix sacs de tradi et trois sacs de seigle pour jeudi.",
+      "say": "Hi, it's Nadine from Sarrailh. Ten sacks of traditional flour and three sacks of rye for Thursday.",
       "expect": {
         "tools_any": [
           "create_draft_order",
@@ -17,12 +17,12 @@
         ],
         "says_any": [
           "10",
-          "dix"
+          "ten"
         ]
       }
     },
     {
-      "say": "Finalement mettez-en quinze de tradi, et enlevez le seigle.",
+      "say": "Actually, make that fifteen sacks of traditional flour and take off the rye.",
       "expect": {
         "tools_any": [
           "update_order_line",
@@ -35,12 +35,12 @@
         ],
         "says_any": [
           "15",
-          "quinze"
+          "fifteen"
         ]
       }
     },
     {
-      "say": "Oui, validez.",
+      "say": "Yes, please confirm.",
       "expect": {
         "tools_any": [
           "confirm_order"

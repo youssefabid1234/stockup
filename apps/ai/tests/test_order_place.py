@@ -8,17 +8,17 @@ from app.tools import registry
 from app.tools.registry import ToolContext
 
 CATALOGUE = [
-    {"id": "prd_0001", "name": "Farine de blé T55 tradition française (sac 25 kg)", "aliases": ["tradi"], "unit": "piece", "caliber": "sac 25 kg", "active": True},
-    {"id": "prd_0006", "name": "Farine de seigle T130 (sac 25 kg)", "aliases": ["seigle"], "unit": "piece", "caliber": "sac 25 kg", "active": True},
-    {"id": "prd_0026", "name": "Beurre de tourage 82 % (plaque 2 kg)", "aliases": ["tourage standard", "tourage"], "unit": "kg", "caliber": "carton 5 plaques de 2 kg", "active": True},
-    {"id": "prd_0025", "name": "Beurre de tourage AOP 84 % (plaque 2 kg)", "aliases": ["tourage AOP", "tourage"], "unit": "kg", "caliber": "carton 5 plaques de 2 kg", "active": True},
+    {"id": "prd_0001", "name": "Traditional T55 wheat flour (25 kg sack)", "aliases": ["tradi"], "unit": "piece", "caliber": "25 kg sack", "active": True},
+    {"id": "prd_0006", "name": "Rye flour T130 (25 kg sack)", "aliases": ["seigle"], "unit": "piece", "caliber": "25 kg sack", "active": True},
+    {"id": "prd_0026", "name": "Touring butter 82 % (plate 2 kg)", "aliases": ["tourage standard", "laminating butter"], "unit": "kg", "caliber": "carton 5 plates of 2 kg", "active": True},
+    {"id": "prd_0025", "name": "Butter AOP 84 % (plate 2 kg)", "aliases": ["laminating butter AOP", "laminating butter"], "unit": "kg", "caliber": "carton 5 plates of 2 kg", "active": True},
 ]
 
 
 class FakeErp:
     def __init__(self, status="active"):
         self.client = {"id": "cli_0001", "name": "Maison Sarrailh", "status": status, "deliveryDays": ["tue", "thu", "sat"],
-                       "zone": "Toulouse centre & faubourgs"}
+                       "zone": "Toulouse center & suburbs"}
         self.orders: dict[str, dict] = {}
         self.calls: list[tuple[str, str]] = []
 
@@ -90,6 +90,7 @@ def place(monkeypatch):
     importlib.reload(order_jev)
     from app.tools import order_place
 
+    registry.TOOLS.pop("place_order", None)
     importlib.reload(order_place)
     fn = registry.TOOLS["place_order"].fn
     import app.clients as clients
@@ -117,8 +118,8 @@ def test_the_model_can_read_the_tool(place):
 async def test_new_order_in_one_call(place):
     erp = FakeErp()
     r = await place(ToolContext(erp=erp, actor="voice_agent"), "cli_0001", [line(said="tradi", qty=10)], "jeudi", None)
-    assert r["written"] and r["daySay"] == "jeudi 26 novembre"
-    assert r["readback"].startswith("10 sacs de Farine de blé T55 tradition française")
+    assert r["written"] and r["daySay"] == "Thursday 26 November"
+    assert r["readback"].startswith("10 sacks of Traditional T55 wheat flour")
     o = next(iter(erp.orders.values()))
     assert o["deliveryDate"] == "2026-11-26" and o["lines"][0]["qty"] == 10 and o["source"] == "voice_agent"
 
@@ -138,12 +139,12 @@ async def test_change_of_mind_edits_the_order_in_progress(place):
 async def test_impossible_day_writes_nothing(place):
     erp = FakeErp()
     r = await place(ToolContext(erp=erp, actor="voice_agent"), "cli_0001", [line(said="tradi", qty=10)], "mercredi", None)
-    assert not r["written"] and "jeudi 26 novembre" in r["next"] and erp.orders == {}
+    assert not r["written"] and "Thursday 26 November" in r["next"] and erp.orders == {}
 
 
 async def test_ambiguous_product_asks_instead_of_guessing(place):
     erp = FakeErp()
-    r = await place(ToolContext(erp=erp, actor="voice_agent"), "cli_0001", [line(said="tourage", qty=40, said_unit="kilos")], "jeudi", None)
+    r = await place(ToolContext(erp=erp, actor="voice_agent"), "cli_0001", [line(said="laminating butter", qty=40, said_unit="kilos")], "jeudi", None)
     assert not r["written"] and r["next"] and erp.orders == {}
 
 

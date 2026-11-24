@@ -29,40 +29,6 @@ from app.config import settings
 # v1 (T1). GENERAL on purpose: no client, product or person name. The jury plays other scenarios, and the facts
 # (who refuses substitutions, which product replaces which, who approves discounts) come from the ERP and the
 # company documents already in the prompt. Baseline that motivated each rule: docs/team/status/daycem.md.
-SALES_RULES = """Règles de vente (rupture, remplacement, prix) :
-- Produit demandé indisponible ou en quantité insuffisante : avant toute proposition, identifie le client et lis ses préférences et notes. Si sa fiche est déjà dans la conversation (préchargée ou déjà récupérée), ne rappelle pas get_client.
-- Si ses préférences ou notes refusent les remplacements pour ce produit ou pour sa famille (une règle sur « le beurre » couvre tous les beurres) :
-  - annonce la rupture et la date de retour telle qu'elle est écrite dans l'ERP ou les documents (sinon dis que tu n'as pas encore de date) ;
-  - cherche ensuite une solution qui n'est pas un autre produit : une allocation ou une réservation déjà notée pour ce client sur ce produit (cite la quantité et la période telles qu'elles sont écrites), ou un arrivage attendu dans le stock, tel que l'ERP le donne ;
-  - propose de noter sa demande pour le premier arrivage seulement si tu peux l'enregistrer avec un outil (log_client_event, type special_request, avec le produit, la quantité et la date souhaitée) ; présente-la comme une demande notée, jamais comme une réservation ou une livraison garantie ;
-  - ne parle d'aucun autre produit, ni de la raison pour laquelle tu n'en proposes pas ;
-  - même avec tous ces éléments, exactement 2 phrases. Phrase 1 : la rupture, avec la date de retour, ou à défaut l'allocation ou l'arrivage qui le concerne. Phrase 2 : la proposition de noter sa demande, en question. Exemple de forme : « Le [produit demandé] est en rupture, sans date de retour pour l'instant, mais vous avez [quantité] réservés pour [période]. Voulez-vous que je note votre demande pour le premier arrivage ? »
-- Si ce client demande lui-même une alternative : propose le remplaçant (même usage, en stock) en disant clairement la différence avec le produit demandé (qualité, composition, prix), puis demande son accord. Sans « oui », rien n'est ajouté.
-- Sinon, propose UN SEUL remplaçant, en stock et de même usage. Préfère celui que les documents de l'entreprise désignent comme substitut ; ne prends jamais un produit seulement parce que son prix est proche.
-- Quand l'outil indique qu'aucun produit en stock n'a le même usage, annonce la rupture et demande au client ce qu'il souhaite, sans proposer de produit. Exemple de ce que tu dis : « Le [produit demandé] est en rupture pour le moment, et je n'ai rien d'équivalent en stock. Que souhaitez-vous faire ? »
-- Première proposition d'un remplaçant : exactement 2 phrases.
-  - Phrase 1 : la rupture et le remplaçant, avec sa raison en quelques mots.
-  - Phrase 2 : son prix pour ce client tel que l'ERP le donne déjà (au kilo, à l'unité ou au carton, avec la promo seulement si l'ERP en renvoie une), puis la question d'accord.
-  - Exemple de forme : « Le [produit demandé] est en rupture, mais j'ai le [remplaçant], qui sert au même usage. Il est à [prix] le kilo avec la promo jusqu'au [date] : je vous le mets à la place ? »
-  - Rien d'autre à ce moment-là : pas de total ni de calcul (quote_line viendra ensuite pour les totaux), pas de date de livraison, sauf si le client les demande ou si le jour demandé n'est pas livré (alors la règle sur la date de la commande s'applique).
-- Une date de fin de rupture ou de retour à la normale trouvée dans les documents vaut date de retour : donne-la telle qu'elle est écrite, sans la transformer ni en déduire une autre (si le document dit « jusqu'à la fin du mois », dis « normalement fin du mois », pas « début du mois prochain »). Sans la cause, et ne dis pas « sans promesse ».
-- Ne cite une promotion que si l'ERP en renvoie une pour ce produit et ce client. Sinon, n'en parle pas.
-- Sans « oui » explicite du client, n'ajoute jamais un remplaçant à la commande.
-- Quand la fiche ne dit rien de clair sur les remplacements pour ce produit, annonce la rupture puis demande au client s'il accepte un produit équivalent, sans le nommer. Exemple de ce que tu dis : « Le [produit demandé] est en rupture pour le moment. Accepteriez-vous un produit équivalent à la place ? »
-- Demande de remise ou comparaison avec un concurrent : tu n'accordes et ne promets aucune remise. Dis son prix tel que l'ERP le donne pour ce client (négocié s'il en a un), puis la valeur du produit en une phrase (qualité, origine, telles que les documents les décrivent). Si la demande dépasse ce qu'un commercial peut accorder selon les documents de l'entreprise, propose de la transmettre à la personne qui valide ces remises (nommée dans les documents), pas au commercial ; sinon, à son commercial. N'ajoute aucun mot qui engage (« garanti », « il validera », « ça devrait passer ») : dis seulement que cette personne décidera.
-- Ne promets une action (prévenir quelqu'un, rappeler, noter) que si tu la fais pendant l'appel avec un outil (log_client_event, save_context).
-- Les notes internes restent privées : ne donne pas au client les causes (grève, problème fournisseur) ni les avis de l'équipe. Les faits qui le concernent directement peuvent lui être dits (disponible ou non, quand, à quel prix, une allocation ou une réservation déjà notée pour lui).
-- Parle comme sa fiche le demande (section « Comment leur parler » : unités, tutoiement, interlocuteur).
-- Réponds en 1 ou 2 phrases. Une courte salutation en début d'appel (« Bonjour [prénom]. ») ne compte pas dans ces 2 phrases.
-- Ne prononce jamais un nom de champ ou une valeur technique renvoyés par un outil (« substitution », « inconnu », « demander », « inStock »…) : ce sont des indications pour toi, pas des phrases pour le client.
-- Ta réponse commence directement par ce que tu dis au client : jamais d'étiquette suivie de deux-points, ni de note sur ce que tu as décidé.
-- Une seule question à la fois : d'abord l'accord sur le remplaçant, le reste (jour, quantité, total) après.
-- N'explique jamais à voix haute ce que tu vérifies et pourquoi (ce que tu as lu dans la fiche, pourquoi tu fais ou ne fais pas quelque chose) : dis seulement le résultat au client.
-- N'appelle le client par un nom que s'il l'a donné lui-même pendant l'appel, ou si c'est l'interlocuteur indiqué dans sa fiche. Sinon, pas de nom."""
-
-
-# English version, READY BUT NOT WIRED: the team picks one language setting for the whole prompt first (prompts.py,
-# ORDER_RULES, product_insight's rule). Same rules, same order as SALES_RULES; examples with no real name.
 SALES_RULES_EN = """Sales rules (shortage, substitute, price):
 - Requested product unavailable or not enough of it: before any offer, identify the client and read their preferences and notes. If their card is already in the conversation (preloaded or already fetched), do not call get_client again.
 - If their preferences or notes refuse substitutes for this product or its family (a rule about « the butter » covers every butter):
@@ -94,6 +60,9 @@ SALES_RULES_EN = """Sales rules (shortage, substitute, price):
 - Never explain out loud what you are checking and why (what you read on the card, why you do or do not do something): only tell the client the result.
 - Call the client by a name only if they gave it themselves during the call, or if it is the contact person on their card. Otherwise, no name."""
 
+SALES_RULES = SALES_RULES_EN
+
+
 def sales_rules_section() -> str:
     """What prompts.py adds to the system prompt. '' when the switch is off or the rules are empty."""
     return SALES_RULES.strip() if team_flags.sales_rules() else ""
@@ -115,7 +84,7 @@ _REFUSAL = re.compile(
     r"(refuse (?:les |toute |toutes les )?substitutions?|jamais de substitutions?|aucune substitution"
     r"|ne (?:jamais )?substitue[rz]?|jamais substituer"
     r"|refuses (?:any |all )?substitutions?|substitutions? (?:are |is )?refused|never (?:any )?substitutions?"
-    r"|no substitutions?|(?:does|do) not (?:want|accept) any substitutions?)(?P<rest>[^.;:]*)"
+    r"|never substitute|no substitutions?|(?:does|do) not (?:want|accept) any substitutions?)(?P<rest>[^.;:]*)"
 )
 _ACCEPT = re.compile(r"accepte (?:les |des )?substitutions?|accepts? (?:\w+ )?substitutions?|substitutions? (?:are |is )?accepted")
 # "... sans être prévenu / sans accord / si on prévient" (« without being told », « if informed ») turns a refusal into
@@ -213,9 +182,9 @@ async def decide_substitution(
     try:
         p = await jev.yes_no(
             state,
-            f"Ce client accepte-t-il un autre produit à la place de « {product_name} », quand celui-ci manque ?",
-            "La fiche dit qu'il accepte les remplacements pour ce produit, au moins s'il est prévenu.",
-            "La fiche dit qu'il refuse les remplacements (en général ou sur ce produit).",
+            f"Will this customer accept an alternative when {product_name} is unavailable?",
+            "The customer accepts replacements for this product, at least with advance notice.",
+            "The customer refuses replacements for this product or in general.",
         )
     except Exception:  # Jev down / slow: never block a voice turn on it
         return "demander"

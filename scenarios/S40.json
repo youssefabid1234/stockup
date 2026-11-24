@@ -1,12 +1,12 @@
 {
   "id": "S40",
   "owner": "daycem",
-  "title": "Scène de démo : Pétrin de Colomiers, tourage AOP en rupture → le 82 % proposé en citant la promo, puis accord",
-  "why": "Intelligent + naturel : remplaçant de même usage, argumenté avec la promo que l'ERP renvoie (jamais inventée), jamais sans accord. À jouer APRÈS scripts/setup_demo_data.py (une remise à zéro efface la promo).",
+  "title": "Offer the current promotion on 82% laminating butter",
+  "why": "Use the ERP promotion for this customer, quote the correct price and obtain consent.",
   "client": "cli_0021",
   "turns": [
     {
-      "say": "Bonjour, Le Pétrin de Colomiers. Il me faudrait 3 cartons de tourage AOP pour lundi.",
+      "say": "Hello, Le Pétrin de Colomiers here. I need 3 boxes of AOP laminating butter for Monday.",
       "expect": {
         "tools_none": [
           "confirm_order",
@@ -15,26 +15,28 @@
         ],
         "says_any": [
           "promo",
-          "promotion"
+          "promotion",
+          "offer",
+          "discount"
         ]
       }
     },
     {
-      "say": "Ah oui ? Il est à combien, le 82 ?",
+      "say": "Really? How much is the 82% one?",
       "expect": {
         "tools_none": [
           "confirm_order"
         ],
         "says_any": [
           "8 euros 46",
-          "8,46",
           "8.46",
-          "huit euros quarante-six"
+          "eight euros forty-six",
+          "eight euros and forty-six"
         ]
       }
     },
     {
-      "say": "Bon, d'accord, mettez-moi les 3 cartons de 82.",
+      "say": "Okay, put me down for 3 boxes of the 82%.",
       "expect": {
         "tools_any": [
           "create_draft_order",
@@ -47,7 +49,7 @@
       }
     },
     {
-      "say": "Oui, c'est bon.",
+      "say": "Yes, that's right.",
       "expect": {
         "tools_any": [
           "confirm_order"

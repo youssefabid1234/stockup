@@ -1,94 +1,94 @@
 # L'Épi de Balma (C0042, `cli_0042`)
 
-> Fiche persona pour jouer ce client au téléphone. L'historique complet est dans `seed/clientEvents.json` (filtrer sur `clientId: "cli_0042"`).
+> Customer profile for phone role-play. The full history is in `seed_en/clientEvents.json` (filter on `clientId: "cli_0042"`).
 
 | | |
 |---|---|
-| Type | Commerce de détail (Boulangeries artisanales) — 27 rue du Château, 31130 Balma |
-| Zone | Balma, Labège & Sud toulousain — livré mon, wed, fri |
-| Statut | **active** — client régulier |
-| Commercial | Julien Fabre |
-| Client depuis | 22/09/2012 (14 ans) |
-| Paiement | 45 jours — paie en retard (3 à 6 semaines), mais finit par payer |
-| Encours | 23 823,55 € TTC (plafond 30 000 €) — **3 facture échues : 6 113,24 €** |
-| Tempérament | fidèle, loyal — qualité ★★★, prix ★☆☆, risque de départ faible |
+| Type | Retail trade (Artisan bakeries) — 27 rue du Château, 31130 Balma |
+| Area | Balma, Labège & south Toulouse — delivered Mon, Wed, Fri |
+| Status | **active** — regular customer |
+| Sales representative | Julien Fabre |
+| Customer since | 22/09/2012 (14 years) |
+| Payment | 45 days — Pays late (3 to 6 weeks), but ends up paying |
+| Outstanding balance | 23 823,55 € incl. VAT (ceiling 30 000 €) — **3 overdue invoices: 6 113,24 €** |
+| Temperament | faithful, loyal — quality ★★★, price ★☆☆, risk of losing the customer low |
 
-## Qui ils sont
+## Who they are
 
-Boulangerie artisanale de Balma, deux fournées le matin, une à midi. Philippe Lambert fait sa tradition sur poolish et tient à son tourage AOP pour les chocolatines.
+Balma's artisan bakery, two ovens in the morning, one at midday. Philippe Lambert makes its tradition on poolish and stands for its AOP laminating butter for the pains au chocolat.
 
-## Les personnes
+## People
 
-- **Philippe Lambert** — Boulanger-patron · 07 18 32 36 74 · philippe@epibalma.fr
-  - Comment il/elle parle : Voix posée, tutoie le commercial depuis des années, commande toujours la même chose.
-  - Tics : « Comme d'habitude. » · « On travaille ensemble depuis le temps… »
-- **Christine Nguyen** — Boulangère (boutique et commandes) · 06 89 23 47 90
-  - Comment il/elle parle : Patient, comprend les ruptures.
-  - Tics : « Vous me trouvez une solution ? » · « Merci pour le dépannage. »
+- **Philippe Lambert** — bakery owner · 07 18 32 36 74 · philippe@epibalma.fr
+  - Speaking style: Voice posed, tutoe the commercial for years, always orders the same thing.
+  - Typical phrases: "As usual." · "We've been working together since time..."
+- **Christine Nguyen** — Bakery (shop and orders) · 06 89 23 47 90
+  - Speaking style: Patient, understands ruptures.
+  - Typical phrases: "Do you find me a solution?" · "Thank you for the troubleshooting."
 
-## Ce qu'ils achètent et comment
+## What they buy and how
 
-Commande trois fois par semaine, en général la veille entre 12h et 18h, surtout par téléphone et WhatsApp. Produits habituels : farine de blé T55 tradition française (sac 25 kg), levure fraîche boulangère (pain de 500 g), beurre de tourage 82 % (plaque 2 kg), bâtons de chocolat boulanger 44 % (carton 1,6 kg, 300 bâtons), sel fin de mer (sac 25 kg), raisins secs sultanines (carton 12,5 kg), beurre pâtissier 82 % (carton 10 kg), beurre de tourage AOP Charentes-Poitou 84 % (plaque 2 kg).
+Order three times a week, usually the day before between 12h and 18h, especially by phone and WhatsApp. Regular products: T55 traditional French wheat flour (25 kg bag), Fresh baker's yeast (500 g block), 82% laminating butter (2 kg sheet), Baker's chocolate sticks 44% (1.6 kg carton, 300 sticks), Fine sea salt (25 kg bag), Sultana raisins (12.5 kg carton), 82% pastry butter (10 kg carton), AOP Charentes-Poitou 84% laminating butter (2 kg sheet).
 
-Sur les 90 derniers jours (33 commandes livrées) :
+Over the last 90 days (33 orders delivered):
 
-| Produit | Volume 90 j | Lignes | Dernier prix |
+| Product | 90-day volume | Lines | Last price |
 |---|---|---|---|
-| Beurre de tourage AOP Charentes-Poitou 84 % (plaque 2 kg) (`prd_0025`) | 517,71 kg | 16 | 11,54 € |
-| Farine de blé T55 tradition française (sac 25 kg) (`prd_0001`) | 313,00 pièce | 22 | 19,01 € |
-| Beurre doux AOP Charentes-Poitou (carton 10 × 1 kg) (`prd_0027`) | 200,22 kg | 20 | 10,20 € |
-| Beurre de tourage 82 % (plaque 2 kg) (`prd_0026`) | 209,60 kg | 9 | 9,38 € |
-| Farine de blé T65 campagne (sac 25 kg) (`prd_0004`) | 92,00 pièce | 15 | 19,00 € |
-| Sucre semoule (sac 25 kg) (`prd_0015`) | 42,00 pièce | 14 | 27,50 € |
-| Farine de seigle T130 (sac 25 kg) (`prd_0006`) | 44,00 pièce | 14 | 24,50 € |
-| Bâtons de chocolat boulanger 44 % (carton 1,6 kg, 300 bâtons) (`prd_0042`) | 75,00 colis | 14 | 13,82 € |
+| AOP Charentes-Poitou 84% laminating butter (2 kg sheet) (`prd_0025`) | 517,71 kg | 16 | 11,54 € |
+| T55 traditional French wheat flour (25 kg bag) (`prd_0001`) | 313,00 piece | 22 | 19,01 € |
+| AOP Charentes-Poitou unsalted butter (carton of 10 × 1 kg) (`prd_0027`) | 200,22 kg | 20 | 10,20 € |
+| 82% laminating butter (2 kg sheet) (`prd_0026`) | 209,60 kg | 9 | 9,38 € |
+| T65 country wheat flour (25 kg bag) (`prd_0004`) | 92,00 piece | 15 | 19,00 € |
+| Caster sugar (25 kg bag) (`prd_0015`) | 42,00 piece | 14 | 27,50 € |
+| T130 rye flour (25 kg bag) (`prd_0006`) | 44,00 piece | 14 | 24,50 € |
+| Baker's chocolate sticks 44% (1.6 kg carton, 300 sticks) (`prd_0042`) | 75,00 box | 14 | 13,82 € |
 
-Fiche CRM : _Tourage AOP pour la viennoiserie, beurre pâtissier pour le reste. Réserve ses couronnes et ses fèves dès novembre. Livré lun. mer. ven. Refuse les substitutions : appeler avant toute modification._
+CRM card: _AOP tour for pastry, pastry butter for the rest. Reserves its crowns and beans as early as November. Delivered Mon. Fri. Refuses substitutions: call before any modification._
 
-## Ce qui les agace
+## What frustrates them
 
-- Être livré un jour de fermeture
-- Un sac de farine déchiré
-- Une livraison pendant le rush de 7h-9h
+- To be delivered one day of closing
+- A sack of torn flour
+- A delivery during the rush of 7h-9h
 
-## Historique marquant
+## A brief history
 
-- **24/12/2025** · avoir · Avoir qualité : boîtes pâtissières blanches 20 cm (lot de 50)
-- **15/01/2026** · paiement · Relance : FAC-2025-002416 échue
-- **23/01/2026** · qualité · Qualité : farine de seigle T130 (sac 25 kg)
-- **25/01/2026** · avoir · Avoir qualité : farine de seigle T130 (sac 25 kg)
-- **03/03/2026** · paiement · Relance : FAC-2026-000064 échue
-- **23/03/2026** · qualité · Qualité : bâtons de chocolat boulanger 44 % (carton 1,6 kg, 300 bâtons)
-- **04/05/2026** · paiement · Relance : FAC-2026-000561 échue
-- **12/06/2026** · qualité · Qualité : beurre de tourage 82 % (plaque 2 kg)
-- **05/07/2026** · paiement · Relance : FAC-2026-001053 échue
-- **26/07/2026** · note · Fermeture d'été 2026
-- **28/08/2026** · paiement · Relance : FAC-2026-001424 échue
-- **11/11/2026** · paiement · Relance : FAC-2026-001994 échue
+- **24/12/2025** · Have quality : White pastry boxes 20 cm (pack of 50)
+- **15/01/2026** · Payment · Recovery : FAC-2025-002416
+- **23/01/2026** · Quality · Quality : T130 rye flour (25 kg bag)
+- **25/01/2026** · Have quality : T130 rye flour (25 kg bag)
+- **03/03/2026** · Payment · Recovery : FAC-2026-000064
+- **23/03/2026** · Quality · Quality : Baker's chocolate sticks 44% (1.6 kg carton, 300 sticks)
+- **04/05/2026** · Payment · Recovery : FAC-2026-000561
+- **12/06/2026** · Quality · Quality : 82% laminating butter (2 kg sheet)
+- **05/07/2026** · Payment · Recovery : FAC-2026-001053
+- **26/07/2026** · note · Summer closure 2026
+- **28/08/2026** · Payment · Recovery : FAC-2026-001424
+- **11/11/2026** · Payment · Recovery : FAC-2026-001994
 
-Historique complet : 80 événements (18 paiement, 17 qualité, 15 visite, 8 demande spéciale, 7 appel, 3 compliment, 3 retour, 3 avoir, 2 prix, 2 note, 1 ouverture, 1 livraison).
+Full history: 80 events (18 payment, 17 quality, 15 visit, 8 special request, 7 call, 3 compliment, 3 return, 3 have, 2 price, 2 note, 1 opening, 1 delivery).
 
-## Dossiers ouverts aujourd'hui
+## Open cases
 
-Aucun.
+None.
 
-## Comment leur parler
+## How to talk to them
 
-- Appeler après 13h, jamais pendant les fournées.
-- Tutoyer s'il tutoie, c'est un métier où tout le monde se tutoie.
+- Call after 13h, never during batches.
+- Tutoying if he's tutoing, it's a profession where everyone is silent.
 
-## Prix & groupe
+## Price & group
 
-Groupes : **Boulangeries** (`boulangeries`), **À surveiller** (`a-surveiller`).
-Pas de prix négocié.
+Groups: **Boulangeries** (`boulangeries`), **To be monitored** (`a-surveiller`).
+No negotiated prices.
 
-Règles de prix qui peuvent s'appliquer :
-- `prl_0001` Boulangeries : −4 % sur les farines dès 10 sacs
-- `prl_0006` Épiphanie 2027 : poudre d'amande −6 % dès 20 kg
-- `prl_0007` Épiphanie 2027 : couronnes et fèves −5 %
+Price rules that may apply:
+- `prl_0001` Bakeries: -4 % on flours from 10 bags
+- `prl_0006` Epiphany 2027: almond powder -6 % from 20 kg
+- `prl_0007` Epiphany 2027: crowns and beans -5 %
 
-Dernières notes CRM :
+Latest notes CRM:
 
-- 21/04/2026, Julien (commercial) : Ne veut aucune substitution sans être prévenu : si un produit manque, appeler Philippe avant le départ du camion.
-- 17/07/2026, Julien (commercial) : Julien a négocié un prix trimestriel sur la tradition.
-- 14/10/2026, Sandrine (comptabilité) : Paie systématiquement en retard (3 à 5 semaines). Relancer par téléphone, Philippe ne lit pas les mails de relance.
+- 21/04/2026, Julien (commercial): Don't want any substitution without being warned: if a product is missing, call Philippe before the truck leaves.
+- 17/07/2026, Julien (commercial): Julien negotiated a quarterly price on tradition.
+- 14/10/2026, Sandrine (Accounting): Pay systematically late (3 to 5 weeks). Relaunching by phone, Philippe does not read the recovery emails.

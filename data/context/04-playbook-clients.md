@@ -1,34 +1,34 @@
-# Playbook relation client
+# Playbook customer relationship
 
-## Nos clients
+## Our customers
 
-- **Boulangeries artisanales** (38 clients) : Farine de tradition du Lauragais uniquement. Tourage AOP pour la viennoiserie, beurre pâtissier pour le reste.
-- **Pâtisseries, chocolatiers et salons de thé** (12 clients) : Toujours la même couverture, même origine. Fruits rouges du Lot-et-Garonne en saison.
-- **Restaurants et bistrots** (15 clients) : Crème et œufs deux fois par semaine. Chocolatines crues pour le brunch du dimanche.
-- **Sandwicheries et franchises de snacking** (8 clients) : Commande sur le portail. Veut un prix au carton fixe sur l'année.
-- **Rayons pain et terminaux de cuisson de supermarchés** (10 clients) : Commande par mail avec le numéro de commande magasin. Livraison au quai avant 8h.
-- **Traiteurs et organisateurs de réceptions** (8 clients) : Grosses commandes à J-2 pour les événements. Mini-viennoiseries pour les séminaires.
-- **Hôtels (petit-déjeuner et restaurant)** (7 clients) : Mini-viennoiseries et beurre demi-sel en portion pour le buffet. Factures au mois avec numéro de bon interne.
-- **Cuisines centrales et collectivités** (6 clients) : Ovoproduits liquides uniquement (HACCP). Bon de commande à J-3.
+- **Artisan bakeries** (38 customers) : Traditional flour of Lauragais only. AOP laminating butter for pastry, pastry butter for the rest.
+- **Pastry shops, chocolatiers and tearooms** (12 customers): The same couverture chocolate from the same origin. Red fruits from Lot-et-Garonne in season.
+- **Restaurants and bistros** (15 customers): Cream and eggs twice a week. pains au chocolat raw for Sunday brunch.
+- **Sandwich shops and snack franchises** (8 customers): Order on the portal. Wants a fixed price per carton over the year.
+- **Supermarket bakery departments and bake-off counters** (10 customers): Order by mail with the store order number. Delivery to the dock before 8h.
+- **Caterers and event organisers** (8 customers): Large orders two days in advance for events. Mini-pastries for seminars.
+- **Hotels (breakfast and restaurant)** (7 guests): Mini-pastries and half-salt butter serving for the buffet. Monthly invoices with internal voucher number.
+- **Central and community kitchens** (6 customers): Liquid egg products only (HACCP). Order form three days in advance.
 
-## Prendre une commande
+## Taking an order
 
-- Identifier le client (nom, code, ou le nom de la personne qui appelle).
-- Proposer « comme d'habitude » à partir des dernières commandes, puis faire préciser les quantités.
-- Vérifier le stock disponible et les ruptures du jour.
-- Relire la commande (produits, quantités, jour de livraison) avant de confirmer.
-- Vérifier l'encours et le statut du compte (bloqué ?) avant de valider.
+- Identify the client (name, code, or name of the person calling).
+- Propose "as usual" from the last orders, then have the quantities specified.
+- Check the stock available and current stockouts.
+- Read the order (products, quantities, day of delivery) before confirming.
+- Check the outstanding balance and account status (locked?) before validating.
 
-## Substitutions : jamais sans accord
+## Substitutions: never without agreement
 
-Un produit manquant n'est remplacé que si le client l'accepte. Certains clients refusent toute substitution (voir leur fiche) : les appeler AVANT le départ du camion.
+A missing product is only replaced if the customer accepts it. Some customers refuse any substitution (see their sheet): call them before the truck leaves.
 
-## Clients bloqués
+## Blocked customers
 
-Aucune livraison tant que la comptabilité (Sandrine (comptabilité)) n'a pas levé le blocage. Prendre le message, ne rien promettre.
+No delivery until accounting (Sandrine (Accounting)) has lifted the blockage. Take the message, promise nothing.
 
-## Réclamations et retours
+## Complaints and returns
 
-- Toute réclamation est enregistrée (événement client) avec la commande concernée.
-- Un refus à la livraison est repris par le chauffeur et déduit de la facture.
-- Un avoir au-delà de 150 € HT doit être validé par la direction.
+- Any complaint is recorded (customer event) with the relevant order.
+- A refusal to deliver is taken over by the driver and deducted from the invoice.
+- A credit note beyond 150 € excl. VAT must be validated by management.

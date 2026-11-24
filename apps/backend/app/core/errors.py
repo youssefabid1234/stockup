@@ -11,7 +11,7 @@ class HttpError(Exception):
 
 
 def not_found(what: str, id: str) -> HttpError:
-    return HttpError(404, "not_found", f"{what} introuvable : {id}")
+    return HttpError(404, "not_found", f"{what} Not found: {id}")
 
 
 def bad_request(code: str, message: str) -> HttpError:

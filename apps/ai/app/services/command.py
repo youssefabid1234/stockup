@@ -87,7 +87,7 @@ async def run_command(
     utterance: Utterance | None = None,  # …or a live recording, transcribed while it was recorded
     mime: str = "audio/webm",
     hint: str | None = None,  # STT vocabulary hint (mock STT: the transcript)
-    actor_name: str = "Commande vocale",
+    actor_name: str = "Voice control",
     speak: bool = False,
 ) -> AsyncIterator[CommandStreamEvent]:
     t0 = time.perf_counter()
@@ -108,7 +108,7 @@ async def run_command(
     text = (text or "").strip()
     yield TranscriptEvent(text=text, ms=timings.stt_ms or 0)
     if not text:
-        yield ErrorEvent(message="Rien entendu — réessayez.")
+        yield ErrorEvent(message="Not heard — try again.")
         return
 
     # 2. Agent, stateless: the history is this one utterance.

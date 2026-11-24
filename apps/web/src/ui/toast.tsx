@@ -53,7 +53,7 @@ export function Toaster() {
               <div className="text-[13px] font-medium">{t.title}</div>
               {t.description ? <div className="mt-0.5 text-[12px] text-muted-foreground">{t.description}</div> : null}
             </div>
-            <button type="button" onClick={() => dismiss(t.id)} className="text-muted-foreground hover:text-foreground" aria-label="Fermer">
+            <button type="button" onClick={() => dismiss(t.id)} className="text-muted-foreground hover:text-foreground" aria-label="Close">
               <X size={13} strokeWidth={1.75} />
             </button>
           </div>

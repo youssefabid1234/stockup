@@ -17,8 +17,8 @@ def test_demo_rule_targets_the_bakeries_and_the_82_tourage_for_the_rest_of_the_m
     assert rule["method"] == {"kind": "discount_pct", "pct": 8.0}
     assert (rule["validFrom"], rule["validTo"]) == ("2026-11-24", "2026-11-30")
     assert rule["active"] is True
-    assert rule["name"] == "Promo tourage 82 % : −8 % jusqu'au 30/11"
-    assert "démo" in rule["note"].lower()  # data modified on purpose, said in the ERP itself
+    assert rule["name"] == "82% laminating butter: 8% off until 30/11"
+    assert "demo" in rule["note"].lower()  # data modified on purpose, said in the ERP itself
 
 
 def test_the_end_date_follows_the_erp_business_date():

@@ -8,12 +8,12 @@ import { Select } from "@/ui";
 import { DocumentListPage, useDocListFilters, type DocRow } from "@/features/document/list";
 
 const STATUS_TABS = [
-  { id: "", label: "Toutes" },
-  { id: "draft", label: "Brouillons" },
-  { id: "sent", label: "Envoyées" },
-  { id: "partially_received", label: "Partielles" },
-  { id: "received", label: "Reçues" },
-  { id: "cancelled", label: "Annulées" },
+  { id: "", label: "All" },
+  { id: "draft", label: "Drafts" },
+  { id: "sent", label: "Sent" },
+  { id: "partially_received", label: "Partial" },
+  { id: "received", label: "Received" },
+  { id: "cancelled", label: "Cancelled" },
 ] as const;
 const OPEN: PurchaseOrderStatus[] = ["sent", "partially_received"];
 
@@ -31,7 +31,7 @@ export default function PurchaseOrdersPage() {
   return (
     <DocumentListPage
       kind="purchase"
-      title="Achats"
+      title="Purchases"
       icon={ShoppingBasket}
       tabs={STATUS_TABS}
       filters={f}
@@ -42,9 +42,9 @@ export default function PurchaseOrdersPage() {
       loading={isLoading}
       error={isError}
       onRetry={() => refetch()}
-      extraFilter={<Select size="sm" value={f.partner} onChange={f.setPartner} placeholder="Tous les fournisseurs" options={supplierOptions}
-        aria-label="Fournisseur" className="w-[200px]" />}
-      emptyText="Commandez auprès d'un fournisseur pour réapprovisionner le stock."
+      extraFilter={<Select size="sm" value={f.partner} onChange={f.setPartner} placeholder="All suppliers" options={supplierOptions}
+        aria-label="Supplier" className="w-[200px]" />}
+      emptyText="Place a purchase order to replenish stock."
     />
   );
 }

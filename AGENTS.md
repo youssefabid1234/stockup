@@ -2,7 +2,7 @@
 
 Read this first, then the files it points to. It applies to Claude Code, Cursor, Codex and any other coding agent.
 
-## Team 12 – règles d'équipe
+## Team 12 – Team Rules
 
 > These team rules come first. Then read the team plan [docs/team/README.md](docs/team/README.md), the contracts
 > [docs/team/interfaces.md](docs/team/interfaces.md) and **your human's task sheet** in [docs/team/tasks/](docs/team/tasks/)
@@ -36,15 +36,15 @@ to build the best voice agent on top of it (smart, fast, natural).
 |---|---|
 | [SETUP.md](SETUP.md) | installing and running the project (Docker or local), troubleshooting |
 | [GLOSSAIRE.md](GLOSSAIRE.md) | plain-French definitions of the tech terms (the team may have little software background: explain in these words) |
-| [FAQ.md](FAQ.md) | the team's frequent questions (French): where to code, how to check a change, keys, cost, deliverables |
+| [FAQ.md](FAQ.md) | the team's frequent questions (English): where to code, how to check a change, keys, cost, deliverables |
 | [BRIEF.md](BRIEF.md) | the challenge, deliverables, judging |
 | [METIER.md](METIER.md) | how food wholesale works, its vocabulary, and how each concept maps to the ERP |
 | [ERP.md](ERP.md) | the ERP itself: pages, lifecycles, business rules (pricing, stock, credit), data model, agent tools, API cheat-sheet |
 | [README.md](README.md) | architecture, configuration (`.env`), how to add a tool or a provider |
-| [TECH.md](TECH.md) | the detailed technical guide (French): request flows, backend layering, every endpoint, agent loop, `@tool` internals, frontend data flow, known pitfalls, worked extension examples |
-| [GUIDE-AGENTS.md](GUIDE-AGENTS.md) | the teaching guide (French): agent concepts (loop, harness, tools, context, prompt caching, models, Jev, evaluation, pitfalls) mapped to the kit's code |
+| [TECH.md](TECH.md) | the detailed technical guide (English): request flows, backend layering, every endpoint, agent loop, `@tool` internals, frontend data flow, known pitfalls, worked extension examples |
+| [GUIDE-AGENTS.md](GUIDE-AGENTS.md) | the teaching guide (English): agent concepts (loop, harness, tools, context, prompt caching, models, Jev, evaluation, pitfalls) mapped to the kit's code |
 | [apps/ai/README.md](apps/ai/README.md) | the agent loop, tools, providers, the voice WebSocket protocol |
-| [GUIDE-VOIX.md](GUIDE-VOIX.md) | voice-agent guide (French): latency metrics, the kit's measured numbers, speed and naturalness techniques mapped to the files to change |
+| [GUIDE-VOIX.md](GUIDE-VOIX.md) | voice-agent guide (English): latency metrics, the kit's measured numbers, speed and naturalness techniques mapped to the files to change |
 | [DESIGN.md](DESIGN.md) | the web design system (only when touching `apps/web`) |
 
 ## Layout

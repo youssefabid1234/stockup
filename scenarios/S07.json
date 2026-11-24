@@ -1,23 +1,23 @@
 {
   "id": "S07",
   "owner": "mohamed-amine",
-  "title": "Phrase orale hésitante (euh, répétitions)",
-  "why": "Intelligent + naturel : comprendre « dix de tradi » malgré les hésitations",
+  "title": "A hesitant caller uses bakery shorthand",
+  "why": "Preserve the requested products and quantities despite hesitations.",
   "client": "cli_0001",
   "turns": [
     {
-      "say": "euh bonjour euh c'est Nadine de chez euh Sarrailh, je voudrais euh dix de tradi et deux euh deux levures pour jeudi",
+      "say": "Um, hi, it's Nadine from, uh, Sarrailh. I'd like, um, ten of the traditional flour and two, uh, two blocks of yeast for Thursday.",
       "expect": {
         "tools_none": [
           "confirm_order"
         ],
         "says_any": [
           "tradi",
-          "tradition"
+          "traditional"
         ],
         "says_none": [
           "10 kilos",
-          "dix kilos"
+          "ten kilos"
         ]
       }
     }

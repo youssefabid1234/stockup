@@ -20,9 +20,9 @@ import { Combobox } from "../prices/pickers";
 import { InlineConfirmDelete } from "../prices/rules";
 
 const SCOPES: { scope: TagScope; label: string; icon: LucideIcon; path: string; noun: string }[] = [
-  { scope: "client", label: "Clients", icon: Users, path: "/clients", noun: "client" },
-  { scope: "product", label: "Produits", icon: Package, path: "/products", noun: "produit" },
-  { scope: "supplier", label: "Fournisseurs", icon: Building2, path: "/suppliers", noun: "fournisseur" },
+  { scope: "client", label: "Customers", icon: Users, path: "/clients", noun: "client" },
+  { scope: "product", label: "Products", icon: Package, path: "/products", noun: "produit" },
+  { scope: "supplier", label: "Suppliers", icon: Building2, path: "/suppliers", noun: "supplier" },
 ];
 
 export default function GroupsPage() {
@@ -35,9 +35,9 @@ export default function GroupsPage() {
   return (
     <Page>
       <PageHeader
-        title="Groupes"
+        title="Groups"
         count={tags?.length}
-        filters={<SearchInput value={q} onChange={setQ} placeholder="Chercher un groupe…" />}
+        filters={<SearchInput value={q} onChange={setQ} placeholder="Look for a band..." />}
       />
       <PageBody flush>
         <div className="grid min-h-full grid-cols-1 divide-y divide-border md:grid-cols-3 md:divide-x md:divide-y-0">
@@ -75,7 +75,7 @@ function ScopeColumn({ meta, tags, loading, q, selected, onSelect }: {
         <Icon size={14} strokeWidth={1.75} className="text-muted-foreground" />
         <span className={SECTION_LABEL}>{meta.label}</span>
         <span className="text-[11.5px] tabular-nums text-muted-foreground">{tags?.length ?? ""}</span>
-        <Button size="sm" variant="ghost" icon={Plus} className="ml-auto" onClick={() => setCreating(true)}>Groupe</Button>
+        <Button size="sm" variant="ghost" icon={Plus} className="ml-auto" onClick={() => setCreating(true)}>Group</Button>
       </header>
       {creating ? <NewGroupRow scope={meta.scope} taken={(tags ?? []).map((t) => t.id)} onDone={(id) => { setCreating(false); if (id) onSelect(id); }} /> : null}
       {loading && !tags ? (
@@ -84,9 +84,9 @@ function ScopeColumn({ meta, tags, loading, q, selected, onSelect }: {
         <EmptyState
           compact
           icon={Tags}
-          title={n ? "Aucun groupe ne correspond" : `Aucun groupe de ${meta.label.toLowerCase()}`}
-          description={n ? undefined : "Regroupez-les pour leur appliquer des règles de prix."}
-          action={n ? undefined : <Button size="sm" icon={Plus} onClick={() => setCreating(true)}>Nouveau groupe</Button>}
+          title={n ? "No group matches" : `No group of ${meta.label.toLowerCase()}`}
+          description={n ? undefined : "Bring them together to apply price rules."}
+          action={n ? undefined : <Button size="sm" icon={Plus} onClick={() => setCreating(true)}>New group</Button>}
         />
       ) : (
         <ul className="flex flex-col">
@@ -123,19 +123,19 @@ function ScopeColumn({ meta, tags, loading, q, selected, onSelect }: {
 function NewGroupRow({ scope, taken, onDone }: { scope: TagScope; taken: string[]; onDone: (id?: string) => void }) {
   const [label, setLabel] = useState("");
   const [color, setColor] = useState<TagColor>(TAG_COLORS[taken.length % (TAG_COLORS.length - 1)]);
-  const create = useApiMutation(api.tags.create, { success: (t) => `Groupe « ${t.label} » créé`, invalidate: [qk.tags.all], onSuccess: (t) => onDone(t.id) });
+  const create = useApiMutation(api.tags.create, { success: (t) => `Group " ${t.label} » created`, invalidate: [qk.tags.all], onSuccess: (t) => onDone(t.id) });
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
     if (label.trim()) create.mutate({ id: tagSlug(label, taken), scope, label: label.trim(), color });
   };
   return (
     <form onSubmit={submit} onKeyDown={(e) => { if (e.key === "Escape") { e.preventDefault(); e.stopPropagation(); onDone(); } }} className="flex flex-col gap-2 border-b border-border bg-muted/30 px-4 py-2.5">
-      <Input size="sm" autoFocus value={label} onChange={(e) => setLabel(e.target.value)} placeholder="Nom du groupe" />
+      <Input size="sm" autoFocus value={label} onChange={(e) => setLabel(e.target.value)} placeholder="Name of group" />
       <div className="flex items-center gap-2">
         <TagColorPicker value={color} onChange={setColor} />
         <span className="ml-auto flex gap-1">
-          <Button size="sm" variant="ghost" onClick={() => onDone()}>Annuler</Button>
-          <Button size="sm" variant="primary" type="submit" disabled={!label.trim()} loading={create.isPending}>Créer</Button>
+          <Button size="sm" variant="ghost" onClick={() => onDone()}>Cancel</Button>
+          <Button size="sm" variant="primary" type="submit" disabled={!label.trim()} loading={create.isPending}>Create</Button>
         </span>
       </div>
     </form>
@@ -174,10 +174,10 @@ function GroupPanel({ tag, onClose }: { tag: TagWithCount; onClose: () => void }
     void qc.invalidateQueries({ queryKey: { client: qk.clients.all, product: qk.products.all, supplier: qk.suppliers.all }[tag.scope] });
   };
   const update = useApiMutation((body: Partial<Pick<TagDef, "label" | "color" | "description">>) => api.tags.update(tag.scope, tag.id, body), {
-    success: "Groupe enregistré", invalidate: [qk.tags.all, qk.pricing.all],
+    success: "Registered group", invalidate: [qk.tags.all, qk.pricing.all],
   });
   const remove = useApiMutation(() => api.tags.remove(tag.scope, tag.id), {
-    success: `Groupe « ${tag.label} » supprimé`, onSuccess: () => { invalidate(); onClose(); },
+    success: `Group " ${tag.label} » deleted`, onSuccess: () => { invalidate(); onClose(); },
   });
   const setTags = useApiMutation((v: { id: string; tags: string[] }) => api.tags.setOn(tag.scope, v.id, v.tags), { onSuccess: invalidate });
   const addMember = (id: string) => {
@@ -197,33 +197,33 @@ function GroupPanel({ tag, onClose }: { tag: TagWithCount; onClose: () => void }
     <SidePanel
       id="group"
       title={<span className="flex items-center gap-2"><TagDot color={tag.color} />{tag.label}</span>}
-      subtitle={`Groupe de ${meta.label.toLowerCase()} · ${tag.count} ${meta.noun}${tag.count > 1 ? "s" : ""}`}
+      subtitle={`Group of ${meta.label.toLowerCase()} · ${tag.count} ${meta.noun}${tag.count > 1 ? "s" : ""}`}
       onClose={onClose}
       footer={
         <>
-          <span className="mr-auto text-[11.5px] text-muted-foreground">Supprimer retire le groupe de chaque {meta.noun} ; les règles qui le visent cessent de s'appliquer.</span>
-          <InlineConfirmDelete text onConfirm={() => remove.mutate()} pending={remove.isPending} label="Supprimer" />
+          <span className="mr-auto text-[11.5px] text-muted-foreground">Delete removes the group from each {meta.noun} The rules which apply to it cease to apply.</span>
+          <InlineConfirmDelete text onConfirm={() => remove.mutate()} pending={remove.isPending} label="Delete" />
         </>
       }
     >
       <div className="flex flex-col gap-5">
         <div className="flex flex-col gap-3">
-          <Field label="Nom"><Input value={label} onChange={(e) => setLabel(e.target.value)} onBlur={commitText} onKeyDown={(e) => e.key === "Enter" && e.currentTarget.blur()} /></Field>
-          <Field label="Description"><Textarea rows={2} value={description} onChange={(e) => setDescription(e.target.value)} onBlur={commitText} placeholder="À quoi sert ce groupe…" /></Field>
-          <Field label="Couleur"><TagColorPicker value={tag.color} onChange={(color) => update.mutate({ color })} /></Field>
-          <div className="text-[11.5px] text-muted-foreground">Identifiant <Mono>{tag.id}</Mono> · enregistré automatiquement</div>
+          <Field label="Name"><Input value={label} onChange={(e) => setLabel(e.target.value)} onBlur={commitText} onKeyDown={(e) => e.key === "Enter" && e.currentTarget.blur()} /></Field>
+          <Field label="Description"><Textarea rows={2} value={description} onChange={(e) => setDescription(e.target.value)} onBlur={commitText} placeholder="What's this group for?" /></Field>
+          <Field label="Colour"><TagColorPicker value={tag.color} onChange={(color) => update.mutate({ color })} /></Field>
+          <div className="text-[11.5px] text-muted-foreground">Identifier <Mono>{tag.id}</Mono> · automatically recorded</div>
         </div>
 
         <div className="flex flex-col gap-2">
           <div className="flex items-baseline justify-between">
-            <span className={SECTION_LABEL}>Membres</span>
+            <span className={SECTION_LABEL}>Members</span>
             <span className="text-[11.5px] tabular-nums text-muted-foreground">{members?.length ?? ""}</span>
           </div>
-          <Combobox value="" onChange={addMember} options={candidates} placeholder={`Ajouter un ${meta.noun}…`} size="sm" />
+          <Combobox value="" onChange={addMember} options={candidates} placeholder={`Add ${meta.noun}…`} size="sm" />
           {isLoading && !members ? (
             <div className="flex flex-col gap-2">{[0, 1, 2].map((i) => <Skeleton key={i} className="h-7 w-full" />)}</div>
           ) : !members?.length ? (
-            <p className="py-3 text-[12.5px] text-muted-foreground">Aucun {meta.noun} dans ce groupe.</p>
+            <p className="py-3 text-[12.5px] text-muted-foreground">None {meta.noun} in this group.</p>
           ) : (
             <ul className="rounded-[4px] border border-border">
               {members.sort((a, b) => a.name.localeCompare(b.name)).map((m) => (
@@ -232,8 +232,8 @@ function GroupPanel({ tag, onClose }: { tag: TagWithCount; onClose: () => void }
                   <span className="max-w-[45%] truncate text-[11.5px] text-muted-foreground">{m.sub}</span>
                   <button
                     type="button"
-                    aria-label={`Retirer ${m.name} du groupe`}
-                    title="Retirer du groupe"
+                    aria-label={`Remove ${m.name} Group`}
+                    title="Remove from group"
                     onClick={() => removeMember(m)}
                     className="grid size-6 place-items-center rounded-[4px] text-muted-foreground opacity-60 hover:bg-muted hover:text-destructive group-hover:opacity-100"
                   >
@@ -247,7 +247,7 @@ function GroupPanel({ tag, onClose }: { tag: TagWithCount; onClose: () => void }
 
         {tag.scope !== "supplier" ? (
           <Link to={`/prices?tab=rules&q=${encodeURIComponent(tag.label)}`} className="text-[12.5px] text-primary hover:underline">
-            Voir les règles de prix de ce groupe →
+            See the price rules of this group →
           </Link>
         ) : null}
       </div>

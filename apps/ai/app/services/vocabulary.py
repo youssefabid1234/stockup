@@ -13,7 +13,7 @@ from app.tools.erp import ErpClient
 TTL_S = 300  # refresh every 5 min
 RETRY_S = 30  # ERP down: try again sooner
 MAX_TERMS = 500
-BAKERY_TERMS = ("tradi", "tourage", "chocolatine", "gruau", "T55")
+BAKERY_TERMS = ("traditional flour", "laminating butter", "pain au chocolat", "strong flour", "T55")
 
 _cache: tuple[float, bool, list[str]] = (0.0, False, [])  # expiry, TEAM_FILLERS state, terms
 _lock = asyncio.Lock()

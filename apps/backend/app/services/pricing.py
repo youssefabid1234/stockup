@@ -78,13 +78,13 @@ def rule_price(rule: Doc, p: Doc) -> float:
 def _inapplicable(rule: Doc, qty: float, date: str) -> str | None:
     """Why a rule that targets this pair does not apply (None = applicable)."""
     if not rule["active"]:
-        return "règle inactive"
+        return "inactive rule"
     if rule.get("validFrom") and date < rule["validFrom"]:
-        return f"valable à partir du {rule['validFrom']}"
+        return f"valid from {rule['validFrom']}"
     if rule.get("validTo") and date > rule["validTo"]:
-        return f"expirée le {rule['validTo']}"
+        return f"expired on {rule['validTo']}"
     if rule.get("minQty") and qty < rule["minQty"]:
-        return f"à partir de {js_str(rule['minQty'])} unités"
+        return f"from {js_str(rule['minQty'])} Units"
     return None
 
 
@@ -93,30 +93,30 @@ def _inapplicable(rule: Doc, qty: float, date: str) -> str | None:
 
 def client_scope_label(s: Doc) -> str:
     if s["kind"] == "all":
-        return "Tous les clients"
+        return "All customers"
     if s["kind"] == "tag":
-        return f"Groupe : {tag_label('client', s['tag'])}"
+        return f"Group: {tag_label('client', s['tag'])}"
     client = crud.clients.get(s["clientId"])
     return client["name"] if client else s["clientId"]
 
 
 def product_scope_label(s: Doc) -> str:
     if s["kind"] == "all":
-        return "Tous les produits"
+        return "All products"
     if s["kind"] == "tag":
-        return f"Groupe : {tag_label('product', s['tag'])}"
+        return f"Group: {tag_label('product', s['tag'])}"
     if s["kind"] == "category":
-        return f"Catégorie : {category_label(s['category'])}"
+        return f"Category: {category_label(s['category'])}"
     product = crud.products.get(s["productId"])
     return product["name"] if product else s["productId"]
 
 
 def method_label(m: Doc) -> str:
     if m["kind"] == "fixed":
-        return f"Prix fixe {fmt_eur(m['price'])}"
+        return f"Fixed price {fmt_eur(m['price'])}"
     if m["kind"] == "discount_pct":
-        return f"-{js_str(m['pct'])} % sur prix catalogue"
-    return f"Coût +{js_str(m['pct'])} %"
+        return f"-{js_str(m['pct'])} % on catalogue price"
+    return f"Cost +{js_str(m['pct'])} %"
 
 
 def _margin(price: float, cost: float) -> float:
@@ -131,7 +131,7 @@ def resolve_for_subject(who: PriceSubject, product: Doc, qty: float = 1, date: s
     candidates: list[Doc] = []
     cp = crud.client_prices.get(f"{who.client_id}|{product['id']}") if who.client_id else None
     if cp:
-        candidates.append({"source": "client_price", "label": "Prix négocié client", "price": round2(cp["price"]), "applied": False})
+        candidates.append({"source": "client_price", "label": "Negotiated customer price", "price": round2(cp["price"]), "applied": False})
 
     ranked = [(r, _specificity(r, who, product)) for r in crud.price_rules.all()]
     ranked = sort_by(
@@ -144,12 +144,12 @@ def resolve_for_subject(who: PriceSubject, product: Doc, qty: float = 1, date: s
         reason = _inapplicable(r, qty, date)
         if not reason and not best:
             best = r
-        label = f"Règle « {r['name']} » ({client_scope_label(r['clientScope'])} × {product_scope_label(r['productScope'])}, {method_label(r['method'])})"
+        label = f"Rule \" {r['name']} » ({client_scope_label(r['clientScope'])} × {product_scope_label(r['productScope'])}, {method_label(r['method'])})"
         candidates.append({
             "source": "rule", "ruleId": r["id"], "label": label, "price": rule_price(r, product), "applied": False,
             **({"reason": reason} if reason else {}),
         })  # fmt: skip
-    candidates.append({"source": "list", "label": "Prix catalogue", "price": round2(product["price"]), "applied": False})
+    candidates.append({"source": "list", "label": "Catalogue price", "price": round2(product["price"]), "applied": False})
 
     # Winner: client price > best applicable rule > list price.
     if cp:
@@ -163,22 +163,22 @@ def resolve_for_subject(who: PriceSubject, product: Doc, qty: float = 1, date: s
         if c["applied"] or c.get("reason"):
             continue
         if winner["source"] == "client_price":
-            c["reason"] = "le prix négocié du client prime"
+            c["reason"] = "the customer's negotiated price takes precedence"
         else:
-            c["reason"] = "remplacé par une règle" if c["source"] == "list" else "règle moins prioritaire"
+            c["reason"] = "replaced by a rule" if c["source"] == "list" else "lower-priority rule"
 
     if winner["source"] == "client_price":
-        explanation = f"Prix négocié pour ce client : {fmt_eur(winner['price'])}"
+        explanation = f"Price negotiated for this customer: {fmt_eur(winner['price'])}"
     elif best:
         explanation = (
-            f"Règle « {best['name']} » ({client_scope_label(best['clientScope'])} × {product_scope_label(best['productScope'])}) : "
+            f"Rule \" {best['name']} » ({client_scope_label(best['clientScope'])} × {product_scope_label(best['productScope'])}) : "
             f"{method_label(best['method'])} → {fmt_eur(winner['price'])}"
         )
     else:
-        explanation = f"Prix catalogue : {fmt_eur(product['price'])}"
+        explanation = f"Catalogue price: {fmt_eur(product['price'])}"
     if winner["source"] == "list" and rules:
         reasons = ", ".join(c.get("reason", "") for c in candidates if c["source"] == "rule")
-        explanation += f" ({len(rules)} règle(s) non applicable(s) : {reasons})"
+        explanation += f" ({len(rules)} rule(s) not applicable: {reasons})"
 
     return {
         "clientId": who.client_id or "",
@@ -200,7 +200,7 @@ def resolve_price(client_id: str, product_id: str, qty: float = 1, date: str | N
     client = crud.clients.require(client_id)
     product = crud.products.require(product_id)
     if not qty > 0:  # also catches NaN
-        raise bad_request("invalid_qty", "La quantité doit être positive")
+        raise bad_request("invalid_qty", "The quantity must be positive")
     return resolve_for_subject(_subject_of(client), product, qty, date or today())
 
 
@@ -217,7 +217,7 @@ def price_grid(client_id: str | None = None, client_tag: str | None = None, prod
     elif client_tag:
         who = PriceSubject(tags=[client_tag])
     else:
-        raise bad_request("missing_subject", "clientId ou clientTag requis")
+        raise bad_request("missing_subject", "clientId or clientTag is required")
     nq = normalize(q) if q else None
     day = today()
     products = crud.products.filter(
@@ -284,11 +284,11 @@ def _check_rule(r: Doc) -> None:
     if ps["kind"] == "tag":
         check_tags("product", [ps["tag"]])
     if m["kind"] == "fixed" and not m["price"] > 0:
-        raise bad_request("invalid_price", "Le prix fixe doit être positif")
+        raise bad_request("invalid_price", "The fixed price must be positive")
     if m["kind"] == "discount_pct" and not 0 < m["pct"] < 100:
-        raise bad_request("invalid_pct", "La remise doit être entre 0 et 100 %")
+        raise bad_request("invalid_pct", "The discount must be between 0 and 100 per cent")
     if m["kind"] == "markup_pct" and not m["pct"] >= 0:
-        raise bad_request("invalid_pct", "La marge sur coût doit être positive")
+        raise bad_request("invalid_pct", "The cost margin must be positive")
     if r.get("validFrom") and r.get("validTo") and r["validTo"] < r["validFrom"]:
         raise bad_request("invalid_dates", "validTo avant validFrom")
 
@@ -314,7 +314,7 @@ def create_price_rule(ctx: Ctx, input: Doc) -> Doc:
     }
     crud.price_rules.put(rule)
     log_event(ctx, "price_rule.created", *_rule_entity(rule),
-              f"Nouvelle règle de prix « {rule['name']} » : {method_label(rule['method'])} "
+              f"New pricing rule « {rule['name']} » : {method_label(rule['method'])} "
               f"({client_scope_label(rule['clientScope'])} × {product_scope_label(rule['productScope'])})")  # fmt: skip
     return rule
 
@@ -326,12 +326,12 @@ def update_price_rule(ctx: Ctx, id: str, patch: Doc) -> Doc:
     _check_rule(updated)
     crud.price_rules.put(updated)
     if patch.get("active") is False:
-        what = "désactivée"
+        what = "Deactivated"
     elif patch.get("active") is True and not rule["active"]:
-        what = "réactivée"
+        what = "reactivated"
     else:
-        what = f"modifiée ({', '.join(patch)})"
-    log_event(ctx, "price_rule.updated", *_rule_entity(updated), f"Règle de prix « {updated['name']} » {what}")
+        what = f"amended ({', '.join(patch)})"
+    log_event(ctx, "price_rule.updated", *_rule_entity(updated), f"Price rule « {updated['name']} » {what}")
     return updated
 
 
@@ -339,7 +339,7 @@ def update_price_rule(ctx: Ctx, id: str, patch: Doc) -> Doc:
 def delete_price_rule(ctx: Ctx, id: str) -> Doc:
     rule = crud.price_rules.require(id)
     crud.price_rules.delete(id)
-    log_event(ctx, "price_rule.deleted", *_rule_entity(rule), f"Règle de prix « {rule['name']} » supprimée")
+    log_event(ctx, "price_rule.deleted", *_rule_entity(rule), f"Price rule « {rule['name']} » deleted")
     return {"ok": True}
 
 
@@ -351,12 +351,12 @@ def set_client_price(ctx: Ctx, client_id: str, product_id: str, price: float) ->
     client = crud.clients.require(client_id)
     product = crud.products.require(product_id)
     if not price > 0:
-        raise bad_request("invalid_price", "Le prix doit être positif")
+        raise bad_request("invalid_price", "The price must be positive")
     before = crud.client_prices.get(f"{client_id}|{product_id}")
     cp = crud.client_prices.put({"clientId": client_id, "productId": product_id, "price": round2(price)})
-    was = f" (avant {fmt_eur(before['price'])})" if before else f" (catalogue {fmt_eur(product['price'])})"
+    was = f" (before {fmt_eur(before['price'])})" if before else f" (catalogue {fmt_eur(product['price'])})"
     log_event(ctx, "client_price.set", "client", client_id,
-              f"Prix négocié {product['name']} pour {client['name']} : {fmt_eur(cp['price'])}{was}")  # fmt: skip
+              f"Negotiated price {product['name']} pour {client['name']} : {fmt_eur(cp['price'])}{was}")  # fmt: skip
     return cp
 
 
@@ -367,5 +367,5 @@ def delete_client_price(ctx: Ctx, client_id: str, product_id: str) -> Doc:
     key = f"{client_id}|{product_id}"
     crud.client_prices.require(key)
     crud.client_prices.delete(key)
-    log_event(ctx, "client_price.deleted", "client", client_id, f"Prix négocié {product['name']} supprimé pour {client['name']}")
+    log_event(ctx, "client_price.deleted", "client", client_id, f"Negotiated price {product['name']} deleted for {client['name']}")
     return {"ok": True}

@@ -72,7 +72,7 @@ from .voice_reply import spoken_reply, without_repeated_greeting
 
 client_message = TypeAdapter(VoiceClientMessage)
 
-CALL_GREETINGS = {None: "Bonjour.", "madame": "Bonjour Madame.", "monsieur": "Bonjour Monsieur."}
+CALL_GREETINGS = {None: "Hello.", "madame": "Hello, ma'am.", "monsieur": "Hello, sir."}
 GREETING_PREPARE_TIMEOUT = 3.0  # mode 4 greeting is a full sentence; plays as soon as ready
 
 
@@ -211,14 +211,14 @@ class VoiceConnection:
                     is_new=msg.is_new,
                 )
             except Exception as e:  # ERP down…: the call still works, the agent will look the client up itself
-                await self.send(VoiceErrorMessage(message=f"Fiche client indisponible : {e}"))
+                await self.send(VoiceErrorMessage(message=f"Customer form unavailable : {e}"))
                 sheet = None
         used = sheet is not None
         conv.call_context = sheet
         await self.send(
             CallerReadyMessage(
                 client_id=sheet.client_id or None if sheet else None,
-                name=sheet.name if sheet else (msg.company_name or "Appelant inconnu"),
+                name=sheet.name if sheet else (msg.company_name or "Unknown caller"),
                 contact_name=(sheet.caller_contact if sheet else None) or msg.contact_name,
                 is_new=bool(sheet and sheet.is_new),
                 status=sheet.status if sheet else None,
@@ -336,7 +336,7 @@ class VoiceConnection:
             if not heard:
                 if speaker:
                     await speaker.stop()
-                await self.send(VoiceErrorMessage(message="Rien entendu — réessayez."))
+                await self.send(VoiceErrorMessage(message="Not heard — try again."))
                 return
             conv.opening_greeting = None
             await self.send(TranscriptMessage(text=heard, final=True))
@@ -356,7 +356,7 @@ class VoiceConnection:
             route_on = heard if len(conv.pending) == 1 else listening.merge_parts(conv.pending)
             llm, model_used = pick_llm(route_on, get_llm_client(), get_fast_llm_client)
             if model_used == "rapide":
-                print(f"[router] modèle rapide pour « {heard} »", flush=True)
+                print(f"[route] fast model for \" {heard} »", flush=True)
             async for ev in agent(working, llm=llm, tools=all_tools(), mode="voice", actor_name=conv.actor_name, **extra):
                 match ev:
                     case TextEvent(delta=delta) if delta.strip():
@@ -368,7 +368,7 @@ class VoiceConnection:
                     case ToolResultEvent(name=name, ok=ok, ms=ms):
                         await self.send(AgentToolMessage(name=name, ok=ok, ms=ms))
                     case DoneEvent(message=message):
-                        spoken = spoken_reply(message.content) or "Je n’ai pas de réponse à vous donner pour le moment."
+                        spoken = spoken_reply(message.content) or "I don't have any answers to give you at this time."
                         if greeted:
                             contact = conv.call_context.caller_contact if conv.call_context else None
                             spoken = without_repeated_greeting(spoken, contact)

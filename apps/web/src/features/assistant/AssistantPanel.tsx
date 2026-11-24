@@ -14,9 +14,9 @@ import { Markdown } from "@/ui/markdown";
 import { ToolRow } from "./tools";
 
 const SUGGESTIONS: { label: string; send: boolean }[] = [
-  { label: "Qu'est-ce que commande d'habitude Le Bistrot du Port ?", send: true },
+  { label: "What is the usual order of Le Bistrot du Port?", send: true },
   { label: "Stock de bar de ligne ?", send: true },
-  { label: "Crée une pré-commande pour ", send: false },
+  { label: "Create a pre-order for ", send: false },
 ];
 
 export function AssistantPanel() {
@@ -73,11 +73,11 @@ export function AssistantPanel() {
         <Sparkles size={14} strokeWidth={1.75} className="text-violet" />
         <div className="text-[13.5px] font-semibold">Assistant</div>
         <div className="min-w-0 flex-1 truncate pl-1 font-mono text-[10.5px] text-muted-foreground" title={llm ? `${llm.provider} · ${llm.model ?? ""}` : undefined}>
-          {down ? <span className="text-destructive">hors ligne</span> : llm ? `${llm.provider}${llm.model ? ` · ${llm.model}` : ""}` : ""}
+          {down ? <span className="text-destructive">Offline</span> : llm ? `${llm.provider}${llm.model ? ` · ${llm.model}` : ""}` : ""}
         </div>
-        {items.length ? <IconButton icon={RotateCcw} label="Nouvelle conversation" size="sm" onClick={() => { chat.reset(); inputRef.current?.focus(); }} /> : null}
+        {items.length ? <IconButton icon={RotateCcw} label="New conversation" size="sm" onClick={() => { chat.reset(); inputRef.current?.focus(); }} /> : null}
         <Kbd>⌘J</Kbd>
-        <IconButton icon={X} label="Fermer" size="sm" onClick={shell.closeAssistant} />
+        <IconButton icon={X} label="Close" size="sm" onClick={shell.closeAssistant} />
       </div>
 
       <div
@@ -92,9 +92,9 @@ export function AssistantPanel() {
           <div className="flex flex-col gap-4 px-4 pb-4 pt-8">
             <div className="flex flex-col gap-1.5">
               <div className="flex h-8 w-8 items-center justify-center rounded-[4px] bg-violet/10 text-violet"><Sparkles size={16} strokeWidth={1.75} /></div>
-              <div className="mt-1 text-[14px] font-semibold">Que voulez-vous savoir ?</div>
+              <div className="mt-1 text-[14px] font-semibold">What do you want to know?</div>
               <p className="text-[12.5px] text-muted-foreground">
-                L'assistant lit l'ERP (clients, stock, commandes) et peut préparer des pré-commandes. Chaque action apparaît ici et dans l'activité.
+                The assistant reads the ERP (customers, stock, orders) and can prepare pre-orders. Each action appears here and in the activity.
               </p>
             </div>
             <div className="flex flex-col items-start gap-1.5">
@@ -122,12 +122,12 @@ export function AssistantPanel() {
         <div className="flex shrink-0 items-start gap-2 border-t border-border bg-destructive/[.05] px-4 py-2.5 text-[12px]">
           <PlugZap size={14} strokeWidth={1.75} className="mt-px shrink-0 text-destructive" />
           <div className="min-w-0 flex-1">
-            <div className="font-medium">Service IA injoignable</div>
+            <div className="font-medium">Service IA unreachable</div>
             <div className="text-muted-foreground">
               Lancez <code className="font-mono text-[11px]">pnpm --filter @kit/ai dev</code> (port 4100).
             </div>
           </div>
-          <Button size="sm" loading={health.isFetching} onClick={() => health.refetch()}>Réessayer</Button>
+          <Button size="sm" loading={health.isFetching} onClick={() => health.refetch()}>Retry</Button>
         </div>
       ) : null}
 
@@ -139,15 +139,15 @@ export function AssistantPanel() {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={onKeyDown}
-            placeholder="Demandez à l'assistant…"
+            placeholder="Ask the assistant..."
             className="max-h-[120px] min-h-[22px] flex-1 resize-none bg-transparent py-0.5 text-[13px] leading-[18px] outline-none placeholder:text-muted-foreground"
           />
           {busy ? (
-            <IconButton icon={Square} label="Arrêter (Échap)" size="sm" variant="default" onClick={chat.stop} />
+            <IconButton icon={Square} label="Stop (Echap)" size="sm" variant="default" onClick={chat.stop} />
           ) : (
             <IconButton
               icon={ArrowUp}
-              label="Envoyer (Entrée)"
+              label="Send (Enter)"
               size="sm"
               variant="default"
               disabled={!input.trim()}
@@ -157,7 +157,7 @@ export function AssistantPanel() {
           )}
         </div>
         <div className="mt-1.5 flex items-center justify-between px-0.5 text-[10.5px] text-muted-foreground">
-          <span>Entrée pour envoyer · Maj+Entrée pour un saut de ligne</span>
+          <span>Enter to send · Shift+Enter for a line jump</span>
         </div>
       </div>
     </div>
@@ -185,17 +185,17 @@ function Message({ it }: { it: ChatItem }) {
         ),
       )}
       {empty && it.status === "streaming" ? (
-        <div className="flex items-center gap-2 text-[12px] text-muted-foreground"><Spinner size={12} className="text-violet" />Réflexion…</div>
+        <div className="flex items-center gap-2 text-[12px] text-muted-foreground"><Spinner size={12} className="text-violet" />Thinking...</div>
       ) : null}
       {it.status === "error" ? (
         <div className="flex items-start gap-1.5 text-[12px] text-destructive">
           <CircleAlert size={13} strokeWidth={1.75} className="mt-[3px] shrink-0" />
-          <span>{it.error ?? "Erreur"}</span>
+          <span>{it.error ?? "Error"}</span>
         </div>
       ) : null}
-      {it.status === "stopped" ? <div className="text-[11.5px] text-muted-foreground">Réponse interrompue.</div> : null}
+      {it.status === "stopped" ? <div className="text-[11.5px] text-muted-foreground">Answer interrupted.</div> : null}
       {it.status === "done" && it.ms != null ? (
-        <div className="num font-mono text-[10.5px] text-muted-foreground">{(it.ms / 1000).toLocaleString("fr-FR", { maximumFractionDigits: 1 })} s</div>
+        <div className="num font-mono text-[10.5px] text-muted-foreground">{(it.ms / 1000).toLocaleString("en-GB", { maximumFractionDigits: 1 })} s</div>
       ) : null}
     </div>
   );

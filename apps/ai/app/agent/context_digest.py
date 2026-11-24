@@ -1,5 +1,5 @@
 """
-OWNER: Amine Khalil (T3/T4 repris de Youssef) · switch TEAM_SLIM_PROMPT · « un prompt plus léger, donc plus rapide »
+OWNER: Amine Khalil (T3/T4 taken from Youssef) · switch TEAM_SLIM_PROMPT · "a lighter, faster speed"
 
 Every model call re-reads the system prompt. Measured (mar. 24/11): ~35 k tokens per call, of which the company context
 (the 6 DATA_DIR/context/*.md files) is 55 % — mostly the product catalogue tables (aliases, prices, shelf life), which
@@ -18,13 +18,14 @@ from app.config import settings
 
 # file (matched on a word of its name) → the « ## » sections to keep (matched on the start of the heading, accents kept)
 KEEP: dict[str, tuple[str, ...]] = {
-    "entreprise": ("Équipe", "Règles de la maison", "Situation au"),
-    "journee": ("Heures limites", "Facturation"),
-    "glossaire": ("Alias ambigus", "Substitutions habituelles", "Saisonnalité"),
-    "playbook": ("Prendre une commande", "Substitutions", "Clients bloqués", "Réclamations"),
-    "prix": ("Prix de vente", "Règles de prix", "Crédit et relances"),
-    "livraisons": ("Tournées",),
+    "entreprise": ("Team", "House rules", "Current situation"),
+    "journee": ("Order cutoffs", "Invoicing"),
+    "glossaire": ("Ambiguous terms", "Usual substitutions", "Seasonality"),
+    "playbook": ("Taking an order", "Substitutions", "Blocked customers", "Complaints"),
+    "prix": ("Selling prices", "Pricing rules", "Credit and collections"),
+    "livraisons": ("Delivery routes",),
 }
+
 _SECTION = re.compile(r"^## ", re.M)
 
 
@@ -52,5 +53,5 @@ def read_context_digest() -> str:
     for p in files:
         text = p.read_text(encoding="utf-8")
         headings = _keep_for(p.name)
-        out.append(f"<!-- {p.name} (extrait) -->\n{digest(text, headings)}" if headings else f"<!-- {p.name} -->\n{text.strip()}")
+        out.append(f"<!-- {p.name} (excerpt) -->\n{digest(text, headings)}" if headings else f"<!-- {p.name} -->\n{text.strip()}")
     return "\n\n".join(out)

@@ -22,6 +22,12 @@ def env(name: str, default: str = "") -> str:
     return os.environ.get(name, "").strip() or default
 
 
+def english_speech_language(key: str) -> str:
+    # Older team .env files explicitly selected French. Keep English locale variants.
+    value = env(key, "en").replace("_", "-")
+    return value if value.lower().split("-")[0] == "en" else "en"
+
+
 @dataclass(frozen=True)
 class LLMSettings:
     provider: str  # openai | openai-compatible | anthropic | gemini | mock
@@ -71,7 +77,7 @@ class Settings:
 settings = Settings(
     port=int(env("AI_PORT", "4100")),
     erp_api_url=env("ERP_API_URL", "http://localhost:4000").rstrip("/"),
-    data_dir=(REPO_ROOT / env("DATA_DIR", "../hackathon-data")).resolve(),
+    data_dir=(REPO_ROOT / env("DATA_DIR", "./data")).resolve(),
     max_steps=int(env("AGENT_MAX_STEPS", "8")),
     llm=LLMSettings(
         provider=env("LLM_PROVIDER", "mock").lower(),
@@ -84,15 +90,15 @@ settings = Settings(
         provider=env("STT_PROVIDER", "mock").lower(),
         api_key=env("STT_API_KEY"),
         model=env("STT_MODEL"),
-        language=env("STT_LANGUAGE", "fr"),
-        mock_text=env("MOCK_STT_TEXT", "Bonjour, il vous reste du bar ?"),
+        language=english_speech_language("STT_LANGUAGE"),
+        mock_text=env("MOCK_STT_TEXT", "Hello, do you have any sea bass in stock?"),
     ),
     tts=TTSSettings(
         provider=env("TTS_PROVIDER", "mock").lower(),
         api_key=env("TTS_API_KEY"),
         model=env("TTS_MODEL"),
         voice=env("TTS_VOICE"),
-        language=env("TTS_LANGUAGE", "fr"),
+        language=english_speech_language("TTS_LANGUAGE"),
     ),
     jev=JevSettings(
         api_key=env("JEV_API_KEY"),

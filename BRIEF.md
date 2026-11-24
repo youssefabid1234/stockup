@@ -1,174 +1,174 @@
-# Hackathon voix — Brief participants
+# Voice Hackathon — Participants Briefing
 
-24 heures pour construire un agent vocal qui fait un vrai travail dans l'ERP d'un grossiste alimentaire.
-Ce brief explique le contexte, ce qu'on vous donne, ce qu'on attend et comment vous y prendre.
-L'installation est dans [SETUP.md](SETUP.md), le détail technique du kit dans le [README](README.md).
-Un mot inconnu ? [GLOSSAIRE.md](GLOSSAIRE.md) · Une question ? [FAQ.md](FAQ.md)
+24 hours to build a vocal agent that does a real job in a food wholesaler's ERP.
+This brief explains the context, what you are given, what you are expected to do, and how you can do it.
+The installation is in [SETUP.md](SETUP.md), the technical details of the kit in [README](README.md).
+An unknown word? [GLOSSAIRE.md](GLOSSAIRE.md) · A question ? [FAQ.md](FAQ.md)
 
 ---
 
-## 1. Le contexte
+## 1. The context
 
-Stockline construit le logiciel des grossistes alimentaires : marée, fruits et légumes, viande, crèmerie,
-épicerie fine, boissons. Ces entreprises achètent la nuit à leurs fournisseurs et livrent le matin des centaines
-de restaurants, poissonniers, cantines, hôtels et traiteurs.
+Stockline builds the software of food wholesalers: tidal, fruit and vegetables, meat, creamery,
+These companies buy at night from their suppliers and deliver in the morning hundreds of
+restaurants, fish shops, canteens, hotels and caterers.
 
-Dans ce métier, presque tout passe par la voix :
+In this profession, almost everything goes through the voice:
 
-- **Les clients** appellent pour commander (« comme d'habitude », à 2 h du matin), demander si le turbot sauvage
-  est arrivé, se plaindre d'une livraison, discuter un prix.
-- **Les fournisseurs** sont appelés pour comparer les prix, négocier, réserver un lot.
-- **Les transporteurs** pour réserver la tournée la plus rapide au meilleur prix.
-- **Les prospects** pour vendre et présenter les arrivages du jour.
-- **Les collègues** : « il nous reste combien de bar ? », « ce client paie à combien de jours ? », « qu'est-ce
-  qui se passe avec Ostréa ? ».
+- **Customers** call to order ("as usual", at 2 in the morning), ask if the wild turbot
+  has arrived, complaining about a delivery, discussing a price.
+- **Suppliers** are called to compare prices, negotiate, book a lot.
+- **The ** carriers to book the fastest tour at the best price.
+- **Prospects** to sell and present the arrivals of the day.
+- **Collectors**: "How many bars do we have left?", "this customer pays how many dayss?", "What is it?
+  which is going on with Ostrea?"
 
-Chaque appel finit dans l'ERP : une commande, un prix, une réclamation, un paiement, une tournée. Aujourd'hui,
-quelqu'un le retape à la main. Un bon agent vocal écoute, comprend le métier, agit dans l'ERP pendant l'appel et
-répond comme le ferait le meilleur commercial de la boîte.
+Each call ends in the ERP: an order, a price, a claim, a payment, a tour. Today,
+a good voice agent listens, understands the trade, acts in the ERP during the call and
+answer as the best salesman in the box would.
 
-## 2. Le métier
+## 2. The trade
 
-Un grossiste alimentaire achète en gros chaque nuit, stocke quelques jours au froid et livre le matin des
-centaines de professionnels, avec une marge faible et des produits qui périssent vite. Clients, prise de
-commande, catalogue, prix, achats, stocks et lots, préparation, tournées, facturation et encours, réclamations,
-saisons : chaque partie a son vocabulaire et ses pièges.
+A food wholesaler buys wholesale every night, stores some days in the cold and delivers in the morning of
+hundreds of professionals, with a weak margin and products that perish quickly. Customers, take of
+order, catalogue, prices, purchases, stocks and lots, preparation, tours, billing and outstanding, claims,
+seasons: each game has its own vocabulary and traps.
 
-**Lisez la référence complète : [METIER.md](METIER.md).** C'est la meilleure source d'idées pour choisir votre
-problème, et ce que votre agent doit comprendre pour être crédible.
+**Read the full reference: [METIER.md](METIER.md).** This is the best source of ideas to choose your
+problem, and what your agent needs to understand to be credible.
 
-## 3. Le défi
+## 3. The challenge
 
-**Construisez l'agent vocal le plus utile possible sur cet ERP.**
+**Build the most useful vocal agent on this ERP.**
 
-Il n'y a pas de sujet imposé. Votre première étape est de **choisir un vrai problème** dans ce métier, et de
-**justifier** pourquoi c'est celui-là : qui appelle qui, à quel moment, ce que ça coûte aujourd'hui, ce que
-l'agent change. Partez du contexte ci-dessus et des données de votre entreprise.
+There is no imposed subject. Your first step is to **choose a real problem** in this trade, and
+**justify** why it's this one: who calls who, when, what it costs today, what
+the agent changes. Leave the above context and your company's data.
 
-On jugera votre agent sur trois axes :
+Your agent will be judged on three lines:
 
-| Axe | Ce que ça veut dire | Comment on le voit |
+| Axis | What that means. | How we see it |
 |---|---|---|
-| **Smart** | Il connaît l'entreprise, le client, les produits, l'historique. Il ne se trompe pas, propose des alternatives, gère l'ambiguïté, agit juste dans l'ERP. | Il sait que ce chef refuse les substitutions, propose le bon remplaçant, retrouve « le loup » dans le catalogue, crée la bonne commande. |
-| **Fast** | La réponse arrive vite, sans blanc gênant. | Délai fin de parole → premier son, nombre d'allers-retours modèle/outils, coût par appel. |
-| **Natural** | On oublie que c'est une machine. | Phrases courtes, ton juste, interruptions gérées, chiffres dits à l'oral, relecture de commande, bruit de fond. |
+| **Smart** | He knows the company, the customer, the products, the history. He is not mistaken, offers alternatives, manages ambiguity, acts just in the ERP. | He knows that this chef refuses substitutions, proposes the right replacement, finds "the wolf" in the catalog, creates the right order. |
+| **Fast** | The answer comes quickly, without annoying white. | End of speech time → first sound, number of round trips model/tools, cost per call. |
+| **Natural** | We forget it's a machine. | Short phrases, fair tone, managed interruptions, spoken numbers, command rereading, background noise. |
 
-Le jury testera votre agent **en direct**, sur des scénarios que vous ne connaîtrez pas à l'avance.
+The jury will test your agent **in direct**, on scenarios you won't know in advance.
 
-## 4. Ce qu'on vous donne
+## 4. What we give you
 
-| Quoi | Détail |
+| What? | Detail |
 |---|---|
-| **Le kit (repo code)** | Un ERP complet et simple : clients, fournisseurs, produits, stocks et lots, pré-commandes, commandes, factures, paiements, encours, tournées, prix négociés, historique clients/fournisseurs, table de contexte. Backend Python (FastAPI), service IA Python, frontend React. |
-| **Le guide de l'ERP** | [ERP.md](ERP.md) : chaque page, les cycles de vie, les règles métier (prix, stock, crédit), le modèle de données, les outils de l'agent et l'API. |
-| **Un agent de base** | Une boucle agent simple, ~16 outils qui lisent et écrivent dans l'ERP, des clients LLM / STT / TTS interchangeables (OpenAI, Anthropic, Gemini, Deepgram, Soniox, ElevenLabs, Gradium, ou tout endpoint compatible OpenAI), un chat, un mode vocal push-to-talk et un mode commande vocale. |
-| **La simulation d'appel** | Pas de numéro de téléphone : une page **Voix** à deux pistes audio. Maintenez Espace pour parler en tant que client, relâchez, l'agent répond. L'ERP se met à jour en direct sous vos yeux. |
-| **Les données (dans votre zip, `./data`)** | Une entreprise fictive par équipe (24 en tout), avec ~100 clients, ses fournisseurs, son catalogue et 3 ans d'historique : commandes à rythmes variés, saisons, réclamations, retards de paiement, personas détaillés, documents de l'entreprise. |
-| **Des clés** (déjà dans votre `.env`) | LLM (Anthropic), transcription (Soniox), voix (ElevenLabs), Jev (modèle de décision rapide). Avec des plafonds : surveillez votre consommation. |
-| **De l'aide** | L'équipe Stockline sur place toute la nuit pour vous débloquer. |
+| **The kit (repo code)** | A complete and simple ERP: customers, suppliers, products, stocks and lots, pre-orders, orders, invoices, payments, outstanding, tours, negotiated prices, historical customers/suppliers, context table. Backend Python (FastaPI), service AI Python, frontend React. |
+| **The ERP** guide | [ERP.md](ERP.md): each page, life cycles, business rules (price, stock, credit), data model, agent tools and API. |
+| **A basic agent** | A single agent loop, ~16 tools that read and write in the ERP, LLM / STT / TTS customers interchangeable (OpenAI, Anthropic, Gemini, Deepgram, Soniox, ElevenLabs, Gradium, or any OpenAI compatible endpoint), a chat, a push-to-talk voice mode and a voice control mode. |
+| **Call simulation** | No phone number: one page **Voix** with two audio tracks. Keep Space to speak as a client, release, the agent responds. The ERP updates live before your eyes. |
+| **Data (in your zip, `./data`)** | A team fictitious company (24 in total), with ~100 customers, its suppliers, its catalog and 3 years of history: orders with varied rhythms, seasons, claims, late payment, detailed personas, company documents. |
+| **Keys** (already in your `.env`) | LLM (Anthropic), transcription (Soniox), voice (ElevenLabs), Jev (fast decision model).With ceilings: monitor your consumption. |
+| **Help** | The Stockline team on site all night to unlock you. |
 
-Tout tourne aussi **sans clé** : des faux modèles (mock) répondent de façon déterministe et appellent le vrai ERP.
-Utile pour développer et tester sans brûler vos crédits.
+Everything also spins ** without keys**: fake models (mock) answer deterministically and call the real ERP.
+Useful to develop and test without burning your credits.
 
-## 5. Démarrer
+## 5. Start
 
-Chaque équipe reçoit un **zip** : le kit, les données de son entreprise (`./data`) et sa configuration (`.env`,
-privé). **Suivez [SETUP.md](SETUP.md)** : installer Docker (à faire avant le hackathon), `make setup`, premier
-appel, repo d'équipe. Comptez 20 à 30 minutes la première fois.
+Each team receives a **zip**: kit, company data (`./data`) and configuration (`.env`,
+**Follow [SETUP.md](SETUP.md)**: Install Docker (to be done before hackathon), `make setup`, first
+Call, team repo. Count 20 to 30 minutes the first time.
 
-Ensuite :
+Next:
 
-1. Ouvrez **http://localhost:5173** et parcourez l'ERP : clients, commandes, stocks, Contexte. Ce sont les données
-   de **votre** entreprise.
-2. Page **Voix** : maintenez Espace et parlez comme un client. Regardez la transcription, les outils appelés,
-   les temps de réponse, et l'ERP qui se met à jour.
-3. Lisez `apps/ai/app/agent/loop.py` (la boucle) et `apps/ai/app/tools/` (les outils). C'est là que vous passerez
-   la plupart de votre temps. Le plan du projet : [SETUP.md, Comment le projet est organisé](SETUP.md#comment-le-projet-est-organisé).
+1. Open **http://localhost:5173** and browse the ERP: customers, orders, stocks, Context. These are the data
+   from **your** company.
+2. Page **Voix**: Keep Space and speak like a client. Look at the transcription, the tools called,
+   the response times, and the ERP that is updating.
+3. Read `apps/ai/app/agent/loop.py` (the loop) and `apps/ai/app/tools/` (the tools). This is where you will pass
+   Most of your time. Project plan: [SETUP.md, How the project is organised](SETUP.md#comment-le-projet-est-organisé).
 
-## 6. Comment s'y prendre
+## 6. How to do it
 
-Un découpage qui marche bien sur 24 h :
+A cut that works well on 24 h :
 
-1. **Choisir le problème (H0 → H2).** Lisez les fiches clients (`data/context/clients/`) et les documents de
-   l'entreprise (`data/context/`). Qui appelle ?
-   Pour quoi faire ? Qu'est-ce qui rate aujourd'hui ? Choisissez **un** cas d'usage et écrivez-le dans
-   `DECISIONS.md` avec votre justification.
-2. **Écrire vos scénarios de test (H2 → H3).** 5 à 10 appels réalistes, dont des cas difficiles : client
-   ambigu, produit en rupture, client bloqué pour impayés, changement d'avis en cours d'appel, bruit. Ce sont
-   vos tests de non-régression pour toute la nuit.
-3. **Faire marcher le parcours de bout en bout (H3 → H8).** Vraies clés, vrai micro, un appel complet qui
-   finit avec la bonne action dans l'ERP. Moche mais complet.
-4. **Mesurer, puis améliorer (H8 → H20).** Notez la latence, le coût et les erreurs de chaque scénario.
-   Attaquez le pire des trois axes en premier. Retestez après chaque changement.
-5. **Préparer la démo (H20 → H24).** Gelez le code, enregistrez la vidéo, préparez les slides, répétez la démo
-   live.
+1. **Choose problem (H0 → H2).** Read customer cards (`data/context/clients/`) and related documents
+   the enterprise (`data/context/`). Who calls ?
+   What to do? What is missing today? Choose **un** case and write it in
+   `DECISIONS.md` with your justification.
+2. **Write your test scenarios (H2 → H3).** 5 to 10 realistic calls, including difficult cases: customer
+   ambiguous, broken product, customer blocked for unpaid, change of mind during call, noise. These are
+   your non-regression tests for the whole night.
+3. **Take the course from end to end (H3 → H8).** True Keys, true microphone, a complete call that
+   ends with the right action in the ERP. Mocking but complete.
+4. **Measuring, then improving (H8 → H20).** Note the latency, cost and errors of each scenario.
+   Attack the worst of the three axes first. Test each change.
+5. **Prepare demo (H20 → H24).** Freeze code, save video, prepare slides, repeat demo
+   Live.
 
-Notez chaque choix important dans `DECISIONS.md` au fil de l'eau (quoi, pourquoi, ce que vous avez essayé et
-abandonné). Le jury le lira.
+Note each important choice in `DECISIONS.md` along the water (what, why, what you tried and
+The jury will read it.
 
-## 7. Pistes techniques
+## 7. Technical tracks
 
-Ce ne sont pas des sujets, juste des directions qui font la différence. Nouveaux sur les agents LLM ? Lisez
-[GUIDE-AGENTS.md](GUIDE-AGENTS.md) : boucle, outils, contexte, cache de prompt, choix du modèle, Jev, mesure, pièges.
-Pour la voix (latence fin de parole → premier son, mesures du kit, techniques pour aller plus vite et sonner
-naturel, et où les brancher) : [GUIDE-VOIX.md](GUIDE-VOIX.md).
+These are not subjects, just directions that make the difference. New on Agents LLM? Read
+[GUIDE-AGENTS.md](GUIDE-AGENTS.md): loop, tools, context, quick cache, model choice, Jev, measurement, traps.
+For the voice (end of speech latency → first sound, kit measurements, techniques to go faster and ring
+natural, and where to plug them): [GUIDE-VOIX.md](GUIDE-VOIX.md).
 
-**Pour aller vite**
+**To go fast**
 
-- Modèles en streaming partout : STT avec transcriptions partielles, LLM en streaming, TTS phrase par phrase.
-- Speech-to-speech (modèles audio natifs) pour supprimer des étapes.
-- Paralléliser : lancer les outils indépendants ensemble, précharger la fiche du client dès le début de l'appel,
-  anticiper l'appel d'outil suivant.
-- Un petit modèle rapide pour les tours simples (Jev pour les décisions), un gros seulement quand il le faut.
-- Du code déterministe pour ce qui n'a pas besoin d'un modèle : quantités, unités, dates.
+- Streaming templates everywhere: STT with partial transcriptions, LLM en streaming, TTS sentence par phrase.
+- Speech-to-speech (native audio models) to remove steps.
+- Parallelize: launch the independent tools together, preload the customer's card from the beginning of the call,
+  anticipate the next tool call.
+- A small quick model for single spins (Jev for decisions), a big one only when needed.
+- Deterministic code for what doesn't need a model: quantities, units, dates.
 
-**Pour être smart**
+**To be smart**
 
-- Gestion du contexte : mettre dans le prompt seulement ce dont le tour a besoin.
-- La **table de contexte** : chaque fait est rattaché à un client, un fournisseur, un produit ou une catégorie.
-  Construisez dessus : recherche sémantique, graphe entre entités, mémoire de ce que l'agent apprend en appel.
-- Retrieval sur l'historique : réclamations ouvertes, habitudes d'achat, prix négociés.
-- Orchestration : un agent principal qui pilote des agents spécialisés, des outils composites (recherche + stock
-  + prix client en un seul appel), un état de dialogue pour la prise de commande.
+- Context management: to put in the prompt only what the turn needs.
+- Context **table**: Each fact is related to a customer, supplier, product or category.
+  Build on it: semantic search, graph between entities, memory of what the agent learns on appeal.
+- Retrival on history: open claims, buying habits, negotiated prices.
+- Orchestration: a principal agent who pilot specialized agents, composite tools (search + stock)
+  + customer price in one call), a dialog state for the purchase of orders.
 
-**Pour être naturel**
+**To be natural**
 
-- Tours de parole courts, interruptions (barge-in), petites phrases d'attente pendant que les outils tournent.
-- Relire la commande avant de valider, dire les chiffres et unités à l'oral (« douze kilos », « dix-huit euros
-  cinquante »).
-- Tester avec du bruit de fond (marché, cuisine, camion) et des accents.
-- Le bon ton pour chaque interlocuteur : les fiches clients disent comment chacun parle.
+- Short speaking tours, interruptions (barge-in), small waiting phrases while the tools turn.
+- Reread the order before validating, say the numbers and units in the mouth ("12 kilos", "18 euros
+  fifty").
+- Test with background noise (market, kitchen, truck) and accents.
+- The right tone for each contact person: the customer records tell us how each person speaks.
 
-## 8. Livrables et démo finale
+## 8. Finishables and final demo
 
-À rendre avant la fin des 24 h :
+To be returned before the end of the 24 h:
 
-- [ ] **Le repo GitHub** de votre équipe, qui tourne avec `make setup` une fois le dossier `data/` de votre zip
-  remis en place (`data/seed/` n'est pas dans git).
-- [ ] **`DECISIONS.md`** : le problème choisi et pourquoi, vos choix techniques, ce qui a marché et ce qui n'a
-  pas marché, vos mesures (latence, coût, taux de réussite des scénarios).
-- [ ] **Les slides** : 5 minutes maximum.
-- [ ] **Une vidéo** de démo : 2 minutes maximum, un vrai appel de bout en bout.
-- [ ] **La démo live** : le jury appelle votre agent, en direct, sur ses propres scénarios.
+- [ ] **The GitHub** repo of your team, which runs with `make setup` once the `data/` folder of your zip
+  reset (`data/seed/` is not in git).
+- [ ] **`DECISIONS.md`**: the problem chosen and why, your technical choices, what worked and what didn't
+  your measures (latency, cost, success rate of scenarios).
+- [ ] **The slides**: 5 minutes maximum.
+- [ ] **A demo video**: 2 minutes maximum, a real call from end to end.
+- [ ] **The live** demo: The jury calls your agent live on its own scenarios.
 
-**Prix principal** : le meilleur agent sur smart, fast et natural, plus la pertinence du problème choisi.
+**Main prize**: the best agent on smart, fast and natural, plus the relevance of the chosen problem.
 
-**Prix spéciaux** :
+**Special prices** :
 
-| Prix | Pour |
+| Price | For |
 |---|---|
-| Le plus rapide | la plus faible latence fin de parole → premier son, mesurée en démo |
-| Le moins cher | le plus faible coût par appel réussi |
-| Le plus naturel | celui qu'on prend pour un humain |
-| Le plus smart | celui qui gère le mieux les cas difficiles du jury |
+| Fastest | the lowest late speech latency → first sound, measured in demo |
+| The cheapest | the lowest cost per successful call |
+| The most natural | The one you think of as a human |
+| The smartest | the one who best manages the difficult cases of the jury |
 
-## 9. Règles et aide
+## 9. Rules and aid
 
-- Vous pouvez tout modifier dans le kit : ERP, outils, prompts, frontend, données. Gardez-le démarrable avec
-  `make setup` pour que le jury puisse le lancer.
-- Toutes les données sont fictives. Ne mettez jamais de clé API dans le repo : elles vont dans `.env`, qui est
-  ignoré par git.
-- Les clés ont un plafond. Développez avec les mocks, testez avec les vraies clés.
-- Bloqués plus de 20 minutes ? Venez voir l'équipe Stockline. On est là pour ça.
-- Installation et problèmes courants : [SETUP.md](SETUP.md). Architecture, configuration, ajouter un outil ou un
-  fournisseur de modèle : [README](README.md).
+- You can change everything in the kit: ERP, tools, prompts, frontend, data. Keep it started with
+  `make setup` so the jury can throw it.
+- All data is fictitious. Never put a API key in the repo: they go to `.env`, which is
+  Ignored by git.
+- The keys have a ceiling. Develop with the mocks, test with the real keys.
+- Blocked more than 20 - Come and see the team. Stockline. That's why we're here..
+- Installation and common problems: [SETUP.md](SETUP.md). Architecture, configuration, add tool or tool
+  Model supplier: [README](README.md).

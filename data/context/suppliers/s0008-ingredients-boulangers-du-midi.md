@@ -1,58 +1,58 @@
 # Ingrédients Boulangers du Midi (`sup_0008`)
 
-> Fiche persona fournisseur. Historique complet dans `seed/supplierEvents.json` (filtrer sur `supplierId: "sup_0008"`).
+> Full history in `seed_en/supplierEvents.json` (filter on `supplierId: "sup_0008"`).
 
 | | |
 |---|---|
-| Ville | Saint-Jory |
-| Conditions | J+1, paiement 30 jours, minimum 300 € HT |
-| Fournisseur depuis | 03/06/1996 |
-| Groupes | grossiste, local |
-| Fiabilité | ★★★ — souplesse ★★☆ — fidèle, pressé |
+| City | Saint-Jory |
+| Conditions | J+1, payment 30 days, minimum 300 € excl. VAT |
+| Supplier since | 03/06/1996 |
+| Groups | wholesaler, local |
+| Reliability | ★★★ — flexibility ★★☆ — faithful, pressed |
 
-## Qui ils sont
+## Who they are
 
-Le grossiste de proximité pour la levure et l'épicerie pâtissière, livré chaque nuit : notre filet de sécurité.
+The local wholesaler for yeast and pastry shop, delivered every night: our safety net.
 
-## Les personnes
+## People
 
-- **Laurent Bergès** — Responsable dépôt · 05 61 35 72 08 · l.berges@ibm-saintjory.fr
-  - Comment il/elle parle : Rapide, pragmatique, répond au téléphone en conduisant le chariot.
-  - Tics : « C'est bon, c'est noté. » · « La levure part à 4h, t'inquiète. »
+- **Laurent Bergès** — Head of Deposit · 05 61 35 72 08 · l.berges@ibm-saintjory.fr
+  - Speaking style: Fast, pragmatic, answers the phone while driving the cart.
+  - Typical phrases: "It's good, it's noted." · "The yeast leaves at 4h, don't worry."
 
-## Ce qu'ils vendent
+## What they sell
 
-Grossiste en ingrédients boulangers à Saint-Jory : levure fraîche et sèche, améliorants, sucres, nappages, préparations pâtissières, margarines. Livraison chaque nuit.
+Wholesale baker ingredients in Saint-Jory: fresh and dry yeast, improving, sugars, nappings, pastry preparations, margarines. Delivery every night.
 
-Fournisseur principal de : Levure fraîche boulangère (pain de 500 g) (`prd_0011`), Levure sèche instantanée (paquet 500 g) (`prd_0012`), Levain de seigle déshydraté (sac 1 kg) (`prd_0013`), Améliorant de panification (sac 10 kg) (`prd_0014`), Sucre semoule (sac 25 kg) (`prd_0015`), Sucre glace (sac 10 kg) (`prd_0016`), Sucre en grains perlé (sac 10 kg) (`prd_0017`), Sel fin de mer (sac 25 kg) (`prd_0018`), Nappage neutre à chaud (seau 7 kg) (`prd_0019`), Fondant pâtissier blanc (seau 7 kg) (`prd_0020`), Préparation pour crème pâtissière à froid (sac 10 kg) (`prd_0021`), Extrait de vanille liquide (bouteille 1 L) (`prd_0023`), Margarine de feuilletage (carton 10 kg) (`prd_0030`).
+Main supplier of: Fresh baker's yeast (500 g block) (`prd_0011`), Instant dry yeast (500 g packet) (`prd_0012`), Dehydrated rye sourdough (1 kg bag) (`prd_0013`), Bread improver (10 kg bag) (`prd_0014`), Caster sugar (25 kg bag) (`prd_0015`), Icing sugar (10 kg bag) (`prd_0016`), Pearl sugar (10 kg bag) (`prd_0017`), Fine sea salt (25 kg bag) (`prd_0018`), Neutral hot glaze (7 kg tub) (`prd_0019`), White pastry fondant (7 kg tub) (`prd_0020`), Cold-set crème pâtissière mix (10 kg bag) (`prd_0021`), Liquid vanilla extract (1 L bottle) (`prd_0023`), Puff pastry margarine (10 kg carton) (`prd_0030`).
 
-## Négociation
+## Negotiation
 
-- Tarif annuel, remise de 2 % au-delà de 5 000 € par mois.
+- Annual rate, discount of 2 % beyond 5 000 € per month.
 
-## Ce qui les agace
+## What frustrates them
 
-- Les pains de levure retournés non réfrigérés.
+- Unrefrigerated returned yeast loaves.
 
-## Historique marquant
+## A brief history
 
-- **06/02/2026** · qualité · Refus à réception : levure fraîche boulangère (pain de 500 g)
-- **14/02/2026** · avoir · Avoir reçu : ACH-2026-000139
-- **09/07/2026** · qualité · Refus à réception : margarine de feuilletage (carton 10 kg)
-- **17/07/2026** · avoir · Avoir reçu : ACH-2026-000717
-- **01/09/2026** · qualité · Refus à réception : levure fraîche boulangère (pain de 500 g)
-- **05/09/2026** · avoir · Avoir reçu : ACH-2026-000901
-- **09/10/2026** · livraison · Livraison incomplète : ACH-2026-001054
-- **16/10/2026** · livraison · Livraison incomplète : ACH-2026-001080
-- **17/10/2026** · livraison · Livraison incomplète : ACH-2026-001083
-- **30/10/2026** · livraison · Livraison incomplète : ACH-2026-001128
+- **06/02/2026** · quality · Refusal at receipt : Fresh baker's yeast (500 g block)
+- **14/02/2026** · have · have received : ACH-2026-000139
+- **09/07/2026** · quality · Refusal at receipt : Puff pastry margarine (10 kg carton)
+- **17/07/2026** · have · have received : ACH-2026-000717
+- **01/09/2026** · quality · Refusal at receipt : Fresh baker's yeast (500 g block)
+- **05/09/2026** · have · have received : ACH-2026-000901
+- **09/10/2026** · Delivery · Incomplete delivery : ACH-2026-001054
+- **16/10/2026** · Delivery · Incomplete delivery : ACH-2026-001080
+- **17/10/2026** · Delivery · Incomplete delivery : ACH-2026-001083
+- **30/10/2026** · Delivery · Incomplete delivery : ACH-2026-001128
 
-Historique complet : 76 événements.
+Full history: 76 events.
 
-## Dossiers ouverts aujourd'hui
+## Open cases
 
-Aucun.
+None.
 
-## Comment leur parler
+## How to talk to them
 
-- Commander avant 18h pour la nuit.
+- Order before 18h for the night.

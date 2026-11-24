@@ -1,77 +1,77 @@
 # Restaurant Jean (C0023, `cli_0023`)
 
-> Fiche persona pour jouer ce client au téléphone. L'historique complet est dans `seed/clientEvents.json` (filtrer sur `clientId: "cli_0023"`).
+> Customer profile for phone role-play. The full history is in `seed_en/clientEvents.json` (filter on `clientId: "cli_0023"`).
 
 | | |
 |---|---|
-| Type | Restaurant (Restaurants et bistrots) — 127 rue de Metz, 31500 Toulouse (Côte Pavée) |
-| Zone | Toulouse centre & faubourgs — livré wed, sat |
-| Statut | **active** — perdu (plus de commande), dernière livraison le 18/02/2026 |
-| Commercial | Marion Escudié |
-| Client depuis | 20/12/2013 (12 ans) |
-| Paiement | 30 jours — paie à l'échéance, sans histoire |
-| Encours | 0,00 € TTC (plafond 2 000 €) |
-| Tempérament | chaleureux, pressé, désorganisé — qualité ★★☆, prix ★☆☆, risque de départ élevé |
+| Type | Restaurant (Restaurants and bistros) — 127 rue de Metz, 31500 Toulouse (Côte Pavée) |
+| Area | Toulouse centre & suburbs — delivered Wed, Sat |
+| Status | **active** — lost (more order), last delivery on 18/02/2026 |
+| Sales representative | Marion Escudié |
+| Customer since | 20/12/2013 (12 years) |
+| Payment | 30 days — Pays on due date, without history |
+| Outstanding balance | 0,00 € incl. VAT (ceiling 2 000 €) |
+| Temperament | warm, pressed, disorganized — quality ★★☆, price ★☆☆, high risk of losing the customer |
 
-## Qui ils sont
+## Who they are
 
-Restaurant traditionnel de Toulouse (Côte Pavée), crêpes à la Chandeleur et desserts maison le week-end.
+Traditional restaurant of Toulouse (Côte Pavée), pancakes with Chandeleur and homemade desserts on weekends.
 
-## Les personnes
+## People
 
-- **Wei Garcia** — Chef-patron · 06 57 15 19 69 · wei@restaurantjean.fr
-  - Comment il/elle parle : Appelle tard, oublie des produits, rappelle dix minutes après.
-  - Tics : « Je vous rappelle, j'ai un livreur. » · « C'était quoi déjà la dernière fois ? »
+- **Wei Garcia** — Chief Executive Officer · 06 57 15 19 69 · wei@restaurantjean.fr
+  - Speaking style: Call late, forget about products, call back ten minutes later.
+  - Typical phrases: "I'll call you back, I have a delivery man." · "What was the last time?"
 - **Damien Rey** — Chef de cuisine · 06 18 66 91 42
-  - Comment il/elle parle : Très sympathique, prend des nouvelles, tutoie vite.
-  - Tics : « Passez goûter le nouveau plat ! » · « Bisous à l'équipe. »
+  - Speaking style: Very friendly, take news, quickly tutoe.
+  - Typical phrases: "Come and taste the new dish!" · "Bives to the team."
 
-## Ce qu'ils achètent et comment
+## What they buy and how
 
-Commande deux fois par semaine, en général la veille entre 14h et 18h, surtout par téléphone et WhatsApp. Produits habituels : crème liquide UHT 35 % (brique 1 L), œufs plein air calibre M (plateau de 30), beurre pâtissier 82 % (carton 10 kg), lait entier UHT (brique 1 L), margarine de feuilletage (carton 10 kg), citron jaune (colis 5 kg), beurre de tourage AOP Charentes-Poitou 84 % (plaque 2 kg).
+Order twice a week, usually the day before between 14h and 18h, especially by phone and WhatsApp. Regular products: UHT liquid cream 35% (1 L carton), Free-range eggs, size M (tray of 30), 82% pastry butter (10 kg carton), Whole UHT milk (1 L carton), Puff pastry margarine (10 kg carton), Lemon (5 kg case), AOP Charentes-Poitou 84% laminating butter (2 kg sheet).
 
-Fiche CRM : _Chocolatines crues pour le brunch du dimanche. Commande l'après-midi entre deux services. Livré mer. sam. Accepte les substitutions équivalentes si on prévient._
+CRM record : _Chocolatines raw for Sunday brunch. Order the afternoon between two services. Delivered sea. sam. Accept equivalent substitutions if notified._
 
-## Ce qui les agace
+## What frustrates them
 
-- Les livraisons pendant le service
-- Les œufs cassés
+- Delivery during service
+- Broken eggs
 
-## Historique marquant
+## A brief history
 
-- **10/03/2024** · avoir · Avoir qualité : lait entier UHT (brique 1 L)
-- **16/03/2024** · carte · Nouvelle carte de printemps
-- **15/05/2024** · qualité · Qualité : crème liquide UHT 35 % (brique 1 L)
-- **28/09/2024** · carte · Carte d'automne
-- **08/01/2025** · prix · Tarifs 2025
-- **28/07/2025** · note · Fermeture d'été 2025
-- **30/09/2025** · carte · Carte d'automne
-- **21/12/2025** · demande spéciale · Fêtes 2025 : réservation de volumes
-- **17/01/2026** · prix · Tarifs 2026
-- **22/01/2026** · risque de départ · Commandes en baisse
-- **17/03/2026** · note · Plus de commande depuis un mois
-- **23/03/2026** · carte · Nouvelle carte de printemps
+- **10/03/2024** · Have quality : Whole UHT milk (1 L carton)
+- **16/03/2024** · map · New spring map
+- **15/05/2024** · Quality · Quality : UHT liquid cream 35% (1 L carton)
+- **28/09/2024** · map · Autumn card
+- **08/01/2025** · prices · Rates 2025
+- **28/07/2025** · note · Summer closure 2025
+- **30/09/2025** · map · Autumn card
+- **21/12/2025** · special request · Holidays 2025 : volume reservation
+- **17/01/2026** · prices · Rates 2026
+- **22/01/2026** · risk of losing the customer · Lower orders
+- **17/03/2026** · note · More orders for a month
+- **23/03/2026** · map · New spring map
 
-Historique complet : 50 événements (9 qualité, 9 visite, 8 appel, 4 demande spéciale, 4 note, 4 prix, 4 compliment, 4 carte, 1 ouverture, 1 livraison, 1 avoir, 1 risque de départ).
+Full history: 50 events (9 quality, 9 visit, 8 call, 4 special request, 4 note, 4 price, 4 compliment, 4 card, 1 opening, 1 delivery, 1 have, 1 risk of losing the customer).
 
-## Dossiers ouverts aujourd'hui
+## Open cases
 
-Aucun.
+None.
 
-## Comment leur parler
+## How to talk to them
 
-- Être bref, le chef est en cuisine.
-- Ne pas appeler entre 12h et 14h30.
+- To be brief, the chef is in the kitchen.
+- Do not call between 12h and 14h30.
 
-## Prix & groupe
+## Price & group
 
-Groupes : **Restaurants** (`chr`), **Clients perdus** (`perdus`).
-Pas de prix négocié.
+Groups: **Restaurants** (`chr`), **Lost customers** (`perdus`).
+No negotiated prices.
 
-Règles de prix qui peuvent s'appliquer :
-- `prl_0006` Épiphanie 2027 : poudre d'amande −6 % dès 20 kg
-- `prl_0007` Épiphanie 2027 : couronnes et fèves −5 %
+Price rules that may apply:
+- `prl_0006` Epiphany 2027: almond powder -6 % from 20 kg
+- `prl_0007` Epiphany 2027: crowns and beans -5 %
 
-Dernières notes CRM :
+Latest notes CRM:
 
-Aucune.
+None.

@@ -1,26 +1,26 @@
-# ERP.md — le guide de l'ERP du kit
+# ERP.md — the guide to the ERP kit
 
-Ce fichier explique l'ERP du kit : ce qu'il couvre, comment il marche, comment s'en servir (écran et API).
-Tout ce qui est écrit ici est vérifié dans le code. En cas de doute, le code fait foi :
-`apps/backend/app/services/` (règles métier), `apps/backend/app/schemas/domain.py` (modèle de données).
+This file explains the ERP of the kit: what it covers, how it works, how to use it (screen and API).
+Everything written here is checked in the code. In case of doubt, the code is authentic:
+`apps/backend/app/services/` (business rules), `apps/backend/app/schemas/domain.py` (data model).
 
-Les autres docs, à ne pas confondre :
+The other docs, not to be confused:
 
-| Doc | Pour quoi |
+| Doc | For what? |
 |---|---|
-| [BRIEF.md](BRIEF.md) | le défi, les livrables, le jury |
-| [METIER.md](METIER.md) | le métier de grossiste alimentaire et son vocabulaire |
-| [SETUP.md](SETUP.md) | installation pas à pas |
-| [README.md](README.md) | architecture, configuration, commandes |
-| [AGENTS.md](AGENTS.md) | règles pour les agents de code |
-| [apps/ai/README.md](apps/ai/README.md) | boucle agent, outils, fournisseurs LLM/STT/TTS, protocole WebSocket voix |
+| [BRIEF.md](BRIEF.md) | challenge, deliverables, jury |
+| [METIER.md](METIER.md) | the trade of food wholesaler and his vocabulary |
+| [SETUP.md](SETUP.md) | step by step installation |
+| [README.md](README.md) | architecture, configuration, commands |
+| [AGENTS.md](AGENTS.md) | rules for code agents |
+| [apps/ai/README.md](apps/ai/README.md) | agent loop, tools, suppliers LLM/STT/TTS, WebSocket voice protocol |
 
 ---
 
-## 1. Ce que couvre l'ERP
+## 1. What the ERP covers
 
-Un grossiste (marée, fruits et légumes, crèmerie, épicerie) vend à des restaurants, poissonneries, cantines…
-et achète à des fournisseurs. L'ERP suit tout le flux, de la commande au paiement.
+A wholesaler (marée, fruit and vegetables, cream shop, grocery store) sells to restaurants, fish shops, canteens...
+and buys from suppliers. The ERP tracks the entire flow, from order to payment.
 
 ```
 VENTES
@@ -43,166 +43,166 @@ AUTOUR
  journal d'activité en direct (qui a fait quoi : équipe, assistant IA, agent vocal)
 ```
 
-Trois briques :
+Three bricks:
 
-| Brique | Où | Port |
+| carton | Where | Port |
 |---|---|---|
-| API ERP (FastAPI + SQLite) | `apps/backend` | 4000 (`/docs`, `/openapi.json`) |
-| Service IA (agent, chat, voix) | `apps/ai` | 4100 |
+| API ERP (FastaPI + SQLite) | `apps/backend` | 4000 (`/docs`, `/openapi.json`) |
+| Service AI (agent, cat, voice) | `apps/ai` | 4100 |
 | Web (React) | `apps/web` | 5173 (proxy `/api` → 4000, `/ai` → 4100) |
 
-Raccourcis globaux du web : `⌘K` recherche et « Aller à », `⌘J` assistant IA, `⌥ Espace` (maintenu) commande vocale,
-`⌘B` ou `⌘\` barre latérale.
+Global web shortcuts: `⌘K` search and "Go to", `⌘J` assistant AI, `⌥ Espace` (maintenance) voice command,
+`⌘B` or `⌘\` sidebar.
 
 ---
 
-## 2. Les pages (ordre du menu)
+## 2. Pages (menu order)
 
-Chaque page lit l'API ERP. Les filtres sont dans l'URL (on peut partager un lien filtré).
+Each page reads the API ERP. The filters are in the URL (you can share a filtered link).
 
-### Accueil — `/`
-- **Montre** : CA du jour, CA du mois, commandes du jour, pré-commandes à traiter, à livrer aujourd'hui, impayés en
-  retard ; CA des 30 derniers jours ; top 10 clients sur 30 j ; stock bas ; DLC proches ; activité en direct.
-- **Actions** : « Nouvelle commande » ; chaque ligne mène à son objet.
+### Home — `/`
+- **Montre** : CA of the day, CA of the month, orders of the day, pre-orders to process, to deliver today, unpaid in
+  delay; CA of the last 30 days; top 10 customers on 30 j; low stock; shelf life close; live activity.
+- **Actions**: "New command"; each line leads to its object.
 - **API** : `GET /api/dashboard`, `GET /api/events/stream`.
 
-### Commandes — `/orders`
-- **Montre** : les commandes de vente (n°, client, date de livraison, lignes, total, statut), totaux en pied.
-- **Filtres** : onglets de statut (Toutes, Pré-commandes, Confirmées, Préparées, Livrées, Facturées, Annulées) avec
-  compteurs ; recherche n° / client ; date de livraison (Hier, Aujourd'hui, Demain, ou une date) ; canal ;
-  `?clientId=` filtre par client.
-- **Actions** : « Nouvelle commande » → choix du client → brouillon vide → page de la commande.
+### Orders — `/orders`
+- **Montre**: sales orders (n°, customer, delivery date, lines, total, status), total standing.
+- **Filters**: status tabs (All, Pre-orders, Confirmed, Prepared, Delivered, Invoiced, Cancelled) with
+  counters; search no. / customer; delivery date (Hier, Today, Tomorrow, or a date); channel;
+  `?clientId=` filter per customer.
+- **Actions**: "New order" → customer choice → empty draft → order page.
 - **API** : `GET /api/orders`, `POST /api/orders`.
 
-### Commande — `/orders/:id`
-- **Montre** : bandeau (client, date, total HT, total TTC, création), alertes, lignes éditables, note ; colonne de
-  droite : client, panier habituel, facture, tournée.
-- **Lignes** : quantité, prix, note modifiables en ligne ; stock disponible par ligne ; icône ⓘ sur le prix =
-  d'où vient ce prix (Négocié / Règle « … » / Catalogue) ; bouton « Alternatives » = produits de remplacement.
-  Après préparation, la colonne « préparé » reçoit les poids réels.
-- **Actions** : Confirmer → Préparer → Livrer → Facturer ; Annuler (deux clics) ; « Voir la facture ».
+### Order — `/orders/:id`
+- **Montre**: banner (client, date, total excl. VAT, total incl. VAT, creation), alerts, editable lines, note; column of
+  Right: customer, usual basket, bill, tour.
+- **Lines**: quantity, price, changeable note online; stock available by line; price icon i =
+  where this price comes from (Negotiated / Rule "..." / Catalogue); "Alternatives" button = replacement products.
+  After preparation, the column "prepared" receives the actual weights.
+- **Actions**: Confirm → Prepare → Deliver → Invoice; Cancel (two clicks); "View invoice".
 - **API** : `GET /api/orders/{id}`, `PATCH /api/orders/{id}`, `POST|PATCH|DELETE /api/orders/{id}/lines…`,
   `POST /api/orders/{id}/confirm|prepare|deliver|invoice|cancel`, `GET /api/products/{id}/alternatives`,
   `GET /api/prices/resolve`, `GET /api/clients/{id}/usual`.
 
-### Clients — `/clients`
-- **Montre** : nom, type, groupes, zone, commercial, encours, en retard, dernière commande, statut.
-- **Filtres** : recherche (nom, code, ville, contact), type, zone, groupe.
-- **Actions** : « Nouveau client » (panneau latéral ; créé en statut `prospect`).
+### Customers — `/clients`
+- **Montre** : name, type, groups, zone, commercial, outstanding, late, last order, status.
+- **Filtres** : search (name, code, city, contact), type, zone, group.
+- **Actions**: "New customer" (side panel; created in `prospect` status).
 - **API** : `GET /api/clients`, `POST /api/clients`.
 
-### Client — `/clients/:id`
-- **Onglets** : Vue d'ensemble · Historique · Contexte.
-- **Vue d'ensemble** : KPI (encours, en retard, plafond de crédit, CA 30 j, dernière commande), commandes récentes,
-  factures ouvertes, panier habituel, prix négociés, informations, contacts, notes CRM, historique récent, groupes.
-- **Actions** : Bloquer / Débloquer, ajouter une note, nouvel événement, nouvelle fiche de contexte.
+### Customer — `/clients/:id`
+- **Onglets**: Overview · Background · Background.
+- **Overview** : KPI (current, overdue, credit ceiling, CA 30 j, last order), recent orders,
+  Open bills, usual basket, negotiated prices, information, contacts, notes CRM, recent history, groups.
+- **Actions** : Block / Unlock, add a note, new event, new context sheet.
 - **API** : `GET /api/clients/{id}`, `PATCH /api/clients/{id}`, `POST /api/clients/{id}/notes`,
   `GET|POST /api/clients/{id}/events`, `GET /api/context/for?entityType=client&id=…`.
 
-### Prix — `/prices`
-Quatre onglets :
-- **Matrice** : produits × groupes de clients (ou jusqu'à 8 clients choisis). Chaque case = prix résolu ; un clic
-  ouvre le détail et permet de créer une règle ou un prix négocié. `GET /api/prices/grid`.
-- **Règles** : liste des règles de prix, création / édition dans un panneau avec aperçu, suppression.
+### Price — `/prices`
+Four tabs:
+- **Matrice**: products × customer groups (or up to 8 customers selected). Each box = price solved; one click
+  opens the details and creates a negotiated rule or price. `GET /api/prices/grid`.
+- **Rules**: Price rules list, creation / editing in a panel with preview, deletion.
   `GET|POST|PATCH|DELETE /api/price-rules`.
-- **Prix négociés** : tous les prix client × produit, édition en ligne, ajout, suppression.
+- **Prices negotiated**: all customer prices × product, online edition, addition, deletion.
   `PUT|DELETE /api/clients/{id}/prices/{productId}`.
-- **Simulateur** : client + produit + quantité (+ date) → prix retenu, tous les candidats et pourquoi chacun a été
-  appliqué ou non. `GET /api/prices/resolve`.
+- **Simulator** : customer + product + quantity (+ date) → price selected, all the candidates and why each one was
+  applied or not. `GET /api/prices/resolve`.
 
-### Historique — `/history`
-- **Montre** : tous les événements clients et fournisseurs de l'entreprise, plus récents d'abord.
-- **Filtres** : onglets Clients / Fournisseurs ; famille (Réclamations & qualité, Retours & avoirs, Paiements,
-  Commercial, Relation, Notes) ; statut ; du / au ; recherche plein texte.
-- **Actions** : « Marquer résolu » en ligne ; lien vers le client / fournisseur.
+### History — `/history`
+- **Montre**: all the company's customer and supplier events, most recent first.
+- **Filters**: Clients/Suppliers tabs; Family (Claims & Quality, Returns & Assets, Payments,
+  Commercial, Relationship, Notes) ; status ; from / to ; search full text.
+- **Actions**: "mark Solved" online; link to customer / supplier.
 - **API** : `GET /api/client-events`, `GET /api/supplier-events`, `PATCH /api/client-events/{id}`,
   `PATCH /api/supplier-events/{id}`.
 
-### Produits — `/products` et `/products/:id`
-- **Liste** : onglets par catégorie ; recherche nom / SKU / appellation (alias) ; groupe. Prix, coût, marge, stock,
-  prochaine DLC. `GET /api/products?q=…&category=…&tag=…` (le filtre texte s'appelle `q`, pas `search`).
-- **Fiche** : KPI, lots en FEFO, prix des fournisseurs comparés, mouvements récents, ventes 30 j, contexte ;
-  « Ajuster le stock » (panneau). `GET /api/products/{id}`, `POST /api/stock/adjust`, `PATCH /api/products/{id}`.
+### Products — `/products` and `/products/:id`
+- **List**: tabs by category; search name / SKU / name (alias); group. Price, cost, margin, stock,
+  shelf life. `GET /api/products?q=…&category=…&tag=…` (the text filter is called `q`, not `search`).
+- **Fiche**: KPI, batches in FEFO, comparative supplier prices, recent movements, sales 30 j, context;
+  "Adjust stock" (sign). `GET /api/products/{id}`, `POST /api/stock/adjust`, `PATCH /api/products/{id}`.
 
 ### Stocks — `/stock`
-- **Montre** : chaque produit : physique, réservé, disponible, entrant, prochaine DLC, état.
-- **Onglets** : Tout · Rupture (disponible ≤ 0) · Stock bas (règle du tableau de bord, voir §3.3) · DLC proche
-  (prochaine DLC dans 2 jours ou moins).
-- **Actions** : clic sur une ligne → panneau avec les lots et l'ajustement.
+- **Montre**: each product: physical, reserved, available, incoming, next shelf life, condition.
+- **Onglets**: All · Out (available ≤ 0) · Low stock (dashboard rule, see §3.3) · Near shelf life
+  (Next shelf life in 2 days or less).
+- **Actions**: Click on a line → panel with batches and fit.
 - **API** : `GET /api/stock`, `GET /api/stock/movements`, `POST /api/stock/adjust`.
 
-### Achats — `/purchase-orders` et `/purchase-orders/:id`
-- **Liste** : onglets Toutes, Brouillons, Envoyées, Partielles, Reçues, Annulées ; recherche ; date attendue ;
-  fournisseur (`?supplierId=`). « Nouvelle commande d'achat » → choix du fournisseur → brouillon vide.
-- **Fiche** : lignes éditables (en brouillon), écart avec le prix habituel du fournisseur, alertes, date attendue,
-  note, lots reçus ; actions Envoyer, Réceptionner (mode réception ligne par ligne, réception partielle possible),
-  Annuler.
-- **API** : `GET|POST /api/purchase-orders`, `GET|PATCH /api/purchase-orders/{id}`, lignes,
+### Purchases — `/purchase-orders` and `/purchase-orders/:id`
+- **List**: All tabs, Drafts, Sent, Partial, Received, Cancelled; Search; Date expected;
+  supplier (`?supplierId=`). "New Purchase Order" → choice of supplier → blank draft.
+- **Fiche**: editable lines (in draft), deviation from the supplier's usual price, alerts, expected date,
+  note, lots received; actions Send, Receive (line-by-line reception mode, partial receipt possible),
+  Cancel.
+- **API**: `GET|POST /api/purchase-orders`, `GET|PATCH /api/purchase-orders/{id}`, lines,
   `POST /api/purchase-orders/{id}/send|receive|cancel`, `GET /api/suppliers/{id}/usual`.
 
-### Fournisseurs — `/suppliers` et `/suppliers/:id`
-- **Liste** : nom, ville, catégories, délai, conditions, minimum de commande. Filtres : recherche, catégorie, groupe.
-- **Fiche** (onglets Vue d'ensemble · Historique · Contexte) : infos, contacts, tarif fournisseur, commandes
-  d'achat ; « Commander » crée un brouillon d'achat pour ce fournisseur.
+### Suppliers — `/suppliers` and `/suppliers/:id`
+- **List**: name, city, categories, delay, conditions, minimum order. Filters: search, category, group.
+- **Fiche** ( tabs Overview · Background · Background) : information, contacts, supplier price, orders
+  "Order" creates a purchase draft for this supplier.
 - **API** : `GET /api/suppliers`, `GET|PATCH /api/suppliers/{id}`, `GET|POST /api/suppliers/{id}/events`.
 
-### Encours — `/receivables`
-- **Montre** : balance âgée par client au jour métier ; KPI (encours, échu, DSO, clients en retard) ; barre empilée
-  par tranche (clic = filtre).
-- **Filtres** : recherche, groupe, commercial, zone, « En retard uniquement ».
-- **Panneau client** (clic sur une ligne) : factures ouvertes, paiements, litiges ouverts, dernières relances ;
-  actions Enregistrer un paiement, Enregistrer la relance (crée un événement `late_payment`), Bloquer / Débloquer,
-  Fiche client.
+### Outstanding — `/receivables`
+- **Montre**: aged balance per customer on business day; KPI (current, due, DSO, customers late); stacked bar
+  per slice (click = filter).
+- **Filtres**: search, group, commercial, area, "Dead only".
+- **Customer panel** (click on a line): open invoices, payments, open disputes, latest re-launches;
+  Actions Save a payment, Save Recovery (create an event `late_payment`), Block / Unlock,
+  Customer profile.
 - **API** : `GET /api/receivables`, `POST /api/payments`, `POST /api/clients/{id}/events`, `PATCH /api/clients/{id}`.
 
-### Factures — `/invoices` et `/invoices/:id`
-- **Liste** : onglets À payer, En retard, Payées, Toutes ; recherche n° / client ; totaux.
-- **Fiche** : la facture en document (lignes avec TVA, totaux), statut, échéance, commandes liées, paiements
-  affectés, « Enregistrer un paiement ».
+### Invoices — `/invoices` and `/invoices/:id`
+- **List**: tabs To be paid, Late, Paid, All ; search no. / customer ; total.
+- **Fiche**: the invoice in document (lines with VAT, total), status, maturity, related orders, payments
+  affected, "Save a payment".
 - **API** : `GET /api/invoices`, `GET /api/invoices/{id}`, `POST /api/payments`.
 
-### Paiements — `/payments`
-- **Montre** : les paiements reçus. Filtres : recherche (client, référence, facture), mode de paiement.
-- **Actions** : enregistrer un paiement, avec affectation manuelle ou automatique (plus anciennes factures d'abord).
+### Payments — `/payments`
+- **Montre**: payments received. Filters: search (client, reference, invoice), method of payment.
+- **Actions**: Record a payment, with manual or automatic assignment (older invoices first).
 - **API** : `GET /api/payments`, `POST /api/payments`.
 
-### Tournées — `/routes`
-- **Onglets** : Tournées du jour · Définitions.
-- **Tournées du jour** : date (Aujourd'hui, Demain, Autre) ; une carte par tournée avec arrêts, ETA, poids ;
-  flèches Monter / Descendre pour réordonner ; « Planifier ».
+### Turns — `/routes`
+- **Onglets** : Day shots · Definitions.
+- **Tours of the day**: date (Today, Tomorrow, Other); one map per tour with stops, ETA, weight;
+  Up / Down arrows to reorder; "Plan".
 - **API** : `GET /api/routes`, `GET /api/route-runs?date=`, `POST /api/route-runs/plan`,
   `PATCH /api/route-runs/{id}/stops`.
 
-### Assistant — `⌘J` (pas une page)
-Panneau de chat à droite. Voir §6.
+### Assistant — `⌘J` (not one page)
+Cat panel on the right. See §6.
 
-### Voix — `/voice`
-Deux modes (en-tête, `?mode=command`) : Appel et Commande. Voir §6.
+### Votes — `/voice`
+Two modes (header, `?mode=command`): Call and Command. See §6.
 
-### Contexte — `/context`
-- **Montre** : toutes les fiches de contexte. Onglets : Toutes, Entreprise, Clients, Fournisseurs, Produits, Rayons.
-- **Filtres** : recherche, genre (`kind`), source, entité.
-- **Actions** : clic = panneau d'édition (sauvegarde auto) ; « Nouvelle fiche ». Fiches écrites par l'IA en violet.
+### Background — `/context`
+- **Montre**: all context sheets. Tabs: All, Company, Customers, Suppliers, Products, Rayons.
+- **Filtres**: search, gender (`kind`), source, entity.
+- **Actions**: click = editing panel (autoguard) ; "New file". Sheets written by the AI in purple.
 - **API** : `GET|POST /api/context`, `GET|PATCH|DELETE /api/context/{id}`.
 
-### Activité — `/activity`
-- **Montre** : le journal de toutes les écritures, en direct. Onglets Tout · IA & voix · Équipe ; filtre par objet.
+### Activity — `/activity`
+- **Montre**: the journal of all scripts, live. Tabs All · AI & voice · Team ; filter by object.
 - **API** : `GET /api/events`, `GET /api/events/stream`.
 
-### Groupes — `/groups`
-- **Montre** : trois colonnes (clients, produits, fournisseurs) ; nombre de membres par groupe.
-- **Actions** : créer un groupe ; clic = éditer, ajouter / retirer des membres.
+### Groups — `/groups`
+- **Montre**: three columns (customers, products, suppliers); number of members per group.
+- **Actions** : create a group ; click = edit, add / remove members.
 - **API** : `GET|POST /api/tags`, `PATCH|DELETE /api/tags/{scope}/{id}`, `PATCH /api/clients|products|suppliers/{id}`
-  avec `{tags}`.
+  with `{tags}`.
 
 ---
 
-## 3. Cycles de vie et règles métier
+## 3. Life cycles and business rules
 
-Les erreurs ont toujours la forme `{"error": {"code", "message"}}`. Une transition interdite renvoie
-`409 invalid_transition`. Les alertes (`warnings`) ne bloquent jamais : elles sont recalculées à chaque lecture.
+Errors always have the form `{"error": {"code", "message"}}`. A prohibited transition returns
+`409 invalid_transition`. Alerts (`warnings`) never block: they are recalculated at each reading.
 
-### 3.1 Commandes de vente
+### 3.1 Sales Orders
 
 ```
 draft ──confirm──▶ confirmed ──prepare──▶ prepared ──deliver──▶ delivered ──invoice──▶ invoiced
@@ -210,320 +210,320 @@ draft ──confirm──▶ confirmed ──prepare──▶ prepared ──del
   └──────cancel────────┴──────────cancel──────────┘ (depuis draft, confirmed, prepared)
 ```
 
-| Action | Depuis | Effet |
+| Action | Since | Effect |
 |---|---|---|
-| `POST /api/orders` | — | Crée en `draft`. Prix de chaque ligne résolu (§3.4). `deliveryDate` par défaut = prochain jour de livraison du client strictement après aujourd'hui (demain s'il n'en a pas). `source` par défaut = `voice_agent` si l'acteur est `voice_agent`, sinon `manual`. |
-| `PATCH /api/orders/{id}` | `draft`, `confirmed` | Date de livraison, note. Une commande confirmée qui change de date change de tournée. |
-| Ajouter / retirer une ligne | `draft`, `confirmed` | Retirer la dernière ligne d'une commande confirmée : `409 empty_order` (annulez plutôt). |
-| Modifier une ligne | `draft`, `confirmed` ; en `prepared` seulement `preparedQty` et `note` | Changer `productId` recalcule le prix. |
-| `confirm` | `draft` | Exige ≥ 1 ligne (`409 empty_order`). Réserve le stock (calculé, voir §3.3). Pose la commande sur la tournée de la zone du client à la date de livraison. |
-| `prepare` | `confirmed` | Saisit les poids réels (`preparedQty`) ; une ligne non listée = préparée comme commandée. Le total suit les poids réels. |
-| `deliver` | `confirmed`, `prepared` | Sort le stock des lots en FEFO (mouvements `sale`). Si le stock physique manque, la livraison passe quand même et le journal le signale. L'arrêt de tournée passe `delivered`. |
-| `invoice` | `delivered` | Crée une facture (`issued`) et passe la commande en `invoiced`. |
-| `cancel` | `draft`, `confirmed`, `prepared` | La réservation disparaît ; l'arrêt quitte sa tournée. |
+| `POST /api/orders` | — | Creates in `draft`. Price of each line solved (§3.4). Default `deliveryDate` = next day of delivery of the customer strictly after today (tomorrow if it does not have one). Default `source` = `voice_agent` if the actor is `voice_agent`, otherwise `manual`. |
+| `PATCH /api/orders/{id}` | `draft`, `confirmed` | Delivery date, note. A confirmed order that changes date change tour. |
+| Add/Remove Line | `draft`, `confirmed` | Remove the last line from a confirmed command: `409 empty_order` (cancel instead). |
+| Edit a line | `draft`, `confirmed`; in `prepared` only `preparedQty` and `note` | Change `productId` recalculates the price. |
+| `confirm` | `draft` | Requires ≥ 1 line (`409 empty_order`). Reserves the stock (calculated, see §3.3). Place the order on the tour of the customer area on the delivery date. |
+| `prepare` | `confirmed` | Entered the actual weights (`preparedQty`); an unlisted line = prepared as ordered. The total follows the actual weights. |
+| `deliver` | `confirmed`, `prepared` | Removes the stock of the lots in FEFO (movements `sale`). If the physical stock is missing, the delivery passes and the newspaper reports it. The stopover passes `delivered`. |
+| `invoice` | `delivered` | Create an invoice (`issued`) and place the order in `invoiced`. |
+| `cancel` | `draft`, `confirmed`, `prepared` | The reservation disappears; the stop leaves its tour. |
 
-Une ligne : `productId`, `qty`, `unitPrice` (€ HT), `preparedQty`, `note` (« bien frais »), `substituteFor` (produit
-remplacé). La quantité qui compte (stock, total, facture) = `preparedQty` si connue, sinon `qty`.
+One line: `productId`, `qty`, `unitPrice` (€ excl. VAT), `preparedQty`, `note` ("fresh property"), `substituteFor` (product
+The quantity that counts (stock, total, invoice) = `preparedQty` if known, otherwise `qty`.
 
-**Alertes de commande** (seulement en `draft`, `confirmed`, `prepared`) :
+**Order Alerts** (only in `draft`, `confirmed`, `prepared`):
 
-| Code | Déclencheur |
+| Code | Trigger |
 |---|---|
-| `client_blocked` | le client a le statut `blocked` |
-| `credit_limit` | `creditLimit` > 0 et encours TTC + TTC de cette commande > `creditLimit` |
-| `no_route` | aucune tournée de la zone du client ne roule ce jour de semaine |
-| `insufficient_stock` | disponible (sans compter la réservation de cette commande) < quantité demandée du produit |
-| `expiring_soon` | le premier lot FEFO du produit expire au plus tard le lendemain de la livraison |
-| `price_below_cost` | prix de la ligne < coût de référence du produit |
+| `client_blocked` | the customer has the status `blocked` |
+| `credit_limit` | `creditLimit` > 0 and current incl. VAT + incl. VAT of this order > `creditLimit` |
+| `no_route` | no tour of the customer area runs this weekday |
+| `insufficient_stock` | available (excluding reservation of this order) < requested quantity of product |
+| `expiring_soon` | the first lot FEFO of the product expires no later than the day after delivery |
+| `price_below_cost` | price of line < reference cost of product |
 
-### 3.2 Commandes d'achat et réceptions
+### 3.2 Purchase orders and receptions
 
 ```
 draft ──send──▶ sent ──receive──▶ partially_received ──receive──▶ received
 draft | sent | partially_received ──cancel──▶ cancelled   (les lots déjà reçus restent en stock)
 ```
 
-- Création en `draft` ; lignes facultatives. Prix par défaut = tarif du fournisseur (`SupplierPrice`), sinon coût
-  de référence du produit. `expectedDate` par défaut = aujourd'hui + `leadTimeDays` du fournisseur.
-- Lignes modifiables en `draft` seulement ; `expectedDate` et `note` en `draft` ou `sent`.
-- `send` exige ≥ 1 ligne (`409 empty_order`).
-- `receive` (depuis `sent` ou `partially_received`) : `receivedQty` = quantité reçue **maintenant**, ajoutée au déjà
-  reçu. Sans corps : tout le reste à recevoir. Chaque ligne reçue crée **un lot** : `receivedAt` = aujourd'hui,
-  `expiresAt` = aujourd'hui + `shelfLifeDays` du produit, plus un mouvement `receipt`. Statut `received` si toutes les
-  lignes sont complètes, sinon `partially_received`. Rien reçu : `400 nothing_received`.
+- Creation in `draft`; optional lines. Default price = supplier price (`SupplierPrice`), otherwise cost
+  default `expectedDate` = today + `leadTimeDays` from the supplier.
+- Editable lines in `draft` only; `expectedDate` and `note` in `draft` or `sent`.
+- `send` requires ≥ 1 line (`409 empty_order`).
+- `receive` (since `sent` or `partially_received`): `receivedQty` = received quantity **now**, already added
+  received. Without bodies: everything else to receive. Each received line creates **a lot**: `receivedAt` = today,
+  `expiresAt` = today + `shelfLifeDays` of the product, plus a `receipt` movement. Status `received` if all
+  lines are complete, otherwise `partially_received`. Not received: `400 nothing_received`.
 
-**Alertes d'achat** (seulement en `draft`, `sent`) :
+**Buy Alerts** (only in `draft`, `sent`):
 
-| Code | Déclencheur |
+| Code | Trigger |
 |---|---|
-| `below_min_order` | total HT < `minOrderAmount` du fournisseur |
-| `not_in_supplier_catalog` | le produit n'a pas de prix chez ce fournisseur |
-| `price_above_usual` | prix de la ligne > 110 % du prix habituel du fournisseur |
+| `below_min_order` | total supplier excl. VAT < `minOrderAmount` |
+| `not_in_supplier_catalog` | the product has no price at that supplier |
+| `price_above_usual` | price of the line > 110 % of the supplier's usual price |
 
 ### 3.3 Stock
 
-Le stock est fait de **lots** (`Lot`). Un lot = une entrée d'un produit, avec une DLC (`expiresAt`).
+The stock is made of **lots** (`Lot`). A lot = a product entry, with a shelf life (`expiresAt`).
 
-| Grandeur | Calcul |
+| Size | Calculation |
 |---|---|
-| `onHand` (physique) | Σ `qtyRemaining` des lots |
-| `reserved` (réservé) | Σ quantités des lignes des commandes `confirmed` et `prepared` |
-| `available` (disponible) | `onHand` − `reserved` |
-| `incoming` (entrant) | Σ (`qty` − `receivedQty`) des achats `sent` et `partially_received` |
-| `nextExpiry` | DLC du premier lot encore en stock |
+| `onHand` (physical) | `qtyRemaining` of lots |
+| `reserved` (reserved) | Quantity of `confirmed` and `prepared` command lines |
+| `available` (available) | `onHand` − `reserved` |
+| `incoming` (entry) | (`qty` - `receivedQty`) for purchases `sent` and `partially_received` |
+| `nextExpiry` | shelf life of the first batch still in stock |
 
-- La réservation n'est pas stockée : elle découle du statut des commandes. Annuler ou livrer la libère.
-- **FEFO** (premier expiré, premier sorti) : on sort d'abord le lot qui expire le plus tôt (puis le plus ancien reçu).
-- **Ajustement** (`POST /api/stock/adjust`, `reason` = `adjustment` ou `waste`) : `qty` > 0 crée un nouveau lot
-  (DLC = aujourd'hui + durée de vie) ; `qty` < 0 sort en FEFO. `waste` (perte) sort toujours, quel que soit le
-  signe envoyé.
-- Mouvements (`StockMovement.reason`) : `receipt`, `sale`, `adjustment`, `waste`, `return`.
-- **Stock bas** (tableau de bord) : disponible ≤ 0, ou disponible < 2 jours de ventes moyennes (moyenne sur 14 jours).
-- **DLC proches** (tableau de bord) : lots en stock qui expirent dans 2 jours ou moins (déjà expirés compris).
-- **Alternatives** (`GET /api/products/{id}/alternatives`) : même catégorie, actif, disponible > 0, prix le plus
-  proche d'abord, 10 maximum.
+- The reservation is not stored: it results from the status of the orders. Cancel or deliver it free.
+- **FEFO** (first expired, first released): the lot that expires the earlier (then the oldest received) is first released.
+- **Adjustment** (`POST /api/stock/adjust`, `reason` = `adjustment` or `waste`): `qty` > 0 creates a new batch
+  (shelf life = today + life) ; `qty` < 0 comes out in FEFO. `waste` (loss) always comes out, whatever the
+  Sign sent.
+- Movements (`StockMovement.reason`): `receipt`, `sale`, `adjustment`, `waste`, `return`.
+- **Stock low** (dashboard): available ≤ 0, or available < 2 days average sales (average on 14 days).
+- **shelf life near** (Dashboard): lots in stock that expire in 2 days or less (already expired included).
+- **Alternatives** (`GET /api/products/{id}/alternatives`): same category, active, available > 0, most price
+  close first, maximum 10.
 
-### 3.4 Prix : qui gagne
+### 3.4 Prize: who wins
 
-Ordre de résolution (`apps/backend/app/services/pricing.py`) :
+Order of Resolution (`apps/backend/app/services/pricing.py`):
 
-1. **Prix négocié** (`ClientPrice`, client × produit) : gagne toujours.
-2. **Règle de prix** (`PriceRule`) : la plus spécifique applicable gagne. Spécificité, de la plus forte à la plus
-   faible :
-   client + produit > client + groupe/catégorie > client + tous produits > groupe de clients + produit >
-   groupe de clients + groupe/catégorie > groupe de clients + tous produits > tous clients + produit >
-   tous clients + groupe/catégorie > tous clients + tous produits.
-   À égalité : `priority` la plus haute, puis la plus récente.
-   Une règle s'applique si `active`, si la date est dans `validFrom`…`validTo`, et si quantité ≥ `minQty`.
-3. **Prix catalogue** (`Product.price`).
+1. **Price negotiated** (`ClientPrice`, customer × product): always wins.
+2. **Price rule** (`PriceRule`): the most specific applicable wins. Specificity, from the strongest to the most
+   Low:
+   customer + product > customer + group/category > customer + all products > customer group + product >
+   Customer group + group/category > customer group + all products > all customers + product >
+   all customers + group/category > all customers + all products.
+   Equal: `priority` the highest, then the most recent.
+   A rule applies if `active`, the date is in `validFrom`...`validTo`, and the quantity is ≥ `minQty`.
+3. **Catalogue price** (`Product.price`).
 
-Méthodes d'une règle : `fixed` (prix fixe), `discount_pct` (% de remise sur le prix catalogue, entre 0 et 100),
-`markup_pct` (% de marge sur le coût).
+Methods of a rule: `fixed` (fixed price), `discount_pct` (% discount on the catalogue price, between 0 and 100),
+`markup_pct` (% cost margin).
 
-**Voir pourquoi un prix a été choisi** : `GET /api/prices/resolve?clientId=…&productId=…&qty=…[&date=…]` renvoie
-`price`, `source` (`client_price` | `rule` | `list`), `ruleId`, `marginPct`, `explanation` (phrase en français) et
-`candidates` : chaque prix possible, `applied`, et `reason` quand il n'a pas été retenu (« règle inactive »,
-« à partir de 10 unités », « le prix négocié du client prime »…). Dans le web : l'icône ⓘ sur une ligne de commande,
-ou Prix → Simulateur.
+**See why a price has been chosen** : `GET /api/prices/resolve?clientId=…&productId=…&qty=…[&date=…]` returns
+`price`, `source` (`client_price`) `rule` (`list`), `ruleId`, `marginPct`, `explanation` (phrase in French) and
+`candidates`: Each price possible, `applied`, and `reason` when not retained ("inactive rule",
+"from 10 units", "the negotiated price of the prime customer". In the web: the i icon on a command line,
+or Price → Simulator.
 
-Le prix d'une ligne est figé à sa création. Changer une règle ne modifie pas les commandes existantes.
+The price of a line is fixed at its creation. Changing a rule does not change existing commands.
 
-### 3.5 Crédit, clients bloqués, risque d'encours
+### 3.5 Credit, customers blocked, risk of outstanding
 
-- `Client.status` : `active`, `blocked`, `prospect`. On bloque à la main (`PATCH /api/clients/{id}` avec
-  `{"status": "blocked"}`, bouton Bloquer). Un client bloqué **peut** encore commander : l'ERP ajoute l'alerte
-  `client_blocked`. C'est à l'agent de décider quoi dire.
-- `creditLimit` : encours TTC autorisé. `0` = pas de contrôle.
-- **Encours** (`outstanding`) = Σ (`totalTtc` − `amountPaid`) des factures ouvertes. **Échu** (`overdue`) = la part
-  dont l'échéance est passée.
-- **Tranches** de la balance âgée (jours après échéance) : `current` (pas échu), `d1_30`, `d31_60`, `d61_90`, `d90plus`.
-- **Risque** (`GET /api/receivables`, champ `risk`) :
+- `Client.status`: `active`, `blocked`, `prospect`. We block by hand (`PATCH /api/clients/{id}` with
+  `{"status": "blocked"}`, Block button). A client blocked ** can still order**: the ERP adds the alert
+  `client_blocked`, it's up to the agent to decide what to say.
+- `creditLimit`: incl. VAT stock allowed. `0` = no control.
+- **Outstanding balance** (`outstanding`) = Σ (`totalTtc` − `amountPaid`) Open invoices. **Spent** (`overdue`) = share
+  whose deadline has passed.
+- **Tranches** of the older balance (days after maturity): `current` (not due), `d1_30`, `d31_60`, `d61_90`, `d90plus`.
+- **Risque** (`GET /api/receivables`, field `risk`):
 
-| Niveau | Si au moins une condition |
+| Level | If at least one condition |
 |---|---|
-| `high` (Élevé) | client `blocked` ; encours > `creditLimit` (si > 0) ; plus de 60 jours de retard ; délai moyen de paiement > 60 j **et** quelque chose d'échu |
-| `watch` (À surveiller) | encours > 80 % du plafond ; plus de 30 jours de retard ; un événement `late_payment` **ouvert** ; délai moyen de paiement > 45 j |
-| `ok` | sinon |
+| `high` (High) | customer `blocked`; outstanding > `creditLimit` (if > 0); more than 60 days late; average payment time > 60 j ** and ** something expired |
+| `watch` (To be monitored) | outstanding > ceiling 80 %; more than 30 days late; one event `late_payment` **opened**; average payment time > 45 j |
+| `ok` | if not |
 
-- `avgDaysToPay` : factures payées dont le dernier paiement date de moins de 90 jours (date du dernier paiement −
-  date d'émission).
-- **DSO** = encours / CA TTC facturé sur 90 jours × 90.
-- Seuls les clients avec au moins une facture ouverte apparaissent dans `/api/receivables`.
+- `avgDaysToPay`: Invoices paid whose last payment is less than 90 days (date of last payment -
+  date of issue).
+- **DSO** = outstanding / CA incl. VAT billed on 90 days × 90.
+- Only customers with at least one open invoice appear in `/api/receivables`.
 
-### 3.6 Factures, paiements, affectation
+### 3.6 Invoices, payments, assignment
 
-- Une facture naît d'une commande livrée (`POST /api/orders/{id}/invoice`). Lignes = quantités préparées, TVA par
-  produit (`vatRate`, 0,055 pour l'alimentaire). `issuedAt` = aujourd'hui ; `dueDate` = aujourd'hui +
-  `paymentTermsDays` du client (0 = comptant).
-- Statuts stockés : `issued`, `partially_paid`, `paid` (et `draft`, `cancelled`). `overdue` n'est **jamais stocké** :
-  il est calculé à la lecture (facture ouverte dont `dueDate` < aujourd'hui).
-- `GET /api/invoices?status=open` : pseudo-statut = toutes les factures avec un solde.
-- **Paiement** (`POST /api/payments`) : montant TTC, `method` (`transfer`, `card`, `cheque`, `cash`,
+- An invoice arises from an order delivered (`POST /api/orders/{id}/invoice`). Lines = prepared quantities, VAT per
+  product (`vatRate`, 0,055 Food). `issuedAt` = Today ; `dueDate` = Today +
+  Customer's `paymentTermsDays` (0 = cash).
+- Storage status: `issued`, `partially_paid`, `paid` (and `draft`, `cancelled`). `overdue` is not **Never stored**:
+  it is calculated at reading (open bill including `dueDate` < today).
+- `GET /api/invoices?status=open`: pseudo-status = all invoices with a balance.
+- **Payment** (`POST /api/payments`): amount incl. VAT, `method` (`transfer`, `card`, `cheque`, `cash`,
   `direct_debit`).
-  - Sans `allocations` : affecté aux factures ouvertes **les plus anciennes d'abord** ; l'excédent reste non affecté.
-  - Avec `allocations` : chaque facture doit être à ce client (`400 wrong_client`), chaque montant ≤ solde de la
-    facture, la somme ≤ montant du paiement (`400 over_allocated`).
-  - Le statut de la facture suit : `paid` si solde ≤ 0, sinon `partially_paid`.
+  - Without `allocations`: allocated to ** open invoices the oldest first**; the surplus remains unallocated.
+  - With `allocations`: each invoice must be to this customer (`400 wrong_client`), each amount ≤ balance of the
+    invoice, the sum ≤ the amount of the payment (`400 over_allocated`).
+  - The invoice status is as follows: `paid` if balance ≤ 0, otherwise `partially_paid`.
 
-### 3.7 Tournées
+### 3.7 Turns
 
-- Une **tournée** (`Route`) dessert une `zone` certains jours (`days`), avec une heure de départ et une capacité.
-- Un **passage** (`RouteRun`, `run_…`) = une tournée à une date. Statut `planned` → `in_progress` (un arrêt livré) →
-  `done` (plus d'arrêt en attente).
-- Confirmer une commande la pose sur le passage de la zone du client à sa date (créé au besoin). S'il n'y a pas de
-  tournée ce jour-là, l'ERP prend quand même une tournée de la zone (et la commande porte l'alerte `no_route`).
-- `POST /api/route-runs/plan {date}` : pose toutes les commandes `confirmed` / `prepared` de la date, ajoute les
-  nouvelles triées par ville puis nom, retire les arrêts annulés ou déplacés.
-- `PATCH /api/route-runs/{id}/stops {orderIds}` : ces commandes d'abord, dans cet ordre ; les autres suivent.
-- ETA d'un arrêt = heure de départ + 12 min × rang. Poids : une `box` ≈ 5 kg, toute autre unité ≈ 1 kg.
+- A ** turned** (`Route`) serves a `zone` some days (`days`), with one departure time and capacity.
+- A **passage** (`RouteRun`, `run_…`) = one tour on a date. Status `planned` → `in_progress` (one stop delivered) →
+  `done` (more standstill).
+- Confirm an order the installation on the client's area crossing on its date (created if necessary).
+  toured that day, the ERP still takes a tour of the area (and the command carries the alert `no_route`).
+- `POST /api/route-runs/plan {date}`: Installs all the `confirmed` / `prepared` commands of the date, adds the
+  news sorted by city then name, removes cancelled or displaced stops.
+- `PATCH /api/route-runs/{id}/stops {orderIds}`: These commands first, in this order; the others follow.
+- ETA one stop = departure time + 12 Min × row. Weight: one `box` ≈ 5 kg, any other unit ≈ 1 kg.
 
-### 3.8 Historique client et fournisseur
+### 3.8 Customer and supplier history
 
-Le long terme de la relation : réclamations, retours, litiges, appels, visites, négociations…
+The long term of the relationship: claims, returns, disputes, appeals, visits, negotiations...
 
-- **Types client** (`ClientEventType`) : `onboarding`, `call`, `visit`, `complaint`, `quality_issue`, `delivery_issue`,
+- **Customer types** (`ClientEventType`): `onboarding`, `call`, `visit`, `complaint`, `quality_issue`, `delivery_issue`,
   `return`, `credit_note`, `dispute`, `late_payment`, `payment_plan`, `price_negotiation`, `special_request`,
   `menu_change`, `contact_change`, `compliment`, `churn_risk`, `won_back`, `note`.
-- **Types fournisseur** (`SupplierEventType`) : `onboarding`, `call`, `visit`, `quality_issue`, `delivery_issue`,
+- **Supplier types** (`SupplierEventType`): `onboarding`, `call`, `visit`, `quality_issue`, `delivery_issue`,
   `shortage`, `return`, `credit_note`, `dispute`, `price_change`, `price_negotiation`, `invoice_issue`, `payment`,
   `contract`, `certification`, `contact_change`, `compliment`, `note`.
-- **Statut** (`open` | `resolved`) : les types « problème » sont créés `open` automatiquement.
-  Client : `complaint`, `quality_issue`, `delivery_issue`, `return`, `dispute`, `late_payment`, `churn_risk`.
-  Fournisseur : `quality_issue`, `delivery_issue`, `shortage`, `return`, `dispute`, `invoice_issue`.
-  Les autres n'ont pas de statut. Passer à `resolved` remplit `resolvedAt` ; repasser à `open` l'efface.
-- **Gravité** (`severity`) : `low`, `medium`, `high`.
-- **Canal** (`channel`) : `phone`, `email`, `whatsapp`, `visit`, `voice_agent`, `sms`, `other`. Par défaut
-  `voice_agent` quand l'acteur est l'agent vocal. Auteur par défaut : le nom de l'acteur, sinon « Équipe »,
-  « Assistant IA », « Agent vocal ».
-- Liens facultatifs : `orderId`, `invoiceId` (doivent être à ce client), `productIds`, `amount` (€), `tags`.
-- `at` : par défaut maintenant ; une date seule = 09:00.
-- Stats de la fiche client (`eventStats`) : total, ouverts, réclamations sur 12 mois (`complaint`, `quality_issue`,
-  `delivery_issue`), retours sur 12 mois.
+- **Status** (`open` | `resolved`) : problem types are created `open` automatically.
+  Customer: `complaint`, `quality_issue`, `delivery_issue`, `return`, `dispute`, `late_payment`, `churn_risk`.
+  Supplier: `quality_issue`, `delivery_issue`, `shortage`, `return`, `dispute`, `invoice_issue`.
+  The others have no status. Switching to `resolved` fills `resolvedAt`; go back to `open` the eraser.
+- **Gravity** (`severity`): `low`, `medium`, `high`.
+- **Canal** (`channel`) : `phone`, `email`, `whatsapp`, `visit`, `voice_agent`, `sms`, `other`. By default
+  `voice_agent` when the actor is the vocal agent. Default author: the name of the actor, otherwise "Team",
+  "Assistant AI", "Vocal Agent".
+- Optional links: `orderId`, `invoiceId` (must be this customer), `productIds`, `amount` (€), `tags`.
+- `at`: default now; one date only = 09:00.
+- Customer data sheet (`eventStats`): total, open, claims over 12 months (`complaint`, `quality_issue`,
+  `delivery_issue`), back on 12 months.
 
-### 3.9 Groupes (tags)
+### 3.9 Groups (tags)
 
-- Un groupe (`TagDef`) a un `id` (slug, unique par `scope`), un `scope` (`client`, `supplier`, `product`), un `label`,
-  une couleur et une description.
-- Les entités portent les ids de groupes dans leur champ `tags`. Un tag non défini est refusé (`400 unknown_tag`).
-- Les règles de prix ciblent un groupe de clients et / ou un groupe de produits.
-- Supprimer un groupe le retire de toutes les entités ; les règles qui le visent ne s'appliquent plus.
+- A group (`TagDef`) has a `id` (slug, unique by `scope`), a `scope` (`client`, `supplier`, `product`), a `label`,
+  a colour and description.
+- Entities carry group ids in their `tags` field. An undefined tag is refused (`400 unknown_tag`).
+- Price rules target a group of customers and/or a group of products.
+- Remove a group from all entities; the rules that apply to it no longer apply.
 
-### 3.10 La table de contexte
+### 3.10 The context table
 
-Ce que les agents doivent savoir, en fiches courtes et modifiables.
+What agents need to know, in short and editable sheets.
 
-- Une fiche (`ContextEntry`, `ctx_…`) est rattachée par `entityType` + `entityId` :
-  - `company` : pas d'`entityId` ;
-  - `client`, `supplier`, `product` : un id existant (`cli_…`, `sup_…`, `prd_…`) ;
-  - `category` : l'id d'une catégorie produit de votre entreprise (liste propre à chaque entreprise :
+- A plug (`ContextEntry`, `ctx_…`) is attached by `entityType` + `entityId`:
+  - `company`: no `entityId`;
+  - `client`, `supplier`, `product`: an existing id (`cli_…`, `sup_…`, `prd_…`);
+  - `category`: the id of a product category of your business (business-specific list:
     `GET /api/categories` → `[{id, label}]`).
-- **Genres** (`kind`) : `policy` (règle), `procedure` (comment faire / dire), `preference` (ce qu'ils aiment),
-  `fact` (contexte), `relationship` (les personnes), `pricing` (accords), `logistics` (livraison, stockage),
-  `risk` (irritants, crédit, risque de départ).
-- **Source** (`source`) : `seed` (pack de données), `user` (web), `ai_chat`, `voice_agent`. Fixée par l'en-tête
-  `x-actor` à l'écriture.
-- Recherche : `GET /api/context?q=…` plein texte insensible aux accents, classé par pertinence (titre > tags et entité > corps).
-  Filtres `entityType`, `entityId`, `kind`, `source`, `tag` ; `limit` (défaut 100).
-- **`GET /api/context/for?entityType=client&id=cli_0010`** : tout ce qu'il faut charger avant de parler d'une
-  entité. `entries` = ses fiches ; `related` = fiches liées (produit → sa catégorie ; fournisseur → ses catégories ;
-  toute entité → les fiches `company` ou `category` dont le texte cite son id).
-- En plus de la table, l'agent lit à chaque tour les fichiers `DATA_DIR/context/*.md` (voir
+- **Genres** (`kind`): `policy` (rule), `procedure` (how to do/say), `preference` (what they like),
+  `fact` (context), `relationship` (persons), `pricing` (agreements), `logistics` (delivery, storage),
+  `risk` (irritants, credit, risk of losing the customer).
+- **Source** (`source`): `seed` (data package), `user` (web), `ai_chat`, `voice_agent`. Fixed by the header
+  `x-actor` writing.
+- Search: `GET /api/context?q=…` full text insensitive to accents, classified by relevance (Title > tags and entity > body).
+  Filters `entityType`, `entityId`, `kind`, `source`, `tag`; `limit` (default 100).
+- **`GET /api/context/for?entityType=client&id=cli_0010`**: everything you need to load before talking about a
+  entity. `entries` = its records; `related` = related records (product → its category; supplier → its categories;
+  any → entity the `company` or `category` forms whose text quotes its id).
+- In addition to the table, the agent reads each turn `DATA_DIR/context/*.md` files (see
   `apps/ai/app/agent/prompts.py`).
 
 ---
 
-## 4. Modèle de données
+## 4. Data model
 
-Ids préfixés, montants en euros HT sauf `*Ttc`, dates `YYYY-MM-DD`, horodatages ISO complets. JSON en camelCase.
-Source : `apps/backend/app/schemas/domain.py`.
+Prefixed Ids, amounts in euros excl. VAT except `*Ttc`, dates `YYYY-MM-DD`, full ISO timers. JSON in camelCase.
+Source: `apps/backend/app/schemas/domain.py`.
 
-| Entité | Id | Champs clés |
+| Entity | Id | Key fields |
 |---|---|---|
 | `Client` | `cli_0010` (code `C0010`) | `name`, `type`, `contacts`, `zone`, `deliveryDays`, `paymentTermsDays`, `creditLimit`, `status`, `salesRep`, `preferences`, `notes`, `tags` |
-| `Product` | `prd_0015` | `sku`, `name`, `aliases` (ce que les gens disent : « loup »), `category`, `unit` (`kg`, `piece`, `box`, `dozen`, `liter`), `price`, `cost`, `vatRate`, `shelfLifeDays`, `mainSupplierId`, `active`, `tags` |
+| `Product` | `prd_0015` | `sku`, `name`, `aliases` (what people say: "wolf"), `category`, `unit` (`kg`, `piece`, `box`, `dozen`, `liter`), `price`, `cost`, `vatRate`, `shelfLifeDays`, `mainSupplierId`, `active`, `tags` |
 | `Supplier` | `sup_0001` | `name`, `categories`, `leadTimeDays`, `paymentTermsDays`, `minOrderAmount`, `notes`, `tags` |
-| `ClientPrice` | clé client × produit | `clientId`, `productId`, `price` |
-| `SupplierPrice` | clé fournisseur × produit | `supplierId`, `productId`, `price`, `updatedAt` |
+| `ClientPrice` | customer key × product | `clientId`, `productId`, `price` |
+| `SupplierPrice` | key supplier × product | `supplierId`, `productId`, `price`, `updatedAt` |
 | `PriceRule` | `prl_0001` | `name`, `active`, `priority`, `clientScope`, `productScope`, `method`, `minQty`, `validFrom`, `validTo` |
 | `Order` | `ord_002063`, n° `CMD-2026-016935` | `clientId`, `status`, `source`, `deliveryDate`, `routeRunId`, `totalHt`, `lines[]`, `invoiceId`, `createdBy` |
 | `OrderLine` | `lin_…` | `productId`, `qty`, `unitPrice`, `preparedQty`, `note`, `substituteFor` |
 | `PurchaseOrder` | `po_000697`, n° `ACH-2026-003650` | `supplierId`, `status`, `expectedDate`, `totalHt`, `lines[]` (`pol_…` : `qty`, `unitPrice`, `receivedQty`) |
 | `Lot` | `lot_003273` | `productId`, `supplierId`, `purchaseOrderId`, `qtyReceived`, `qtyRemaining`, `receivedAt`, `expiresAt` |
-| `StockMovement` | `mov_015840` | `productId`, `lotId`, `qty` (+ entrée, − sortie), `reason`, `refType`, `refId`, `note` |
+| `StockMovement` | `mov_015840` | `productId`, `lotId`, `qty` (+ input, - output), `reason`, `refType`, `refId`, `note` |
 | `Invoice` | `inv_001630`, n° `FAC-2026-011440` | `clientId`, `orderIds`, `status`, `issuedAt`, `dueDate`, `lines`, `totalHt`, `totalVat`, `totalTtc`, `amountPaid` |
-| `Payment` | `pay_000545` | `clientId`, `amount` (TTC), `method`, `receivedAt`, `reference`, `allocations[]` (`invoiceId`, `amount`) |
+| `Payment` | `pay_000545` | `clientId`, `amount` (incl. VAT), `method`, `receivedAt`, `reference`, `allocations[]` (`invoiceId`, `amount`) |
 | `Route` | `rte_0001` | `name`, `zone`, `driver`, `vehicle`, `capacityKg`, `days`, `departureTime` |
 | `RouteRun` | `run_000075` | `routeId`, `date`, `status`, `stops[]` (`orderId`, `clientId`, `seq`, `eta`, `status`) |
 | `ClientEvent` | `cev_002017` | `clientId`, `at`, `type`, `title`, `description`, `channel`, `author`, `severity`, `status`, `resolution`, `orderId`, `invoiceId`, `productIds`, `amount` |
-| `SupplierEvent` | `sev_000500` | idem, avec `supplierId` et `purchaseOrderId` |
+| `SupplierEvent` | `sev_000500` | Idem, with `supplierId` and `purchaseOrderId` |
 | `TagDef` | slug (`gastro`, `premium`) | `scope`, `label`, `color`, `description` |
 | `ContextEntry` | `ctx_0001` | `entityType`, `entityId`, `kind`, `title`, `body` (markdown court), `tags`, `source` |
 | `ActivityEvent` | `evt_0000029` | `at`, `actor`, `actorName`, `type`, `entity`, `entityId`, `summary` |
 
-Numéros de documents : `CMD-<année>-<6 chiffres>` (vente), `ACH-…` (achat), `FAC-…` (facture). Les ids des
-nouvelles lignes (`lin_…`, `pol_…`) sont aléatoires ; tous les autres ids continuent la séquence.
+Document numbers: `CMD-<année>-<6 chiffres>` (sale), `ACH-…` (purchase), `FAC-…` (invoice).
+new lines (`lin_…`, `pol_…`) are random; all other ids continue the sequence.
 
 ---
 
-## 5. L'horloge métier et le flux d'activité
+## 5. Business Clock and Business Flow
 
-### L'horloge : `meta.today`
-- Les données sont ancrées sur une date fixe : `GET /api/meta` → `{company, today, currency, generatedAt, trade, region}`
-  (`trade` et `region` : le métier et la zone, affichés dans la barre latérale).
-- « Aujourd'hui », « demain », « en retard », « échu », « 30 derniers jours » se calculent **toujours** sur
-  `meta.today`, jamais sur la vraie date.
-- Les nouveaux enregistrements ont la date `meta.today` et l'heure réelle de l'horloge murale.
-- L'agent reçoit cette date dans son prompt système (« Aujourd'hui : mardi 24 novembre 2026 »).
+### The clock : `meta.today`
+- The data is anchored to a fixed date: `GET /api/meta` → `{company, today, currency, generatedAt, trade, region}`
+  (`trade` and `region`: the trade and area, displayed in the sidebar).
+- "Today", "Tomorrow", "Delayed", "Due", "30 Last days" are calculated **Always** on
+  `meta.today`, never on the real date.
+- The new recordings have the date `meta.today` and the actual time of the wall clock.
+- The agent receives this date in its prompt system ("Today: Tuesday 24 November 2026").
 
-### Le flux d'activité
-- Chaque écriture ajoute un `ActivityEvent` (`type` comme `order.confirmed`, `payment.recorded`,
-  `client_event.created`, `context.created`…) avec une phrase `summary` en français.
-- **Qui écrit** : en-tête `x-actor` = `user` | `ai_chat` | `voice_agent` (valeur inconnue ou absente = `user`), plus
-  `x-actor-name` facultatif (nom affiché, encodé URI). Le web envoie `user` / « Moi ». Les outils de l'agent envoient
-  `ai_chat` (chat) ou `voice_agent` (voix, commande vocale).
-- **En direct** : `GET /api/events/stream` (Server-Sent Events) envoie `ready` une fois, puis un événement `activity`
-  par écriture validée, et `ping` toutes les 15 s. `GET /api/events?limit=50` = l'historique, plus récent d'abord.
-- **Violet** : dans le web, tout ce qui vient de `ai_chat` ou `voice_agent` est teinté violet (Activité, Accueil,
-  colonne de droite de la page Voix, fiches de contexte écrites par l'IA, appels d'outils dans l'assistant).
-- `make reset` vide le journal.
+### The flow of activity
+- Each write adds a `ActivityEvent` (`type` like `order.confirmed`, `payment.recorded`,
+  `client_event.created`, `context.created`... with a `summary` sentence in French.
+- ** Who writes** : header `x-actor` = `user` | `ai_chat` | `voice_agent` ( value unknown or absent = `user`), plus
+  `x-actor-name` optional (name displayed, encoded URI). The web sends `user` / "Me". Agent tools send
+  `ai_chat` (chat) or `voice_agent` (voice, voice command).
+- **Direct**: `GET /api/events/stream` (Server-Sent Events) sends `ready` once, then an event `activity`
+  by validated writing, and `ping` all 15 s. `GET /api/events?limit=50` = history, most recent first.
+- **Violet**: in the web, everything from `ai_chat` or `voice_agent` is stained purple (Activity, Home,
+  right column of the Voice page, context sheets written by the AI, tool calls in the wizard).
+- `make reset` clears the paper.
 
 ---
 
-## 6. Le côté IA de l'ERP
+## 6. The AI side of the ERP
 
-### Les trois surfaces
+### The three surfaces
 
-| Surface | Comment | Ce qu'elle fait | Route IA |
+| Surface | How | What she does | Road AI |
 |---|---|---|---|
-| **Assistant** | `⌘J`, panneau de droite sur toutes les pages | Chat texte avec l'agent (mode `chat`, markdown léger). Les appels d'outils s'affichent en lignes violettes avec lien vers l'objet. | `POST /ai/chat` (SSE) |
-| **Voix · Appel** | page `/voice` | Simulation d'appel téléphonique : maintenez Espace (ou le gros bouton) pour parler en tant que client, relâchez ; l'agent répond en texte et en audio (mode `voice` : 1–2 phrases, pas d'ids, nombres arrondis). Chronologie à deux pistes, latences par tour, écritures de l'agent en direct à droite. | `WS /ai/voice` |
-| **Voix · Commande** | page `/voice?mode=command`, ou `⌥ Espace` maintenu sur n'importe quelle page (HUD), ou bouton « Voix » de l'en-tête | Un commercial pilote l'ERP à la voix, une phrase à la fois, sans historique (mode `command` : agit tout de suite, répond en une phrase). Si la phrase demande de *voir* (« montre », « ouvre », « affiche »…), le web navigue vers la page de l'objet. Un clic court sur le bouton ouvre le HUD pour taper la commande. | `POST /ai/command[?speak=1]` (SSE) |
+| **Assistant** | `⌘J`, right panel on all pages | Text chat with the agent (mode `chat`, light markdown). Tool calls are displayed in purple lines with link to the object. | `POST /ai/chat` (SSE) |
+| **Voice · Call** | page `/voice` | Phone call simulation: hold Space (or the big button) to speak as a client, release; the agent responds in text and audio (mode `voice`: 1–2 sentences, no ids, rounded numbers). Two-track chronology, latency per turn, live agent writings to the right. | `WS /ai/voice` |
+| **Voice · Command** | page `/voice?mode=command`, or `⌥ Espace` held on any page (HUD), or "Voice" button on the header | A commercial driver controls the ERP at the same time, one sentence at a time, without history (mode `command`: acts immediately, answers in one sentence). If the sentence asks for "see" ("watch", "open", "show" ...), the web navigates to the object page. A short click on the button opens the HUD to type the command. | `POST /ai/command[?speak=1]` (SSE) |
 
-Le prompt système (`apps/ai/app/agent/prompts.py`) = règles de base + règles du mode + entreprise et date du jour +
-nom de l'interlocuteur + tous les fichiers `DATA_DIR/context/*.md`. Protocoles détaillés : [apps/ai/README.md](apps/ai/README.md).
+The prompt system (`apps/ai/app/agent/prompts.py`) = basic rules + mode rules + company and date +
+contact name + all `DATA_DIR/context/*.md` files. Detailed protocols: [apps/ai/README.md](apps/ai/README.md).
 
-### Les outils de l'agent
+### The Agent's Tools
 
-16 outils, dans `apps/ai/app/tools/`. Ils appellent l'API ERP avec `x-actor` ; ils ne contiennent pas de règle métier.
-Liste à jour : `GET http://localhost:4100/tools`.
+16 tools, in `apps/ai/app/tools/`. They call the API ERP with `x-actor`; they do not contain any business rules.
+Updated list: `GET http://localhost:4100/tools`.
 
-| Outil | Ce qu'il fait | Route ERP |
+| Tool | What he does | Road ERP |
 |---|---|---|
-| `search` | Retrouve client, produit, fournisseur ou commande depuis ce qui est dit (flou, sans accents, alias, mots parasites ignorés) | `GET /api/search` |
-| `get_client` | Fiche client : statut, conditions, encours, préférences, notes, panier habituel, problèmes ouverts, 5 derniers événements | `GET /api/clients/{id}` |
-| `get_product_stock` | Disponible, entrant, prochaine DLC, prix catalogue | `GET /api/products/{id}` |
-| `find_alternatives` | 5 produits de remplacement en stock | `GET /api/products/{id}/alternatives` |
-| `get_price` | Prix pour un client et une quantité, avec l'explication ; signale un meilleur prix par volume | `GET /api/prices/resolve` |
-| `search_context` | Cherche dans les fiches de contexte (règles, procédures, habitudes…) | `GET /api/context` |
-| `get_context` | Tout le contexte d'un client, fournisseur, produit ou rayon | `GET /api/context/for` |
-| `save_context` | Mémorise un fait durable (préférence, contact, contrainte) | `POST /api/context` |
-| `get_client_history` | Historique d'un client, filtrable par types | `GET /api/clients/{id}/events` |
-| `log_client_event` | Enregistre une réclamation, un appel, une demande… | `POST /api/clients/{id}/events` |
-| `get_supplier_history` | Historique d'un fournisseur | `GET /api/suppliers/{id}/events` |
-| `log_supplier_event` | Enregistre un événement fournisseur | `POST /api/suppliers/{id}/events` |
-| `create_draft_order` | Crée une pré-commande (`draft`) avec ou sans lignes | `POST /api/orders` |
-| `add_order_line` | Ajoute une ligne à une commande | `POST /api/orders/{id}/lines` |
-| `confirm_order` | Confirme (après accord explicite sur le récapitulatif) ; renvoie les alertes | `POST /api/orders/{id}/confirm` |
-| `get_order` | Détail d'une commande : lignes, statut, total, alertes | `GET /api/orders/{id}` |
+| `search` | Find customer, product, supplier or order from what is said (float, without accents, alias, unknown parasitic words) | `GET /api/search` |
+| `get_client` | Customer profile: status, conditions, stock, preferences, notes, usual basket, open issues, latest 5 events | `GET /api/clients/{id}` |
+| `get_product_stock` | Available, incoming, next shelf life, catalogue price | `GET /api/products/{id}` |
+| `find_alternatives` | 5 replacement products in stock | `GET /api/products/{id}/alternatives` |
+| `get_price` | Price for one customer and one quantity, with explanation; reports a better price per volume | `GET /api/prices/resolve` |
+| `search_context` | Search in context sheets (rules, procedures, habits...) | `GET /api/context` |
+| `get_context` | The whole context of a customer, supplier, product or radius | `GET /api/context/for` |
+| `save_context` | Memorizes a lasting fact (preference, contact, constraint) | `POST /api/context` |
+| `get_client_history` | Customer history, filterable by type | `GET /api/clients/{id}/events` |
+| `log_client_event` | Record a complaint, a call, a request... | `POST /api/clients/{id}/events` |
+| `get_supplier_history` | Supplier History | `GET /api/suppliers/{id}/events` |
+| `log_supplier_event` | Record a supplier event | `POST /api/suppliers/{id}/events` |
+| `create_draft_order` | Create a pre-order (`draft`) with or without lines | `POST /api/orders` |
+| `add_order_line` | Add a line to a command | `POST /api/orders/{id}/lines` |
+| `confirm_order` | Confirms (after explicit agreement on the summary); returns alerts | `POST /api/orders/{id}/confirm` |
+| `get_order` | Detail of an order: lines, status, total, alerts | `GET /api/orders/{id}` |
 
-Ce que l'agent **ne peut pas** faire aujourd'hui (pas d'outil) : modifier ou retirer une ligne, annuler, préparer,
-livrer, facturer, enregistrer un paiement, gérer les achats, les prix, le stock, les tournées. Les routes existent
-dans l'API : un outil de plus suffit (voir [apps/ai/README.md, « Add a tool »](apps/ai/README.md#add-a-tool-about-10-lines)).
+What Agent ** can't do today ** (no tool): modify or remove a line, cancel, prepare,
+Deliver, bill, record a payment, manage purchases, prices, stock, tours. Roads exist
+in the API: one more tool is enough (see [apps/ai/README.md, "Add a tool"](apps/ai/README.md#add-a-tool-about-10-lines)).
 
 ---
 
-## 7. Pas à pas
+## 7. Step by step
 
-Dans les exemples d'API, `B=http://localhost:4000/api`. Ajoutez `-H 'x-actor: voice_agent'` pour voir l'écriture en
-violet dans le web.
+In the examples of API, `B=http://localhost:4000/api`. Add `-H 'x-actor: voice_agent'` to see the writing in
+purple in the web.
 
-### 7.1 Prendre une commande de bout en bout
+### 7.1 Take an order from end to end
 **Web**
-1. Commandes → « Nouvelle commande » → tapez le client → Entrée. Un brouillon s'ouvre.
-2. Ajoutez les lignes (recherche produit, alias compris) ou piochez dans le panier habituel à droite.
-3. Lisez les alertes, puis Confirmer. Le stock est réservé, la commande est sur une tournée.
-4. Préparer (saisissez les poids réels si besoin) → Livrer → Facturer.
-5. Sur la facture : « Enregistrer un paiement ».
+1. Orders → "New order" → type the client → Enter. A draft opens.
+2. Add the lines (product search, including aliases) or pick up in the usual shopping cart on the right.
+3. Read the alerts, then Confirm. Stock is booked, order is on a tour.
+4. Prepare (enter actual weights if needed) → Deliver → Invoice.
+5. On the invoice: "Save a payment".
 
 **API**
 ```bash
@@ -538,73 +538,73 @@ curl -s -X POST $B/payments -H 'content-type: application/json' \
   -d '{"clientId":"cli_0010","amount":86.19,"method":"transfer"}'
 ```
 
-### 7.2 Gérer une rupture avec un produit de remplacement
-1. Vérifiez les notes et le contexte du client d'abord (certains refusent toute substitution) :
+### 7.2 Manage a rupture with a replacement product
+1. Check the client's notes and context first (some refuse any substitution):
    `GET $B/context/for?entityType=client&id=cli_…`.
-2. Sur la commande, une ligne en rupture porte `insufficient_stock`. Bouton « Alternatives » de la ligne →
-   « Remplacer ». Par l'API : `GET $B/products/prd_…/alternatives`, puis
-   `PATCH $B/orders/ord_…/lines/lin_… {"productId":"prd_NEW","substituteFor":"prd_OLD"}`. Le prix est recalculé
-   pour le nouveau produit.
-3. Possible en `draft` ou `confirmed`.
+2. On order, a broken line carries `insufficient_stock`. "Alternatives" button of line →
+   "Replace". By API: `GET $B/products/prd_…/alternatives`, then
+   `PATCH $B/orders/ord_…/lines/lin_… {"productId":"prd_NEW","substituteFor":"prd_OLD"}`. Price recalculated
+   for the new product.
+3. Possible in `draft` or `confirmed`.
 
-### 7.3 Recevoir une commande d'achat en partie
-1. Achats → la commande (`sent` ou `partially_received`) → Réceptionner → saisissez la quantité reçue par ligne →
-   valider.
+### 7.3 Receive a purchase order in part
+1. Purchases → Order (`sent` or `partially_received`) → Receive → Enter the quantity received by line →
+   validate.
 2. API : `POST $B/purchase-orders/po_…/receive {"lines":[{"lineId":"pol_…","receivedQty":6}]}`.
-3. Résultat : un lot par ligne reçue (DLC = aujourd'hui + durée de vie), statut `partially_received` tant qu'il
-   reste à recevoir. Une seconde réception ajoute au déjà reçu. Le reste à recevoir compte dans `incoming`.
+3. Result: one lot per received line (shelf life = today + service life), status `partially_received` as long as it
+   A second reception adds to the already received. The remainder to be received account in `incoming`.
 
-### 7.4 Enregistrer une réclamation
-1. Fiche client → Historique → « Nouvel événement » → type Réclamation, titre, description, gravité, commande ou
-   produits liés.
+### 7.4 Record a Claim
+1. Customer details → History → "New event" → type Claim, title, description, gravity, order or
+   related products.
 2. API : `POST $B/clients/cli_…/events {"type":"complaint","title":"Raie pas fraîche","severity":"medium","orderId":"ord_…"}`.
-   Elle est créée `open`.
-3. Pour clore : « Marquer résolu » (Historique) ou `PATCH $B/client-events/cev_… {"status":"resolved","resolution":"Avoir de 20 €"}`.
+   It is created `open`.
+3. To close: "mark Solved" (Historical) or `PATCH $B/client-events/cev_… {"status":"resolved","resolution":"Avoir de 20 €"}`.
 
-### 7.5 Comprendre pourquoi un client est bloqué (ou à risque)
+### 7.5 Understand why a client is blocked (or at risk)
 1. `GET $B/clients/cli_…` : `status`, `creditLimit`, `outstanding`, `overdue`, `notes`, `recentEvents`, `openIssues`.
-2. Encours → filtrez sur le client → panneau : tranches, factures ouvertes, dernières relances, litiges, risque.
-   API : `GET $B/receivables?q=<nom>` (champs `risk`, `maxDaysOverdue`, `creditUsedPct`, `avgDaysToPay`,
+2. Current → filter on customer → panel: slices, open invoices, latest re-launchs, disputes, risk.
+   API: `GET $B/receivables?q=<nom>` (fields `risk`, `maxDaysOverdue`, `creditUsedPct`, `avgDaysToPay`,
    `openDisputes`, `lastReminderAt`).
-3. Historique du client, filtre Paiements : `GET $B/clients/cli_…/events?type=late_payment,payment_plan,dispute`.
-4. Le statut `blocked` est posé à la main : l'événement `client.updated` (« Client … bloqué ») dans le journal dit
-   quand et par qui.
+3. Customer History, Filter Payments: `GET $B/clients/cli_…/events?type=late_payment,payment_plan,dispute`.
+4. The `blocked` status is placed by hand: the event `client.updated` ("Customer ... blocked") in the newspaper says
+   When and by whom.
 
-### 7.6 Fixer un prix négocié
-1. Prix → Prix négociés → « Nouveau prix négocié » ; ou Matrice → clic sur une case client → « Fixer ce prix ».
-2. API : `PUT $B/clients/cli_…/prices/prd_… {"price":17.5}` (remplace s'il existe). Supprimer :
+### 7.6 Set a negotiated price
+1. Price → Prices negotiated → "New negotiated price"; or Matrix → click on a customer box → "Setting this price".
+2. API: `PUT $B/clients/cli_…/prices/prd_… {"price":17.5}` (replaces if it exists). Delete:
    `DELETE $B/clients/cli_…/prices/prd_…`.
-3. Vérifiez : `GET $B/prices/resolve?clientId=cli_…&productId=prd_…` → `source: "client_price"`. Les commandes
-   déjà créées gardent leur ancien prix.
+3. Check: `GET $B/prices/resolve?clientId=cli_…&productId=prd_…` → `source: "client_price"`. Orders
+   already created keep their old prize.
 
-### 7.7 Voir ce que l'agent sait d'un client
-1. Fiche client → onglet Contexte (fiches propres + fiches liées).
-2. API : `GET $B/context/for?entityType=client&id=cli_…` (ce que charge l'outil `get_context`), plus
-   `GET $B/clients/cli_…` (ce que renvoie `get_client`).
-3. Ce qu'il a appris pendant les conversations : `GET $B/context?source=ai_chat,voice_agent`.
-4. Le contexte entreprise toujours présent dans le prompt : `DATA_DIR/context/*.md`.
+### 7.7 See what the agent knows about a client
+1. Customer Sheet → Context tab (clean sheets + linked sheets).
+2. API : `GET $B/context/for?entityType=client&id=cli_…` (what the `get_context` tool loads), more
+   `GET $B/clients/cli_…` (which `get_client` returns).
+3. What he learned during the conversations: `GET $B/context?source=ai_chat,voice_agent`.
+4. The context always present in the prompt: `DATA_DIR/context/*.md`.
 
-### 7.8 Remettre les données à zéro
-`make reset` (= `POST /api/admin/reset`). Vide la base, recharge le pack de données de `DATA_DIR`, vide le journal.
-Toutes vos écritures sont perdues.
+### 7.8 Reset data to zero
+`make reset` (= `POST /api/admin/reset`). Empty the database, reload the `DATA_DIR` data package, empty the log.
+All your writings are lost.
 
-### 7.9 Vos données
-Les données de votre entreprise sont dans `./data` (`DATA_DIR=./data` dans `.env`). Si vous les cassez,
-`make reset` les recharge. Vérifiez : `GET $B/meta` → `company` et `today`.
+### 7.9 Data
+Your company's data is in `./data` (`DATA_DIR=./data` in `.env`). If you break them,
+`make reset` recharges them. Check: `GET $B/meta` → `company` and `today`.
 
 ---
 
-## 8. Aide-mémoire de l'API
+## 8. Aide-memoire of the API
 
-Toutes les routes sont sous `/api`. Toutes les écritures acceptent `x-actor` et `x-actor-name`. Schémas complets et
-essai en direct : http://localhost:4000/docs.
+All routes are under `/api`. All entries accept `x-actor` and `x-actor-name`. Complete diagrams and
+live test: http://localhost:4000/docs.
 
-**Listes (toutes les routes GET qui renvoient une liste).** Pagination, filtres et tri côté serveur :
-`limit` (défaut **100**, max **500**), `offset`, `sort` (champ triable de la route, voir `/docs`), `order=asc|desc`.
-Réponse : un **tableau** JSON — la page demandée, donc **tronqué à `limit`** — ou, avec `envelope=1`,
-`{items, total, limit, offset, counts?, sums?, …}` où `total` dit combien de lignes correspondent aux filtres et les
-extras (`counts` par statut, `sums`…) portent sur tout l'ensemble filtré. Un agent n'a presque jamais besoin de tout :
-filtrez (`clientId`, `status`, `date`, `q`…) et gardez `limit` petit. Détails : [TECH.md · Pagination](TECH.md#pagination).
+**List (all GET routes that return a list).** Pagination, filters and server side sorting:
+`limit` (default **100**, max **500**), `offset`, `sort` (triable road field, see `/docs`), `order=asc|desc`.
+Answer: a **table** JSON — the page requested, so **truncated to `limit`** — or, with `envelope=1`,
+`{items, total, limit, offset, counts?, sums?, …}` where `total` says how many lines match the filters and the
+extras (`counts` by status, `sums`...) cover the entire filtered assembly. An agent almost never needs everything:
+filter (`clientId`, `status`, `date`, `q`...) and keep `limit` small. Details: [TECH.md · Pagination](TECH.md#pagination).
 
 ```bash
 curl -s 'localhost:4000/api/orders?clientId=cli_0012&limit=5'                       # les 5 dernières commandes (tableau)
@@ -612,98 +612,98 @@ curl -s 'localhost:4000/api/invoices?status=overdue&sort=balance&order=desc&limi
 curl -s 'localhost:4000/api/orders?status=delivered&envelope=1&limit=1' | jq .total   # combien de commandes livrées
 ```
 
-**Système**
-| Méthode | Chemin | Rôle |
+**System**
+| Method | Path | Role |
 |---|---|---|
 | GET | `/health` | `{ok, today}` |
-| GET | `/meta` | entreprise, date métier |
-| GET | `/dashboard` | KPI de l'accueil |
-| GET | `/search?q=&types=&limit=` | recherche floue ; `types` = `client,product,supplier,order` (+ `context` sur demande) |
-| GET | `/events?actor=&entity=` | journal d'activité (`actor=ai` : assistant + agent vocal ; défaut `limit` 50) |
-| GET | `/events/stream` | journal en direct (SSE) |
-| POST | `/admin/reset` | recharge le pack de données |
+| GET | `/meta` | business, business date |
+| GET | `/dashboard` | Host KPI |
+| GET | `/search?q=&types=&limit=` | blurred search; `types` = `client,product,supplier,order` (+ `context` on request) |
+| GET | `/events?actor=&entity=` | activity log (`actor=ai`: assistant + vocal agent; default `limit` 50) |
+| GET | `/events/stream` | Live journal (SSE) |
+| POST | `/admin/reset` | recharge the data pack |
 
 **Clients**
-| Méthode | Chemin | Rôle |
+| Method | Path | Role |
 |---|---|---|
-| GET | `/clients?q=&type=&zone=&status=&tag=` | liste avec KPI ; `sort` = `name`, `outstanding`, `overdue`, `last`… |
-| GET | `/clients/{id}` | fiche complète (prix négociés, 20 dernières commandes, factures ouvertes, paiements, habituel, historique récent) |
-| GET | `/clients/{id}/usual` | panier habituel (60 derniers jours) |
-| POST | `/clients` | créer |
-| PATCH | `/clients/{id}` | modifier (statut, plafond, tags…) |
-| POST | `/clients/{id}/notes` | ajouter une note `{text, author}` |
-| GET / POST | `/clients/{id}/events?type=&status=&q=` | historique du client (`sort=open` : dossiers ouverts d'abord) / ajouter un événement |
-| GET | `/client-events?type=&status=&clientId=&q=&from=&to=` | historique tous clients, récent d'abord |
-| PATCH | `/client-events/{id}` | modifier, résoudre |
-| PUT / DELETE | `/clients/{id}/prices/{productId}` | prix négocié |
+| GET | `/clients?q=&type=&zone=&status=&tag=` | list with KPI; `sort` = `name`, `outstanding`, `overdue`, `last`... |
+| GET | `/clients/{id}` | complete sheet (negotiated prices, 20 latest orders, open invoices, payments, usual, recent history) |
+| GET | `/clients/{id}/usual` | usual shopping cart (60 last days) |
+| POST | `/clients` | create |
+| PATCH | `/clients/{id}` | edit (status, ceiling, tags...) |
+| POST | `/clients/{id}/notes` | add a note `{text, author}` |
+| GET / POST | `/clients/{id}/events?type=&status=&q=` | client history (`sort=open`: folders opened first) / add event |
+| GET | `/client-events?type=&status=&clientId=&q=&from=&to=` | historical all customers, recent first |
+| PATCH | `/client-events/{id}` | modify, resolve |
+| PUT / DELETE | `/clients/{id}/prices/{productId}` | negotiated price |
 
-**Catalogue, fournisseurs, stock**
-| Méthode | Chemin | Rôle |
+**Catalogue, suppliers, stock**
+| Method | Path | Role |
 |---|---|---|
-| GET | `/products?q=&category=&tag=&active=` | catalogue avec stock ; `sort` = `name`, `price`, `margin`, `available`… |
-| GET | `/products/{id}` | fiche : stock, lots, prix fournisseurs, mouvements, ventes 30 j |
-| GET | `/products/{id}/alternatives` | produits de remplacement |
-| PATCH | `/products/{id}` | prix, coût, tags… |
-| GET | `/suppliers?q=&category=&tag=` · `/suppliers/{id}` | fournisseurs (la fiche embarque les 60 dernières commandes d'achat) |
-| PATCH | `/suppliers/{id}` | modifier |
-| GET | `/suppliers/{id}/usual` | achats habituels (60 jours) |
-| GET / POST | `/suppliers/{id}/events` | historique fournisseur |
-| GET / PATCH | `/supplier-events` · `/supplier-events/{id}` | historique tous fournisseurs / modifier |
-| GET | `/stock?q=&tab=` | niveaux de stock (`tab` = `out`, `low`, `expiring`) |
-| GET | `/stock/movements?productId=` | mouvements, récent d'abord |
-| POST | `/stock/adjust` | ajustement ou perte `{productId, qty, reason, note}` |
+| GET | `/products?q=&category=&tag=&active=` | catalogue with stock; `sort` = `name`, `price`, `margin`, `available`... |
+| GET | `/products/{id}` | sheet : stock, lots, supplier prices, movements, sales 30 j |
+| GET | `/products/{id}/alternatives` | alternative products |
+| PATCH | `/products/{id}` | price, cost, tags... |
+| GET | `/suppliers?q=&category=&tag=` · `/suppliers/{id}` | suppliers (the card takes in the latest 60 purchase orders) |
+| PATCH | `/suppliers/{id}` | modify |
+| GET | `/suppliers/{id}/usual` | regular purchases (60 days) |
+| GET / POST | `/suppliers/{id}/events` | history supplier |
+| GET / PATCH | `/supplier-events` · `/supplier-events/{id}` | history all suppliers / modify |
+| GET | `/stock?q=&tab=` | Stock levels (`tab` = `out`, `low`, `expiring`) |
+| GET | `/stock/movements?productId=` | movements, recent first |
+| POST | `/stock/adjust` | adjustment or loss `{productId, qty, reason, note}` |
 
-**Ventes**
-| Méthode | Chemin | Rôle |
+**Sales**
+| Method | Path | Role |
 |---|---|---|
-| GET | `/orders?status=&clientId=&date=&q=&source=` | liste, livraison la plus récente d'abord (`status` = liste séparée par des virgules) ; `sort` = `date`, `number`, `total`, `client`… |
-| GET | `/orders/{id}` | détail avec alertes |
-| POST | `/orders` | créer un brouillon `{clientId, deliveryDate?, lines?, note?, source?}` |
-| PATCH | `/orders/{id}` | date de livraison, note |
-| POST / PATCH / DELETE | `/orders/{id}/lines[/{lineId}]` | lignes |
-| POST | `/orders/{id}/confirm` · `/prepare` · `/deliver` · `/invoice` · `/cancel` | cycle de vie |
+| GET | `/orders?status=&clientId=&date=&q=&source=` | list, most recent delivery first (`status` = comma separated list); `sort` = `date`, `number`, `total`, `client`... |
+| GET | `/orders/{id}` | detail with alerts |
+| POST | `/orders` | create a draft `{clientId, deliveryDate?, lines?, note?, source?}` |
+| PATCH | `/orders/{id}` | delivery date, note |
+| POST / PATCH / DELETE | `/orders/{id}/lines[/{lineId}]` | lines |
+| POST | `/orders/{id}/confirm` · `/prepare` · `/deliver` · `/invoice` · `/cancel` | life cycle |
 
 **Achats**
-| Méthode | Chemin | Rôle |
+| Method | Path | Role |
 |---|---|---|
-| GET | `/purchase-orders?status=&supplierId=&date=&q=` | liste, récente d'abord |
-| GET | `/purchase-orders/{id}` | détail avec lots reçus et alertes |
-| POST | `/purchase-orders` | créer un brouillon `{supplierId, lines?, expectedDate?, note?}` |
-| PATCH | `/purchase-orders/{id}` | date attendue, note |
-| POST / PATCH / DELETE | `/purchase-orders/{id}/lines[/{lineId}]` | lignes (brouillon) |
-| POST | `/purchase-orders/{id}/send` · `/receive` · `/cancel` | cycle de vie |
+| GET | `/purchase-orders?status=&supplierId=&date=&q=` | list, recent first |
+| GET | `/purchase-orders/{id}` | details with batches received and alerts |
+| POST | `/purchase-orders` | create a draft `{supplierId, lines?, expectedDate?, note?}` |
+| PATCH | `/purchase-orders/{id}` | due date, note |
+| POST / PATCH / DELETE | `/purchase-orders/{id}/lines[/{lineId}]` | lines (brown) |
+| POST | `/purchase-orders/{id}/send` · `/receive` · `/cancel` | life cycle |
 
 **Facturation**
-| Méthode | Chemin | Rôle |
+| Method | Path | Role |
 |---|---|---|
-| GET | `/invoices?status=&clientId=&q=` | liste sans les lignes (`status=open` et `overdue` acceptés) ; `sort` = `issued`, `due`, `balance`… |
-| GET | `/invoices/{id}` | détail avec paiements |
-| GET | `/payments?clientId=&method=&q=` | liste, récent d'abord (`q` : client, référence ou n° de facture) |
-| POST | `/payments` | enregistrer `{clientId, amount, method, receivedAt?, reference?, allocations?}` |
-| GET | `/receivables?q=&tag=&rep=&zone=&onlyOverdue=` | balance âgée, risque, DSO |
+| GET | `/invoices?status=&clientId=&q=` | list without accepted lines (`status=open` and `overdue`); `sort` = `issued`, `due`, `balance`... |
+| GET | `/invoices/{id}` | details with payments |
+| GET | `/payments?clientId=&method=&q=` | list, recent first (`q`: customer, reference or invoice number) |
+| POST | `/payments` | register `{clientId, amount, method, receivedAt?, reference?, allocations?}` |
+| GET | `/receivables?q=&tag=&rep=&zone=&onlyOverdue=` | age balance, risk, DSO |
 
-**Prix et groupes**
-| Méthode | Chemin | Rôle |
+**Prices and groups**
+| Method | Path | Role |
 |---|---|---|
-| GET | `/prices/resolve?clientId=&productId=&qty=&date=` | prix retenu et pourquoi |
-| GET | `/prices/grid?clientId=` ou `?clientTag=` (+ `productTag`, `category`, `q`) | grille de prix |
-| GET / POST | `/price-rules` | règles (`active`, `clientId`, `productId` en filtres) / créer |
-| PATCH / DELETE | `/price-rules/{id}` | modifier / supprimer |
-| GET / POST | `/tags?scope=` · `/tags` | groupes avec compteurs / créer |
-| PATCH / DELETE | `/tags/{scope}/{id}` | modifier / supprimer |
+| GET | `/prices/resolve?clientId=&productId=&qty=&date=` | price and why |
+| GET | `/prices/grid?clientId=` or `?clientTag=` (+ `productTag`, `category`, `q`) | Price grid |
+| GET / POST | `/price-rules` | rules (`active`, `clientId`, `productId` in filters) / create |
+| PATCH / DELETE | `/price-rules/{id}` | edit / delete |
+| GET / POST | `/tags?scope=` · `/tags` | groups with meters / create |
+| PATCH / DELETE | `/tags/{scope}/{id}` | edit / delete |
 
-**Logistique**
-| Méthode | Chemin | Rôle |
+**Logistics**
+| Method | Path | Role |
 |---|---|---|
-| GET | `/routes` | définitions des tournées |
-| GET | `/route-runs?date=&routeId=` | passages avec arrêts, ETA, poids |
-| POST | `/route-runs/plan` | planifier une date `{date}` |
-| PATCH | `/route-runs/{id}/stops` | réordonner `{orderIds}` |
+| GET | `/routes` | definitions of tours |
+| GET | `/route-runs?date=&routeId=` | passages with stops, ETA, weight |
+| POST | `/route-runs/plan` | plan a date `{date}` |
+| PATCH | `/route-runs/{id}/stops` | reorder `{orderIds}` |
 
-**Contexte**
-| Méthode | Chemin | Rôle |
+**Context**
+| Method | Path | Role |
 |---|---|---|
-| GET | `/context?entityType=&entityId=&kind=&source=&tag=&q=` | chercher / lister (par pertinence avec `q`) |
-| GET | `/context/for?entityType=&id=` | tout le contexte d'une entité |
-| GET / PATCH / DELETE | `/context/{id}` | une fiche |
-| POST | `/context` | créer `{entityType, entityId?, kind, title, body, tags?}` |
+| GET | `/context?entityType=&entityId=&kind=&source=&tag=&q=` | search / list (by relevance with `q`) |
+| GET | `/context/for?entityType=&id=` | the whole context of an entity |
+| GET / PATCH / DELETE | `/context/{id}` | one sheet |
+| POST | `/context` | create `{entityType, entityId?, kind, title, body, tags?}` |

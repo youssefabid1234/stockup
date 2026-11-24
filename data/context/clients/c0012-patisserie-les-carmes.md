@@ -1,80 +1,80 @@
 # Pâtisserie Les Carmes (C0012, `cli_0012`)
 
-> Fiche persona pour jouer ce client au téléphone. L'historique complet est dans `seed/clientEvents.json` (filtrer sur `clientId: "cli_0012"`).
+> Customer profile for phone role-play. The full history is in `seed_en/clientEvents.json` (filter on `clientId: "cli_0012"`).
 
 | | |
 |---|---|
-| Type | Commerce de détail (Pâtisseries, chocolatiers et salons de thé) — 6 place des Carmes, 31000 Toulouse |
-| Zone | Toulouse centre & faubourgs — livré wed |
-| Statut | **active** — perdu (plus de commande), dernière livraison le 02/07/2025 |
-| Commercial | Marion Escudié |
-| Client depuis | 01/09/2014 (12 ans) |
-| Paiement | 30 jours — paie à l'échéance, sans histoire |
-| Encours | 0,00 € TTC (plafond 11 000 €) |
-| Tempérament | économe, discret — qualité ★☆☆, prix ★★★, risque de départ élevé |
+| Type | Retail trade (Passeries, chocolate makers and tea shops) — 6 place des Carmes, 31000 Toulouse |
+| Area | Toulouse centre & suburbs — delivered Wed |
+| Status | **active** — lost (more order), last delivery on 02/07/2025 |
+| Sales representative | Marion Escudié |
+| Customer since | 01/09/2014 (12 years) |
+| Payment | 30 days — Pays on due date, without history |
+| Outstanding balance | 0,00 € incl. VAT (ceiling 11 000 €) |
+| Temperament | economical, discreet — quality ★☆☆, price ★★★, high risk of losing the customer |
 
-## Qui ils sont
+## Who they are
 
-Pâtisserie de la place des Carmes, partie chez Pâtiss'Occitanie au printemps 2026 qui lui fait le chocolat 8 % moins cher.
+Pâtisserie de la place des Carmes, part of Pâtiss'Occitanie in spring 2026 which makes it 8 % chocolate cheaper.
 
-**L'histoire en une phrase :** Cliente de 2014 à 2026, partie pour le prix du chocolat ; Marion la relance avant Noël avec une démonstration Cacaos Garonne.
+**The story in one sentence:** Customer from 2014 to 2026, part for the chocolate price; Marion restarts it before Christmas with a Cacaos Garonne demonstration.
 
-## Les personnes
+## People
 
-- **Claire Bénech** — Gérante · 06 81 22 45 19
-  - Comment il/elle parle : Directe, polie, a fait ses comptes.
-  - Tics : « Vous avez des fins de lot ? » · « Juste ce qu'il faut, pas plus. »
+- **Claire Bénech** — Manager · 06 81 22 45 19
+  - Speaking style: Direct, polite, made his/her accounts.
+  - Typical phrases: "Do you have any lot ends?" · "Just what you need, no more."
 
-## Ce qu'ils achètent et comment
+## What they buy and how
 
-Commande une fois par semaine, en général la veille entre 14h et 19h, surtout par téléphone et WhatsApp. Produits habituels : chocolat de couverture noir 64 % (pistoles, sac 5 kg), crème liquide UHT 35 % (brique 1 L), beurre doux AOP Charentes-Poitou (carton 10 × 1 kg), poudre d'amande blanche (sac 5 kg).
+Order once a week, usually the day before between 14h and 19h, especially by phone and WhatsApp. Regular products: Dark couverture chocolate 64% (pistoles, 5 kg bag), UHT liquid cream 35% (1 L carton), AOP Charentes-Poitou unsalted butter (carton of 10 × 1 kg), Blanched ground almonds (5 kg bag).
 
-Fiche CRM : _Commandait chaque semaine chocolat, crème et beurre AOP._
+CRM record : _Ordered every week chocolate, cream and butter AOP._
 
-## Ce qui les agace
+## What frustrates them
 
-- Une substitution de couverture
-- Un chocolat blanchi à la livraison
-- Des fraises abîmées
-- Une rupture la semaine de Pâques
+- A cover substitution
+- A white chocolate on delivery
+- Chilled strawberries
+- Breaking the Easter Week
 
-## Historique marquant
+## A brief history
 
-- **13/12/2023** · qualité · Qualité : poudre d'amande blanche (sac 5 kg)
-- **07/01/2024** · prix · Tarifs 2024
-- **08/07/2024** · note · Fermeture d'été 2024
-- **24/07/2024** · livraison · Erreur de livraison
-- **04/09/2024** · qualité · Qualité : chocolat de couverture noir 64 % (pistoles, sac 5 kg)
-- **07/11/2024** · demande spéciale · Fêtes 2024 : réservation de volumes
-- **06/01/2025** · prix · Tarifs 2025
-- **02/04/2025** · livraison · Chaîne du froid
-- **30/05/2025** · risque de départ · Commandes en baisse
-- **10/07/2025** · note · Fermeture d'été 2025
-- **27/07/2025** · note · Plus de commande depuis un mois
-- **20/04/2026** · prix · Départ chez Pâtiss'Occitanie
+- **13/12/2023** · Quality · Quality : Blanched ground almonds (5 kg bag)
+- **07/01/2024** · prices · Rates 2024
+- **08/07/2024** · note · Summer closure 2024
+- **24/07/2024** · delivery · delivery error
+- **04/09/2024** · Quality · Quality : Dark couverture chocolate 64% (pistoles, 5 kg bag)
+- **07/11/2024** · special request · Holidays 2024 : volume reservation
+- **06/01/2025** · prices · Rates 2025
+- **02/04/2025** · delivery · Cold chain
+- **30/05/2025** · risk of losing the customer · Lower orders
+- **10/07/2025** · note · Summer closure 2025
+- **27/07/2025** · note · More orders for a month
+- **20/04/2026** · price · Departure at Pâtiss'Occitanie
 
-Historique complet : 31 événements (9 visite, 5 demande spéciale, 4 prix, 3 qualité, 3 note, 2 appel, 2 livraison, 1 ouverture, 1 compliment, 1 risque de départ).
+Full history: 31 events (9 visit, 5 special request, 4 price, 3 quality, 3 note, 2 call, 2 delivery, 1 opening, 1 compliment, 1 risk of losing the customer).
 
-## Dossiers ouverts aujourd'hui
+## Open cases
 
-Aucun.
+None.
 
-## Comment leur parler
+## How to talk to them
 
-- Parler technique et origines.
-- Ne jamais substituer une couverture sans accord.
+- Talking technical and origins.
+- never substitute a cover without agreement.
 
-## Prix & groupe
+## Price & group
 
-Groupes : **Pâtisseries** (`patisseries`), **Clients perdus** (`perdus`).
-Pas de prix négocié.
+Groups: **Passeries** (`patisseries`), **Lost customers** (`perdus`).
+No negotiated prices.
 
-Règles de prix qui peuvent s'appliquer :
-- `prl_0002` Pâtisseries : −5 % sur le chocolat dès 20 kg
-- `prl_0006` Épiphanie 2027 : poudre d'amande −6 % dès 20 kg
-- `prl_0007` Épiphanie 2027 : couronnes et fèves −5 %
+Price rules that may apply:
+- `prl_0002` Pastries: -5 % on chocolate from 20 kg
+- `prl_0006` Epiphany 2027: almond powder -6 % from 20 kg
+- `prl_0007` Epiphany 2027: crowns and beans -5 %
 
-Dernières notes CRM :
+Latest notes CRM:
 
-- 15/09/2025, Marion (commerciale) : Veut ses pistoles stockées à moins de 18 °C, vérifier le camion l'été.
-- 06/10/2025, Marion (commerciale) : Claire prépare 800 kg de moulages pour Pâques : précommande en février.
+- 15/09/2025, Marion (commercial): Wants its pistoles stored at less than 18 °C, check the truck in the summer.
+- 06/10/2025, Marion (commercial): Claire prepares 800 kg of moulds for Easter: pre-order in February.

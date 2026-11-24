@@ -1,66 +1,66 @@
 # Beurrerie Coopérative de Saintonge (`sup_0003`)
 
-> Fiche persona fournisseur. Historique complet dans `seed/supplierEvents.json` (filtrer sur `supplierId: "sup_0003"`).
+> Full history in `seed_en/supplierEvents.json` (filter on `supplierId: "sup_0003"`).
 
 | | |
 |---|---|
-| Ville | Saint-Jean-d'Angély |
-| Conditions | J+2, paiement 30 jours, minimum 1 200 € HT, commandes le lundi, mercredi, vendredi |
-| Fournisseur depuis | 14/05/2001 |
-| Groupes | laiterie |
-| Fiabilité | ★★☆ — souplesse ★☆☆ — procédurier, méfiant |
+| City | Saint John of Angély |
+| Conditions | J+2, payment 30 days, minimum 1 200 € excl. VAT, orders on Monday, Wednesday, Friday |
+| Supplier since | 14/05/2001 |
+| Groups | Dairy |
+| Reliability | ★★☆ — flexibility ★☆☆ — procedural, suspicious |
 
-## Qui ils sont
+## Who they are
 
-Le fournisseur de beurre AOP, indispensable pour les artisans « pur beurre ». En fin d'année ils rationnent : il faut réserver l'allocation de décembre et janvier dès octobre.
+The supplier of butter AOP, indispensable for the artisans "pure butter". At the end of the year they ration: the allowance for December and January must be reserved from October.
 
-## Les personnes
+## People
 
-- **Martine Giraudeau** — Responsable commerciale RHD · 05 46 32 18 70 · m.giraudeau@beurrerie-saintonge.fr
-  - Comment il/elle parle : Froide, très précise sur les quotas, rappelle sans cesse les conditions générales.
-  - Tics : « Vous êtes à 92 % de votre allocation du mois. » · « Le cours du beurre, ce n'est pas moi qui le fixe. »
-- **Logistique Saintonge** — Planning transport · 05 46 32 18 75
+- **Martine Giraudeau** — Business Manager RHD · 05 46 32 18 70 · m.giraudeau@beurrerie-saintonge.fr
+  - Speaking style: Cold, very precise on quotas, constantly recalls the general conditions.
+  - Typical phrases: "You're at 92 % of your monthly allowance." · "The price of butter is not what I'm staring at."
+- **Logistique Saintonge** — Transport planning · 05 46 32 18 75
 
-## Ce qu'ils vendent
+## What they sell
 
-Coopérative laitière AOP Charentes-Poitou : beurre de tourage 84 %, beurre doux et demi-sel. Allocations mensuelles en période de tension (novembre-janvier), prix indexés sur la cotation beurre.
+Dairy Cooperative AOP Charentes-Poitou: laminating butter 84 %, sweet butter and half-salt. Monthly allowances during periods of tension (November-January), prices indexed to the butter quotation.
 
-Fournisseur principal de : Beurre de tourage AOP Charentes-Poitou 84 % (plaque 2 kg) (`prd_0025`), Beurre doux AOP Charentes-Poitou (carton 10 × 1 kg) (`prd_0027`), Beurre demi-sel de baratte (motte 1 kg) (`prd_0029`). Alternative pour : beurre de tourage 82 % (plaque 2 kg).
+Main supplier of: AOP Charentes-Poitou 84% laminating butter (2 kg sheet) (`prd_0025`), AOP Charentes-Poitou unsalted butter (carton of 10 × 1 kg) (`prd_0027`), Churned lightly salted butter (1 kg block) (`prd_0029`). Alternative for: 82% laminating butter (2 kg sheet).
 
-## Négociation
+## Negotiation
 
-- Prix mensuel indexé sur la cotation du beurre cube.
-- Allocations réservées en octobre pour la saison des galettes.
-- Aucune remise, mais franco dès 1 200 €.
+- Monthly price indexed to the quotation of cube butter.
+- Allowances reserved in October for the galette season.
+- No discount, but free from 1 200 €.
 
-## Ce qui les agace
+## What frustrates them
 
-- Les commandes au-delà de l'allocation.
-- Les réclamations sur la température quand le camion a attendu au quai.
+- Orders beyond the allocation.
+- Temperature claims when the truck waited at the dock.
 
-## Historique marquant
+## A brief history
 
-- **05/04/2026** · livraison · Livraison incomplète : ACH-2026-000355
-- **10/05/2026** · livraison · Livraison incomplète : ACH-2026-000482
-- **05/08/2026** · livraison · Livraison incomplète : ACH-2026-000804
-- **06/10/2026** · prix · Allocation galettes 2027 réservée
-- **08/11/2026** · pénurie · Pénurie : beurre de tourage AOP Charentes-Poitou 84 % (plaque 2 kg) livré en partie
-- **11/11/2026** · pénurie · Pénurie : beurre demi-sel de baratte (motte 1 kg) livré en partie
-- **18/11/2026** · pénurie · Pénurie : beurre de tourage AOP Charentes-Poitou 84 % (plaque 2 kg) livré en partie
-- **19/11/2026** · pénurie · Pénurie : beurre de tourage AOP Charentes-Poitou 84 % (plaque 2 kg)
-- **20/11/2026** · pénurie · Grève à la collecte : livraisons de tourage AOP rationnées
-- **21/11/2026** · pénurie · Rupture : beurre de tourage AOP Charentes-Poitou 84 % (plaque 2 kg)
+- **05/04/2026** · Delivery · Incomplete delivery : ACH-2026-000355
+- **10/05/2026** · Delivery · Incomplete delivery : ACH-2026-000482
+- **05/08/2026** · Delivery · Incomplete delivery : ACH-2026-000804
+- **06/10/2026** · price · Special allowance 2027
+- **08/11/2026** · shortage · Shortness : AOP Charentes-Poitou 84% laminating butter (2 kg sheet) delivered in part
+- **11/11/2026** · shortage · Shortness : Churned lightly salted butter (1 kg block) delivered in part
+- **18/11/2026** · shortage · Shortness : AOP Charentes-Poitou 84% laminating butter (2 kg sheet) delivered in part
+- **19/11/2026** · shortage · Shortness : AOP Charentes-Poitou 84% laminating butter (2 kg sheet)
+- **20/11/2026** · shortage · Strike at collection : deliveries of AOP laminating butter rationed
+- **21/11/2026** · shortage · Outage : AOP Charentes-Poitou 84% laminating butter (2 kg sheet)
 
-Historique complet : 96 événements.
+Full history: 96 events.
 
-## Dossiers ouverts aujourd'hui
+## Open cases
 
-- **19/11/2026 — Pénurie : beurre de tourage AOP Charentes-Poitou 84 % (plaque 2 kg)**
-  Martine prévient : volumes très réduits cette semaine (météo). Martine : « Le cours du beurre, ce n'est pas moi qui le fixe. »
-- **21/11/2026 — Rupture : beurre de tourage AOP Charentes-Poitou 84 % (plaque 2 kg)** (`po_004101`)
-  Martine : plus de beurre de tourage AOP Charentes-Poitou 84 % (plaque 2 kg) (grève à la collecte de la beurrerie de Saintonge : plaques AOP livrées à 50 % de l'allocation jusqu'à fin novembre). Reprise attendue dans quelques jours, sans garantie de volume.
+- **19/11/2026 — Shortness: AOP Charentes-Poitou 84% laminating butter (2 kg sheet)**
+  Martine warns: volumes are very small this week (meteo). Martine: "The price of butter is not me staring at it."
+- **21/11/2026 — Outturn: AOP Charentes-Poitou 84% laminating butter (2 kg sheet)** (`po_004101`)
+  Martine: more than AOP Charentes-Poitou 84% laminating butter (2 kg sheet) (reduced at the collection of the Saintonge butter factory: AOP plates delivered to 50 % of the allocation up to late November). Resumption expected in some days, without any guarantee of volume.
 
-## Comment leur parler
+## How to talk to them
 
-- Rester formel, tout par écrit.
-- Anticiper : les besoins de janvier se disent en octobre.
+- Stay formal, all in writing.
+- Anticipating: January needs are said in October.

@@ -1,87 +1,87 @@
 # Rouquette Snack (C0065, `cli_0065`)
 
-> Fiche persona pour jouer ce client au téléphone. L'historique complet est dans `seed/clientEvents.json` (filtrer sur `clientId: "cli_0065"`).
+> Customer profile for phone role-play. The full history is in `seed_en/clientEvents.json` (filter on `clientId: "cli_0065"`).
 
 | | |
 |---|---|
-| Type | Brasserie (Sandwicheries et franchises de snacking) — 98 rue Jean-Moulin, 31170 Tournefeuille |
-| Zone | Blagnac, Colomiers & Ouest — livré tue, thu |
-| Statut | **active** — client régulier |
-| Commercial | Karim Belkacem |
-| Client depuis | 03/10/2016 (10 ans) |
-| Paiement | 30 jours — paie à l'échéance, sans histoire |
-| Encours | 4 230,78 € TTC (plafond 6 000 €) |
-| Tempérament | économe — qualité ★☆☆, prix ★★★, risque de départ moyen |
+| Type | Brasserie (Sandwicheries and snacks) — 98 rue Jean-Moulin, 31170 Tournefeuille |
+| Area | Blagnac, Colomiers & Ouest — delivered Tue, Thu |
+| Status | **active** — regular customer |
+| Sales representative | Karim Belkacem |
+| Customer since | 03/10/2016 (10 years) |
+| Payment | 30 days — Pays on due date, without history |
+| Outstanding balance | 4 230,78 € incl. VAT (ceiling 6 000 €) |
+| Temperament | economic — quality ★☆☆, price ★★★, medium risk of losing the customer |
 
-## Qui ils sont
+## Who they are
 
-Point de vente de snacking à Tournefeuille, cuisson de viennoiseries crues et sandwiches. Christian Guyot commande les chocolatines par carton de 140.
+Snacks at Tournefeuille, raw pastries cooking and sandwiches. Christian Guyot orders pains au chocolat by carton from 140.
 
-## Les personnes
+## People
 
-- **Christian Guyot** — Gérant · 06 27 01 87 34 · christian@rouquettesnack.fr
-  - Comment il/elle parle : Calcule tout, demande les promos et les fins de lot.
-  - Tics : « Vous avez des fins de lot ? » · « Juste ce qu'il faut, pas plus. »
-- **Guillaume Kaci** — Responsable de point de vente · 06 88 58 24 84
-  - Comment il/elle parle : Calcule tout, demande les promos et les fins de lot.
-  - Tics : « Juste ce qu'il faut, pas plus. » · « C'est combien au kilo, ramené ? »
+- **Christian Guyot** — manager · 06 27 01 87 34 · christian@rouquettesnack.fr
+  - Speaking style: Calculate everything, ask for promos and lot ends.
+  - Typical phrases: "Do you have any lot ends?" · "Just what you need, no more."
+- **Guillaume Kaci** — Point of sale manager · 06 88 58 24 84
+  - Speaking style: Calculate everything, ask for promos and lot ends.
+  - Typical phrases: "Just what you need, no more." · "How much is by kilo, brought back?"
 
-## Ce qu'ils achètent et comment
+## What they buy and how
 
-Commande deux fois par semaine, en général la veille entre 14h et 18h, surtout par portail web et téléphone. Produits habituels : croissant pur beurre cru surgelé 70 g (carton 150), baguette précuite surgelée 280 g (carton 60), sachets viennoiserie papier (carton 1000), praliné noisette 50 % (seau 5 kg), couronnes des rois carton dorées (lot de 100).
+Order twice a week, usually the day before between 14h and 18h, mainly via web portal and telephone. Usual products: Raw frozen all-butter croissant 70 g (carton of 150), Frozen par-baked baguette 280 g (carton of 60), Paper viennoiserie bags (carton of 1000), Hazelnut praline 50% (5 kg tub), Gold cardboard king cake crowns (pack of 100).
 
-Sur les 90 derniers jours (19 commandes livrées) :
+Over the last 90 days (19 orders delivered):
 
-| Produit | Volume 90 j | Lignes | Dernier prix |
+| Product | 90-day volume | Lines | Last price |
 |---|---|---|---|
-| Praliné noisette 50 % (seau 5 kg) (`prd_0045`) | 241,53 kg | 11 | 16,44 € |
-| Croissant pur beurre cru surgelé 70 g (carton 150) (`prd_0053`) | 66,00 colis | 9 | 52,00 € |
-| Baguette précuite surgelée 280 g (carton 60) (`prd_0058`) | 53,00 colis | 5 | 22,75 € |
-| Sachets viennoiserie papier (carton 1000) (`prd_0066`) | 24,00 colis | 6 | 17,50 € |
+| Hazelnut praline 50% (5 kg tub) (`prd_0045`) | 241,53 kg | 11 | 16,44 € |
+| Raw frozen all-butter croissant 70 g (carton of 150) (`prd_0053`) | 66,00 box | 9 | 52,00 € |
+| Frozen par-baked baguette 280 g (carton of 60) (`prd_0058`) | 53,00 box | 5 | 22,75 € |
+| Paper viennoiserie bags (carton of 1000) (`prd_0066`) | 24,00 box | 6 | 17,50 € |
 
-Fiche CRM : _Veut un prix au carton fixe sur l'année. Livraison avant 7h pour la cuisson. Livré mar. jeu. Accepte les substitutions équivalentes si on prévient._
+CRM record : _Vests a fixed carton price on the year. Delivery before 7h for cooking. Delivered on. game. Accept equivalent substitutions if we warn._
 
-## Ce qui les agace
+## What frustrates them
 
-- Les hausses en cours d'année
-- Une livraison après 7h
+- Increases during the year
+- Delivery after 7h
 
-## Historique marquant
+## A brief history
 
-- **05/02/2021** · qualité · Qualité : croissant pur beurre cru surgelé 70 g (carton 150)
-- **09/06/2021** · note · Reprise après les confinements
-- **14/12/2021** · demande spéciale · Fêtes 2021 : réservation
-- **06/04/2022** · prix · Hausse tarifaire (gazole, énergie)
-- **04/12/2022** · demande spéciale · Fêtes 2022 : réservation
-- **18/01/2024** · prix · Tarifs 2024
-- **28/07/2024** · note · Fermeture d'été 2024
-- **12/11/2024** · contact · Nouveau contact : Guillaume Kaci
-- **09/07/2025** · note · Fermeture d'été 2025
-- **21/12/2025** · demande spéciale · Fêtes 2025 : réservation de volumes
-- **14/01/2026** · prix · Tarifs 2026
-- **27/09/2026** · carte · Carte d'automne
+- **05/02/2021** · Quality · Quality : Raw frozen all-butter croissant 70 g (carton of 150)
+- **09/06/2021** · note · Resumption after confinement
+- **14/12/2021** · special request · Holidays 2021 : reservation
+- **06/04/2022** · price · Tariff increase (diesel, energy)
+- **04/12/2022** · special request · Holidays 2022 : reservation
+- **18/01/2024** · prices · Rates 2024
+- **28/07/2024** · note · Summer closure 2024
+- **12/11/2024** · contact · New contact : Guillaume Kaci
+- **09/07/2025** · note · Summer closure 2025
+- **21/12/2025** · special request · Holidays 2025 : volume reservation
+- **14/01/2026** · prices · Rates 2026
+- **27/09/2026** · map · Autumn card
 
-Historique complet : 34 événements (8 visite, 5 demande spéciale, 4 qualité, 4 note, 4 appel, 3 compliment, 3 prix, 1 ouverture, 1 contact, 1 carte).
+Full history: 34 events (8 visit, 5 special request, 4 quality, 4 rating, 4 call, 3 compliment, 3 price, 1 opening, 1 contact, 1 map).
 
-## Dossiers ouverts aujourd'hui
+## Open cases
 
-Aucun.
+None.
 
-## Comment leur parler
+## How to talk to them
 
-- Parler prix au carton et rotation.
-- Confirmer par écrit.
+- Talk about price to cardboard and rotation.
+- Confirm in writing.
 
-## Prix & groupe
+## Price & group
 
-Groupes : **Snacking** (`snacking`).
-Prix négociés (`clientPrices`, toujours prioritaires) : baguette précuite surgelée 280 g (carton 60) 22,75 € (liste 24,00) ; couronnes des rois carton dorées (lot de 100) 12,32 € (liste 13,00).
+Groups: **Snacking** (`snacking`).
+Negotiated prices (`clientPrices`, always priority): Frozen par-baked baguette 280 g (carton of 60) 22,75 € (list 24,00); Gold cardboard king cake crowns (pack of 100) 12,32 € (list 13,00).
 
-Règles de prix qui peuvent s'appliquer :
-- `prl_0005` Snacking : coût + 20 % sur les chocolatines
-- `prl_0006` Épiphanie 2027 : poudre d'amande −6 % dès 20 kg
-- `prl_0007` Épiphanie 2027 : couronnes et fèves −5 %
+Price rules that may apply:
+- `prl_0005` Snacking: cost + 20 % on pains au chocolat
+- `prl_0006` Epiphany 2027: almond powder -6 % from 20 kg
+- `prl_0007` Epiphany 2027: crowns and beans -5 %
 
-Dernières notes CRM :
+Latest notes CRM:
 
-Aucune.
+None.

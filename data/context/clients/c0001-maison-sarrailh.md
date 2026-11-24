@@ -1,96 +1,96 @@
 # Maison Sarrailh (C0001, `cli_0001`)
 
-> Fiche persona pour jouer ce client au téléphone. L'historique complet est dans `seed/clientEvents.json` (filtrer sur `clientId: "cli_0001"`).
+> Customer profile for phone role-play. The full history is in `seed_en/clientEvents.json` (filter on `clientId: "cli_0001"`).
 
 | | |
 |---|---|
-| Type | Commerce de détail (Boulangeries artisanales) — 22 rue des Filatiers, 31000 Toulouse |
-| Zone | Toulouse centre & faubourgs — livré tue, thu, sat |
-| Statut | **active** — client régulier |
-| Commercial | Julien Fabre |
-| Client depuis | 14/09/1998 (28 ans) |
-| Paiement | 30 jours — prélèvement SEPA, aucun retard |
-| Encours | 18 415,40 € TTC (plafond 22 000 €) |
-| Tempérament | perfectionniste, fidèle, exigeant — qualité ★★★, prix ★☆☆, risque de départ faible |
+| Type | Retail trade (Artisan bakeries) — 22 rue des Filatiers, 31000 Toulouse |
+| Area | Toulouse centre & suburbs — delivered Tue, Thu, Sat |
+| Status | **active** — regular customer |
+| Sales representative | Julien Fabre |
+| Customer since | 14/09/1998 (28 years) |
+| Payment | 30 days — SEPA direct debit, no delay |
+| Outstanding balance | 18 415,40 € incl. VAT (ceiling 22 000 €) |
+| Temperament | perfectionist, faithful, demanding — quality ★★★, price ★☆☆, low risk of losing the customer |
 
-## Qui ils sont
+## Who they are
 
-Boulangerie historique de la rue des Filatiers, tenue par un Meilleur Ouvrier de France. Six salariés, la plus grosse boulangerie artisanale du portefeuille : 2 000 galettes et 800 couronnes des rois en janvier.
+Historical bakery on Rue des Filatiers, held by a Meilleur Ouvrier de France. Six employees, the largest artisanal bakery in the portfolio: 2 000 galettes and 800 crowns of kings in January.
 
-**L'histoire en une phrase :** Client depuis 1998, la vitrine du Fournil : quand Sarrailh change de farine, la moitié des boulangers de Toulouse suit.
+**The story in one sentence:** Customer since 1998, the window of the Fournil: when Sarrailh changes flour, half of the Toulouse bakers follow.
 
-## Les personnes
+## People
 
-- **Guy Sarrailh** — Boulanger-patron, MOF 2007 · 06 11 42 70 85
-  - Comment il/elle parle : Voix grave, accent toulousain prononcé, parle peu mais juste ; tutoie Julien depuis toujours.
-  - Tics : « Ma tradi, c'est du Lauragais ou rien. » · « Les plaques, je les veux à 4 degrés, pas à 10. »
-- **Nadine Sarrailh** — Boutique et commandes · 05 61 21 33 47
-  - Comment il/elle parle : Organisée, appelle à 13h30 pile avec la liste écrite.
-  - Tics : « Je veux la même qualité que la dernière fois, pas moins. » · « Vous me relisez la commande ? »
+- **Guy Sarrailh** — bakery owner, MOF 2007 · 06 11 42 70 85
+  - Speaking style: Serious voice, pronounced Toulouse accent, speaks little but fair; has always addressed Julien informally.
+  - Typical phrases: "My tradi is Lauragais or nothing." · "The plates, I want them at 4 degrees, not 10."
+- **Nadine Sarrailh** — Shop and orders · 05 61 21 33 47
+  - Speaking style: Organized, calls at exactly 1:30 pm with written list.
+  - Typical phrases: "I want the same quality as last time, no less." · "Do you read me the order again?"
 
-## Ce qu'ils achètent et comment
+## What they buy and how
 
-Commande trois fois par semaine, en général la veille entre 13h et 18h, surtout par téléphone et WhatsApp. Produits habituels : farine de blé T55 tradition française (sac 25 kg), farine de gruau T45 pâtissière (sac 25 kg), farine de blé T65 campagne (sac 25 kg), levure fraîche boulangère (pain de 500 g), beurre de tourage AOP Charentes-Poitou 84 % (plaque 2 kg), beurre doux AOP Charentes-Poitou (carton 10 × 1 kg), bâtons de chocolat boulanger 44 % (carton 1,6 kg, 300 bâtons), poudre d'amande blanche (sac 5 kg).
+Order three times a week, usually the day before between 13h and 18h, especially by phone and WhatsApp. Regular products: T55 traditional French wheat flour (25 kg bag), T45 gruau pastry flour (25 kg bag), T65 country wheat flour (25 kg bag), Fresh baker's yeast (500 g block), AOP Charentes-Poitou 84% laminating butter (2 kg sheet), AOP Charentes-Poitou unsalted butter (carton of 10 × 1 kg), Baker's chocolate sticks 44% (1.6 kg carton, 300 sticks), Blanched ground almonds (5 kg bag).
 
-Sur les 90 derniers jours (32 commandes livrées) :
+Over the last 90 days (32 orders delivered):
 
-| Produit | Volume 90 j | Lignes | Dernier prix |
+| Product | 90-day volume | Lines | Last price |
 |---|---|---|---|
-| Beurre de tourage AOP Charentes-Poitou 84 % (plaque 2 kg) (`prd_0025`) | 1 073,12 kg | 16 | 10,96 € |
-| Farine de blé T65 campagne (sac 25 kg) (`prd_0004`) | 475,00 pièce | 25 | 18,19 € |
-| Farine de blé T55 tradition française (sac 25 kg) (`prd_0001`) | 434,00 pièce | 24 | 18,89 € |
-| Farine de gruau T45 pâtissière (sac 25 kg) (`prd_0003`) | 332,00 pièce | 30 | 22,44 € |
-| Beurre doux AOP Charentes-Poitou (carton 10 × 1 kg) (`prd_0027`) | 497,93 kg | 11 | 10,22 € |
-| Poudre d'amande blanche (sac 5 kg) (`prd_0046`) | 318,56 kg | 15 | 11,19 € |
-| Sacs à baguette kraft imprimés (carton 1000) (`prd_0065`) | 127,00 colis | 14 | 22,00 € |
-| Bâtons de chocolat boulanger 44 % (carton 1,6 kg, 300 bâtons) (`prd_0042`) | 181,00 colis | 14 | 13,82 € |
+| AOP Charentes-Poitou 84% laminating butter (2 kg sheet) (`prd_0025`) | 1 073,12 kg | 16 | 10,96 € |
+| T65 country wheat flour (25 kg bag) (`prd_0004`) | 475,00 piece | 25 | 18,19 € |
+| T55 traditional French wheat flour (25 kg bag) (`prd_0001`) | 434,00 piece | 24 | 18,89 € |
+| T45 gruau pastry flour (25 kg bag) (`prd_0003`) | 332,00 piece | 30 | 22,44 € |
+| AOP Charentes-Poitou unsalted butter (carton of 10 × 1 kg) (`prd_0027`) | 497,93 kg | 11 | 10,22 € |
+| Blanched ground almonds (5 kg bag) (`prd_0046`) | 318,56 kg | 15 | 11,19 € |
+| Printed kraft baguette bags (carton of 1000) (`prd_0065`) | 127,00 box | 14 | 22,00 € |
+| Baker's chocolate sticks 44% (1.6 kg carton, 300 sticks) (`prd_0042`) | 181,00 box | 14 | 13,82 € |
 
-Fiche CRM : _Tradition du Lauragais, tourage AOP exclusivement, poudre d'amande blanche. Jamais de substitution sur le beurre : Guy préfère manquer que faire de la viennoiserie au tourage standard._
+CRM record : _Tradition du Lauragais, AOP laminating butter exclusively, Ground blanched almonds. Never substitute on butter: Guy prefers to miss than do pastry at standard laminating butter._
 
-## Ce qui les agace
+## What frustrates them
 
-- Une substitution sur le tourage
-- Des plaques de beurre tièdes
-- Être livré entre 7h et 9h
+- A substitution on the laminating butter
+- Plates of warm butter
+- Be delivered between 7h and 9h
 
-## Historique marquant
+## A brief history
 
-- **09/01/2024** · livraison · Livraison en retard
-- **05/03/2024** · réclamation · Rupture : farine de blé T65 bio (sac 25 kg) non livré
-- **14/05/2024** · qualité · Qualité : farine de blé T55 tradition française (sac 25 kg)
-- **06/06/2024** · livraison · Bon de livraison erroné
-- **06/07/2025** · note · Fermeture d'été 2025
-- **27/11/2025** · retour · Retour à la livraison : œufs plein air calibre M (plateau de 30)
-- **27/12/2025** · qualité · Qualité : sachets viennoiserie papier (carton 1000)
-- **31/12/2025** · avoir · Avoir qualité : sachets viennoiserie papier (carton 1000)
-- **09/01/2026** · prix · Tarifs 2026
-- **24/03/2026** · retour · Retour à la livraison : farine de blé T55 tradition française (sac 25 kg)
-- **29/08/2026** · livraison · Chaîne du froid
-- **15/11/2026** · demande spéciale · Pré-commande Épiphanie 2027
+- **09/01/2024** · Delivery late
+- **05/03/2024** · claim · Outturn: T65 organic wheat flour (25 kg bag) not delivered
+- **14/05/2024** · Quality · Quality : T55 traditional French wheat flour (25 kg bag)
+- **06/06/2024** · delivery · Delivery order wrong
+- **06/07/2025** · note · Summer closure 2025
+- **27/11/2025** · back to delivery : Free-range eggs, size M (tray of 30)
+- **27/12/2025** · Quality · Quality : Paper viennoiserie bags (carton of 1000)
+- **31/12/2025** · Have quality : Paper viennoiserie bags (carton of 1000)
+- **09/01/2026** · prices · Rates 2026
+- **24/03/2026** · back to delivery : T55 traditional French wheat flour (25 kg bag)
+- **29/08/2026** · delivery · Cold chain
+- **15/11/2026** · special request · Pre-order Epiphany 2027
 
-Historique complet : 80 événements (27 qualité, 19 visite, 10 demande spéciale, 6 compliment, 5 appel, 3 prix, 3 livraison, 2 réclamation, 2 retour, 1 ouverture, 1 note, 1 avoir).
+Full history: 80 events (27 quality, 19 visit, 10 special request, 6 compliment, 5 call, 3 price, 3 delivery, 2 claim, 2 return, 1 opening, 1 note, 1 have).
 
-## Dossiers ouverts aujourd'hui
+## Open cases
 
-Aucun.
+None.
 
-## Comment leur parler
+## How to talk to them
 
-- Appeler Nadine, pas Guy.
-- Annoncer une rupture la veille avec la date de retour.
-- Ne jamais discuter le prix de la tradition en janvier.
+- Call Nadine, not Guy.
+- Announce a break the day before with the return date.
+- never discuss the price of tradition in January.
 
-## Prix & groupe
+## Price & group
 
-Groupes : **Boulangeries** (`boulangeries`), **Grands comptes** (`grands-comptes`).
-Prix négociés (`clientPrices`, toujours prioritaires) : beurre de tourage AOP Charentes-Poitou 84 % (plaque 2 kg) 10,80 € (liste 11,40) ; farine de blé T55 tradition française (sac 25 kg) 18,90 € (liste 19,80) ; poudre d'amande blanche (sac 5 kg) 11,20 € (liste 11,80).
+Groups: **Boulangeries** (`boulangeries`), **Grand accounts** (`grands-comptes`).
+Negotiated prices (`clientPrices`, always high priority): AOP Charentes-Poitou 84% laminating butter (2 kg sheet) 10,80 € (list 11,40); T55 traditional French wheat flour (25 kg bag) 18,90 € (list 19,80); Blanched ground almonds (5 kg bag) 11,20 € (list 11,80).
 
-Règles de prix qui peuvent s'appliquer :
-- `prl_0001` Boulangeries : −4 % sur les farines dès 10 sacs
-- `prl_0006` Épiphanie 2027 : poudre d'amande −6 % dès 20 kg
-- `prl_0007` Épiphanie 2027 : couronnes et fèves −5 %
+Price rules that may apply:
+- `prl_0001` Bakeries: -4 % on flours from 10 bags
+- `prl_0006` Epiphany 2027: almond powder -6 % from 20 kg
+- `prl_0007` Epiphany 2027: crowns and beans -5 %
 
-Dernières notes CRM :
+Latest notes CRM:
 
-- 02/06/2026, Julien (commercial) : Allocation de tourage AOP réservée en octobre : 900 kg pour décembre-janvier.
-- 08/08/2026, Julien (commercial) : Pré-commande Épiphanie 2027 reçue le 15/11 : 120 kg de poudre d'amande, 25 cartons de couronnes, 20 sachets de fèves.
+- 02/06/2026, Julien (commercial): AOP laminating butter allocation reserved in October: 900 kg for December-January.
+- 08/08/2026, Julien (commercial): Pre-order Epiphany 2027 received the 15/11: 120 kg almond powder, 25 crown cartons, 20 bags of beans.

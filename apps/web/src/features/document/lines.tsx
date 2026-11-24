@@ -48,7 +48,7 @@ export function LinesTable({ doc, products, supplierPrices, onAlternatives, extr
 
   const cols: Col[] = [];
   cols.push({
-    key: "product", header: "Produit", className: "whitespace-normal py-1.5",
+    key: "product", header: "Product", className: "whitespace-normal py-1.5",
     cell: (l) => {
       const p = products.get(l.productId);
       const w = warnOf.get(l.productId);
@@ -58,8 +58,8 @@ export function LinesTable({ doc, products, supplierPrices, onAlternatives, extr
           <Link to={`/products/${l.productId}`} className="min-w-0 break-words font-medium hover:underline">{l.productName}</Link>
           {p ? <Mono className="hidden text-[11px] text-muted-foreground 2xl:inline">{p.sku}</Mono> : null}
           {subOf ? <Badge tone="info" className="max-w-full"><ArrowRightLeft size={10} strokeWidth={2} className="shrink-0" /><span className="truncate">remplace {subOf}</span></Badge> : null}
-          {w?.has("expiring_soon") ? <Badge tone="warning" className="shrink-0">DLC proche</Badge> : null}
-          {w?.has("not_in_supplier_catalog") ? <Badge tone="warning" className="shrink-0">Hors catalogue</Badge> : null}
+          {w?.has("expiring_soon") ? <Badge tone="warning" className="shrink-0">DLC  near</Badge> : null}
+          {w?.has("not_in_supplier_catalog") ? <Badge tone="warning" className="shrink-0">Outside catalogue</Badge> : null}
         </div>
       );
     },
@@ -77,8 +77,8 @@ export function LinesTable({ doc, products, supplierPrices, onAlternatives, extr
   // Stock: what can be sold (sale) / what is already on hand before buying (purchase draft).
   if (inProgress) {
     cols.push({
-      key: "stock", header: sale ? "Disponible" : "En stock", width: 92, right: true,
-      title: sale ? undefined : "Stock disponible aujourd'hui",
+      key: "stock", header: sale ? "Available" : "En stock", width: 92, right: true,
+      title: sale ? undefined : "Stock available today",
       cell: (l) => {
         if (!sale) {
           const p = products.get(l.productId);
@@ -88,7 +88,7 @@ export function LinesTable({ doc, products, supplierPrices, onAlternatives, extr
         const short = !!warnOf.get(l.productId)?.has("insufficient_stock") || avail < l.qty;
         const empty = avail <= 0;
         return (
-          <span className="inline-flex items-center gap-1.5" title={short ? "Stock insuffisant pour cette quantité" : undefined}>
+          <span className="inline-flex items-center gap-1.5" title={short ? "Insufficient stock for this quantity" : undefined}>
             {short ? <span className={cn("h-1.5 w-1.5 rounded-full", empty ? "bg-destructive" : "bg-warning")} /> : null}
             <Qty value={avail} unit={l.unit} tone={empty ? "destructive" : short ? "warning" : undefined} />
           </span>
@@ -98,24 +98,24 @@ export function LinesTable({ doc, products, supplierPrices, onAlternatives, extr
   }
 
   cols.push({
-    key: "qty", header: "Qté cdée", title: "Quantité commandée", width: editable ? 106 : 86, right: true, className: editable ? editCls : undefined,
+    key: "qty", header: "Qty cde", title: "Quantity ordered", width: editable ? 106 : 86, right: true, className: editable ? editCls : undefined,
     cell: (l) => editable
-      ? <NumberCell compact label={`Quantité : ${l.productName}`} value={l.qty} suffix={unitOf(l)} min={0.001} onCommit={(qty) => update.mutate({ lineId: l.id, patch: { qty } })} />
+      ? <NumberCell compact label={`Quantity: ${l.productName}`} value={l.qty} suffix={unitOf(l)} min={0.001} onCommit={(qty) => update.mutate({ lineId: l.id, patch: { qty } })} />
       : <Qty value={l.qty} unit={l.unit} className={doc.picked && l.preparedQty != null && Math.abs(l.preparedQty - l.qty) > 1e-9 ? "text-muted-foreground" : undefined} />,
   });
 
   if (sale && doc.picked) {
     cols.push({
-      key: "prepared", header: "Qté prép.", title: "Quantité préparée", width: preparing ? 106 : 90, right: true, className: preparing ? editCls : undefined,
+      key: "prepared", header: "Qty prep.", title: "Prepared quantity", width: preparing ? 106 : 90, right: true, className: preparing ? editCls : undefined,
       cell: (l) => preparing
-        ? <NumberCell compact label={`Quantité préparée : ${l.productName}`} value={l.preparedQty ?? l.qty} suffix={unitOf(l)} onCommit={(preparedQty) => update.mutate({ lineId: l.id, patch: { preparedQty } })} />
+        ? <NumberCell compact label={`Prepared quantity: ${l.productName}`} value={l.preparedQty ?? l.qty} suffix={unitOf(l)} onCommit={(preparedQty) => update.mutate({ lineId: l.id, patch: { preparedQty } })} />
         : <Qty value={l.preparedQty ?? l.qty} unit={l.unit} className={l.preparedQty != null && Math.abs(l.preparedQty - l.qty) > 1e-9 ? "font-medium" : undefined} />,
     });
   }
 
   if (!sale && doc.receiving) {
     cols.push({
-      key: "received", header: "Reçu", width: 132, right: true,
+      key: "received", header: "Received", width: 132, right: true,
       cell: (l) => {
         const got = l.receivedQty ?? 0;
         const done = got >= l.qty;
@@ -139,7 +139,7 @@ export function LinesTable({ doc, products, supplierPrices, onAlternatives, extr
           <span className="inline-flex items-center justify-end gap-0.5">
             <PriceSourceInfo clientId={doc.partnerId} productId={l.productId} qty={l.qty} date={doc.date} unitPrice={l.unitPrice} />
             {editable
-              ? <NumberCell compact label={`Prix unitaire : ${l.productName}`} value={l.unitPrice} suffix="€" onCommit={(unitPrice) => update.mutate({ lineId: l.id, patch: { unitPrice } })} tone={p && l.unitPrice < p.cost ? "destructive" : undefined} />
+              ? <NumberCell compact label={`Unit price: ${l.productName}`} value={l.unitPrice} suffix="€" onCommit={(unitPrice) => update.mutate({ lineId: l.id, patch: { unitPrice } })} tone={p && l.unitPrice < p.cost ? "destructive" : undefined} />
               : <Money value={l.unitPrice} />}
           </span>
         );
@@ -150,7 +150,7 @@ export function LinesTable({ doc, products, supplierPrices, onAlternatives, extr
         <span className="inline-flex items-center justify-end gap-1.5">
           <PriceGap price={l.unitPrice} usual={usual} warn={above} />
           {editable
-            ? <NumberCell compact label={`Prix unitaire : ${l.productName}`} value={l.unitPrice} suffix="€" onCommit={(unitPrice) => update.mutate({ lineId: l.id, patch: { unitPrice } })} tone={above ? "warning" : undefined} />
+            ? <NumberCell compact label={`Unit price: ${l.productName}`} value={l.unitPrice} suffix="€" onCommit={(unitPrice) => update.mutate({ lineId: l.id, patch: { unitPrice } })} tone={above ? "warning" : undefined} />
             : <Money value={l.unitPrice} />}
         </span>
       );
@@ -168,7 +168,7 @@ export function LinesTable({ doc, products, supplierPrices, onAlternatives, extr
             {sale && onAlternatives ? (
               <IconButton icon={ArrowRightLeft} label="Alternatives" size="sm" onClick={() => onAlternatives(l)} className={short ? "text-warning hover:text-warning" : undefined} />
             ) : null}
-            <IconButton icon={Trash2} label="Retirer la ligne" size="sm" disabled={remove.isPending} onClick={() => remove.mutate(l.id)} className="hover:text-destructive" />
+            <IconButton icon={Trash2} label="Remove line" size="sm" disabled={remove.isPending} onClick={() => remove.mutate(l.id)} className="hover:text-destructive" />
           </span>
         );
       },
@@ -178,13 +178,13 @@ export function LinesTable({ doc, products, supplierPrices, onAlternatives, extr
   const priceOf = !sale && supplierPrices
     ? (p: ProductSummary) => {
         const sp = supplierPrices.get(p.id);
-        return sp != null ? { price: sp } : { price: p.cost, hint: supplierPrices.size ? "hors catalogue" : undefined };
+        return sp != null ? { price: sp } : { price: p.cost, hint: supplierPrices.size ? "excluding catalogue" : undefined };
       }
     : undefined;
-  const hint = editable ? "Cliquez une valeur pour la modifier" : preparing ? "Saisissez les quantités pesées" : null;
+  const hint = editable ? "Click a value to edit it" : preparing ? "Enter the weighed quantities" : null;
 
   return (
-    <Section title={title ?? "Lignes"} count={doc.lines.length} actions={actions ?? (hint ? <span className="text-[11.5px] text-muted-foreground">{hint}</span> : null)}>
+    <Section title={title ?? "Lines"} count={doc.lines.length} actions={actions ?? (hint ? <span className="text-[11.5px] text-muted-foreground">{hint}</span> : null)}>
       <div className={frameClassName}>
         <TableFrame>
           <Table fixed>
@@ -203,8 +203,8 @@ export function LinesTable({ doc, products, supplierPrices, onAlternatives, extr
                 <tr>
                   <td colSpan={cols.length} className="border-b border-border px-3 py-6 text-center text-[12.5px] text-muted-foreground">
                     <span className="inline-flex items-center gap-2">
-                      <PackageOpen size={14} strokeWidth={1.75} />Aucune ligne.{" "}
-                      {editable ? (sale ? "Ajoutez un produit ou reprenez le panier habituel du client." : "Ajoutez un produit ou reprenez les achats habituels chez ce fournisseur.") : ""}
+                      <PackageOpen size={14} strokeWidth={1.75} />No lines.{" "}
+                      {editable ? (sale ? "Add a product or take back the customer's usual basket." : "Add a product or take back the usual purchases from this supplier.") : ""}
                     </span>
                   </td>
                 </tr>
@@ -231,7 +231,7 @@ export function TotalsBlock({ totals, footnote }: { totals: { ht: number; vat: n
       <div className="min-w-0 text-[12px] text-muted-foreground">{footnote}</div>
       <dl className="grid w-[280px] shrink-0 grid-cols-[1fr_auto] gap-x-6 gap-y-1 text-[13px]">
         <dt className="text-muted-foreground">Total HT</dt><dd className="text-right"><Money value={totals.ht} /></dd>
-        <dt className="text-muted-foreground">TVA</dt><dd className="text-right"><Money value={totals.vat} /></dd>
+        <dt className="text-muted-foreground">VAT</dt><dd className="text-right"><Money value={totals.vat} /></dd>
         <dt className="border-t border-border pt-1.5 font-medium">Total TTC</dt>
         <dd className="border-t border-border pt-1.5 text-right"><Money value={totals.ttc} className="text-[15px] font-semibold" /></dd>
       </dl>
@@ -247,7 +247,7 @@ function PriceGap({ price, usual, warn }: { price: number; usual?: number; warn:
   return (
     <span
       className={cn("num text-[11px]", warn ? "font-medium text-warning" : gap > 0 ? "text-muted-foreground" : "text-success")}
-      title={`Prix habituel ${usual.toLocaleString("fr-FR", { style: "currency", currency: "EUR" })}`}
+      title={`Regular price ${usual.toLocaleString("en-GB", { style: "currency", currency: "EUR" })}`}
     >
       {`${gap > 0 ? "+" : "−"}${Math.round(Math.abs(gap) * 100)} %`}
     </span>

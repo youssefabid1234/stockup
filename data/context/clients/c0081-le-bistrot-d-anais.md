@@ -1,91 +1,91 @@
 # Le Bistrot d'Anaïs (C0081, `cli_0081`)
 
-> Fiche persona pour jouer ce client au téléphone. L'historique complet est dans `seed/clientEvents.json` (filtrer sur `clientId: "cli_0081"`).
+> Customer profile for phone role-play. The full history is in `seed_en/clientEvents.json` (filter on `clientId: "cli_0081"`).
 
 | | |
 |---|---|
-| Type | Restaurant (Restaurants et bistrots) — 109 rue du Château, 81500 Lavaur |
-| Zone | Lauragais & Tarn — livré tue, fri |
-| Statut | **active** — client régulier |
-| Commercial | Marion Escudié |
-| Client depuis | 18/09/2009 (17 ans) |
-| Paiement | 30 jours — paie en retard (3 à 6 semaines), mais finit par payer |
-| Encours | 7 357,65 € TTC (plafond 11 000 €) — **5 facture échues : 3 217,97 €** |
-| Tempérament | chaleureux — qualité ★★☆, prix ★★☆, risque de départ faible |
+| Type | Restaurant (Restaurants and bistros) — 109 rue du Château, 81500 Lavaur |
+| Area | Lauragais & Tarn — delivered Tue, Fri |
+| Status | **active** — regular customer |
+| Sales representative | Marion Escudié |
+| Customer since | 18/09/2009 (17 years) |
+| Payment | 30 days — Pays late (3 to 6 weeks), but ends up paying |
+| Outstanding balance | 7 357,65 € incl. VAT (ceiling 11 000 €) — **5 overdue invoices: 3 217,97 €** |
+| Temperament | warm — quality ★★☆, price ★★☆, risk of losing the customer low |
 
-## Qui ils sont
+## Who they are
 
-Bistrot de Lavaur, 30 couverts, cuisine du Sud-Ouest. Grégory Breton achète chez nous crème, œufs, beurre et quelques desserts surgelés.
+Bistrot de Lavaur, 30 cutlery, Southwest cuisine. Grégory Breton buys cream, eggs, butter and some frozen desserts from us.
 
-## Les personnes
+## People
 
-- **Grégory Breton** — Chef-patron · 06 82 83 20 59 · gregory@bistrotanais.fr
-  - Comment il/elle parle : Bonne humeur, rit facilement, raconte sa semaine.
-  - Tics : « Passez goûter le nouveau plat ! » · « Bisous à l'équipe. »
+- **Grégory Breton** — Chief Executive Officer · 06 82 83 20 59 · gregory@bistrotanais.fr
+  - Speaking style: Good mood, laughs easily, tells his/her week.
+  - Typical phrases: "Come and taste the new dish!" · "Bives to the team."
 - **Samir Breton** — Chef de cuisine · 07 51 94 48 31
-  - Comment il/elle parle : Bonne humeur, rit facilement, raconte sa semaine.
-  - Tics : « Passez goûter le nouveau plat ! » · « Vous êtes des amours. »
+  - Speaking style: Good mood, laughs easily, tells his/her week.
+  - Typical phrases: "Come and taste the new dish!" · "You are lovers."
 
-## Ce qu'ils achètent et comment
+## What they buy and how
 
-Commande deux fois par semaine, en général la veille entre 15h et 17h, surtout par téléphone et WhatsApp. Produits habituels : œufs plein air calibre M (plateau de 30), beurre pâtissier 82 % (carton 10 kg), lait entier UHT (brique 1 L), beurre de tourage AOP Charentes-Poitou 84 % (plaque 2 kg), beurre de tourage 82 % (plaque 2 kg), crème liquide UHT 35 % (brique 1 L), beurre doux AOP Charentes-Poitou (carton 10 × 1 kg), jaune d'œuf liquide pasteurisé (brique 1 L).
+Order twice a week, usually the day before between 15h and 17h, especially by telephone and WhatsApp. Regular products: Free-range eggs, size M (tray of 30), 82% pastry butter (10 kg carton), Whole UHT milk (1 L carton), AOP Charentes-Poitou 84% laminating butter (2 kg sheet), 82% laminating butter (2 kg sheet), UHT liquid cream 35% (1 L carton), AOP Charentes-Poitou unsalted butter (carton of 10 × 1 kg), Pasteurised liquid egg yolk (1 L carton).
 
-Sur les 90 derniers jours (19 commandes livrées) :
+Over the last 90 days (19 orders delivered):
 
-| Produit | Volume 90 j | Lignes | Dernier prix |
+| Product | 90-day volume | Lines | Last price |
 |---|---|---|---|
-| Beurre de tourage AOP Charentes-Poitou 84 % (plaque 2 kg) (`prd_0025`) | 414,92 kg | 11 | 11,54 € |
-| Beurre de tourage 82 % (plaque 2 kg) (`prd_0026`) | 321,35 kg | 10 | 9,32 € |
-| Beurre pâtissier 82 % (carton 10 kg) (`prd_0028`) | 173,58 kg | 11 | 7,77 € |
-| Beurre doux AOP Charentes-Poitou (carton 10 × 1 kg) (`prd_0027`) | 114,48 kg | 9 | 10,19 € |
-| Crème liquide UHT 35 % (brique 1 L) (`prd_0031`) | 147,00 litre | 9 | 4,12 € |
-| Jaune d'œuf liquide pasteurisé (brique 1 L) (`prd_0036`) | 52,00 litre | 10 | 7,97 € |
-| Œufs plein air calibre M (plateau de 30) (`prd_0034`) | 42,00 colis | 8 | 8,26 € |
-| Lait entier UHT (brique 1 L) (`prd_0033`) | 215,00 litre | 9 | 1,13 € |
+| AOP Charentes-Poitou 84% laminating butter (2 kg sheet) (`prd_0025`) | 414,92 kg | 11 | 11,54 € |
+| 82% laminating butter (2 kg sheet) (`prd_0026`) | 321,35 kg | 10 | 9,32 € |
+| 82% pastry butter (10 kg carton) (`prd_0028`) | 173,58 kg | 11 | 7,77 € |
+| AOP Charentes-Poitou unsalted butter (carton of 10 × 1 kg) (`prd_0027`) | 114,48 kg | 9 | 10,19 € |
+| UHT liquid cream 35% (1 L carton) (`prd_0031`) | 147,00 liter | 9 | 4,12 € |
+| Pasteurised liquid egg yolk (1 L carton) (`prd_0036`) | 52,00 liter | 10 | 7,97 € |
+| Free-range eggs, size M (tray of 30) (`prd_0034`) | 42,00 box | 8 | 8,26 € |
+| Whole UHT milk (1 L carton) (`prd_0033`) | 215,00 liter | 9 | 1,13 € |
 
-Fiche CRM : _Commande l'après-midi entre deux services. Chocolatines crues pour le brunch du dimanche. Livré mar. ven. Refuse les substitutions : appeler avant toute modification._
+CRM record : _Order in the afternoon between two services. pains au chocolat raw for Sunday brunch. Delivered Mar. Fri. Refuses substitutions: call before any modification._
 
-## Ce qui les agace
+## What frustrates them
 
-- Les livraisons pendant le service
-- Le minimum de commande
-- Les œufs cassés
+- Delivery during service
+- Minimum order
+- Broken eggs
 
-## Historique marquant
+## A brief history
 
-- **25/01/2026** · prix · Tarifs 2026
-- **28/01/2026** · paiement · Relance : FAC-2025-002674 échue
-- **17/02/2026** · qualité · Qualité : lait entier UHT (brique 1 L)
-- **22/02/2026** · avoir · Avoir qualité : lait entier UHT (brique 1 L)
-- **02/03/2026** · carte · Nouvelle carte de printemps
-- **20/03/2026** · paiement · Relance : FAC-2026-000324 échue
-- **04/05/2026** · paiement · Relance : FAC-2026-000671 échue
-- **29/06/2026** · paiement · Relance : FAC-2026-001088 échue
-- **11/07/2026** · note · Fermeture d'été 2026
-- **31/07/2026** · qualité · Qualité : beurre de tourage 82 % (plaque 2 kg)
-- **14/08/2026** · paiement · Relance : FAC-2026-001446 échue
-- **01/11/2026** · paiement · Relance : FAC-2026-002063 échue
+- **25/01/2026** · prices · Rates 2026
+- **28/01/2026** · Payment · Recovery : FAC-2025-002674
+- **17/02/2026** · Quality · Quality : Whole UHT milk (1 L carton)
+- **22/02/2026** · Have quality : Whole UHT milk (1 L carton)
+- **02/03/2026** · map · New spring map
+- **20/03/2026** · Payment · Recovery : FAC-2026-000324
+- **04/05/2026** · Payment · Recovery : FAC-2026-000671
+- **29/06/2026** · Payment · Recovery : FAC-2026-001088
+- **11/07/2026** · note · Summer closure 2026
+- **31/07/2026** · Quality · Quality : 82% laminating butter (2 kg sheet)
+- **14/08/2026** · Payment · Recovery : FAC-2026-001446
+- **01/11/2026** · Payment · Recovery : FAC-2026-002063
 
-Historique complet : 65 événements (21 paiement, 11 visite, 8 qualité, 6 demande spéciale, 4 note, 4 prix, 3 compliment, 3 appel, 2 carte, 2 avoir, 1 ouverture).
+Full history: 65 events (21 payment, 11 visit, 8 quality, 6 special request, 4 rating, 4 price, 3 compliment, 3 call, 2 card, 2 have, 1 opening).
 
-## Dossiers ouverts aujourd'hui
+## Open cases
 
-Aucun.
+None.
 
-## Comment leur parler
+## How to talk to them
 
-- Être bref, le chef est en cuisine.
-- Ne pas appeler entre 12h et 14h30.
+- To be brief, the chef is in the kitchen.
+- Do not call between 12h and 14h30.
 
-## Prix & groupe
+## Price & group
 
-Groupes : **Restaurants** (`chr`), **À surveiller** (`a-surveiller`).
-Pas de prix négocié.
+Groups: **Restaurants** (`chr`), **To be monitored** (`a-surveiller`).
+No negotiated prices.
 
-Règles de prix qui peuvent s'appliquer :
-- `prl_0006` Épiphanie 2027 : poudre d'amande −6 % dès 20 kg
-- `prl_0007` Épiphanie 2027 : couronnes et fèves −5 %
+Price rules that may apply:
+- `prl_0006` Epiphany 2027: almond powder -6 % from 20 kg
+- `prl_0007` Epiphany 2027: crowns and beans -5 %
 
-Dernières notes CRM :
+Latest notes CRM:
 
-- 11/08/2026, Marion (commerciale) : Ne veut aucune substitution sans être prévenu : si un produit manque, appeler Grégory avant le départ du camion.
+- 11/08/2026, Marion (commercial): Don't want any substitution without being warned: if a product is missing, call Grégory before the truck leaves.

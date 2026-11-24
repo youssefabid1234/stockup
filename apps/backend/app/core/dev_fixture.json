@@ -9,10 +9,10 @@
   {
    "id": "prd_0001",
    "sku": "BAR-LIG-12",
-   "name": "Bar de ligne 1-2 kg",
+   "name": "Line-caught sea bass 1-2 kg",
    "aliases": [
-    "loup",
-    "bar",
+    "sea bass",
+    "bass",
     "seabass"
    ],
    "category": "whole_fish",
@@ -21,7 +21,7 @@
    "cost": 19.8,
    "vatRate": 0.055,
    "shelfLifeDays": 4,
-   "origin": "Bretagne",
+   "origin": "Brittany",
    "caliber": "1-2 kg",
    "mainSupplierId": "sup_0001",
    "active": true
@@ -29,10 +29,10 @@
   {
    "id": "prd_0002",
    "sku": "DOR-ROY-46",
-   "name": "Dorade royale 400-600 g",
+   "name": "Gilthead sea bream 400-600 g",
    "aliases": [
-    "dorade",
-    "daurade"
+    "sea bream",
+    "gilthead bream"
    ],
    "category": "whole_fish",
    "unit": "kg",
@@ -40,7 +40,7 @@
    "cost": 11.2,
    "vatRate": 0.055,
    "shelfLifeDays": 4,
-   "origin": "Méditerranée",
+   "origin": "Mediterranean",
    "caliber": "400-600 g",
    "mainSupplierId": "sup_0001",
    "active": true
@@ -48,11 +48,11 @@
   {
    "id": "prd_0003",
    "sku": "SJQ-NOI-3",
-   "name": "Noix de Saint-Jacques",
+   "name": "Scallop meat",
    "aliases": [
-    "saint jacques",
-    "st jacques",
-    "coquilles"
+    "scallops",
+    "scallop meat",
+    "shellfish"
    ],
    "category": "shellfish",
    "unit": "kg",
@@ -60,17 +60,17 @@
    "cost": 38,
    "vatRate": 0.055,
    "shelfLifeDays": 3,
-   "origin": "Normandie",
+   "origin": "Normandy",
    "mainSupplierId": "sup_0001",
    "active": true
   },
   {
    "id": "prd_0004",
    "sku": "SAU-FIL-EC",
-   "name": "Filet de saumon Écosse",
+   "name": "Scottish salmon fillet",
    "aliases": [
-    "saumon",
-    "pavé de saumon"
+    "salmon",
+    "salmon steak"
    ],
    "category": "fillet",
    "unit": "kg",
@@ -78,17 +78,17 @@
    "cost": 16.5,
    "vatRate": 0.055,
    "shelfLifeDays": 5,
-   "origin": "Écosse",
+   "origin": "Scotland",
    "mainSupplierId": "sup_0001",
    "active": true
   },
   {
    "id": "prd_0005",
    "sku": "CIT-JAU-5",
-   "name": "Citron jaune (colis 5 kg)",
+   "name": "Lemons (5 kg box)",
    "aliases": [
-    "citron",
-    "citrons"
+    "lemon",
+    "lemons"
    ],
    "category": "produce",
    "unit": "box",
@@ -96,16 +96,16 @@
    "cost": 8,
    "vatRate": 0.055,
    "shelfLifeDays": 14,
-   "origin": "Espagne",
+   "origin": "Spain",
    "mainSupplierId": "sup_0002",
    "active": true
   },
   {
    "id": "prd_0006",
    "sku": "PER-PLA-BT",
-   "name": "Persil plat (botte)",
+   "name": "Flat-leaf parsley (bunch)",
    "aliases": [
-    "persil"
+    "parsley"
    ],
    "category": "produce",
    "unit": "piece",
@@ -133,7 +133,7 @@
    ],
    "address": "12 quai de Seine",
    "city": "Boulogne-Billancourt",
-   "zone": "Paris Ouest",
+   "zone": "West Paris",
    "deliveryDays": [
     "mon",
     "tue",
@@ -145,7 +145,7 @@
    "creditLimit": 5000,
    "status": "active",
    "salesRep": "Sophie",
-   "preferences": "Bar et Saint-Jacques toutes les semaines",
+   "preferences": "Orders sea bass and scallops every week",
    "notes": [],
    "createdAt": "2025-03-01T09:00:00.000Z"
   },
@@ -157,13 +157,13 @@
    "contacts": [
     {
      "name": "Claire Martin",
-     "role": "Gérante",
+     "role": "Manager",
      "phone": "+33 6 98 76 54 32"
     }
    ],
    "address": "4 rue du Marché",
    "city": "Neuilly-sur-Seine",
-   "zone": "Paris Ouest",
+   "zone": "West Paris",
    "deliveryDays": [
     "tue",
     "thu",
@@ -173,7 +173,7 @@
    "creditLimit": 3000,
    "status": "active",
    "salesRep": "Sophie",
-   "preferences": "Gros volumes de dorade",
+   "preferences": "Large quantities of sea bream",
    "notes": [],
    "createdAt": "2025-05-10T09:00:00.000Z"
   },
@@ -185,13 +185,13 @@
    "contacts": [
     {
      "name": "Paul Garnier",
-     "role": "Acheteur",
+     "role": "Buyer",
      "email": "paul@leshalles.fr"
     }
    ],
    "address": "8 avenue Foch",
    "city": "Rueil-Malmaison",
-   "zone": "Paris Ouest",
+   "zone": "West Paris",
    "deliveryDays": [
     "mon",
     "wed",
@@ -201,7 +201,7 @@
    "creditLimit": 1000,
    "status": "blocked",
    "salesRep": "Karim",
-   "preferences": "Paie au comptant",
+   "preferences": "Pays on delivery",
    "notes": [],
    "createdAt": "2025-09-01T09:00:00.000Z"
   }
@@ -414,7 +414,7 @@
    "lines": [
     {
      "productId": "prd_0001",
-     "label": "Bar de ligne 1-2 kg",
+     "label": "Line-caught sea bass 1-2 kg",
      "qty": 8,
      "unitPrice": 26.9,
      "vatRate": 0.055,
@@ -422,7 +422,7 @@
     },
     {
      "productId": "prd_0003",
-     "label": "Noix de Saint-Jacques",
+     "label": "Scallop meat",
      "qty": 3,
      "unitPrice": 54,
      "vatRate": 0.055,
@@ -439,10 +439,10 @@
  "routes": [
   {
    "id": "rte_0001",
-   "name": "Tournée Paris Ouest",
-   "zone": "Paris Ouest",
+   "name": "West Paris delivery route",
+   "zone": "West Paris",
    "driver": "Didier",
-   "vehicle": "Camion frigo 12 m³",
+   "vehicle": "12 m³ refrigerated truck",
    "capacityKg": 1200,
    "days": [
     "mon",

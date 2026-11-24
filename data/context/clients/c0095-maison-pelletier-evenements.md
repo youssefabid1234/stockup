@@ -1,86 +1,86 @@
 # Maison Pelletier Événements (C0095, `cli_0095`)
 
-> Fiche persona pour jouer ce client au téléphone. L'historique complet est dans `seed/clientEvents.json` (filtrer sur `clientId: "cli_0095"`).
+> Customer profile for phone role-play. The full history is in `seed_en/clientEvents.json` (filter on `clientId: "cli_0095"`).
 
 | | |
 |---|---|
-| Type | Traiteur (Traiteurs et organisateurs de réceptions) — 116 boulevard de la Croix-Rousse, 31150 Fenouillet |
-| Zone | Fondeyre, L'Union & Nord toulousain — livré fri |
-| Statut | **active** — en baisse |
-| Commercial | Karim Belkacem |
-| Client depuis | 26/09/2006 (20 ans) |
-| Paiement | 30 jours — paie à l'échéance, sans histoire |
-| Encours | 6 442,18 € TTC (plafond 9 000 €) |
-| Tempérament | désorganisé, impulsif, chaleureux — qualité ★★☆, prix ★★☆, risque de départ élevé |
+| Type | Caterer (Treaters and Reception Organizers) — 116 boulevard de la Croix-Rousse, 31150 Fenouillet |
+| Area | Fondeyre, L'Union & Nord Toulousein — delivered Fri |
+| Status | **active** — down |
+| Sales representative | Karim Belkacem |
+| Customer since | 26/09/2006 (20 years) |
+| Payment | 30 days — Pays on due date, without history |
+| Outstanding balance | 6 442,18 € incl. VAT (ceiling 9 000 €) |
+| Temperament | disorganized, impulsive, warm — quality ★★☆, price ★★☆, high risk of losing the customer |
 
-## Qui ils sont
+## Who they are
 
-Traiteur de Fenouillet : mariages l'été, séminaires, réveillons. Mini-viennoiseries pour les petits-déjeuners d'entreprise, feuilletage pour les bouchées.
+Fenouillet Caterer: summer weddings, seminars, Christmas Eves. Mini-pastries for business breakfasts, leafing for bites.
 
-## Les personnes
+## People
 
-- **Xavier Robin** — Gérant · 06 56 89 58 85 · xavier@maisonpelletierevenement.fr
-  - Comment il/elle parle : Change d'avis souvent, commandes de dernière minute.
-  - Tics : « On improvise. » · « Je change tout pour demain. »
+- **Xavier Robin** — manager · 06 56 89 58 85 · xavier@maisonpelletierevenement.fr
+  - Speaking style: Change your mind often, last minute orders.
+  - Typical phrases: "We improvise." · "I change everything for tomorrow."
 
-## Ce qu'ils achètent et comment
+## What they buy and how
 
-Commande une fois par semaine, en général 2 jours avant entre 9h et 17h, surtout par e-mail et téléphone. Produits habituels : jaune d'œuf liquide pasteurisé (brique 1 L), crème fraîche épaisse 30 % (seau 5 L), crème liquide UHT 35 % (brique 1 L), farine bise T80 (sac 25 kg), chocolatine pur beurre crue surgelée 75 g (carton 140), couronnes des rois carton dorées (lot de 100), beurre doux AOP Charentes-Poitou (carton 10 × 1 kg), citron jaune (colis 5 kg).
+Order once a week, usually 2 days front between 9h and 17h, especially via e-mail and telephone. Regular products: Pasteurised liquid egg yolk (1 L carton), Thick crème fraîche 30% (5 L tub), UHT liquid cream 35% (1 L carton), T80 bise flour (25 kg bag), Raw frozen all-butter pain au chocolat 75 g (carton of 140), Gold cardboard king cake crowns (pack of 100), AOP Charentes-Poitou unsalted butter (carton of 10 × 1 kg), Lemon (5 kg case).
 
-Sur les 90 derniers jours (12 commandes livrées) :
+Over the last 90 days (12 orders delivered):
 
-| Produit | Volume 90 j | Lignes | Dernier prix |
+| Product | 90-day volume | Lines | Last price |
 |---|---|---|---|
-| Chocolatine pur beurre crue surgelée 75 g (carton 140) (`prd_0054`) | 101,00 colis | 5 | 54,00 € |
-| Beurre doux AOP Charentes-Poitou (carton 10 × 1 kg) (`prd_0027`) | 479,59 kg | 7 | 10,22 € |
-| Crème liquide UHT 35 % (brique 1 L) (`prd_0031`) | 806,00 litre | 7 | 4,09 € |
-| Lait entier UHT (brique 1 L) (`prd_0033`) | 1 048,00 litre | 10 | 1,12 € |
-| Farine bise T80 (sac 25 kg) (`prd_0005`) | 45,00 pièce | 6 | 21,49 € |
-| Crème fraîche épaisse 30 % (seau 5 L) (`prd_0032`) | 149,00 litre | 5 | 4,59 € |
-| Jaune d'œuf liquide pasteurisé (brique 1 L) (`prd_0036`) | 75,00 litre | 4 | 8,07 € |
-| Citron jaune (colis 5 kg) (`prd_0062`) | 112,54 kg | 6 | 2,70 € |
+| Raw frozen all-butter pain au chocolat 75 g (carton of 140) (`prd_0054`) | 101,00 box | 5 | 54,00 € |
+| AOP Charentes-Poitou unsalted butter (carton of 10 × 1 kg) (`prd_0027`) | 479,59 kg | 7 | 10,22 € |
+| UHT liquid cream 35% (1 L carton) (`prd_0031`) | 806,00 liter | 7 | 4,09 € |
+| Whole UHT milk (1 L carton) (`prd_0033`) | 1 048,00 liter | 10 | 1,12 € |
+| T80 bise flour (25 kg bag) (`prd_0005`) | 45,00 piece | 6 | 21,49 € |
+| Thick crème fraîche 30% (5 L tub) (`prd_0032`) | 149,00 liter | 5 | 4,59 € |
+| Pasteurised liquid egg yolk (1 L carton) (`prd_0036`) | 75,00 liter | 4 | 8,07 € |
+| Lemon (5 kg case) (`prd_0062`) | 112,54 kg | 6 | 2,70 € |
 
-Fiche CRM : _Pré-commandes de Noël dès novembre. Mini-viennoiseries pour les séminaires. Livré ven. Accepte les substitutions équivalentes si on prévient._
+CRM form: _Pre-orders from Christmas in November. Mini-pastries for seminars. Delivered Fri. Accept equivalent substitutions if notified._
 
-## Ce qui les agace
+## What frustrates them
 
-- Les cartons de minis incomplets
-- Une rupture le jour d'un mariage
+- Incomplete mini cartons
+- A breakdown on the day of a marriage
 
-## Historique marquant
+## A brief history
 
-- **07/12/2021** · demande spéciale · Fêtes 2021 : réservation
-- **11/04/2022** · prix · Hausse tarifaire (gazole, énergie)
-- **22/11/2022** · qualité · Qualité : chocolatine pur beurre crue surgelée 75 g (carton 140)
-- **02/12/2022** · demande spéciale · Fêtes 2022 : réservation
-- **21/10/2023** · qualité · Qualité : chocolatine pur beurre crue surgelée 75 g (carton 140)
-- **27/11/2023** · demande spéciale · Fêtes 2023 : réservation de volumes
-- **19/12/2023** · demande spéciale · Fêtes 2023 : réservation de volumes
-- **18/01/2024** · prix · Tarifs 2024
-- **09/01/2025** · prix · Tarifs 2025
-- **09/01/2026** · prix · Tarifs 2026
-- **06/03/2026** · carte · Nouvelle carte de printemps
-- **22/05/2026** · livraison · Erreur de livraison
+- **07/12/2021** · special request · Holidays 2021 : reservation
+- **11/04/2022** · price · Tariff increase (diesel, energy)
+- **22/11/2022** · Quality · Quality : Raw frozen all-butter pain au chocolat 75 g (carton of 140)
+- **02/12/2022** · special request · Holidays 2022 : reservation
+- **21/10/2023** · Quality · Quality : Raw frozen all-butter pain au chocolat 75 g (carton of 140)
+- **27/11/2023** · special request · Holidays 2023 : volume reservation
+- **19/12/2023** · special request · Holidays 2023 : volume reservation
+- **18/01/2024** · prices · Rates 2024
+- **09/01/2025** · prices · Rates 2025
+- **09/01/2026** · prices · Rates 2026
+- **06/03/2026** · map · New spring map
+- **22/05/2026** · delivery · delivery error
 
-Historique complet : 60 événements (14 visite, 12 qualité, 10 demande spéciale, 8 compliment, 7 appel, 4 prix, 2 note, 1 ouverture, 1 carte, 1 livraison).
+Full history: 60 events (14 visit, 12 quality, 10 special request, 8 compliment, 7 call, 4 price, 2 note, 1 opening, 1 card, 1 delivery).
 
-## Dossiers ouverts aujourd'hui
+## Open cases
 
-Aucun.
+None.
 
-## Comment leur parler
+## How to talk to them
 
-- Faire préciser la date de l'événement et le nombre de couverts.
+- Specify the date of the event and the number of covers.
 
-## Prix & groupe
+## Price & group
 
-Groupes : **Traiteurs** (`traiteurs`).
-Pas de prix négocié.
+Groups: **Treaters** (`traiteurs`).
+No negotiated prices.
 
-Règles de prix qui peuvent s'appliquer :
-- `prl_0006` Épiphanie 2027 : poudre d'amande −6 % dès 20 kg
-- `prl_0007` Épiphanie 2027 : couronnes et fèves −5 %
+Price rules that may apply:
+- `prl_0006` Epiphany 2027: almond powder -6 % from 20 kg
+- `prl_0007` Epiphany 2027: crowns and beans -5 %
 
-Dernières notes CRM :
+Latest notes CRM:
 
-Aucune.
+None.

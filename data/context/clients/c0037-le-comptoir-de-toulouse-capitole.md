@@ -1,77 +1,77 @@
 # Le Comptoir de Toulouse (Capitole) (C0037, `cli_0037`)
 
-> Fiche persona pour jouer ce client au téléphone. L'historique complet est dans `seed/clientEvents.json` (filtrer sur `clientId: "cli_0037"`).
+> Customer profile for phone role-play. The full history is in `seed_en/clientEvents.json` (filter on `clientId: "cli_0037"`).
 
 | | |
 |---|---|
-| Type | Restaurant (Restaurants et bistrots) — 20 rue des Filatiers, 31000 Toulouse (Capitole) |
-| Zone | Toulouse centre & faubourgs — livré mon |
-| Statut | **active** — perdu (plus de commande), dernière livraison le 26/05/2025 |
-| Commercial | Marion Escudié |
-| Client depuis | 28/06/2021 (5 ans) |
-| Paiement | 30 jours — paie en retard (3 à 6 semaines), mais finit par payer |
-| Encours | 0,00 € TTC (plafond 3 500 €) |
-| Tempérament | désorganisé, pressé, chaleureux — qualité ★☆☆, prix ★★☆, risque de départ élevé |
+| Type | Restaurant (Restaurants and bistros) — 20 rue des Filatiers, 31000 Toulouse (Capitole) |
+| Area | Toulouse centre & suburbs — delivered Mon |
+| Status | **active** — lost (more order), last delivery on 26/05/2025 |
+| Sales representative | Marion Escudié |
+| Customer since | 28/06/2021 (5 years) |
+| Payment | 30 days — Pays late (3 to 6 weeks), but ends up paying |
+| Outstanding balance | 0,00 € incl. VAT (ceiling 3 500 €) |
+| Temperament | disorganized, pressed, warm — quality ★☆☆, price ★★☆, high risk of losing the customer |
 
-## Qui ils sont
+## Who they are
 
-Bistrot de Toulouse (Capitole), 30 couverts, cuisine du Sud-Ouest. Guillaume Cassagne achète chez nous crème, œufs, beurre et quelques desserts surgelés.
+Toulouse Bistrot (Capitol), 30 cutlery, Southwest cuisine. Guillaume Cassagne buys cream, eggs, butter and some frozen desserts from us.
 
-## Les personnes
+## People
 
-- **Guillaume Cassagne** — Chef-patron · 06 32 50 64 39 · guillaume@comptoirtoulousecapitole.fr
-  - Comment il/elle parle : Appelle entre deux services, raccroche vite.
-  - Tics : « Vite, j'ai pas le temps. » · « Pareil que d'hab, go. »
+- **Guillaume Cassagne** — Chief Executive Officer · 06 32 50 64 39 · guillaume@comptoirtoulousecapitole.fr
+  - Speaking style: Calls between two services, hang up fast.
+  - Typical phrases: "Quickly, I don't have time." · "Same as usual, go."
 - **Benoît Perez** — Chef de cuisine · 06 70 43 76 27
-  - Comment il/elle parle : Très sympathique, prend des nouvelles, tutoie vite.
-  - Tics : « Alors, ça va chez vous ? » · « Bisous à l'équipe. »
+  - Speaking style: Very friendly, take news, quickly tutoe.
+  - Typical phrases: "So, how's it going with you?" · "Bives to the team."
 
-## Ce qu'ils achètent et comment
+## What they buy and how
 
-Commande une fois par semaine, en général la veille entre 14h et 17h, surtout par téléphone et WhatsApp. Produits habituels : crème liquide UHT 35 % (brique 1 L), beurre pâtissier 82 % (carton 10 kg), lait entier UHT (brique 1 L), sucre semoule (sac 25 kg), purée de framboise surgelée (barquette 1 kg), œufs plein air calibre M (plateau de 30).
+Order once a week, usually the day before between 14h and 17h, especially by phone and WhatsApp. Regular products: UHT liquid cream 35% (1 L carton), 82% pastry butter (10 kg carton), Whole UHT milk (1 L carton), Caster sugar (25 kg bag), Frozen raspberry purée (1 kg tray), Free-range eggs, size M (tray of 30).
 
-Fiche CRM : _Crème et œufs deux fois par semaine. Commande l'après-midi entre deux services. Livré lun. Accepte les substitutions équivalentes si on prévient._
+Sheet CRM: _Cream and eggs twice a week. Order the afternoon between two services. Delivered Mon. Accept equivalent substitutions if notified._
 
-## Ce qui les agace
+## What frustrates them
 
-- Les livraisons pendant le service
-- Les œufs cassés
+- Delivery during service
+- Broken eggs
 
-## Historique marquant
+## A brief history
 
-- **16/10/2024** · paiement · Relance : FAC-2024-001898 échue
-- **09/12/2024** · paiement · Relance : FAC-2024-002283 échue
-- **24/01/2025** · prix · Tarifs 2025
-- **10/02/2025** · paiement · Relance : FAC-2024-002785 échue
-- **30/03/2025** · carte · Nouvelle carte de printemps
-- **12/04/2025** · paiement · Relance : FAC-2025-000512 échue
-- **18/04/2025** · risque de départ · Commandes en baisse
-- **28/04/2025** · qualité · Qualité : œufs plein air calibre M (plateau de 30)
-- **03/05/2025** · avoir · Avoir qualité : œufs plein air calibre M (plateau de 30)
-- **05/05/2025** · livraison · Chaîne du froid
-- **07/06/2025** · paiement · Relance : FAC-2025-000915 échue
-- **14/07/2025** · note · Plus de commande depuis un mois
+- **16/10/2024** · Payment · Recovery : FAC-2024-001898
+- **09/12/2024** · Payment · Recovery : FAC-2024-002283
+- **24/01/2025** · prices · Rates 2025
+- **10/02/2025** · Payment · Recovery : FAC-2024-002785
+- **30/03/2025** · map · New spring map
+- **12/04/2025** · Payment · Recovery : FAC-2025-000512
+- **18/04/2025** · risk of losing the customer · Lower orders
+- **28/04/2025** · Quality · Quality : Free-range eggs, size M (tray of 30)
+- **03/05/2025** · Have quality : Free-range eggs, size M (tray of 30)
+- **05/05/2025** · delivery · Cold chain
+- **07/06/2025** · Payment · Recovery : FAC-2025-000915
+- **14/07/2025** · note · More orders for a month
 
-Historique complet : 31 événements (10 paiement, 5 visite, 3 prix, 3 appel, 2 carte, 1 ouverture, 1 demande spéciale, 1 compliment, 1 risque de départ, 1 qualité, 1 avoir, 1 livraison, 1 note).
+Full history: 31 events (10 payment, 5 visit, 3 price, 3 call, 2 card, 1 opening, 1 special request, 1 compliment, 1 risk of losing the customer, 1 quality, 1 have, 1 delivery, 1 note).
 
-## Dossiers ouverts aujourd'hui
+## Open cases
 
-Aucun.
+None.
 
-## Comment leur parler
+## How to talk to them
 
-- Ne pas appeler entre 12h et 14h30.
-- Être bref, le chef est en cuisine.
+- Do not call between 12h and 14h30.
+- To be brief, the chef is in the kitchen.
 
-## Prix & groupe
+## Price & group
 
-Groupes : **Restaurants** (`chr`), **À surveiller** (`a-surveiller`), **Clients perdus** (`perdus`).
-Pas de prix négocié.
+Groups: **Restaurants** (`chr`), **To be monitored** (`a-surveiller`), **Lost customers** (`perdus`).
+No negotiated prices.
 
-Règles de prix qui peuvent s'appliquer :
-- `prl_0006` Épiphanie 2027 : poudre d'amande −6 % dès 20 kg
-- `prl_0007` Épiphanie 2027 : couronnes et fèves −5 %
+Price rules that may apply:
+- `prl_0006` Epiphany 2027: almond powder -6 % from 20 kg
+- `prl_0007` Epiphany 2027: crowns and beans -5 %
 
-Dernières notes CRM :
+Latest notes CRM:
 
-- 11/10/2026, Sandrine (comptabilité) : Paie systématiquement en retard (3 à 5 semaines). Relancer par téléphone, Guillaume ne lit pas les mails de relance.
+- 11/10/2026, Sandrine (accounting): Pay systematically late (3 to 5 weeks). Re-launching by phone, Guillaume does not read the recovery emails.

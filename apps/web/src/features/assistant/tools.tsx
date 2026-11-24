@@ -17,19 +17,19 @@ export interface ToolRun {
 
 export interface EntityLink { to: string; label: string }
 
-/** French verb for each harness tool (unknown tools fall back to their raw name). */
+/** English verb for each harness tool (unknown tools fall back to their raw name). */
 export const TOOL_LABEL: Record<string, string> = {
-  search: "Recherche",
-  get_client: "Fiche client",
-  get_product_stock: "Stock produit",
+  search: "Search",
+  get_client: "Customer record",
+  get_product_stock: "Product stock",
   find_alternatives: "Alternatives",
-  create_draft_order: "Pré-commande",
-  add_order_line: "Ajout de ligne",
+  create_draft_order: "Pre-order",
+  add_order_line: "Add Line",
   confirm_order: "Confirmation",
-  get_order: "Commande",
-  search_context: "Recherche contexte",
-  get_context: "Contexte",
-  save_context: "Mémorisation",
+  get_order: "Order",
+  search_context: "Background research",
+  get_context: "Context",
+  save_context: "Memorization",
 };
 
 const ID_ENTITY: [RegExp, ActivityEvent["entity"]][] = [
@@ -99,7 +99,7 @@ export function resultSummary(t: ToolRun): string | undefined {
     const err = r && !Array.isArray(r) && typeof r === "object" ? (r as Record<string, unknown>).error : r;
     return typeof err === "string" ? err : err ? JSON.stringify(err).slice(0, 120) : "erreur";
   }
-  if (Array.isArray(r)) return `${r.length} résultat${r.length > 1 ? "s" : ""}`;
+  if (Array.isArray(r)) return `${r.length} result${r.length > 1 ? "s" : ""}`;
   return undefined;
 }
 

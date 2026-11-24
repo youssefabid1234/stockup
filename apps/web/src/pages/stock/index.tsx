@@ -15,10 +15,10 @@ import { AdjustStockPanel, ExpiryLabel, fefo, LotsTable, stockTone, useToday } f
 
 type Row = StockLevel & { product: Product };
 const TABS = [
-  { id: "", label: "Tout" },
-  { id: "out", label: "Rupture" },
-  { id: "low", label: "Stock bas" },
-  { id: "expiring", label: "DLC proche" },
+  { id: "", label: "All" },
+  { id: "out", label: "Out of stock" },
+  { id: "low", label: "Low stock" },
+  { id: "expiring", label: "DLC  near" },
 ] as const;
 type Tab = (typeof TABS)[number]["id"];
 
@@ -47,7 +47,7 @@ export default function StockPage() {
 
   const columns = useMemo<Column<Row>[]>(() => [
     {
-      id: "product", header: "Produit", sortKey: "product",
+      id: "product", header: "Product", sortKey: "product",
       cell: (r) => (
         <span className="flex min-w-0 items-center gap-2">
           <span className="truncate font-medium">{r.product.name}</span>
@@ -55,17 +55,17 @@ export default function StockPage() {
         </span>
       ),
     },
-    { id: "category", header: "Catégorie", width: 140, hideBelow: 1100, muted: true, sortKey: "category", cell: (r) => categoryLabel(r.product.category) },
+    { id: "category", header: "Category", width: 140, hideBelow: 1100, muted: true, sortKey: "category", cell: (r) => categoryLabel(r.product.category) },
     { id: "onHand", header: "En stock", width: 110, numeric: true, sortKey: "onHand", cell: (r) => <Qty value={r.onHand} unit={r.product.unit} /> },
-    { id: "reserved", header: "Réservé", width: 100, hideBelow: 1000, numeric: true, sortKey: "reserved", cell: (r) => <Qty value={r.reserved} unit={r.product.unit} className={r.reserved ? undefined : "text-muted-foreground"} /> },
+    { id: "reserved", header: "Reserved", width: 100, hideBelow: 1000, numeric: true, sortKey: "reserved", cell: (r) => <Qty value={r.reserved} unit={r.product.unit} className={r.reserved ? undefined : "text-muted-foreground"} /> },
     {
-      id: "available", header: "Disponible", width: 110, numeric: true, sortKey: "available",
+      id: "available", header: "Available", width: 110, numeric: true, sortKey: "available",
       cell: (r) => <Qty value={r.available} unit={r.product.unit} tone={r.available <= 0 ? "destructive" : is.low(r) ? "warning" : undefined} className="font-medium" />,
     },
-    { id: "incoming", header: "Entrant", width: 100, hideBelow: 1000, numeric: true, sortKey: "incoming", cell: (r) => <Qty value={r.incoming} unit={r.product.unit} className={r.incoming ? "text-info" : "text-muted-foreground"} /> },
-    { id: "expiry", header: "Prochaine DLC", width: 150, sortKey: "expiry", cell: (r) => <ExpiryLabel date={r.nextExpiry} today={today} /> },
+    { id: "incoming", header: "Entering", width: 100, hideBelow: 1000, numeric: true, sortKey: "incoming", cell: (r) => <Qty value={r.incoming} unit={r.product.unit} className={r.incoming ? "text-info" : "text-muted-foreground"} /> },
+    { id: "expiry", header: "Next DLC", width: 150, sortKey: "expiry", cell: (r) => <ExpiryLabel date={r.nextExpiry} today={today} /> },
     {
-      id: "state", header: "État", width: 110, sortKey: "state",
+      id: "state", header: "Status", width: 110, sortKey: "state",
       cell: (r) => { const s = stockTone(r.available, is.low(r)); return <StatusDot tone={s.tone} label={s.label} />; },
     },
   ], [today, is]);
@@ -78,11 +78,11 @@ export default function StockPage() {
       <PageHeader
         title="Stocks"
         tabs={<Tabs<Tab> value={tab as Tab} onChange={setTab} items={TABS.map((t) => ({ ...t, count: page ? counts[t.id] ?? 0 : undefined }))} />}
-        filters={<SearchInput value={q} onChange={setQ} placeholder="Produit, SKU…" />}
+        filters={<SearchInput value={q} onChange={setQ} placeholder="Product, SKU…" />}
       />
       <PageBody flush>
         {isError && !data ? (
-          <EmptyState icon={Boxes} title="Stocks indisponibles" description="L'API ne répond pas. Vérifiez que le serveur tourne sur le port 4000." action={<Button size="sm" onClick={() => refetch()}>Réessayer</Button>} />
+          <EmptyState icon={Boxes} title="Stocks not available" description="TheAPI Check that the server is running on port 4000." action={<Button size="sm" onClick={() => refetch()}>Retry</Button>} />
         ) : (
           <DataTable
             columns={columns}
@@ -92,13 +92,13 @@ export default function StockPage() {
             getRowId={(r) => r.productId}
             selectedId={sel || null}
             onRowClick={(r) => setSel(r.productId === sel ? "" : r.productId)}
-            footer={rows ? `${total} produit${total > 1 ? "s" : ""}${filtered ? " · filtrés" : ""}` : undefined}
+            footer={rows ? `${total} produit${total > 1 ? "s" : ""}${filtered ? " · filtered" : ""}` : undefined}
             empty={
               <EmptyState
                 icon={Boxes}
-                title={tab === "out" ? "Aucune rupture" : tab === "low" ? "Aucun stock bas" : tab === "expiring" ? "Aucune DLC proche" : "Aucun produit ne correspond"}
-                description={tab ? "Rien à signaler dans cette vue." : "Modifiez la recherche."}
-                action={filtered ? <Button size="sm" onClick={() => { setTab(""); setQ(""); }}>Tout afficher</Button> : undefined}
+                title={tab === "out" ? "No rupture" : tab === "low" ? "No stock low" : tab === "expiring" ? "None DLC  near" : "No products match"}
+                description={tab ? "There's nothing to report in that view." : "Change the search."}
+                action={filtered ? <Button size="sm" onClick={() => { setTab(""); setQ(""); }}>View All</Button> : undefined}
               />
             }
           />
@@ -122,26 +122,26 @@ function StockPanel({ row, low, today, onClose }: { row: Row; low: boolean; toda
       title={p.name}
       subtitle={<span className="font-mono">{p.sku}</span>}
       onClose={onClose}
-      actions={<Button size="sm" variant="ghost" iconRight={ArrowUpRight} onClick={() => navigate(`/products/${p.id}`)}>Fiche</Button>}
-      footer={<Button variant="primary" icon={SlidersHorizontal} onClick={() => setAdjusting(true)}>Ajuster le stock</Button>}
+      actions={<Button size="sm" variant="ghost" iconRight={ArrowUpRight} onClick={() => navigate(`/products/${p.id}`)}>Form</Button>}
+      footer={<Button variant="primary" icon={SlidersHorizontal} onClick={() => setAdjusting(true)}>Adjust Stock</Button>}
     >
       <div className="flex flex-col gap-6">
-        <Section title="Niveaux">
+        <Section title="Levels">
           <KeyValue
             labelWidth={130}
             items={[
-              { label: "État", value: <StatusDot tone={s.tone} label={s.label} /> },
+              { label: "Status", value: <StatusDot tone={s.tone} label={s.label} /> },
               { label: "En stock", value: <Qty value={row.onHand} unit={p.unit} /> },
-              { label: "Réservé", value: <Qty value={row.reserved} unit={p.unit} /> },
-              { label: "Disponible", value: <Qty value={row.available} unit={p.unit} tone={row.available <= 0 ? "destructive" : undefined} className="font-medium" /> },
-              { label: "Entrant", value: <Qty value={row.incoming} unit={p.unit} /> },
-              { label: "Prochaine DLC", value: <ExpiryLabel date={row.nextExpiry} today={today} /> },
+              { label: "Reserved", value: <Qty value={row.reserved} unit={p.unit} /> },
+              { label: "Available", value: <Qty value={row.available} unit={p.unit} tone={row.available <= 0 ? "destructive" : undefined} className="font-medium" /> },
+              { label: "Entering", value: <Qty value={row.incoming} unit={p.unit} /> },
+              { label: "Next DLC", value: <ExpiryLabel date={row.nextExpiry} today={today} /> },
             ]}
           />
         </Section>
         <Section title="Lots · FEFO" count={fefo(row.lots).length}>
           <LotsTable compact lots={row.lots} unit={p.unit} today={today}
-            empty={<div className="rounded-[6px] border border-dashed border-border px-3 py-3 text-[12.5px] text-muted-foreground">Aucun lot en stock.</div>} />
+            empty={<div className="rounded-[6px] border border-dashed border-border px-3 py-3 text-[12.5px] text-muted-foreground">No lot in stock.</div>} />
         </Section>
       </div>
     </SidePanel>

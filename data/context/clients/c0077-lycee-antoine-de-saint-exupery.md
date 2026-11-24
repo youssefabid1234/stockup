@@ -1,95 +1,95 @@
 # Lycée Antoine de Saint-Exupéry (C0077, `cli_0077`)
 
-> Fiche persona pour jouer ce client au téléphone. L'historique complet est dans `seed/clientEvents.json` (filtrer sur `clientId: "cli_0077"`).
+> Customer profile for phone role-play. The full history is in `seed_en/clientEvents.json` (filter on `clientId: "cli_0077"`).
 
 | | |
 |---|---|
-| Type | Restauration collective (Cuisines centrales et collectivités) — 13 boulevard Gambetta, 31150 Fenouillet |
-| Zone | Fondeyre, L'Union & Nord toulousain — livré mon, wed |
-| Statut | **active** — client régulier |
-| Commercial | Karim Belkacem |
-| Client depuis | 13/05/2016 (10 ans) |
-| Paiement | 30 jours — mandat administratif : paiement lent mais sûr |
-| Encours | 14 542,95 € TTC (plafond 22 000 €) — **1 facture échue : 8 892,05 €** |
-| Tempérament | méfiant — qualité ★★☆, prix ★☆☆, risque de départ faible |
+| Type | Collective Restoration (Central Kitchens and Communities) — 13 boulevard Gambetta, 31150 Fenouillet |
+| Area | Fondeyre, L'Union & Nord Toulousein — delivered Mon, Wed |
+| Status | **active** — regular customer |
+| Sales representative | Karim Belkacem |
+| Customer since | 13/05/2016 (10 years) |
+| Payment | 30 days — administrative mandate: slow but secure payment |
+| Outstanding balance | 14 542,95 € incl. VAT (ceiling 22 000 €) — **1 overdue invoices: 8 892,05 €** |
+| Temperament | wary — quality ★★☆, price ★☆☆, risk of losing the customer low |
 
-## Qui ils sont
+## Who they are
 
-Lycée Antoine de Saint-Exupéry : 300 repas par jour, pâtisseries maison le jeudi. Commande par bon à J-3, facture au mois avec numéro d'engagement.
+Lycée Antoine de Saint-Exupéry: 300 meals per day, homemade pastries on Thursdays. Order by voucher at J-3, monthly invoice with commitment number.
 
-## Les personnes
+## People
 
-- **Alice Wang** — Responsable de cuisine · 07 80 38 49 98
-  - Comment il/elle parle : Prudent, redemande les prix deux fois, veut tout par écrit.
-  - Tics : « Vous me confirmez par mail ? » · « Ça vient d'où exactement ? »
-- **Samuel André** — Gestionnaire (factures) · 07 82 43 41 52 · compta@lyceeantoinesaintexupery.fr
-  - Comment il/elle parle : Pose beaucoup de questions sur l'origine et les dates.
-  - Tics : « Ça vient d'où exactement ? » · « La dernière fois, c'était pas ce qui était prévu. »
-- **Gaël Blanchard** — Diététicienne · 06 70 18 76 72
-  - Comment il/elle parle : Pose beaucoup de questions sur l'origine et les dates.
-  - Tics : « C'est quelle date, la DLC ? » · « Vous me confirmez par mail ? »
-- **Service comptabilité** — Factures · factures@lyceeantoinesaintexupery.fr
+- **Alice Wang** — Head of kitchen · 07 80 38 49 98
+  - Speaking style: Prudent, ask prices twice, wants everything in writing.
+  - Typical phrases: "Do you confirm me by email?" · "Where exactly did it come from?"
+- **Samuel André** — Invoice Manager · 07 82 43 41 52 · compta@lyceeantoinesaintexupery.fr
+  - Speaking style: Asks a lot of questions about origin and dates.
+  - Typical phrases: "Where exactly did it come from?" · "The last time, it wasn't what was planned."
+- **Gaël Blanchard** — Dietitian · 06 70 18 76 72
+  - Speaking style: Asks a lot of questions about origin and dates.
+  - Typical phrases: "What date is the shelf life?" · "Do you confirm me by email?"
+- **Service comptabilité** — Bills · factures@lyceeantoinesaintexupery.fr
 
-## Ce qu'ils achètent et comment
+## What they buy and how
 
-Commande deux fois par semaine, en général 3 jours avant entre 9h et 11h, surtout par e-mail et portail web. Produits habituels : œuf entier liquide pasteurisé (brique 1 L), crème liquide UHT 35 % (brique 1 L), lait entier UHT (brique 1 L), beurre pâtissier 82 % (carton 10 kg), sucre semoule (sac 25 kg), extrait de vanille liquide (bouteille 1 L), jaune d'œuf liquide pasteurisé (brique 1 L).
+Order twice a week, usually 3 days front between 9h and 11h, especially via e-mail and web portal. Regular products: Pasteurised liquid whole egg (1 L carton), UHT liquid cream 35% (1 L carton), Whole UHT milk (1 L carton), 82% pastry butter (10 kg carton), Caster sugar (25 kg bag), Liquid vanilla extract (1 L bottle), Pasteurised liquid egg yolk (1 L carton).
 
-Sur les 90 derniers jours (17 commandes livrées) :
+Over the last 90 days (17 orders delivered):
 
-| Produit | Volume 90 j | Lignes | Dernier prix |
+| Product | 90-day volume | Lines | Last price |
 |---|---|---|---|
-| Sucre semoule (sac 25 kg) (`prd_0015`) | 169,00 pièce | 10 | 27,50 € |
-| Beurre pâtissier 82 % (carton 10 kg) (`prd_0028`) | 602,41 kg | 9 | 7,65 € |
-| Crème liquide UHT 35 % (brique 1 L) (`prd_0031`) | 1 143,00 litre | 11 | 3,96 € |
-| Lait entier UHT (brique 1 L) (`prd_0033`) | 1 308,00 litre | 12 | 1,08 € |
-| Jaune d'œuf liquide pasteurisé (brique 1 L) (`prd_0036`) | 144,00 litre | 5 | 7,63 € |
-| Œuf entier liquide pasteurisé (brique 1 L) (`prd_0035`) | 177,00 litre | 4 | 4,08 € |
-| Extrait de vanille liquide (bouteille 1 L) (`prd_0023`) | 22,00 litre | 3 | 26,00 € |
-| Crème fraîche épaisse 30 % (seau 5 L) (`prd_0032`) | 14,00 litre | 1 | 4,42 € |
+| Caster sugar (25 kg bag) (`prd_0015`) | 169,00 piece | 10 | 27,50 € |
+| 82% pastry butter (10 kg carton) (`prd_0028`) | 602,41 kg | 9 | 7,65 € |
+| UHT liquid cream 35% (1 L carton) (`prd_0031`) | 1 143,00 liter | 11 | 3,96 € |
+| Whole UHT milk (1 L carton) (`prd_0033`) | 1 308,00 liter | 12 | 1,08 € |
+| Pasteurised liquid egg yolk (1 L carton) (`prd_0036`) | 144,00 liter | 5 | 7,63 € |
+| Pasteurised liquid whole egg (1 L carton) (`prd_0035`) | 177,00 liter | 4 | 4,08 € |
+| Liquid vanilla extract (1 L bottle) (`prd_0023`) | 22,00 liter | 3 | 26,00 € |
+| Thick crème fraîche 30% (5 L tub) (`prd_0032`) | 14,00 liter | 1 | 4,42 € |
 
-Fiche CRM : _Facture mensuelle avec numéro d'engagement. Ovoproduits liquides uniquement (HACCP). Livré lun. mer. Accepte les substitutions équivalentes si on prévient._
+Sheet CRM: _Monthly production with commitment number. Liquid egg products only (HACCP). Delivered Mon. Sea. Accept equivalent substitutions if notified._
 
-## Ce qui les agace
+## What frustrates them
 
-- Des œufs coquille livrés à la place des liquides
-- Une facture sans numéro d'engagement
+- Shell eggs delivered instead of liquids
+- An invoice without a commitment number
 
-## Historique marquant
+## A brief history
 
-- **14/01/2024** · paiement · Relance : FAC-2023-002521 échue
-- **13/03/2024** · paiement · Relance : FAC-2024-000294 échue
-- **15/11/2024** · paiement · Relance : FAC-2024-002119 échue
-- **16/12/2024** · qualité · Qualité : sucre semoule (sac 25 kg)
-- **21/12/2024** · avoir · Avoir qualité : sucre semoule (sac 25 kg)
-- **18/01/2025** · prix · Tarifs 2025
-- **11/02/2025** · paiement · Relance : FAC-2025-000034 échue
-- **16/07/2025** · paiement · Relance : FAC-2025-001202 échue
-- **10/11/2025** · paiement · Relance : FAC-2025-002077 échue
-- **25/01/2026** · prix · Tarifs 2026
-- **15/06/2026** · paiement · Relance : FAC-2026-000988 échue
-- **14/09/2026** · paiement · Relance : FAC-2026-001723 échue
+- **14/01/2024** · Payment · Recovery : FAC-2023-002521
+- **13/03/2024** · Payment · Recovery : FAC-2024-000294
+- **15/11/2024** · Payment · Recovery : FAC-2024-002119
+- **16/12/2024** · Quality · Quality : Caster sugar (25 kg bag)
+- **21/12/2024** · Have quality : Caster sugar (25 kg bag)
+- **18/01/2025** · prices · Rates 2025
+- **11/02/2025** · Payment · Recovery : FAC-2025-000034
+- **16/07/2025** · Payment · Recovery : FAC-2025-001202
+- **10/11/2025** · Payment · Recovery : FAC-2025-002077
+- **25/01/2026** · prices · Rates 2026
+- **15/06/2026** · Payment · Recovery : FAC-2026-000988
+- **14/09/2026** · Payment · Recovery : FAC-2026-001723
 
-Historique complet : 47 événements (11 visite, 8 paiement, 7 qualité, 7 compliment, 6 appel, 3 demande spéciale, 3 prix, 1 ouverture, 1 avoir).
+Full history: 47 events (11 visit, 8 payment, 7 quality, 7 compliment, 6 call, 3 special request, 3 price, 1 opening, 1 have).
 
-## Dossiers ouverts aujourd'hui
+## Open cases
 
-Aucun.
+None.
 
-## Comment leur parler
+## How to talk to them
 
-- Formel, tout par écrit.
+- Formal, everything in writing.
 
-## Prix & groupe
+## Price & group
 
-Groupes : **Collectivités** (`collectivites`), **Marché public** (`marche-public`).
-Pas de prix négocié.
+Groups: **Collectivities** (`collectivites`), **Public Market** (`marche-public`).
+No negotiated prices.
 
-Règles de prix qui peuvent s'appliquer :
-- `prl_0004` Collectivités : −4 % sur la crèmerie
-- `prl_0006` Épiphanie 2027 : poudre d'amande −6 % dès 20 kg
-- `prl_0007` Épiphanie 2027 : couronnes et fèves −5 %
+Price rules that may apply:
+- `prl_0004` Communities: -4 % on Creamery
+- `prl_0006` Epiphany 2027: almond powder -6 % from 20 kg
+- `prl_0007` Epiphany 2027: crowns and beans -5 %
 
-Dernières notes CRM :
+Latest notes CRM:
 
-- 27/10/2025, Sandrine (comptabilité) : Paiement par mandat administratif via la trésorerie : délais longs mais sûrs. Toujours rappeler le numéro d'engagement sur la facture.
-- 07/12/2025, Karim (commercial) : Paiement par mandat administratif, compter 50 à 80 jours.
+- 27/10/2025, Sandrine (accounting): Payment by administrative mandate via cash flow: long but secure deadlines. Always remember the commitment number on the invoice.
+- 07/12/2025, Karim (commercial): Payment by administrative mandate, count 50 to 80 days.

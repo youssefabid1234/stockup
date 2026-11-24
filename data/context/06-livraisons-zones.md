@@ -1,39 +1,39 @@
-# Livraisons et zones
+# Delivery and areas
 
-## Tournées
+## Delivery routes
 
-| id | Tournée | Zone | Chauffeur | Véhicule | Jours | Départ |
+| id | Route | Area | Driver | Vehicle | days | Departure |
 |---|---|---|---|---|---|---|
-| rte_0001 | Tournée Capitole | Toulouse centre & faubourgs | Yohan Ferrié | Renault Master frigo 20 m³ (GK-431-TL) | lun mar mer jeu ven sam | 06:30 |
-| rte_0002 | Tournée Nord | Fondeyre, L'Union & Nord toulousain | Christophe Rouquette | Iveco Daily frigo 16 m³ (FN-208-UN) | lun mar mer jeu ven sam | 06:45 |
-| rte_0003 | Tournée Ouest | Blagnac, Colomiers & Ouest | Mathieu Sabatier | Porteur 12 t frigo bi-température (FX-772-CO) | lun mar mer jeu ven | 06:30 |
-| rte_0004 | Tournée Sud-Est | Balma, Labège & Sud toulousain | Nicolas Py | Renault Master frigo 20 m³ (GB-560-LB) | lun mar mer jeu ven sam | 06:45 |
-| rte_0005 | Tournée Lauragais-Tarn | Lauragais & Tarn | Serge Alibert | Porteur 12 t frigo (EV-913-LG) | mar ven | 06:00 |
+| rte_0001 | Capitol tour | Toulouse centre & suburbs | Yohan Ferrié | Renault Master fridge 20 m3 (GK-431-TL) | Mon Tue Wed Thu Fri Sat | 06:30 |
+| rte_0002 | North turn | Fondeyre, L'Union & Northern Toulouse | Christophe Rouquette | Iveco Daily fridge 16 m3 (FN-208-UN) | Mon Tue Wed Thu Fri Sat | 06:45 |
+| rte_0003 | West tour | Blagnac, Colomiers & Ouest | Mathieu Sabatier | Porter 12 t fridge bi-temperature (FX-772-CO) | Mon Tue Wed Thu Fri | 06:30 |
+| rte_0004 | South-East tour | Balma, Labège & south Toulouse | Nicolas Py | Renault Master fridge 20 m3 (GB-560-LB) | Mon Tue Wed Thu Fri Sat | 06:45 |
+| rte_0005 | Turn Lauragais-Tarn | Lauragais & Tarn | Serge Alibert | Carrier 12 t fridge (EV-913-LG) | Tue Fri | 06:00 |
 
-## Zone Toulouse centre & faubourgs
+## Zone Toulouse center & suburbs
 
-Communes / quartiers : Toulouse (Capitole) (31000), Toulouse (Saint-Cyprien) (31300), Toulouse (Saint-Michel) (31400), Toulouse (Côte Pavée) (31500). Livrée lundi, mardi, mercredi, jeudi, vendredi, samedi, départ 06:30. 28 clients.
+Municipalities / neighborhoods : Toulouse (Capitol) (31000), Toulouse (Saint-Cyprien) (31300), Toulouse (Saint-Michel) (31400), Toulouse (Côte Pavée) (31500). Delivered Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, departure 06:30. 28 customers.
 
-## Zone Fondeyre, L'Union & Nord toulousain
+## Zone Fondeyre, L'Union & Northern Toulouse
 
-Communes / quartiers : Toulouse (Minimes) (31200), L'Union (31240), Saint-Jean (31240), Aucamville (31140), Fenouillet (31150), Castelginest (31780), Fronton (31620). Livrée lundi, mardi, mercredi, jeudi, vendredi, samedi, départ 06:45. 24 clients.
+Municipalities / neighborhoods : Toulouse (Minimes) (31200), L'Union (31240), Saint-Jean (31240), Aucamville (31140), Fenouillet (31150), Castelginest (31780), Fronton (31620). Delivered Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, departure 06:45. 24 customers.
 
-## Zone Blagnac, Colomiers & Ouest
+## Zone Blagnac, Colomiers & West
 
-Communes / quartiers : Blagnac (31700), Colomiers (31770), Tournefeuille (31170), Cugnaux (31270), Léguevin (31490). Livrée lundi, mardi, mercredi, jeudi, vendredi, départ 06:30. 15 clients.
+Communes / districts : Blagnac (31700), Colomiers (31770), Tournefeuille (31170), Cugnaux (31270), Léguevin (31490). Delivered Monday, Tuesday, Wednesday, Thursday, Friday, departure 06:30. 15 customers.
 
-## Zone Balma, Labège & Sud toulousain
+## Zone Balma, Labège & South Toulouse
 
-Communes / quartiers : Balma (31130), Labège (31670), Castanet-Tolosan (31320), Ramonville-Saint-Agne (31520), Muret (31600), Portet-sur-Garonne (31120). Livrée lundi, mardi, mercredi, jeudi, vendredi, samedi, départ 06:45. 21 clients.
+Municipalities / neighborhoods : Balma (31130), Labège (31670), Castanet-Tolosan (31320), Ramonville-Saint-Agne (31520), Muret (31600), Portet-sur-Garonne (31120). Delivered Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, departure 06:45. 21 customers.
 
 ## Zone Lauragais & Tarn
 
-Communes / quartiers : Villefranche-de-Lauragais (31290), Revel (31250), Castelnaudary (11400), Lavaur (81500), Albi (81000). Livrée mardi, vendredi, départ 06:00. 12 clients.
+Communes / districts : Villefranche-de-Lauragais (31290), Revel (31250), Castelnaudary (11400), Lavaur (81500), Albi (81000). Delivered Tuesday, Friday, departure 06:00. 12 customers.
 
-## Heures limites de commande
+## Order cutoffs
 
-- Commande avant 17h pour une livraison le lendemain matin (tournées de Toulouse et de la périphérie).
-- Tournée Lauragais-Tarn (mardi et vendredi) : commande la veille avant 12h.
-- Dépannage de levure et de farine le jour même : possible jusqu'à 9h si la tournée n'est pas partie, sinon retrait au dépôt.
-- Épiphanie : pré-commandes de poudre d'amande, feuilletage, couronnes et fèves avant le 15 décembre.
-- Collectivités : bon de commande à J-3 avant 12h.
+- For Toulouse and the surrounding area, order before 5 pm for delivery the following morning.
+- For the Lauragais–Tarn route (Tuesday and Friday), order before noon the previous day.
+- Emergency yeast and flour deliveries may be possible until 9 am if the truck has not left. After departure, offer collection at the depot.
+- For Epiphany, pre-order ground almonds, puff pastry, paper crowns and porcelain charms before 15 December.
+- Institutional customers must send a purchase order before noon three days before delivery.

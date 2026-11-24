@@ -27,7 +27,7 @@ const WRITE_TOOLS = /^(create|add|confirm|update|set|mark|cancel|delete|record|r
 export function runLinks(r: CommandRun): EntityLink[] {
   const out: EntityLink[] = [];
   const push = (l: EntityLink) => { if (!out.some((x) => x.to === l.to)) out.push(l); };
-  if (r.navigate) push({ to: r.navigate.path, label: r.navigate.label ?? "Ouvrir" });
+  if (r.navigate) push({ to: r.navigate.path, label: r.navigate.label ?? "Open" });
   const done = r.tools.filter((t) => t.ok);
   for (const t of done.filter((t) => WRITE_TOOLS.test(t.name)).reverse()) toolLinks(t).slice(0, 1).forEach(push);
   for (const t of done.filter((t) => !WRITE_TOOLS.test(t.name) && t.name !== "search").reverse()) toolLinks(t).slice(0, 1).forEach(push);
@@ -50,7 +50,7 @@ export function RunLinks({ r, onNavigate, className }: { r: CommandRun; onNaviga
             i === 0 ? "font-medium text-violet" : "text-secondary-foreground",
           )}
         >
-          <span className="truncate">{i === 0 ? `Ouvrir ${l.label}` : l.label}</span>
+          <span className="truncate">{i === 0 ? `Open ${l.label}` : l.label}</span>
           <ArrowUpRight size={12} strokeWidth={1.75} className="shrink-0" />
         </Link>
       ))}
@@ -59,16 +59,16 @@ export function RunLinks({ r, onNavigate, className }: { r: CommandRun; onNaviga
 }
 
 export const fmtMs = (ms: number) =>
-  ms < 1000 ? `${Math.round(ms)} ms` : `${(ms / 1000).toLocaleString("fr-FR", { minimumFractionDigits: 1, maximumFractionDigits: 1 })} s`;
+  ms < 1000 ? `${Math.round(ms)} ms` : `${(ms / 1000).toLocaleString("en-GB", { minimumFractionDigits: 1, maximumFractionDigits: 1 })} s`;
 
 export type MetricKey = keyof TurnTimings | "perceivedMs";
 export const COMMAND_METRICS: { key: MetricKey; label: string; title: string }[] = [
-  { key: "sttMs", label: "STT", title: "Transcription de la commande" },
-  { key: "llmFirstTokenMs", label: "LLM 1er", title: "Premier token du modèle (après les outils éventuels)" },
-  { key: "llmTotalMs", label: "LLM", title: "Modèle, outils ERP compris" },
-  { key: "ttsFirstByteMs", label: "TTS", title: "Premier octet de la réponse vocale" },
-  { key: "totalMs", label: "Total", title: "Réception de la commande → réponse prête (serveur)" },
-  { key: "perceivedMs", label: "Perçu", title: "Relâchement de la touche → réponse affichée / entendue (navigateur)" },
+  { key: "sttMs", label: "STT", title: "Transcription of the order" },
+  { key: "llmFirstTokenMs", label: "LLM 1er", title: "First token of model (after possible tools)" },
+  { key: "llmTotalMs", label: "LLM", title: "Model, tools ERP  including" },
+  { key: "ttsFirstByteMs", label: "TTS", title: "First byte of voice response" },
+  { key: "totalMs", label: "Total", title: "Order receipt → ready answer (server)" },
+  { key: "perceivedMs", label: "Perceived", title: "Release of the key → response displayed / heard (navigator)" },
 ];
 
 export const metricValue = (r: CommandRun, k: MetricKey) => (k === "perceivedMs" ? r.perceivedMs : r.timings?.[k]);

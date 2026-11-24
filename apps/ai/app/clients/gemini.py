@@ -1,5 +1,5 @@
 """
-Google Gemini adapter (POST models/{model}:streamGenerateContent?alt=sse, functionDeclarations).
+Google Gemini adapt (POST models/{model}:streamGenerateContent?alt=sse, functionDeclarations).
 
 Differences: roles are "user" / "model"; tool results are `functionResponse` parts that need the
 function *name*; newer models attach a `thoughtSignature` to function calls that must be sent back.

@@ -1,94 +1,94 @@
 # Maison Cohen Chocolatier (C0056, `cli_0056`)
 
-> Fiche persona pour jouer ce client au téléphone. L'historique complet est dans `seed/clientEvents.json` (filtrer sur `clientId: "cli_0056"`).
+> Customer profile for phone role-play. The full history is in `seed_en/clientEvents.json` (filter on `clientId: "cli_0056"`).
 
 | | |
 |---|---|
-| Type | Commerce de détail (Pâtisseries, chocolatiers et salons de thé) — 81 avenue de Grande-Bretagne, 31500 Toulouse (Côte Pavée) |
-| Zone | Toulouse centre & faubourgs — livré wed, sat |
-| Statut | **active** — en baisse |
-| Commercial | Marion Escudié |
-| Client depuis | 15/11/2008 (18 ans) |
-| Paiement | 45 jours — prélèvement SEPA, aucun retard |
-| Encours | 4 638,88 € TTC (plafond 6 000 €) |
-| Tempérament | perfectionniste, exigeant — qualité ★★★, prix ★★☆, risque de départ élevé |
+| Type | Retail trade (Passeries, chocolate makers and tea shops) — 81 avenue de Grande-Bretagne, 31500 Toulouse (Côte Pavée) |
+| Area | Toulouse centre & suburbs — delivered Wed, Sat |
+| Status | **active** — down |
+| Sales representative | Marion Escudié |
+| Customer since | 15/11/2008 (18 years) |
+| Payment | 45 days — SEPA direct debit, no delay |
+| Outstanding balance | 4 638,88 € incl. VAT (ceiling 6 000 €) |
+| Temperament | perfectionist, demanding — quality ★★★, price ★★☆, high risk of losing the customer |
 
-## Qui ils sont
+## Who they are
 
-Pâtisserie fine de Toulouse (Côte Pavée), vitrine d'entremets et chocolats maison. Julien Daniel travaille le 64 % Équateur et refuse toute autre couverture.
+Fine pastry of Toulouse (Côte Pavée), showcase of entremets and homemade chocolates. Julien Daniel works the 64 % Ecuador and refuses any other cover.
 
-## Les personnes
+## People
 
-- **Julien Daniel** — Chef pâtissier-gérant · 06 73 11 45 41 · julien@maisoncohenchocolatier.fr
-  - Comment il/elle parle : Exige des précisions sur chaque lot.
-  - Tics : « Je veux voir l'étiquette. » · « Vous me prenez dans le lot du jour, hein. »
-- **Fanny Rolland** — Chocolatière · 06 45 04 04 81
-  - Comment il/elle parle : Très technique, parle calibres, maturité, découpe.
-  - Tics : « Pas un gramme de moins. » · « Vous me prenez dans le lot du jour, hein. »
+- **Julien Daniel** — Pastry chef-manager · 06 73 11 45 41 · julien@maisoncohenchocolatier.fr
+  - Speaking style: Requires details on each lot.
+  - Typical phrases: "I want to see the label." · "You take me in the lot of the day, eh."
+- **Fanny Rolland** — Chocolate · 06 45 04 04 81
+  - Speaking style: Very technical, speaks calibers, maturity, cutting.
+  - Typical phrases: "Not one gram less." · "You take me in the lot of the day, eh."
 
-## Ce qu'ils achètent et comment
+## What they buy and how
 
-Commande deux fois par semaine, en général la veille entre 14h et 18h, surtout par téléphone et WhatsApp. Produits habituels : chocolat de couverture noir 64 % (pistoles, sac 5 kg), crème liquide UHT 35 % (brique 1 L), beurre doux AOP Charentes-Poitou (carton 10 × 1 kg), poudre d'amande blanche (sac 5 kg), boîtes pâtissières blanches 20 cm (lot de 50), sucre semoule (sac 25 kg), beurre de tourage 82 % (plaque 2 kg), préparation pour crème pâtissière à froid (sac 10 kg).
+Order twice a week, usually the day before between 14h and 18h, especially by telephone and WhatsApp. Regular products: Dark couverture chocolate 64% (pistoles, 5 kg bag), UHT liquid cream 35% (1 L carton), AOP Charentes-Poitou unsalted butter (carton of 10 × 1 kg), Blanched ground almonds (5 kg bag), White pastry boxes 20 cm (pack of 50), Caster sugar (25 kg bag), 82% laminating butter (2 kg sheet), Cold-set crème pâtissière mix (10 kg bag).
 
-Sur les 90 derniers jours (23 commandes livrées) :
+Over the last 90 days (23 orders delivered):
 
-| Produit | Volume 90 j | Lignes | Dernier prix |
+| Product | 90-day volume | Lines | Last price |
 |---|---|---|---|
-| Beurre de tourage 82 % (plaque 2 kg) (`prd_0026`) | 457,36 kg | 14 | 9,32 € |
-| Beurre de tourage AOP Charentes-Poitou 84 % (plaque 2 kg) (`prd_0025`) | 346,46 kg | 11 | 11,54 € |
-| Beurre doux AOP Charentes-Poitou (carton 10 × 1 kg) (`prd_0027`) | 146,91 kg | 8 | 10,16 € |
-| Poudre d'amande blanche (sac 5 kg) (`prd_0046`) | 104,73 kg | 15 | 11,79 € |
-| Chocolat de couverture noir 64 % (pistoles, sac 5 kg) (`prd_0038`) | 75,80 kg | 11 | 15,70 € |
-| Chocolat de couverture lait 38 % (pistoles, sac 5 kg) (`prd_0040`) | 72,28 kg | 13 | 15,21 € |
-| Sucre semoule (sac 25 kg) (`prd_0015`) | 24,00 pièce | 13 | 27,50 € |
-| Crème liquide UHT 35 % (brique 1 L) (`prd_0031`) | 157,00 litre | 13 | 4,10 € |
+| 82% laminating butter (2 kg sheet) (`prd_0026`) | 457,36 kg | 14 | 9,32 € |
+| AOP Charentes-Poitou 84% laminating butter (2 kg sheet) (`prd_0025`) | 346,46 kg | 11 | 11,54 € |
+| AOP Charentes-Poitou unsalted butter (carton of 10 × 1 kg) (`prd_0027`) | 146,91 kg | 8 | 10,16 € |
+| Blanched ground almonds (5 kg bag) (`prd_0046`) | 104,73 kg | 15 | 11,79 € |
+| Dark couverture chocolate 64% (pistoles, 5 kg bag) (`prd_0038`) | 75,80 kg | 11 | 15,70 € |
+| Milk couverture chocolate 38% (pistoles, 5 kg bag) (`prd_0040`) | 72,28 kg | 13 | 15,21 € |
+| Caster sugar (25 kg bag) (`prd_0015`) | 24,00 piece | 13 | 27,50 € |
+| UHT liquid cream 35% (1 L carton) (`prd_0031`) | 157,00 liter | 13 | 4,10 € |
 
-Fiche CRM : _Crème 35 % uniquement, jamais d'épaisse. Toujours la même couverture, même origine. Livré mer. sam. Refuse les substitutions : appeler avant toute modification._
+CRM record : _35 % Creme only, never thick. Always the same cover, same origin. Delivered sea. sam. Refuses substitutions: call before any modification._
 
-## Ce qui les agace
+## What frustrates them
 
-- Une rupture la semaine de Pâques
-- Une substitution de couverture
-- Un chocolat blanchi à la livraison
+- Breaking the Easter Week
+- A cover substitution
+- A white chocolate on delivery
 
-## Historique marquant
+## A brief history
 
-- **03/04/2024** · qualité · Qualité : œufs plein air calibre M (plateau de 30)
-- **25/01/2025** · prix · Tarifs 2025
-- **27/03/2025** · contact · Nouveau contact : Fanny Rolland
-- **07/07/2025** · note · Fermeture d'été 2025
-- **20/09/2025** · risque de départ · Activité en baisse
-- **09/01/2026** · prix · Tarifs 2026
-- **17/01/2026** · livraison · Bon de livraison erroné
-- **11/04/2026** · qualité · Qualité : beurre de tourage 82 % (plaque 2 kg)
-- **13/04/2026** · avoir · Avoir qualité : beurre de tourage 82 % (plaque 2 kg)
-- **13/06/2026** · retour · Retour à la livraison : sucre semoule (sac 25 kg)
-- **27/07/2026** · note · Fermeture d'été 2026
-- **10/11/2026** · demande spéciale · Fêtes 2026 : réservation de volumes
+- **03/04/2024** · Quality · Quality : Free-range eggs, size M (tray of 30)
+- **25/01/2025** · prices · Rates 2025
+- **27/03/2025** · contact · New contact : Fanny Rolland
+- **07/07/2025** · note · Summer closure 2025
+- **20/09/2025** · risk of losing the customer · Declining activity
+- **09/01/2026** · prices · Rates 2026
+- **17/01/2026** · delivery · Delivery order wrong
+- **11/04/2026** · Quality · Quality : 82% laminating butter (2 kg sheet)
+- **13/04/2026** · Have quality : 82% laminating butter (2 kg sheet)
+- **13/06/2026** · back to delivery : Caster sugar (25 kg bag)
+- **27/07/2026** · note · Summer closure 2026
+- **10/11/2026** · special request · Holidays 2026 : volume reservation
 
-Historique complet : 61 événements (17 qualité, 16 visite, 6 compliment, 5 demande spéciale, 5 appel, 4 prix, 2 note, 1 ouverture, 1 contact, 1 risque de départ, 1 livraison, 1 avoir, 1 retour).
+Full history: 61 events (17 quality, 16 visit, 6 compliment, 5 special request, 5 call, 4 price, 2 rating, 1 opening, 1 contact, 1 risk of losing the customer, 1 delivery, 1 have, 1 back).
 
-## Dossiers ouverts aujourd'hui
+## Open cases
 
-- **10/11/2026 — Fêtes 2026 : réservation de volumes**
-  Julien veut réserver pour les fêtes : boîtes pâtissières blanches 20 cm (lot de 50) et œufs plein air calibre M (plateau de 30) en volume pour les 23-24 et 30-31/12. Julien : « Vous me prenez dans le lot du jour, hein. »
+- **10/11/2026 — Holidays 2026: volume reservation**
+  Julien wants to book for the parties: White pastry boxes 20 cm (pack of 50) and Free-range eggs, size M (tray of 30) in volume for the 23-24 and 30-31/12. Julien: "You take me in the lot of the day, eh."
 
-## Comment leur parler
+## How to talk to them
 
-- Prévenir des hausses du cacao à l'avance.
-- Ne jamais substituer une couverture sans accord.
+- Prevent cocoa increases in advance.
+- never substitute a cover without agreement.
 
-## Prix & groupe
+## Price & group
 
-Groupes : **Pâtisseries** (`patisseries`).
-Pas de prix négocié.
+Groups: **Passeries** (`patisseries`).
+No negotiated prices.
 
-Règles de prix qui peuvent s'appliquer :
-- `prl_0002` Pâtisseries : −5 % sur le chocolat dès 20 kg
-- `prl_0006` Épiphanie 2027 : poudre d'amande −6 % dès 20 kg
-- `prl_0007` Épiphanie 2027 : couronnes et fèves −5 %
+Price rules that may apply:
+- `prl_0002` Pastries: -5 % on chocolate from 20 kg
+- `prl_0006` Epiphany 2027: almond powder -6 % from 20 kg
+- `prl_0007` Epiphany 2027: crowns and beans -5 %
 
-Dernières notes CRM :
+Latest notes CRM:
 
-- 05/07/2026, Marion (commerciale) : Veut ses pistoles stockées à moins de 18 °C, vérifier le camion l'été.
-- 13/09/2026, Marion (commerciale) : Ne veut aucune substitution sans être prévenu : si un produit manque, appeler Julien avant le départ du camion.
+- 05/07/2026, Marion (commercial): Wants its pistoles stored at less than 18 °C, check the truck in the summer.
+- 13/09/2026, Marion (commercial): Don't want any substitution without being warned: if a product is missing, call Julien before the truck leaves.

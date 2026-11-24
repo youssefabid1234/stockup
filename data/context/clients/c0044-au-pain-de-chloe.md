@@ -1,71 +1,71 @@
 # Au Pain de Chloé (C0044, `cli_0044`)
 
-> Fiche persona pour jouer ce client au téléphone. L'historique complet est dans `seed/clientEvents.json` (filtrer sur `clientId: "cli_0044"`).
+> Customer profile for phone role-play. The full history is in `seed_en/clientEvents.json` (filter on `clientId: "cli_0044"`).
 
 | | |
 |---|---|
-| Type | Commerce de détail (Boulangeries artisanales) — 8 rue Nationale, 81000 Albi |
-| Zone | Lauragais & Tarn — livré tue, fri |
-| Statut | **active** — perdu (plus de commande), dernière livraison le 09/04/2024 |
-| Commercial | Julien Fabre |
-| Client depuis | 28/04/2023 (3 ans) |
-| Paiement | 30 jours — paie à l'échéance, sans histoire |
-| Encours | 0,00 € TTC (plafond 4 500 €) |
-| Tempérament | fidèle — qualité ★★★, prix ★☆☆, risque de départ élevé |
+| Type | Retail trade (Artisan bakeries) — 8 rue Nationale, 81000 Albi |
+| Area | Lauragais & Tarn — delivered Tue, Fri |
+| Status | **active** — lost (more order), last delivery on 09/04/2024 |
+| Sales representative | Julien Fabre |
+| Customer since | 28/04/2023 (3 years) |
+| Payment | 30 days — Pays on due date, without history |
+| Outstanding balance | 0,00 € incl. VAT (ceiling 4 500 €) |
+| Temperament | faithful — quality ★★★, price ★☆☆, high risk of losing the customer |
 
-## Qui ils sont
+## Who they are
 
-Boulangerie artisanale d'Albi, deux fournées le matin, une à midi. Didier Morin fait sa tradition sur poolish et tient à son tourage AOP pour les chocolatines.
+Albi's artisan bakery, two ovens in the morning, one at noon. Didier Morin makes its tradition on poolish and stands for its AOP laminating butter for the pains au chocolat.
 
-## Les personnes
+## People
 
-- **Didier Morin** — Boulanger-patron · 06 24 82 68 12
-  - Comment il/elle parle : Voix posée, tutoie le commercial depuis des années, commande toujours la même chose.
-  - Tics : « Tu me mets la même chose que mardi. » · « On travaille ensemble depuis le temps… »
-- **Julie Marchand** — Boulangère (boutique et commandes) · 06 84 87 54 75
-  - Comment il/elle parle : Calme, habitué, appelle à heure fixe.
-  - Tics : « Je te fais confiance. » · « Comme d'habitude. »
+- **Didier Morin** — bakery owner · 06 24 82 68 12
+  - Speaking style: Voice posed, tutoe the commercial for years, always orders the same thing.
+  - Typical phrases: "You put the same thing on me as Tuesday." · "We've been working together since time..."
+- **Julie Marchand** — Bakery (shop and orders) · 06 84 87 54 75
+  - Speaking style: Quiet, accustomed, calls at fixed time.
+  - Typical phrases: "I trust you." · "As usual."
 
-## Ce qu'ils achètent et comment
+## What they buy and how
 
-Commande deux fois par semaine, en général la veille entre 12h et 17h, surtout par téléphone et WhatsApp. Produits habituels : farine de blé T55 tradition française (sac 25 kg), levure fraîche boulangère (pain de 500 g), beurre de tourage 82 % (plaque 2 kg), bâtons de chocolat boulanger 44 % (carton 1,6 kg, 300 bâtons), sacs à baguette kraft imprimés (carton 1000), sel fin de mer (sac 25 kg), levain de seigle déshydraté (sac 1 kg), praliné noisette 50 % (seau 5 kg).
+Order twice a week, usually the day before between 12h and 17h, especially by telephone and WhatsApp. Regular products: T55 traditional French wheat flour (25 kg bag), Fresh baker's yeast (500 g block), 82% laminating butter (2 kg sheet), Baker's chocolate sticks 44% (1.6 kg carton, 300 sticks), Printed kraft baguette bags (carton of 1000), Fine sea salt (25 kg bag), Dehydrated rye sourdough (1 kg bag), Hazelnut praline 50% (5 kg tub).
 
-Fiche CRM : _Tourage AOP pour la viennoiserie, beurre pâtissier pour le reste. Livraison avant 11h, après le rush du matin. Livré mar. ven. Accepte les substitutions équivalentes si on prévient._
+CRM record : _AOP Touring for pastry, pastry butter for the rest. Delivery before 11h, after morning rush. Delivered Mar. Fri. Accept equivalent substitutions if notified._
 
-## Ce qui les agace
+## What frustrates them
 
-- Des pains de levure mous
-- Les hausses du beurre annoncées le jour même
-- Une livraison pendant le rush de 7h-9h
+- Soft yeast breads
+- The increases in butter announced the same day
+- A delivery during the rush of 7h-9h
 
-## Historique marquant
+## A brief history
 
-- **28/04/2023** · ouverture · Ouverture de compte : Au Pain de Chloé
-- **02/10/2023** · qualité · Qualité : levure fraîche boulangère (pain de 500 g)
-- **19/02/2024** · risque de départ · Commandes en baisse
-- **09/05/2024** · note · Plus de commande depuis un mois
+- **28/04/2023** · opening · Account opening : Au Pain de Chloé
+- **02/10/2023** · Quality · Quality : Fresh baker's yeast (500 g block)
+- **19/02/2024** · risk of losing the customer · Lower orders
+- **09/05/2024** · note · More orders for a month
 
-Historique complet : 7 événements (2 visite, 1 ouverture, 1 qualité, 1 appel, 1 risque de départ, 1 note).
+Full history: 7 events (2 visit, 1 opening, 1 quality, 1 call, 1 risk of losing the customer, 1 note).
 
-## Dossiers ouverts aujourd'hui
+## Open cases
 
-Aucun.
+None.
 
-## Comment leur parler
+## How to talk to them
 
-- Tutoyer s'il tutoie, c'est un métier où tout le monde se tutoie.
-- Appeler après 13h, jamais pendant les fournées.
+- Tutoying if he's tutoing, it's a profession where everyone is silent.
+- Call after 13h, never during batches.
 
-## Prix & groupe
+## Price & group
 
-Groupes : **Boulangeries** (`boulangeries`), **Clients perdus** (`perdus`).
-Prix négociés (`clientPrices`, toujours prioritaires) : levain de seigle déshydraté (sac 1 kg) 8,28 € (liste 8,90) ; sacs à baguette kraft imprimés (carton 1000) 20,48 € (liste 22,00).
+Groups: **Boulangeries** (`boulangeries`), **Lost customers** (`perdus`).
+Negotiated prices (`clientPrices`, always priority): Dehydrated rye sourdough (1 kg bag) 8,28 € (list 8,90); Printed kraft baguette bags (carton of 1000) 20,48 € (list 22,00).
 
-Règles de prix qui peuvent s'appliquer :
-- `prl_0001` Boulangeries : −4 % sur les farines dès 10 sacs
-- `prl_0006` Épiphanie 2027 : poudre d'amande −6 % dès 20 kg
-- `prl_0007` Épiphanie 2027 : couronnes et fèves −5 %
+Price rules that may apply:
+- `prl_0001` Bakeries: -4 % on flours from 10 bags
+- `prl_0006` Epiphany 2027: almond powder -6 % from 20 kg
+- `prl_0007` Epiphany 2027: crowns and beans -5 %
 
-Dernières notes CRM :
+Latest notes CRM:
 
-- 01/02/2026, Julien (commercial) : Julien a négocié un prix trimestriel sur la tradition.
+- 01/02/2026, Julien (commercial): Julien negotiated a quarterly price on tradition.

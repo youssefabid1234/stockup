@@ -1,92 +1,92 @@
 # Salon de thé Les Camélias (C0032, `cli_0032`)
 
-> Fiche persona pour jouer ce client au téléphone. L'historique complet est dans `seed/clientEvents.json` (filtrer sur `clientId: "cli_0032"`).
+> Customer profile for phone role-play. The full history is in `seed_en/clientEvents.json` (filter on `clientId: "cli_0032"`).
 
 | | |
 |---|---|
-| Type | Commerce de détail (Pâtisseries, chocolatiers et salons de thé) — 103 bis avenue Foch, 31320 Castanet-Tolosan |
-| Zone | Balma, Labège & Sud toulousain — livré mon |
-| Statut | **active** — client régulier |
-| Commercial | Marion Escudié |
-| Client depuis | 28/09/2019 (7 ans) |
-| Paiement | 45 jours — prélèvement SEPA, aucun retard |
-| Encours | 5 579,53 € TTC (plafond 10 500 €) |
-| Tempérament | méfiant, exigeant, chaleureux — qualité ★★★, prix ★★☆, risque de départ faible |
+| Type | Retail trade (Passeries, chocolate makers and tea shops) — 103 bis avenue Foch, 31320 Castanet-Tolosan |
+| Area | Balma, Labège & south Toulouse — delivered Mon |
+| Status | **active** — regular customer |
+| Sales representative | Marion Escudié |
+| Customer since | 28/09/2019 (7 years) |
+| Payment | 45 days — SEPA direct debit, no delay |
+| Outstanding balance | 5 579,53 € incl. VAT (ceiling 10 500 €) |
+| Temperament | wary, demanding, warm — quality ★★★, price ★★☆, risk of losing the customer low |
 
-## Qui ils sont
+## Who they are
 
-Chocolatier-pâtissier à Castanet-Tolosan : moulages de Pâques, bûches et ballotins de Noël représentent la moitié de son chiffre.
+Chocolate-pastry shop in Castanet-Tolosan: Easter moulds, logs and Christmas ballotins account for half of its figure.
 
-## Les personnes
+## People
 
-- **Bernard Collet** — Chef pâtissier-gérant · 07 81 76 50 30 · bernard@salonthecamelias.fr
-  - Comment il/elle parle : Prudent, redemande les prix deux fois, veut tout par écrit.
-  - Tics : « Vous me confirmez par mail ? » · « Ça vient d'où exactement ? »
+- **Bernard Collet** — Pastry chef-manager · 07 81 76 50 30 · Bernard@salonthecamelias.fr
+  - Speaking style: Prudent, ask prices twice, wants everything in writing.
+  - Typical phrases: "Do you confirm me by email?" · "Where exactly did it come from?"
 
-## Ce qu'ils achètent et comment
+## What they buy and how
 
-Commande une fois par semaine, en général la veille entre 14h et 18h, surtout par téléphone et WhatsApp. Produits habituels : chocolat de couverture noir 64 % (pistoles, sac 5 kg), crème liquide UHT 35 % (brique 1 L), beurre doux AOP Charentes-Poitou (carton 10 × 1 kg), poudre d'amande blanche (sac 5 kg), boîtes pâtissières blanches 20 cm (lot de 50), eau de fleur d'oranger (bidon 1 L), chocolatine pur beurre crue surgelée 75 g (carton 140), œuf entier liquide pasteurisé (brique 1 L).
+Order once a week, usually the day before between 14h and 18h, especially by phone and WhatsApp. Regular products: Dark couverture chocolate 64% (pistoles, 5 kg bag), UHT liquid cream 35% (1 L carton), AOP Charentes-Poitou unsalted butter (carton of 10 × 1 kg), Blanched ground almonds (5 kg bag), White pastry boxes 20 cm (pack of 50), Orange blossom water (1 L container), Raw frozen all-butter pain au chocolat 75 g (carton of 140), Pasteurised liquid whole egg (1 L carton).
 
-Sur les 90 derniers jours (13 commandes livrées) :
+Over the last 90 days (13 orders delivered):
 
-| Produit | Volume 90 j | Lignes | Dernier prix |
+| Product | 90-day volume | Lines | Last price |
 |---|---|---|---|
-| Chocolat de couverture noir 64 % (pistoles, sac 5 kg) (`prd_0038`) | 227,55 kg | 8 | 14,92 € |
-| Chocolatine pur beurre crue surgelée 75 g (carton 140) (`prd_0054`) | 57,00 colis | 7 | 54,00 € |
-| Poudre d'amande blanche (sac 5 kg) (`prd_0046`) | 237,19 kg | 9 | 11,09 € |
-| Chocolat de couverture lait 38 % (pistoles, sac 5 kg) (`prd_0040`) | 161,24 kg | 8 | 14,44 € |
-| Beurre doux AOP Charentes-Poitou (carton 10 × 1 kg) (`prd_0027`) | 201,79 kg | 5 | 10,19 € |
-| Œufs plein air calibre M (plateau de 30) (`prd_0034`) | 182,00 colis | 11 | 8,34 € |
-| Crème liquide UHT 35 % (brique 1 L) (`prd_0031`) | 308,00 litre | 6 | 4,10 € |
-| Sucre glace (sac 10 kg) (`prd_0016`) | 62,00 pièce | 11 | 16,50 € |
+| Dark couverture chocolate 64% (pistoles, 5 kg bag) (`prd_0038`) | 227,55 kg | 8 | 14,92 € |
+| Raw frozen all-butter pain au chocolat 75 g (carton of 140) (`prd_0054`) | 57,00 box | 7 | 54,00 € |
+| Blanched ground almonds (5 kg bag) (`prd_0046`) | 237,19 kg | 9 | 11,09 € |
+| Milk couverture chocolate 38% (pistoles, 5 kg bag) (`prd_0040`) | 161,24 kg | 8 | 14,44 € |
+| AOP Charentes-Poitou unsalted butter (carton of 10 × 1 kg) (`prd_0027`) | 201,79 kg | 5 | 10,19 € |
+| Free-range eggs, size M (tray of 30) (`prd_0034`) | 182,00 box | 11 | 8,34 € |
+| UHT liquid cream 35% (1 L carton) (`prd_0031`) | 308,00 liter | 6 | 4,10 € |
+| Icing sugar (10 kg bag) (`prd_0016`) | 62,00 piece | 11 | 16,50 € |
 
-Fiche CRM : _Crème 35 % uniquement, jamais d'épaisse. Fruits rouges du Lot-et-Garonne en saison. Livré lun. Accepte les substitutions équivalentes si on prévient._
+CRM record : _35 % Creme only, never thick. Lot-et-Garonne red fruits in season. Delivered Mon. Accept equivalent substitutions if warned._
 
-## Ce qui les agace
+## What frustrates them
 
-- Une substitution de couverture
-- Une rupture la semaine de Pâques
-- Des fraises abîmées
-- Un chocolat blanchi à la livraison
+- A cover substitution
+- Breaking the Easter Week
+- Chilled strawberries
+- A white chocolate on delivery
 
-## Historique marquant
+## A brief history
 
-- **10/04/2022** · prix · Hausse tarifaire (gazole, énergie)
-- **24/08/2022** · qualité · Qualité : chocolat de couverture noir 64 % (pistoles, sac 5 kg)
-- **07/06/2023** · qualité · Qualité : sucre glace (sac 10 kg)
-- **15/04/2024** · qualité · Qualité : sucre glace (sac 10 kg)
-- **22/04/2024** · livraison · Livraison en retard
-- **02/12/2024** · qualité · Qualité : fèves des rois en porcelaine (sachet de 100)
-- **23/01/2025** · prix · Tarifs 2025
-- **03/07/2025** · note · Fermeture d'été 2025
-- **18/08/2025** · qualité · Qualité : chocolatine pur beurre crue surgelée 75 g (carton 140)
-- **19/01/2026** · livraison · Livraison en retard
-- **08/07/2026** · note · Fermeture d'été 2026
-- **19/11/2026** · demande spéciale · Fêtes 2026 : réservation de volumes
+- **10/04/2022** · price · Tariff increase (diesel, energy)
+- **24/08/2022** · Quality · Quality : Dark couverture chocolate 64% (pistoles, 5 kg bag)
+- **07/06/2023** · Quality · Quality : Icing sugar (10 kg bag)
+- **15/04/2024** · Quality · Quality : Icing sugar (10 kg bag)
+- **22/04/2024** · Delivery late
+- **02/12/2024** · Quality · Quality : Porcelain king cake charms (pack of 100)
+- **23/01/2025** · prices · Rates 2025
+- **03/07/2025** · note · Summer closure 2025
+- **18/08/2025** · Quality · Quality : Raw frozen all-butter pain au chocolat 75 g (carton of 140)
+- **19/01/2026** · Delivery late
+- **08/07/2026** · note · Summer closure 2026
+- **19/11/2026** · special request · Holidays 2026 : volume reservation
 
-Historique complet : 33 événements (9 appel, 8 qualité, 6 visite, 2 demande spéciale, 2 prix, 2 livraison, 2 note, 1 ouverture, 1 compliment).
+Full history: 33 events (9 call, 8 quality, 6 visit, 2 special request, 2 price, 2 delivery, 2 note, 1 opening, 1 compliment).
 
-## Dossiers ouverts aujourd'hui
+## Open cases
 
-- **19/11/2026 — Fêtes 2026 : réservation de volumes**
-  Bernard veut réserver pour les fêtes : fèves des rois en porcelaine (sachet de 100) et boîtes pâtissières blanches 20 cm (lot de 50) en volume pour les 23-24 et 30-31/12. Bernard : « Vous me confirmez par mail ? »
+- **19/11/2026 — Holidays 2026: volume reservation**
+  Bernard wants to book for the holidays: Porcelain king cake charms (pack of 100) and White pastry boxes 20 cm (pack of 50) in volume for the 23-24 and 30-31/12. Bernard: "Do you confirm me by email?"
 
-## Comment leur parler
+## How to talk to them
 
-- Prévenir des hausses du cacao à l'avance.
-- Ne jamais substituer une couverture sans accord.
+- Prevent cocoa increases in advance.
+- never substitute a cover without agreement.
 
-## Prix & groupe
+## Price & group
 
-Groupes : **Pâtisseries** (`patisseries`).
-Pas de prix négocié.
+Groups: **Passeries** (`patisseries`).
+No negotiated prices.
 
-Règles de prix qui peuvent s'appliquer :
-- `prl_0002` Pâtisseries : −5 % sur le chocolat dès 20 kg
-- `prl_0006` Épiphanie 2027 : poudre d'amande −6 % dès 20 kg
-- `prl_0007` Épiphanie 2027 : couronnes et fèves −5 %
+Price rules that may apply:
+- `prl_0002` Pastries: -5 % on chocolate from 20 kg
+- `prl_0006` Epiphany 2027: almond powder -6 % from 20 kg
+- `prl_0007` Epiphany 2027: crowns and beans -5 %
 
-Dernières notes CRM :
+Latest notes CRM:
 
-- 11/07/2025, Marion (commerciale) : Veut ses pistoles stockées à moins de 18 °C, vérifier le camion l'été.
-- 12/07/2026, Marion (commerciale) : Bernard prépare 800 kg de moulages pour Pâques : précommande en février.
+- 11/07/2025, Marion (commercial): Wants its pistoles stored at less than 18 °C, check the truck in the summer.
+- 12/07/2026, Marion (commercial): Bernard prepares 800 kg of moulds for Easter: pre-order in February.

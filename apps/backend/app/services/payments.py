@@ -75,20 +75,20 @@ def list_payments(lq: ListQuery | None = None, client_id: str | None = None, met
 def record_payment(ctx: Ctx, input: Doc) -> Doc:
     client = crud.clients.require(input["clientId"])
     if not input["amount"] > 0:
-        raise bad_request("invalid_amount", "Le montant doit être positif")
+        raise bad_request("invalid_amount", "The amount must be positive")
     amount = round2(input["amount"])
 
     allocations: list[Doc] = []
     if input.get("allocations"):
         # Explicit allocations: each must target an invoice of this client and fit its balance.
         if round2(total(a["amount"] for a in input["allocations"])) > amount:
-            raise bad_request("over_allocated", "La somme des affectations dépasse le montant du paiement")
+            raise bad_request("over_allocated", "The sum of the allocations exceeds the amount of the payment")
         for a in input["allocations"]:
             inv = crud.invoices.require(a["invoiceId"])
             if inv["clientId"] != client["id"]:
-                raise bad_request("wrong_client", f"La facture {inv['number']} n'appartient pas à {client['name']}")
+                raise bad_request("wrong_client", f"The invoice {inv['number']} does not belong to {client['name']}")
             if round2(a["amount"]) > invoices.balance_of(inv):
-                raise bad_request("over_allocated", f"Montant supérieur au solde de {inv['number']} ({fmt_eur(invoices.balance_of(inv))})")
+                raise bad_request("over_allocated", f"Amount above the balance of {inv['number']} ({fmt_eur(invoices.balance_of(inv))})")
             allocations.append({"invoiceId": inv["id"], "amount": round2(a["amount"])})
     else:
         # Auto: settle the oldest open invoices first. Any remainder stays as unallocated credit.
@@ -118,6 +118,6 @@ def record_payment(ctx: Ctx, input: Doc) -> Doc:
     }
     crud.payments.put(payment)
     numbers = [crud.invoices.require(a["invoiceId"])["number"] for a in allocations]
-    where = f" (affecté à {', '.join(numbers)})" if numbers else " (non affecté)"
-    log_event(ctx, "payment.recorded", "payment", payment["id"], f"Paiement de {fmt_eur(amount)} reçu de {client['name']}{where}")
+    where = f" (as at {', '.join(numbers)})" if numbers else " (not affected)"
+    log_event(ctx, "payment.recorded", "payment", payment["id"], f"Payment of {fmt_eur(amount)} received from {client['name']}{where}")
     return payment_summary(payment)

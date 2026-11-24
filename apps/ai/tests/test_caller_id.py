@@ -8,8 +8,8 @@ from app.schemas import CallerMessage, CallerReadyMessage
 
 SARRAILH = {
     "id": "cli_0001", "name": "Maison Sarrailh", "status": "active", "deliveryDays": ["tue", "thu", "sat"],
-    "contacts": [{"name": "Nadine Sarrailh", "role": "Boutique et commandes", "phone": "05 61 21 33 47"}],
-    "preferences": "Jamais de substitution sur le beurre.", "usual": [], "notes": [],
+    "contacts": [{"name": "Nadine Sarrailh", "role": "Shop and orders", "phone": "05 61 21 33 47"}],
+    "preferences": "Never substitute butter.", "usual": [], "notes": [],
 }  # fmt: skip
 
 
@@ -20,7 +20,7 @@ class FakeErp:
     async def get(self, path, params=None):
         self.calls.append(path)
         if path == "/api/clients":
-            return [SARRAILH, {"id": "cli_0002", "name": "Autre", "contacts": [{"name": "X", "phone": "06 00 00 00 00"}]}]
+            return [SARRAILH, {"id": "cli_0002", "name": "Other", "contacts": [{"name": "X", "phone": "06 00 00 00 00"}]}]
         if path.startswith("/api/clients/"):
             return SARRAILH
         if path == "/api/context/for":
@@ -38,7 +38,7 @@ def fresh_cache():
 async def test_known_client_by_id():
     cc = await caller_context(FakeErp(), client_id="cli_0001", contact_name="Nadine Sarrailh")
     text = render_for_prompt(cc)
-    assert cc.name == "Maison Sarrailh" and "Au téléphone : Nadine Sarrailh" in text and "ne le recherche pas" in text
+    assert cc.name == "Maison Sarrailh" and "On the phone: Nadine Sarrailh" in text and "Do not search for this caller again" in text
 
 
 async def test_known_client_by_phone_any_format():
@@ -47,15 +47,15 @@ async def test_known_client_by_phone_any_format():
 
 
 async def test_unknown_phone_is_a_new_client():
-    cc = await caller_context(FakeErp(), phone="07 99 99 99 99", contact_name="Camille", company_name="Boulangerie du Canal")
-    assert cc.is_new and cc.client_id == "" and cc.name == "Boulangerie du Canal"
+    cc = await caller_context(FakeErp(), phone="07 99 99 99 99", contact_name="Camille", company_name="Bakery of the Canal")
+    assert cc.is_new and cc.client_id == "" and cc.name == "Bakery of the Canal"
     text = render_for_prompt(cc)
-    assert "NOUVEAU CLIENT" in text and "Ne crée et ne confirme AUCUNE commande" in text and "Camille" in text
+    assert "NEW CUSTOMER" in text and "Do not create or confirm an order" in text and "Camille" in text
 
 
 async def test_ticked_new_client_never_looks_up_the_erp():
     erp = FakeErp()
-    cc = await caller_context(erp, is_new=True, company_name="Chez Paul", phone="05 61 21 33 47")
+    cc = await caller_context(erp, is_new=True, company_name="Paul's", phone="05 61 21 33 47")
     assert cc.is_new and erp.calls == []  # even with a phone that exists: the form said "nouveau client"
 
 

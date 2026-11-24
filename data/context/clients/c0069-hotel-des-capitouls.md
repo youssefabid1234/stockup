@@ -1,95 +1,95 @@
 # Hôtel des Capitouls (C0069, `cli_0069`)
 
-> Fiche persona pour jouer ce client au téléphone. L'historique complet est dans `seed/clientEvents.json` (filtrer sur `clientId: "cli_0069"`).
+> Customer profile for phone role-play. The full history is in `seed_en/clientEvents.json` (filter on `clientId: "cli_0069"`).
 
 | | |
 |---|---|
-| Type | Hôtel (Hôtels (petit-déjeuner et restaurant)) — 130 avenue de la Libération, 31520 Ramonville-Saint-Agne |
-| Zone | Balma, Labège & Sud toulousain — livré tue, thu, sat |
-| Statut | **active** — client régulier |
-| Commercial | Marion Escudié |
-| Client depuis | 24/12/2019 (6 ans) |
-| Paiement | 45 jours — paie en retard (3 à 6 semaines), mais finit par payer |
-| Encours | 23 230,08 € TTC (plafond 35 000 €) — **1 facture échue : 13 510,06 €** |
-| Tempérament | procédurier, exigeant, pressé — qualité ★★★, prix ★☆☆, risque de départ faible |
+| Type | Hotels (Breakfast and Restaurant) — 130 avenue de la Libération, 31520 Ramonville-Saint-Agne |
+| Area | Balma, Labège & south Toulouse — delivered Tue, Thu, Sat |
+| Status | **active** — regular customer |
+| Sales representative | Marion Escudié |
+| Customer since | 24/12/2019 (6 years) |
+| Payment | 45 days — Pays late (3 to 6 weeks), but ends up paying |
+| Outstanding balance | 23 230,08 € incl. VAT (ceiling 35 000 €) — **1 overdue invoices: 13 510,06 €** |
+| Temperament | processor, demanding, pressed — quality ★★★, price ★☆☆, risk of losing the customer low |
 
-## Qui ils sont
+## Who they are
 
-Hôtel de Ramonville-Saint-Agne, petit-déjeuner buffet avec mini-viennoiseries cuites sur place, restaurant de 30 couverts. Factures au mois validées par l'économat.
+Hotel de Ramonville-Saint-Agne, buffet breakfast with mini-pastries cooked on site, restaurant of 30 covered. Monthly invoices validated by the economy.
 
-## Les personnes
+## People
 
 - **Malik Daniel** — Chef de cuisine · 06 30 86 14 06
-  - Comment il/elle parle : Phrases courtes, pas le temps, veut un récapitulatif en dix secondes.
-  - Tics : « Envoyez, envoyez. » · « Pareil que d'hab, go. »
-- **Samira Bonnet** — Responsable des achats · 07 45 85 71 50 · compta@hotelcapitouls.fr
-  - Comment il/elle parle : Appelle entre deux services, raccroche vite.
-  - Tics : « Vite, j'ai pas le temps. » · « Pareil que d'hab, go. »
-- **Fabrice Bertin** — Gouvernante petit-déjeuner · 06 85 89 91 20
-  - Comment il/elle parle : Appelle entre deux services, raccroche vite.
-  - Tics : « Envoyez, envoyez. » · « C'est bon ? Je raccroche. »
-- **Service comptabilité** — Factures · factures@hotelcapitouls.fr
+  - Speaking style: Short phrases, not time, wants a summary in ten seconds.
+  - Typical phrases: "Send, send." · "Same as usual, go."
+- **Samira Bonnet** — Head of Procurement · 07 45 85 71 50 · compta@hotelcapitouls.fr
+  - Speaking style: Calls between two services, hang up fast.
+  - Typical phrases: "Quickly, I don't have time." · "Same as usual, go."
+- **Fabrice Bertin** — Governing breakfast · 06 85 89 91 20
+  - Speaking style: Calls between two services, hang up fast.
+  - Typical phrases: "Send, send." · "It's okay? I'm hanging up."
+- **Service comptabilité** — Bills · factures@hotelcapitouls.fr
 
-## Ce qu'ils achètent et comment
+## What they buy and how
 
-Commande trois fois par semaine, en général la veille entre 11h et 16h, surtout par e-mail et téléphone. Produits habituels : assortiment mini-viennoiseries crues (carton 210), beurre demi-sel de baratte (motte 1 kg), lait entier UHT (brique 1 L), crème liquide UHT 35 % (brique 1 L), chocolatine pur beurre crue surgelée 75 g (carton 140), beurre de tourage 82 % (plaque 2 kg), croissant pur beurre cru surgelé 70 g (carton 150), beurre doux AOP Charentes-Poitou (carton 10 × 1 kg).
+Order three times a week, usually the day before between 11h and 16h, especially via e-mail and telephone. Regular products: Assorted raw mini viennoiseries (carton of 210), Churned lightly salted butter (1 kg block), Whole UHT milk (1 L carton), UHT liquid cream 35% (1 L carton), Raw frozen all-butter pain au chocolat 75 g (carton of 140), 82% laminating butter (2 kg sheet), Raw frozen all-butter croissant 70 g (carton of 150), AOP Charentes-Poitou unsalted butter (carton of 10 × 1 kg).
 
-Sur les 90 derniers jours (36 commandes livrées) :
+Over the last 90 days (36 orders delivered):
 
-| Produit | Volume 90 j | Lignes | Dernier prix |
+| Product | 90-day volume | Lines | Last price |
 |---|---|---|---|
-| Beurre de tourage 82 % (plaque 2 kg) (`prd_0026`) | 1 106,48 kg | 20 | 8,80 € |
-| Beurre doux AOP Charentes-Poitou (carton 10 × 1 kg) (`prd_0027`) | 527,94 kg | 19 | 9,62 € |
-| Chocolatine pur beurre crue surgelée 75 g (carton 140) (`prd_0054`) | 87,00 colis | 23 | 54,00 € |
-| Croissant pur beurre cru surgelé 70 g (carton 150) (`prd_0053`) | 78,00 colis | 14 | 49,12 € |
-| Crème liquide UHT 35 % (brique 1 L) (`prd_0031`) | 803,00 litre | 26 | 4,10 € |
-| Assortiment mini-viennoiseries crues (carton 210) (`prd_0056`) | 34,00 colis | 11 | 43,45 € |
-| Beurre demi-sel de baratte (motte 1 kg) (`prd_0029`) | 61,98 kg | 9 | 11,65 € |
-| Lait entier UHT (brique 1 L) (`prd_0033`) | 361,00 litre | 14 | 1,12 € |
+| 82% laminating butter (2 kg sheet) (`prd_0026`) | 1 106,48 kg | 20 | 8,80 € |
+| AOP Charentes-Poitou unsalted butter (carton of 10 × 1 kg) (`prd_0027`) | 527,94 kg | 19 | 9,62 € |
+| Raw frozen all-butter pain au chocolat 75 g (carton of 140) (`prd_0054`) | 87,00 box | 23 | 54,00 € |
+| Raw frozen all-butter croissant 70 g (carton of 150) (`prd_0053`) | 78,00 box | 14 | 49,12 € |
+| UHT liquid cream 35% (1 L carton) (`prd_0031`) | 803,00 liter | 26 | 4,10 € |
+| Assorted raw mini viennoiseries (carton of 210) (`prd_0056`) | 34,00 box | 11 | 43,45 € |
+| Churned lightly salted butter (1 kg block) (`prd_0029`) | 61,98 kg | 9 | 11,65 € |
+| Whole UHT milk (1 L carton) (`prd_0033`) | 361,00 liter | 14 | 1,12 € |
 
-Fiche CRM : _Factures au mois avec numéro de bon interne. Mini-viennoiseries et beurre demi-sel en portion pour le buffet. Livré mar. jeu. sam. Accepte les substitutions équivalentes si on prévient._
+CRM file: _Monthly measurements with internal voucher number. Mini-pastries and half-salt butter serving for the buffet. Delivered on. Thu. Sat. Accept equivalent substitutions if notified._
 
-## Ce qui les agace
+## What frustrates them
 
-- Une facture sans numéro de bon
-- Des minis cassées
+- An invoice without a voucher number
+- Minis broken
 
-## Historique marquant
+## A brief history
 
-- **30/08/2025** · paiement · Relance : FAC-2025-001448 échue
-- **18/11/2025** · demande spéciale · Fêtes 2025 : réservation de volumes
-- **30/11/2025** · paiement · Relance : FAC-2025-002074 échue
-- **25/01/2026** · prix · Tarifs 2026
-- **12/02/2026** · qualité · Qualité : beurre doux AOP Charentes-Poitou (carton 10 × 1 kg)
-- **28/02/2026** · paiement · Relance : FAC-2026-000033 échue
-- **28/03/2026** · qualité · Qualité : crème liquide UHT 35 % (brique 1 L)
-- **15/08/2026** · retour · Retour à la livraison : beurre doux AOP Charentes-Poitou (carton 10 × 1 kg)
-- **27/08/2026** · paiement · Relance : FAC-2026-001479 échue
-- **17/09/2026** · carte · Carte d'automne
-- **22/10/2026** · livraison · Bon de livraison erroné
-- **06/11/2026** · demande spéciale · Fêtes 2026 : réservation de volumes
+- **30/08/2025** · Payment · Recovery : FAC-2025-001448
+- **18/11/2025** · special request · Holidays 2025 : volume reservation
+- **30/11/2025** · Payment · Recovery : FAC-2025-002074
+- **25/01/2026** · prices · Rates 2026
+- **12/02/2026** · Quality · Quality : AOP Charentes-Poitou unsalted butter (carton of 10 × 1 kg)
+- **28/02/2026** · Payment · Recovery : FAC-2026-000033
+- **28/03/2026** · Quality · Quality : UHT liquid cream 35% (1 L carton)
+- **15/08/2026** · back to delivery : AOP Charentes-Poitou unsalted butter (carton of 10 × 1 kg)
+- **27/08/2026** · Payment · Recovery : FAC-2026-001479
+- **17/09/2026** · map · Autumn card
+- **22/10/2026** · delivery · Delivery order wrong
+- **06/11/2026** · special request · Holidays 2026 : volume reservation
 
-Historique complet : 53 événements (11 paiement, 9 visite, 7 qualité, 6 appel, 5 retour, 4 prix, 3 compliment, 3 demande spéciale, 2 note, 1 ouverture, 1 carte, 1 livraison).
+Full history: 53 events (11 payment, 9 visit, 7 quality, 6 call, 5 return, 4 price, 3 compliment, 3 special request, 2 note, 1 opening, 1 card, 1 delivery).
 
-## Dossiers ouverts aujourd'hui
+## Open cases
 
-- **06/11/2026 — Fêtes 2026 : réservation de volumes**
-  Fabrice veut réserver pour les fêtes : assortiment mini-viennoiseries crues (carton 210) et beurre doux AOP Charentes-Poitou (carton 10 × 1 kg) en volume pour les 23-24 et 30-31/12. Malik : « Pareil que d'hab, go. »
+- **06/11/2026 — Holidays 2026: volume reservation**
+  Fabrice wants to book for the parties: Assorted raw mini viennoiseries (carton of 210) and AOP Charentes-Poitou unsalted butter (carton of 10 × 1 kg) in volume for the 23-24 and 30-31/12. Malik: "Same as usual, go."
 
-## Comment leur parler
+## How to talk to them
 
-- Être formel.
-- Passer par le responsable des achats.
+- Be formal.
+- Go through the procurement manager.
 
-## Prix & groupe
+## Price & group
 
-Groupes : **Hôtellerie** (`hotellerie`), **À surveiller** (`a-surveiller`).
-Prix négociés (`clientPrices`, toujours prioritaires) : beurre de tourage 82 % (plaque 2 kg) 8,69 € (liste 9,20) ; assortiment mini-viennoiseries crues (carton 210) 43,45 € (liste 46,00) ; beurre doux AOP Charentes-Poitou (carton 10 × 1 kg) 9,63 € (liste 10,20) ; croissant pur beurre cru surgelé 70 g (carton 150) 49,12 € (liste 52,00).
+Groups: **Hotel ** (`hotellerie`), **To be monitored** (`a-surveiller`).
+Negotiated prices (`clientPrices`, always priority): 82% laminating butter (2 kg sheet) 8,69 € (list 9,20); Assorted raw mini viennoiseries (carton of 210) 43,45 € (list 46,00); AOP Charentes-Poitou unsalted butter (carton of 10 × 1 kg) 9,63 € (list 10,20); Raw frozen all-butter croissant 70 g (carton of 150) 49,12 € (list 52,00).
 
-Règles de prix qui peuvent s'appliquer :
-- `prl_0006` Épiphanie 2027 : poudre d'amande −6 % dès 20 kg
-- `prl_0007` Épiphanie 2027 : couronnes et fèves −5 %
+Price rules that may apply:
+- `prl_0006` Epiphany 2027: almond powder -6 % from 20 kg
+- `prl_0007` Epiphany 2027: crowns and beans -5 %
 
-Dernières notes CRM :
+Latest notes CRM:
 
-Aucune.
+None.

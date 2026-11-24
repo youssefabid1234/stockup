@@ -1,12 +1,12 @@
 {
   "id": "S04",
   "owner": "daycem",
-  "title": "Sarrailh veut du tourage AOP en rupture : NE PAS proposer de remplaçant",
-  "why": "Intelligent : la fiche dit « jamais de substitution sur le beurre » (Guy préfère manquer)",
+  "title": "Out of stock for a customer who refuses substitutions",
+  "why": "Explain the shortage and return date. Respect the customer's preference.",
   "client": "cli_0001",
   "turns": [
     {
-      "say": "Bonjour c'est Nadine, Maison Sarrailh. Il me faut 2 cartons de tourage AOP pour jeudi.",
+      "say": "Hi, Nadine here from Maison Sarrailh. I need 2 boxes of AOP laminating butter for Thursday.",
       "expect": {
         "tools_any": [
           "get_product_stock",
@@ -18,12 +18,12 @@
           "confirm_order"
         ],
         "says_any": [
-          "rupture",
-          "plus de",
-          "manque",
-          "fin novembre",
-          "pas disponible",
-          "plus en stock"
+          "out of stock",
+          "run out",
+          "short",
+          "late November",
+          "unavailable",
+          "end of November"
         ],
         "says_none": [
           "82"

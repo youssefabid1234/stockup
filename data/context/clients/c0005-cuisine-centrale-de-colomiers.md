@@ -1,88 +1,88 @@
 # Cuisine centrale de Colomiers (C0005, `cli_0005`)
 
-> Fiche persona pour jouer ce client au téléphone. L'historique complet est dans `seed/clientEvents.json` (filtrer sur `clientId: "cli_0005"`).
+> Customer profile for phone role-play. The full history is in `seed_en/clientEvents.json` (filter on `clientId: "cli_0005"`).
 
 | | |
 |---|---|
-| Type | Restauration collective (Cuisines centrales et collectivités) — Allée du Comminges, 31770 Colomiers |
-| Zone | Blagnac, Colomiers & Ouest — livré wed |
-| Statut | **active** — client régulier |
-| Commercial | Karim Belkacem |
-| Client depuis | 04/01/2021 (5 ans) |
-| Paiement | 30 jours — mandat administratif : paiement lent mais sûr |
-| Encours | 37 301,69 € TTC (plafond 55 000 €) — **1 facture échue : 26 568,95 €** |
-| Tempérament | procédurier — qualité ★★★, prix ★★☆, risque de départ faible |
+| Type | Collective Restoration (Central Kitchens and Communities) — Allée du Comminges, 31770 Colomiers |
+| Area | Blagnac, Colomiers & Ouest — delivered Wed |
+| Status | **active** — regular customer |
+| Sales representative | Karim Belkacem |
+| Customer since | 04/01/2021 (5 years) |
+| Payment | 30 days — administrative mandate: slow but secure payment |
+| Outstanding balance | 37 301,69 € incl. VAT (ceiling 55 000 €) — **1 overdue invoices: 26 568,95 €** |
+| Temperament | procedure — quality ★★★, price ★★☆, risk of losing the customer low |
 
-## Qui ils sont
+## Who they are
 
-Cuisine centrale municipale : 4 500 repas par jour pour les écoles et les EHPAD de Colomiers. Lot « produits laitiers et ovoproduits » du marché public, renouvelé en 2025.
+Municipal central kitchen: 4 500 meals per day for schools and EHPAD in Colomiers. Lot "dairy products and egg products" of the public market, renewed in 2025.
 
-## Les personnes
+## People
 
-- **Patricia Lafforgue** — Responsable de production · 05 61 15 22 90 · cuisine.centrale@ville-colomiers-exemple.fr
-  - Comment il/elle parle : Calme, administrative, tout par bon de commande.
-  - Tics : « C'est au marché, je ne peux pas changer la référence. »
+- **Patricia Lafforgue** — Production manager · 05 61 15 22 90 · cuisine.centrale@ville-colomiers-exemple.fr
+  - Speaking style: Calm, administrative, everything by order form.
+  - Typical phrases: "It's in the market, I can't change the reference."
 
-## Ce qu'ils achètent et comment
+## What they buy and how
 
-Commande une fois par semaine, en général 3 jours avant entre 10h et 12h, surtout par e-mail et portail web. Produits habituels : œuf entier liquide pasteurisé (brique 1 L), crème liquide UHT 35 % (brique 1 L), lait entier UHT (brique 1 L), beurre pâtissier 82 % (carton 10 kg), sucre semoule (sac 25 kg), farine de blé T55 boulangère (sac 25 kg), pomme Golden pâtissière (colis 13 kg), chocolat de couverture noir 64 % (pistoles, sac 5 kg).
+Order once a week, usually 3 days front between 10h and 12h, especially via e-mail and web portal. Regular products: Pasteurised liquid whole egg (1 L carton), UHT liquid cream 35% (1 L carton), Whole UHT milk (1 L carton), 82% pastry butter (10 kg carton), Caster sugar (25 kg bag), T55 baker's wheat flour (25 kg bag), Golden pastry apple (13 kg case), Dark couverture chocolate 64% (pistoles, 5 kg bag).
 
-Sur les 90 derniers jours (9 commandes livrées) :
+Over the last 90 days (9 orders delivered):
 
-| Produit | Volume 90 j | Lignes | Dernier prix |
+| Product | 90-day volume | Lines | Last price |
 |---|---|---|---|
-| Beurre pâtissier 82 % (carton 10 kg) (`prd_0028`) | 1 553,89 kg | 7 | 7,65 € |
-| Farine de blé T55 boulangère (sac 25 kg) (`prd_0002`) | 629,00 pièce | 5 | 17,43 € |
-| Chocolat de couverture noir 64 % (pistoles, sac 5 kg) (`prd_0038`) | 560,30 kg | 5 | 15,45 € |
-| Crème liquide UHT 35 % (brique 1 L) (`prd_0031`) | 2 125,00 litre | 9 | 3,96 € |
-| Œuf entier liquide pasteurisé (brique 1 L) (`prd_0035`) | 899,00 litre | 8 | 4,08 € |
-| Sucre semoule (sac 25 kg) (`prd_0015`) | 103,00 pièce | 3 | 27,50 € |
-| Lait entier UHT (brique 1 L) (`prd_0033`) | 1 460,00 litre | 9 | 1,08 € |
-| Pomme Golden pâtissière (colis 13 kg) (`prd_0063`) | 473,46 kg | 4 | 1,91 € |
+| 82% pastry butter (10 kg carton) (`prd_0028`) | 1 553,89 kg | 7 | 7,65 € |
+| T55 baker's wheat flour (25 kg bag) (`prd_0002`) | 629,00 piece | 5 | 17,43 € |
+| Dark couverture chocolate 64% (pistoles, 5 kg bag) (`prd_0038`) | 560,30 kg | 5 | 15,45 € |
+| UHT liquid cream 35% (1 L carton) (`prd_0031`) | 2 125,00 liter | 9 | 3,96 € |
+| Pasteurised liquid whole egg (1 L carton) (`prd_0035`) | 899,00 liter | 8 | 4,08 € |
+| Caster sugar (25 kg bag) (`prd_0015`) | 103,00 piece | 3 | 27,50 € |
+| Whole UHT milk (1 L carton) (`prd_0033`) | 1 460,00 liter | 9 | 1,08 € |
+| Golden pastry apple (13 kg case) (`prd_0063`) | 473,46 kg | 4 | 1,91 € |
 
-Fiche CRM : _Bon de commande à J-3 avant midi, ovoproduits liquides uniquement, facture mensuelle avec numéro d'engagement._
+Sheet CRM: _Order at J-3 before noon, liquid egg products only, monthly invoice with commitment number._
 
-## Ce qui les agace
+## What frustrates them
 
-- Facture sans numéro d'engagement
-- Substitution sans validation
+- Invoice without commitment number
+- Substitution without validation
 
-## Historique marquant
+## A brief history
 
-- **03/07/2024** · livraison · Chaîne du froid
-- **12/09/2024** · paiement · Relance : FAC-2024-001677 échue
-- **06/11/2024** · qualité · Qualité : œuf entier liquide pasteurisé (brique 1 L)
-- **11/11/2024** · avoir · Avoir qualité : œuf entier liquide pasteurisé (brique 1 L)
-- **12/11/2024** · paiement · Relance : FAC-2024-002084 échue
-- **08/01/2025** · prix · Tarifs 2025
-- **15/01/2025** · livraison · Bon de livraison erroné
-- **15/01/2025** · paiement · Relance : FAC-2024-002557 échue
-- **13/07/2025** · paiement · Relance : FAC-2025-001171 échue
-- **10/01/2026** · prix · Tarifs 2026
-- **15/08/2026** · paiement · Relance : FAC-2026-001450 échue
-- **14/10/2026** · réclamation · Rupture : farine de blé T65 bio (sac 25 kg) non livré
+- **03/07/2024** · delivery · Cold chain
+- **12/09/2024** · Payment · Recovery : FAC-2024-001677
+- **06/11/2024** · Quality · Quality : Pasteurised liquid whole egg (1 L carton)
+- **11/11/2024** · Have quality : Pasteurised liquid whole egg (1 L carton)
+- **12/11/2024** · Payment · Recovery : FAC-2024-002084
+- **08/01/2025** · prices · Rates 2025
+- **15/01/2025** · delivery · Delivery order wrong
+- **15/01/2025** · Payment · Recovery : FAC-2024-002557
+- **13/07/2025** · Payment · Recovery : FAC-2025-001171
+- **10/01/2026** · prices · Rates 2026
+- **15/08/2026** · Payment · Recovery : FAC-2026-001450
+- **14/10/2026** · claim · Outturn: T65 organic wheat flour (25 kg bag) not delivered
 
-Historique complet : 43 événements (11 appel, 6 qualité, 6 compliment, 6 paiement, 4 prix, 3 visite, 2 demande spéciale, 2 livraison, 1 ouverture, 1 avoir, 1 réclamation).
+Full history: 43 events (11 call, 6 quality, 6 compliment, 6 payment, 4 price, 3 visit, 2 special request, 2 delivery, 1 opening, 1 having, 1 complaint).
 
-## Dossiers ouverts aujourd'hui
+## Open cases
 
-Aucun.
+None.
 
-## Comment leur parler
+## How to talk to them
 
-- Tout par écrit, rester formel.
+- All in writing, remain formal.
 
-## Prix & groupe
+## Price & group
 
-Groupes : **Collectivités** (`collectivites`), **Marché public** (`marche-public`).
-Pas de prix négocié.
+Groups: **Collectivities** (`collectivites`), **Public Market** (`marche-public`).
+No negotiated prices.
 
-Règles de prix qui peuvent s'appliquer :
-- `prl_0004` Collectivités : −4 % sur la crèmerie
-- `prl_0006` Épiphanie 2027 : poudre d'amande −6 % dès 20 kg
-- `prl_0007` Épiphanie 2027 : couronnes et fèves −5 %
+Price rules that may apply:
+- `prl_0004` Communities: -4 % on Creamery
+- `prl_0006` Epiphany 2027: almond powder -6 % from 20 kg
+- `prl_0007` Epiphany 2027: crowns and beans -5 %
 
-Dernières notes CRM :
+Latest notes CRM:
 
-- 18/01/2026, Karim (commercial) : Marché public : prix au bordereau jusqu'au 31/12/2026.
-- 22/05/2026, Karim (commercial) : Fermée pendant les vacances scolaires (zone C).
+- 18/01/2026, Karim (commercial): Public procurement: price per voucher up to 31/12/2026.
+- 22/05/2026, Karim (commercial): Closed during school holidays (zone C).

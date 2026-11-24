@@ -38,16 +38,16 @@ export function useTheme() {
 }
 
 const OPTS: { id: ThemePref; icon: typeof Sun; label: string }[] = [
-  { id: "light", icon: Sun, label: "Clair" },
-  { id: "dark", icon: Moon, label: "Sombre" },
-  { id: "system", icon: Monitor, label: "Système" },
+  { id: "light", icon: Sun, label: "Clear" },
+  { id: "dark", icon: Moon, label: "Dark" },
+  { id: "system", icon: Monitor, label: "System" },
 ];
 
 /** Three-way light / dark / system switch (sidebar footer). */
 export function ThemeToggle({ className }: { className?: string }) {
   const { theme } = useTheme();
   return (
-    <div role="radiogroup" aria-label="Thème" className={cn(SEGMENT_TRACK, className)}>
+    <div role="radiogroup" aria-label="Theme" className={cn(SEGMENT_TRACK, className)}>
       {OPTS.map(({ id, icon: Icon, label }) => (
         <button
           key={id}

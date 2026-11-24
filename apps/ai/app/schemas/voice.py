@@ -1,7 +1,7 @@
 """
 WS /voice contract: push-to-talk sessions, two tracks (the human "caller" and the agent).
 
-Client → server: JSON messages below, plus binary audio frames between audio_start and audio_end.
+Customer → server: JSON messages below, plus binary audio frames between audio_start and audio_end.
 Server → client: JSON messages below, plus binary audio frames between agent_audio_start and agent_audio_end.
 """
 

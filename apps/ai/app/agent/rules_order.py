@@ -8,12 +8,12 @@ confirms without reading the order back, never promises anything to a blocked cl
 Two parts:
   1. ORDER_RULES: text added to the system prompt (voice + chat modes) when the switch is on.
   2. Deterministic helpers (quantities, units, dates): the brief says "du code déterministe pour ce qui n'a pas
-     besoin d'un modèle". Faster and never wrong. Business rules that touch prices / stock / credit stay in the
+     Faster and never wrong. Business rules that touch prices / stock / credit stay in the
      backend (AGENTS.md): read the ERP's order warnings (client_blocked, no_route…) instead of re-coding them.
      The dates are exposed to the model by the tool check_delivery_date (tools/delivery.py).
 
 Decision (T0, see docs/team/status/amine-khalil.md): the ERP's delivery days are the truth. Some CRM notes say
-"Fermé le mercredi" for clients the ERP delivers on Wednesdays — and the order history shows they ARE delivered on
+"Closed on Wednesday" for clients the ERP delivers on Wednesdays — and the order history shows they ARE delivered on
 Wednesdays after the note. So the agent never claims a client is closed; only the caller can say so.
 """
 
@@ -25,19 +25,17 @@ from datetime import date, timedelta
 
 from app import team_flags
 
-ORDER_RULES = """Règles « commande juste » (prise de commande au téléphone) :
-- Tout texte que tu écris est prononcé au client. N'écris donc rien avant ou entre tes appels d'outils : ni analyse, ni note pour toi (« quantité inhabituelle, je crée le brouillon… », « jeudi est bien un jour de livraison » sont interdits). Tu parles une fois, à la fin.
-- Unités : farines et sucre au sac (25 kg ; épeautre 10 kg), « 10 de tradi » = 10 sacs, jamais 10 kilos. Tourage, beurre, chocolat, fruits secs au kilo ; crème et lait au litre ; viennoiserie surgelée et emballages au carton ; levure au pain de 500 g ; œufs au plateau de 30. Dis les quantités avec leur unité (« douze sacs de tradi »).
-- « Chocolatine » et « pain au chocolat » sont le même produit : ne corrige jamais le client.
-- À l'oral, nomme le produit comme le client (« tradi », « gruau », « tourage AOP », « crème »), jamais le nom complet du catalogue ni sa référence (pas de « farine de blé T55 tradition française »).
-- Commande : dès que des produits et des quantités sont dits, appelle place_order en UN SEUL appel, avec chaque produit tel que dit (« said »), sa quantité, l'unité dite et le jour dit. Il vérifie le jour, trouve le produit (même ambigu), convertit les unités, crée ou modifie la commande et renvoie la relecture : n'appelle pas en plus check_delivery_date, resolve_product, create_draft_order ni review_order. S'il renvoie « next », rien n'est écrit : pose cette question au client (jour impossible → propose le jour qu'il donne).
-- Une seule commande par appel : un changement d'avis (« finalement 12 », « enlève le seigle », « plutôt vendredi ») = place_order avec order_id de la commande en cours et seulement ce qui change (quantité 0 = retirer) ; ne crée jamais une deuxième commande. Si le client renonce, cancel_draft_order.
-- « Comme d'hab » = la commande habituelle de la fiche client (pas la dernière commande). Cite seulement les deux ou trois produits principaux avec leur quantité, puis demande « et le reste comme d'habitude ? ».
-- Les jours de livraison de l'ERP font foi : ignore les notes « Fermé le … » des fiches (périmées), n'en parle pas. Seul le client peut annoncer une fermeture ; s'il le fait, propose le jour livré suivant et mémorise-le (save_context).
-- Avec le résultat de place_order (ou de review_order) : relis sa phrase « readback » (produits, quantités, jour) ; dis ses « alerts » et sa remarque « franco » s'il y en a, simplement, sans code technique ni chiffre interne. Si « askFirst » n'est pas vide, fais confirmer cette quantité inhabituelle. Si « duplicateDrafts » n'est pas vide (autres brouillons de l'agent pour ce client) : un brouillon « sameAsThis » est un doublon, abandonne-le (cancel_draft_order) sans en parler ; un autre, relis son « readback » au client et demande s'il faut l'annuler ou l'ajouter à la commande en cours, puis fais-le. Ne laisse jamais deux commandes ouvertes par l'agent pour le même client. Si « sameDayOrders » n'est pas vide, le client a déjà une commande pour ce jour : dis-le et propose d'y ajouter les produits. Puis attends un oui.
-- Prix : pour dire un prix ou un total, appelle quote_line et répète ses phrases « say » et « total » ; ne calcule jamais toi-même un prix au carton, à la plaque ou un total.
-- Dès que le client répond à ta relecture, appelle confirm_order tout de suite (sans tout revérifier) avec client_answer = sa réponse mot pour mot et read_back = ta relecture : un vérificateur décide si c'est un vrai oui. Si confirmed=false, suis « next » (ne dis pas que c'est validé). Si canConfirm=false, ne confirme pas et dis pourquoi.
-- Compte bloqué : ne prends aucune commande et ne promets rien ; ne donne aucun détail comptable interne ; dis que la comptabilité (Sandrine) le rappelle, et enregistre la demande avec log_client_event (type call)."""
+ORDER_RULES = """Phone order rules:
+- Use tools silently, then speak once. Use the caller's everyday names for products.
+- Flour and sugar are sold by the sack (25 kg, or 10 kg for einkorn). Ten traditional flour means ten sacks. Butter, chocolate and nuts are sold by weight, milk and cream by litre, frozen pastries and packaging by box, yeast by 500 g block, eggs by tray of 30.
+- Chocolatine and pain au chocolat refer to the same pastry. Respect the caller's terms.
+- When quantities and products are clear, call place_order once with the caller's product words in said, quantity, spoken units and day. It checks the day, resolves products, converts units, creates or edits the draft and prepares a readback. If it returns next, ask that question before proceeding.
+- Keep one draft per call. Pass its order_id when changing a quantity, removing a line (quantity zero) or changing the date. Use cancel_draft_order if the caller abandons the order.
+- “The usual” means the usual basket in the customer record. Mention two or three main items and ask whether to keep the rest as usual.
+- Use ERP delivery days. Ignore outdated “Closed on …” notes. If the caller announces a closure, offer the next delivery day and save the new information with save_context.
+- Read back the products, quantities, date, relevant alerts and delivery charge from the tool. Confirm unusually large quantities in askFirst. Check duplicateDrafts and sameDayOrders. Cancel identical duplicate drafts. Ask about other open drafts or existing orders for the same day before combining or cancelling them.
+- For prices use quote_line and read its say and total. Never calculate pack prices or totals mentally.
+- After readback, call confirm_order with the caller's exact answer in client_answer. Follow the returned next step for an ambiguous answer or change. Never confirm a blocked order. For a blocked account, record the customer's message and arrange the appropriate handoff without disclosing internal credit notes."""
 
 
 def order_rules_section() -> str:
@@ -49,16 +47,16 @@ def order_rules_section() -> str:
 
 WEEKDAYS = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]
 DAYS_FR = {"lundi": "mon", "mardi": "tue", "mercredi": "wed", "jeudi": "thu", "vendredi": "fri", "samedi": "sat", "dimanche": "sun"}  # fmt: skip
-DAY_LABEL = {v: k for k, v in DAYS_FR.items()}
-MONTHS_FR = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"]  # fmt: skip
-ASAP = ("au plus vite", "des que possible", "le plus tot", "prochaine livraison", "rapidement", "vite")
+DAY_LABEL = dict(zip(WEEKDAYS, ("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"), strict=True))
+DAYS_FR.update({name.lower(): code for code, name in DAY_LABEL.items()})
+ASAP = ("asap", "as soon as possible", "earliest", "next delivery", "au plus vite", "des que possible")
 CUTOFF_HOUR = 17  # order before 17h for next-morning delivery (02-journee-type.md)
 CUTOFF_HOUR_LAURAGAIS = 12  # Lauragais-Tarn route: order the day before, before noon
 LAURAGAIS_ZONE = "Lauragais & Tarn"
 
 
 def _norm(s: str) -> str:
-    """lower case, no accents, single spaces: "Après-Demain " → "apres-demain"."""
+    """ lower case, no accents, single spaces: "After tomorrow" → "after tomorrow"."""
     s = unicodedata.normalize("NFKD", s).encode("ascii", "ignore").decode()
     return re.sub(r"\s+", " ", s.lower()).strip()
 
@@ -80,27 +78,27 @@ def first_possible(today: date, delivery_days: list[str], now_hour: float = 6, c
 
 def parse_asked_day(today: date, asked: str | None) -> date | None | str:
     """What the caller said → a date, "asap", or None when it is not understood / not a future day.
-    "demain", "après-demain", "jeudi", "jeudi prochain", "26/11", "le 26", "2026-11-26", "au plus vite"."""
+    Examples include tomorrow, next Thursday, 26/11, the 26th and ASAP."""
     if asked is None or not asked.strip():
         return "asap"
     a = _norm(asked)
     if any(k in a for k in ASAP):
         return "asap"
-    if "apres-demain" in a or "apres demain" in a:
+    if any(term in a for term in ("day after tomorrow", "apres-demain", "apres demain")):
         return today + timedelta(days=2)
-    if "demain" in a:
+    if "tomorrow" in a or "demain" in a:
         return today + timedelta(days=1)
-    if "aujourd" in a or "ce matin" in a or "ce midi" in a:
+    if "today" in a or "aujourd" in a or "this morning" in a or "this noon" in a:
         return today
     if m := re.search(r"(\d{4})-(\d{2})-(\d{2})", a):
         return date(int(m[1]), int(m[2]), int(m[3]))
-    if m := re.search(r"\b(\d{1,2})\s*/\s*(\d{1,2})\b", a):
+    if m := re.search(r"\b(\d{1,2})\s*/\s*(\d{1,2})(?:st|nd|rd|th)?\b", a):
         return _future(today, int(m[1]), int(m[2]))
     for name, code in DAYS_FR.items():
         if re.search(rf"\b{name}\b", a):
             ahead = (WEEKDAYS.index(code) - today.weekday()) % 7 or 7  # "mardi" said on a Tuesday = next Tuesday
             return today + timedelta(days=ahead)
-    if m := re.search(r"\b(?:le\s+)?(\d{1,2})\b", a):
+    if m := re.search(r"\b(?:le\s+)?(\d{1,2})(?:st|nd|rd|th)?\b", a):
         return _future(today, int(m[1]), today.month)
     return None
 
@@ -135,8 +133,8 @@ def next_delivery_date(
 
 
 def french_day(d: date) -> str:
-    """date(2026, 11, 26) → "jeudi 26 novembre"."""
-    return f"{DAY_LABEL[WEEKDAYS[d.weekday()]]} {d.day} {MONTHS_FR[d.month - 1]}"
+    """date(2026, 11, 26) → "Thursday, November 26"."""
+    return f"{DAY_LABEL[WEEKDAYS[d.weekday()]]} {d.day} {d:%B}"
 
 
 def delivery_answer(
@@ -151,17 +149,17 @@ def delivery_answer(
     if wanted == "asap" or (date_ok := next_delivery_date(today, delivery_days, asked, now_hour, cutoff)) is not None:
         d = nxt if wanted == "asap" else date_ok
         if d is None:
-            return {**out, "ok": False, "reason": "aucun jour de livraison connu pour ce client"}
+            return {**out, "ok": False, "reason": "No delivery days are on file for this customer."}
         return {**out, "ok": True, "date": d.isoformat(), "say": french_day(d)}
     if not isinstance(wanted, date):
-        reason = f"jour non compris : « {asked} »"
+        reason = f"Unrecognised delivery day: {asked}"
     elif wanted <= today:
-        reason = "les tournées du jour sont parties (dépannage possible au dépôt)"
+        reason = "Today's delivery routes have left. Pickup at the depot may be possible."
     elif WEEKDAYS[wanted.weekday()] not in delivery_days:
-        reason = f"le client n'est pas livré le {DAY_LABEL[WEEKDAYS[wanted.weekday()]]} (tournée : {', '.join(days_fr)})"
+        reason = f"No delivery on {DAY_LABEL[WEEKDAYS[wanted.weekday()]]} (delivery days: {', '.join(days_fr)})"
     else:
-        limit = "la veille avant 12h" if cutoff == CUTOFF_HOUR_LAURAGAIS else "avant 17h la veille"
-        reason = f"trop tard pour ce jour : commande {limit}"
+        limit = "before noon the previous day" if cutoff == CUTOFF_HOUR_LAURAGAIS else "before 5 pm the previous day"
+        reason = f"This delivery is past the cutoff. Order {limit}"
     return {
         **out,
         "ok": False,
@@ -172,9 +170,9 @@ def delivery_answer(
 
 
 UNIT_ALIASES = {
-    "kg": ("kg", "kilo", "kilos", "kilogramme", "kilogrammes"),
-    "l": ("l", "litre", "litres"),
-    "g": ("g", "gramme", "grammes"),
+    "kg": ("kg", "kilo", "kilos", "kilogram", "kilograms", "kilogramme", "kilogrammes"),
+    "l": ("l", "liter", "liters", "litre", "litres"),
+    "g": ("g", "gram", "grams", "gramme", "grammes"),
 }
 
 
@@ -219,9 +217,9 @@ UNUSUAL_RATIO = 5  # a line at 5× (or more) the client's usual quantity is read
 # What the caller may hear for each ERP warning code. None = internal, never said to the caller.
 # `blocks` = the order must not be confirmed while it is there.
 WARNINGS_FOR_CALLER: dict[str, tuple[str | None, bool]] = {
-    "client_blocked": ("votre compte est bloqué : je ne peux pas valider de commande, la comptabilité vous rappelle", True),
-    "credit_limit": ("cette commande dépasse votre plafond de crédit : la comptabilité doit la valider avant", True),
-    "no_route": ("aucune tournée ne passe chez vous ce jour-là", True),
+    "client_blocked": ("Your account is blocked. Our accounts team will call you back before we can confirm an order.", True),
+    "credit_limit": ("This order exceeds your credit limit and needs approval from our accounts team.", True),
+    "no_route": ("We don't deliver to your address that day.", True),
     "insufficient_stock": (None, True),  # said per product below, with what is left
     "expiring_soon": (None, False),  # a FEFO lot close to its date: the warehouse's business
     "price_below_cost": (None, False),  # margin: internal
@@ -230,13 +228,17 @@ WARNINGS_FOR_CALLER: dict[str, tuple[str | None, bool]] = {
 
 def fr_number(x: float) -> str:
     """12.0 → "12", 1.5 → "1,5"."""
-    return f"{x:g}".replace(".", ",")
+    return f"{x:g}"
 
 
 def _plural(word: str, n: float) -> str:
-    if n <= 1 or word.endswith(("s", "x")):
+    if word == "loaf" and n != 1:
+        return "loaves"
+    if word == "box" and n != 1:
+        return "boxes"
+    if n == 1 or word.endswith("s"):
         return word
-    return word + ("x" if word.endswith("eau") else "s")
+    return word + ('es' if word.endswith(('ch', 'sh')) else 's')
 
 
 def say_quantity(qty: float, unit: str | None, caliber: str | None = None) -> str:
@@ -245,12 +247,16 @@ def say_quantity(qty: float, unit: str | None, caliber: str | None = None) -> st
         return f"{fr_number(qty)} {'kilo' if qty <= 1 else 'kilos'}"
     if unit in ("liter", "l"):
         return f"{fr_number(qty)} {'litre' if qty <= 1 else 'litres'}"
-    word = (caliber or "").split()[0] if caliber else ("carton" if unit == "box" else "pièce")
+    word = package_word(caliber, "carton" if unit == "box" else "piece")
     return f"{fr_number(qty)} {_plural(word, qty)}"
+
+def package_word(caliber: str | None, fallback: str) -> str:
+    words = re.findall(r"[a-zA-Z]+", (caliber or "").lower())
+    return next((w for w in words if w not in {"kg", "g", "l", "of", "x"}), fallback)
 
 
 def short_name(product_name: str) -> str:
-    """"Farine de blé T55 tradition française (sac 25 kg)" → "Farine de blé T55 tradition française"."""
+    """"Wheat flour T55 French tradition (sac 25 kg)" → "Wheat flour T55 French tradition"."""
     return product_name.split(" (")[0].strip()
 
 
@@ -259,8 +265,8 @@ def franco_note(total_ht: float) -> str | None:
     if total_ht >= FRANCO_HT or total_ht <= 0:
         return None
     missing = FRANCO_HT - total_ht
-    return (f"la commande fait {fr_number(round(total_ht))} euros hors taxes : en dessous de 150 euros, il y a 12 euros de "
-            f"livraison ; il manque environ {fr_number(round(missing))} euros pour être livré gratuitement")
+    return (f"Delivery costs 12 euros for orders below 150 euros excluding VAT. "
+            f"About {fr_number(round(missing))} more euros would qualify for free delivery.")
 
 
 def unusual_lines(lines: list[dict], usual: list[dict], ratio: float = UNUSUAL_RATIO) -> list[dict]:
@@ -277,7 +283,7 @@ def unusual_lines(lines: list[dict], usual: list[dict], ratio: float = UNUSUAL_R
 def review(order: dict, products: dict[str, dict], usual: list[dict], client_orders: list[dict] | None = None) -> dict:
     """
     Everything to read back before confirm_order, deterministic:
-      readback   : "12 sacs de Farine de blé T55 tradition française, … ; livraison jeudi 26 novembre"
+      readback : "12 bags of wheat flour T55 French tradition, ...; delivery Thursday 26 November"
       alerts     : what to tell the caller (ERP warnings translated, internal ones dropped)
       franco     : the 12 € fee note when the order is below 150 € HT
       askFirst   : unusual quantities to have confirmed
@@ -287,9 +293,9 @@ def review(order: dict, products: dict[str, dict], usual: list[dict], client_ord
     parts = []
     for line in order["lines"]:
         p = products.get(line["productId"]) or {}
-        parts.append(f"{say_quantity(line['qty'], line.get('unit') or p.get('unit'), p.get('caliber'))} de {short_name(line.get('productName') or p.get('name', ''))}")
+        parts.append(f"{say_quantity(line['qty'], line.get('unit') or p.get('unit'), p.get('caliber'))} of {short_name(line.get('productName') or p.get('name', ''))}")
     when = french_day(date.fromisoformat(order["deliveryDate"][:10])) if order.get("deliveryDate") else None
-    readback = ", ".join(parts) + (f" ; livraison {when}" if when else "")
+    readback = ", ".join(parts) + (f", for delivery on {when}" if when else "")
 
     alerts: list[str] = []
     blocking: list[str] = []
@@ -300,9 +306,9 @@ def review(order: dict, products: dict[str, dict], usual: list[dict], client_ord
             if line:
                 p = products.get(line["productId"]) or {}
                 left = max(0.0, line.get("available") or 0)
-                said = (f"{short_name(line.get('productName', ''))} : il n'en reste que "
-                        f"{say_quantity(left, line.get('unit') or p.get('unit'), p.get('caliber'))}") if left > 0 else \
-                    f"{short_name(line.get('productName', ''))} : en rupture"
+                said = (f"{short_name(line.get('productName', ''))}: only "
+                        f"{say_quantity(left, line.get('unit') or p.get('unit'), p.get('caliber'))} left") if left > 0 else \
+                    f"{short_name(line.get('productName', ''))}: out of stock"
         if said and said not in alerts:
             alerts.append(said)
         if blocks:
@@ -313,8 +319,8 @@ def review(order: dict, products: dict[str, dict], usual: list[dict], client_ord
     for u in unusual:
         p = products.get(u["productId"]) or {}
         name = short_name(p.get("name", u["productId"]))
-        ask_first.append(f"{say_quantity(u['qty'], p.get('unit'), p.get('caliber'))} de {name}, alors que d'habitude c'est "
-                         f"environ {say_quantity(u['usualQty'], p.get('unit'), p.get('caliber'))}")
+        ask_first.append(f"{say_quantity(u['qty'], p.get('unit'), p.get('caliber'))} of {name}, compared with your usual "
+                         f"{say_quantity(u['usualQty'], p.get('unit'), p.get('caliber'))}")
     out = {
         "orderId": order.get("id"),
         "readback": readback,
@@ -344,7 +350,7 @@ def other_open_orders(order: dict, client_orders: list[dict], products: dict[str
       duplicates : other DRAFTS created by the voice agent (a draft left behind when the agent re-created the order
                    instead of editing it: the very bug seen in S31 v1) → to cancel before confirm_order.
       same_day   : other open orders for the same delivery day (e.g. a WhatsApp draft the client sent last night)
-                   → to mention: « vous avez déjà une commande pour mercredi, je l'ajoute dedans ? ».
+                   → to mention: "You already have an order for Wednesday, do I add it in?".
     Drafts from other channels (WhatsApp, e-mail, portal) are never duplicates: the team confirms those.
     """
     duplicates, same_day = [], []
@@ -372,7 +378,7 @@ def _qty_by_product(lines: list[dict]) -> dict[str, float]:
 
 def _line_words(line: dict, products: dict[str, dict]) -> str:
     p = products.get(line["productId"]) or {}
-    return f"{say_quantity(line['qty'], line.get('unit') or p.get('unit'), p.get('caliber'))} de {short_name(line.get('productName') or p.get('name', ''))}"
+    return f"{say_quantity(line['qty'], line.get('unit') or p.get('unit'), p.get('caliber'))} of {short_name(line.get('productName') or p.get('name', ''))}"
 
 
 # ── Prices said out loud (S05 recording: « 92 euros la plaque de 2 kilos… pardon, 18 euros 40 ») ──
@@ -382,21 +388,21 @@ _FR_WORD_UNITS = {"kg": "kilo", "l": "litre"}
 
 
 def fr_money(x: float) -> str:
-    """9.2 → "9 euros 20", 92.0 → "92 euros", 0.5 → "50 centimes", 1.05 → "1 euro 05"."""
+    """ 9.2 → "9 euros 20", 92.0 → "92 euros", 0.5 → "50 centimes", 1.05 → "1 euro 05"."""
     cents = round(x * 100)
     e, c = divmod(cents, 100)
     if e == 0:
-        return f"{c} centimes"
+        return f"{c} cent{'s' if c != 1 else ''}"
     euros = f"{e} euro{'s' if e > 1 else ''}"
-    return f"{euros} {c:02d}" if c else euros
+    return f"{euros} and {c} cent{'s' if c != 1 else ''}" if c else euros
 
 
 def packaging(unit: str, caliber: str, product_name: str = "") -> list[tuple[str, float]]:
     """
     The packages a weighed / liquid product is handled in, biggest first, with their size in the selling unit:
-      kg, "carton 5 plaques de 2 kg"                       → [("carton", 10), ("plaque", 2)]
-      kg, "plaquette 1 kg" (name "… (carton 10 × 1 kg)")  → [("carton", 10), ("plaquette", 1)]
-      liter, "carton 6 × 1 L" (name "… (brique 1 L)")     → [("carton", 6), ("brique", 1)]
+      kg, "carton 5 plates of 2 kg" → [("carton", 10), ("plate", 2)]
+      kg, "platelet 1 kg" (name "... (cardboard 10 × 1 kg)") → [("cardboard", 10), ("platelet", 1)]
+      read, "carton 6 × 1 L" (name "... (brick 1 L)") → [("carton", 6), ("brick", 1)]
       kg, "sac 5 kg"                                       → [("sac", 5)]
     Products sold by the piece / box (sacs de farine, cartons de viennoiserie) return [] : the unit IS the package.
     """
@@ -409,7 +415,9 @@ def packaging(unit: str, caliber: str, product_name: str = "") -> list[tuple[str
 
     texts = [_norm(t.replace("×", "x")) for t in [caliber, *re.findall(r"\(([^)]*)\)", product_name)]]  # _norm drops "×"
     for t in texts:
-        if m := re.match(r"^(\w+)\s+(\d+)\s+(\w+?)s?\s+de\s+(\d+(?:[.,]\d+)?)\s*(kg|l)\b", t):  # carton 5 plaques de 2 kg
+        t = re.sub(r"^(\d+(?:[.,]\d+)?\s*(?:x\s*\d+(?:[.,]\d+)?\s*)?(?:kg|l))\s+(\w+)$", r"\2 \1", t)
+        t = re.sub(r"^(box|carton|case|pack|sack|bag) of ", r"\1 ", t)
+        if m := re.match(r"^(\w+)\s+(\d+)\s+(\w+?)s?\s+(?:of|de)\s+(\d+(?:[.,]\d+)?)\s*(kg|l)\b", t):  # carton 5 plaques de 2 kg
             out += [(m[1], int(m[2]) * num(m[4])), (m[3], num(m[4]))]
         elif m := re.match(r"^(\w+)\s+(\d+)\s*[x×]\s*(\d+(?:[.,]\d+)?)\s*(kg|l)\b", t):  # carton 6 × 1 L
             out.append((m[1], int(m[2]) * num(m[3])))
@@ -429,7 +437,9 @@ def to_selling_qty(qty: float, said_unit: str | None, unit: str, caliber: str, p
     if unit in ("kg", "liter", "l"):
         if said is None or said in ("kg", "l"):
             return qty
-        word = said.rstrip("sx") if said.endswith(("s", "x")) and said not in ("colis",) else said
+        word = said.rstrip("sx") if said.endswith(("s", "x")) and said not in ("box",) else said
+        if said == 'boxes':
+            word = 'box'
         for w, size in packaging(unit, caliber, product_name):
             if w == word or w == said:
                 return round(qty * size, 3)
@@ -440,34 +450,30 @@ def to_selling_qty(qty: float, said_unit: str | None, unit: str, caliber: str, p
 def quote(qty: float, unit: str, caliber: str, product_name: str, unit_price: float, said_unit: str | None = None) -> dict:
     """
     Price sentences ready to be said, computed (never by the model):
-      say       : "9 euros 20 le kilo, soit 92 euros le carton de 10 kilos (18 euros 40 la plaque de 2 kilos)"
-      total     : "276 euros hors taxes pour 30 kilos, soit 3 cartons"
+      Say: "9 euros 20 per kilo, or 92 euros a 10 kilo carton (18 euros 40 a 2 kilo plaque)"
+      Total: "€276 excluding taxes for 30 kg, i.e. 3 cartons"
     """
     q = to_selling_qty(qty, said_unit, unit, caliber, product_name)
     word = _FR_WORD_UNITS.get("l" if unit == "liter" else unit)
     packs = packaging(unit, caliber, product_name)
     if word:
-        say = f"{fr_money(unit_price)} le {word}"
-        if packs:
-            big, size = packs[0]
-            say += f", soit {fr_money(unit_price * size)} le {big} de {fr_number(size)} {word}s"
-            if len(packs) > 1 and packs[1][1] != 1:  # « 4 euros 10 la brique de 1 litre » = the litre price again
-                small, s2 = packs[1]
-                say += f" ({fr_money(unit_price * s2)} {'la' if small.endswith('e') else 'le'} {small} de {fr_number(s2)} {word}{'s' if s2 > 1 else ''})"
+        say = f"{fr_money(unit_price)} per {word}"
+        for package, size in packs:
+            if size != 1:
+                say += f", {fr_money(unit_price * size)} per {fr_number(size)}-{word} {package}"
     else:
-        noun = (caliber or "").split()[0] if caliber else "pièce"
-        size = " ".join(caliber.split()[1:]) if caliber else ""
-        size = re.sub(r"(\d)\s*kg\b", r"\1 kilos", re.sub(r"(\d)\s*g\b", r"\1 grammes", re.sub(r"(\d)\s*L\b", r"\1 litres", size)))
-        say = f"{fr_money(unit_price)} {'la' if noun.endswith('e') else 'le'} {noun}" + (f" de {size}" if size else "")
+        say = f"{fr_money(unit_price)} per {caliber or 'piece'}"
+
+
     total = unit_price * q
     qty_words = say_quantity(q, unit, caliber)
     if word and packs and (n := q / packs[0][1]) == int(n) and n >= 1:
-        qty_words += f", soit {fr_number(n)} {_plural(packs[0][0], n)}"
+        qty_words += f", or {fr_number(n)} {_plural(packs[0][0], n)}"
     return {
         "qty": q,
         "unitPrice": unit_price,
         "say": say,
-        "total": f"{fr_money(total)} hors taxes pour {qty_words}",
+        "total": f"{fr_money(total)} excluding VAT for {qty_words}",
         "totalHt": round(total, 2),
     }
 
@@ -484,8 +490,8 @@ PICK_MIN = 0.6  # Jev's confidence needed to pick a product without asking
 
 # Words the product glossary (03-glossaire-produits.md, « Alias ambigus ») says must be clarified: never settled by an
 # alias alone, always by the client's habits (Jev) or by asking.
-AMBIGUOUS_WORDS = {"tourage", "lait", "poudre", "farine", "chocolat", "creme"}
-_ARTICLES = re.compile(r"^(?:(?:du|de la|des|de|le|la|les|un|une)\s+|de l'|d'|l')")  # not the "de" of « demi-sel »
+AMBIGUOUS_WORDS = {"laminating butter", "butter", "milk", "powder", "flour", "chocolate", "cream", "tourage", "lait", "poudre", "farine", "chocolat", "creme"}
+_ARTICLES = re.compile(r"^(?:(?:some|the|an|a|du|de la|des|de|le|la|les|un|une)\s+|de l'|d'|l')")  # not the "de" of « demi-sel »
 
 
 def _singular(s: str) -> str:
@@ -494,7 +500,7 @@ def _singular(s: str) -> str:
 
 def alias_match(said: str, products: dict[str, dict]) -> str | None:
     """
-    « pains de levure » → prd_0011 when the words are exactly one product's catalogue alias (or name before the
+    "Breads of yeast" → prd_0011 when the words are exactly one product's catalogue alias (or name before the
     parenthesis), singular/plural and accents ignored. None when no alias matches, when several products share it, or
     when it is one of the glossary's ambiguous words (« tourage », « poudre »…): those need the client's habits.
     """
@@ -510,8 +516,8 @@ def alias_match(said: str, products: dict[str, dict]) -> str | None:
     return next(iter(hits)) if len(hits) == 1 else None
 
 JEV_YES_QUESTIONS = {
-    "accord": {"type": "noul", "instructions": "Le client accepte la commande telle qu'elle a été relue, sans rien changer."},
-    "change": {"type": "noul", "instructions": "Le client demande une modification, un ajout ou pose une question avant de valider."},
+    "accord": {"type": "noul", "instructions": "The customer accepts the order as it has been reread, without changing anything."},
+    "change": {"type": "noul", "instructions": "The client requests a change, an addition or a question before validating."},
 }
 
 
@@ -527,7 +533,7 @@ def classify_answer(accord: float, change: float) -> str:
 
 
 NEXT_STEP = {
-    "change": "Le client veut modifier ou demande quelque chose : réponds-lui, modifie la commande (update_order_line…), relis, puis redemande son accord.",
-    "no": "Le client ne valide pas : ne confirme pas, demande-lui ce qu'il souhaite (modifier, reporter ou abandonner : cancel_draft_order).",
-    "unsure": "Réponse ambiguë : ne confirme pas, redemande simplement « je vous la valide ? ».",
+    "change": "The customer wants to modify or ask for something: answer him, change the order (update_order_line...), read again, then ask for his consent.",
+    "no": "The client does not validate: do not confirm, ask him what he wishes (change, postpone or give up: cancel_draft_order).",
+    "unsure": "Ambiguous answer: do not confirm, simply ask \"I validate it to you?\".",
 }

@@ -1,96 +1,96 @@
 # Au Pain d'Audrey (C0086, `cli_0086`)
 
-> Fiche persona pour jouer ce client au téléphone. L'historique complet est dans `seed/clientEvents.json` (filtrer sur `clientId: "cli_0086"`).
+> Customer profile for phone role-play. The full history is in `seed_en/clientEvents.json` (filter on `clientId: "cli_0086"`).
 
 | | |
 |---|---|
-| Type | Commerce de détail (Boulangeries artisanales) — 63 rue Pasteur, 31780 Castelginest |
-| Zone | Fondeyre, L'Union & Nord toulousain — livré tue, fri |
-| Statut | **active** — client régulier |
-| Commercial | Julien Fabre |
-| Client depuis | 25/04/2013 (13 ans) |
-| Paiement | 30 jours — prélèvement SEPA, aucun retard |
-| Encours | 9 936,98 € TTC (plafond 15 000 €) |
-| Tempérament | loyal, fidèle, pressé — qualité ★★☆, prix ★☆☆, risque de départ faible |
+| Type | Retail trade (Artisan bakeries) — 63 rue Pasteur, 31780 Castelginest |
+| Area | Fondeyre, L'Union & Nord Toulousein — delivered Tue, Fri |
+| Status | **active** — regular customer |
+| Sales representative | Julien Fabre |
+| Customer since | 25/04/2013 (13 years) |
+| Payment | 30 days — SEPA direct debit, no delay |
+| Outstanding balance | 9 936,98 € incl. VAT (ceiling 15 000 €) |
+| Temperament | loyal, faithful, pressed — quality ★★☆, price ★☆☆, risk of losing the customer low |
 
-## Qui ils sont
+## Who they are
 
-Boulangerie de village à Castelginest avec dépôt de pain dans deux communes voisines. Gros consommateur de T65 et de seigle.
+Village bakery in Castelginest with bread deposit in two nearby communes. Large consumer of T65 and rye.
 
-## Les personnes
+## People
 
-- **Bastien Le Gall** — Boulanger-patron · 07 27 32 75 03
-  - Comment il/elle parle : Calme, habitué, appelle à heure fixe.
-  - Tics : « Tu me mets la même chose que mardi. » · « Je te fais confiance. »
-- **Clémence Bousquet** — Boulangère (boutique et commandes) · 06 59 90 72 46
-  - Comment il/elle parle : Phrases courtes, pas le temps, veut un récapitulatif en dix secondes.
-  - Tics : « Pareil que d'hab, go. » · « Vite, j'ai pas le temps. »
+- **Bastien Le Gall** — bakery owner · 07 27 32 75 03
+  - Speaking style: Quiet, accustomed, calls at fixed time.
+  - Typical phrases: "You put the same thing on me as Tuesday." · "I trust you."
+- **Clémence Bousquet** — Bakery (shop and orders) · 06 59 90 72 46
+  - Speaking style: Short phrases, not time, wants a summary in ten seconds.
+  - Typical phrases: "Same as usual, go." · "Quickly, I don't have time."
 
-## Ce qu'ils achètent et comment
+## What they buy and how
 
-Commande deux fois par semaine, en général la veille entre 13h et 17h, surtout par téléphone et WhatsApp. Produits habituels : farine de blé T55 tradition française (sac 25 kg), levure fraîche boulangère (pain de 500 g), beurre de tourage 82 % (plaque 2 kg), sacs à baguette kraft imprimés (carton 1000), sel fin de mer (sac 25 kg), crème liquide UHT 35 % (brique 1 L), beurre de tourage AOP Charentes-Poitou 84 % (plaque 2 kg), baguette précuite surgelée 280 g (carton 60).
+Order twice a week, usually the day before between 13h and 17h, especially by telephone and WhatsApp. Regular products: T55 traditional French wheat flour (25 kg bag), Fresh baker's yeast (500 g block), 82% laminating butter (2 kg sheet), Printed kraft baguette bags (carton of 1000), Fine sea salt (25 kg bag), UHT liquid cream 35% (1 L carton), AOP Charentes-Poitou 84% laminating butter (2 kg sheet), Frozen par-baked baguette 280 g (carton of 60).
 
-Sur les 90 derniers jours (20 commandes livrées) :
+Over the last 90 days (20 orders delivered):
 
-| Produit | Volume 90 j | Lignes | Dernier prix |
+| Product | 90-day volume | Lines | Last price |
 |---|---|---|---|
-| Beurre de tourage AOP Charentes-Poitou 84 % (plaque 2 kg) (`prd_0025`) | 925,30 kg | 12 | 11,54 € |
-| Beurre de tourage 82 % (plaque 2 kg) (`prd_0026`) | 619,17 kg | 10 | 8,69 € |
-| Farine de blé T55 boulangère (sac 25 kg) (`prd_0002`) | 264,00 pièce | 10 | 16,56 € |
-| Farine de blé T55 tradition française (sac 25 kg) (`prd_0001`) | 215,00 pièce | 9 | 19,00 € |
-| Baguette précuite surgelée 280 g (carton 60) (`prd_0058`) | 149,00 colis | 11 | 22,37 € |
-| Crème liquide UHT 35 % (brique 1 L) (`prd_0031`) | 533,00 litre | 10 | 3,82 € |
-| Sacs à baguette kraft imprimés (carton 1000) (`prd_0065`) | 58,00 colis | 12 | 22,00 € |
-| Levure fraîche boulangère (pain de 500 g) (`prd_0011`) | 547,00 pièce | 13 | 1,35 € |
+| AOP Charentes-Poitou 84% laminating butter (2 kg sheet) (`prd_0025`) | 925,30 kg | 12 | 11,54 € |
+| 82% laminating butter (2 kg sheet) (`prd_0026`) | 619,17 kg | 10 | 8,69 € |
+| T55 baker's wheat flour (25 kg bag) (`prd_0002`) | 264,00 piece | 10 | 16,56 € |
+| T55 traditional French wheat flour (25 kg bag) (`prd_0001`) | 215,00 piece | 9 | 19,00 € |
+| Frozen par-baked baguette 280 g (carton of 60) (`prd_0058`) | 149,00 box | 11 | 22,37 € |
+| UHT liquid cream 35% (1 L carton) (`prd_0031`) | 533,00 liter | 10 | 3,82 € |
+| Printed kraft baguette bags (carton of 1000) (`prd_0065`) | 58,00 box | 12 | 22,00 € |
+| Fresh baker's yeast (500 g block) (`prd_0011`) | 547,00 piece | 13 | 1,35 € |
 
-Fiche CRM : _Paye en LCR à 30 jours fin de mois. Tourage AOP pour la viennoiserie, beurre pâtissier pour le reste. Livré mar. ven. Refuse les substitutions : appeler avant toute modification._
+CRM: _Pay in LCR to 30 days end of month. AOP laminating butter for pastry, pastry butter for the rest. Delivered Mar. Fri. Refuses substitutions: call before any modification._
 
-## Ce qui les agace
+## What frustrates them
 
-- Une livraison pendant le rush de 7h-9h
-- Un sac de farine déchiré
-- Des pains de levure mous
+- A delivery during the rush of 7h-9h
+- A sack of torn flour
+- Soft yeast breads
 
-## Historique marquant
+## A brief history
 
-- **12/12/2022** · demande spéciale · Fêtes 2022 : réservation
-- **28/12/2023** · demande spéciale · Fêtes 2023 : réservation de volumes
-- **08/01/2024** · prix · Tarifs 2024
-- **09/02/2024** · réclamation · Rupture : farine de blé T65 bio (sac 25 kg) non livré
-- **17/01/2025** · qualité · Qualité : levure fraîche boulangère (pain de 500 g)
-- **19/01/2025** · prix · Tarifs 2025
-- **07/02/2025** · qualité · Qualité : levure sèche instantanée (paquet 500 g)
-- **09/02/2025** · avoir · Avoir qualité : levure sèche instantanée (paquet 500 g)
-- **15/01/2026** · prix · Tarifs 2026
-- **17/03/2026** · qualité · Qualité : sel fin de mer (sac 25 kg)
-- **18/03/2026** · avoir · Avoir qualité : sel fin de mer (sac 25 kg)
-- **21/11/2026** · demande spéciale · Fêtes 2026 : réservation de volumes
+- **12/12/2022** · special request · Holidays 2022 : reservation
+- **28/12/2023** · special request · Holidays 2023 : volume reservation
+- **08/01/2024** · prices · Rates 2024
+- **09/02/2024** · claim · Outturn: T65 organic wheat flour (25 kg bag) not delivered
+- **17/01/2025** · Quality · Quality : Fresh baker's yeast (500 g block)
+- **19/01/2025** · prices · Rates 2025
+- **07/02/2025** · Quality · Quality : Instant dry yeast (500 g packet)
+- **09/02/2025** · Have quality : Instant dry yeast (500 g packet)
+- **15/01/2026** · prices · Rates 2026
+- **17/03/2026** · Quality · Quality : Fine sea salt (25 kg bag)
+- **18/03/2026** · Have quality : Fine sea salt (25 kg bag)
+- **21/11/2026** · special request · Holidays 2026 : volume reservation
 
-Historique complet : 47 événements (11 visite, 10 qualité, 8 demande spéciale, 6 appel, 4 compliment, 4 prix, 2 avoir, 1 ouverture, 1 réclamation).
+Full history: 47 events (11 visit, 10 quality, 8 special request, 6 call, 4 compliment, 4 price, 2 have, 1 opening, 1 complaint).
 
-## Dossiers ouverts aujourd'hui
+## Open cases
 
-- **21/11/2026 — Fêtes 2026 : réservation de volumes**
-  Clémence veut réserver pour les fêtes : beurre de tourage 82 % (plaque 2 kg) et farine de blé T55 boulangère (sac 25 kg) en volume pour les 23-24 et 30-31/12. Clémence : « Vite, j'ai pas le temps. »
+- **21/11/2026 — Holidays 2026: volume reservation**
+  Clémence wants to book for the holidays: 82% laminating butter (2 kg sheet) and T55 baker's wheat flour (25 kg bag) in volume for the 23-24 and 30-31/12. Clémence: "Quick, I don't have time."
 
-## Comment leur parler
+## How to talk to them
 
-- Appeler après 13h, jamais pendant les fournées.
-- Parler en sacs, pas en kilos.
-- Rappeler les pré-commandes d'Épiphanie dès novembre.
+- Call after 13h, never during batches.
+- Talk in bags, not in kilos.
+- Call Epiphany pre-orders back in November.
 
-## Prix & groupe
+## Price & group
 
-Groupes : **Boulangeries** (`boulangeries`).
-Prix négociés (`clientPrices`, toujours prioritaires) : crème liquide UHT 35 % (brique 1 L) 3,82 € (liste 4,10) ; beurre de tourage 82 % (plaque 2 kg) 8,58 € (liste 9,20) ; baguette précuite surgelée 280 g (carton 60) 22,37 € (liste 24,00) ; crème fraîche épaisse 30 % (seau 5 L) 4,29 € (liste 4,60).
+Groups: **Boulangeries** (`boulangeries`).
+Negotiated prices (`clientPrices`, always priority): UHT liquid cream 35% (1 L carton) 3,82 € (list 4,10); 82% laminating butter (2 kg sheet) 8,58 € (list 9,20); Frozen par-baked baguette 280 g (carton of 60) 22,37 € (list 24,00); Thick crème fraîche 30% (5 L tub) 4,29 € (list 4,60).
 
-Règles de prix qui peuvent s'appliquer :
-- `prl_0001` Boulangeries : −4 % sur les farines dès 10 sacs
-- `prl_0006` Épiphanie 2027 : poudre d'amande −6 % dès 20 kg
-- `prl_0007` Épiphanie 2027 : couronnes et fèves −5 %
+Price rules that may apply:
+- `prl_0001` Bakeries: -4 % on flours from 10 bags
+- `prl_0006` Epiphany 2027: almond powder -6 % from 20 kg
+- `prl_0007` Epiphany 2027: crowns and beans -5 %
 
-Dernières notes CRM :
+Latest notes CRM:
 
-- 22/05/2025, Julien (commercial) : Fermé le mercredi : jamais de livraison ce jour-là.
-- 12/02/2026, Julien (commercial) : Ne veut aucune substitution sans être prévenu : si un produit manque, appeler Bastien avant le départ du camion.
-- 22/10/2026, Julien (commercial) : Bastien fait 600 galettes et 300 couronnes pour l'Épiphanie : réserver poudre d'amande et feuilletage.
+- 22/05/2025, Julien (commercial): Closed on Wednesday: never delivered on that day.
+- 12/02/2026, Julien (commercial): Don't want any substitution without being warned: if a product is missing, call Bastien before the truck leaves.
+- 22/10/2026, Julien (commercial): Bastien made 600 cakes and 300 crowns for Epiphany: reserve almond powder and leafing.

@@ -5,7 +5,7 @@
       └───────cancel───────┴────────cancel────────┘                (deliver also accepted from confirmed)
 
 - confirm reserves stock (reservation is computed from order statuses, see stock.py) and puts the
-  order on a route run.
+  order us to run.
 - deliver consumes lots FEFO and writes stock movements.
 Illegal transitions raise 409 {code: "invalid_transition"}.
 """
@@ -19,27 +19,27 @@ from app.core.activity import Ctx, log_event, now, today
 from app.core.db import Doc, per_data_version, transactional
 from app.core.listing import Key, ListQuery, apply_sort, count_by, respond, split_set, sum_of
 from app.core.errors import bad_request, conflict
-from app.core.utils import add_days, collate_key, de, fmt_eur, fr_day, fr_num, js_str, normalize, round2, round3, total
+from app.core.utils import add_days, collate_key, fmt_eur, fr_day, fr_num, js_str, normalize, round2, round3, total
 from app.services import clients, invoices, pricing, routing
 from app.services.stock import consume_fefo, fefo_lots, line_qty, stock_levels
 
 STATUS_FR = {
-    "draft": "brouillon",
-    "confirmed": "confirmée",
-    "prepared": "préparée",
-    "delivered": "livrée",
-    "invoiced": "facturée",
-    "cancelled": "annulée",
+    "draft": "draft",
+    "confirmed": "confirmed",
+    "prepared": "prepared",
+    "delivered": "delivered",
+    "invoiced": "invoiced",
+    "cancelled": "Cancelled",
 }
 
 
 def _guard(order: Doc, allowed: list[str], action: str) -> None:
     """409 unless the order is in one of `allowed`."""
     if order["status"] not in allowed:
-        expected = " ou ".join(STATUS_FR[s] for s in allowed)
+        expected = " or ".join(STATUS_FR[s] for s in allowed)
         raise conflict(
             "invalid_transition",
-            f"Impossible {de(action)} la commande {order['number']} : elle est {STATUS_FR[order['status']]} (attendu : {expected})",
+            f"Cannot {action} order {order['number']} : it is {STATUS_FR[order['status']]} (expected: {expected})",
         )
 
 
@@ -133,18 +133,18 @@ def order_warnings(order: Doc) -> list[Doc]:
     client = crud.clients.require(order["clientId"])
 
     if client["status"] == "blocked":
-        warnings.append({"code": "client_blocked", "message": f"Le client {client['name']} est bloqué"})
+        warnings.append({"code": "client_blocked", "message": f"The client {client['name']} is blocked"})
     if client["creditLimit"] > 0:
         outstanding = clients.client_balances(client["id"])["outstanding"]
         exposure = round2(outstanding + _total_ttc(order["lines"]))
         if exposure > client["creditLimit"]:
             warnings.append({
                 "code": "credit_limit",
-                "message": f"Plafond de crédit dépassé : encours {fmt_eur(outstanding)} + cette commande = {fmt_eur(exposure)} TTC "
-                f"pour un plafond de {fmt_eur(client['creditLimit'])}",
+                "message": f"Exceeded credit limit: outstanding {fmt_eur(outstanding)} + this order = {fmt_eur(exposure)} incl. VAT "
+                f"for a ceiling of {fmt_eur(client['creditLimit'])}",
             })  # fmt: skip
     if not routing.zone_served_on(client["zone"], order["deliveryDate"]):
-        warnings.append({"code": "no_route", "message": f"Aucune tournée ne dessert la zone « {client['zone']} » {fr_day(order['deliveryDate'])}"})
+        warnings.append({"code": "no_route", "message": f"No tours to the area \" {client['zone']} » {fr_day(order['deliveryDate'])}"})
 
     levels = stock_levels(order["id"])
     demand: dict[str, float] = {}
@@ -158,8 +158,8 @@ def order_warnings(order: Doc) -> list[Doc]:
             warnings.append({
                 "code": "insufficient_stock",
                 "productId": product_id,
-                "message": f"Stock insuffisant pour {name} : {fr_num(round3(max(0, available)))} {p['unit'] if p else ''} "
-                f"disponible(s) pour {fr_num(qty)} demandé(s)",
+                "message": f"Insufficient stock for {name} : {fr_num(round3(max(0, available)))} {p['unit'] if p else ''} "
+                f"available for {fr_num(qty)} requested",
             })  # fmt: skip
         # The lot FEFO would pick first expires the day after delivery or sooner.
         lots = fefo_lots(product_id)
@@ -175,7 +175,7 @@ def order_warnings(order: Doc) -> list[Doc]:
             warnings.append({
                 "code": "price_below_cost",
                 "productId": p["id"],
-                "message": f"{p['name']} vendu {fmt_eur(l['unitPrice'])} sous le coût d'achat ({fmt_eur(p['cost'])})",
+                "message": f"{p['name']} sold for {fmt_eur(l['unitPrice'])} under the cost of purchase ({fmt_eur(p['cost'])})",
             })  # fmt: skip
     return warnings
 
@@ -204,9 +204,9 @@ def order_detail(id: str) -> Doc:
 def _build_line(client_id: str, input: Doc) -> Doc:
     product = crud.products.require(input["productId"])
     if not product["active"]:
-        raise bad_request("product_inactive", f"Le produit {product['name']} n'est plus actif")
+        raise bad_request("product_inactive", f"The product {product['name']} is no longer active")
     if not input["qty"] > 0:
-        raise bad_request("invalid_qty", "La quantité doit être positive")
+        raise bad_request("invalid_qty", "The quantity must be positive")
     unit_price = input.get("unitPrice")
     if unit_price is None:
         unit_price = pricing.price_for(client_id, product["id"], input["qty"])
@@ -239,7 +239,7 @@ def create_order(ctx: Ctx, input: Doc) -> Doc:
     }
     saved = _save(order)
     log_event(ctx, "order.created", "order", order["id"],
-              f"Commande {order['number']} créée pour {client['name']} (livraison {order['deliveryDate']}, {len(order['lines'])} ligne(s))")  # fmt: skip
+              f"Order {order['number']} created for {client['name']} (delivery) {order['deliveryDate']}, {len(order['lines'])} line(s)")  # fmt: skip
     return order_detail(saved["id"])
 
 
@@ -255,21 +255,21 @@ def update_order(ctx: Ctx, id: str, patch: Doc) -> Doc:
         updated = crud.orders.put({**rest, "routeRunId": run_id} if run_id else rest)
     what = []
     if patch.get("deliveryDate"):
-        what.append(f"livraison le {patch['deliveryDate']}")
+        what.append(f"Delivery on {patch['deliveryDate']}")
     if "note" in patch:
         what.append("note")
-    log_event(ctx, "order.updated", "order", id, f"Commande {order['number']} modifiée ({', '.join(what)})")
+    log_event(ctx, "order.updated", "order", id, f"Order {order['number']} amended ({', '.join(what)})")
     return order_detail(id)
 
 
 @transactional
 def add_line(ctx: Ctx, id: str, input: Doc) -> Doc:
     order = crud.orders.require(id)
-    _guard(order, ["draft", "confirmed"], "ajouter une ligne à")
+    _guard(order, ["draft", "confirmed"], "add a line to")
     line = _build_line(order["clientId"], input)
     _save({**order, "lines": [*order["lines"], line]})
     p = crud.products.require(line["productId"])
-    log_event(ctx, "order.line_added", "order", id, f"{js_str(line['qty'])} {p['unit']} de {p['name']} ajouté(s) à {order['number']}")
+    log_event(ctx, "order.line_added", "order", id, f"{js_str(line['qty'])} {p['unit']} of {p['name']} added to {order['number']}")
     return order_detail(id)
 
 
@@ -278,37 +278,37 @@ def update_line(ctx: Ctx, id: str, line_id: str, patch: Doc) -> Doc:
     order = crud.orders.require(id)
     line = next((l for l in order["lines"] if l["id"] == line_id), None)
     if not line:
-        raise bad_request("unknown_line", f"Ligne {line_id} introuvable sur {order['number']}")
+        raise bad_request("unknown_line", f"Line {line_id} not found on {order['number']}")
     # Once picked, only the prepared quantity and the note can change.
     only_prep = all(k in ("preparedQty", "note") for k in patch)
-    _guard(order, ["draft", "confirmed", "prepared"] if only_prep else ["draft", "confirmed"], "modifier une ligne de")
+    _guard(order, ["draft", "confirmed", "prepared"] if only_prep else ["draft", "confirmed"], "modify a line of")
     updated = {**line, **patch}
     if patch.get("productId") and patch["productId"] != line["productId"]:
         rebuilt = _build_line(order["clientId"], {"productId": patch["productId"], "qty": patch.get("qty", line["qty"]), "unitPrice": patch.get("unitPrice")})
         updated = {**updated, "productId": rebuilt["productId"], "unitPrice": rebuilt["unitPrice"]}
     if not updated["qty"] > 0:
-        raise bad_request("invalid_qty", "La quantité doit être positive")
+        raise bad_request("invalid_qty", "The quantity must be positive")
     if updated.get("preparedQty") is not None and updated["preparedQty"] < 0:
-        raise bad_request("invalid_qty", "Quantité préparée négative")
+        raise bad_request("invalid_qty", "Negative prepared quantity")
     updated["unitPrice"] = round2(updated["unitPrice"])
     _save({**order, "lines": [updated if l["id"] == line_id else l for l in order["lines"]]})
     p = crud.products.get(updated["productId"])
-    log_event(ctx, "order.line_updated", "order", id, f"Ligne {p['name'] if p else updated['productId']} modifiée sur {order['number']}")
+    log_event(ctx, "order.line_updated", "order", id, f"Line {p['name'] if p else updated['productId']} amended on {order['number']}")
     return order_detail(id)
 
 
 @transactional
 def delete_line(ctx: Ctx, id: str, line_id: str) -> Doc:
     order = crud.orders.require(id)
-    _guard(order, ["draft", "confirmed"], "retirer une ligne de")
+    _guard(order, ["draft", "confirmed"], "remove a line from")
     line = next((l for l in order["lines"] if l["id"] == line_id), None)
     if not line:
-        raise bad_request("unknown_line", f"Ligne {line_id} introuvable sur {order['number']}")
+        raise bad_request("unknown_line", f"Line {line_id} not found on {order['number']}")
     if order["status"] == "confirmed" and len(order["lines"]) == 1:
-        raise conflict("empty_order", f"Impossible de retirer la dernière ligne de {order['number']} confirmée : annulez la commande")
+        raise conflict("empty_order", f"Could not remove last line of {order['number']} confirmed: cancel the order")
     _save({**order, "lines": [l for l in order["lines"] if l["id"] != line_id]})
     p = crud.products.get(line["productId"])
-    log_event(ctx, "order.line_removed", "order", id, f"{p['name'] if p else line['productId']} retiré de {order['number']}")
+    log_event(ctx, "order.line_removed", "order", id, f"{p['name'] if p else line['productId']} withdrawn from {order['number']}")
     return order_detail(id)
 
 
@@ -318,15 +318,15 @@ def confirm_order(ctx: Ctx, id: str) -> Doc:
     order = crud.orders.require(id)
     _guard(order, ["draft"], "confirmer")
     if not order["lines"]:
-        raise conflict("empty_order", f"La commande {order['number']} n'a aucune ligne")
+        raise conflict("empty_order", f"The order {order['number']} has no line")
     confirmed = _save({**order, "status": "confirmed", "confirmedAt": now()})
     run_id = routing.attach_order(confirmed)
     if run_id:
         crud.orders.put({**confirmed, "routeRunId": run_id})
     detail = order_detail(id)
-    warn = f" — {len(detail['warnings'])} alerte(s)" if detail["warnings"] else ""
+    warn = f" — {len(detail['warnings'])} alert(s)" if detail["warnings"] else ""
     log_event(ctx, "order.confirmed", "order", id,
-              f"Commande {order['number']} confirmée pour {detail['client']['name']} ({fmt_eur(detail['totalHt'])} HT){warn}")  # fmt: skip
+              f"Order {order['number']} confirmed for {detail['client']['name']} ({fmt_eur(detail['totalHt'])} excl. VAT){warn}")  # fmt: skip
     return detail
 
 
@@ -334,14 +334,14 @@ def confirm_order(ctx: Ctx, id: str) -> Doc:
 def prepare_order(ctx: Ctx, id: str, prepared: list[Doc] | None = None) -> Doc:
     """confirmed → prepared. Lines not listed are considered picked exactly as ordered."""
     order = crud.orders.require(id)
-    _guard(order, ["confirmed"], "préparer")
+    _guard(order, ["confirmed"], "prepare")
     by_line = {p["lineId"]: p["preparedQty"] for p in prepared or []}
     for line_id in by_line:
         if not any(l["id"] == line_id for l in order["lines"]):
-            raise bad_request("unknown_line", f"Ligne {line_id} introuvable sur {order['number']}")
+            raise bad_request("unknown_line", f"Line {line_id} not found on {order['number']}")
     lines = [{**l, "preparedQty": by_line.get(l["id"], line_qty(l))} for l in order["lines"]]
     _save({**order, "lines": lines, "status": "prepared"})
-    log_event(ctx, "order.prepared", "order", id, f"Commande {order['number']} préparée ({fmt_eur(_total_ht(lines))} HT)")
+    log_event(ctx, "order.prepared", "order", id, f"Order {order['number']} prepared ({fmt_eur(_total_ht(lines))} excl. VAT)")
     return order_detail(id)
 
 
@@ -356,12 +356,12 @@ def deliver_order(ctx: Ctx, id: str) -> Doc:
         missing = consume_fefo(l["productId"], l["preparedQty"], "sale", {"refType": "order", "refId": order["id"]})
         if missing > 0:
             p = crud.products.get(l["productId"])
-            shortages.append(f"{p['name'] if p else l['productId']} ({js_str(missing)} manquant)")
+            shortages.append(f"{p['name'] if p else l['productId']} ({js_str(missing)} missing)")
     delivered = _save({**order, "lines": lines, "status": "delivered", "deliveredAt": now()})
     routing.mark_stop_delivered(delivered)
     client = crud.clients.get(order["clientId"])
-    extra = f" — stock physique insuffisant : {', '.join(shortages)}" if shortages else ""
-    log_event(ctx, "order.delivered", "order", id, f"Commande {order['number']} livrée à {client['name'] if client else '?'}{extra}")
+    extra = f" — insufficient physical stock: {', '.join(shortages)}" if shortages else ""
+    log_event(ctx, "order.delivered", "order", id, f"Order {order['number']} delivered to {client['name'] if client else '?'}{extra}")
     return order_detail(id)
 
 
@@ -381,5 +381,5 @@ def cancel_order(ctx: Ctx, id: str) -> Doc:
     cancelled = _save({**order, "status": "cancelled"})
     routing.detach_order(cancelled)
     crud.orders.put({k: v for k, v in cancelled.items() if k != "routeRunId"})
-    log_event(ctx, "order.cancelled", "order", id, f"Commande {order['number']} annulée")
+    log_event(ctx, "order.cancelled", "order", id, f"Order {order['number']} Cancelled")
     return order_detail(id)

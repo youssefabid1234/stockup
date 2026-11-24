@@ -1,16 +1,31 @@
 {
   "id": "S10",
   "owner": "mohamed-amine",
-  "title": "Le client interrompt une recherche de stock",
-  "why": "Sur la page Voix, reprendre Espace dès le premier son de la première réplique. Le son en cours doit cesser et la nouvelle demande doit être entendue. Le rejeu texte couvre les deux répliques en séquence.",
+  "title": "The caller interrupts a stock lookup",
+  "why": "On the Voice page, start speaking as soon as the first sound plays. Audio should stop and the new request should be heard. Text replay covers the two turns in sequence.",
   "turns": [
     {
-      "say": "Vous avez de la levure fraîche en stock ?",
-      "expect": {"tools_any": ["search", "get_product_stock", "product_insight"], "tools_none": ["confirm_order"]}
+      "say": "Do you have fresh yeast in stock?",
+      "expect": {
+        "tools_any": [
+          "search",
+          "get_product_stock",
+          "product_insight"
+        ],
+        "tools_none": [
+          "confirm_order"
+        ]
+      }
     },
     {
-      "say": "Pardon, je vous coupe. Finalement, je ne commande rien. Au revoir.",
-      "expect": {"tools_none": ["create_draft_order", "add_order_line", "confirm_order"]}
+      "say": "Sorry to interrupt. Actually, I won't order anything. Goodbye.",
+      "expect": {
+        "tools_none": [
+          "create_draft_order",
+          "add_order_line",
+          "confirm_order"
+        ]
+      }
     }
   ]
 }

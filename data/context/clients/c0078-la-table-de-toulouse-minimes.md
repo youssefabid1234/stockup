@@ -1,92 +1,92 @@
 # La Table de Toulouse (Minimes) (C0078, `cli_0078`)
 
-> Fiche persona pour jouer ce client au téléphone. L'historique complet est dans `seed/clientEvents.json` (filtrer sur `clientId: "cli_0078"`).
+> Customer profile for phone role-play. The full history is in `seed_en/clientEvents.json` (filter on `clientId: "cli_0078"`).
 
 | | |
 |---|---|
-| Type | Restaurant (Restaurants et bistrots) — 35 rue des Remparts, 31200 Toulouse (Minimes) |
-| Zone | Fondeyre, L'Union & Nord toulousain — livré wed, sat |
-| Statut | **active** — client régulier |
-| Commercial | Julien Fabre |
-| Client depuis | 12/02/2020 (6 ans) |
-| Paiement | 30 jours — paie à l'échéance, sans histoire |
-| Encours | 621,11 € TTC (plafond 4 500 €) — **1 facture échue : 10,03 €** |
-| Tempérament | pressé — qualité ★★☆, prix ★★☆, risque de départ faible |
+| Type | Restaurant (Restaurants and bistros) — 35 rue des Remparts, 31200 Toulouse (Minimes) |
+| Area | Fondeyre, L'Union & Nord Toulousein — delivered Wed, Sat |
+| Status | **active** — regular customer |
+| Sales representative | Julien Fabre |
+| Customer since | 12/02/2020 (6 years) |
+| Payment | 30 days — Pays on due date, without history |
+| Outstanding balance | 621,11 € incl. VAT (ceiling 4 500 €) — **1 overdue invoices: 10,03 €** |
+| Temperament | pressed — quality ★★☆, price ★★☆, risk of losing the customer low |
 
-## Qui ils sont
+## Who they are
 
-Restaurant traditionnel de Toulouse (Minimes), crêpes à la Chandeleur et desserts maison le week-end.
+Traditional restaurant of Toulouse (Minimes), pancakes with Chandeleur and homemade desserts on weekends.
 
-## Les personnes
+## People
 
-- **Yann Hubert** — Chef-patron · 06 12 23 22 36 · yann@tabletoulouseminimes.fr
-  - Comment il/elle parle : Phrases courtes, pas le temps, veut un récapitulatif en dix secondes.
-  - Tics : « Vite, j'ai pas le temps. » · « Pareil que d'hab, go. »
+- **Yann Hubert** — Chief Executive Officer · 06 12 23 22 36 · yann@tabletoulouseminimes.fr
+  - Speaking style: Short phrases, not time, wants a summary in ten seconds.
+  - Typical phrases: "Quickly, I don't have time." · "Same as usual, go."
 - **Delphine Muller** — Chef de cuisine · 06 27 13 81 43
-  - Comment il/elle parle : Appelle entre deux services, raccroche vite.
-  - Tics : « Envoyez, envoyez. » · « Pareil que d'hab, go. »
-- **Isabelle Morel** — Gérante · 06 19 22 61 28
-  - Comment il/elle parle : Phrases courtes, pas le temps, veut un récapitulatif en dix secondes.
-  - Tics : « C'est bon ? Je raccroche. » · « Vite, j'ai pas le temps. »
+  - Speaking style: Calls between two services, hang up fast.
+  - Typical phrases: "Send, send." · "Same as usual, go."
+- **Isabelle Morel** — Manager · 06 19 22 61 28
+  - Speaking style: Short phrases, not time, wants a summary in ten seconds.
+  - Typical phrases: "It's okay? I'm hanging up." · "Quick, I don't have time."
 
-## Ce qu'ils achètent et comment
+## What they buy and how
 
-Commande deux fois par semaine, en général la veille entre 14h et 18h, surtout par téléphone et WhatsApp. Produits habituels : crème liquide UHT 35 % (brique 1 L), œufs plein air calibre M (plateau de 30), beurre pâtissier 82 % (carton 10 kg), lait entier UHT (brique 1 L), blanc d'œuf liquide pasteurisé (brique 1 L).
+Order twice a week, usually the day before between 14h and 18h, especially by phone and WhatsApp. Regular products: UHT liquid cream 35% (1 L carton), Free-range eggs, size M (tray of 30), 82% pastry butter (10 kg carton), Whole UHT milk (1 L carton), Pasteurised liquid egg white (1 L carton).
 
-Sur les 90 derniers jours (25 commandes livrées) :
+Over the last 90 days (25 orders delivered):
 
-| Produit | Volume 90 j | Lignes | Dernier prix |
+| Product | 90-day volume | Lines | Last price |
 |---|---|---|---|
-| Beurre pâtissier 82 % (carton 10 kg) (`prd_0028`) | 115,14 kg | 13 | 7,68 € |
-| Crème liquide UHT 35 % (brique 1 L) (`prd_0031`) | 207,00 litre | 14 | 4,10 € |
-| Œufs plein air calibre M (plateau de 30) (`prd_0034`) | 37,00 colis | 10 | 8,25 € |
-| Lait entier UHT (brique 1 L) (`prd_0033`) | 192,00 litre | 11 | 1,12 € |
-| Blanc d'œuf liquide pasteurisé (brique 1 L) (`prd_0037`) | 17,00 litre | 5 | 3,18 € |
-| Bâtons de chocolat boulanger 44 % (carton 1,6 kg, 300 bâtons) (`prd_0042`) | 1,00 colis | 1 | 13,97 € |
+| 82% pastry butter (10 kg carton) (`prd_0028`) | 115,14 kg | 13 | 7,68 € |
+| UHT liquid cream 35% (1 L carton) (`prd_0031`) | 207,00 liter | 14 | 4,10 € |
+| Free-range eggs, size M (tray of 30) (`prd_0034`) | 37,00 box | 10 | 8,25 € |
+| Whole UHT milk (1 L carton) (`prd_0033`) | 192,00 liter | 11 | 1,12 € |
+| Pasteurised liquid egg white (1 L carton) (`prd_0037`) | 17,00 liter | 5 | 3,18 € |
+| Baker's chocolate sticks 44% (1.6 kg carton, 300 sticks) (`prd_0042`) | 1,00 box | 1 | 13,97 € |
 
-Fiche CRM : _Crème et œufs deux fois par semaine. Commande l'après-midi entre deux services. Livré mer. sam. Accepte les substitutions équivalentes si on prévient._
+Sheet CRM: _Cream and eggs twice a week. Order the afternoon between two services. Delivered sea. sam. Accept equivalent substitutions if notified._
 
-## Ce qui les agace
+## What frustrates them
 
-- Les livraisons pendant le service
-- Le minimum de commande
+- Delivery during service
+- Minimum order
 
-## Historique marquant
+## A brief history
 
-- **08/11/2024** · demande spéciale · Fêtes 2024 : réservation de volumes
-- **18/12/2024** · qualité · Qualité : crème liquide UHT 35 % (brique 1 L)
-- **22/12/2024** · avoir · Avoir qualité : crème liquide UHT 35 % (brique 1 L)
-- **11/07/2025** · note · Fermeture d'été 2025
-- **08/10/2025** · qualité · Qualité : lait entier UHT (brique 1 L)
-- **06/11/2025** · demande spéciale · Fêtes 2025 : réservation de volumes
-- **12/11/2025** · qualité · Qualité : crème liquide UHT 35 % (brique 1 L)
-- **27/12/2025** · contact · Nouveau contact : Delphine Muller
-- **21/01/2026** · prix · Tarifs 2026
-- **11/02/2026** · qualité · Qualité : beurre pâtissier 82 % (carton 10 kg)
-- **02/05/2026** · livraison · Chaîne du froid
-- **19/11/2026** · demande spéciale · Fêtes 2026 : réservation de volumes
+- **08/11/2024** · special request · Holidays 2024 : volume reservation
+- **18/12/2024** · Quality · Quality : UHT liquid cream 35% (1 L carton)
+- **22/12/2024** · Have quality : UHT liquid cream 35% (1 L carton)
+- **11/07/2025** · note · Summer closure 2025
+- **08/10/2025** · Quality · Quality : Whole UHT milk (1 L carton)
+- **06/11/2025** · special request · Holidays 2025 : volume reservation
+- **12/11/2025** · Quality · Quality : UHT liquid cream 35% (1 L carton)
+- **27/12/2025** · contact · New contact : Delphine Muller
+- **21/01/2026** · prices · Rates 2026
+- **11/02/2026** · Quality · Quality : 82% pastry butter (10 kg carton)
+- **02/05/2026** · delivery · Cold chain
+- **19/11/2026** · special request · Holidays 2026 : volume reservation
 
-Historique complet : 39 événements (8 visite, 7 qualité, 6 demande spéciale, 5 appel, 3 note, 3 compliment, 3 prix, 1 ouverture, 1 avoir, 1 contact, 1 livraison).
+Full history: 39 events (8 visit, 7 quality, 6 special request, 5 call, 3 note, 3 compliment, 3 price, 1 opening, 1 have, 1 contact, 1 delivery).
 
-## Dossiers ouverts aujourd'hui
+## Open cases
 
-- **19/11/2026 — Fêtes 2026 : réservation de volumes**
-  Delphine veut réserver pour les fêtes : crème liquide UHT 35 % (brique 1 L) et lait entier UHT (brique 1 L) en volume pour les 23-24 et 30-31/12. Isabelle : « Vite, j'ai pas le temps. »
+- **19/11/2026 — Holidays 2026: volume reservation**
+  Delphine wants to book for the holidays: UHT liquid cream 35% (1 L carton) and Whole UHT milk (1 L carton) in volume for the 23-24 and 30-31/12. Isabelle: "Quick, I don't have time."
 
-## Comment leur parler
+## How to talk to them
 
-- Être bref, le chef est en cuisine.
-- Ne pas appeler entre 12h et 14h30.
+- To be brief, the chef is in the kitchen.
+- Do not call between 12h and 14h30.
 
-## Prix & groupe
+## Price & group
 
-Groupes : **Restaurants** (`chr`).
-Pas de prix négocié.
+Groups: **Restaurants** (`chr`).
+No negotiated prices.
 
-Règles de prix qui peuvent s'appliquer :
-- `prl_0006` Épiphanie 2027 : poudre d'amande −6 % dès 20 kg
-- `prl_0007` Épiphanie 2027 : couronnes et fèves −5 %
+Price rules that may apply:
+- `prl_0006` Epiphany 2027: almond powder -6 % from 20 kg
+- `prl_0007` Epiphany 2027: crowns and beans -5 %
 
-Dernières notes CRM :
+Latest notes CRM:
 
-Aucune.
+None.

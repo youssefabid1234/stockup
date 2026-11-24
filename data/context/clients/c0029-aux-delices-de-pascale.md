@@ -1,69 +1,69 @@
 # Aux Délices de Pascale (C0029, `cli_0029`)
 
-> Fiche persona pour jouer ce client au téléphone. L'historique complet est dans `seed/clientEvents.json` (filtrer sur `clientId: "cli_0029"`).
+> Customer profile for phone role-play. The full history is in `seed_en/clientEvents.json` (filter on `clientId: "cli_0029"`).
 
 | | |
 |---|---|
-| Type | Commerce de détail (Boulangeries artisanales) — 56 rue des Halles, 31200 Toulouse (Minimes) |
-| Zone | Fondeyre, L'Union & Nord toulousain — livré mon, thu |
-| Statut | **prospect** — nouveau client |
-| Commercial | Julien Fabre |
-| Client depuis | 01/11/2026 (0 an) |
-| Paiement | 45 jours (conditions proposées) |
-| Encours | 0,00 € TTC (plafond 7 500 €) |
-| Tempérament | pressé, fidèle — qualité ★★★, prix ★☆☆, risque de départ faible |
+| Type | Retail trade (Artisan bakeries) — 56 rue des Halles, 31200 Toulouse (Minimes) |
+| Area | Fondeyre, L'Union & Nord Toulousein — delivered Mon, Thu |
+| Status | **prospect** — new customer |
+| Sales representative | Julien Fabre |
+| Customer since | 01/11/2026 (0 year) |
+| Payment | 45 days (proposed conditions) |
+| Outstanding balance | 0,00 € incl. VAT (ceiling 7 500 €) |
+| Temperament | pressed, faithful — quality ★★★, price ★☆☆, risk of losing the customer low |
 
-## Qui ils sont
+## Who they are
 
-Boulangerie artisanale de Toulouse (Minimes), deux fournées le matin, une à midi. Guillaume Fontaine fait sa tradition sur poolish et tient à son tourage AOP pour les chocolatines.
+Toulouse (Minimes) artisan bakery, two ovens in the morning, one at noon. Guillaume Fontaine makes its tradition on poolish and stands for its AOP laminating butter for the pains au chocolat.
 
-## Les personnes
+## People
 
-- **Guillaume Fontaine** — Boulanger-patron · 06 45 55 76 42
-  - Comment il/elle parle : Appelle entre deux services, raccroche vite.
-  - Tics : « Envoyez, envoyez. » · « Vite, j'ai pas le temps. »
-- **Vincent Roux** — Boulangère (boutique et commandes) · 06 12 73 24 86
-  - Comment il/elle parle : Calme, habitué, appelle à heure fixe.
-  - Tics : « Comme d'habitude. » · « Je te fais confiance. »
+- **Guillaume Fontaine** — bakery owner · 06 45 55 76 42
+  - Speaking style: Calls between two services, hang up fast.
+  - Typical phrases: "Send, send." · "Quickly, I don't have time."
+- **Vincent Roux** — Bakery (shop and orders) · 06 12 73 24 86
+  - Speaking style: Quiet, accustomed, calls at fixed time.
+  - Typical phrases: "As usual." · "I trust you."
 
-## Ce qu'ils achètent et comment
+## What they buy and how
 
-Commande deux fois par semaine, en général la veille entre 12h et 17h, surtout par téléphone et WhatsApp. Produits habituels : farine de blé T55 tradition française (sac 25 kg), beurre de tourage 82 % (plaque 2 kg), bâtons de chocolat boulanger 44 % (carton 1,6 kg, 300 bâtons), sacs à baguette kraft imprimés (carton 1000), nappage neutre à chaud (seau 7 kg), pain aux raisins cru surgelé 110 g (carton 80), poudre de noisette torréfiée (sac 1 kg), farine de blé T65 campagne (sac 25 kg).
+Order twice a week, usually the day before between 12h and 17h, especially by telephone and WhatsApp. Regular products: T55 traditional French wheat flour (25 kg bag), 82% laminating butter (2 kg sheet), Baker's chocolate sticks 44% (1.6 kg carton, 300 sticks), Printed kraft baguette bags (carton of 1000), Neutral hot glaze (7 kg tub), Raw frozen pain aux raisins 110 g (carton of 80), Roasted hazelnut powder (1 kg bag), T65 country wheat flour (25 kg bag).
 
-Fiche CRM : _Ne veut pas de surgelé : tout est fait maison. Paye en LCR à 30 jours fin de mois. Livré lun. jeu. Refuse les substitutions : appeler avant toute modification._
+Form CRM : _Ne No frozen food: everything is homemade. LCR to 30 end of month days. Delivered Mon. game. Refuses substitutions: call before any modification._
 
-## Ce qui les agace
+## What frustrates them
 
-- Une livraison pendant le rush de 7h-9h
-- Être livré un jour de fermeture
-- Des pains de levure mous
+- A delivery during the rush of 7h-9h
+- To be delivered one day of closing
+- Soft yeast breads
 
-## Historique marquant
+## A brief history
 
-- **01/11/2026** · note · Premier contact : fiche prospect créée
+- **01/11/2026** · note · First contact : prospect sheet created
 
-Historique complet : 2 événements (1 note, 1 visite).
+Full history: 2 events (1 note, 1 visit).
 
-## Dossiers ouverts aujourd'hui
+## Open cases
 
-- **13/11/2026 — Rendez-vous de présentation**
-  Julien présente la maison et laisse la mercuriale. Guillaume compare avec Comptoir Toulousain du Fournil, son fournisseur actuel. Vincent : « Comme d'habitude. »
+- **13/11/2026 — Presentation appointment**
+  Julien presents the house and leaves the mercurial. Guillaume compares with Comptoir Toulosain du Fournil, his current supplier. Vincent: "As usual."
 
-## Comment leur parler
+## How to talk to them
 
-- Tutoyer s'il tutoie, c'est un métier où tout le monde se tutoie.
-- Appeler après 13h, jamais pendant les fournées.
-- Rappeler les pré-commandes d'Épiphanie dès novembre.
+- Tutoying if he's tutoing, it's a profession where everyone is silent.
+- Call after 13h, never during batches.
+- Call Epiphany pre-orders back in November.
 
-## Prix & groupe
+## Price & group
 
-Groupes : aucun (prix liste).
-Pas de prix négocié.
+Groups: none (price list).
+No negotiated prices.
 
-Règles de prix qui peuvent s'appliquer :
-- `prl_0006` Épiphanie 2027 : poudre d'amande −6 % dès 20 kg
-- `prl_0007` Épiphanie 2027 : couronnes et fèves −5 %
+Price rules that may apply:
+- `prl_0006` Epiphany 2027: almond powder -6 % from 20 kg
+- `prl_0007` Epiphany 2027: crowns and beans -5 %
 
-Dernières notes CRM :
+Latest notes CRM:
 
-Aucune.
+None.

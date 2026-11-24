@@ -1,86 +1,86 @@
 # Roussel Traiteur (C0055, `cli_0055`)
 
-> Fiche persona pour jouer ce client au téléphone. L'historique complet est dans `seed/clientEvents.json` (filtrer sur `clientId: "cli_0055"`).
+> Customer profile for phone role-play. The full history is in `seed_en/clientEvents.json` (filter on `clientId: "cli_0055"`).
 
 | | |
 |---|---|
-| Type | Traiteur (Traiteurs et organisateurs de réceptions) — 67 bis rue Victor-Hugo, 31240 L'Union |
-| Zone | Fondeyre, L'Union & Nord toulousain — livré fri |
-| Statut | **active** — client régulier |
-| Commercial | Karim Belkacem |
-| Client depuis | 13/05/2007 (19 ans) |
-| Paiement | 30 jours — paie à l'échéance, sans histoire |
-| Encours | 16 820,93 € TTC (plafond 21 000 €) |
-| Tempérament | négociateur, chaleureux, impulsif — qualité ★★★, prix ★★★, risque de départ moyen |
+| Type | Caterer (Treaters and Reception Organizers) — 67 bis rue Victor-Hugo, 31240 L'Union |
+| Area | Fondeyre, L'Union & Nord Toulousein — delivered Fri |
+| Status | **active** — regular customer |
+| Sales representative | Karim Belkacem |
+| Customer since | 13/05/2007 (19 years) |
+| Payment | 30 days — Pays on due date, without history |
+| Outstanding balance | 16 820,93 € incl. VAT (ceiling 21 000 €) |
+| Temperament | negotiator, warm, impulsive — quality ★★★, price ★★★, medium risk of losing the customer |
 
-## Qui ils sont
+## Who they are
 
-Traiteur de L'Union : mariages l'été, séminaires, réveillons. Mini-viennoiseries pour les petits-déjeuners d'entreprise, feuilletage pour les bouchées.
+Union Caterer: weddings in summer, seminars, Christmas Eves. Mini-pastries for business breakfasts, leafing for bites.
 
-## Les personnes
+## People
 
-- **Ludovic Marchand** — Gérant · 06 34 50 94 58
-  - Comment il/elle parle : Joue la surprise sur chaque tarif, finit par commander.
-  - Tics : « Vous me faites un geste ? » · « À ce prix-là, je prends ailleurs. »
+- **Ludovic Marchand** — manager · 06 34 50 94 58
+  - Speaking style: Play surprise on each fare, end up ordering.
+  - Typical phrases: "Are you making a move?" · "At this price, I take another place."
 
-## Ce qu'ils achètent et comment
+## What they buy and how
 
-Commande une fois par semaine, en général 2 jours avant entre 10h et 16h, surtout par e-mail et téléphone. Produits habituels : couronnes des rois carton dorées (lot de 100), farine de blé T65 campagne (sac 25 kg), praliné noisette 50 % (seau 5 kg), croissant pur beurre cru surgelé 70 g (carton 150), crème liquide UHT 35 % (brique 1 L), lait entier UHT (brique 1 L), farine de seigle T130 (sac 25 kg), papier cuisson siliconé 40 × 60 (carton 500 feuilles).
+Order once a week, usually 2 days front between 10h and 16h, especially via e-mail and telephone. Regular products: Gold cardboard king cake crowns (pack of 100), T65 country wheat flour (25 kg bag), Hazelnut praline 50% (5 kg tub), Raw frozen all-butter croissant 70 g (carton of 150), UHT liquid cream 35% (1 L carton), Whole UHT milk (1 L carton), T130 rye flour (25 kg bag), Silicone baking paper 40 × 60 (carton of 500 sheets).
 
-Sur les 90 derniers jours (12 commandes livrées) :
+Over the last 90 days (12 orders delivered):
 
-| Produit | Volume 90 j | Lignes | Dernier prix |
+| Product | 90-day volume | Lines | Last price |
 |---|---|---|---|
-| Beurre de tourage 82 % (plaque 2 kg) (`prd_0026`) | 2 264,66 kg | 9 | 9,32 € |
-| Beurre de tourage AOP Charentes-Poitou 84 % (plaque 2 kg) (`prd_0025`) | 607,87 kg | 5 | 11,54 € |
-| Croissant pur beurre cru surgelé 70 g (carton 150) (`prd_0053`) | 103,00 colis | 5 | 52,00 € |
-| Praliné noisette 50 % (seau 5 kg) (`prd_0045`) | 290,27 kg | 6 | 16,26 € |
-| Beurre pâtissier 82 % (carton 10 kg) (`prd_0028`) | 551,44 kg | 5 | 7,68 € |
-| Farine de seigle T130 (sac 25 kg) (`prd_0006`) | 106,00 pièce | 6 | 24,52 € |
-| Sacs à baguette kraft imprimés (carton 1000) (`prd_0065`) | 116,00 colis | 6 | 22,00 € |
-| Crème liquide UHT 35 % (brique 1 L) (`prd_0031`) | 551,00 litre | 7 | 4,10 € |
+| 82% laminating butter (2 kg sheet) (`prd_0026`) | 2 264,66 kg | 9 | 9,32 € |
+| AOP Charentes-Poitou 84% laminating butter (2 kg sheet) (`prd_0025`) | 607,87 kg | 5 | 11,54 € |
+| Raw frozen all-butter croissant 70 g (carton of 150) (`prd_0053`) | 103,00 box | 5 | 52,00 € |
+| Hazelnut praline 50% (5 kg tub) (`prd_0045`) | 290,27 kg | 6 | 16,26 € |
+| 82% pastry butter (10 kg carton) (`prd_0028`) | 551,44 kg | 5 | 7,68 € |
+| T130 rye flour (25 kg bag) (`prd_0006`) | 106,00 piece | 6 | 24,52 € |
+| Printed kraft baguette bags (carton of 1000) (`prd_0065`) | 116,00 box | 6 | 22,00 € |
+| UHT liquid cream 35% (1 L carton) (`prd_0031`) | 551,00 liter | 7 | 4,10 € |
 
-Fiche CRM : _Pré-commandes de Noël dès novembre. Grosses commandes à J-2 pour les événements. Livré ven. Refuse les substitutions : appeler avant toute modification._
+CRM card: _Christmas pre-orders as early as November. Large orders at J-2 for events. Delivered Fri. Refuses substitutions: call before any change._
 
-## Ce qui les agace
+## What frustrates them
 
-- Les cartons de minis incomplets
-- Une rupture le jour d'un mariage
+- Incomplete mini cartons
+- A breakdown on the day of a marriage
 
-## Historique marquant
+## A brief history
 
-- **12/12/2020** · demande spéciale · Fêtes 2020 : réservation
-- **12/12/2021** · demande spéciale · Fêtes 2021 : réservation
-- **14/02/2022** · qualité · Qualité : beurre de tourage AOP Charentes-Poitou 84 % (plaque 2 kg)
-- **07/04/2022** · prix · Hausse tarifaire (gazole, énergie)
-- **25/02/2023** · qualité · Qualité : couronnes des rois carton dorées (lot de 100)
-- **25/01/2024** · prix · Tarifs 2024
-- **02/03/2024** · carte · Nouvelle carte de printemps
-- **03/05/2024** · qualité · Qualité : croissant pur beurre cru surgelé 70 g (carton 150)
-- **06/05/2024** · avoir · Avoir qualité : croissant pur beurre cru surgelé 70 g (carton 150)
-- **05/09/2024** · carte · Carte d'automne
-- **24/01/2025** · prix · Tarifs 2025
-- **11/03/2026** · carte · Nouvelle carte de printemps
+- **12/12/2020** · special request · Holidays 2020 : reservation
+- **12/12/2021** · special request · Holidays 2021 : reservation
+- **14/02/2022** · Quality · Quality : AOP Charentes-Poitou 84% laminating butter (2 kg sheet)
+- **07/04/2022** · price · Tariff increase (diesel, energy)
+- **25/02/2023** · Quality · Quality : Gold cardboard king cake crowns (pack of 100)
+- **25/01/2024** · prices · Rates 2024
+- **02/03/2024** · map · New spring map
+- **03/05/2024** · Quality · Quality : Raw frozen all-butter croissant 70 g (carton of 150)
+- **06/05/2024** · Have quality : Raw frozen all-butter croissant 70 g (carton of 150)
+- **05/09/2024** · map · Autumn card
+- **24/01/2025** · prices · Rates 2025
+- **11/03/2026** · map · New spring map
 
-Historique complet : 59 événements (16 qualité, 16 visite, 7 demande spéciale, 5 compliment, 5 appel, 3 prix, 3 carte, 2 note, 1 ouverture, 1 avoir).
+Full history: 59 events (16 quality, 16 visit, 7 special request, 5 compliment, 5 call, 3 price, 3 map, 2 note, 1 opening, 1 have).
 
-## Dossiers ouverts aujourd'hui
+## Open cases
 
-Aucun.
+None.
 
-## Comment leur parler
+## How to talk to them
 
-- Faire préciser la date de l'événement et le nombre de couverts.
+- Specify the date of the event and the number of covers.
 
-## Prix & groupe
+## Price & group
 
-Groupes : **Traiteurs** (`traiteurs`), **Grands comptes** (`grands-comptes`).
-Pas de prix négocié.
+Groups: **Treaters** (`traiteurs`), **Grand accounts** (`grands-comptes`).
+No negotiated prices.
 
-Règles de prix qui peuvent s'appliquer :
-- `prl_0006` Épiphanie 2027 : poudre d'amande −6 % dès 20 kg
-- `prl_0007` Épiphanie 2027 : couronnes et fèves −5 %
+Price rules that may apply:
+- `prl_0006` Epiphany 2027: almond powder -6 % from 20 kg
+- `prl_0007` Epiphany 2027: crowns and beans -5 %
 
-Dernières notes CRM :
+Latest notes CRM:
 
-- 24/07/2026, Karim (commercial) : Ne veut aucune substitution sans être prévenu : si un produit manque, appeler Ludovic avant le départ du camion.
+- 24/07/2026, Karim (commercial): Do not want any substitution without being warned: if a product is missing, call Ludovic before the truck leaves.

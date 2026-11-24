@@ -33,28 +33,28 @@ def test_sales_rules_follow_their_switch(monkeypatch):
     monkeypatch.delenv("TEAM_SALES_RULES", raising=False)
     assert rules_sales.sales_rules_section() == ""
     monkeypatch.setenv("TEAM_SALES_RULES", "1")
-    assert "remplaçant" in rules_sales.sales_rules_section()
+    assert "substitute" in rules_sales.sales_rules_section()
 
 
 def test_sales_rules_stay_general():
     """The jury plays other clients and products: the rules must not name any of ours (facts come from the ERP)."""
     text = rules_sales.SALES_RULES.lower()
     for specific in ["sarrailh", "colomiers", "escaich", "gerbe", "nadine", "guy", "bernard", "julien",
-                     "tourage", "82", "aop", "cli_", "prd_"]:
-        assert specific not in text, f"rule mentions {specific!r}"
+                     "laminating butter", "82", "aop", "cli_", "prd_"]:
+        assert specific not in text, f"Rule {specific!r}"
 
 
 def test_refuses_substitution_from_preferences():
-    prefs = "Tradition du Lauragais, tourage AOP exclusivement. Jamais de substitution sur le beurre."
-    assert rules_sales.refuses_substitution(prefs, "Beurre de tourage AOP Charentes-Poitou 84 %")
-    assert not rules_sales.refuses_substitution(prefs, "Chocolat de couverture noir 64 %")
+    prefs = "Tradition of Lauragais, tourage AOP Only. Never substitute on butter."
+    assert rules_sales.refuses_substitution(prefs, "Butter AOP Charentes-Poitou 84 %")
+    assert not rules_sales.refuses_substitution(prefs, "Black chocolate cover 64%")
 
 
 def test_rank_alternatives_in_stock_and_promo_first():
     alts = [
         {"id": "a", "name": "Margarine", "available": 50, "clientPrice": 3.9},
-        {"id": "b", "name": "Tourage 82 %", "available": 0, "clientPrice": 9.2},
-        {"id": "c", "name": "Tourage 82 %", "available": 30, "clientPrice": 9.2, "promo": "-8 %"},
+        {"id": "b", "name": "Touring 82 %", "available": 0, "clientPrice": 9.2},
+        {"id": "c", "name": "Touring 82 %", "available": 30, "clientPrice": 9.2, "promo": "-8 %"},
     ]
     assert [a["id"] for a in rules_sales.rank_alternatives(alts, "")][:2] == ["c", "a"]
 

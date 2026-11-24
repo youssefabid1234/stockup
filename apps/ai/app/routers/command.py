@@ -50,7 +50,7 @@ async def command(request: Request, speak: str | None = None):
             audio=audio,
             mime=content_type or "audio/webm",
             hint=header_text(request.headers.get("x-mock-text") or request.headers.get("x-stt-hint")),
-            actor_name=(typed and typed.actor_name) or header_text(request.headers.get("x-actor-name")) or "Commande vocale",
+            actor_name=(typed and typed.actor_name) or header_text(request.headers.get("x-actor-name")) or "Voice control",
             speak=speak in ("1", "true"),
         )
     )

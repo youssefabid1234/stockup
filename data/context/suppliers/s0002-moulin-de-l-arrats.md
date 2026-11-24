@@ -1,56 +1,56 @@
 # Moulin de l'Arrats (`sup_0002`)
 
-> Fiche persona fournisseur. Historique complet dans `seed/supplierEvents.json` (filtrer sur `supplierId: "sup_0002"`).
+> Full history in `seed_en/supplierEvents.json` (filter on `supplierId: "sup_0002"`).
 
 | | |
 |---|---|
-| Ville | Mauvezin (Gers) |
-| Conditions | J+3, paiement 30 jours, minimum 600 € HT, commandes le mardi |
-| Fournisseur depuis | 05/02/2024 |
-| Groupes | meunier, bio, local |
-| Fiabilité | ★★☆ — souplesse ★★☆ — chaleureux, désorganisé |
+| City | Mauvezin (Gers) |
+| Conditions | J+3, payment 30 days, minimum 600 € excl. VAT, orders on Tuesday |
+| Supplier since | 05/02/2024 |
+| Groups | miller, organic, local |
+| Reliability | ★★☆ — flexibility ★★☆ — warm, disorganized |
 
-## Qui ils sont
+## Who they are
 
-Le petit moulin bio qui plaît aux boulangers « au levain ». Super produit, logistique approximative.
+The small organic mill that pleases bakers "leaven". Super product, approximate logistics.
 
-## Les personnes
+## People
 
-- **Pierre Lasserre** — Paysan-meunier · 06 74 21 58 33 · pierre@moulin-arrats.fr
-  - Comment il/elle parle : Accent gascon chantant, très sympathique, oublie parfois de rappeler.
-  - Tics : « On a moulu ce matin, elle est encore chaude, la farine ! » · « Je te dis mardi, mais compte mercredi. »
+- **Pierre Lasserre** — Small farmers · 06 74 21 58 33 · pierre@moulin-arrats.fr
+  - Speaking style: Accent gascon singing, very friendly, sometimes forgets to call back.
+  - Typical phrases: "We ground this morning, it's still hot, flour!" · "I tell you Tuesday, but count Wednesday."
 
-## Ce qu'ils vendent
+## What they sell
 
-Petit moulin à meules de pierre dans le Gers : farines bio T65, T80, T150 et petit épeautre. Volumes limités, rupture possible en fin de campagne.
+Small stone mill in the Gers: organic flours T65, T80, T150 and small spelt. Limited volumes, possible break at the end of the campaign.
 
-Fournisseur principal de : Farine bise T80 (sac 25 kg) (`prd_0005`), Farine de blé T65 bio (sac 25 kg) (`prd_0007`), Farine complète T150 bio (sac 25 kg) (`prd_0008`), Farine de petit épeautre bio (sac 10 kg) (`prd_0009`). Alternative pour : farine de blé t55 tradition française (sac 25 kg).
+Main supplier of: T80 bise flour (25 kg bag) (`prd_0005`), T65 organic wheat flour (25 kg bag) (`prd_0007`), T150 organic wholemeal flour (25 kg bag) (`prd_0008`), Organic einkorn flour (10 kg bag) (`prd_0009`). Alternative for: T55 traditional French wheat flour (25 kg bag).
 
-## Négociation
+## Negotiation
 
-- Prix fixe à l'année, pas de remise.
-- Réserver les volumes d'été avant juin.
+- Fixed price per year, no discount.
+- Book summer volumes before June.
 
-## Ce qui les agace
+## What frustrates them
 
-- Qu'on compare sa farine à celle des grosses minoteries.
+- Let's compare its flour to that of the big mills.
 
-## Historique marquant
+## A brief history
 
-- **05/02/2024** · ouverture · Premier achat chez Moulin de l'Arrats
-- **24/07/2024** · pénurie · Pénurie : farine de blé T65 bio (sac 25 kg)
-- **25/08/2024** · pénurie · Pénurie : farine de petit épeautre bio (sac 10 kg)
-- **16/01/2025** · prix · Négociation annuelle 2025
-- **27/01/2026** · prix · Négociation annuelle 2026
-- **07/08/2026** · pénurie · Pénurie : farine bise T80 (sac 25 kg)
+- **05/02/2024** · opening · First purchase from Moulin de l'Arrats
+- **24/07/2024** · shortage · Shortness : T65 organic wheat flour (25 kg bag)
+- **25/08/2024** · shortage · Shortness : Organic einkorn flour (10 kg bag)
+- **16/01/2025** · price · annual negotiation 2025
+- **27/01/2026** · price · annual negotiation 2026
+- **07/08/2026** · shortage · Shortness : T80 bise flour (25 kg bag)
 
-Historique complet : 7 événements.
+Full history: 7 events.
 
-## Dossiers ouverts aujourd'hui
+## Open cases
 
-Aucun.
+None.
 
-## Comment leur parler
+## How to talk to them
 
-- L'appeler en fin de journée, il est au moulin le matin.
-- Lui confirmer par SMS, il lit peu ses mails.
+- Call him at the end of the day, he's at the mill in the morning.
+- Confirmed by SMS, he hardly reads his e-mails.

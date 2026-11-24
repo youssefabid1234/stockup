@@ -1,88 +1,88 @@
 # Le Petit Capitole (C0034, `cli_0034`)
 
-> Fiche persona pour jouer ce client au téléphone. L'historique complet est dans `seed/clientEvents.json` (filtrer sur `clientId: "cli_0034"`).
+> Customer profile for phone role-play. The full history is in `seed_en/clientEvents.json` (filter on `clientId: "cli_0034"`).
 
 | | |
 |---|---|
-| Type | Restaurant (Restaurants et bistrots) — 121 rue Thiers, 11400 Castelnaudary |
-| Zone | Lauragais & Tarn — livré tue, fri |
-| Statut | **active** — en croissance |
-| Commercial | Marion Escudié |
-| Client depuis | 21/03/2018 (8 ans) |
-| Paiement | 30 jours — paie à l'échéance, sans histoire |
-| Encours | 2 473,93 € TTC (plafond 4 000 €) — **1 facture échue : 289,59 €** |
-| Tempérament | désorganisé, pressé — qualité ★★★, prix ★★★, risque de départ moyen |
+| Type | Restaurant (Restaurants and bistros) — 121 rue Thiers, 11400 Castelnaudary |
+| Area | Lauragais & Tarn — delivered Tue, Fri |
+| Status | **active** — growing |
+| Sales representative | Marion Escudié |
+| Customer since | 21/03/2018 (8 years) |
+| Payment | 30 days — Pays on due date, without history |
+| Outstanding balance | 2 473,93 € incl. VAT (ceiling 4 000 €) — **1 overdue invoices: 289,59 €** |
+| Temperament | Disorganized, pressed — quality ★★★, price ★★★, medium risk of losing the customer |
 
-## Qui ils sont
+## Who they are
 
-Bistrot de Castelnaudary, 120 couverts, cuisine du Sud-Ouest. Jean-Marc Lecomte achète chez nous crème, œufs, beurre et quelques desserts surgelés.
+Bistrot de Castelnaudary, 120 cutlery, Southwest cuisine. Jean-Marc Lecomte buys cream, eggs, butter and some frozen desserts from us.
 
-## Les personnes
+## People
 
-- **Jean-Marc Lecomte** — Chef-patron · 06 82 44 24 37
-  - Comment il/elle parle : Parle en faisant autre chose, bruit de cuisine derrière.
-  - Tics : « C'était quoi déjà la dernière fois ? » · « Ah attends, j'ai oublié un truc… »
+- **Jean-Marc Lecomte** — Chief Executive Officer · 06 82 44 24 37
+  - Speaking style: Speak by doing something else, cooking noise behind.
+  - Typical phrases: "What was it the last time?" · "Ah wait, I forgot something..."
 
-## Ce qu'ils achètent et comment
+## What they buy and how
 
-Commande trois fois par semaine, en général la veille entre 15h et 17h, surtout par téléphone et WhatsApp. Produits habituels : crème liquide UHT 35 % (brique 1 L), œufs plein air calibre M (plateau de 30), beurre pâtissier 82 % (carton 10 kg), lait entier UHT (brique 1 L), pépites de chocolat noir cuisson (sac 5 kg), sel fin de mer (sac 25 kg), œuf entier liquide pasteurisé (brique 1 L), pomme Golden pâtissière (colis 13 kg).
+Order three times a week, usually the day before between 15h and 17h, especially by phone and WhatsApp. Regular products: UHT liquid cream 35% (1 L carton), Free-range eggs, size M (tray of 30), 82% pastry butter (10 kg carton), Whole UHT milk (1 L carton), Dark chocolate baking chips (5 kg bag), Fine sea salt (25 kg bag), Pasteurised liquid whole egg (1 L carton), Golden pastry apple (13 kg case).
 
-Sur les 90 derniers jours (24 commandes livrées) :
+Over the last 90 days (24 orders delivered):
 
-| Produit | Volume 90 j | Lignes | Dernier prix |
+| Product | 90-day volume | Lines | Last price |
 |---|---|---|---|
-| Beurre pâtissier 82 % (carton 10 kg) (`prd_0028`) | 245,85 kg | 14 | 7,68 € |
-| Croissant pur beurre cru surgelé 70 g (carton 150) (`prd_0053`) | 23,00 colis | 11 | 52,00 € |
-| Crème liquide UHT 35 % (brique 1 L) (`prd_0031`) | 274,00 litre | 13 | 4,10 € |
-| Œufs plein air calibre M (plateau de 30) (`prd_0034`) | 94,00 colis | 11 | 8,34 € |
-| Pépites de chocolat noir cuisson (sac 5 kg) (`prd_0044`) | 52,69 kg | 11 | 8,88 € |
-| Œuf entier liquide pasteurisé (brique 1 L) (`prd_0035`) | 94,00 litre | 9 | 4,30 € |
-| Pomme Golden pâtissière (colis 13 kg) (`prd_0063`) | 125,58 kg | 13 | 1,89 € |
-| Lait entier UHT (brique 1 L) (`prd_0033`) | 209,00 litre | 9 | 1,12 € |
+| 82% pastry butter (10 kg carton) (`prd_0028`) | 245,85 kg | 14 | 7,68 € |
+| Raw frozen all-butter croissant 70 g (carton of 150) (`prd_0053`) | 23,00 box | 11 | 52,00 € |
+| UHT liquid cream 35% (1 L carton) (`prd_0031`) | 274,00 liter | 13 | 4,10 € |
+| Free-range eggs, size M (tray of 30) (`prd_0034`) | 94,00 box | 11 | 8,34 € |
+| Dark chocolate baking chips (5 kg bag) (`prd_0044`) | 52,69 kg | 11 | 8,88 € |
+| Pasteurised liquid whole egg (1 L carton) (`prd_0035`) | 94,00 liter | 9 | 4,30 € |
+| Golden pastry apple (13 kg case) (`prd_0063`) | 125,58 kg | 13 | 1,89 € |
+| Whole UHT milk (1 L carton) (`prd_0033`) | 209,00 liter | 9 | 1,12 € |
 
-Fiche CRM : _Commande l'après-midi entre deux services. Crème et œufs deux fois par semaine. Livré mar. ven. Accepte les substitutions équivalentes si on prévient._
+CRM record : _Order in the afternoon between two services. Cream and eggs twice a week. Delivered Mar. Fri. Accept equivalent substitutions if notified._
 
-## Ce qui les agace
+## What frustrates them
 
-- Les livraisons pendant le service
-- Les œufs cassés
-- Le minimum de commande
+- Delivery during service
+- Broken eggs
+- Minimum order
 
-## Historique marquant
+## A brief history
 
-- **01/11/2024** · qualité · Qualité : pomme Golden pâtissière (colis 13 kg)
-- **22/04/2025** · qualité · Qualité : œufs plein air calibre M (plateau de 30)
-- **27/04/2025** · avoir · Avoir qualité : œufs plein air calibre M (plateau de 30)
-- **05/08/2025** · note · Ouverture d'un deuxième établissement
-- **21/11/2025** · demande spéciale · Fêtes 2025 : réservation de volumes
-- **05/12/2025** · qualité · Qualité : beurre pâtissier 82 % (carton 10 kg)
-- **07/12/2025** · avoir · Avoir qualité : beurre pâtissier 82 % (carton 10 kg)
-- **10/12/2025** · demande spéciale · Fêtes 2025 : réservation de volumes
-- **23/01/2026** · qualité · Qualité : œufs plein air calibre M (plateau de 30)
-- **28/01/2026** · avoir · Avoir qualité : œufs plein air calibre M (plateau de 30)
-- **27/02/2026** · qualité · Qualité : sel fin de mer (sac 25 kg)
-- **06/09/2026** · carte · Carte d'automne
+- **01/11/2024** · Quality · Quality : Golden pastry apple (13 kg case)
+- **22/04/2025** · Quality · Quality : Free-range eggs, size M (tray of 30)
+- **27/04/2025** · Have quality : Free-range eggs, size M (tray of 30)
+- **05/08/2025** · note · Opening of a second establishment
+- **21/11/2025** · special request · Holidays 2025 : volume reservation
+- **05/12/2025** · Quality · Quality : 82% pastry butter (10 kg carton)
+- **07/12/2025** · Have quality : 82% pastry butter (10 kg carton)
+- **10/12/2025** · special request · Holidays 2025 : volume reservation
+- **23/01/2026** · Quality · Quality : Free-range eggs, size M (tray of 30)
+- **28/01/2026** · Have quality : Free-range eggs, size M (tray of 30)
+- **27/02/2026** · Quality · Quality : Fine sea salt (25 kg bag)
+- **06/09/2026** · map · Autumn card
 
-Historique complet : 44 événements (12 qualité, 10 appel, 6 visite, 3 note, 3 compliment, 3 avoir, 2 carte, 2 demande spéciale, 1 ouverture, 1 prix, 1 retour).
+Full history: 44 events (12 quality, 10 call, 6 visit, 3 note, 3 compliment, 3 have, 2 card, 2 special request, 1 opening, 1 price, 1 back).
 
-## Dossiers ouverts aujourd'hui
+## Open cases
 
-Aucun.
+None.
 
-## Comment leur parler
+## How to talk to them
 
-- Être bref, le chef est en cuisine.
-- Ne pas appeler entre 12h et 14h30.
+- To be brief, the chef is in the kitchen.
+- Do not call between 12h and 14h30.
 
-## Prix & groupe
+## Price & group
 
-Groupes : **Restaurants** (`chr`).
-Pas de prix négocié.
+Groups: **Restaurants** (`chr`).
+No negotiated prices.
 
-Règles de prix qui peuvent s'appliquer :
-- `prl_0006` Épiphanie 2027 : poudre d'amande −6 % dès 20 kg
-- `prl_0007` Épiphanie 2027 : couronnes et fèves −5 %
+Price rules that may apply:
+- `prl_0006` Epiphany 2027: almond powder -6 % from 20 kg
+- `prl_0007` Epiphany 2027: crowns and beans -5 %
 
-Dernières notes CRM :
+Latest notes CRM:
 
-Aucune.
+None.

@@ -1,12 +1,12 @@
 {
   "id": "S30",
   "owner": "amine-khalil",
-  "title": "Petite commande sous le franco (150 € HT) : prévenir des 12 € de livraison",
-  "why": "Intelligent : règle de la maison (franco 150 € HT, sinon 12 €) dite au bon moment, puis commande juste",
+  "title": "Delivery fee below the free delivery threshold",
+  "why": "Read back the fee, then update the order when extra items qualify it for free delivery.",
   "client": "cli_0001",
   "turns": [
     {
-      "say": "Bonjour, c'est Nadine de chez Sarrailh. Juste deux pains de levure pour jeudi s'il vous plaît.",
+      "say": "Hello, this is Nadine from Sarrailh. Just two blocks of yeast for Thursday, please.",
       "expect": {
         "tools_any": [
           "review_order",
@@ -17,31 +17,31 @@
         ],
         "says_any": [
           "12 euros",
-          "douze euros",
-          "frais de livraison",
-          "franco",
+          "twelve euros",
+          "delivery fee",
+          "free delivery",
           "150"
         ]
       }
     },
     {
-      "say": "Ah d'accord. Alors rajoutez huit sacs de tradi.",
+      "say": "Okay. Add eight sacks of traditional flour, then.",
       "expect": {
         "tools_none": [
           "confirm_order"
         ],
         "says_any": [
           "8",
-          "huit"
+          "eight"
         ],
         "says_none": [
-          "12 euros de livraison",
-          "douze euros de livraison"
+          "12 euros for delivery",
+          "twelve euros for delivery"
         ]
       }
     },
     {
-      "say": "C'est bon, validez.",
+      "say": "That's right, confirm it.",
       "expect": {
         "tools_any": [
           "confirm_order"

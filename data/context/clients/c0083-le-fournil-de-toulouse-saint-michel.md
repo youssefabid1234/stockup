@@ -1,94 +1,94 @@
 # Le Fournil de Toulouse (Saint-Michel) (C0083, `cli_0083`)
 
-> Fiche persona pour jouer ce client au téléphone. L'historique complet est dans `seed/clientEvents.json` (filtrer sur `clientId: "cli_0083"`).
+> Customer profile for phone role-play. The full history is in `seed_en/clientEvents.json` (filter on `clientId: "cli_0083"`).
 
 | | |
 |---|---|
-| Type | Commerce de détail (Boulangeries artisanales) — 45 rue Gambetta, 31400 Toulouse (Saint-Michel) |
-| Zone | Toulouse centre & faubourgs — livré mon |
-| Statut | **active** — client régulier |
-| Commercial | Julien Fabre |
-| Client depuis | 14/04/2017 (9 ans) |
-| Paiement | 30 jours — prélèvement SEPA, aucun retard |
-| Encours | 9 722,70 € TTC (plafond 14 000 €) |
-| Tempérament | économe, fidèle, pressé — qualité ★☆☆, prix ★★★, risque de départ faible |
+| Type | Retail trade (Artisan bakeries) — 45 rue Gambetta, 31400 Toulouse (Saint-Michel) |
+| Area | Toulouse centre & suburbs — delivered Mon |
+| Status | **active** — regular customer |
+| Sales representative | Julien Fabre |
+| Customer since | 14/04/2017 (9 years) |
+| Payment | 30 days — SEPA direct debit, no delay |
+| Outstanding balance | 9 722,70 € incl. VAT (ceiling 14 000 €) |
+| Temperament | economical, faithful, pressed — quality ★☆☆, price ★★★, risk of losing the customer low |
 
-## Qui ils sont
+## Who they are
 
-Boulangerie de village à Toulouse (Saint-Michel) avec dépôt de pain dans deux communes voisines. Gros consommateur de T65 et de seigle.
+Village bakery in Toulouse (Saint-Michel) with bread deposit in two nearby communes. Large consumer of T65 and rye.
 
-## Les personnes
+## People
 
-- **Cédric Lacroix** — Boulanger-patron · 06 25 03 48 23 · cedric@fourniltoulousesaintmich.fr
-  - Comment il/elle parle : Calcule tout, demande les promos et les fins de lot.
-  - Tics : « C'est combien au kilo, ramené ? » · « Juste ce qu'il faut, pas plus. »
-- **Kenji Breton** — Boulangère (boutique et commandes) · 06 86 16 21 24
-  - Comment il/elle parle : Appelle entre deux services, raccroche vite.
-  - Tics : « Pareil que d'hab, go. » · « C'est bon ? Je raccroche. »
+- **Cédric Lacroix** — bakery owner · 06 25 03 48 23 · cedric@fourniltoulousesaintmich.fr
+  - Speaking style: Calculate everything, ask for promos and lot ends.
+  - Typical phrases: "How much by kilo, brought back?" · "Just what you need, no more."
+- **Kenji Breton** — Bakery (shop and orders) · 06 86 16 21 24
+  - Speaking style: Calls between two services, hang up fast.
+  - Typical phrases: "Same as usual, go." · "It's good? I'm hanging up."
 
-## Ce qu'ils achètent et comment
+## What they buy and how
 
-Commande une fois par semaine, en général la veille entre 13h et 17h, surtout par téléphone et WhatsApp. Produits habituels : farine de blé T55 tradition française (sac 25 kg), levure fraîche boulangère (pain de 500 g), bâtons de chocolat boulanger 44 % (carton 1,6 kg, 300 bâtons), sacs à baguette kraft imprimés (carton 1000), sel fin de mer (sac 25 kg), farine bise T80 (sac 25 kg), farine de gruau T45 pâtissière (sac 25 kg), farine de seigle T130 (sac 25 kg).
+Order once a week, usually the day before between 13h and 17h, especially by phone and WhatsApp. Regular products: T55 traditional French wheat flour (25 kg bag), Fresh baker's yeast (500 g block), Baker's chocolate sticks 44% (1.6 kg carton, 300 sticks), Printed kraft baguette bags (carton of 1000), Fine sea salt (25 kg bag), T80 bise flour (25 kg bag), T45 gruau pastry flour (25 kg bag), T130 rye flour (25 kg bag).
 
-Sur les 90 derniers jours (12 commandes livrées) :
+Over the last 90 days (12 orders delivered):
 
-| Produit | Volume 90 j | Lignes | Dernier prix |
+| Product | 90-day volume | Lines | Last price |
 |---|---|---|---|
-| Beurre de tourage 82 % (plaque 2 kg) (`prd_0026`) | 529,90 kg | 6 | 9,32 € |
-| Farine de blé T55 tradition française (sac 25 kg) (`prd_0001`) | 234,00 pièce | 10 | 19,01 € |
-| Farine de gruau T45 pâtissière (sac 25 kg) (`prd_0003`) | 184,00 pièce | 8 | 22,56 € |
-| Beurre doux AOP Charentes-Poitou (carton 10 × 1 kg) (`prd_0027`) | 383,01 kg | 7 | 10,20 € |
-| Bâtons de chocolat boulanger 44 % (carton 1,6 kg, 300 bâtons) (`prd_0042`) | 163,00 colis | 8 | 13,90 € |
-| Farine de blé T65 campagne (sac 25 kg) (`prd_0004`) | 110,00 pièce | 8 | 18,24 € |
-| Farine bise T80 (sac 25 kg) (`prd_0005`) | 78,00 pièce | 8 | 20,64 € |
-| Sacs à baguette kraft imprimés (carton 1000) (`prd_0065`) | 42,00 colis | 5 | 22,00 € |
+| 82% laminating butter (2 kg sheet) (`prd_0026`) | 529,90 kg | 6 | 9,32 € |
+| T55 traditional French wheat flour (25 kg bag) (`prd_0001`) | 234,00 piece | 10 | 19,01 € |
+| T45 gruau pastry flour (25 kg bag) (`prd_0003`) | 184,00 piece | 8 | 22,56 € |
+| AOP Charentes-Poitou unsalted butter (carton of 10 × 1 kg) (`prd_0027`) | 383,01 kg | 7 | 10,20 € |
+| Baker's chocolate sticks 44% (1.6 kg carton, 300 sticks) (`prd_0042`) | 163,00 box | 8 | 13,90 € |
+| T65 country wheat flour (25 kg bag) (`prd_0004`) | 110,00 piece | 8 | 18,24 € |
+| T80 bise flour (25 kg bag) (`prd_0005`) | 78,00 piece | 8 | 20,64 € |
+| Printed kraft baguette bags (carton of 1000) (`prd_0065`) | 42,00 box | 5 | 22,00 € |
 
-Fiche CRM : _Livraison avant 11h, après le rush du matin. Ne veut pas de surgelé : tout est fait maison. Livré lun. Accepte les substitutions équivalentes si on prévient._
+CRM record : _Delivery before 11h, after the morning rush. Do not want to freeze: everything is homemade. Delivered Mon. Accept equivalent substitutions if notified._
 
-## Ce qui les agace
+## What frustrates them
 
-- Des pains de levure mous
-- Les hausses du beurre annoncées le jour même
+- Soft yeast breads
+- The increases in butter announced the same day
 
-## Historique marquant
+## A brief history
 
-- **07/12/2020** · demande spéciale · Fêtes 2020 : réservation
-- **06/12/2021** · demande spéciale · Fêtes 2021 : réservation
-- **09/04/2022** · prix · Hausse tarifaire (gazole, énergie)
-- **12/07/2023** · qualité · Qualité : sel fin de mer (sac 25 kg)
-- **29/11/2023** · demande spéciale · Fêtes 2023 : réservation de volumes
-- **29/07/2024** · note · Fermeture d'été 2024
-- **13/01/2025** · prix · Tarifs 2025
-- **05/05/2025** · livraison · Chaîne du froid
-- **31/12/2025** · demande spéciale · Fêtes 2025 : réservation de volumes
-- **11/01/2026** · prix · Tarifs 2026
-- **03/08/2026** · livraison · Livraison laissée devant la porte
-- **16/11/2026** · qualité · Qualité : sel fin de mer (sac 25 kg)
+- **07/12/2020** · special request · Holidays 2020 : reservation
+- **06/12/2021** · special request · Holidays 2021 : reservation
+- **09/04/2022** · price · Tariff increase (diesel, energy)
+- **12/07/2023** · Quality · Quality : Fine sea salt (25 kg bag)
+- **29/11/2023** · special request · Holidays 2023 : volume reservation
+- **29/07/2024** · note · Summer closure 2024
+- **13/01/2025** · prices · Rates 2025
+- **05/05/2025** · delivery · Cold chain
+- **31/12/2025** · special request · Holidays 2025 : volume reservation
+- **11/01/2026** · prices · Rates 2026
+- **03/08/2026** · Delivery · Delivery left at the door
+- **16/11/2026** · Quality · Quality : Fine sea salt (25 kg bag)
 
-Historique complet : 35 événements (9 visite, 8 appel, 4 compliment, 4 demande spéciale, 3 qualité, 3 prix, 2 livraison, 1 ouverture, 1 note).
+Full history: 35 events (9 visit, 8 call, 4 compliment, 4 special request, 3 quality, 3 price, 2 delivery, 1 opening, 1 note).
 
-## Dossiers ouverts aujourd'hui
+## Open cases
 
-- **16/11/2026 — Qualité : sel fin de mer (sac 25 kg)** (`ord_024544`, `inv_008384`)
-  Kenji appelle à réception : mauvaise référence livrée (commande CMD-2026-007317, 4 pièces). Kenji : « C'est bon ? Je raccroche. »
+- **16/11/2026 — Quality: Fine sea salt (25 kg bag)** (`ord_024544`, `inv_008384`)
+  Kenji calls at reception: wrong reference delivered (command CMD-2026-007317, 4 pieces). Kenji: "It's okay? I hang up."
 
-## Comment leur parler
+## How to talk to them
 
-- Appeler après 13h, jamais pendant les fournées.
-- Rappeler les pré-commandes d'Épiphanie dès novembre.
-- Parler en sacs, pas en kilos.
+- Call after 13h, never during batches.
+- Call Epiphany pre-orders back in November.
+- Talk in bags, not in kilos.
 
-## Prix & groupe
+## Price & group
 
-Groupes : **Boulangeries** (`boulangeries`).
-Pas de prix négocié.
+Groups: **Boulangeries** (`boulangeries`).
+No negotiated prices.
 
-Règles de prix qui peuvent s'appliquer :
-- `prl_0001` Boulangeries : −4 % sur les farines dès 10 sacs
-- `prl_0006` Épiphanie 2027 : poudre d'amande −6 % dès 20 kg
-- `prl_0007` Épiphanie 2027 : couronnes et fèves −5 %
+Price rules that may apply:
+- `prl_0001` Bakeries: -4 % on flours from 10 bags
+- `prl_0006` Epiphany 2027: almond powder -6 % from 20 kg
+- `prl_0007` Epiphany 2027: crowns and beans -5 %
 
-Dernières notes CRM :
+Latest notes CRM:
 
-- 09/01/2026, Julien (commercial) : Cédric fait 600 galettes et 300 couronnes pour l'Épiphanie : réserver poudre d'amande et feuilletage.
-- 01/05/2026, Julien (commercial) : Fermé le mercredi : jamais de livraison ce jour-là.
+- 09/01/2026, Julien (commercial): Cédric makes 600 cakes and 300 crowns for Epiphany: reserve almond powder and leafing.
+- 01/05/2026, Julien (commercial): Closed on Wednesday: never delivered on that day.

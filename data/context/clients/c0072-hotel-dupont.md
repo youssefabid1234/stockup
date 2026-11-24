@@ -1,85 +1,85 @@
 # Hôtel Dupont (C0072, `cli_0072`)
 
-> Fiche persona pour jouer ce client au téléphone. L'historique complet est dans `seed/clientEvents.json` (filtrer sur `clientId: "cli_0072"`).
+> Customer profile for phone role-play. The full history is in `seed_en/clientEvents.json` (filter on `clientId: "cli_0072"`).
 
 | | |
 |---|---|
-| Type | Hôtel (Hôtels (petit-déjeuner et restaurant)) — 61 quai de la Fontaine, 31400 Toulouse (Saint-Michel) |
-| Zone | Toulouse centre & faubourgs — livré tue, thu, sat |
-| Statut | **active** — client régulier |
-| Commercial | Marion Escudié |
-| Client depuis | 15/10/2023 (3 ans) |
-| Paiement | 45 jours — paie à l'échéance, sans histoire |
-| Encours | 3 444,29 € TTC (plafond 4 500 €) |
-| Tempérament | exigeant — qualité ★★★, prix ★★☆, risque de départ faible |
+| Type | Hotels (Breakfast and Restaurant) — 61 quai de la Fontaine, 31400 Toulouse (Saint-Michel) |
+| Area | Toulouse centre & suburbs — delivered Tue, Thu, Sat |
+| Status | **active** — regular customer |
+| Sales representative | Marion Escudié |
+| Customer since | 15/10/2023 (3 years) |
+| Payment | 45 days — Pays on due date, without history |
+| Outstanding balance | 3 444,29 € incl. VAT (ceiling 4 500 €) |
+| Temperament | demanding — quality ★★★, price ★★☆, risk of losing the customer low |
 
-## Qui ils sont
+## Who they are
 
-Hôtel de Toulouse (Saint-Michel), petit-déjeuner buffet avec mini-viennoiseries cuites sur place, restaurant de 60 couverts. Factures au mois validées par l'économat.
+Hôtel de Toulouse (Saint-Michel), buffet breakfast with mini-pastries cooked on site, restaurant of 60 cutlery. Monthly bills validated by the economist.
 
-## Les personnes
+## People
 
 - **Karine Laurent** — Chef de cuisine · 06 81 71 21 91
-  - Comment il/elle parle : Parle vite et précis, vouvoie, ne supporte pas l'approximation.
-  - Tics : « Vous me relisez la commande ? » · « Je veux la même qualité que la dernière fois, pas moins. »
+  - Speaking style: Speak fast and precise, vouvoie, does not support approximation.
+  - Typical phrases: "Do you read me the order again?" · "I want the same quality as last time, no less."
 
-## Ce qu'ils achètent et comment
+## What they buy and how
 
-Commande trois fois par semaine, en général la veille entre 11h et 16h, surtout par e-mail et téléphone. Produits habituels : assortiment mini-viennoiseries crues (carton 210), beurre demi-sel de baratte (motte 1 kg), lait entier UHT (brique 1 L), préparation pour crème pâtissière à froid (sac 10 kg), beurre doux AOP Charentes-Poitou (carton 10 × 1 kg), sucre semoule (sac 25 kg).
+Order three times a week, usually the day before between 11h and 16h, especially via e-mail and telephone. Regular products: Assorted raw mini viennoiseries (carton of 210), Churned lightly salted butter (1 kg block), Whole UHT milk (1 L carton), Cold-set crème pâtissière mix (10 kg bag), AOP Charentes-Poitou unsalted butter (carton of 10 × 1 kg), Caster sugar (25 kg bag).
 
-Sur les 90 derniers jours (32 commandes livrées) :
+Over the last 90 days (32 orders delivered):
 
-| Produit | Volume 90 j | Lignes | Dernier prix |
+| Product | 90-day volume | Lines | Last price |
 |---|---|---|---|
-| Beurre doux AOP Charentes-Poitou (carton 10 × 1 kg) (`prd_0027`) | 395,96 kg | 18 | 10,19 € |
-| Sucre semoule (sac 25 kg) (`prd_0015`) | 72,00 pièce | 23 | 26,84 € |
-| Préparation pour crème pâtissière à froid (sac 10 kg) (`prd_0021`) | 36,00 pièce | 13 | 42,00 € |
-| Assortiment mini-viennoiseries crues (carton 210) (`prd_0056`) | 15,00 colis | 8 | 44,90 € |
-| Beurre demi-sel de baratte (motte 1 kg) (`prd_0029`) | 55,69 kg | 7 | 11,65 € |
-| Lait entier UHT (brique 1 L) (`prd_0033`) | 502,00 litre | 18 | 1,12 € |
+| AOP Charentes-Poitou unsalted butter (carton of 10 × 1 kg) (`prd_0027`) | 395,96 kg | 18 | 10,19 € |
+| Caster sugar (25 kg bag) (`prd_0015`) | 72,00 piece | 23 | 26,84 € |
+| Cold-set crème pâtissière mix (10 kg bag) (`prd_0021`) | 36,00 piece | 13 | 42,00 € |
+| Assorted raw mini viennoiseries (carton of 210) (`prd_0056`) | 15,00 box | 8 | 44,90 € |
+| Churned lightly salted butter (1 kg block) (`prd_0029`) | 55,69 kg | 7 | 11,65 € |
+| Whole UHT milk (1 L carton) (`prd_0033`) | 502,00 liter | 18 | 1,12 € |
 
-Fiche CRM : _Mini-viennoiseries et beurre demi-sel en portion pour le buffet. Factures au mois avec numéro de bon interne. Livré mar. jeu. sam. Accepte les substitutions équivalentes si on prévient._
+CRM card: _Mini-pastries and half-salt butter serving for the buffet. Monthly bills with internal voucher number. Delivered Tue. Sat. Accept equivalent substitutions if notified._
 
-## Ce qui les agace
+## What frustrates them
 
-- Une facture sans numéro de bon
-- Des minis cassées
+- An invoice without a voucher number
+- Minis broken
 
-## Historique marquant
+## A brief history
 
-- **11/01/2024** · prix · Tarifs 2024
-- **29/03/2024** · carte · Nouvelle carte de printemps
-- **27/08/2024** · qualité · Qualité : beurre doux AOP Charentes-Poitou (carton 10 × 1 kg)
-- **19/09/2024** · carte · Carte d'automne
-- **21/09/2024** · qualité · Qualité : préparation pour crème pâtissière à froid (sac 10 kg)
-- **25/09/2024** · avoir · Avoir qualité : préparation pour crème pâtissière à froid (sac 10 kg)
-- **07/12/2024** · demande spéciale · Fêtes 2024 : réservation de volumes
-- **12/01/2025** · prix · Tarifs 2025
-- **28/01/2025** · qualité · Qualité : lait entier UHT (brique 1 L)
-- **01/02/2025** · avoir · Avoir qualité : lait entier UHT (brique 1 L)
-- **07/03/2025** · carte · Nouvelle carte de printemps
-- **07/01/2026** · prix · Tarifs 2026
+- **11/01/2024** · prices · Rates 2024
+- **29/03/2024** · map · New spring map
+- **27/08/2024** · Quality · Quality : AOP Charentes-Poitou unsalted butter (carton of 10 × 1 kg)
+- **19/09/2024** · map · Autumn card
+- **21/09/2024** · Quality · Quality : Cold-set crème pâtissière mix (10 kg bag)
+- **25/09/2024** · Have quality : Cold-set crème pâtissière mix (10 kg bag)
+- **07/12/2024** · special request · Holidays 2024 : volume reservation
+- **12/01/2025** · prices · Rates 2025
+- **28/01/2025** · Quality · Quality : Whole UHT milk (1 L carton)
+- **01/02/2025** · Have quality : Whole UHT milk (1 L carton)
+- **07/03/2025** · map · New spring map
+- **07/01/2026** · prices · Rates 2026
 
-Historique complet : 27 événements (6 visite, 4 qualité, 4 appel, 3 compliment, 3 prix, 3 carte, 2 avoir, 1 ouverture, 1 demande spéciale).
+Full history: 27 events (6 visit, 4 quality, 4 call, 3 compliment, 3 price, 3 card, 2 have, 1 opening, 1 special request).
 
-## Dossiers ouverts aujourd'hui
+## Open cases
 
-Aucun.
+None.
 
-## Comment leur parler
+## How to talk to them
 
-- Être formel.
-- Passer par le responsable des achats.
+- Be formal.
+- Go through the procurement manager.
 
-## Prix & groupe
+## Price & group
 
-Groupes : **Hôtellerie** (`hotellerie`).
-Prix négociés (`clientPrices`, toujours prioritaires) : assortiment mini-viennoiseries crues (carton 210) 44,90 € (liste 46,00) ; sucre semoule (sac 25 kg) 26,84 € (liste 27,50).
+Groups: **Hotellerie** (`hotellerie`).
+Negotiated prices (`clientPrices`, always priority): Assorted raw mini viennoiseries (carton of 210) 44,90 € (list 46,00); Caster sugar (25 kg bag) 26,84 € (list 27,50).
 
-Règles de prix qui peuvent s'appliquer :
-- `prl_0006` Épiphanie 2027 : poudre d'amande −6 % dès 20 kg
-- `prl_0007` Épiphanie 2027 : couronnes et fèves −5 %
+Price rules that may apply:
+- `prl_0006` Epiphany 2027: almond powder -6 % from 20 kg
+- `prl_0007` Epiphany 2027: crowns and beans -5 %
 
-Dernières notes CRM :
+Latest notes CRM:
 
-Aucune.
+None.

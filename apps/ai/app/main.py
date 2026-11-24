@@ -1,10 +1,10 @@
 """
-AI service entry point: HTTP routes + WS /voice on the same port (AI_PORT, default 4100).
+AI service entry point: HTTP Roads + WS /voice on the same port (AI_PORT, default 4100).
 
     uv run python -m app.main                      # or, with auto-reload:
     uv run uvicorn app.main:app --reload --port 4100
 
-API docs: http://localhost:4100/docs — the contract (all events and WS messages) is in /openapi.json.
+API Docs: http://localhost:4100/docs — the contract (all events and WS messages) is in /openapi.json.
 """
 
 from contextlib import asynccontextmanager
@@ -30,7 +30,7 @@ async def lifespan(_app: FastAPI):
     try:  # build the provider clients now: a missing key fails at startup, not at the first call
         llm, stt, tts = get_llm_client(), get_stt_client(), get_tts_client()
     except ConfigError as e:
-        raise SystemExit(f"[ai] configuration error: {e}\n     see apps/ai/README.md and .env.example") from None
+        raise SystemExit(f"[ai] error configuration: {e}\n     see apps/ai/README.md and .env.example") from None
     print(f"[ai] http://localhost:{settings.port}  (WS /voice, docs /docs)")
     print(f"[ai] llm={llm.provider}:{llm.model}  stt={stt.name}  tts={tts.name}  erp={settings.erp_api_url}", flush=True)
     yield

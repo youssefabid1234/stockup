@@ -1,62 +1,62 @@
-# Prix et crédit
+# Prices and credit
 
-## Prix de vente
+## Selling prices
 
-- Tarif beurre et chocolat révisé le 1er de chaque mois (cotation beurre, cours du cacao), envoyé aux clients le 25 du mois précédent.
-- Farines : prix trimestriel indexé sur le blé meunier ; accords de prix annuels possibles pour les gros boulangers.
-- Surgelés, emballages et épicerie : tarif annuel au 1er février.
-- Franco 150 € HT, sinon 12 € de frais de livraison.
-- Remises : commerciaux jusqu'à 5 %, au-delà Bernard. Le standard ne peut pas accorder de remise.
+- Rate butter and chocolate revised the first of each month (butter rate, cocoa price), sent to customers the 25 of the previous month.
+- Flours: quarterly price indexed on milled wheat; possible annual price agreements for large bakers.
+- Frozen, Packed and Grocery: Annual rate at 1 February.
+- Franco 150 € excl. VAT, otherwise 12 € shipping costs.
+- Discounts: sales staff may approve up to 5%. Bernard must approve larger discounts. The phone agent cannot grant a discount.
 
-Ordre de résolution : prix négocié client > règle de prix (client, puis groupe) > prix liste.
+Order of resolution: negotiated customer price > price rule (customer, then group) > price list.
 
-## Groupes de clients
+## Customer groups
 
-- **Boulangeries** (`boulangeries`) : Boulangeries artisanales : farines au sac, levure, tourage, emballages.
-- **Pâtisseries** (`patisseries`) : Pâtissiers et chocolatiers : couvertures, crème, fruits secs ; pics à Pâques et Noël.
-- **Restaurants** (`chr`) : Restaurants et bistrots : crème, œufs, beurre, quelques surgelés.
-- **Snacking** (`snacking`) : Franchises et sandwicheries : viennoiserie crue au carton.
-- **GMS** (`gms`) : Rayons pain et terminaux de cuisson des supermarchés.
-- **Traiteurs** (`traiteurs`) : Traiteurs événementiels, volumes irréguliers.
-- **Hôtellerie** (`hotellerie`) : Hôtels : petit-déjeuner, factures au mois.
-- **Collectivités** (`collectivites`) : Cuisines centrales et établissements publics.
-- **Marché public** (`marche-public`) : Prix au bordereau, paiement par mandat administratif.
-- **Grands comptes** (`grands-comptes`) : Les plus gros chiffres d'affaires des 12 derniers mois, suivis par la direction.
-- **À surveiller** (`a-surveiller`) : Retards de paiement, litiges ou compte bloqué : vérifier l'encours avant toute commande.
-- **Clients perdus** (`perdus`) : Plus de commande depuis plusieurs mois (partis à la concurrence ou fermés) : à reconquérir.
+- **Bakeries** (`boulangeries`): Artisan bakeries: flour by the sack, yeast, laminating butter, packaging.
+- **Pastry shops** (`patisseries`): Pastry chefs and chocolatiers: couverture, cream, dried fruit; peaks at Easter and Christmas.
+- **Restaurants** (`chr`): Restaurants and bistros: cream, eggs, butter, some frozen products.
+- **Snacking** (`snacking`): Franchises and sandwich shops: raw viennoiserie by the carton.
+- **Supermarkets** (`gms`): Supermarket bread aisles and bake-off points.
+- **Caterers** (`traiteurs`): Event caterers, irregular volumes.
+- **Hotels** (`hotellerie`): Hotels: breakfast, monthly invoicing.
+- **Institutional catering** (`collectivites`): Central kitchens and public institutions.
+- **Public procurement** (`marche-public`): Prices per schedule, payment by administrative order.
+- **Key accounts** (`grands-comptes`): The highest revenues over the last 12 months, monitored by management.
+- **To watch** (`a-surveiller`): Late payments, disputes or blocked account: check the outstanding balance before any order.
+- **Lost customers** (`perdus`): No orders for several months (gone to the competition or closed): to win back.
 
-## Règles de prix
+## Pricing rules
 
-- `prl_0001` Boulangeries : −4 % sur les farines dès 10 sacs, du 01/01/2024
-- `prl_0002` Pâtisseries : −5 % sur le chocolat dès 20 kg, du 01/09/2024
-- `prl_0003` GMS : −5 % sur la viennoiserie crue, du 01/02/2025 — Accord annuel des terminaux de cuisson.
-- `prl_0004` Collectivités : −4 % sur la crèmerie, du 01/01/2025
-- `prl_0005` Snacking : coût + 20 % sur les chocolatines, du 01/06/2025 — Prix plancher accordé aux franchises.
-- `prl_0006` Épiphanie 2027 : poudre d'amande −6 % dès 20 kg, du 15/11/2026 au 31/01/2027 — Opération galettes : pré-commande avant le 15 décembre.
-- `prl_0007` Épiphanie 2027 : couronnes et fèves −5 %, du 15/11/2026 au 15/12/2026 — Remise de pré-commande.
-- `prl_0008` Pâques 2026 : couvertures −4 % en précommande (inactive), du 01/02/2026 au 28/02/2026
+- `prl_0001` Bakeries: -4 % on flours from 10 bags, 01/01/2024
+- `prl_0002` Pastries: -5 % on chocolate from 20 kg, 01/09/2024
+- `prl_0003` GMS: -5 % on raw pastry, of 01/02/2025 - Annual agreement of cooking terminals.
+- `prl_0004` Communities: -4 % on Creamery, 01/01/2025
+- `prl_0005` Snacking: cost + 20 % on pains au chocolat, 01/06/2025 — Floor price for franchises.
+- `prl_0006` Epiphany 2027: almond powder −6 % from 20 kg, from 15/11/2026 to 31/01/2027 — Operation cakes: pre-order before 15 December.
+- `prl_0007` Epiphany 2027: crowns and beans -5 %, from 15/11/2026 to 15/12/2026 — Pre-order discount.
+- `prl_0008` Easter 2026 : Covers −4 % pre-order (inactive), 01/02/2026 to 28/02/2026
 
-## Crédit et relances
+## Credit and collections
 
-- Boulangers en LCR à 30 jours fin de mois ; nouveaux clients au comptant pendant trois mois.
-- Relance à J+5 par mail, J+15 par téléphone (Sandrine), J+30 mise en demeure.
-- Blocage automatique à la deuxième LCR rejetée ou au-delà du plafond d'encours.
-- Déblocage : règlement de l'échu ou échéancier signé par Bernard ; livraisons au comptant en attendant.
+- Bakers pay by bill of exchange at 30 days end of month. New customers pay on delivery for three months.
+- Send a reminder five days after the due date, call after 15 days (Sandrine), and email again after 30 days.
+- Automatic locking at the second LCR rejected or above the current ceiling.
+- Unblocking: settlement of the due date or schedule signed by Bernard; cash deliveries pending.
 
-## Clients à surveiller (au 24/11)
+## Customers to be monitored (at 24/11)
 
-- Le Pétrin de Balma (cli_0007) : mauvais payeur, compte à risque, 6 facture échues pour 7 244,72 € TTC — **bloqué**.
-- Au Pain d'Antan (cli_0008) : mauvais payeur, compte à risque, 4 facture échues pour 19 076,03 € TTC — **bloqué**.
-- Maison Pujol Traiteur (cli_0009) : paie à l'heure mais déduit ce qu'il conteste, 1 facture échue pour 294,30 € TTC.
-- La Brasserie des Carmes (cli_0014) : paie en retard (3 à 6 semaines), mais finit par payer.
-- Le Pétrin de Muret (cli_0019) : paie à l'heure mais déduit ce qu'il conteste, 1 facture échue pour 182,90 € TTC.
-- Le Comptoir de Colomiers (cli_0025) : paie en retard (3 à 6 semaines), mais finit par payer, 1 facture échue pour 672,39 € TTC.
-- Garcia Traiteur (cli_0035) : paie en retard (3 à 6 semaines), mais finit par payer, 5 facture échues pour 12 980,98 € TTC.
-- Le Comptoir de Toulouse (Capitole) (cli_0037) : paie en retard (3 à 6 semaines), mais finit par payer.
-- Maison Bourgeois Chocolatier (cli_0040) : paie en retard (3 à 6 semaines), mais finit par payer, 3 facture échues pour 4 507,13 € TTC.
-- L'Épi de Balma (cli_0042) : paie en retard (3 à 6 semaines), mais finit par payer, 3 facture échues pour 6 113,24 € TTC.
-- Le Buffet Toulousain (cli_0046) : mauvais payeur, compte à risque, 3 facture échues pour 4 883,56 € TTC — **bloqué**.
-- Le Fournil de Labège (cli_0050) : paie en retard (3 à 6 semaines), mais finit par payer, 1 facture échue pour 4 474,22 € TTC.
-- Restaurant inter-entreprises Rangueil (cli_0057) : mandat administratif : paiement lent mais sûr, 1 facture échue pour 18 878,58 € TTC.
-- Traiteur Saint-Aubin (cli_0058) : paie en retard (3 à 6 semaines), mais finit par payer.
-- Aux Délices de Florian (cli_0067) : paie en retard (3 à 6 semaines), mais finit par payer, 1 facture échue pour 6 884,34 € TTC.
+- Le Pétrin de Balma (cli_0007): Bad payer, at-risk account, 6 overdue invoices for 7 244,72 € incl. VAT — **blocked**.
+- Au Pain d'Antan (cli_0008): Bad payer, at-risk account, 4 overdue invoices for 19 076,03 € incl. VAT — **blocked**.
+- Maison Pujol Traiteur (cli_0009): Pays on time but deducts what he contests, 1 overdue invoice for 294,30 € incl. VAT.
+- La Brasserie des Carmes (cli_0014): Pays late (3 to 6 weeks), but ends up paying.
+- Le Pétrin de Muret (cli_0019): Pays on time but deducts what he contests, 1 overdue invoice for 182,90 € incl. VAT.
+- Le Comptoir de Colomiers (cli_0025): Pays late (3 to 6 weeks), but ends up paying, 1 overdue invoice for 672,39 € incl. VAT.
+- Garcia Traiteur (cli_0035): Pays late (3 to 6 weeks), but ends up paying, 5 bill due for 12 980,98 € incl. VAT.
+- Le Comptoir de Toulouse (Capitol) (cli_0037): Pays late (3 to 6 weeks), but ends up paying.
+- Maison Bourgeois Chocolatier (cli_0040): Pays late (3 to 6 weeks), but ends up paying, 3 bill due for 4 507,13 € incl. VAT.
+- L'Épi de Balma (cli_0042): Pays late (3 to 6 weeks), but ends up paying, 3 bill due for 6 113,24 € incl. VAT.
+- Le Buffet Toulousain (cli_0046): Bad payer, at-risk account, 3 overdue invoices for 4 883,56 € incl. VAT — **blocked**.
+- Le Fournil de Labège (cli_0050): Pays late (3 to 6 weeks), but ends up paying, 1 overdue invoice for 4 474,22 € incl. VAT.
+- Restaurant inter-entreprises Rangueil (cli_0057): administrative mandate: slow but secure payment, 1 invoice expired for 18 878,58 € incl. VAT.
+- Traiteur Saint-Aubin (cli_0058): Pays late (3 to 6 weeks), but ends up paying.
+- Aux Délices de Florian (cli_0067): Pays late (3 to 6 weeks), but ends up paying, 1 overdue invoice for 6 884,34 € incl. VAT.

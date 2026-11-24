@@ -122,10 +122,10 @@ async def load_call_context(erp: ErpClient, client_id: str) -> CallContext:
     return cc
 
 
-# ── "Fermé le mercredi" vs the ERP's delivery days ──
+# - - "Closed Wednesday" vs. the ERP's delivery days ──
 
-_DAY_CODES = {"lundi": "mon", "mardi": "tue", "mercredi": "wed", "jeudi": "thu", "vendredi": "fri", "samedi": "sat", "dimanche": "sun"}  # fmt: skip
-_CLOSED = re.compile(r"ferm[ée]e?s?\s+(?:le\s+|les\s+)?(lundi|mardi|mercredi|jeudi|vendredi|samedi|dimanche)", re.IGNORECASE)
+_DAY_CODES = {name.lower(): name[:3].lower() for name in ("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")}
+_CLOSED = re.compile(r"closed\s+(?:on\s+)?(" + "|".join(_DAY_CODES) + r")s?\b", re.I)
 
 
 def contradicts_delivery_days(text: str, delivery_days: list[str]) -> bool:
@@ -257,7 +257,7 @@ async def caller_context(
         # the request but confirms nothing; the wholesaler approves the new account first.
         return CallContext(
             client_id="",
-            name=company_name or contact_name or "Nouveau client",
+            name=company_name or contact_name or "New customer",
             status="new",
             caller_contact=contact_name,
             caller_phone=phone,
@@ -266,45 +266,41 @@ async def caller_context(
 
 
 NEW_CLIENT_RULES = (
-    "NOUVEAU CLIENT, pas encore dans l'ERP. Accueille-le chaleureusement, demande ou confirme le nom de l'établissement, "
-    "l'adresse de livraison et ce qu'il veut commander. Ne crée et ne confirme AUCUNE commande : explique que l'équipe "
-    "ouvre son compte et le rappelle très vite pour valider sa première commande. Tu peux lui dire si un produit est "
-    "disponible et son prix catalogue."
+    "NEW CUSTOMER. Ask for the contact details, delivery address and requested items. Do not create or confirm an order. "
+    "Explain that the team will open the account and call back to validate the first order. You may quote availability and list prices."
 )
-
-
-DAYS_FR = {"mon": "lundi", "tue": "mardi", "wed": "mercredi", "thu": "jeudi", "fri": "vendredi", "sat": "samedi", "sun": "dimanche"}  # fmt: skip
+DAYS_FR = {code: name.title() for name, code in _DAY_CODES.items()}
 
 
 def render_for_prompt(cc: CallContext | None) -> str:
-    """The sheet as the model reads it (French, compact). '' when nothing is loaded."""
+    """The sheet as the model reads it (English, compact). '' when nothing is loaded."""
     if cc is None:
         return ""
-    on_phone = f"- Au téléphone : {cc.caller_contact}" + (f" ({cc.caller_phone})" if cc.caller_phone else "") if cc.caller_contact or cc.caller_phone else ""
+    on_phone = f"- On the phone: {cc.caller_contact}" + (f" ({cc.caller_phone})" if cc.caller_phone else "") if cc.caller_contact or cc.caller_phone else ""
     if cc.is_new:
-        return "\n".join(p for p in [f"# Appelant identifié avant l'appel : {cc.name}", on_phone, NEW_CLIENT_RULES] if p)
+        return "\n".join(p for p in [f"# Caller identified before the call: {cc.name}", on_phone, NEW_CLIENT_RULES] if p)
     lines = [
-        f"# Client au téléphone : {cc.name} ({cc.client_id})",
-        "Il est déjà identifié (numéro reconnu) et sa fiche est chargée ci-dessous (à jour) : ne le recherche pas (pas de"
-        " search, get_client ni get_context pour ce client), sers-toi de cette fiche et de son id. Utilise toujours les"
-        " outils pour le stock d'un autre produit, les prix et la commande.",
+        f"# Customer on the phone: {cc.name} ({cc.client_id})",
+        "This caller is already identified. Use the customer ID and record below. Do not search for this caller again. "
+        "Use tools for other products, prices and orders.",
+
         on_phone,
-        f"- Statut : {cc.status}" + (" — COMPTE BLOQUÉ : ne rien promettre, prendre le message" if cc.blocked else ""),
-        f"- Jours de livraison (ERP, ils font foi même si une note dit le contraire) : "
-        f"{', '.join(DAYS_FR.get(d, d) for d in cc.delivery_days) or 'inconnus'}",
+        f"- Status: {cc.status}" + (" — BLOCKED ACCOUNT: take a message without promising an order" if cc.blocked else ""),
+        f"- Delivery days (ERP, even if a note says otherwise): "
+        f"{', '.join(DAYS_FR.get(d, d) for d in cc.delivery_days) or 'unknown'}",
     ]
     prefs = " ".join(s for s in re.split(r"(?<=\.)\s+", cc.preferences) if not contradicts_delivery_days(s, cc.delivery_days))
     if prefs:
-        lines.append(f"- Préférences : {prefs}")
+        lines.append(f"- Preferences: {prefs}")
     if cc.outstanding is not None:
-        lines.append(f"- Encours : {cc.outstanding:.0f} € (plafond {cc.credit_limit or 0:.0f} €), problèmes ouverts : {cc.open_issues}")
+        lines.append(f"- Outstanding balance: {cc.outstanding:.0f} € (credit limit {cc.credit_limit or 0:.0f} €), open problems: {cc.open_issues}")
     if cc.usual:
         usual = "; ".join(
             f"{u.product_name} ({u.product_id}) ~{u.avg_qty:g} {u.unit}" + (f", stock {u.available:g}" if u.available is not None else "")
             for u in cc.usual
             if u.avg_qty is not None
         )
-        lines.append(f"- Commande habituelle : {usual}")
+        lines.append(f"- Usual order: {usual}")
     for n in cc.notes:
         lines.append(f"- Note : {n}")
     for e in cc.context_entries:

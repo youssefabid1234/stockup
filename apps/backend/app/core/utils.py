@@ -77,49 +77,24 @@ def total(xs: Iterable[float]) -> float:
 NNBSP = " "  # narrow no-break space: the French thousands separator
 
 
-def _fr_decimal(n: float, min_frac: int, max_frac: int) -> str:
-    """Format like n.toLocaleString("fr-FR", {minimumFractionDigits, maximumFractionDigits})."""
-    d = Decimal(n).quantize(Decimal(1).scaleb(-max_frac), rounding=ROUND_HALF_UP)
-    sign = "-" if d < 0 else ""
-    integer, _, frac = f"{abs(d):f}".partition(".")
-    frac = frac.rstrip("0").ljust(min_frac, "0")
-    groups = []
-    while len(integer) > 3:
-        groups.insert(0, integer[-3:])
-        integer = integer[:-3]
-    groups.insert(0, integer)
-    out = NNBSP.join(groups)
-    return f"{sign}{out},{frac}" if frac else f"{sign}{out}"
-
+def _decimal(n: float, min_frac: int, max_frac: int) -> str:
+    value = Decimal(n).quantize(Decimal(1).scaleb(-max_frac), rounding=ROUND_HALF_UP)
+    integer, _, fraction = f"{value:,.{max_frac}f}".partition(".")
+    fraction = fraction.rstrip("0").ljust(min_frac, "0")
+    return f"{integer}.{fraction}" if fraction else integer
 
 def fmt_eur(n: float) -> str:
-    """1234.5 → "1 234,50 €"."""
-    return f"{_fr_decimal(round2(n), 2, 2)} €"
-
+    return f"€{_decimal(round2(n), 2, 2)}"
 
 def fr_money(n: float) -> str:
-    """1234.5 → "1 234,50" (no currency sign)."""
-    return _fr_decimal(n, 2, 2)
-
+    return _decimal(n, 2, 2)
 
 def fr_num(n: float) -> str:
-    """1.5 → "1,5" (up to 3 decimals)."""
-    return _fr_decimal(n, 0, 3)
-
-
-_FR_WEEKDAYS = ["lun.", "mar.", "mer.", "jeu.", "ven.", "sam.", "dim."]
-_FR_MONTHS = ["janv.", "févr.", "mars", "avr.", "mai", "juin", "juil.", "août", "sept.", "oct.", "nov.", "déc."]
-
+    return _decimal(n, 0, 3)
 
 def fr_day(iso: str) -> str:
-    """"2026-11-24" → "le mar. 24 nov."."""
-    d = date.fromisoformat(iso[:10])
-    return f"le {_FR_WEEKDAYS[d.weekday()]} {d.day} {_FR_MONTHS[d.month - 1]}"
-
-
-def de(word: str) -> str:
-    """French elision: de("annuler") → "d'annuler", de("livrer") → "de livrer"."""
-    return f"d'{word}" if re.match(r"[aeiouyhéè]", word, re.I) else f"de {word}"
+    day = date.fromisoformat(iso[:10])
+    return f"{day:%a} {day.day} {day:%b}"
 
 
 # ───────── Dates (ISO strings) ─────────

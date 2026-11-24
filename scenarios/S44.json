@@ -1,16 +1,33 @@
 {
   "id": "S44",
   "owner": "daycem",
-  "title": "Salon de thé Les Glycines : fraises en rupture, rien d'équivalent en stock → ne rien proposer, demander ce qu'il souhaite",
-  "why": "Intelligent : quand aucun produit en stock n'a le même usage, on ne pousse pas un produit au hasard (citron, pomme) ; on annonce la rupture et on laisse le client choisir.",
+  "title": "Les Glycines asks for unavailable strawberries",
+  "why": "When no equivalent is available, explain the shortage and ask what the customer would like.",
   "client": "cli_0088",
   "turns": [
     {
-      "say": "Bonjour, Salon de thé Les Glycines. Il me faudrait 10 barquettes de fraises Gariguette pour lundi.",
+      "say": "Hello, Salon de thé Les Glycines here. I need ten punnets of Gariguette strawberries for Monday.",
       "expect": {
-        "tools_none": ["create_draft_order", "add_order_line", "place_order", "confirm_order"],
-        "says_any": ["souhait", "voulez", "préfér", "que puis-je", "autre chose"],
-        "says_none": ["citron", "pomme", "poire", "framboise", "inconnu", "substitution"]
+        "tools_none": [
+          "create_draft_order",
+          "add_order_line",
+          "place_order",
+          "confirm_order"
+        ],
+        "says_any": [
+          "would you",
+          "prefer",
+          "anything else",
+          "what can I"
+        ],
+        "says_none": [
+          "lemon",
+          "apple",
+          "pear",
+          "raspberry",
+          "unknown",
+          "substitution"
+        ]
       }
     }
   ]

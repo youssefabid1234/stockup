@@ -1,78 +1,78 @@
 # La Brasserie des Carmes (C0014, `cli_0014`)
 
-> Fiche persona pour jouer ce client au téléphone. L'historique complet est dans `seed/clientEvents.json` (filtrer sur `clientId: "cli_0014"`).
+> Customer profile for phone role-play. The full history is in `seed_en/clientEvents.json` (filter on `clientId: "cli_0014"`).
 
 | | |
 |---|---|
-| Type | Restaurant (Restaurants et bistrots) — 56 rue Émile-Zola, 31320 Castanet-Tolosan |
-| Zone | Balma, Labège & Sud toulousain — livré tue |
-| Statut | **active** — perdu (plus de commande), dernière livraison le 01/07/2025 |
-| Commercial | Marion Escudié |
-| Client depuis | 15/07/2023 (3 ans) |
-| Paiement | 30 jours — paie en retard (3 à 6 semaines), mais finit par payer |
-| Encours | 0,00 € TTC (plafond 2 500 €) |
-| Tempérament | pressé, chaleureux — qualité ★★★, prix ★★☆, risque de départ élevé |
+| Type | Restaurant (Restaurants and bistros) — 56 rue Émile-Zola, 31320 Castanet-Tolosan |
+| Area | Balma, Labège & south Toulouse — delivered Tue |
+| Status | **active** — lost (more order), last delivery on 01/07/2025 |
+| Sales representative | Marion Escudié |
+| Customer since | 15/07/2023 (3 years) |
+| Payment | 30 days — Pays late (3 to 6 weeks), but ends up paying |
+| Outstanding balance | 0,00 € incl. VAT (ceiling 2 500 €) |
+| Temperament | pressed, warm — quality ★★★, price ★★☆, high risk of losing the customer |
 
-## Qui ils sont
+## Who they are
 
-Restaurant traditionnel de Castanet-Tolosan, crêpes à la Chandeleur et desserts maison le week-end.
+Traditional restaurant in Castanet-Tolosan, pancakes in Chandeleur and homemade desserts on weekends.
 
-## Les personnes
+## People
 
-- **Guilhem Martin** — Chef-patron · 07 59 11 34 10
-  - Comment il/elle parle : Phrases courtes, pas le temps, veut un récapitulatif en dix secondes.
-  - Tics : « Vite, j'ai pas le temps. » · « Pareil que d'hab, go. »
+- **Guilhem Martin** — Chief Executive Officer · 07 59 11 34 10
+  - Speaking style: Short phrases, not time, wants a summary in ten seconds.
+  - Typical phrases: "Quickly, I don't have time." · "Same as usual, go."
 - **Sébastien Bousquet** — Chef de cuisine · 07 41 35 85 02
-  - Comment il/elle parle : Très sympathique, prend des nouvelles, tutoie vite.
-  - Tics : « Vous êtes des amours. » · « Bisous à l'équipe. »
+  - Speaking style: Very friendly, take news, quickly tutoe.
+  - Typical phrases: "You are lovers." · "Blessed to the team."
 
-## Ce qu'ils achètent et comment
+## What they buy and how
 
-Commande une fois par semaine, en général la veille entre 14h et 18h, surtout par téléphone et WhatsApp. Produits habituels : crème liquide UHT 35 % (brique 1 L), œufs plein air calibre M (plateau de 30), beurre pâtissier 82 % (carton 10 kg), lait entier UHT (brique 1 L), œuf entier liquide pasteurisé (brique 1 L), beurre doux AOP Charentes-Poitou (carton 10 × 1 kg), sel fin de mer (sac 25 kg), croissant pur beurre cru surgelé 70 g (carton 150).
+Order once a week, usually the day before between 14h and 18h, especially by phone and WhatsApp. Regular products: UHT liquid cream 35% (1 L carton), Free-range eggs, size M (tray of 30), 82% pastry butter (10 kg carton), Whole UHT milk (1 L carton), Pasteurised liquid whole egg (1 L carton), AOP Charentes-Poitou unsalted butter (carton of 10 × 1 kg), Fine sea salt (25 kg bag), Raw frozen all-butter croissant 70 g (carton of 150).
 
-Fiche CRM : _Chocolatines crues pour le brunch du dimanche. Crème et œufs deux fois par semaine. Livré mar. Accepte les substitutions équivalentes si on prévient._
+Sheet CRM: _Chocolatines raw for Sunday brunch. Cream and eggs twice a week. Delivered Tue. Accept equivalent substitutions if warned._
 
-## Ce qui les agace
+## What frustrates them
 
-- Les œufs cassés
-- Les livraisons pendant le service
-- Le minimum de commande
+- Broken eggs
+- Delivery during service
+- Minimum order
 
-## Historique marquant
+## A brief history
 
-- **18/08/2024** · paiement · Relance : FAC-2024-001520 échue
-- **20/10/2024** · paiement · Relance : FAC-2024-001929 échue
-- **07/11/2024** · demande spéciale · Fêtes 2024 : réservation de volumes
-- **09/12/2024** · paiement · Relance : FAC-2024-002278 échue
-- **13/01/2025** · prix · Tarifs 2025
-- **08/02/2025** · paiement · Relance : FAC-2024-002780 échue
-- **05/04/2025** · paiement · Relance : FAC-2025-000414 échue
-- **13/05/2025** · risque de départ · Commandes en baisse
-- **28/05/2025** · paiement · Relance : FAC-2025-000816 échue
-- **27/07/2025** · note · Fermeture d'été 2025
-- **31/07/2025** · paiement · Relance : FAC-2025-001305 échue
-- **02/08/2025** · note · Plus de commande depuis un mois
+- **18/08/2024** · Payment · Recovery : FAC-2024-001520
+- **20/10/2024** · Payment · Recovery : FAC-2024-001929
+- **07/11/2024** · special request · Holidays 2024 : volume reservation
+- **09/12/2024** · Payment · Recovery : FAC-2024-002278
+- **13/01/2025** · prices · Rates 2025
+- **08/02/2025** · Payment · Recovery : FAC-2024-002780
+- **05/04/2025** · Payment · Recovery : FAC-2025-000414
+- **13/05/2025** · risk of losing the customer · Lower orders
+- **28/05/2025** · Payment · Recovery : FAC-2025-000816
+- **27/07/2025** · note · Summer closure 2025
+- **31/07/2025** · Payment · Recovery : FAC-2025-001305
+- **02/08/2025** · note · More orders for a month
 
-Historique complet : 34 événements (11 paiement, 8 visite, 6 appel, 2 note, 1 ouverture, 1 qualité, 1 carte, 1 livraison, 1 demande spéciale, 1 prix, 1 risque de départ).
+Complete history: 34 events (11 payment, 8 visit, 6 call, 2 note, 1 opening, 1 quality, 1 card, 1 delivery, 1 special request, 1 price, 1 risk of losing the customer).
 
-## Dossiers ouverts aujourd'hui
+## Open cases
 
-Aucun.
+None.
 
-## Comment leur parler
+## How to talk to them
 
-- Être bref, le chef est en cuisine.
-- Ne pas appeler entre 12h et 14h30.
+- To be brief, the chef is in the kitchen.
+- Do not call between 12h and 14h30.
 
-## Prix & groupe
+## Price & group
 
-Groupes : **Restaurants** (`chr`), **À surveiller** (`a-surveiller`), **Clients perdus** (`perdus`).
-Pas de prix négocié.
+Groups: **Restaurants** (`chr`), **To be monitored** (`a-surveiller`), **Lost customers** (`perdus`).
+No negotiated prices.
 
-Règles de prix qui peuvent s'appliquer :
-- `prl_0006` Épiphanie 2027 : poudre d'amande −6 % dès 20 kg
-- `prl_0007` Épiphanie 2027 : couronnes et fèves −5 %
+Price rules that may apply:
+- `prl_0006` Epiphany 2027: almond powder -6 % from 20 kg
+- `prl_0007` Epiphany 2027: crowns and beans -5 %
 
-Dernières notes CRM :
+Latest notes CRM:
 
-- 01/11/2026, Sandrine (comptabilité) : Paie systématiquement en retard (3 à 5 semaines). Relancer par téléphone, Guilhem ne lit pas les mails de relance.
+- 01/11/2026, Sandrine (accounting): Pay systematically late (3 to 5 weeks). Relaunching by phone, Guilhem does not read the recovery emails.

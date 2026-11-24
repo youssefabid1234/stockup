@@ -1,34 +1,30 @@
-# Youssef – ⚡ Plusieurs cerveaux (orchestrateur, fiche préchargée, super-outil)  ·  mis à jour mar. 24/11
+# Youssef – Several brains (orchestrator, preloaded plug, super tool) · updated Tue. 24/11
 
-- Fait depuis la dernière sync :
-  - **« Qui appelle ? » avant l'appel** (PR #9) : 1re réplique S01 7,7 s → 3,5 s (/chat), 6,9 s → 3,9 s en voix.
-  - **Corrigé : « l'agent oublie qui appelle pendant l'appel »** (vu en test d'équipe). Deux causes :
-    1. chez qui n'avait pas `TEAM_PRELOAD=1` dans son `.env`, le nom s'affichait en haut mais la fiche n'était pas
-       donnée à l'agent → **l'appelant choisi dans le formulaire est maintenant toujours transmis** (sans interrupteur) ;
-    2. si le service IA redémarre en plein appel (git pull, fichier enregistré : uvicorn --reload), il perdait
-       l'appelant → **la page renvoie l'appelant à chaque reconnexion** (`resume`, la conversation à l'écran est gardée).
-    Vérifié en vrai : interrupteur éteint + redémarrage en plein appel → l'agent sait toujours « Nadine Sarrailh ».
-  - Fiche en cache copiée par appel (Guy puis Nadine pour la même boulangerie ne se mélangent plus).
-  - **T1 super-outil produit (`product_insight`)** : stock + arrivages + prix du client + remplaçants classés (règles de
-    Daycem) avec leur prix et leur promo, en un appel. 1re réplique : S05 6,2 → 3,9 s, S40 4,3 → 3,4 s, S04 4,1 → 3,5 s
-    (médianes) ; l'agent cite la promo exacte. Allumé par défaut dans `.env.example`.
-  - **Mains libres (page Voix, idée 1 + 2)** : plus besoin de maintenir Espace : le micro reste ouvert, début et fin de parole détectés (pause ≈ 0,65 s), et parler pendant que l'agent parle le coupe. Bouton « Mains libres » (allumé par défaut), Espace marche toujours. ⚠️ Mohamed Amine : ça touche ta page Voix (useVoiceSession : readRms, stopTalking({quiet})), relis stp.
-  - **Écoute robuste (mains libres)** : plus aucun morceau perdu (les phrases dites avant la réponse sont réunies en un
-    seul message, même coupées en pleine transcription), voix multiples séparées par Soniox ([appelant] / [autre voix])
-    et mots douteux marqués « mot(?) » → l'agent ignore les autres voix, garde la dernière correction, redemande un mot
-    douteux. Vérifié en vrai (2 voix ElevenLabs → Soniox ; 3 réponses de l'agent). ⚠️ Mohamed Amine : touche
-    voice_session (Conversation.pending), utterance.py, soniox.py (enable_speaker_diarization) : relis stp.
-  - **ERP en anglais** : `data/seed_en/` dans git (toutes les données traduites, ID intacts) ; s'active avec
-    `SEED_DIR_NAME=seed_en` dans `.env`. ⚠️ Pour l'agent/branche anglaise : le code qui lit du FRANÇAIS dans les données
-    doit suivre : `rules_sales.substitution_policy` (« refuse/accepte les substitutions » → « never any substitution »,
-    « accepts … substitutions »), `call_context` (« Fermé le <jour> » → « Closed on <day>s »), `rules_order` (alias et
-    mots d'emballage « sac/carton/plaque » → « bag/carton/sheet »), et les phrases générées par l'ERP lui-même
-    (`apps/backend`, ex. « Règle « … » : -8 % sur prix catalogue »). Noms des produits : `data/seed_en/GLOSSARY.md`.
-- En cours : T4 (deux cerveaux + Jev).
-- Pour Daycem : S05·2 attend `get_price` mais `quote_line` (Amine K.) répond juste → ajouter `quote_line` à `tools_any` ;
-  S05·1 « 82 » est dit en lettres (« quatre-vingt-deux ») → ajouter cette forme à `says_any`.
-- Changement de contrat : `caller` accepte `resume` ; `caller_ready` renvoie `resume`. `TEAM_PRELOAD` ne sert plus
-  qu'à l'identification automatique dans la conversation (sans formulaire).
-- J'ai besoin de : **tout le monde → testez la page Voix en passant par « Qui appelle ? »** (obligatoire avant de parler).
-- Interrupteur(s) : TEAM_PRELOAD = on · TEAM_PRODUCT_INSIGHT = on (après `make restart`) · TEAM_ORCHESTRATOR = off
-- ⚠️ Pour tester S40 / la démo : `--reset` efface la promo de démo → relancer `scripts/setup_demo_data.py` après.
+- Done since the last sync:
+  - **"Who calls?" before call** (PR #9): 1re replica S01 7,7 s → 3,5 s (/chat), 6,9 s → 3,9 s in voice.
+  - **Corrected: "the agent forgets who calls during the call"** (see team test). Two causes:
+    1. in which had not `TEAM_PRELOAD=1` in his `.env`, the name was on top but the card was not
+       given to agent → **The caller chosen in the form is now always transmitted** (without switch);
+    2. if the AI service restarts at full call (git pull, saved file: uvicorn --reload), it loses
+       the appellant → ** the page returns the appellant to each ** reconnection (`resume`, the on-screen conversation is kept).
+    Verified in real life: switch off + restart in full call → the agent still knows "Nadine Sarrailh".
+  - Cache sheet copied by call (Guy then Nadine for the same bakery no longer mix).
+  - **T1 super tool product (`product_insight`)** : stock + arrivals + customer price + classed replacements (rules of
+    Daycem) with price and promo, on one call. 1re replica : S05 6,2 → 3,9 s, S40 4,3 → 3,4 s, S04 4,1 → 3,5 s
+    (median); the agent quotes the exact promo. Ignited by default in `.env.example`.
+  - **Free hands (Voices page, idea 1 + 2)** : no need to maintain Space: the microphone remains open, beginning and end of speech detected (pause ≈ 0,65 s), and speak while the agent speaks the cup. Button "Free Hands" (set by default), Space always works. ⚠️ Mohamed Amine : It touches your Voice page (useVoiceSession : readRms, stopTalking({(quiet})), reread.
+  - ** Robust listening (free hands)**: no more lost pieces (the sentences said before the answer are combined into one
+    single message, even if cut in full transcription), multiple voices separated by Soniox ([caller] / [other voice])
+    and dubious words marked "word(?)" → the agent ignores the other voices, keeps the last correction, asks again a word
+    - Checked in real life. (2 Votes ElevenLabs → Soniox ; 3 the agent's answers). ⚠️ Mohamed Amine : key
+    voice_session (Conversation.pending), utterance.py, Soniox.py (enable_speaker_diarization): relis stp.
+- In progress: T4 (two brains + Jev).
+- For Daycem: S05·2 waits `get_price` but `quote_line` (Amine K.) just answers → add `quote_line` to `tools_any`;
+  S05·1 "82" is said in letters ("eighty-two") → add this form to `says_any`.
+- Contract change: `caller` accepts `resume`; `caller_ready` returns `resume`. `TEAM_PRELOAD` no longer serves
+  only to the automatic identification in the conversation (without form).
+- I need: **Everyone → test the Voice page via "Who calls?"** (required before speaking).
+- Switch(s): TEAM_PRELOAD = on · TEAM_PRODUCT_INSIGHT = on (after `make restart`) · TEAM_ORCHESTRATOR = off
+- To test S40 / demo: `--reset` erases demo promo → restart `scripts/setup_demo_data.py` after.
+
+The English ERP pack and product glossary are in `data/seed_en/`. The substitution rules, caller identification and order readback now use it.
