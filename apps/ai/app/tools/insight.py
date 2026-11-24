@@ -98,7 +98,7 @@ async def _resolve(erp, client_id: str, product_id: str, qty: float | None) -> d
 
 async def gather_insight(erp, client_id: str, product_id: str, qty: float | None = None) -> dict[str, Any]:
     """Everything about one product for one client, in one call. Shape: docs/team/interfaces.md §2."""
-    from app.agent.rules_sales import rank_alternatives, substitution_policy
+    from app.agent.rules_sales import has_same_use_substitute, rank_alternatives, substitution_policy
 
     async def safe(coro):
         try:
@@ -153,6 +153,15 @@ async def gather_insight(erp, client_id: str, product_id: str, qty: float | None
         return out
 
     candidates = [a for a in alternatives or [] if a.get("id") and a.get("id") != product_id]
+    if not has_same_use_substitute(product_id, product.get("name") or "", candidates):
+        # Daycem's T3: nothing in stock has the same use (docs name none, no name in common): don't push lemons for
+        # strawberries; no second wave of prices either
+        out["alternatives"] = []
+        out["note"] = (
+            "Aucun produit en stock n'a le même usage. Annonce la rupture et demande au client ce qu'il souhaite, "
+            "sans proposer de produit."
+        )
+        return out
     prices = await asyncio.gather(
         *(_resolve(erp, client_id, a["id"], qty if a.get("unit") == product.get("unit") else None) for a in candidates)
     )
@@ -170,6 +179,9 @@ async def gather_insight(erp, client_id: str, product_id: str, qty: float | None
         if promo := promo_of(p, rules):
             row["promo"] = promo
         rows.append(row)
-    ranked = rank_alternatives(rows, card.get("preferences") or "", for_product_id=product_id, for_category=product.get("category"))
+    ranked = rank_alternatives(
+        rows, card.get("preferences") or "", for_product_id=product_id, for_category=product.get("category"),
+        for_product_name=product.get("name"), for_unit=product.get("unit"),
+    )
     out["alternatives"] = [{k: v for k, v in r.items() if k != "category"} for r in ranked[:MAX_ALTERNATIVES]]
     return out

@@ -39,6 +39,7 @@ SALES_RULES = """Règles de vente (rupture, remplacement, prix) :
   - même avec tous ces éléments, exactement 2 phrases. Phrase 1 : la rupture, avec la date de retour, ou à défaut l'allocation ou l'arrivage qui le concerne. Phrase 2 : la proposition de noter sa demande, en question. Exemple de forme : « Le [produit demandé] est en rupture, sans date de retour pour l'instant, mais vous avez [quantité] réservés pour [période]. Voulez-vous que je note votre demande pour le premier arrivage ? »
 - Si ce client demande lui-même une alternative : propose le remplaçant (même usage, en stock) en disant clairement la différence avec le produit demandé (qualité, composition, prix), puis demande son accord. Sans « oui », rien n'est ajouté.
 - Sinon, propose UN SEUL remplaçant, en stock et de même usage. Préfère celui que les documents de l'entreprise désignent comme substitut ; ne prends jamais un produit seulement parce que son prix est proche.
+- Quand l'outil indique qu'aucun produit en stock n'a le même usage, annonce la rupture et demande au client ce qu'il souhaite, sans proposer de produit. Exemple de ce que tu dis : « Le [produit demandé] est en rupture pour le moment, et je n'ai rien d'équivalent en stock. Que souhaitez-vous faire ? »
 - Première proposition d'un remplaçant : exactement 2 phrases.
   - Phrase 1 : la rupture et le remplaçant, avec sa raison en quelques mots.
   - Phrase 2 : son prix pour ce client tel que l'ERP le donne déjà (au kilo, à l'unité ou au carton, avec la promo seulement si l'ERP en renvoie une), puis la question d'accord.
@@ -206,23 +207,78 @@ def _read_substitutes(folder: str) -> tuple[tuple[str, list[str]], ...]:
     return tuple(found.items())
 
 
+# ── T3 · same use, when the docs name no substitute: names that share distinctive words ─────────────────────────────
+#
+# Audit 24/11 (docs/team/t3-ranking-audit.md): with only the ERP order (closest price), 29 of the 62 products the docs
+# don't cover got an absurd first choice for the same use. Product names say the use (first word, then qualifiers):
+# compare them, without the packaging (in parentheses), numbers and units. No product name lives in this code.
+
+_NAME_STOP = {"de", "du", "des", "la", "le", "les", "et", "en", "au", "aux", "pour", "avec", "sans", "cm", "mm", "kg",
+              "ml", "cl", "g", "l", "x"}  # fmt: skip
+
+
+def _name_words(name: str) -> list[str]:
+    """Distinctive words of a product name, in order (the first one is usually the product itself).
+    « Pommes vertes bio (colis de 12) » → ["pomm", "vert", "bio"]: plural and feminine folded, packaging dropped."""
+    name = re.sub(r"\([^)]*\)", " ", (name or "").replace("œ", "oe").replace("Œ", "Oe"))
+    out = []
+    for w in re.findall(r"[a-z0-9]+", _norm(name)):
+        if w in _NAME_STOP or w.isdigit() or len(w) < 2:
+            continue
+        w = w[:-1] if w.endswith("s") and len(w) > 3 else w
+        w = w[:-1] if w.endswith("e") and len(w) > 3 else w
+        out.append(w)
+    return out
+
+
+def name_match(missing_name: str, candidate_name: str, others: list[str] | tuple[str, ...] = ()) -> int:
+    """How much a candidate's name says « same use » as the missing product: shared distinctive words, the first word
+    of the missing product counting double. A word that most `others` (the candidate list) share decides nothing
+    (the family word shared by the whole list). 0 = nothing in common."""
+    missing, cand = _name_words(missing_name), set(_name_words(candidate_name))
+    if not missing:
+        return 0
+    lists = [set(_name_words(o)) for o in others]
+    common = {w for w in missing if lists and sum(w in o for o in lists) > len(lists) / 2}
+    head = 2 if missing[0] in cand and missing[0] not in common else 0
+    return head + len((set(missing[1:]) - common) & cand)
+
+
+def has_same_use_substitute(
+    product_id: str, product_name: str, alternatives: list[dict], *, substitutes: dict[str, list[str]] | None = None
+) -> bool:
+    """Is any alternative in stock a believable substitute: named by the docs, or sharing a distinctive word?
+    False → product_insight says so and the agent asks the caller instead of proposing lemons for strawberries.
+    No name → we can't tell: True (keep the previous behaviour)."""
+    if not product_name:
+        return True
+    named = (doc_substitutes() if substitutes is None else substitutes).get(product_id, [])
+    # no `others` here: the family word (shared by the whole list) is exactly what says « same use »
+    return any(a.get("id") in named or name_match(product_name, a.get("name") or "") > 0 for a in alternatives
+               if (a.get("available") or 0) > 0)  # fmt: skip
+
+
 def rank_alternatives(
     alternatives: list[dict],
     preferences: str,  # kept for the interfaces.md §5 contract; refusing is decide_substitution's job, not ranking's
     *,
     for_product_id: str | None = None,  # the missing product: to find its substitute in the docs
     for_category: str | None = None,  # its category: "same use"
+    for_product_name: str | None = None,  # its name: names sharing distinctive words first (name_match)
+    for_unit: str | None = None,  # its unit: same unit breaks a tie
     substitutes: dict[str, list[str]] | None = None,  # default: read from the docs (doc_substitutes)
 ) -> list[dict]:
     """
     Order substitutes from best to worst. Never drops or changes one (the agent proposes the first, with consent):
       1. in stock (available > 0)        2. named as substitute in the company docs
-      3. same category (same use)        4. active promo            5. then the ERP's own order
+      3. same category (same use)        4. name sharing distinctive words with the missing product
+      5. same unit                       6. active promo            7. then the ERP's own order
     Each dict: {id, name, unit, price, available, clientPrice?, promo?, category?} (product_insight / find_alternatives).
     """
     if substitutes is None:
         substitutes = doc_substitutes() if for_product_id else {}
     named = substitutes.get(for_product_id or "", [])
+    names = [a.get("name") or "" for a in alternatives]
 
     def key(item: tuple[int, dict]) -> tuple:
         position, alt = item
@@ -231,6 +287,8 @@ def rank_alternatives(
             not (alt.get("available") or 0) > 0,
             doc_rank,
             not (for_category and alt.get("category") == for_category),
+            -name_match(for_product_name or "", alt.get("name") or "", names),
+            not (for_unit and alt.get("unit") == for_unit),
             not alt.get("promo"),
             position,
         )
