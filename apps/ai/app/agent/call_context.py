@@ -57,6 +57,7 @@ class CallContext:
     loaded_ms: int | None = None
     caller_contact: str | None = None  # who is on the phone (caller ID form), e.g. "Nadine Sarrailh"
     caller_phone: str | None = None
+    recent_orders: list[str] = field(default_factory=list)  # team 12: latest orders, newest first, ready to say
 
     @property
     def blocked(self) -> bool:
@@ -76,9 +77,10 @@ async def load_call_context(erp: ErpClient, client_id: str) -> CallContext:
     TODO(Youssef, later): active promos for this client (price rules), once Daycem's demo promo exists.
     """
     t0 = time.perf_counter()
-    client, ctx_for = await asyncio.gather(
+    client, ctx_for, orders = await asyncio.gather(
         erp.get(f"/api/clients/{client_id}"),
         erp.get("/api/context/for", {"entityType": "client", "id": client_id}),
+        _safe(erp.get("/api/orders", {"clientId": client_id, "limit": 3})),  # « c'est quoi ma dernière commande ? »
     )
     days = client.get("deliveryDays") or []
     cc = CallContext(
@@ -111,7 +113,11 @@ async def load_call_context(erp: ErpClient, client_id: str) -> CallContext:
             for e in (ctx_for.get("entries") or [])[:12]
         ],
     )
-    # Stock of the usual items, in parallel (for "comme d'hab": the agent knows at once what is available).
+    # Stock of the usual items and the lines of the latest orders, in parallel.
+    rows = orders.get("items", orders) if isinstance(orders, dict) else orders
+    rows = [o for o in rows if isinstance(o, dict) and o.get("id")][:3] if isinstance(rows, list) else []
+    details = await asyncio.gather(*(_safe(erp.get(f"/api/orders/{o['id']}")) for o in rows))
+    cc.recent_orders = [describe_order(o, d) for o, d in zip(rows, details, strict=True)]
     stocks = await asyncio.gather(
         *(erp.get(f"/api/products/{u.product_id}") for u in cc.usual if u.product_id), return_exceptions=True
     )
@@ -120,6 +126,47 @@ async def load_call_context(erp: ErpClient, client_id: str) -> CallContext:
             u.available = p.get("available")
     cc.loaded_ms = int((time.perf_counter() - t0) * 1000)
     return cc
+
+
+async def _safe(coro):
+    """An optional read: never let it break the sheet (None on any error)."""
+    try:
+        return await coro
+    except Exception:
+        return None
+
+
+STATUS_FR = {"draft": "brouillon", "confirmed": "confirmée", "delivered": "livrée", "invoiced": "facturée", "cancelled": "annulée"}
+
+
+def describe_order(summary: dict, detail: dict | None) -> str:
+    """« jeu. 26/11 · confirmée · 151 € : 10 sac de tradi, 5 kg de demi-sel » (lines when the detail loaded)."""
+    from datetime import date
+
+    day = summary.get("deliveryDate") or ""
+    try:
+        d = date.fromisoformat(day[:10])
+        when = f"{DAYS_FR[['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'][d.weekday()]]} {d:%d/%m}"
+    except (ValueError, KeyError):
+        when = day
+    head = f"{when} · {STATUS_FR.get(summary.get('status'), summary.get('status') or '?')}"
+    if summary.get("totalHt") is not None:
+        head += f" · {summary['totalHt']:.0f} €"
+    lines = []
+    for li in (detail or {}).get("lines") or []:
+        name = li.get("productName") or li.get("name") or li.get("productId") or "?"
+        qty = li.get("qty", li.get("quantity"))
+        lines.append(f"{qty:g} {li.get('unit') or ''} {name}".replace("  ", " ") if isinstance(qty, (int, float)) else name)
+    return head + (" : " + ", ".join(lines[:8]) + (" …" if len(lines) > 8 else "") if lines else f" ({summary.get('lineCount', '?')} lignes)")
+
+
+_LEAD = re.compile(r"\bJ\s*-\s*(\d+)\b")
+
+
+def order_lead_days(preferences: str) -> int | None:
+    """« Bon de commande à J-3 » → 3 (the client must order N days before delivery)."""
+    m = _LEAD.search(preferences or "")
+    return int(m.group(1)) if m else None
 
 
 # ── "Fermé le mercredi" vs the ERP's delivery days ──
@@ -296,6 +343,9 @@ def render_for_prompt(cc: CallContext | None) -> str:
     prefs = " ".join(s for s in re.split(r"(?<=\.)\s+", cc.preferences) if not contradicts_delivery_days(s, cc.delivery_days))
     if prefs:
         lines.append(f"- Préférences : {prefs}")
+    if (lead := order_lead_days(cc.preferences)) is not None:
+        lines.append(f"- Délai de commande : J-{lead} (il commande {lead} jours avant la livraison). Pour une livraison plus "
+                     "proche, dis-le-lui d'abord et propose la première date qui respecte ce délai (ou demande si c'est urgent).")
     if cc.outstanding is not None:
         lines.append(f"- Encours : {cc.outstanding:.0f} € (plafond {cc.credit_limit or 0:.0f} €), problèmes ouverts : {cc.open_issues}")
     if cc.usual:
@@ -305,6 +355,8 @@ def render_for_prompt(cc: CallContext | None) -> str:
             if u.avg_qty is not None
         )
         lines.append(f"- Commande habituelle : {usual}")
+    if cc.recent_orders:
+        lines.append("- Dernières commandes (la plus récente d'abord) : " + " | ".join(cc.recent_orders))
     for n in cc.notes:
         lines.append(f"- Note : {n}")
     for e in cc.context_entries:

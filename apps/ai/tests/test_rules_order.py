@@ -302,7 +302,7 @@ def test_confirm_only_on_a_real_yes(monkeypatch):
     for accord, change, confirmed in [(0.96, 0.14, True), (0.03, 0.91, False), (0.5, 0.4, False)]:
         erp = FakeErp(ORDER)
         monkeypatch.setattr(clients, "get_jev_client", lambda a=accord, c=change: FakeJev(a, c))
-        r = run(confirm(ToolContext(erp=erp, actor="voice_agent"), "ord_1", "réponse", "Je valide ?"))
+        r = run(confirm(ToolContext(erp=erp, actor="voice_agent"), "ord_1", "oui c'est bon", "Je valide ?"))  # team 12: a real-looking answer (bare words never reach Jev)
         assert r["confirmed"] is confirmed and r["decidedBy"] == "jev"
         assert erp.posted == (["/api/orders/ord_1/confirm"] if confirmed else [])
         if not confirmed:

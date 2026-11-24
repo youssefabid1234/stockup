@@ -22,7 +22,10 @@ from .db import Doc
 PRODUCT_ID = "prd_0026"  # Beurre de tourage 82 % (plaque 2 kg)
 CLIENT_TAG = "boulangeries"
 DISCOUNT_PCT = 8.0
-RULE_ID = "prl_0900"  # far from the seed's ids; new rules created in the ERP continue after it
+RULE_ID = "prl_0900"
+# Epiphany articles the data pack ships inactive while the company docs (01-entreprise.md) say pre-orders are open
+# until 15/12 and clients have pre-orders in their cards: the agent refused them in 3 of 150 test calls (24/11).
+ACTIVATE = ("prd_0068", "prd_0069")  # couronnes des rois, fèves des rois  # far from the seed's ids; new rules created in the ERP continue after it
 
 
 def english() -> bool:
@@ -53,17 +56,22 @@ def demo_price_rule(today: date) -> Doc:
 
 def add_team_demo_data(pack: Doc) -> list[str]:
     """Add the demo rows to a pack read from DATA_DIR/seed (in place). Returns what was added (for the log)."""
+    added: list[str] = []
+    for p in pack.get("products") or []:
+        if p.get("id") in ACTIVATE and not p.get("active", True):
+            p["active"] = True
+            added.append(f"{p['id']} actif")
     today_raw = (pack.get("meta") or {}).get("today")
     if not today_raw:
-        return []
+        return added
     products = {p.get("id") for p in pack.get("products") or []}
     tags = {t.get("id") or t.get("slug") or t.get("name") for t in pack.get("tags") or [] if isinstance(t, dict)}
     clients_tagged = any(CLIENT_TAG in (c.get("tags") or []) for c in pack.get("clients") or [])
     if PRODUCT_ID not in products or not (CLIENT_TAG in tags or clients_tagged):
-        return []
+        return added
     rule = demo_price_rule(date.fromisoformat(str(today_raw)[:10]))
     rules = pack.setdefault("priceRules", [])
     if any(r.get("id") == rule["id"] or r.get("name") == rule["name"] for r in rules):
-        return []
+        return added
     rules.append(rule)
-    return [rule["name"]]
+    return [*added, rule["name"]]

@@ -9,6 +9,10 @@ _INTERNAL_LEAD = re.compile(
     r"(?:d'abord,?\s+)?(?:je dois|il faut que je|je vais devoir)\s+"
     r"(?:d'abord\s+)?(?:vérifier|chercher|consulter|identifier|utiliser|appeler|répondre|déterminer|comprendre)\b|"
     r"ma réponse (?:doit|sera|va)\b|"
+    # team 12 (Youssef): the model explaining its own rules (heard in the 150 test calls, 24/11)
+    r"(?:la|sa) fiche(?: du client| client)?\s+(?:dit|indique|précise|mentionne|montre)\b|"
+    r"(?:d['’]après|selon) (?:la|sa) fiche\b|"
+    r"(?:la|ma) (?:règle|consigne)\s+(?:dit|est|veut|impose)\b|"
     r"(?:le client|l['’]appelant|l['’]utilisateur)\s+(?:demande|souhaite|veut)\b"
     r")",
     re.I,
