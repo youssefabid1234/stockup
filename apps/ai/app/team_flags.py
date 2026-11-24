@@ -7,7 +7,7 @@ TEAM_PRODUCT_INSIGHT, read when tools are registered (restart needed). See docs/
 
 | Switch                 | Owner          | Brick                                                        |
 |------------------------|----------------|--------------------------------------------------------------|
-| TEAM_FILLERS           | Mohamed Amine  | services/fillers.py: classic (1), fast restatement (2), combined (3) |
+| TEAM_FILLERS           | Mohamed Amine  | services/fillers.py: classic (1), fast restatement (2), combined (3), no silence (4) |
 | TEAM_ORCHESTRATOR      | Youssef        | agent/orchestrator.py: fast "speaker" agent + "brain" agent  |
 | TEAM_PRELOAD           | Youssef        | agent/call_context.py: client sheet loaded once, in parallel |
 | TEAM_PRODUCT_INSIGHT   | Youssef        | tools/product_insight.py: stock + price + substitutes + promo |
@@ -28,7 +28,7 @@ def _on(name: str) -> bool:
 
 def fillers_mode() -> int:
     value = os.environ.get("TEAM_FILLERS", "").strip().lower()
-    if value in {"2", "3"}:
+    if value in {"2", "3", "4"}:  # 4 = no silence: agent opens the call, instant acknowledgement, continuous typing
         return int(value)
     return int(value in _TRUE)
 
@@ -39,6 +39,11 @@ def fillers() -> bool:
 
 def fast_fillers() -> bool:
     return fillers_mode() in {2, 3}
+
+
+def no_silence() -> bool:
+    """TEAM_FILLERS=4: the agent opens the call, acknowledges at once and types until the answer (services/fillers.py)."""
+    return fillers_mode() == 4
 
 
 def orchestrator() -> bool:

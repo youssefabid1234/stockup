@@ -475,7 +475,8 @@ def quote(qty: float, unit: str, caliber: str, product_name: str, unit_price: fl
 # Calibrated on 12 real caller answers (mar. 24/11, 113–229 ms each): plain yeses score 0.89–0.96 on « accord »;
 # « oui mais… », « et rajoutez… », « attendez », questions score ≤ 0.14, with « change » 0.59–0.93.
 
-YES_MIN = 0.8  # « accord » at or above: confirm
+YES_MIN = 0.8  # « accord » at or above (and « change » below CHANGE_MIN): confirm
+SURE_YES = 0.9  # « accord » at or above: confirm whatever « change » says
 NO_MAX = 0.3  # « accord » at or below: do not confirm
 CHANGE_MIN = 0.5  # « change » at or above (with no accord): the caller wants something modified
 PICK_MIN = 0.6  # Jev's confidence needed to pick a product without asking
@@ -515,7 +516,9 @@ JEV_YES_QUESTIONS = {
 
 def classify_answer(accord: float, change: float) -> str:
     """Jev's two probabilities → "yes" | "change" | "no" | "unsure"."""
-    if accord >= YES_MIN and change < CHANGE_MIN:
+    # A very clear yes wins: « C'est bon, validez » right after a price question scored accord 0.95 / change 0.55
+    # (the question nudges « change » up). A real « oui mais… » never scored accord above 0.14 in the calibration.
+    if accord >= SURE_YES or (accord >= YES_MIN and change < CHANGE_MIN):
         return "yes"
     if accord <= NO_MAX:
         return "change" if change >= CHANGE_MIN else "no"

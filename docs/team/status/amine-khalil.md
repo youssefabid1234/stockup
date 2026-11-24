@@ -1,4 +1,17 @@
-# Amine Khalil – 🧠 « La commande juste »  ·  mis à jour mar. 24/11 01h00
+# Amine Khalil – 🧠 « La commande juste » + ⚡ voix (repris de Mohamed Amine)  ·  mis à jour mar. 24/11 02h10
+
+- Fait (02h10) – **mode 4 « zéro silence »** (`TEAM_FILLERS=4`, défaut dans `.env.example`), tâches voix reprises de
+  Mohamed Amine : l'agent **ouvre l'appel** (« Bonjour Madame, que puis-je faire pour vous ? », 0,3 s après le
+  formulaire), **accusé immédiat** à chaque demande (« D'accord, je regarde ça »…), **clavier continu** jusqu'au premier
+  son de la réponse. Mesuré en configuration jury : 1er son 0,0 s, **0,0 s de silence entendu** (avant : 3,0 s médiane
+  sans attente, blancs de 1,4–1,9 s en mode 3). Détail et tableau : DECISIONS.md §3 et « Vitesse et voix ».
+- Corrigé : seuil Jev (« C'est bon, validez » après une question de prix : accord 0,95 / change 0,55 → n'était pas
+  confirmé). Désormais accord ≥ 0,9 = oui.
+- Tests : `conftest.py` rend la suite indépendante du `.env` de chacun ; 232 passent (modes 0, 1, 3, 4).
+- **Pour tous** : mettre `TEAM_FILLERS=4` et `TEAM_PRODUCT_INSIGHT=1` dans votre `.env`, redémarrer l'IA, passer par
+  « Qui appelle ? » : l'agent parle le premier.
+- Reste côté voix : la réponse utile met 2,8–6,3 s (comblée, mais longue) → orchestrateur de Youssef (T4) ou modèle
+  plus rapide ; essai au micro réel (transcription + son dans le navigateur).
 
 - Fait (01h00) – **Jev branché** (recommandation du CTO), `tools/order_jev.py`, derrière `TEAM_ORDER_RULES` :
   - `confirm_order` **remplacé** par une version gardée par Jev (même nom → les scénarios de tous marchent tels quels ;

@@ -32,6 +32,16 @@ de la touche Espace (push-to-talk).
 | Kit d'origine | | | | | | | |
 | + … | | | | | | | |
 
+**Silence entendu par l'appelant** (mar. 24/11 02h00, Maison Sarrailh, 4 répliques : commande, « oui mais mettez-en
+douze », prix, « c'est bon, validez » ; vraies clés, WS `/voice` en texte (ajouter ~0,3-0,5 s de transcription au
+micro) ; le flux MP3 reçu est rejoué comme le navigateur, durées lues dans les en-têtes MP3 et vérifiées avec ffprobe) :
+
+| Réglage | L'agent ouvre l'appel | 1er son après la phrase (médiane / pire) | Réponse utile prête | Silence entendu avant la fin de la réponse |
+|---|---|---|---|---|
+| `TEAM_FILLERS=0` (kit) | non | 3,0 s / 5,0 s | 2,2–4,8 s | tout ce temps (2,3–5,0 s) |
+| `TEAM_FILLERS=3` | non (« Bonjour » joué après la 1re phrase) | 0,0 s / 0,8 s | 2,1–4,3 s | jusqu'à 1,4–1,9 s d'un bloc |
+| **`TEAM_FILLERS=4` (défaut)** · configuration du jury | **oui, 0,3 s** après le formulaire | **0,0 s / 0,0 s** | 2,8–6,3 s | **0,0 s** |
+
 Premier relevé (23/11, via /chat, sans audio) : S03 (client bloqué) PASS, 6 099 ms, premier mot à 4 092 ms ; défaut
 noté : l'agent prononce son raisonnement (« Le compte est bloqué ; je ne prends pas de commande… »).
 
@@ -44,6 +54,18 @@ noté : l'agent prononce son raisonnement (« Le compte est bloqué ; je ne pren
 - L'orchestrateur actuel délègue à l'agent ERP. Les annonces restent actives selon `TEAM_FILLERS` et la réponse finale annule l'attente. Le mode 3 ajoute le clavier pendant la préparation de la reprise rapide. Le ton et la consigne contre les doublons sont proposés à Daycem dans le [suivi](docs/team/status/mohamed-amine.md).
 - Rejeu local via WebSocket, données de démonstration et trois fournisseurs simulés, avec et sans `TEAM_FILLERS` : **3 répliques sur 10** passent dans les deux configurations. S06 et les deux répliques de S10 passent. S01 et S05 échouent sur leurs attentes métier. Sur S11, le modèle simulé lance une recherche sur « merci ». Un test d'intégration vérifie que même dans ce cas la voix ne joue ni annonce ni clavier. Les mesures de référence au micro, le délai perçu et le premier tour ElevenLabs restent à relever sur le pack du Fournil.
 - T7 facultatif est reporté. Espace fournit un point de départ reproductible pour mesurer le délai et interrompre l'agent pendant la démo.
+- **Mode 4 « zéro silence » (repris par Amine Khalil, mar. 24/11 02h00), défaut de l'équipe.** Mesure de départ : en mode 3
+  l'agent ne parlait pas en premier et laissait des blancs de 1,4 à 1,9 s (le clavier attendait 1,4 s puis revenait
+  toutes les 2,2 s). Ce qui change : (1) **l'agent ouvre l'appel** dès le formulaire « Qui appelle ? » (« Bonjour
+  Madame, que puis-je faire pour vous ? », synthétisé pendant le chargement de la fiche, joué dès qu'il est prêt :
+  0,2–0,3 s), et sa première réponse ne redit pas « Bonjour » ; (2) **accusé immédiat** à chaque demande (« D'accord,
+  je regarde ça », « Ok, je vois ça », « Très bien, je vérifie », préparés à l'ouverture) — rien sur « oui » / « merci » ;
+  (3) **clavier continu** : clips de 0,45 s (6 rythmes différents) envoyés juste avant que l'audio déjà envoyé ne
+  s'épuise (le navigateur joue un seul flux et ne cale jamais), arrêtés au premier octet audio de la réponse (pas à son
+  texte : le temps de synthèse est couvert aussi) ; au plus 0,6 s de clavier encore en file à ce moment. Résultat :
+  0,0 s de silence entendu sur les 4 répliques (tableau §3). Les modes 1-3 sont inchangés.
+- Tests : `tests/test_no_silence.py` (8 tests) ; `tests/conftest.py` remet `TEAM_FILLERS` à zéro pour chaque test (la
+  suite donnait des résultats différents selon le `.env` de chacun) : 232 tests passent avec `TEAM_FILLERS` 0, 1, 3 et 4.
 
 ### Plusieurs agents, fiche préchargée, super-outil (Youssef)
 
