@@ -49,6 +49,23 @@ def one_question(reply: str) -> str:
     return re.sub(r"\s{2,}", " ", "".join(parts)).strip()
 
 
+def _question_words(reply: str | None) -> set[str]:
+    asks = [s for s in _SENTENCES.findall(reply or "") if s.rstrip().endswith("?")]
+    return {w for w in _key(asks[-1]).split() if len(w) > 3} if asks else set()
+
+
+def without_repeated_question(reply: str, previous: str | None) -> str:
+    """Team 12 (Youssef), new clients: the question of the previous reply asked again (« Pour le beurre, c'est du tourage
+    ou du doux ? » after the caller let it go) is dropped, the rest is said. Measured in new_client_test N2/N5 (24/11):
+    asked twice although the prompt says once (the caller's request is already noted « à préciser »)."""
+    now, before = _question_words(reply), _question_words(previous)
+    if not now or not before or len(now & before) / len(now | before) < 0.5:
+        return reply
+    parts = _SENTENCES.findall(reply)
+    kept = "".join(p for p in parts if not p.rstrip().endswith("?")).strip()
+    return kept or reply
+
+
 CLOSINGS = ["Je valide ?", "On part là-dessus ?", "C'est bon pour vous ?", "Je vous la confirme ?", "Ça vous va ?",
             "Je la passe comme ça ?", "On valide ?"]
 _CLOSING_WORDS = re.compile(r"\b(valide\w*|confirme\w*|part là-dessus|bon pour vous|ça vous va|passe comme ça)\b", re.I)
