@@ -138,8 +138,27 @@ def spoken_reply(text: str) -> str:
     return _REPLY_LABEL.sub("", text)
 
 
-def without_repeated_greeting(reply: str, contact: str | None) -> str:
-    """Drop just the greeting when the caller has already heard our prepared clip."""
+# team 12 (Youssef): a reintroduction in the middle of a call (« C'est Lucie, du Fournil Occitan. ») sounds robotic;
+# kept only when the caller asks who is speaking (« c'est qui ? », « vous êtes un robot ? »)
+_INTRO = re.compile(
+    r"^(?:ici|c['’]est|je suis|moi,? c['’]est)\s+(?:encore\s+|toujours\s+)?Lucie"
+    r"(?:,?\s+(?:du|de chez)\s+(?:le\s+)?Fournil Occitan|,\s*(?:l['’]|votre\s+)assistante[^,.!?…:]*)?\s*[,.!?…:]+\s*",
+    re.I,
+)
+_WHO = re.compile(r"\b(?:qui (?:est[- ]ce|[eê]tes[- ]vous|parle|c['’]est)|c['’]est qui|robot|vous [eê]tes qui|votre nom|humain|une machine)\b", re.I)
+
+
+def without_repeated_greeting(reply: str, contact: str | None, heard: str | None = None) -> str:
+    """Drop just the greeting when the caller has already heard our prepared clip, and a reintroduction (« C'est Lucie,
+    du Fournil Occitan. ») unless the caller asked who is speaking."""
+    reply = _without_greeting(reply, contact)
+    if heard is not None and _WHO.search(heard):
+        return reply
+    rest = _INTRO.sub("", reply, count=1)
+    return rest[0].upper() + rest[1:] if rest and rest != reply else reply
+
+
+def _without_greeting(reply: str, contact: str | None) -> str:
     address = r"(?:madame|monsieur)"
     if contact:
         name = " ".join(contact.split())

@@ -61,6 +61,7 @@ export function useVoiceSession() {
   const analyser = useRef<AnalyserNode>();
   const raf = useRef<number>();
   const levelBuf = useRef<Uint8Array<ArrayBuffer>>(); // team 12 (Youssef): hands-free reads the mic level (readRms)
+  const tentative = useRef<{ chunks: Blob[]; mime: string } | null>(null); // team 12: a sound being checked (soft barge-in)
   const quietEmpty = useRef(false); // team 12: a hands-free noise heard as nothing: drop the turn, no error shown
   // playback
   const player = useRef<SegmentPlayer>();
@@ -312,9 +313,27 @@ export function useVoiceSession() {
     tick();
   }, []);
 
-  const startTalking = useCallback(async () => {
+  const startTalking = useCallback(async (opts?: { tentative?: boolean }) => {
     if (pressed.current || conn !== "ready" || !caller) return;
     pressed.current = true;
+    if (opts?.tentative && player.current) {
+      // team 12 (Youssef): a sound while Lucie speaks: record it locally, lower her voice, decide in a moment
+      const s = await ensureMic();
+      if (!s || !pressed.current) { pressed.current = false; return; }
+      const mime = REC_MIME.find((t) => MediaRecorder.isTypeSupported(t)) ?? "";
+      const rec = new MediaRecorder(s, mime ? { mimeType: mime } : undefined);
+      recorder.current = rec;
+      tentative.current = { chunks: [], mime: rec.mimeType || mime || "audio/webm" };
+      rec.ondataavailable = (e) => {
+        if (!e.data.size) return;
+        if (tentative.current) tentative.current.chunks.push(e.data);
+        else if (ws.current?.readyState === WebSocket.OPEN) ws.current.send(e.data);
+      };
+      rec.onstop = () => { if (!tentative.current) send({ type: "audio_end" }); };
+      rec.start(100);
+      player.current?.setVolume(0.2);
+      return;
+    }
     stopPlayback();
     const s = await ensureMic();
     // Released while the permission prompt / mic warm-up was pending: do not record a stub.
@@ -335,6 +354,32 @@ export function useVoiceSession() {
     setLastError(undefined);
     meter();
   }, [caller, conn, ensureMic, meter, newTurn, send, stopPlayback]);
+
+  /** Team 12 (Youssef): the sound being checked is real speech: Lucie stops, the caller is heard from the first syllable. */
+  const confirmTalking = useCallback(() => {
+    const t = tentative.current;
+    if (!t || !pressed.current) return;
+    tentative.current = null;
+    stopPlayback();
+    send({ type: "audio_start", mime: t.mime });
+    for (const c of t.chunks) if (ws.current?.readyState === WebSocket.OPEN) ws.current.send(c);
+    void audioCtx.current?.resume();
+    newTurn({ text: "", at: Date.now(), status: "recording" });
+    setActivity("recording");
+    setLastError(undefined);
+    meter();
+  }, [meter, newTurn, send, stopPlayback]);
+
+  /** Team 12 (Youssef): it was only a noise: forget it, Lucie's voice comes back up, as if nothing happened. */
+  const cancelTalking = useCallback(() => {
+    if (!tentative.current) return;
+    tentative.current = null;
+    pressed.current = false;
+    const rec = recorder.current;
+    recorder.current = undefined;
+    if (rec && rec.state !== "inactive") { rec.onstop = null; rec.stop(); }
+    player.current?.setVolume(1);
+  }, []);
 
   /** `quiet`: hands-free ended it (an empty transcript is then a noise, dropped without an error). */
   const stopTalking = useCallback((opts?: { quiet?: boolean }) => {
@@ -425,7 +470,7 @@ export function useVoiceSession() {
 
   return {
     conn, activity, answering, mic, providers, turns, level, lastError,
-    startTalking, stopTalking, sendText, stopPlayback, reset, reconnect: connect,
+    startTalking, stopTalking, confirmTalking, cancelTalking, sendText, stopPlayback, reset, reconnect: connect,
     ensureMic, readRms,
     nudge: () => send({ type: "nudge" }), // team 12 (Youssef): hands-free silence → one short line from the agent
     caller, callerPending, identifyCaller, endCall,

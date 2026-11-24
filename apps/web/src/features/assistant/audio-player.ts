@@ -14,6 +14,7 @@ export class SegmentPlayer {
   private ended = false;
   private stopped = false;
   private playingFired = false;
+  private volume = 1;
 
   constructor(private mime: string, private cb: PlayerCallbacks) {
     const canStream = typeof MediaSource !== "undefined" && MediaSource.isTypeSupported(mime);
@@ -39,6 +40,7 @@ export class SegmentPlayer {
     this.url = url;
     const el = new Audio(url);
     this.el = el;
+    el.volume = this.volume;
     el.onplaying = () => { if (!this.playingFired) { this.playingFired = true; this.cb.onPlaying(); } };
     el.onended = () => this.finish();
     el.onerror = () => this.finish();
@@ -73,6 +75,12 @@ export class SegmentPlayer {
     if (!this.chunks.length) { this.finish(); return; }
     this.ms = undefined;
     this.open(URL.createObjectURL(new Blob(this.chunks, { type: this.mime })));
+  }
+
+  /** Team 12 (Youssef): duck the voice while a sound is checked (0.2), back to 1 when it was only noise. */
+  setVolume(v: number) {
+    this.volume = v;
+    if (this.el) this.el.volume = v;
   }
 
   stop() {

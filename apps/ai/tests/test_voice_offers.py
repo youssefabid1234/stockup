@@ -54,7 +54,7 @@ async def test_outbound_permission_then_refusal(offers):
     offers.outbound = {"offer": OFFER}
     offers.permission = True
     reply = await offers.respond("Non merci")
-    assert "bonne journée" in reply.text
+    assert "Belle journée, au revoir !" in reply.text and "dérangement" in reply.text
     assert offers.pending is None
     assert offers.erp.post.await_args.args[0].endswith("/decline")
 
@@ -119,3 +119,63 @@ async def test_offer_is_also_available_on_explicit_request_without_a_draft(offer
     assert "Quelle quantité" in reply.text
     assert offers.quoted
     offers.erp.post.assert_not_called()
+
+
+# ── team 12 (Youssef): Lucie's own calls stay short, on the offer only, and end at once when the client is not interested ──
+
+
+def outbound(offers):
+    offers.outbound = {"offer": OFFER}
+    offers.permission = True
+    offers._check = AsyncMock(return_value=OFFER)
+    return offers
+
+
+@pytest.mark.parametrize("said", ["J'ai pas le temps là", "Rappelez plus tard", "Non, ça ne m'intéresse pas", "Je suis occupé"])
+async def test_not_interested_at_the_opening_ends_the_call_at_once(offers, said):
+    reply = await outbound(offers).respond(said)
+    assert reply.text.endswith("au revoir !") and "dérangement" in reply.text and "?" not in reply.text
+
+
+async def test_interested_then_quantity_then_goodbye_after_the_confirmation(offers):
+    o = outbound(offers)
+    reply = await o.respond("Oui allez-y")
+    assert "8 euros 46" in reply.text and reply.text.endswith("Ça vous intéresse ?") and "Quelle quantité" not in reply.text
+    reply = await o.respond("Oui")
+    assert reply.text == "Très bien. Combien je vous en mets ? C’est par carton de 5 plaques de 2 kg."
+    reply = await o.respond("Deux cartons")
+    assert reply.awaiting_confirmation and "20 kilos" in reply.text
+
+
+async def test_not_interested_after_the_price_ends_without_a_basket_readback(offers):
+    o = outbound(offers)
+    await o.respond("Oui")
+    reply = await o.respond("Bof, non, pas pour l'instant")
+    assert reply.text.startswith("Pas de souci.") and reply.text.endswith("au revoir !") and "récapitule" not in reply.text
+    assert o.erp.post.await_args.args[0].endswith("/decline")
+
+
+async def test_a_request_of_the_client_is_handled_and_a_vague_answer_is_asked_once(offers):
+    o = outbound(offers)
+    assert await o.respond("J'ai un problème avec ma facture") is None  # Lucie takes care of it
+    o2 = outbound(offers)
+    o2.permission, o2.reasked = True, False
+    first = await o2.respond("Euh, c'est qui ?")
+    assert first.text.endswith("Je vous en dis deux mots ?") and "Lucie" not in first.text
+    second = await o2.respond("Hmm")
+    assert second.text.endswith("au revoir !")
+
+
+async def test_inbound_offers_keep_the_basket_readback(offers):
+    offers.pending = OFFER  # an offer slipped into a client's own call: a « non » goes back to their order
+    reply = await offers.respond("Non")
+    assert "au revoir" not in reply.text
+
+
+def test_no_greeting_nor_reintroduction_in_the_middle_of_a_call():
+    from app.services.voice_reply import without_repeated_greeting as clean
+
+    assert clean("Bonjour Nadine, c'est Lucie du Fournil Occitan. Vous voulez combien de sacs ?", "Nadine Sarrailh", "euh") == "Vous voulez combien de sacs ?"
+    assert clean("C'est Lucie, je suis toujours là. Vous disiez ?", None, "allô ?") == "Je suis toujours là. Vous disiez ?"
+    who = "C'est Lucie, l'assistante vocale du Fournil Occitan. Je prends votre commande ?"
+    assert clean(who, None, "Attendez, vous êtes un robot ?") == who  # asked: she says who she is

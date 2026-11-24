@@ -110,7 +110,10 @@ function CallMode({ modeSwitch }: { modeSwitch: ReactNode }) {
   useEffect(() => {
     const last = v.turns[v.turns.length - 1];
     if (!v.caller || !last || !last.agent.done || v.activity !== "idle" || goodbyeDone.current === last.id) return;
-    if (!/\b(au revoir|bonne (?:journ[ée]e|soir[ée]e|fin de journ[ée]e|continuation)|[àa] (?:bient[ôo]t|plus|demain)|ciao|bye)\b/i.test(last.caller.text)) return;
+    const callerBye = /\b(au revoir|bonne (?:journ[ée]e|soir[ée]e|fin de journ[ée]e|continuation)|[àa] (?:bient[ôo]t|plus|demain)|ciao|bye)\b/i.test(last.caller.text);
+    // Lucie's own call (outbound): she ends it herself, as soon as she has said goodbye
+    const lucieBye = !!v.caller.outboundId && /\bau revoir\s*[!.]?\s*$/i.test(last.agent.text.trim());
+    if (!callerBye && !lucieBye) return;
     goodbyeDone.current = last.id;
     const t = window.setTimeout(() => vRef.current.endCall(), 1200);
     return () => window.clearTimeout(t);
