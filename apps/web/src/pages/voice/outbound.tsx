@@ -1,5 +1,6 @@
+import { useEffect, useRef } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { MessageSquare, PhoneCall, PhoneOutgoing } from "lucide-react";
+import { MessageSquare, PhoneCall, PhoneOff, PhoneOutgoing } from "lucide-react";
 import type { OutboundAttempt } from "@kit/shared";
 import { api } from "@/lib/api";
 import { UNIT_LABEL } from "@/lib/format";
@@ -23,6 +24,7 @@ export function OutboundCalls({
   onAnswer: (id: string) => void;
 }) {
   const queryClient = useQueryClient();
+  const audio = useRef<AudioContext | null>(null);
   const switchQuery = useQuery({
     queryKey: ["outbound-demo", "status"], queryFn: api.outboundDemo.status, retry: false, staleTime: Infinity,
   });
@@ -43,9 +45,39 @@ export function OutboundCalls({
     },
   });
 
-  if (!enabled) return null;
+  const dismiss = useMutation({
+    mutationFn: api.outboundDemo.dismiss,
+    onSuccess: () => void queryClient.invalidateQueries({ queryKey: ["outbound-demo"] }),
+  });
   const latest = attempts.data?.[0];
   const ringing = latest?.status === "ringing";
+
+  useEffect(() => {
+    if (!ringing || pending || !audio.current) return;
+    const ctx = audio.current;
+    const ring = () => {
+      const now = ctx.currentTime;
+      for (const offset of [0, 0.33]) {
+        const tone = ctx.createOscillator();
+        const gain = ctx.createGain();
+        tone.frequency.value = 440;
+        gain.gain.value = 0;
+        tone.connect(gain).connect(ctx.destination);
+        gain.gain.setValueAtTime(0, now + offset);
+        gain.gain.linearRampToValueAtTime(0.055, now + offset + 0.03);
+        gain.gain.linearRampToValueAtTime(0, now + offset + 0.24);
+        tone.start(now + offset);
+        tone.stop(now + offset + 0.25);
+      }
+    };
+    ring();
+    const interval = window.setInterval(ring, 2500);
+    return () => window.clearInterval(interval);
+  }, [ringing, pending]);
+
+  useEffect(() => () => { void audio.current?.close().catch(() => undefined); }, []);
+
+  if (!enabled) return null;
   const active = ringing || latest?.status === "answered";
   const upcoming = candidates.data?.[0];
   const offer = active ? latest.offer : upcoming?.offer;
@@ -73,9 +105,18 @@ export function OutboundCalls({
       {ringing ? (
         <Button className="w-full" variant="primary" icon={PhoneCall} disabled={!ready || busy || pending}
           onClick={() => onAnswer(latest.id)}>{pending ? "Connexion…" : "Décrocher"}</Button>
+      ) : latest?.status === "answered" && !busy && !pending ? (
+        <Button className="w-full" icon={PhoneOff} disabled={dismiss.isPending}
+          onClick={() => dismiss.mutate(latest.id)}>Terminer l’appel simulé</Button>
       ) : (
-        <Button className="w-full" icon={PhoneOutgoing} disabled={!ready || busy || active || !upcoming || start.isPending}
-          onClick={() => start.mutate(crypto.randomUUID())}>{start.isPending ? "Lancement…" : "Lancer un appel"}</Button>
+        <Button className="w-full" icon={PhoneOutgoing} disabled={!ready || busy || pending || active || !upcoming || start.isPending}
+          onClick={() => {
+            start.mutate(crypto.randomUUID());
+            if (typeof AudioContext !== "undefined") {
+              audio.current ??= new AudioContext();
+              void audio.current.resume().catch(() => undefined);
+            }
+          }}>{start.isPending ? "Lancement…" : "Lancer un appel"}</Button>
       )}
       {latest ? (
         <div aria-live="polite" className="space-y-2">

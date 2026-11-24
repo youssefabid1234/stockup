@@ -6,7 +6,7 @@ from uuid import UUID
 
 from fastapi import APIRouter, Depends
 
-from app.core.errors import not_found
+from app.core.errors import not_found, validation_error
 from app.schemas.base import Input, Schema
 from app.services import outbound_calls
 from .recommendations import Offer, enabled as recommendations_enabled
@@ -67,8 +67,6 @@ async def outbound_demo_attempts():
 
 @router.post("/attempts", response_model=Attempt, dependencies=[Depends(require_enabled)])
 async def start_outbound_demo(body: Start):
-    from app.core.errors import validation_error
-
     try:
         request_id = str(UUID(body.request_id))
     except ValueError:
@@ -84,4 +82,10 @@ async def answer_outbound_demo(attempt_id: str, body: Session):
 @router.post("/attempts/{attempt_id}/complete", dependencies=[Depends(require_enabled)])
 async def complete_outbound_demo(attempt_id: str, body: Session):
     outbound_calls.complete(attempt_id, body.session_id)
+    return {"ok": True}
+
+
+@router.post("/attempts/{attempt_id}/dismiss", dependencies=[Depends(require_enabled)])
+async def dismiss_outbound_demo(attempt_id: str):
+    outbound_calls.dismiss(attempt_id)
     return {"ok": True}

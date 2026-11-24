@@ -7,9 +7,9 @@ import uuid
 from dataclasses import dataclass
 from datetime import date
 
-from app.agent.rules_order import french_day, packaging, quote, say_quantity, short_name, to_selling_qty
+from app.agent.rules_order import MONTHS_FR, packaging, quote, say_quantity, short_name, to_selling_qty
 from app.schemas import ChatMessage, ToolCall
-from app.tools import ErpClient, ToolContext
+from app.tools import TOOLS, ErpClient, ToolContext
 from app.tools.erp import ErpError, enc
 from app.tools.orders import summarize_order
 from app.agent.loop import to_json
@@ -20,10 +20,19 @@ CONFIRM_QUESTION = re.compile(
 )
 NO = re.compile(r"(?:non(?: merci| pas interesse(?:e)?)?|pas interesse(?:e)?|pas maintenant|une autre fois)")
 YES = re.compile(r"(?:oui(?: allez y| je vous ecoute| bien sur| volontiers)?|allez y|je vous ecoute|d accord|volontiers|ok)")
+CONFIRM = re.compile(r"(?:oui(?: merci| c est bon| je confirme| validez| confirmez)?|c est bon|d accord|(?:validez|confirmez)(?: la commande| le panier)?)")
+ASK_OFFERS = re.compile(
+    r"(?:(?:est ce que )?vous avez|avez vous|y a t il|quelles sont|montrez moi) "
+    r"(?:(?:des|une|les|vos) )?(promos?|promotions?|nouveautes?|offres?|suggestions?)"
+    r"(?: (?:en ce moment|aujourd hui|pour moi))?"
+)
 PRICE = re.compile(r"\b(?:prix|combien|tarif|ca coute)\b")
-WORDS = ("zero un deux trois quatre cinq six sept huit neuf dix onze douze treize quatorze quinze seize").split()
+WORDS = {word: i for i, word in enumerate(
+    "zero un deux trois quatre cinq six sept huit neuf dix onze douze treize quatorze quinze seize".split()
+)}
+WORDS.update(une=1, vingt=20, trente=30, quarante=40, cinquante=50, soixante=60, cent=100)
 ADD = re.compile(
-    r"(?:oui )?(?P<verb>ajoutez|rajoutez|mettez|prends|prendrais|voudrais)(?P<pronoun> en| moi)? "
+    r"(?:oui(?: mais)? )?(?P<verb>ajoutez|rajoutez|mettez|prends|prendrais|voudrais)(?P<pronoun> en| moi)? "
     r"(?P<qty>\d+|\w+)(?: (?P<tail>.*))?"
 )
 PACKS = {"carton", "plaque", "caisse", "boite", "sac", "seau", "brique", "bidon", "colis"}
@@ -43,7 +52,7 @@ def amount_requested(text: str, offer: dict) -> float | None:
     if not (match := ADD.fullmatch(text)):
         return None
     number = match["qty"]
-    qty = int(number) if number.isdigit() and len(number) <= 6 else WORDS.index(number) if number in WORDS else 0
+    qty = int(number) if number.isdigit() and len(number) <= 6 else WORDS.get(number, 0)
     if not qty:
         return None
     unit, _, rest = (match["tail"] or "").partition(" ")
@@ -76,6 +85,8 @@ class Handled:
     text: str
     order: dict | None = None
     review: dict | None = None
+    awaiting_confirmation: bool = False
+    offered: dict | None = None
 
     def remember(self, history: list[ChatMessage]) -> None:
         for name, result in (("get_order", self.order), ("review_order", self.review)):
@@ -99,6 +110,7 @@ class CallOffers:
         self.pending: dict | None = None
         self.permission = bool(outbound)
         self.quoted = False
+        self.readback: str | None = None
 
     async def complete(self) -> None:
         if self.outbound:
@@ -127,15 +139,22 @@ class CallOffers:
             return Handled("C’est l’assistant vocal du Fournil Occitan. Est-ce que je peux vous présenter l’offre ?")
 
         if not (offer := self.pending):
+            if self.readback:
+                readback, self.readback = self.readback, None
+                if CONFIRM.fullmatch(text):
+                    return await self._confirm(heard, readback)
+            if ask := ASK_OFFERS.fullmatch(text):
+                return await self._requested_offer(ask[1])
             return None
         if NO.fullmatch(text):
             self.pending = None
             await self._decline(offer)
-            return Handled(await self._readback("Bien sûr."))
-        if YES.fullmatch(text) or PRICE.search(text):
+            return await self._readback("Bien sûr.")
+        asks_price = PRICE.search(text) and not re.search(r"\b(?:commande|panier|livraison|frais|total)\b", text)
+        if YES.fullmatch(text) or asks_price:
             if not (fresh := await self._check(offer)):
                 self.pending = None
-                return Handled(await self._readback("L’offre vient de changer."))
+                return await self._readback("L’offre vient de changer.")
             self.pending = fresh
             self.quoted = True
             return Handled(self._price(fresh))
@@ -147,21 +166,25 @@ class CallOffers:
                 order = await self.erp.post(f"/api/recommendations/{enc(self.client_id)}/accept", {
                     "offer": offer, "quantity": qty, "orderId": self.draft, "requestId": self.session_id,
                 })
-            except ErpError:
+            except ErpError as error:
+                if error.status is None or error.status >= 500:
+                    return Handled("L’ajout n’a pas été confirmé par l’ERP. Pouvez-vous me redire la quantité ?")
                 self.pending = None
-                return Handled(await self._readback("Je dois revérifier le tarif et le stock de cette offre."))
+                return await self._readback("Je dois revérifier le tarif et le stock de cette offre.")
             self.pending = None
             self.draft = order["id"]
             spoken = f"J’ai ajouté {say_quantity(qty, offer['unit'], product_caliber(offer))} de {short_name(offer['productName'])}."
             review = await self._review()
-            return Handled(self._recap(spoken, review), summarize_order(order), review)
+            return Handled(self._recap(spoken, review), summarize_order(order), review, self._can_confirm(review))
         if ADD.match(text) and (" en " in f" {text} " or " moi " in f" {text} " or normalized(short_name(offer["productName"])) in text):
             return Handled("Pouvez-vous me préciser la quantité et le conditionnement pour ce produit ?")
+        if re.fullmatch(r"(?:j en prends|je prends|ajoutez en|mettez m en|mettez moi|je vous en prends)", text):
+            return Handled("Quelle quantité souhaitez-vous pour ce produit ?")
         if re.match(r"^(?:oui|d accord|ok)\b", text):
             return Handled("Souhaitez-vous modifier la commande ou en savoir plus sur cette offre ?")
         if re.search(r"\b(?:validez|confirmez) (?:la commande|le panier)\b", text):
             self.pending = None
-            return Handled(await self._readback("Je vous relis la commande."))
+            return await self._readback("Je vous relis la commande.")
         self.pending = None
         return None  # another explicit need: resume the standard order conversation
 
@@ -204,6 +227,21 @@ class CallOffers:
             line = f"Vous prenez aussi souvent {product} avec cette commande. Vous souhaitez en ajouter ?"
         return f"{cleaned} {line}".strip(), offer
 
+    async def _requested_offer(self, request: str) -> Handled:
+        kind = "promo" if request.startswith("promo") else "new" if request.startswith("nouveaute") else None
+        try:
+            async with asyncio.timeout(1):
+                offers = await self.erp.get("/api/recommendations", {"clientId": self.client_id, "orderId": self.draft})
+        except (ErpError, TimeoutError):
+            return Handled("Je n’ai pas pu vérifier les offres pour le moment.")
+        for offer in offers:
+            if not kind or offer["kind"] == kind:
+                name = short_name(offer["productName"])
+                prefix = "En promotion" if offer["kind"] == "promo" else "En nouveauté" if offer["kind"] == "new" else "Dans vos habitudes"
+                self.quoted = True
+                return Handled(f"{prefix}, le produit {name}. {self._price(offer)}", offered=offer)
+        return Handled("Je n’ai pas trouvé d’offre adaptée à vos achats pour le moment.")
+
     async def _check(self, offer: dict) -> dict | None:
         try:
             async with asyncio.timeout(1):
@@ -222,8 +260,8 @@ class CallOffers:
     @staticmethod
     def _price(offer: dict) -> str:
         price = quote(1, offer["unit"], product_caliber(offer), offer["productName"], offer["unitPrice"])["say"]
-        until = offer.get("validUntil")
-        deadline = f" jusqu’au {french_day(date.fromisoformat(until))}" if until else ""
+        until = date.fromisoformat(offer["validUntil"]) if offer.get("validUntil") else None
+        deadline = f" jusqu’au {until.day} {MONTHS_FR[until.month - 1]}" if until else ""
         return f"C’est {price} hors taxes{deadline}. Quelle quantité souhaitez-vous ?"
 
     async def _review(self) -> dict | None:
@@ -237,8 +275,33 @@ class CallOffers:
                 pass
         return None
 
-    async def _readback(self, prefix: str) -> str:
-        return self._recap(prefix, await self._review())
+    async def _readback(self, prefix: str) -> Handled:
+        review = await self._review()
+        return Handled(self._recap(prefix, review), review=review, awaiting_confirmation=self._can_confirm(review))
+
+    @staticmethod
+    def _can_confirm(review: dict | None) -> bool:
+        return bool(review and review["canConfirm"] and not any(
+            review.get(key) for key in ("askFirst", "duplicateDrafts", "sameDayOrders")
+        ))
+
+    async def _confirm(self, heard: str, readback: str) -> Handled:
+        if not self.draft:
+            return Handled("Je n’ai plus de brouillon à confirmer.")
+        review = await self._review()
+        if not self._can_confirm(review):
+            return Handled(self._recap("Je dois revérifier la commande.", review), review=review)
+        tool = TOOLS["confirm_order"]
+        try:
+            result = await tool.run({
+                "orderId": self.draft, "clientAnswer": heard, "readBack": readback,
+            }, ToolContext(self.erp, "voice_agent"))
+        except (ErpError, ValueError):
+            return Handled("Je n’ai pas pu confirmer la commande. Pouvez-vous me redonner votre accord ?", awaiting_confirmation=True)
+        if result.get("confirmed") is False or (result.get("status") != "confirmed" and not result.get("alreadyConfirmed")):
+            return Handled("Je n’ai pas pu valider. Je vous confirme seulement après votre accord clair.", awaiting_confirmation=True)
+        self.draft = None
+        return Handled("C’est confirmé. Votre commande a bien été enregistrée.", order=result if result.get("id") else None)
 
     @staticmethod
     def _recap(prefix: str, review: dict | None) -> str:

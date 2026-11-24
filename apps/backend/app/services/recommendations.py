@@ -1,7 +1,7 @@
 """Offers supported by purchases, the catalogue and the price actually applied by the ERP."""
 
-from collections import Counter, defaultdict
 import re
+from collections import Counter, defaultdict
 
 from app import crud
 from app.core.activity import Ctx, today
@@ -12,10 +12,11 @@ from app.services import client_events, clients, orders, pricing, routing, stock
 
 HISTORY_DAYS = 60
 OFFER_REJECTED = "Offre refusée"
+_open_issues = per_data_version(client_events.open_issues_by_client)
 
 
 def eligible(client: Doc) -> bool:
-    return client["status"] == "active" and not client_events.open_issues_by_client().get(client["id"])
+    return client["status"] == "active" and not _open_issues().get(client["id"])
 
 
 def _blocked_category(client: Doc, product: Doc) -> bool:

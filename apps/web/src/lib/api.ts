@@ -147,6 +147,7 @@ export const api = {
     candidates: () => get<OutboundTarget[]>("/outbound-demo/candidates", undefined, { silent: true }),
     attempts: () => get<OutboundAttempt[]>("/outbound-demo/attempts", undefined, { silent: true }),
     start: (requestId: string) => post<OutboundAttempt>("/outbound-demo/attempts", { requestId }),
+    dismiss: (id: string) => post<{ ok: boolean }>("/outbound-demo/attempts/" + encodeURIComponent(id) + "/dismiss"),
   },
 
   products: {

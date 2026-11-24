@@ -109,6 +109,14 @@ def complete(attempt_id: str, session_id: str) -> None:
 
 
 @transactional
+def dismiss(attempt_id: str) -> None:
+    """Close a simulated call when its browser session has been lost."""
+    attempt = crud.outbound_attempts.require(attempt_id)
+    if attempt["status"] == "answered":
+        complete(attempt_id, attempt["sessionId"])
+
+
+@transactional
 def _expire_attempt(attempt_id: str, now: float) -> None:
     attempt = crud.outbound_attempts.require(attempt_id)
     if attempt["status"] == "ringing" and now >= attempt["deadline"]:

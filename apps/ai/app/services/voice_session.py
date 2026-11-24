@@ -202,7 +202,8 @@ class VoiceConnection:
     async def nudge(self) -> None:
         """One short, varied line after a silence (« Vous êtes toujours là ? »): no model, no history, never while
         the caller speaks or the agent works. The page sends it once per silence (hands-free only)."""
-        if self.recording or (self.turn and not self.turn.done()):
+        offers = self.conversation.offers if self.conversation else None
+        if self.recording or (self.turn and not self.turn.done()) or (offers and (offers.pending or offers.permission or offers.readback)):
             return
         self.nudges = getattr(self, "nudges", None) or fillers.PhraseRotation(fillers.NUDGES)
         line = self.nudges.next()
@@ -448,6 +449,7 @@ class VoiceConnection:
             handled = await offers.respond(heard) if offers else None
             if handled:
                 spoken = handled.text
+                offer_to_play = handled.offered
                 handled.remember(working)
             else:
                 await fillers.on_turn_start(speaker, heard)  # team 12 (Mohamed Amine): no-op while TEAM_FILLERS is off
@@ -497,15 +499,17 @@ class VoiceConnection:
 
             # Only the completed reply goes to the caller. Text emitted before a tool call may be internal notes.
             if spoken:
+                if offers and offer_to_play:
+                    offers.offered = True
                 if not team_flags.no_silence():  # mode 4 types on until the answer's first audio byte
                     await speaker.stop_waiting()
                 await self.send(AgentTextMessage(delta=spoken))
                 speaker.push(spoken)
             await speaker.finish()
-            if offers and offer_to_play:
-                offers.offered = True
-                if speaker.tts_first_byte_ms is not None:
-                    offers.pending = offer_to_play
+            if offers and offer_to_play and speaker.tts_first_byte_ms is not None:
+                offers.pending = offer_to_play
+            if offers and handled and handled.awaiting_confirmation and speaker.tts_first_byte_ms is not None:
+                offers.readback = spoken
             timings.tts_first_byte_ms = speaker.tts_first_byte_ms
             if speaker.first_byte_at:
                 timings.total_ms = int((speaker.first_byte_at - t0) * 1000 + 0.5)

@@ -31,6 +31,7 @@ from datetime import date, timedelta
 from decimal import ROUND_HALF_EVEN, Decimal
 from typing import Any
 
+from app import team_flags
 from app.schemas import ChatMessage, ToolCall
 
 from .base import LLMClient, LLMEvent, LLMRequest, LLMText, LLMToolCall, LLMUsage
@@ -215,7 +216,7 @@ def call(name: str, args: dict) -> ToolCall:
 # ── Conversation mode (chat / voice) ──
 
 
-def decide(messages: list[ChatMessage]) -> ToolCall | str:
+def decide(messages: list[ChatMessage], caller_id: str | None = None, review_drafts: bool = False) -> ToolCall | str:
     """The next step: either a tool call or the final French answer."""
     last_user = last_user_index(messages)
     user_text = messages[last_user].content if last_user >= 0 else ""
@@ -240,7 +241,7 @@ def decide(messages: list[ChatMessage]) -> ToolCall | str:
     if intent == "line":
         line = parse_line(user_text)
         order = find_last_order(before, editable_only=True)
-        client = find_caller(before)
+        client = find_caller(before) or ({"id": caller_id} if caller_id else None)
         if not last:
             if not order and not client:
                 return "Pour quel client est-ce ? Dites-moi le nom de l'établissement."
@@ -253,8 +254,15 @@ def decide(messages: list[ChatMessage]) -> ToolCall | str:
             if order:
                 return call("add_order_line", {"orderId": order["id"], **new_line})
             return call("create_draft_order", {"clientId": client["id"], "lines": [new_line]})
+        if last.name == "review_order":
+            review = last.data
+            summary = review["readback"].replace(" ; ", ". ")
+            alerts = " ".join(review.get("alerts") or [])
+            return f"{summary}. {alerts}".strip() + (" Je vous la valide ?" if review["canConfirm"] else "")
         if last.name in ("create_draft_order", "add_order_line"):
             d = last.data
+            if review_drafts and d.get("status") == "draft":
+                return call("review_order", {"orderId": d["id"]})
             added = (d.get("lines") or [None])[-1]
             # Only the alerts about the line just added (the others were already said).
             own = [w for w in d.get("warnings") or [] if not added or w.get("productId") == added.get("productId")]
@@ -393,6 +401,9 @@ class MockLLM(LLMClient):
     async def stream(self, req: LLMRequest) -> AsyncIterator[LLMEvent]:
         if "MODE COMMANDE" in req.system:
             step = decide_command(req.messages, req.system, [t.name for t in req.tools])
+        elif team_flags.recommendations() and "Mode VOCAL" in req.system:
+            caller = re.search(r"^# Client au téléphone : [^\n]+ \((cli_[a-z0-9_]+)\)$", req.system, re.M)
+            step = decide(req.messages, caller[1] if caller else None, any(t.name == "review_order" for t in req.tools))
         else:
             step = decide(req.messages)
         if isinstance(step, ToolCall):

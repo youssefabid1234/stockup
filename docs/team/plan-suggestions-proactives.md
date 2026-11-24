@@ -2,6 +2,15 @@
 
 **Branche** `mohamed-amine/suggestions-proactives` · **Périmètre** Le Fournil Occitan
 
+L’activation et le parcours de démo sont décrits dans le [README](../../README.md). Les tests ciblés s’exécutent dans chaque service.
+
+```bash
+cd apps/ai
+uv run pytest tests/test_voice_offers.py
+cd ../backend
+uv run python -m unittest discover -s tests -p test_recommendations.py
+```
+
 L’agent propose une offre qui a du sens pour ce client au bon moment. Le même moteur alimente la prise de commande, un appel sortant et, si personne ne décroche, un message de suivi. La première version tourne entièrement dans la simulation Voix du hackathon. Le jury choisit de décrocher ou de laisser sonner et peut vérifier les actions dans l’ERP.
 
 ## 1. Ce que le jury pourra essayer
@@ -100,3 +109,10 @@ Mohamed Amine porte la voix et les scénarios. Daycem valide le ton, les préfé
 - **Mesures.** Utiliser `scripts/run_scenarios.py --voice` et un vrai passage au micro pour comparer la latence perçue et le premier son utile avec la version de départ. Suivre séparément offres prononcées, acceptées, commandes confirmées avec la ligne et SMS simulés. Faire écouter des appels avec et sans suggestion à un membre de l’équipe pour vérifier le ton et le moment choisi.
 
 **Démo de 90 secondes.** Faire entendre une suggestion bien placée dans une commande entrante. Montrer le bon qui ne bouge qu’après la demande d’ajout. Lancer ensuite la campagne et inviter le jury à laisser sonner. Afficher le SMS simulé et sa trace dans l’ERP. Préparer une variante où le jury décroche et prend la conversation à son compte.
+
+## Vérification du parcours de démo
+
+- **Entrant dans Chromium.** Au Fournil de Sandrine commande du cacao. L’agent glisse la promo du tourage. Demander le prix laisse le panier intact. Deux plaques ajoutent 4 kg au même brouillon. Une réponse séparée confirme la commande dans l’ERP.
+- **Sortant décroché dans Chromium.** Après l’accord pour écouter, demander deux cartons ajoute 20 kg à 8,46 €/kg. La commande passe en confirmée après relecture et accord.
+- **Sortant manqué dans Chromium.** Laisser sonner crée un seul SMS simulé et un événement CRM. Recharger la page conserve le résultat. Les tests ERP couvrent également le décrochage tardif, la reprise depuis SQLite, le refus et la disparition de l’offre en cours de sonnerie.
+- **Conditions du rejeu.** Pack `data/seed_en`, ERP SQLite et WebSocket locaux, entrées tapées sur la page Voix et fournisseurs IA/audio simulés. La suite IA complète retrouve deux échecs déjà observés sur le commit de départ de `main`, dans le test de rechargement des outils SAV et le classement anglais des substituts de crème.
