@@ -1,3 +1,4 @@
+import { StockUpLogo, StockUpMark } from "./StockUpLogo";
 import { useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { PanelLeftClose, PanelLeftOpen, Search } from "lucide-react";
@@ -87,14 +88,15 @@ export function Sidebar() {
     >
       {/* Content keeps the expanded width while the outer box animates, so nothing reflows mid-animation. */}
       <nav style={{ width: Math.max(r.width, RAIL_WIDTH) }} className="flex h-full flex-col">
-        <div className="group/head relative flex h-12 shrink-0 items-center gap-2.5 px-4">
-          <StocklineMark />
-          <div className={cn("min-w-0 flex-1", fade)}>
-            <div className="truncate text-[13.5px] font-semibold leading-4">{meta?.company ?? "ERP"}</div>
-            <div className="truncate text-[11px] leading-4 text-muted-foreground">
-              {meta?.trade ? `Grossiste ${meta.trade}` : "Grossiste alimentaire"}
+        <div className="group/head relative flex h-[68px] shrink-0 items-center gap-2.5 border-b border-border px-4">
+          {collapsed ? <StockUpMark /> : (
+            <div className={cn("min-w-0 flex-1", fade)}>
+              <StockUpLogo size={25} />
+              <div className="mt-1 truncate pl-10 text-[11px] font-medium leading-4 text-muted-foreground">
+                {meta?.company ?? "Le Fournil Occitan"}
+              </div>
             </div>
-          </div>
+          )}
           {/* Linear-like: the collapse control appears on header hover / focus, over the end of the subtitle. */}
           {collapsed ? null : (
             <IconButton

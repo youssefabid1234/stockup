@@ -19,7 +19,8 @@ CONFIRM_QUESTION = re.compile(
     r"\s*(?:[Jj]e (?:vous )?(?:la |le )?(?:valide|confirme)(?: (?:la|cette|votre) commande)?|[Cc]'est bon pour vous)\s*\?$"
 )
 NO = re.compile(r"(?:non(?: merci| pas interesse(?:e)?)?|pas interesse(?:e)?|pas maintenant|une autre fois)")
-YES = re.compile(r"(?:oui(?: allez y| je vous ecoute| bien sur| volontiers)?|allez y|je vous ecoute|d accord|volontiers|ok)")
+# team 12 (Youssef): several yes words in a row too (« oui allez-y, je vous écoute » was not a yes: the offer was asked again)
+YES = re.compile(r"(?:oui|ouais|allez y|vas y|je vous ecoute|bien sur|volontiers|d accord|ok|dites|je vous en prie|avec plaisir)(?: (?:oui|allez y|vas y|je vous ecoute|bien sur|volontiers|d accord|ok|dites|je vous en prie|avec plaisir))*")
 CONFIRM = re.compile(r"(?:oui(?: merci| c est bon| je confirme| validez| confirmez)?|c est bon|d accord|(?:validez|confirmez)(?: la commande| le panier)?)")
 ASK_OFFERS = re.compile(
     r"(?:(?:est ce que )?vous avez|avez vous|y a t il|quelles sont|montrez moi) "

@@ -5,6 +5,7 @@
 import { useEffect, useRef, useState } from "react";
 import type { CallerReady } from "@kit/shared";
 import type { VoiceTurn } from "@/features/assistant/useVoiceSession";
+import { cn } from "@/lib/cn";
 
 interface NoteItem {
   id: string;
@@ -97,22 +98,23 @@ export function AgentNotebook({ caller, turns }: { caller?: CallerReady; turns: 
   }, [caller, turns]);
 
   if (!caller && !saved) return null;
+  if (!caller) return <p className="mx-3 mt-3 rounded-xl bg-emerald-500/10 px-3 py-2 text-[12px] text-emerald-700 dark:text-emerald-300">✓ {saved}</p>;
   const byId = Object.fromEntries(notes.map((n) => [n.id, n]));
   return (
-    <section className="shrink-0 border-b border-border px-3 py-3">
+    <section className={cn("flex flex-col px-3 py-3", caller ? "min-h-0 flex-1" : "shrink-0")}>
       <style>{`@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&display=swap');
         @keyframes nb-write { from { clip-path: inset(0 100% 0 0) } to { clip-path: inset(0 0 0 0) } }
         @keyframes nb-draw { from { stroke-dashoffset: 400 } to { stroke-dashoffset: 0 } }
-        .nb-paper { background: #fffdf4; background-image: repeating-linear-gradient(transparent 0 25px, #c9d8ee 25px 26px),
-          linear-gradient(90deg, transparent 26px, #f0b8b8 26px 27px, transparent 27px); font-family: Caveat, 'Segoe Print', 'Comic Sans MS', cursive; }
+        .nb-paper { background: #fffdf4; background-image: repeating-linear-gradient(transparent 0 31px, #c9d8ee 31px 32px),
+          linear-gradient(90deg, transparent 38px, #f0b8b8 38px 39px, transparent 39px); font-family: Caveat, 'Segoe Print', 'Comic Sans MS', cursive; }
         .nb-line { animation: nb-write .7s ease-out both; }
         .nb-draw { stroke-dasharray: 400; animation: nb-draw .9s ease-out both; }`}</style>
-      <div className="nb-paper relative overflow-hidden rounded-[6px] border border-[#e8dfc4] shadow-sm" style={{ color: INK }}>
-        <div className="flex items-baseline justify-between pl-9 pr-3 pt-1 text-[22px] font-bold leading-[26px]">
+      <div className={cn("nb-paper relative overflow-y-auto rounded-[10px] border border-[#e8dfc4] shadow-md", caller && "flex-1")} style={{ color: INK }}>
+        <div className="flex items-baseline justify-between pl-12 pr-4 pt-2 text-[30px] font-bold leading-[32px]">
           <span>Carnet de Lucie</span>
-          <span className="text-[16px] font-medium opacity-70">{caller?.name ?? ""}</span>
+          <span className="text-[19px] font-medium opacity-70">{caller?.name ?? ""}</span>
         </div>
-        <ul className="pb-2 pl-9 pr-3 text-[19px] leading-[26px]">
+        <ul className="pb-3 pl-12 pr-4 text-[23px] leading-[32px]">
           {notes.length === 0 ? <li className="opacity-50">{caller ? "J'écoute…" : ""}</li> : null}
           {notes.map((n) => (
             <li key={n.id} className="nb-line relative" title={new Date(n.at).toLocaleTimeString("fr-FR")}>
@@ -143,7 +145,7 @@ export function AgentNotebook({ caller, turns }: { caller?: CallerReady; turns: 
           ))}
         </ul>
         {links.length ? (
-          <div className="border-t border-dashed border-[#c9d8ee] px-3 pb-2 pl-9 text-[17px] leading-[24px]">
+          <div className="border-t border-dashed border-[#c9d8ee] px-4 pb-2 pl-12 text-[20px] leading-[32px]">
             {links.map((l, i) => byId[l.from] && byId[l.to] ? (
               <div key={i} className="nb-line flex items-center gap-1">
                 <span className="truncate">{byId[l.from].text}</span>
@@ -154,7 +156,7 @@ export function AgentNotebook({ caller, turns }: { caller?: CallerReady; turns: 
             ) : null)}
           </div>
         ) : null}
-        <div className="flex items-center justify-between px-3 pb-1 pl-9 text-[14px] opacity-60">
+        <div className="sticky bottom-0 flex items-center justify-between bg-[#fffdf4]/90 px-4 pb-1.5 pl-12 text-[16px] opacity-70">
           <span>{writing ? "✎ Lucie écrit…" : `${notes.filter((n) => n.status === "active").length} notes · ${notes.filter((n) => n.status === "struck").length} barrées`}</span>
           <span>🛒 commande · ♥ préférence · ? à demander</span>
         </div>

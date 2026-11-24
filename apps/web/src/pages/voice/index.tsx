@@ -1,5 +1,4 @@
-import { OutboundCalls } from "./outbound";
-import { PlannedCalls } from "./planned";
+import { CallsPanel } from "./calls-panel";
 import { AgentNotebook } from "./notebook";
 /**
  * Voix — two modes, switched in the header (?mode=command):
@@ -21,7 +20,6 @@ import { useVoiceSession, type Conn } from "@/features/assistant/useVoiceSession
 import { CallerForm } from "./caller";
 import { ChatHeader, ChatMessages, Composer, QuickReplies, WALLPAPER } from "./chat";
 import { CommandMode } from "./command";
-import { LiveActivity } from "./live-activity";
 import { MetricsBar } from "./metrics";
 
 const isTypingTarget = (t: EventTarget | null) => {
@@ -107,6 +105,17 @@ function CallMode({ modeSwitch }: { modeSwitch: ReactNode }) {
     };
   }, []);
 
+  // team 12 (Youssef): the caller said goodbye and Lucie has answered (her voice is over): hang up by itself.
+  const goodbyeDone = useRef<number>();
+  useEffect(() => {
+    const last = v.turns[v.turns.length - 1];
+    if (!v.caller || !last || !last.agent.done || v.activity !== "idle" || goodbyeDone.current === last.id) return;
+    if (!/\b(au revoir|bonne (?:journ[ée]e|soir[ée]e|fin de journ[ée]e|continuation)|[àa] (?:bient[ôo]t|plus|demain)|ciao|bye)\b/i.test(last.caller.text)) return;
+    goodbyeDone.current = last.id;
+    const t = window.setTimeout(() => vRef.current.endCall(), 1200);
+    return () => window.clearTimeout(t);
+  }, [v.turns, v.activity, v.caller]);
+
   const connected = v.conn === "ready";
   const ready = connected && !!v.caller; // team 12: no talking before the caller is identified
 
@@ -184,13 +193,13 @@ function CallMode({ modeSwitch }: { modeSwitch: ReactNode }) {
             onTalkUp={v.stopTalking}
           />
         </section>
-        <aside className="flex w-[280px] shrink-0 flex-col overflow-y-auto border-l border-border bg-card xl:w-[320px] 2xl:w-[380px]">
+        <aside className={cn("flex shrink-0 flex-col overflow-y-auto border-l border-border bg-muted/30 transition-[width]",
+          v.caller ? "w-[400px] xl:w-[460px] 2xl:w-[520px]" : "w-[300px] xl:w-[340px] 2xl:w-[380px]")}>
           <AgentNotebook caller={v.caller} turns={v.turns} />
-          <PlannedCalls ready={connected} busy={!!v.caller} pending={v.callerPending} />
-          <OutboundCalls ready={connected} busy={!!v.caller} pending={v.callerPending}
-            onAnswer={(outboundId) => v.identifyCaller({ outboundId })}
-            error={v.lastError?.startsWith("Impossible de décrocher") ? v.lastError : undefined} />
-          <div className="min-h-36 flex-1"><LiveActivity /></div>
+          {v.caller ? null : (
+            <CallsPanel ready={connected} busy={!!v.caller} pending={v.callerPending}
+              onAnswer={(outboundId) => v.identifyCaller({ outboundId })} />
+          )}
         </aside>
       </div>
     </Page>

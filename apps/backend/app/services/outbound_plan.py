@@ -128,3 +128,13 @@ def call_now(plan_id: str) -> Doc:
     if not entry:
         raise not_found("Appel planifié", plan_id)
     return outbound_calls.start(plan_id, client_id=entry["clientId"], offer_id=entry["offer"]["id"])
+
+
+def decline(plan_id: str) -> Doc:
+    """The call is refused while it rings: it ends now as unanswered (then Lucie leaves her voice message)."""
+    attempt = crud.outbound_attempts.get(plan_id)
+    if not attempt:
+        raise not_found("Appel", plan_id)
+    if attempt["status"] == "ringing":
+        attempt = crud.outbound_attempts.put({**attempt, "deadline": time.time()})  # process_due marks it missed
+    return attempt

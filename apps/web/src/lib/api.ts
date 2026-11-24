@@ -155,6 +155,7 @@ export const api = {
     list: () => get<PlannedCall[]>("/outbound-plan", undefined, { silent: true }),
     refresh: () => post<PlannedCall[]>("/outbound-plan/refresh"),
     call: (id: string) => post<OutboundAttempt>("/outbound-plan/" + encodeURIComponent(id) + "/call"),
+    decline: (id: string) => post<OutboundAttempt>("/outbound-plan/" + encodeURIComponent(id) + "/decline"),
   },
 
   products: {
