@@ -383,7 +383,8 @@ l'activité, zone et jours de tournée trouvés dans les fiches de zones de l'ER
 demande (événement « onboarding ») pour l'équipe. Jamais de doublon : même téléphone ou même nom = même fiche, complétée ;
 un numéro déjà client gagne sur la case « nouveau client ». Aucune commande : les outils de commande sont retirés pour un
 nouveau client ou un prospect, et l'équipe rappelle pour ouvrir le compte. Testé en vrai (scripts/new_client_test.py :
-7 appels variés, vérification de l'ERP après chaque appel, juge indépendant) : 7/7.
+12 appels variés, dont client bloqué, changement d'avis, cantine qui veut le samedi, quartier + code postal,
+prospect qui rappelle ; ERP vérifié après chaque appel, juge indépendant) : 12/12 sur main fusionné.
 
 ### Commande juste (Amine Khalil)
 

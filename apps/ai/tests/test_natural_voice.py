@@ -109,7 +109,7 @@ def test_codes_and_symbols_are_read_as_words():
     assert tts_text("le prix est de 18,50 euros.") == "le prix est de 18 euros 50."
 
 
-async def test_a_voice_missing_from_the_key_falls_back_to_a_premade_one():
+async def test_a_voice_missing_from_the_key_falls_back_to_a_premade_one(monkeypatch):
     from app.clients.elevenlabs import ElevenLabsTTS
 
     tts = ElevenLabsTTS("k", voice="not-in-this-library")
@@ -124,7 +124,7 @@ async def test_a_voice_missing_from_the_key_falls_back_to_a_premade_one():
     tts._stream = stream
     import app.clients.elevenlabs as el
 
-    el.body_chunks = lambda res: iter(())
+    monkeypatch.setattr(el, "body_chunks", lambda res: iter(()))  # restored after the test (other tests stream)
     await tts.synthesize("Bonjour")
     await tts.synthesize("Encore")
     assert asked == ["not-in-this-library", ElevenLabsTTS.FALLBACK_VOICE, ElevenLabsTTS.FALLBACK_VOICE]
