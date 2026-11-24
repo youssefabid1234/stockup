@@ -103,6 +103,30 @@ SOCIAL_TURN = re.compile(
     r"(?:[\s.,!?’'\-]*(?:c'est tout|merci(?: beaucoup)?|au revoir|bonne journée|bonjour|salut|oui|non|d'accord))+[\s.,!?]*",
     re.I,
 )
+# team 12 (Youssef): the caller is ending the call (« merci, je n'ai rien d'autre, au revoir », « non c'est tout »):
+# no waiting phrase and no typing (« Je regarde ça » before a goodbye sounded absurd, test 24/11)
+CLOSING = re.compile(
+    r"\b(?:au revoir|adieu|ciao|bye|bonne (?:journ[ée]e|soir[ée]e|fin de journ[ée]e|continuation|semaine)|"
+    r"[àa] (?:bient[ôo]t|plus|demain|la prochaine)|c'est tout|ce sera tout|(?:je n'ai|j'ai) (?:plus )?rien d'autre|"
+    r"rien d'autre|on s'arr[êe]te l[àa]|je raccroche|il faut que je (?:vous )?laisse)\b",
+    re.I,
+)
+STILL_ORDERING = re.compile(r"\b(?:mettez|ajoutez|rajoutez|je voudrais|il me faut|il me faudrait|je prends|et aussi|ah et)\b|\d", re.I)
+# a leading « bonjour, oui, alors, euh » says nothing about the request
+LEADING = re.compile(r"^(?:[\s.,!?…-]*(?:re-?bonjour|bonjour|bonsoir|salut|all[ôo]|oui|ouais|alors|euh+|bon|ben|écoutez|dites|madame|monsieur|lucie)\b)+[\s.,!?…-]*", re.I)
+
+
+def is_closing(words: str) -> bool:
+    """« Parfait, merci beaucoup, je n'ai rien d'autre, au revoir » → True; « c'est tout, ah et aussi 2 sacs » → False."""
+    w = (words or "").replace("’", "'")
+    return bool(CLOSING.search(w)) and not STILL_ORDERING.search(CLOSING.split(w)[-1] if CLOSING.split(w) else w)
+
+
+def request_part(words: str) -> str:
+    """The words that carry the request: « Bonjour, oui, alors il me faudrait… » → « il me faudrait… »."""
+    return LEADING.sub("", (words or "").replace("’", "'"), count=1)
+
+
 SEARCH_TOOLS = {
     "search", "get_product_stock", "get_price", "product_insight", "get_client",
     "find_alternatives", "get_order", "check_delivery_date", "create_draft_order", "add_order_line",
@@ -141,13 +165,32 @@ class FillerBank:
     async def warm_up(self, tts: TTSClient, voice: str | None = None) -> None:
         phrases_by_situation = PHRASES
         if team_flags.no_silence():
-            phrases_by_situation = {"ack": ACK_PHRASES, "hmm": HMM_PHRASES, **{f"ack:{k}": v for k, v in ACK_BY_INTENT.items()}}
+            # team 12 (Youssef): the phrases that fit each request first (before, the defaults came first and the
+            # request-specific ones were missing for the first ~10 s: « Je regarde ça » for everything)
+            phrases_by_situation = {**{f"ack:{k}": v for k, v in ACK_BY_INTENT.items()}, "ack": ACK_PHRASES, "hmm": HMM_PHRASES}
         elif team_flags.fillers_mode() == 2:
             phrases_by_situation = {"fast_intro": [FAST_INTRO], "follow_up": PHRASES["follow_up"]}
+        # in parallel (6 at a time), each situation filled in order: ready in ~1-2 s instead of ~10 s
+        sem = asyncio.Semaphore(6)
+
+        async def one(phrase: str) -> CachedAudio:
+            async with sem:
+                return await synthesize_clip(tts, phrase, voice)
+
         for situation, phrases in phrases_by_situation.items():
             clips = self.audio.setdefault(situation, [])
-            for phrase in phrases[len(clips):]:
-                clips.append(await synthesize_clip(tts, phrase, voice))
+            todo = phrases[len(clips):]
+            if not todo:
+                continue
+            if not team_flags.no_silence():  # other modes: one by one, as before
+                for phrase in todo:
+                    clips.append(await synthesize_clip(tts, phrase, voice))
+                continue
+            done = await asyncio.gather(*(one(phrase) for phrase in todo), return_exceptions=True)
+            for clip in done:  # keep what succeeded in order; a failure is retried at the next warm-up
+                if isinstance(clip, BaseException):
+                    raise clip
+                clips.append(clip)
 
     def pick(self, situation: str) -> CachedAudio | None:
         """A clip for this situation, never the same one twice in a row and each one used before any repeats
@@ -432,6 +475,11 @@ async def on_turn_start(speaker, heard: str) -> None:
         # team 12 (Youssef): the phrase follows the request (keywords, else Jev); a discount or a complaint gets one too
         from app.agent.router import is_simple_turn
 
+        if is_closing(words):  # team 12: a goodbye gets no « je regarde ça »; typing only if the answer lags
+            speaker.intent = None
+            speaker.waiting_task = asyncio.create_task(keep_typing(speaker, SOCIAL_TYPING_DELAY))
+            return
+        words = request_part(words) or words
         simple = speaker.social_turn or is_simple_turn(words)  # « c'est bon, validez », « merci »: no phrase
         speaker.intent = None if simple else await choose_intent(words)
         if needs_lookup(words) or speaker.intent:
@@ -467,6 +515,9 @@ async def early_acknowledgement(speaker, utterance) -> None:
     started = asyncio.get_running_loop().time()
     while not speaker.transcript_ready:
         words = (getattr(utterance, "partial", "") or "").replace("’", "'")
+        if words and is_closing(words):  # team 12: the caller is saying goodbye: nothing before the answer
+            return
+        words = request_part(words)
         if words and needs_lookup(words):
             speaker.intent = intent_of(words)  # keywords only here: this path is about speed
             await play_waiting_line(speaker)
