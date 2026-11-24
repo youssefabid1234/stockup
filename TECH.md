@@ -376,7 +376,7 @@ Example worked: **"redo the same command"** (`POST /api/orders/{id}/repeat`), us
 
 80 routes of the ERP (generated from `http://localhost:4000/openapi.json`) and 7 routes of the AI service.
 Live Testing: http://localhost:4000/docs and http://localhost:4100/docs. Examples Curl and Semantic Profession:
-[ERP.md §7 and §8](ERP.md#8-aide-mémoire-de-lapi).
+[ERP.md §7 and §8](ERP.md#8-aide-memoire-of-the-api).
 
 ### Key Files
 

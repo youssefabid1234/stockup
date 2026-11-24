@@ -71,7 +71,7 @@ All three services read the single `.env` at the repo root (your team zip ships 
 An empty `*_MODEL` / `TTS_VOICE` picks the provider's default; the defaults are listed in
 [apps/ai/README.md](apps/ai/README.md#environment). Your team `.env` lists every key your team received as comments at
 the bottom: to switch provider, set `*_PROVIDER` and paste the matching key into `*_API_KEY`
-([SETUP.md](SETUP.md#changer-de-modèle-ou-de-voix)).
+([SETUP.md](SETUP.md#change-model-or-voice)).
 
 ---
 
@@ -160,11 +160,9 @@ Subclass `LLMClient` / `STTClient` / `TTSClient` from `apps/ai/app/clients/base.
 
 ## The data pack
 
-Your team zip ships **your company** in `./data` (`DATA_DIR=./data`): one of 24 fictional food wholesalers
-(fish, fruit & veg, meat, dairy, drinks, frozen…), each with ~100 clients, its suppliers and products and 3 years of
-history. Every team has a different one.
+This checkout includes the English records for Le Fournil Occitan in `./data`. The ERP contains three years of order, payment and delivery history.
 
-- `data/seed/*.json`: the ERP data (clients, products, lots, orders, invoices, payments, routes, events, prices, context).
+- `data/seed_en/*.json`: the ERP data (clients, products, lots, orders, invoices, payments, routes, events, prices, context).
 - `data/context/*.md`: company knowledge (playbooks, glossary, pricing, delivery zones) — put whole into the system
   prompt and re-read every turn, so you can edit it live. `data/context/clients/` and `data/context/suppliers/`: persona sheets.
 
@@ -214,7 +212,7 @@ flash violet in every open page — so the ERP visibly updates during a call.
 
 ## Troubleshooting
 
-Install and run problems (Docker, ports, WSL, mic, keys): [SETUP.md](SETUP.md#en-cas-de-problème). While coding:
+Install and run problems (Docker, ports, WSL, mic, keys): [SETUP.md](SETUP.md#in-case-of-a-problem). While coding:
 
 | Symptom | Fix |
 |---|---|

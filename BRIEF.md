@@ -83,7 +83,7 @@ Next:
 2. Page **Voix**: Keep Space and speak like a client. Look at the transcription, the tools called,
    the response times, and the ERP that is updating.
 3. Read `apps/ai/app/agent/loop.py` (the loop) and `apps/ai/app/tools/` (the tools). This is where you will pass
-   Most of your time. Project plan: [SETUP.md, How the project is organised](SETUP.md#comment-le-projet-est-organisé).
+   Most of your time. Project plan: [SETUP.md, How the project is organised](SETUP.md#how-the-project-is-organised).
 
 ## 6. How to do it
 
