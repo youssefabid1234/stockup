@@ -329,6 +329,25 @@ fausse), S21 (appelant non identifié : l'agent demande qui appelle), S22 (plusi
 n'est écrit avant l'accord sur le 82 %, puis la commande entière en une fois) ; 7 répliques sur 7. Tests : 6 dans
 `test_after_sales.py`, suite complète 391 verts.
 
+#### Préchargement anticipé (TODO 4 de l'orchestrateur, Amine Khalil) : fait, gain faible, et une découverte sur le STT
+
+**Fait** (`agent/orchestrator.py` `Anticipation`, branché dans `voice_session.py`) : pendant que le client parle, chaque
+transcription partielle est scannée (sans modèle, catalogue en cache) ; dès que des produits sont cités, leur stock, prix,
+promo et remplaçants sont lus en arrière-plan. À la fin de la phrase, mêmes produits → le résultat est repris tel quel ;
+sinon il est jeté et la vérification normale tourne. Lecture seule, annulé si le client coupe la parole. 6 tests.
+
+**Mesuré en vrai audio** (phrase lue par ElevenLabs, MP3 envoyé au rythme de la parole sur le WebSocket `/voice`, vraie
+transcription Soniox, 3 questions de Sarrailh, 2 appels) : la vérification était déjà prête à la fin de la phrase sur
+1 question sur 3 ; le gain est de **30 à 40 ms** seulement, car une fois le catalogue en cache la lecture de l'ERP ne
+prend que 9 à 48 ms (les 300 ms mesurés plus tôt étaient le premier appel, à froid).
+
+**Découverte** : sur ce même test, la transcription finale arrive **1,55-1,60 s** après la fin de la parole
+(`sttMs`), et au moment où le client s'arrête, Soniox n'a transcrit que le début de la phrase (« Bonjour, vous avez encore
+du tourage », aucun mot figé) : Soniox a ~1 s de retard sur l'audio. Démarrer le modèle sur le partiel ne servirait donc à
+rien ici. C'est le plus gros délai d'un tour (le modèle met 1,0-1,5 s). **À vérifier au micro du navigateur**
+(WebM/Opus, pas MP3) : si `sttMs` y est aussi > 1 s, c'est la piste n°1 de vitesse (format audio, réglages de Soniox,
+ou fin de parole détectée plus tôt en mains libres).
+
 ### Commande juste (Amine Khalil)
 
 **Mission** : ce qui finit dans l'ERP est exactement ce que le client voulait (bon produit, bonne quantité, bon jour,

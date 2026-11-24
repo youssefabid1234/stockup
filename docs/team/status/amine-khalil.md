@@ -169,3 +169,5 @@ L'agent d'origine croit la note et refuse à tort (vu en S03 et dans un test S1 
 - T6 fait : `report_delivery_issue` + `settle_delivery_issue` (vraie livraison, montant, relivraison gratuite ou avoir,
   > 150 € → direction). S08 réécrit sur les vraies données (livraison du samedi 21/11).
 - Scénarios S20, S21, S22 écrits. Rejeu voix S08 S20 S21 S22 : 7/7.
+- Préchargement anticipé (orchestrateur) : fait, gain 30-40 ms seulement. Découverte : `sttMs` ≈ 1,55 s en vrai audio
+  (MP3 en flux), Soniox ~1 s en retard sur l'audio. **À vérifier au micro du navigateur** (voir DECISIONS).
