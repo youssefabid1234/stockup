@@ -1,0 +1,94 @@
+{
+  "id": "S48",
+  "owner": "daycem",
+  "title": "Le Pétrin de Muret demande 3 % : petite remise → sa commerciale (lue dans la fiche), pas le gérant, rien d'accordé",
+  "why": "Intelligent : une remise qu'un commercial peut accorder (05-prix-et-credit.md) va à la commerciale du client, dont le nom complet vient de la fiche ERP (salesRep ; les notes ne donnent que son prénom) ; l'agent n'accorde rien, ne cite aucun seuil et note la demande (price_negotiation).",
+  "client": "cli_0019",
+  "turns": [
+    {
+      "say": "Bonjour, c'est Marco, Le Pétrin de Muret. Sur mes 20 sacs de tradi de vendredi, vous pouvez me faire 3 % ?",
+      "expect": {
+        "tools_none": [
+          "confirm_order",
+          "place_order",
+          "create_draft_order",
+          "add_order_line",
+          "update_order_line"
+        ],
+        "says_any": [
+          "Escudié",
+          "Escudie",
+          "Marion, votre commerciale",
+          "Marion, ta commerciale",
+          "votre commerciale Marion",
+          "ta commerciale Marion",
+          "votre commerciale, Marion",
+          "ta commerciale, Marion"
+        ],
+        "says_none": [
+          "je vous accorde",
+          "je t'accorde",
+          "je vous fais une remise",
+          "je te fais une remise",
+          "je vous fais un geste",
+          "je te fais un geste",
+          "va pour",
+          "c'est d'accord pour les",
+          "je m'aligne",
+          "on s'aligne",
+          "je vous l'aligne",
+          "je te l'aligne",
+          "je peux descendre",
+          "je descends",
+          "jusqu'à 5",
+          "au-delà de 5",
+          "peut aller jusqu",
+          "Bernard",
+          "gérant",
+          "Castagné",
+          "5 %",
+          "5%",
+          "cinq pour cent",
+          "5 pour cent"
+        ]
+      }
+    },
+    {
+      "say": "Oui, transmettez-lui, merci.",
+      "expect": {
+        "tools_any": [
+          "log_client_event"
+        ],
+        "tools_none": [
+          "confirm_order",
+          "place_order",
+          "create_draft_order",
+          "add_order_line",
+          "update_order_line"
+        ],
+        "says_none": [
+          "je vous accorde",
+          "je t'accorde",
+          "je vous fais une remise",
+          "je te fais une remise",
+          "je vous fais un geste",
+          "je te fais un geste",
+          "va pour",
+          "c'est d'accord pour les",
+          "je m'aligne",
+          "on s'aligne",
+          "je vous l'aligne",
+          "je te l'aligne",
+          "je peux descendre",
+          "je descends",
+          "jusqu'à 5",
+          "au-delà de 5",
+          "peut aller jusqu",
+          "Bernard",
+          "gérant",
+          "Castagné"
+        ]
+      }
+    }
+  ]
+}

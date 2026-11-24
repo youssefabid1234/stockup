@@ -1,26 +1,29 @@
-# Daycem – « Le bon vendeur »  ·  mis à jour mar. 24/11, 0h30
-
-- Fait depuis la dernière sync :
-  - T1 : `SALES_RULES` complet (rupture, un seul remplaçant argumenté avec accord, date de retour telle qu'écrite,
-    pas de remise, pas de raisonnement à voix haute, 1-2 phrases, une seule question, notes internes privées ;
-    client qui refuse : solution sans autre produit + demande notée avec `log_client_event`). Règles générales,
-    vérifiées par `test_sales_rules_stay_general`. Les deux dernières règles ne sont pas encore rejouées.
-  - T3 (début) : `substitution_policy` (mots-clés : refuse / accepte / demander / inconnu) et `decide_substitution`
-    (Jev seulement si « inconnu », toute erreur → demander). 13 tests sur de vraies fiches ; les 104 fiches vérifiées
-    sans anomalie. `refuses_substitution` garde le contrat d'interfaces.md §5.
-  - Test Jev seul sur 10 fiches : 6/10 puis 5/10, ~150-170 ms → `docs/team/jev-substitution-test.md` (pour DECISIONS.md).
-- En cours : T3 `rank_alternatives` (substituts listés dans les documents d'abord), plan à valider.
+# Daycem – « Le bon vendeur »  ·  mis à jour mar. 24/11, après-midi
+- Fait depuis la dernière sync (tout est sur `main`) :
+  - T1 : `SALES_RULES` (rupture, un seul remplaçant argumenté avec accord, fiche muette → demander, 2 phrases,
+    notes internes privées) ; S43 (PR #18, #23).
+  - T3 : `substitution_policy`, `rank_alternatives` (même usage, « rien d'équivalent »), exclusions des fiches,
+    bilingue FR/EN ; S44 à S46 ; audit sur 71 produits (PR #24, #26, #27).
+  - T4 : promo de démo ciblée (tag `promo-tourage`, 6 boulangeries acheteuses d'AOP qui acceptent un remplaçant),
+    `scripts/promo_target.py` ; S40 → Au Pain de Guilhem, S47 hors cible (PR #39).
+  - T5 : négociation sans remise ni seuil cité, demande notée (`price_negotiation`) pour le gérant ou le commercial
+    de la fiche ; ligne « Commercial(e) » dans la fiche préchargée ; S41, S42, S48 8/8, 14 appels (PR #43).
+  - Cohérence de `main` : README (scène promo = Au Pain de Guilhem), `conftest.py` (2 nouveaux interrupteurs remis à
+    zéro), `interfaces.md` (4 interrupteurs ajoutés), DECISIONS « Bon vendeur ».
+- En cours : rejeu des scènes de démo (S05, S40, S41, S42, S47, S48) sur `main` complet.
 - Bloqué / j'attends : rien.
 - J'ai besoin de (qui, quoi) :
-  - **Youssef** : brancher `decide_substitution` / `rank_alternatives` dans `product_insight` (encore `NotImplementedError`).
-  - **Amine K. / Youssef** : brouillon orphelin vu 2 fois sur S05 (CMD-2026-007543 en brouillon à côté de la
-    commande confirmée). Le runner rejoue maintenant tout l'historique (PR #4) et `order_edit` existe (PR #3) :
-    **à revérifier** au prochain rejeu.
-  - **Mohamed Amine** : sa proposition « donne directement le résultat, le lecteur vocal fait patienter » (quand
-    `TEAM_FILLERS=1`) contredit ma règle « Je regarde. est autorisé » : à trancher ensemble avant d'allumer les deux.
-- Interrupteur(s) : TEAM_SALES_RULES = on sur ma branche · prêt à allumer sur main ? oui (S04 et S05 passent)
-- Mesure (scénarios, ms) : voir les tableaux ci-dessous (T0 → T1c : S04 premier mot 7,5 s → 0,7 s).
-- Changement de contrat demandé (interfaces.md) : aucun ; ajout de `substitution_policy` et `decide_substitution`.
+  - **Mohamed Amine** :
+    - `test_accepted_offer_modifies_the_same_draft_in_the_voice_session` passe seul mais échoue dans la suite
+      complète (faux service de synthèse vocale incomplet : `'tuple_iterator' object has no attribute 'aclose'`) ;
+    - la section « suggestions » du README dit d'activer les interrupteurs dans le `.env`, alors qu'ils sont allumés
+      par défaut (`.env.example`) ;
+    - DECISIONS.md ne parle pas encore des suggestions.
+- Interrupteur(s) : `TEAM_SALES_RULES=1` sur `main` (dans `.env.example`) · `SALES_RULES_EN` prête, pas branchée.
+- Mesure : S40 4/4 et S47 2/2 (orchestrateur allumé) ; S41, S42, S48 8/8, 3 événements `price_negotiation` dans l'ERP.
+- Changement de contrat demandé (interfaces.md) : aucun.
+
+(Historique détaillé de T0 et T1 ci-dessous.)
 
 ## Photo de départ T0 (kit seul, Sonnet, via `POST /chat`)
 
@@ -81,7 +84,7 @@ fin de grève, pas comme une date de retour).
   - le premier mot arrive plus tard aux tours 1 et 4 (9,5 s et 8,7 s) : le modèle ne dit plus « Je regarde. » ;
   - **commande en double** : au tour 4, l'agent recrée un brouillon puis le confirme ; CMD-2026-007543 reste en
     brouillon orphelin à côté de CMD-2026-007544 confirmée. Cause probable : le runner ne rejoue que le texte, l'agent
-    perd l'id du brouillon. Non vérifié en vrai appel vocal. → Amine K. (commande) et Youssef (runner).
+    perd l'id du brouillon. Non vérifié en vrai appel vocal. (Réglé depuis : `place_order` d'Amine K.)
 
 Corrections écrites ensuite (pas encore rejouées) : date dite naturellement (« normalement en fin de mois »), sans
 « sans promesse » ; une seule question à la fois (d'abord l'accord sur le remplaçant) ; une courte phrase d'attente

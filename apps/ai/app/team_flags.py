@@ -76,6 +76,14 @@ def sales_rules() -> bool:
     return _on("TEAM_SALES_RULES")
 
 
+def recommendations() -> bool:
+    return _on("TEAM_RECOMMENDATIONS")
+
+
+def outbound_demo() -> bool:
+    return recommendations() and _on("TEAM_OUTBOUND_DEMO")
+
+
 def fast_model() -> str:
     """Model of the fast "speaker" agent (orchestrator). Haiku = fastest Anthropic model."""
     return os.environ.get("TEAM_FAST_MODEL", "").strip() or "claude-haiku-5-5"
@@ -92,4 +100,6 @@ def all_flags() -> dict[str, bool]:
         "sales_rules": sales_rules(),
         "router": router(),
         "slim_prompt": slim_prompt(),
+        "recommendations": recommendations(),
+        "outbound_demo": outbound_demo(),
     }

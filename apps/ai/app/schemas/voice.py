@@ -47,6 +47,7 @@ class TextMessage(WireModel):
 
 class ResetMessage(WireModel):
     type: Literal["reset"] = "reset"
+    hang_up: bool = False
 
 
 class CallerMessage(WireModel):
@@ -61,6 +62,7 @@ class CallerMessage(WireModel):
     phone: str | None = None
     company_name: str | None = None  # for a new client
     is_new: bool = False
+    outbound_id: str | None = None  # simulated outbound attempt, chosen by the backend
     resume: bool = False  # sent again after a reconnect: restore the caller, keep the conversation
 
 
@@ -134,6 +136,7 @@ class AgentDoneMessage(WireModel):
 class VoiceErrorMessage(WireModel):
     type: Literal["error"] = "error"
     message: str
+    code: str | None = None
 
 
 class CallerReadyMessage(WireModel):
@@ -147,6 +150,7 @@ class CallerReadyMessage(WireModel):
     status: str | None = None  # active | blocked | prospect | new…
     loaded_ms: int | None = None
     used_by_agent: bool = False  # the agent gets the sheet (always, when the caller was found or is new)
+    outbound_id: str | None = None
     resume: bool = False  # answer to a resumed caller (after a reconnect): the page keeps its turns
 
 

@@ -60,10 +60,10 @@ export type VoiceClientMessage =
   | { type: "nudge" } // team 12 (Youssef): hands-free, the caller is silent: the server says one short varied line
   | { type: "audio_end" } // caller released space; binary frames sent in between (every 100–250 ms) are the utterance, streamed to the STT as they arrive
   | { type: "text"; text: string } // typed instead of spoken (debug)
-  | { type: "reset" }
+  | { type: "reset"; hangUp?: boolean }
   // Team 12: who is calling (caller ID form, before the call): an ERP client (clientId or phone) or a new client
   // resume: sent again after a reconnect (e.g. the AI service reloaded): restore the caller, keep the conversation
-  | { type: "caller"; clientId?: string; contactName?: string; contactTitle?: "madame" | "monsieur"; phone?: string; companyName?: string; isNew?: boolean; resume?: boolean };
+  | { type: "caller"; clientId?: string; contactName?: string; contactTitle?: "madame" | "monsieur"; phone?: string; companyName?: string; isNew?: boolean; outboundId?: string; resume?: boolean };
 
 /** Team 12: the caller is identified and their sheet loaded (usedByAgent=false while TEAM_PRELOAD is off). */
 export interface CallerReady {
@@ -75,6 +75,7 @@ export interface CallerReady {
   status?: string | null;
   loadedMs?: number | null;
   usedByAgent: boolean;
+  outboundId?: string;
   resume?: boolean; // answer to a resumed caller: keep the turns on screen
 }
 
@@ -98,7 +99,7 @@ export type VoiceServerMessage =
   | { type: "agent_audio_start"; mime: string } // binary frames follow
   | { type: "agent_audio_end" }
   | { type: "agent_done"; text: string; timings: TurnTimings }
-  | { type: "error"; message: string };
+  | { type: "error"; message: string; code?: string };
 
 /**
  * Mime returned by the AI service's mock TTS (no key configured): the bytes are a short silent WAV.

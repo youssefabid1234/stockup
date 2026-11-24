@@ -4,7 +4,7 @@
 > 1. Remettez le dossier `data/` du zip à côté du `Makefile` (`data/seed/` n'est pas dans git), et votre `.env` (clés) à la racine.
 > 2. `make setup` → http://localhost:5173, page **Voix**. Nos réglages (`TEAM_*`) sont ajoutés au `.env` s'ils manquent ; la promo de démo est recréée à chaque remise à zéro de l'ERP.
 > 3. Choisissez **« Qui appelle ? »** (le client, comme l'affichage du numéro), puis **« Démarrer l'appel »** : l'agent décroche et dit bonjour tout seul. Maintenez Espace pour parler, ou cliquez **« Mains libres »** pour parler sans touche (fin de phrase détectée, et vous pouvez lui couper la parole).
-> 4. À essayer : Le Pétrin de Colomiers, « 3 cartons de tourage AOP pour lundi » (rupture → tourage 82 % en promo) ; Maison Sarrailh, même demande (refuse tout remplaçant).
+> 4. À essayer : Au Pain de Guilhem, « 3 cartons de tourage AOP pour lundi » (rupture → tourage 82 % en promo) ; Maison Sarrailh, même demande (refuse tout remplaçant).
 > 5. Nos choix et nos mesures : [DECISIONS.md](DECISIONS.md).
 
 A small but complete ERP for a food wholesaler, an AI service that reads and writes it through tools, and a
@@ -15,6 +15,22 @@ troubleshooting). **The challenge: [BRIEF.md](BRIEF.md)** (French). How the food
 [METIER.md](METIER.md). How the ERP works (pages, business rules, API): [ERP.md](ERP.md). How everything works under the
 hood and how to extend it: [TECH.md](TECH.md) (French). Using a coding agent? Point it at [AGENTS.md](AGENTS.md). This
 README covers the architecture, the configuration and how to extend the kit.
+
+### Démo des suggestions et appels sortants
+
+Dans le `.env` à la racine, activer ces options puis redémarrer les services.
+
+```dotenv
+TEAM_RECOMMENDATIONS=1
+TEAM_OUTBOUND_DEMO=1
+```
+
+- **Appel entrant.** Choisir un client qui a déjà acheté une référence en promotion. Commander un autre produit. Avant de faire valider le panier, l’agent peut glisser une suggestion. Demander « Vous avez des promos en ce moment ? » permet aussi de voir l’offre directement.
+- **Appel sortant.** Sur **Voix**, ouvrir **Appels sortants simulés** et cliquer sur **Lancer un appel**. L’ERP choisit un client selon ses achats, le prix appliqué et le stock. Décrocher, dire « Oui, je vous écoute », puis « Deux cartons » si l’offre concerne le tourage. Vérifier le panier relu par l’agent puis confirmer.
+- **Appel manqué.** Raccrocher et lancer une autre tentative. Laisser sonner. Après 10 secondes par défaut, le SMS simulé apparaît dans Voix et dans l’historique du client. Le délai se règle avec `TEAM_OUTBOUND_RING_SECONDS`.
+- **Nouveauté.** Renseigner **Mise au catalogue** sur la fiche d’un produit. Il peut être proposé pendant 30 jours aux clients qui achètent dans sa catégorie, si le stock et la tournée le permettent.
+
+La promo de démo est ciblée. Le panneau affiche les clients réellement éligibles avec les données chargées dans l’ERP. Le pack français se charge depuis `data/seed`. Pour rejouer avec le pack disponible dans Git, utiliser `DATA_DIR=data` et `SEED_DIR_NAME=seed_en` pour l’ERP. La sonnerie, les appels sortants et les SMS de cette démo restent dans le navigateur et l’ERP. [Plan et scénarios de test](docs/team/plan-suggestions-proactives.md)
 
 ### Quelle doc lire ?
 

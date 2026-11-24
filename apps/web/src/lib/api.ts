@@ -23,6 +23,8 @@ import type { ContextEntry, ContextEntryInput, ContextEntrySummary, ContextForEn
 import type { ListParams, Page } from "@kit/shared";
 import { toast } from "@/ui/toast";
 
+import type { OutboundAttempt, OutboundTarget } from "@kit/shared";
+
 export const API_BASE = "/api";
 export const AI_BASE = "/ai";
 
@@ -140,7 +142,16 @@ export const api = {
     usual: (id: Id) => get<UsualBasketLine[]>(`/suppliers/${id}/usual`),
   },
 
+  outboundDemo: {
+    status: () => get<{ enabled: boolean }>("/outbound-demo/status", undefined, { silent: true }),
+    candidates: () => get<OutboundTarget[]>("/outbound-demo/candidates", undefined, { silent: true }),
+    attempts: () => get<OutboundAttempt[]>("/outbound-demo/attempts", undefined, { silent: true }),
+    start: (requestId: string) => post<OutboundAttempt>("/outbound-demo/attempts", { requestId }),
+    dismiss: (id: string) => post<{ ok: boolean }>("/outbound-demo/attempts/" + encodeURIComponent(id) + "/dismiss"),
+  },
+
   products: {
+    launch: (id: Id, launchedOn: IsoDate | null) => patch<Product>("/products/" + id, { launchedOn }),
     /** Whole catalogue (≤ LIST_MAX) — pickers / lookups. */
     list: (p?: ProductListParams) => get<ProductSummary[]>("/products", whole(p)),
     page: (p?: ProductListParams) => getPage<ProductSummary>("/products", p),

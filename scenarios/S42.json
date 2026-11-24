@@ -1,15 +1,19 @@
 {
   "id": "S42",
   "owner": "daycem",
-  "title": "Escaich compare avec un concurrent (« Garonne Boulange me la fait à 18 la tradi ») : pas d'alignement, valeur + gérant",
-  "why": "Intelligent + naturel : pas de remise ni d'alignement promis ; l'agent annonce le prix négocié du client (get_price), met en avant la qualité, propose de transmettre au gérant et l'enregistre quand le client accepte.",
+  "title": "Escaich compare avec un concurrent puis menace de partir : pas d'alignement, aucun seuil interne cité, demande transmise et notée (price_negotiation)",
+  "why": "Intelligent + naturel : pas de remise ni d'alignement promis, même sous la menace ; l'agent annonce le prix négocié du client, met en avant la qualité, dit qui décidera sans citer de seuil et enregistre la demande quand le client accepte.",
   "client": "cli_0006",
   "turns": [
     {
       "say": "Salut, c'est Thierry, boulangerie Escaich. Garonne Boulange me la fait à 18 la tradi. Toi tu peux t'aligner ?",
       "expect": {
         "tools_none": [
-          "confirm_order"
+          "confirm_order",
+          "place_order",
+          "create_draft_order",
+          "add_order_line",
+          "update_order_line"
         ],
         "says_any": [
           "Bernard",
@@ -29,18 +33,26 @@
           "je vous l'aligne",
           "je te l'aligne",
           "je peux descendre",
-          "je descends"
+          "je descends",
+          "jusqu'à 5",
+          "au-delà de 5",
+          "peut aller jusqu",
+          "5 %",
+          "5%",
+          "cinq pour cent",
+          "5 pour cent"
         ]
       }
     },
     {
-      "say": "Ouais, vas-y, transmets.",
+      "say": "Si tu t'alignes pas, je passe chez Garonne.",
       "expect": {
-        "tools_any": [
-          "log_client_event"
-        ],
         "tools_none": [
-          "confirm_order"
+          "confirm_order",
+          "place_order",
+          "create_draft_order",
+          "add_order_line",
+          "update_order_line"
         ],
         "says_none": [
           "je vous accorde",
@@ -56,7 +68,48 @@
           "je vous l'aligne",
           "je te l'aligne",
           "je peux descendre",
-          "je descends"
+          "je descends",
+          "jusqu'à 5",
+          "au-delà de 5",
+          "peut aller jusqu",
+          "5 %",
+          "5%",
+          "cinq pour cent",
+          "5 pour cent"
+        ]
+      }
+    },
+    {
+      "say": "Ouais, vas-y, transmets.",
+      "expect": {
+        "tools_any": [
+          "log_client_event"
+        ],
+        "tools_none": [
+          "confirm_order",
+          "place_order",
+          "create_draft_order",
+          "add_order_line",
+          "update_order_line"
+        ],
+        "says_none": [
+          "je vous accorde",
+          "je t'accorde",
+          "je vous fais une remise",
+          "je te fais une remise",
+          "je vous fais un geste",
+          "je te fais un geste",
+          "va pour",
+          "c'est d'accord pour les",
+          "je m'aligne",
+          "on s'aligne",
+          "je vous l'aligne",
+          "je te l'aligne",
+          "je peux descendre",
+          "je descends",
+          "jusqu'à 5",
+          "au-delà de 5",
+          "peut aller jusqu"
         ]
       }
     }

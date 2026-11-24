@@ -1,3 +1,4 @@
+import { OutboundCalls } from "./outbound";
 /**
  * Voix — two modes, switched in the header (?mode=command):
  *  - Appel (conversation): two-track push-to-talk lab on WS /ai/voice (below).
@@ -119,7 +120,7 @@ function CallMode({ modeSwitch }: { modeSwitch: ReactNode }) {
                 handsFree={handsFree}
                 onToggleHandsFree={toggleHandsFree}
                 onStopPlayback={v.stopPlayback}
-                onRestart={v.reset}
+                onRestart={v.caller.outboundId ? undefined : v.reset}
                 onHangUp={v.endCall}
               />
               <MetricsBar turns={v.turns} />
@@ -162,8 +163,11 @@ function CallMode({ modeSwitch }: { modeSwitch: ReactNode }) {
             onTalkUp={v.stopTalking}
           />
         </section>
-        <aside className="w-[280px] shrink-0 border-l border-border bg-card xl:w-[320px] 2xl:w-[380px]">
-          <LiveActivity />
+        <aside className="flex w-[280px] shrink-0 flex-col overflow-y-auto border-l border-border bg-card xl:w-[320px] 2xl:w-[380px]">
+          <OutboundCalls ready={connected} busy={!!v.caller} pending={v.callerPending}
+            onAnswer={(outboundId) => v.identifyCaller({ outboundId })}
+            error={v.lastError?.startsWith("Impossible de décrocher") ? v.lastError : undefined} />
+          <div className="min-h-36 flex-1"><LiveActivity /></div>
         </aside>
       </div>
     </Page>

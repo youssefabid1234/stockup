@@ -66,9 +66,11 @@ from app.schemas import (
 )
 from app.schemas.base import WireModel
 from app.tools import ErpClient, all_tools
+from app.tools.erp import ErpError, enc
 
 from . import fillers
 from .utterance import Utterance
+from .voice_offers import CallOffers
 from .vocabulary import stt_hint
 from .voice_reply import (
     one_question,
@@ -92,6 +94,7 @@ class Conversation:
     history: list[ChatMessage] = field(default_factory=list)
     call_context: CallContext | None = None  # team 12 (Youssef): the caller's sheet, once known (TEAM_PRELOAD)
     opening_greeting: str | None = None
+    offers: CallOffers | None = None
     agent_opened: bool = False  # mode 4: the agent already said « Bonjour…, que puis-je faire pour vous ? »
     # team 12 (Youssef): what the caller said that the agent has not answered yet (pieces, oldest first): merged
     # into one message so a new piece never makes the agent forget the previous ones (agent/listening.py)
@@ -184,8 +187,14 @@ class VoiceConnection:
             case TextMessage(text=text):
                 await self.interrupt()
                 self.start_turn(text=text)
-            case ResetMessage():
+            case ResetMessage(hang_up=hang_up):
                 await self.interrupt()
+                if offers := self.conversation.offers:
+                    if hang_up:
+                        await offers.complete()
+                        self.conversation.offers = None
+                    elif not offers.outbound:
+                        self.conversation.offers = CallOffers(offers.client_id, str(uuid.uuid4()))
                 self.conversation.history = []
                 self.conversation.pending = []
                 self.conversation.used_closings = []
@@ -200,7 +209,8 @@ class VoiceConnection:
     async def nudge(self) -> None:
         """One short, varied line after a silence (« Vous êtes toujours là ? »): no model, no history, never while
         the caller speaks or the agent works. The page sends it once per silence (hands-free only)."""
-        if self.recording or (self.turn and not self.turn.done()):
+        offers = self.conversation.offers if self.conversation else None
+        if self.recording or (self.turn and not self.turn.done()) or (offers and (offers.pending or offers.permission or offers.readback)):
             return
         self.nudges = getattr(self, "nudges", None) or fillers.PhraseRotation(fillers.NUDGES)
         line = self.nudges.next()
@@ -219,8 +229,27 @@ class VoiceConnection:
         agent (the caller was chosen explicitly). A new call starts a fresh history; `resume` (sent again by the page
         after a reconnect, e.g. the AI service reloaded) only restores the caller and keeps the conversation."""
         conv = self.conversation
-        opening_enabled = team_flags.fillers()
+        outbound = None
+        if msg.outbound_id:
+            if team_flags.outbound_demo():
+                try:
+                    async with asyncio.timeout(2):
+                        attempt = await ErpClient("voice_agent").post(
+                            f"/api/outbound-demo/attempts/{enc(msg.outbound_id)}/answer", {"sessionId": conv.id}
+                        )
+                    if attempt["status"] == "answered" and attempt.get("sessionId") == conv.id:
+                        outbound = attempt
+                except (ErpError, TimeoutError):
+                    pass
+            if not outbound:
+                await self.send(VoiceErrorMessage(message="Impossible de décrocher. L’appel sortant n’est plus disponible.", code="outbound_unavailable"))
+                return
+            msg = CallerMessage(client_id=outbound["clientId"], outbound_id=msg.outbound_id, resume=msg.resume)
+        opening_enabled = team_flags.fillers() and not outbound
         if not msg.resume:
+            if conv.offers and (not outbound or conv.offers.outbound != outbound):
+                await conv.offers.complete()
+            conv.offers = None
             conv.history = []
             conv.pending = []  # team 12 (Youssef): a new call starts with nothing pending
             conv.used_closings = []
@@ -256,6 +285,9 @@ class VoiceConnection:
                 sheet = None
         used = sheet is not None
         conv.call_context = sheet
+        if team_flags.recommendations() and not conv.offers and (outbound or (sheet and sheet.client_id and sheet.status == "active")):
+            client_id = outbound["clientId"] if outbound else sheet.client_id
+            conv.offers = CallOffers(client_id, conv.id if outbound else str(uuid.uuid4()), outbound)
         await self.send(
             CallerReadyMessage(
                 client_id=sheet.client_id or None if sheet else None,
@@ -265,9 +297,25 @@ class VoiceConnection:
                 status=sheet.status if sheet else None,
                 loaded_ms=sheet.loaded_ms if sheet else None,
                 used_by_agent=used,
+                outbound_id=msg.outbound_id,
                 resume=msg.resume,
             )
         )
+        if outbound and conv.offers and conv.offers.permission and (not msg.resume or not conv.history):
+            self.turn = asyncio.create_task(self.open_outbound(conv))
+
+    async def open_outbound(self, conv: Conversation) -> None:
+        line = "Bonjour, c’est l’assistant vocal du Fournil Occitan. Est-ce que vous avez trente secondes pour une offre ?"
+        await self.send(NudgeSaidMessage(text=line))
+        speaker = Speaker(get_tts_client(), self.send, self.send_bytes, self.bank)
+        try:
+            speaker.push(line)
+            await speaker.finish()
+        except asyncio.CancelledError:
+            await speaker.stop()
+            raise
+        await self.send(AgentDoneMessage(text=line, timings=TurnTimings()))
+        conv.agent_opened = True
 
     async def prepare_and_open(self, conv: Conversation, greeting: str) -> None:
         if greeting not in self.greetings:
@@ -402,47 +450,62 @@ class VoiceConnection:
             conv.pending = [*conv.pending, getattr(utterance, "annotated", None) or heard]
             working = [*conv.history, ChatMessage(role="user", content=listening.merge_parts(conv.pending))]
             speaker = speaker or Speaker(get_tts_client(), self.send, self.send_bytes, self.bank)
-            await fillers.on_turn_start(speaker, heard)  # team 12 (Mohamed Amine): no-op while TEAM_FILLERS is off
-            llm_start = time.perf_counter()
-            # team 12 (Youssef): the orchestrator when TEAM_ORCHESTRATOR is on, else the kit's agent loop
-            agent = run_voice_turn if team_flags.orchestrator() else run_agent
-            extra = {"call_context": conv.call_context} if conv.call_context is not None else {}
-            if anticipated is not None and agent is run_voice_turn:
-                extra["anticipated"] = anticipated
-            # TEAM_ROUTER: « c'est bon, validez », « merci » → the fast model (2-3× faster); the rest → the main model
-            # team 12 (Youssef): several pieces pending → route on the whole request, not just the last « merci »
-            route_on = heard if len(conv.pending) == 1 else listening.merge_parts(conv.pending)
             new_client = bool(conv.call_context and conv.call_context.is_new)
-            if new_client:  # team 12 (Youssef): a new client's « merci » still needs the main model (note what is pending)
-                llm, model_used = get_llm_client(), "principal"
+            offers = conv.offers if team_flags.recommendations() and not new_client else None
+            offer_to_play = None
+            review = None
+            handled = await offers.respond(heard) if offers else None
+            if handled:
+                spoken = handled.text
+                offer_to_play = handled.offered
+                handled.remember(working)
             else:
-                llm, model_used = pick_llm(route_on, get_llm_client(), get_fast_llm_client)
-            tools = [t for t in all_tools() if not (new_client and t.name in preload.NO_ORDER_FOR_NEW)]
-            if model_used == "rapide":
-                print(f"[router] modèle rapide pour « {heard} »", flush=True)
-            async for ev in agent(working, llm=llm, tools=tools, mode="voice", actor_name=conv.actor_name, **extra):
-                match ev:
-                    case TextEvent(delta=delta) if delta.strip():
-                        if timings.llm_first_token_ms is None:
-                            timings.llm_first_token_ms = ms_since(llm_start)
-                    case ToolCallEvent(call=call):
-                        await self.send(AgentToolMessage(name=call.name, args=call.arguments))
-                        await fillers.on_tool_call(speaker, call.name)  # team 12 (Mohamed Amine)
-                    case ToolResultEvent(name=name, ok=ok, ms=ms):
-                        await self.send(AgentToolMessage(name=name, ok=ok, ms=ms))
-                    case DoneEvent(message=message):
-                        spoken = spoken_reply(message.content) or "Je n’ai pas de réponse à vous donner pour le moment."
-                        if greeted:
-                            contact = conv.call_context.caller_contact if conv.call_context else None
-                            spoken = without_repeated_greeting(spoken, contact)
-                        spoken = vary_opening(spoken, conv.last_spoken)  # team 12 (Youssef): no « Parfait, » twice in a row
-                        spoken = vary_closing(one_question(spoken), conv.used_closings)  # one question, varied closing
-                        if conv.call_context and conv.call_context.is_new:  # new client: a question is asked once
-                            spoken = without_repeated_question(spoken, conv.last_spoken)
-                    case ErrorEvent(message=message):
-                        await speaker.stop_waiting()
-                        await self.send(VoiceErrorMessage(message=message))
-            timings.llm_total_ms = ms_since(llm_start)
+                await fillers.on_turn_start(speaker, heard)  # team 12 (Mohamed Amine): no-op while TEAM_FILLERS is off
+                llm_start = time.perf_counter()
+                # team 12 (Youssef): the orchestrator when TEAM_ORCHESTRATOR is on, else the kit's agent loop
+                agent = run_voice_turn if team_flags.orchestrator() else run_agent
+                extra = {"call_context": conv.call_context} if conv.call_context is not None else {}
+                if anticipated is not None and agent is run_voice_turn:
+                    extra["anticipated"] = anticipated
+                # TEAM_ROUTER: « c'est bon, validez », « merci » → the fast model (2-3× faster); the rest → the main model
+                # team 12 (Youssef): several pieces pending → route on the whole request, not just the last « merci »
+                route_on = heard if len(conv.pending) == 1 else listening.merge_parts(conv.pending)
+                if new_client:  # a new client’s « merci » may still need to record the request
+                    llm, model_used = get_llm_client(), "principal"
+                else:
+                    llm, model_used = pick_llm(route_on, get_llm_client(), get_fast_llm_client)
+                tools = [t for t in all_tools() if not (new_client and t.name in preload.NO_ORDER_FOR_NEW)]
+                if model_used == "rapide":
+                    print(f"[router] modèle rapide pour « {heard} »", flush=True)
+                async for ev in agent(working, llm=llm, tools=tools, mode="voice", actor_name=conv.actor_name, **extra):
+                    match ev:
+                        case TextEvent(delta=delta) if delta.strip():
+                            if timings.llm_first_token_ms is None:
+                                timings.llm_first_token_ms = ms_since(llm_start)
+                        case ToolCallEvent(call=call):
+                            await self.send(AgentToolMessage(name=call.name, args=call.arguments))
+                            await fillers.on_tool_call(speaker, call.name)  # team 12 (Mohamed Amine)
+                        case ToolResultEvent(name=name, ok=ok, ms=ms, result=result):
+                            if offers and ok:
+                                offers.observe_order(name, result)
+                                if isinstance(result, dict) and name in {"review_order", "place_order"} and result.get("readback"):
+                                    review = result
+                            await self.send(AgentToolMessage(name=name, ok=ok, ms=ms))
+                        case DoneEvent(message=message):
+                            spoken = spoken_reply(message.content) or "Je n’ai pas de réponse à vous donner pour le moment."
+                            if greeted:
+                                contact = conv.call_context.caller_contact if conv.call_context else None
+                                spoken = without_repeated_greeting(spoken, contact)
+                            spoken = vary_opening(spoken, conv.last_spoken)  # team 12 (Youssef): no « Parfait, » twice in a row
+                            spoken = vary_closing(one_question(spoken), conv.used_closings)  # one question, varied closing
+                            if new_client:
+                                spoken = without_repeated_question(spoken, conv.last_spoken)
+                        case ErrorEvent(message=message):
+                            await speaker.stop_waiting()
+                            await self.send(VoiceErrorMessage(message=message))
+                timings.llm_total_ms = ms_since(llm_start)
+                if offers:
+                    spoken, offer_to_play = await offers.propose(heard, spoken, review)
             conv.history = trim_voice_turn(working, history_size, spoken)
             committed = True
             conv.pending = []  # team 12: answered
@@ -450,11 +513,17 @@ class VoiceConnection:
 
             # Only the completed reply goes to the caller. Text emitted before a tool call may be internal notes.
             if spoken:
+                if offers and offer_to_play:
+                    offers.offered = True
                 if not team_flags.no_silence():  # mode 4 types on until the answer's first audio byte
                     await speaker.stop_waiting()
                 await self.send(AgentTextMessage(delta=spoken))
                 speaker.push(spoken)
             await speaker.finish()
+            if offers and offer_to_play and speaker.tts_first_byte_ms is not None:
+                offers.pending = offer_to_play
+            if offers and handled and handled.awaiting_confirmation and speaker.tts_first_byte_ms is not None:
+                offers.readback = spoken
             timings.tts_first_byte_ms = speaker.tts_first_byte_ms
             if speaker.first_byte_at:
                 timings.total_ms = int((speaker.first_byte_at - t0) * 1000 + 0.5)

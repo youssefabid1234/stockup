@@ -441,6 +441,36 @@ suite complète de l'équipe passe (151 tests au mar. 24/11 01h00), interrupteur
 - Mes tests ne couvrent ni la transcription (texte envoyé directement) ni l'écoute de la voix : à valider au micro.
 ### Bon vendeur (Daycem)
 
+Règles de vente (`apps/ai/app/agent/rules_sales.py`, `TEAM_SALES_RULES=1`), toutes générales : aucun nom de client, de
+produit ou de personne dans le code (tests « stay general », en français et en anglais). La promo ciblée (T4) est en §5.
+
+- **T1 · rupture et remplaçant.** Un seul remplaçant de même usage, avec sa raison et son prix tel que l'ERP le donne ;
+  rien n'est ajouté sans un « oui » du client. Fiche qui refuse les remplacements : pas d'autre produit, la date de
+  retour ou l'allocation, et la demande notée (`log_client_event`, `special_request`). Fiche muette : demander s'il
+  accepte un équivalent, sans le nommer (S43). Notes internes jamais prononcées. Preuve : 1re réplique de S04, S05 et
+  S40 en 2 phrases au lieu de 4 (PR #23) ; S43 2/2. Limite : les 2 phrases ne sont pas toujours tenues (3 réponses sur
+  8 en font 3 au rejeu T5).
+- **T3 · quel remplaçant.** `substitution_policy` lit la fiche (refuse / accepte / demander / inconnu) ;
+  `rank_alternatives` classe : en stock, substitut des documents, même catégorie, même usage (mots du nom), même unité,
+  promo ; ce que la fiche interdit ou impose (« jamais de… », « … uniquement ») est retiré. S'il ne reste rien de même
+  usage : « rien d'équivalent » et l'agent demande (S44). Audit sans modèle sur les 71 produits : les 9 substituts des
+  documents restent premiers, 27 premiers choix corrigés (ex. crème liquide → crème fraîche au lieu de l'œuf liquide),
+  23 produits sans remplaçant de même usage ([audit](docs/team/t3-ranking-audit.md)). Bilingue : sur le pack anglais,
+  71 / 71 premiers choix ; français inchangé (7 384 décisions sur 7 384 identiques). Scénarios S43 à S46. Limites :
+  Jev seul a décidé juste 6 puis 5 fois sur 10 fiches ([test](docs/team/jev-substitution-test.md)), il n'est donc pas
+  branché ; S46 ne prouve pas l'exclusion (aucune vraie rupture ne touche une fiche qui exclut) ; `SALES_RULES_EN`
+  est prête mais pas branchée (l'équipe est revenue au français, PR #30).
+- **T5 · négociation.** Aucune remise accordée ni promise, même si le client insiste ; aucun seuil interne cité. Le
+  prix de l'ERP et la valeur du produit, puis la demande « notée pour » la personne qui décide : le gérant au-delà de
+  ce qu'un commercial peut accorder (`05-prix-et-credit.md`), sinon le commercial de la fiche, nommé par son prénom et
+  son nom (ligne « Commercial(e) » ajoutée à la fiche préchargée). Enregistrée avec `log_client_event`, type
+  `price_negotiation`. Preuve (rejeu unique, orchestrateur allumé) : S41, S42 et S48 8 / 8, 14 appels au modèle,
+  3 événements `price_negotiation` lus dans l'ERP ; « Bernard Castagné » pour 10 % et l'alignement à 18 €, « Marion
+  Escudié » pour 3 %. Limites : 3 réponses sur 8 font 3 phrases ; une relance à 5 % après une demande de 10 % reste
+  chez le gérant (une fois sur deux elle est allée à la commerciale) ; les scénarios ne comptent pas les phrases.
+  Une fois sur six l'agent a d'abord cité le commercial d'un autre client avant de se corriger (relance à 5 % de S41) ;
+  la relance à 5 % va tantôt à la commerciale, tantôt au gérant.
+
 ## 5. Données modifiées pour la démo
 
 **Promo de démo sur le tourage 82 % (Daycem, T4), assumée et fictive, ciblée depuis le 24/11.**
