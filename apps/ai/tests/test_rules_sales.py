@@ -173,3 +173,134 @@ def test_ranking_never_drops_or_changes_an_alternative():
     ranked = rank_alternatives(ERP_ALTERNATIVES_FOR_TOURAGE_AOP, "", for_product_id="prd_0025", substitutes={})
     assert sorted(map(str, ranked)) == sorted(map(str, ERP_ALTERNATIVES_FOR_TOURAGE_AOP))
     assert rank_alternatives([], "") == []
+
+
+# ── T3 · same use: names that share distinctive words come first (when the docs name no substitute) ──
+#
+# Real names and ERP order (closest price first) of GET /api/products/{id}/alternatives, trimmed (audit 24/11).
+
+from app.agent.rules_sales import has_same_use_substitute, name_match  # noqa: E402
+
+
+def _alts(*names, unit="kg", available=10):
+    return [{"id": f"p{i}", "name": n, "unit": unit, "available": available, "category": "c"} for i, n in enumerate(names)]
+
+
+def _names(ranked):
+    return [a["name"] for a in ranked]
+
+
+def test_cream_gets_the_other_cream_not_the_liquid_egg():
+    alts = _alts("Œuf entier liquide pasteurisé (brique 1 L)", "Crème fraîche épaisse 30 % (seau 5 L)",
+                 "Blanc d'œuf liquide pasteurisé (brique 1 L)", "Lait entier UHT (brique 1 L)")  # fmt: skip
+    ranked = rank_alternatives(alts, "", for_product_name="Crème liquide UHT 35 % (brique 1 L)", substitutes={})
+    assert ranked[0]["name"].startswith("Crème fraîche")
+
+
+def test_dark_chocolate_gets_the_other_dark_chocolate_not_the_white_one():
+    alts = _alts("Chocolat de couverture blanc 33 % (pistoles, sac 5 kg)", "Chocolat de couverture lait 38 % (pistoles, sac 5 kg)",
+                 "Praliné noisette 50 % (seau 5 kg)", "Chocolat de couverture noir 70 % (pistoles, sac 5 kg)")  # fmt: skip
+    ranked = rank_alternatives(alts, "", for_product_name="Chocolat de couverture noir 64 % (pistoles, sac 5 kg)", substitutes={})
+    assert ranked[0]["name"].startswith("Chocolat de couverture noir 70")
+
+
+def test_sugar_gets_a_sugar_not_the_vanilla_extract():
+    alts = [{"id": "v", "name": "Extrait de vanille liquide (bouteille 1 L)", "unit": "liter", "available": 5, "category": "c"},
+            *_alts("Nappage neutre à chaud (seau 7 kg)", "Sucre en grains perlé (sac 10 kg)", "Sucre glace (sac 10 kg)", unit="piece")]  # fmt: skip
+    ranked = rank_alternatives(alts, "", for_product_name="Sucre semoule (sac 25 kg)", substitutes={})
+    assert ranked[0]["name"].startswith("Sucre en grains")
+
+
+def test_egg_white_gets_the_whole_liquid_egg_not_the_cream():
+    alts = _alts("Crème liquide UHT 35 % (brique 1 L)", "Œuf entier liquide pasteurisé (brique 1 L)", "Lait entier UHT (brique 1 L)")
+    ranked = rank_alternatives(alts, "", for_product_name="Blanc d'œuf liquide pasteurisé (brique 1 L)", substitutes={})
+    assert ranked[0]["name"].startswith("Œuf entier")
+
+
+def test_the_docs_substitute_still_beats_a_closer_name():
+    # « Beurre doux AOP Charentes-Poitou » shares more words with the AOP tourage, but the docs name the 82 % tourage
+    ranked = rank_alternatives(ERP_ALTERNATIVES_FOR_TOURAGE_AOP, "", for_product_id="prd_0025",
+                               for_product_name="Beurre de tourage AOP Charentes-Poitou 84 % (plaque 2 kg)",
+                               substitutes={"prd_0025": ["prd_0026"]})  # fmt: skip
+    assert ranked[0]["id"] == "prd_0026"
+
+
+def test_in_stock_still_beats_a_closer_name():
+    alts = [*_alts("Crème fraîche épaisse 30 % (seau 5 L)", available=0), *_alts("Lait entier UHT (brique 1 L)")]
+    alts[1]["id"] = "lait"
+    ranked = rank_alternatives(alts, "", for_product_name="Crème liquide UHT 35 % (brique 1 L)", substitutes={})
+    assert ranked[0]["id"] == "lait"
+
+
+def test_a_word_most_candidates_share_does_not_decide():
+    farines = ["Farine de blé T65 campagne (sac 25 kg)", "Farine de blé T55 tradition française (sac 25 kg)",
+               "Farine bise T80 (sac 25 kg)", "Farine de seigle T130 (sac 25 kg)"]  # fmt: skip
+    ranked = rank_alternatives(_alts(*farines), "", for_product_name="Farine de blé T55 boulangère (sac 25 kg)", substitutes={})
+    assert ranked[0]["name"].startswith("Farine de blé T55 tradition")  # « T55 » decides, not « farine » or « blé »
+    assert name_match("Farine de gruau T45 pâtissière (sac 25 kg)", farines[3], farines) == 0
+
+
+def test_packaging_numbers_and_units_never_count():
+    assert name_match("Sel fin de mer (sac 25 kg)", "Sucre semoule (sac 25 kg)") == 0
+    assert name_match("Boîtes pâtissières blanches 20 cm (lot de 50)", "Semelles dorées rondes 28 cm (lot de 100)") == 0
+
+
+def test_plural_and_feminine_forms_match():
+    assert name_match("Œufs plein air calibre M (plateau de 30)", "Œuf entier liquide pasteurisé (brique 1 L)") > 0
+    assert name_match("Pain aux raisins cru surgelé 110 g", "Croissant pur beurre crue surgelée") > 0
+
+
+def test_same_unit_breaks_a_tie():
+    alts = [{"id": "l", "name": "Eau de fleur d'oranger (bidon 1 L)", "unit": "liter", "available": 5},
+            {"id": "s", "name": "Sucre glace (sac 10 kg)", "unit": "piece", "available": 5}]  # fmt: skip
+    ranked = rank_alternatives(alts, "", for_product_name="Sel fin de mer (sac 25 kg)", for_unit="piece", substitutes={})
+    assert ranked[0]["id"] == "s"
+
+
+def test_without_the_missing_name_the_order_is_unchanged():
+    alts = _alts("Œuf entier liquide pasteurisé (brique 1 L)", "Crème fraîche épaisse 30 % (seau 5 L)")
+    assert _names(rank_alternatives(alts, "", substitutes={})) == _names(alts)
+
+
+def test_name_ranking_never_drops_or_changes_an_alternative():
+    alts = _alts("Œuf entier liquide pasteurisé (brique 1 L)", "Crème fraîche épaisse 30 % (seau 5 L)", "Lait entier UHT (brique 1 L)")
+    ranked = rank_alternatives(alts, "", for_product_name="Crème liquide UHT 35 % (brique 1 L)", substitutes={})
+    assert sorted(map(str, ranked)) == sorted(map(str, alts))
+
+
+# ── B · is there a substitute with the same use at all? (product_insight then says so instead of proposing one) ──
+
+
+def test_no_same_use_substitute_for_strawberries_among_lemons_and_apples():
+    alts = _alts("Citron jaune (colis 5 kg)", "Pomme Golden pâtissière (colis 13 kg)")
+    assert has_same_use_substitute("prd_x", "Fraise Gariguette (barquette 500 g)", alts, substitutes={}) is False
+
+
+def test_a_name_sharing_a_distinctive_word_is_a_same_use_substitute():
+    alts = _alts("Œuf entier liquide pasteurisé (brique 1 L)", "Crème fraîche épaisse 30 % (seau 5 L)")
+    assert has_same_use_substitute("prd_x", "Crème liquide UHT 35 % (brique 1 L)", alts, substitutes={}) is True
+
+
+def test_a_docs_substitute_in_stock_is_always_a_same_use_substitute():
+    alts = [{"id": "prd_y", "name": "Tout autre nom", "available": 3}]
+    assert has_same_use_substitute("prd_x", "Un produit", alts, substitutes={"prd_x": ["prd_y"]}) is True
+    assert has_same_use_substitute("prd_x", "Un produit", [{**alts[0], "available": 0}], substitutes={"prd_x": ["prd_y"]}) is False
+
+
+def test_no_name_means_we_cannot_tell_so_we_keep_proposing():
+    assert has_same_use_substitute("prd_x", "", _alts("Citron jaune"), substitutes={}) is True
+
+
+def test_same_use_code_names_no_product():
+    """General for any data pack: the ranking code knows no product, only how names are written."""
+    import inspect
+
+    code = "".join(inspect.getsource(f) for f in (name_match, has_same_use_substitute, rank_alternatives, rules_sales._name_words)).lower()
+    for word in ["creme", "crème", "sucre", "farine", "chocolat", "beurre", "tourage", "oeuf", "œuf", "fraise", "citron", "prd_"]:
+        assert word not in code, f"ranking code mentions {word!r}"
+
+
+def test_the_family_word_is_enough_to_be_a_same_use_substitute():
+    # it decides nothing in the RANKING (every butter has it), but it does say « same use » (audit: 82 % tourage)
+    alts = _alts("Beurre doux AOP Charentes-Poitou (carton 10 × 1 kg)", "Beurre pâtissier 82 % (carton 10 kg)")
+    assert has_same_use_substitute("prd_x", "Beurre de tourage 82 % (plaque 2 kg)", alts, substitutes={}) is True

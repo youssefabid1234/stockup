@@ -1,0 +1,17 @@
+{
+  "id": "S45",
+  "owner": "daycem",
+  "title": "Le Petit Four de Saint-Cyprien : poudre de noisette insuffisante → proposer la poudre d'amande (même usage), pas les cerneaux de noix",
+  "why": "Intelligent : sans substitut dans les documents, le remplaçant de même usage (une autre poudre) passe avant le prix le plus proche ; jamais ajouté sans accord.",
+  "client": "cli_0053",
+  "turns": [
+    {
+      "say": "Bonjour, Le Petit Four de Saint-Cyprien. Il me faudrait 10 kilos de poudre de noisette pour vendredi.",
+      "expect": {
+        "tools_none": ["create_draft_order", "add_order_line", "place_order", "confirm_order"],
+        "says_any": ["amande"],
+        "says_none": ["cerneaux", "noix,", "inconnu", "substitution"]
+      }
+    }
+  ]
+}
