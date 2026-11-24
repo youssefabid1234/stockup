@@ -103,6 +103,27 @@ complète sur 3 dans les deux cas : « comme d'hab » + rupture AOP) — avec le
 la rupture plutôt que par le panier habituel. Règle ajoutée : nommer le produit comme le client (« tradi »), jamais le nom
 catalogue (sans le glossaire, l'agent disait « farine T cinquante-cinq tradition française »).
 
+**T4 · Un seul aller-retour pour une commande (`place_order`, mar. 24/11 03h40).** Le temps ne venait plus de la relecture
+du prompt (cache) mais du nombre d'allers-retours modèle ↔ outils : « dix sacs de tradi pour jeudi » coûtait 3 à 4 appels
+au modèle (jour + produit, puis brouillon, puis relecture, puis la phrase). `tools/order_place.py` fait cette chaîne
+déterministe dans le code : jour (`delivery_answer`), produits (alias du catalogue, sinon Jev avec les habitudes du
+client), unités (« 3 cartons » de tourage → 30 kg ; 1,6 sac → on demande, jamais d'arrondi), écriture (nouveau
+brouillon, ou commande en cours modifiée : quantité, ligne à 0 retirée, autre jour), relecture (`review`). Rien n'est
+écrit si le jour est impossible, le produit ambigu ou le compte bloqué : « next » dit quoi demander.
+
+| Mesure (`/chat`, Sarrailh, 3 appels, médianes) | Prompt complet | Prompt allégé | **+ `place_order`** |
+|---|---|---|---|
+| Commande · « mettez-en douze » · prix · « validez » | 7,2 · 4,6 · 3,5 · 4,0 s | 6,4 · 4,1 · 3,1 · 3,5 s | **3,6 · 3,4 · 3,2 · 3,6 s** |
+| Somme des 4 répliques | 19,3 s | 17,1 s | **13,8 s (−29 %)** |
+| Tokens lus pour la commande (1re réplique) | 137 416 | 86 488 | **43 934 (−68 %)** |
+| Commande juste dans l'ERP | 3/3 | 3/3 | 3/3 |
+
+En vocal (configuration du jury, mode 4, routage) : réponse à la commande prête en 3,7 s (6,1–6,3 s avant), validation
+2,0 s, au revoir 0,6 s, 0,0 s de silence. Scénarios (`/chat`, `--reset`) : S01 S02 S03 S04 S05 S30 S31 S32 S33 S40 tous
+PASS, une seule commande ouverte à chaque fois (S05 4/4 pour la première fois). Les attentes des scénarios acceptent
+maintenant `place_order` là où elles demandaient `create_draft_order` / `update_order_line` / `review_order`, et
+`quote_line` là où elles demandaient `get_price` ; S05/S40 acceptent « quatre-vingt-deux ».
+
 **Mesure de départ (T0, lun. 23/11 23h, `TEAM_ORDER_RULES=1`, autres briques éteintes).**
 `totalMs` = fin de parole du client → premier octet audio de l'agent (`--voice`, phrase tapée donc sans STT) ; c'est la
 métrique du jury. Via /chat (sans audio) on mesure le tour complet : le texte n'arrivant qu'à la fin, c'est presque
