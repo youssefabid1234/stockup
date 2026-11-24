@@ -20,7 +20,7 @@ from .erp import ErpClient
 if team_flags.product_insight():  # team 12 (Youssef): composite tool, registered only when its switch is on
     from . import product_insight  # noqa: F401
 if team_flags.order_rules():  # team 12 (Amine K.): delivery-day tool, registered only when its switch is on
-    from . import after_sales, delivery, order_edit, order_jev, order_place, order_review  # noqa: F401
+    from . import after_sales, delivery, delivery_eta, order_edit, order_jev, order_place, order_review  # noqa: F401
 if team_flags.preload():  # team 12 (Youssef): a new client on the phone becomes a real prospect in the ERP
     from . import new_client  # noqa: F401
 from .registry import TOOLS, Tool, ToolContext, tool

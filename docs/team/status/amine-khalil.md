@@ -174,3 +174,10 @@ L'agent d'origine croit la note et refuse à tort (vu en S03 et dans un test S1 
 - Test au micro (Amine) : transcription 1,24-1,52 s ; le « je regarde » l'attendait → 1,3-1,9 s de silence. Corrigé
   (accusé sur la transcription partielle) : premier son 0,00-0,26 s en vrai audio. Bug corrigé : confirmer une commande
   déjà confirmée faisait 12,5 s d'erreurs → succès direct.
+
+## Vitesse 2e passe + idées 2 et 3 (mar. 24/11, 14h)
+- Gardé (défaut) : `TEAM_EARLY_SPEECH` (question entendue 2,91 → 2,56 s), `TEAM_FAST_REPLY` (commande 4,38 → 3,37 s),
+  clavier dès 0,4 s sur « validé ». Écarté (mesuré plus lent / sans gain) : Haiku principal, `TEAM_NO_THINKING`, `TEAM_FAST_STT`.
+- Idée 2 `delivery_eta` (S35), idée 3 date courte dite au client (S34) + lot de démo à DLC courte (DECISIONS §5).
+- ⚠️ Mohamed Amine : après une relecture « Je vous la valide ? », les suggestions remplacent la question par une offre ;
+  le « oui c'est bon » suivant devient ambigu (S05·4).

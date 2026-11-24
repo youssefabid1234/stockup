@@ -1,0 +1,27 @@
+{
+  "id": "S34",
+  "owner": "amine-khalil",
+  "title": "Date courte : le lot de crème fraîche livré expire juste après la livraison, l'agent le dit et demande",
+  "why": "Intelligent (idée 3) : l'alerte expiring_soon de l'ERP n'était jamais dite au client ; lot de démo à DLC courte (DECISIONS §5).",
+  "client": "cli_0049",
+  "turns": [
+    {
+      "say": "Bonjour, Pause Gourmande. Deux seaux de crème fraîche épaisse pour mercredi.",
+      "expect": {
+        "tools_any": [
+          "place_order"
+        ],
+        "tools_none": [
+          "confirm_order"
+        ],
+        "says_any": [
+          "jeudi 26",
+          "26 novembre",
+          "jeudi vingt-six",
+          "à utiliser avant",
+          "date"
+        ]
+      }
+    }
+  ]
+}

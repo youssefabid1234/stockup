@@ -385,6 +385,43 @@ un numéro déjà client gagne sur la case « nouveau client ». Aucune commande
 nouveau client ou un prospect, et l'équipe rappelle pour ouvrir le compte. Testé en vrai (scripts/new_client_test.py :
 7 appels variés, vérification de l'ERP après chaque appel, juge indépendant) : 7/7.
 
+#### Vitesse, 2e passe (Amine Khalil, 24/11 après-midi) : mesuré en vrai audio, gardé seulement ce qui gagne
+
+Protocole : phrase lue par ElevenLabs, MP3 envoyé au rythme de la parole au WebSocket `/voice`, vraie transcription
+Soniox, vraies clés ; mesure clé = **« réponse entendue »** (fin de la phrase → premier son de la vraie réponse, pas de
+l'accusé), lue dans la ligne `[tour]` des logs ; 3 appels par réglage, médianes.
+
+| Essai | Réponse entendue (médiane) | Décision |
+|---|---|---|
+| Base (3 questions de stock / prix) | 2,91 s | |
+| `TEAM_EARLY_SPEECH` : la réponse est dite pendant que Sonnet l'écrit (phrase par phrase ; la question finale attend les retouches ; un texte suivi d'un appel d'outil n'est jamais dit) | **2,56 s** | gardé (défaut) |
+| `TEAM_NO_THINKING` : Sonnet 5.5 sans réflexion (`between_tools`) | 3,33 s (modèle 1,2 → 2,1 s) | **écarté** : plus lent |
+| `TEAM_FAST_STT` : profil « faible latence » de la doc Soniox, sans séparation des voix | 2,64 s (transcription inchangée, 1,3 s) | **écarté** : la séparation des voix reste |
+| Haiku comme modèle principal (rejeu complet des scénarios) | modèle 3,5 s vs 3,1 s ; pire 12,7 s ; 4 échecs nouveaux sur les confirmations | **écarté** : Sonnet reste |
+| Commande « dix sacs de tradi pour jeudi » puis « c'est bon, validez » (base = lecture anticipée) | 4,38 s | |
+| `TEAM_FAST_REPLY` : relecture propre de `place_order` (ou « c'est validé ») dite sans 2e appel au modèle ; toute alerte, quantité inhabituelle, doublon ou commande du même jour repasse par Sonnet | **3,37 s** | gardé (défaut) |
+
+Et un trou bouché : sur « c'est bon, validé », pas d'accusé (voulu) mais le clavier attendait la transcription : 2,0 à
+2,3 s de silence. Le clavier part maintenant 0,4 s après la fin de la parole si rien n'a été dit.
+
+Rejeu complet après ces réglages (`--voice`, 56 répliques) : 47 réussies (référence Sonnet du jour : 46 / 54). Les
+« c'est bon, validez » non confirmés de S02, S30, S31 viennent de brouillons laissés par les scénarios précédents (même
+ERP pour tout le rejeu : l'agent demande d'abord quoi en faire). S05·4 vient d'une interaction avec les suggestions
+(`voice_offers`) : la relecture directe finit par « Je vous la valide ? », que les suggestions reconnaissent et remplacent
+par une offre ; le « Oui, c'est bon » suivant est alors ambigu (valider ou accepter l'offre ?) → à trancher avec
+Mohamed Amine.
+
+#### Idées 2 et 3 : l'heure du camion, la date courte (Amine Khalil)
+
+- **Heure de passage** (`tools/delivery_eta.py`) : « vous passez à quelle heure ? » → l'arrêt du client sur la tournée
+  planifiée (chauffeur, départ, rang, ETA = départ + 12 min × rang) ; si la tournée n'est pas encore planifiée (elle
+  l'est la veille), l'heure habituelle du client (médiane de ses 4 dernières livraisons), dite « en général vers … ».
+  S35 : « le camion de Yohan part à 6 h 30. Vous êtes son premier arrêt, avec une arrivée prévue vers 7 h 05. »
+- **Date courte** : l'alerte `expiring_soon` de l'ERP (le lot servi en FEFO expire au plus tard le lendemain de la
+  livraison) était classée « interne » et jamais dite. Elle est maintenant dite avec la vraie date, et l'agent demande
+  si ça convient pour la production. S34 : « Attention, ce lot est à utiliser avant jeudi 26 novembre, donc juste
+  après la livraison. »
+
 ### Commande juste (Amine Khalil)
 
 **Mission** : ce qui finit dans l'ERP est exactement ce que le client voulait (bon produit, bonne quantité, bon jour,
@@ -470,6 +507,12 @@ produit ou de personne dans le code (tests « stay general », en français et e
   chez le gérant (une fois sur deux elle est allée à la commerciale) ; les scénarios ne comptent pas les phrases.
 
 ## 5. Données modifiées pour la démo
+
+**Lot à date courte (Amine Khalil, idée 3), fictif et assumé.** Aucun lot du pack n'expirait avant le 4 décembre : l'alerte
+« date courte » ne pouvait pas s'entendre en démo. `apps/backend/app/core/team_demo.py` ajoute à chaque chargement un
+lot `lot_090001` de **60 L (12 seaux) de crème fraîche épaisse 30 %** (`prd_0032`) à utiliser avant **aujourd'hui + 2**
+(jeudi 26/11) ; servi en premier (FEFO), il déclenche l'alerte sur une livraison mercredi ou jeudi. Le stock de ce
+produit augmente d'autant (le stock = somme des lots), et le tableau de bord le montre dans « DLC proches ».
 
 **Promo de démo sur le tourage 82 % (Daycem, T4), assumée et fictive, ciblée depuis le 24/11.**
 

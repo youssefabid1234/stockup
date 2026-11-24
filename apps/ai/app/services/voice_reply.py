@@ -139,3 +139,48 @@ def without_repeated_greeting(reply: str, contact: str | None) -> str:
     if remaining != reply and remaining:
         return remaining[0].upper() + remaining[1:]
     return remaining
+
+
+# team 12 (Amine K., vitesse) : la réponse est dite PENDANT que le modèle l'écrit. Avant, le lecteur attendait le
+# texte complet (Sonnet : 0,3 à 1 s d'écriture après le premier mot). Une phrase est dite dès que la suivante commence ;
+# une question attend la fin (one_question / vary_closing la retouchent) ; un texte suivi d'un appel d'outil n'est
+# jamais final (une phrase pas encore dite est jetée) ; à la fin, seul le reste de la réponse retouchée est dit.
+# a period inside a number or a word (« 8.46 ») is not the end of a sentence: an end mark must be followed by a space
+_EARLY_SENTENCE = re.compile(r"\s*((?:[^.!?…]|[.!?…](?=\S))+[.!?…]+)\s+(?=\S)")
+_EARLY_SPLIT = re.compile(r"(?:[^.!?…]|[.!?…](?=\S))+(?:[.!?…]+|$)")
+
+
+class EarlySpeech:
+    def __init__(self, say, first):
+        self.say, self.first = say, first  # say(sentence) ; first(sentence) -> sentence (salutation, ouverture variée)
+        self.step = ""  # texte de l'étape en cours du modèle
+        self.said: list[str] = []  # phrases déjà dites dans cette étape
+        self.any_said = False
+        self.off = False
+
+    def text(self, delta: str) -> None:
+        if self.off:
+            return
+        self.step += delta
+        while (m := _EARLY_SENTENCE.match(self.step)) and not m.group(1).rstrip().endswith("?"):
+            self.step = self.step[m.end():]
+            sentence = without_codes(m.group(1).strip())
+            if not self.any_said:
+                if _INTERNAL_LEAD.match(sentence):  # une note interne : rien en avance pour ce tour
+                    self.off = True
+                    return
+                sentence = self.first(sentence)
+            if sentence.strip():
+                self.said.append(sentence)
+                self.any_said = True
+                self.say(sentence)
+
+    def tool_call(self) -> None:
+        self.step, self.said = "", []
+
+    def rest(self, final: str) -> str:
+        """Ce qui reste à dire de la réponse finale retouchée (les phrases déjà dites sont sautées)."""
+        if not self.said:
+            return final
+        parts = [p.strip() for p in _EARLY_SPLIT.findall(final or "") if p.strip()]
+        return " ".join(parts[len(self.said):])

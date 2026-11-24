@@ -379,6 +379,9 @@ async def on_turn_start(speaker, heard: str) -> None:
         speaker.start_waiting()
 
 
+EARLY_TYPING = 0.4  # s after the end of speech: typing starts if nothing was said yet
+
+
 async def early_acknowledgement(speaker, utterance) -> None:
     """
     Mode 4, at the microphone: the final transcript comes 1.2-1.5 s after the caller's last word (Soniox, measured
@@ -388,11 +391,17 @@ async def early_acknowledgement(speaker, utterance) -> None:
     """
     if not (team_flags.fillers() and team_flags.no_silence()) or speaker.tts.name == "mock":
         return
+    started = asyncio.get_running_loop().time()
     while not speaker.transcript_ready:
         words = (getattr(utterance, "partial", "") or "").replace("’", "'")
         if words and needs_lookup(words):
             speaker.intent = intent_of(words)  # keywords only here: this path is about speed
             await play_waiting_line(speaker)
+            speaker.waiting_task = asyncio.create_task(keep_typing(speaker, 0.0))
+            return
+        # any other reply (« c'est bon, validé »): the transcript takes 1.2-1.6 s, then the answer ~1 s → typing from
+        # EARLY_TYPING s on, no phrase (measured 24/11: 2.0-2.3 s of silence before the first sound on « validé »)
+        if asyncio.get_running_loop().time() - started >= EARLY_TYPING:
             speaker.waiting_task = asyncio.create_task(keep_typing(speaker, 0.0))
             return
         await asyncio.sleep(0.05)
