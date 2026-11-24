@@ -295,6 +295,7 @@ class VoiceConnection:
 
             # Only the completed reply goes to the caller. Text emitted before a tool call may be internal notes.
             if spoken:
+                await speaker.stop_waiting()
                 await self.send(AgentTextMessage(delta=spoken))
                 speaker.push(spoken)
             await speaker.finish()
@@ -334,6 +335,7 @@ class Speaker:
         self.bank = bank if bank is not None else fillers.FillerBank()
         self.acknowledged = False
         self.restatement: str | None = None
+        self.quick_transcript: str | None = None
         self.waiting_task: asyncio.Task | None = None
         self._audio_lock = asyncio.Lock()
         self.social_turn = False

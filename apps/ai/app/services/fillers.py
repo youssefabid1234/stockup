@@ -17,7 +17,13 @@ from app.clients import TTSClient
 from app.clients.audio import Mp3Encoder
 from app.config import settings
 
+from .fast_restatement import fast_restatement
+
 PHRASES = {"thinking": ["Je regarde.", "Je vérifie."], "follow_up": ["Un instant, je vérifie."]}
+FAST_INTRO = "Je vais voir."
+FAST_INTRO_DELAY = 0.75
+FAST_RESTATEMENT_DELAY = 1.05
+FAST_AUDIO_TIMEOUT = 2.4
 FIRST_KEYBOARD_DELAY = 1.4
 FOLLOW_UP_DELAY = 1.8
 KEYBOARD_INTERVAL = 2.2
@@ -65,7 +71,10 @@ class FillerBank:
     audio: dict[str, list[CachedAudio]] = field(default_factory=dict)
 
     async def warm_up(self, tts: TTSClient, voice: str | None = None) -> None:
-        for situation, phrases in PHRASES.items():
+        phrases_by_situation = PHRASES
+        if team_flags.fast_fillers():
+            phrases_by_situation = {"fast_intro": [FAST_INTRO], "follow_up": PHRASES["follow_up"]}
+        for situation, phrases in phrases_by_situation.items():
             clips = self.audio.setdefault(situation, [])
             for phrase in phrases[len(clips):]:
                 clips.append(await synthesize_clip(tts, phrase, voice))
@@ -122,6 +131,9 @@ def quantity_restatement(heard: str) -> str | None:
 
 async def keep_waiting(speaker) -> None:
     """Play sparse audio while a lookup is still in progress. The speaker cancels us when the answer is ready."""
+    if speaker.quick_transcript is not None:
+        await keep_waiting_with_restatement(speaker)
+        return
     await asyncio.sleep(FIRST_KEYBOARD_DELAY)
     await speaker.play_audio("audio/mpeg", keyboard_click())
     await asyncio.sleep(FOLLOW_UP_DELAY)
@@ -139,12 +151,46 @@ async def keep_waiting(speaker) -> None:
         await speaker.play_audio("audio/mpeg", keyboard_click())
 
 
+async def keep_waiting_with_restatement(speaker) -> None:
+    if not speaker.acknowledged:
+        await asyncio.sleep(FAST_INTRO_DELAY)
+        if not await play_waiting_line(speaker):
+            await speaker.play_audio("audio/mpeg", keyboard_click())
+            return
+
+    loop = asyncio.get_running_loop()
+    ready_after = loop.time() + FAST_RESTATEMENT_DELAY
+    clip = speaker.bank.pick("follow_up")
+    try:
+        async with asyncio.timeout(FAST_AUDIO_TIMEOUT):
+            phrase = await fast_restatement(speaker.quick_transcript)
+            if phrase:
+                result = await synthesize_clip(speaker.tts, phrase, settings.tts.voice or None)
+                if result.mime == "audio/mpeg":
+                    clip = result
+    except Exception as exc:
+        logging.getLogger(__name__).debug("Fast waiting audio unavailable (%s)", type(exc).__name__)
+
+    await asyncio.sleep(max(0, ready_after - loop.time()))
+    if clip and clip.mime == "audio/mpeg":
+        await speaker.play_audio(clip.mime, clip.data)
+    for _ in range(2):
+        await asyncio.sleep(KEYBOARD_INTERVAL)
+        await speaker.play_audio("audio/mpeg", keyboard_click())
+
+
 async def on_turn_start(speaker, heard: str) -> None:
     if not team_flags.fillers():
         return
     words = heard.replace("’", "'")
     speaker.social_turn = bool(SOCIAL_TURN.fullmatch(words))
     if speaker.social_turn or team_flags.orchestrator() or speaker.tts.name == "mock":
+        return
+    if team_flags.fast_fillers():
+        speaker.quick_transcript = words
+        if LOOKUP.search(words):
+            await play_waiting_line(speaker)
+        speaker.start_waiting()
         return
     speaker.restatement = quantity_restatement(words)
     if (LOOKUP.search(words) or speaker.restatement) and await play_waiting_line(speaker):
@@ -170,7 +216,7 @@ async def on_tool_call(speaker, tool_name: str) -> None:
 
 
 async def play_waiting_line(speaker) -> bool:
-    clip = speaker.bank.pick("thinking")
+    clip = speaker.bank.pick("fast_intro" if speaker.quick_transcript is not None else "thinking")
     if clip is None or clip.mime != "audio/mpeg":
         return False
     await speaker.play_audio(clip.mime, clip.data)

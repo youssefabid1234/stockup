@@ -1,13 +1,15 @@
 """Voice turn integration checks for Mohamed Amine's S10 and S11 scenarios."""
 import asyncio
 import json
+from types import SimpleNamespace
 
 import pytest
 
-from app.clients.base import TTSResult
+from app import team_flags
+from app.clients.base import LLMText, TTSResult
 from app.clients.mock_speech import MockSTT
 from app.schemas import ChatMessage, DoneEvent, TextEvent, ToolCall, ToolCallEvent
-from app.services import fillers, vocabulary, voice_session
+from app.services import fast_restatement, fillers, vocabulary, voice_session
 from app.services.voice_reply import spoken_reply
 
 
@@ -38,8 +40,8 @@ class RecordingTTS:
 
 
 @pytest.fixture
-async def call(monkeypatch):
-    monkeypatch.setenv("TEAM_FILLERS", "1")
+async def call(monkeypatch, request):
+    monkeypatch.setenv("TEAM_FILLERS", getattr(request, "param", "1"))
     monkeypatch.delenv("TEAM_ORCHESTRATOR", raising=False)
     tts = RecordingTTS()
     monkeypatch.setattr(voice_session, "get_tts_client", lambda: tts)
@@ -265,3 +267,149 @@ def test_restatement_uses_only_an_unambiguous_quantity(heard, expected):
 ])
 def test_spoken_reply_removes_internal_preamble(raw, expected):
     assert spoken_reply(raw) == expected
+
+
+@pytest.mark.parametrize(("value", "enabled", "fast"), [("0", False, False), ("1", True, False), ("2", True, True)])
+def test_waiting_modes_are_separate(monkeypatch, value, enabled, fast):
+    monkeypatch.setenv("TEAM_FILLERS", value)
+    assert team_flags.fillers() is enabled
+    assert team_flags.fast_fillers() is fast
+
+
+@pytest.mark.parametrize(("heard", "selection", "expected"), [
+    ("Euh, je veux 10 kg de farine pour demain", "je veux 10 kg de farine pour demain",
+     "Vous avez notamment dit : je veux 10 kg de farine pour demain."),
+    ("10 kg de farine ou deux sacs, je ne sais plus", "10 kg de farine",
+     "Vous disiez : 10 kg de farine ou deux sacs, je ne sais plus."),
+    ("Je veux 10,5 kg de farine", "5 kg de farine", "Vous disiez : Je veux 10,5 kg de farine."),
+    ("Je veux 10 kg de farine", "Je veux 20 kg de farine", "Vous disiez : Je veux 10 kg de farine."),
+    ("Peut-être jeudi, mais lundi irait aussi", "", "Vous disiez : Peut-être jeudi, mais lundi irait aussi."),
+])
+async def test_fast_model_selection_keeps_customer_words(monkeypatch, heard, selection, expected):
+    async def model_excerpt(transcript):
+        assert transcript == heard
+        return selection
+
+    monkeypatch.setattr(fast_restatement, "_model_excerpt", model_excerpt)
+    assert await fast_restatement.fast_restatement(heard) == expected
+
+
+@pytest.mark.parametrize("call", ["2"], indirect=True)
+async def test_fast_mode_reads_back_ambiguous_turn_while_agent_works(call, monkeypatch):
+    conn, _ = call
+    monkeypatch.setattr(fillers, "FAST_INTRO_DELAY", 0)
+    monkeypatch.setattr(fillers, "FAST_RESTATEMENT_DELAY", 0)
+    monkeypatch.setattr(fast_restatement, "settings", SimpleNamespace(llm=SimpleNamespace(provider="anthropic")))
+    caller_text = "Plutôt celui de lundi ou le petit format, je ne sais plus"
+    recap = f"Vous disiez : {caller_text}.".encode()
+    reply = "Vous parlez de la farine ?"
+    main_work_started = asyncio.Event()
+    recap_played = asyncio.Event()
+    model_calls = []
+    original_send = conn.ws.send_bytes
+
+    class FastLLM:
+        async def stream(self, request):
+            assert main_work_started.is_set()
+            model_calls.append(request)
+            yield LLMText("celui de lundi")
+
+    async def observe_audio(data):
+        await original_send(data)
+        if data == recap:
+            recap_played.set()
+
+    async def agent(messages, **kwargs):
+        assert [m.content for m in messages] == [caller_text]
+        main_work_started.set()
+        yield TextEvent(delta="Je dois identifier le produit. ")
+        yield ToolCallEvent(call=ToolCall(id="search", name="search", arguments={}))
+        await asyncio.wait_for(recap_played.wait(), timeout=2)
+        yield TextEvent(delta=reply)
+        yield DoneEvent(message=ChatMessage(role="assistant", content=reply), ms=1)
+
+    monkeypatch.setattr(fast_restatement, "get_fast_llm_client", FastLLM)
+    monkeypatch.setattr(conn.ws, "send_bytes", observe_audio)
+    monkeypatch.setattr(voice_session, "run_agent", agent)
+    await conn.run_turn(conn.conversation, text=caller_text)
+
+    assert len(model_calls) == 1
+    assert not model_calls[0].tools
+    assert [m.content for m in model_calls[0].messages] == [caller_text]
+    assert [msg for msg in conn.ws.events if isinstance(msg, bytes)] == [b"Je vais voir.", recap, reply.encode()]
+    assert [msg["delta"] for msg in conn.ws.events if isinstance(msg, dict) and msg["type"] == "agent_text"] == [reply]
+    assert conn.ws.events[-1]["text"] == reply
+
+
+@pytest.mark.parametrize("call", ["2"], indirect=True)
+async def test_fast_mode_cancels_the_restatement_when_answer_is_ready(call, monkeypatch):
+    conn, _ = call
+    started = asyncio.Event()
+    cancelled = asyncio.Event()
+    reply = "Il reste de la farine."
+
+    async def waiting_restatement(heard):
+        started.set()
+        try:
+            await asyncio.Event().wait()
+        finally:
+            cancelled.set()
+
+    async def agent(messages, **kwargs):
+        await asyncio.wait_for(started.wait(), timeout=2)
+        yield TextEvent(delta=reply)
+        yield DoneEvent(message=ChatMessage(role="assistant", content=reply), ms=1)
+
+    monkeypatch.setattr(fillers, "fast_restatement", waiting_restatement)
+    monkeypatch.setattr(voice_session, "run_agent", agent)
+    await asyncio.wait_for(conn.run_turn(conn.conversation, text="Vous avez de la farine en stock ?"), timeout=2)
+    assert cancelled.is_set()
+    assert [msg for msg in conn.ws.events if isinstance(msg, bytes)] == [b"Je vais voir.", reply.encode()]
+
+
+@pytest.mark.parametrize("call", ["2"], indirect=True)
+async def test_fast_mode_keeps_thanks_direct(call, monkeypatch):
+    conn, _ = call
+    calls = []
+
+    async def waiting_restatement(heard):
+        calls.append(heard)
+
+    async def agent(messages, **kwargs):
+        yield TextEvent(delta="Au revoir.")
+        yield DoneEvent(message=ChatMessage(role="assistant", content="Au revoir."), ms=1)
+
+    monkeypatch.setattr(fillers, "FAST_INTRO_DELAY", 0)
+    monkeypatch.setattr(fillers, "fast_restatement", waiting_restatement)
+    monkeypatch.setattr(voice_session, "run_agent", agent)
+    await conn.run_turn(conn.conversation, text="C'est tout, merci.")
+    assert calls == []
+    assert [msg for msg in conn.ws.events if isinstance(msg, bytes)] == [b"Au revoir."]
+
+
+@pytest.mark.parametrize("call", ["2"], indirect=True)
+async def test_barge_in_cancels_fast_model_before_it_can_speak(call, monkeypatch):
+    conn, _ = call
+    started = asyncio.Event()
+    cancelled = asyncio.Event()
+
+    async def waiting_restatement(heard):
+        started.set()
+        try:
+            await asyncio.Event().wait()
+        finally:
+            cancelled.set()
+
+    async def agent(messages, **kwargs):
+        yield ToolCallEvent(call=ToolCall(id="search", name="search", arguments={}))
+        await asyncio.Event().wait()
+
+    monkeypatch.setattr(fillers, "fast_restatement", waiting_restatement)
+    monkeypatch.setattr(voice_session, "run_agent", agent)
+    await conn.handle_text(json.dumps({"type": "text", "text": "Vous avez de la farine en stock ?"}))
+    await asyncio.wait_for(started.wait(), timeout=2)
+    await conn.handle_text(json.dumps({"type": "audio_start", "mime": "audio/webm"}))
+    assert cancelled.is_set()
+    assert [msg for msg in conn.ws.events if isinstance(msg, bytes)] == [b"Je vais voir."]
+    assert conn.ws.events[-1]["type"] == "agent_audio_end"
+    await conn.interrupt()

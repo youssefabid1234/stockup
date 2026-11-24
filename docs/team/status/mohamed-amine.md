@@ -37,3 +37,9 @@ Le modèle peut envoyer quelques lignes de texte avant d'appeler l'ERP. Le lecte
 4. Tester une note avant l'appel ERP et une autre avant « Bonjour » dans la réponse finale. Vérifier le texte affiché, les mots transmis à la synthèse et l'historique après une interruption.
 
 La synthèse de la réponse utile commence après la fin de la génération du modèle. La comparaison au micro devra vérifier l'effet sur le délai jusqu'à cette réponse.
+
+## Variante avec modèle rapide
+
+Avec `TEAM_FILLERS=2`, « Je vais voir » ouvre l'attente. Le modèle rapide sélectionne un court passage de la transcription en parallèle avec l'agent ERP. La reprise utilise les mots du client. Une demande courte et ambiguë est reprise en entier pour garder les options et les négations. Une demande longue dont on risquerait de changer le sens reçoit « Un instant, je vérifie ». Seule la réponse finale de l'agent ERP est lue sur ces tours. La reprise en préparation est annulée si la réponse arrive ou si le client reprend la parole.
+
+Pour comparer, garder les mêmes fournisseurs et `TEAM_ORCHESTRATOR=0`. Relancer l'IA entre `TEAM_FILLERS=1` et `TEAM_FILLERS=2`. Tester « Dix kilos de farine ou deux sacs ? » pendant une vérification assez longue, puis « Merci » pour vérifier la réponse directe. Le mode 2 utilise le modèle `TEAM_FAST_MODEL` du même fournisseur que l'agent principal, sans appel ERP supplémentaire.
