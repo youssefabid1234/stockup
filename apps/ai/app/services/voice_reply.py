@@ -31,6 +31,51 @@ def vary_opening(reply: str, previous: str | None) -> str:
     return rest[:1].upper() + rest[1:] if rest else reply
 
 
+# team 12 (Youssef, natural voice): one question per reply, and never the same validation question twice in a call.
+# Measured: « Je vous mets la crème 35 % ? Vous en voulez combien ? » (two questions) and « On part là-dessus ? » said
+# twice in four replies, although the prompt forbids both (natural_rules_test R02, R04, 24/11).
+_SENTENCES = re.compile(r"[^.!?…]+[.!?…]+|[^.!?…]+$")
+
+
+def one_question(reply: str) -> str:
+    """Keep only the LAST question: earlier ones become statements (« …35 % ? Vous en voulez combien ? » →
+    « …35 %. Vous en voulez combien ? »), so the caller has one thing to answer."""
+    parts = _SENTENCES.findall(reply or "")
+    asks = [i for i, s in enumerate(parts) if s.rstrip().endswith("?")]
+    if len(asks) <= 1:
+        return reply
+    for i in asks[:-1]:
+        parts[i] = re.sub(r"\s*\?+\s*$", ". ", parts[i].rstrip()) if parts[i].rstrip() else parts[i]
+    return re.sub(r"\s{2,}", " ", "".join(parts)).strip()
+
+
+CLOSINGS = ["Je valide ?", "On part là-dessus ?", "C'est bon pour vous ?", "Je vous la confirme ?", "Ça vous va ?",
+            "Je la passe comme ça ?", "On valide ?"]
+_CLOSING_WORDS = re.compile(r"\b(valide\w*|confirme\w*|part là-dessus|bon pour vous|ça vous va|passe comme ça)\b", re.I)
+
+
+def _key(s: str) -> str:
+    return re.sub(r"[^a-zàâçéèêëîïôûùüÿœ' ]", "", s.lower().replace("’", "'")).strip()
+
+
+def vary_closing(reply: str, used: list[str]) -> str:
+    """If the reply ends with a validation question already asked in this call, swap it for one not used yet.
+    `used` (the call's list) is updated with the closing finally said."""
+    parts = _SENTENCES.findall(reply or "")
+    if not parts:
+        return reply
+    last = parts[-1].strip()
+    if not (last.endswith("?") and len(last) <= 40 and _CLOSING_WORDS.search(last)):
+        return reply
+    if _key(last) in used:
+        fresh = next((c for c in CLOSINGS if _key(c) not in used), None)
+        if fresh:
+            parts[-1] = (" " if len(parts) > 1 else "") + fresh
+            last = fresh
+    used.append(_key(last))
+    return "".join(parts).strip()
+
+
 _REPLY_LABEL = re.compile(r"^\s*\*{0,2}réponse(?: au client| finale)?\s*:\*{0,2}\s*", re.I)
 _GREETING = re.compile(r"^\s*(?:bonjour|bonsoir)\b", re.I)
 _SENTENCE_BREAK = re.compile(r"(?<=[.!?…])\s+|\n+")

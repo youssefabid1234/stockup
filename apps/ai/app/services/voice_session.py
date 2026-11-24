@@ -70,7 +70,7 @@ from app.tools import ErpClient, all_tools
 from . import fillers
 from .utterance import Utterance
 from .vocabulary import stt_hint
-from .voice_reply import spoken_reply, vary_opening, without_repeated_greeting
+from .voice_reply import one_question, spoken_reply, vary_closing, vary_opening, without_repeated_greeting
 
 client_message = TypeAdapter(VoiceClientMessage)
 
@@ -90,6 +90,7 @@ class Conversation:
     # into one message so a new piece never makes the agent forget the previous ones (agent/listening.py)
     pending: list[str] = field(default_factory=list)
     last_spoken: str | None = None  # team 12 (Youssef): the previous reply, so the next one opens differently
+    used_closings: list[str] = field(default_factory=list)  # team 12: validation questions already asked
 
 
 # In memory: a reconnect with the same sessionId continues the conversation.
@@ -176,6 +177,7 @@ class VoiceConnection:
                 await self.interrupt()
                 self.conversation.history = []
                 self.conversation.pending = []
+                self.conversation.used_closings = []
                 self.conversation.opening_greeting = None
                 await self.open(self.conversation.id)
             case CallerMessage():  # team 12 (Youssef): caller ID form, before the call
@@ -208,6 +210,7 @@ class VoiceConnection:
         if not msg.resume:
             conv.history = []
             conv.pending = []  # team 12 (Youssef): a new call starts with nothing pending
+            conv.used_closings = []
             conv.agent_opened = False
             greetings = fillers.OPENING_LINES if team_flags.no_silence() else CALL_GREETINGS  # mode 4: the agent opens
             conv.opening_greeting = greetings[msg.contact_title] if opening_enabled else None
@@ -390,6 +393,7 @@ class VoiceConnection:
                             contact = conv.call_context.caller_contact if conv.call_context else None
                             spoken = without_repeated_greeting(spoken, contact)
                         spoken = vary_opening(spoken, conv.last_spoken)  # team 12 (Youssef): no « Parfait, » twice in a row
+                        spoken = vary_closing(one_question(spoken), conv.used_closings)  # one question, varied closing
                     case ErrorEvent(message=message):
                         await speaker.stop_waiting()
                         await self.send(VoiceErrorMessage(message=message))
