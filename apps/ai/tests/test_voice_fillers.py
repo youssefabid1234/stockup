@@ -6,8 +6,9 @@ import pytest
 
 from app.clients.base import TTSResult
 from app.clients.mock_speech import MockSTT
-from app.schemas import TextEvent, ToolCall, ToolCallEvent
+from app.schemas import ChatMessage, DoneEvent, TextEvent, ToolCall, ToolCallEvent
 from app.services import fillers, vocabulary, voice_session
+from app.services.voice_reply import spoken_reply
 
 
 class Socket:
@@ -56,6 +57,7 @@ async def test_fast_lookup_plays_one_ack_and_one_answer(call, monkeypatch):
         for name in ("search", "get_price"):
             yield ToolCallEvent(call=ToolCall(id=name, name=name, arguments={}))
         yield TextEvent(delta="Un instant, je vérifie. Je regarde ce qu’il nous reste. La levure est disponible.")
+        yield DoneEvent(message=ChatMessage(role="assistant", content="Un instant, je vérifie. Je regarde ce qu’il nous reste. La levure est disponible."), ms=1)
 
     monkeypatch.setattr(voice_session, "run_agent", lookup)
     await conn.run_turn(conn.conversation, text="Vous avez de la levure en stock ?")
@@ -81,6 +83,7 @@ async def test_interruption_closes_old_audio_before_thanks(call, monkeypatch):
         # A model may still search on a goodbye. The voice layer must stay quiet.
         yield ToolCallEvent(call=ToolCall(id="extra", name="search", arguments={}))
         yield TextEvent(delta="Au revoir.")
+        yield DoneEvent(message=ChatMessage(role="assistant", content="Au revoir."), ms=1)
 
     monkeypatch.setattr(voice_session, "run_agent", agent)
     await conn.handle_text(json.dumps({"type": "text", "text": "Vous avez de la levure fraîche ?"}))
@@ -101,6 +104,7 @@ async def test_confirmed_lookup_with_no_early_match(call, monkeypatch):
         assert not any(isinstance(event, bytes) for event in conn.ws.events)
         yield ToolCallEvent(call=ToolCall(id="lookup", name="search", arguments={}))
         yield TextEvent(delta="La levure est disponible.")
+        yield DoneEvent(message=ChatMessage(role="assistant", content="La levure est disponible."), ms=1)
 
     monkeypatch.setattr(voice_session, "run_agent", lookup)
     await conn.run_turn(conn.conversation, text="Il vous en reste de la levure ?")
@@ -217,8 +221,10 @@ async def test_following_order_gets_waiting_audio_until_the_answer(call, monkeyp
             yield ToolCallEvent(call=ToolCall(id="search", name="search", arguments={}))
             await asyncio.wait_for(restatement_played.wait(), timeout=2)
             yield TextEvent(delta=" La farine est disponible pour jeudi.")
+            yield DoneEvent(message=ChatMessage(role="assistant", content=" La farine est disponible pour jeudi."), ms=1)
         else:
             yield TextEvent(delta="On a de la levure.")
+            yield DoneEvent(message=ChatMessage(role="assistant", content="On a de la levure."), ms=1)
 
     monkeypatch.setattr(conn.ws, "send_bytes", observe_audio)
     monkeypatch.setattr(voice_session, "run_agent", agent)
@@ -248,3 +254,14 @@ async def test_following_order_gets_waiting_audio_until_the_answer(call, monkeyp
 )
 def test_restatement_uses_only_an_unambiguous_quantity(heard, expected):
     assert fillers.quantity_restatement(heard) == expected
+
+
+@pytest.mark.parametrize(("raw", "expected"), [
+    ("<think>Il me faut le stock.</think>Bonjour, je vous écoute.", "Bonjour, je vous écoute."),
+    ("Je dois vérifier l’ERP. Réponse : Bonjour, on a du stock.", "Bonjour, on a du stock."),
+    ("Analyse : je dois chercher.", ""),
+    ("Bonjour. Il reste 12,5 kilos de farine.", "Bonjour. Il reste 12,5 kilos de farine."),
+    ("Je vous confirme la date de jeudi.", "Je vous confirme la date de jeudi."),
+])
+def test_spoken_reply_removes_internal_preamble(raw, expected):
+    assert spoken_reply(raw) == expected
