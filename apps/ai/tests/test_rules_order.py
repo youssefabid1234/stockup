@@ -244,6 +244,7 @@ def test_classify_answer_from_calibration():
     assert ro.classify_answer(0.02, 0.20) == "no"  # « Non, laissez tomber. »
     assert ro.classify_answer(0.55, 0.40) == "unsure"
     assert ro.classify_answer(0.85, 0.70) == "unsure"  # yes AND a change: ask again
+    assert ro.classify_answer(0.95, 0.55) == "yes"  # « C'est bon, validez » after a price question (seen live)
 
 
 class FakeErp:

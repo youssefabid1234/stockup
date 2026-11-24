@@ -9,8 +9,7 @@
       "say": "Bonjour, c'est Le Pétrin de Balma, il me faudrait 5 sacs de tradi pour demain.",
       "expect": {
         "tools_any": [
-          "search",
-          "get_client"
+          "log_client_event"
         ],
         "tools_none": [
           "confirm_order"

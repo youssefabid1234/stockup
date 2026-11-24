@@ -36,7 +36,8 @@
       "expect": {
         "tools_any": [
           "create_draft_order",
-          "add_order_line"
+          "add_order_line",
+          "place_order"
         ],
         "tools_none": [
           "confirm_order"

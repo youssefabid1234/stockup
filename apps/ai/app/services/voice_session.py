@@ -32,7 +32,8 @@ from app.agent import call_context as preload
 from app.agent import run_agent, sanitize_history
 from app.agent.call_context import CallContext
 from app.agent.loop import ms_since
-from app.agent.orchestrator import run_voice_turn
+from app.agent.orchestrator import get_fast_llm_client, run_voice_turn
+from app.agent.router import pick_llm
 from app.clients import STTUpdate, TTSClient, get_llm_client, get_stt_client, get_tts_client
 from app.config import settings
 from app.schemas import (
@@ -71,7 +72,7 @@ from .voice_reply import spoken_reply, without_repeated_greeting
 client_message = TypeAdapter(VoiceClientMessage)
 
 CALL_GREETINGS = {None: "Bonjour.", "madame": "Bonjour Madame.", "monsieur": "Bonjour Monsieur."}
-GREETING_PREPARE_TIMEOUT = 1.5
+GREETING_PREPARE_TIMEOUT = 3.0  # mode 4 greeting is a full sentence; plays as soon as ready
 
 
 @dataclass
@@ -81,6 +82,7 @@ class Conversation:
     history: list[ChatMessage] = field(default_factory=list)
     call_context: CallContext | None = None  # team 12 (Youssef): the caller's sheet, once known (TEAM_PRELOAD)
     opening_greeting: str | None = None
+    agent_opened: bool = False  # mode 4: the agent already said « Bonjour…, que puis-je faire pour vous ? »
 
 
 # In memory: a reconnect with the same sessionId continues the conversation.
@@ -183,9 +185,15 @@ class VoiceConnection:
         opening_enabled = team_flags.fillers()
         if not msg.resume:
             conv.history = []
-            conv.opening_greeting = CALL_GREETINGS[msg.contact_title] if opening_enabled else None
+            conv.agent_opened = False
+            greetings = fillers.OPENING_LINES if team_flags.no_silence() else CALL_GREETINGS  # mode 4: the agent opens
+            conv.opening_greeting = greetings[msg.contact_title] if opening_enabled else None
         async with asyncio.TaskGroup() as preparation:
-            if opening_enabled and (greeting := conv.opening_greeting) and greeting not in self.greetings:
+            if team_flags.no_silence() and not msg.resume and conv.opening_greeting:
+                # mode 4: say « Bonjour…, que puis-je faire pour vous ? » as soon as the clip is ready, while the
+                # caller's sheet is still loading (it does not need the sheet)
+                preparation.create_task(self.prepare_and_open(conv, conv.opening_greeting))
+            elif opening_enabled and (greeting := conv.opening_greeting) and greeting not in self.greetings:
                 preparation.create_task(self.prepare_greeting(greeting))
             try:
                 sheet = await preload.caller_context(
@@ -213,6 +221,24 @@ class VoiceConnection:
                 resume=msg.resume,
             )
         )
+
+    async def prepare_and_open(self, conv: Conversation, greeting: str) -> None:
+        if greeting not in self.greetings:
+            await self.prepare_greeting(greeting)
+        await self.open_the_call(conv)
+
+    async def open_the_call(self, conv: Conversation) -> None:
+        """Mode 4: like a real switchboard, the agent speaks first as soon as the call starts (« Bonjour Madame, que
+        puis-je faire pour vous ? »). The clip was synthesized while the caller's sheet was loading; its own audio
+        segment. The first reply then skips its own « Bonjour »."""
+        clip = self.greetings.get(conv.opening_greeting or "")
+        if clip is None:
+            return  # not ready (TTS slow): the classic greeting plays on the first release instead
+        speaker = Speaker(get_tts_client(), self.send, self.send_bytes, self.bank)
+        await speaker.play_audio(clip.mime, clip.data)
+        await self.send(AgentAudioEndMessage())
+        conv.opening_greeting = None
+        conv.agent_opened = True
 
     async def open(self, session_id: str | None = None, actor_name: str | None = None) -> None:
         conv = conversations.get(session_id or "") or Conversation(id=session_id or str(uuid.uuid4()))
@@ -278,7 +304,8 @@ class VoiceConnection:
         working: list[ChatMessage] | None = None
         committed = False
         speaker: Speaker | None = None
-        greeted = False
+        greeted = conv.agent_opened  # mode 4: the agent opened the call, its first reply must not say « Bonjour » again
+        conv.agent_opened = False
         try:
             # The caller form prepared this clip. Play it before waiting for the final transcript.
             if conv.opening_greeting and team_flags.fillers():
@@ -310,7 +337,11 @@ class VoiceConnection:
             # team 12 (Youssef): the orchestrator when TEAM_ORCHESTRATOR is on, else the kit's agent loop
             agent = run_voice_turn if team_flags.orchestrator() else run_agent
             extra = {"call_context": conv.call_context} if conv.call_context is not None else {}
-            async for ev in agent(working, llm=get_llm_client(), tools=all_tools(), mode="voice", actor_name=conv.actor_name, **extra):
+            # TEAM_ROUTER: « c'est bon, validez », « merci » → the fast model (2-3× faster); the rest → the main model
+            llm, model_used = pick_llm(heard, get_llm_client(), get_fast_llm_client)
+            if model_used == "rapide":
+                print(f"[router] modèle rapide pour « {heard} »", flush=True)
+            async for ev in agent(working, llm=llm, tools=all_tools(), mode="voice", actor_name=conv.actor_name, **extra):
                 match ev:
                     case TextEvent(delta=delta) if delta.strip():
                         if timings.llm_first_token_ms is None:
@@ -334,7 +365,8 @@ class VoiceConnection:
 
             # Only the completed reply goes to the caller. Text emitted before a tool call may be internal notes.
             if spoken:
-                await speaker.stop_waiting()
+                if not team_flags.no_silence():  # mode 4 types on until the answer's first audio byte
+                    await speaker.stop_waiting()
                 await self.send(AgentTextMessage(delta=spoken))
                 speaker.push(spoken)
             await speaker.finish()
@@ -385,6 +417,7 @@ class Speaker:
         self.started = False
         self.first_byte_at: float | None = None
         self.tts_first_byte_ms: int | None = None
+        self.audio_until = 0.0  # loop time when the audio already sent will have finished playing (mode 4 pacing)
 
     def push(self, delta: str) -> None:
         self.buffer += delta
@@ -403,7 +436,8 @@ class Speaker:
         if not sentence.strip():
             return
         self.first_phrase = False
-        if self.waiting_task and not self.waiting_task.done():
+        # Mode 4 keeps typing until the answer's first audio byte (cancelled in _speak_queued): no gap during the TTS.
+        if self.waiting_task and not self.waiting_task.done() and not team_flags.no_silence():
             self.waiting_task.cancel()
         if self.worker is None:
             self.worker = asyncio.create_task(self._speak_queued())
@@ -417,7 +451,7 @@ class Speaker:
             self.waiting_task.cancel()
             await asyncio.gather(self.waiting_task, return_exceptions=True)
 
-    async def play_audio(self, mime: str, data: bytes) -> None:
+    async def play_audio(self, mime: str, data: bytes, seconds: float | None = None) -> None:
         if not data:
             return
         async with self._audio_lock:
@@ -426,15 +460,19 @@ class Speaker:
                 await self.send(AgentAudioStartMessage(mime=mime))
                 self.first_byte_at = time.perf_counter()
             await self.send_bytes(data)
+            now = asyncio.get_running_loop().time()
+            self.audio_until = max(now, self.audio_until) + (seconds if seconds is not None else fillers.mp3_seconds(data))
 
     async def finish(self) -> None:
         """Speak what is left in the buffer, wait for all the audio, close the segment."""
-        await self.stop_waiting()
+        if not team_flags.no_silence():
+            await self.stop_waiting()
         self.speak(self.buffer)
         self.buffer = ""
         if self.worker:
             self.sentences.put_nowait(None)
             await self.worker
+        await self.stop_waiting()  # mode 4: already stopped by the answer's first byte; no answer at all: stop now
         if self.started:
             await self.send(AgentAudioEndMessage())
 
@@ -458,6 +496,8 @@ class Speaker:
                     async for chunk in chunks:
                         if chunk and self.tts_first_byte_ms is None:
                             self.tts_first_byte_ms = ms_since(tts_start)
+                        if chunk and self.waiting_task and not self.waiting_task.done():
+                            await self.stop_waiting()  # mode 4: the answer is here, stop typing
                         await self.play_audio(result.mime, chunk)
             except Exception as e:
                 await self.send(VoiceErrorMessage(message=f"TTS : {e}"))
