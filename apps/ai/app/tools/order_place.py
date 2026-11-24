@@ -8,8 +8,8 @@ deterministic chain itself, in code: the delivery day (rules_order.delivery_answ
 first, else Jev with the client's habits: resolve_product), the units (« 3 cartons » of tourage → 30 kg), the write
 (create the draft, or edit the order in progress: change a quantity, remove a line at 0, move the day), then the
 read-back (review: alerts, franco, unusual quantities, duplicates). The model then only answers.
-It never writes when something is unclear: an unknown day, an ambiguous product, a blocked account → « next » says what
-to ask, nothing is created.
+It never writes when something is unclear: an unknown day, an ambiguous product, a blocked account, or not enough stock
+(then the substitute comes back with it, to be accepted first) → « next » says what to ask, nothing is created.
 """
 
 import asyncio  # no `from __future__ import annotations`: the tool registry needs the real PlaceLine type
@@ -34,6 +34,7 @@ async def place_order(
     lines: list[PlaceLine],
     delivery_day: str | None = Field(None, description="Le jour tel que dit : « jeudi », « demain », « le 27 » (vide = prochain jour possible, ou celui de la commande en cours)"),
     order_id: str | None = Field(None, description="La commande en cours à modifier (sinon une nouvelle est créée)"),
+    accept_short: bool = Field(False, description="true seulement si le client a dit de prendre quand même malgré le stock insuffisant"),
 ) -> dict:
     """
     Prend ou modifie une commande en UN appel : vérifie le jour de livraison, trouve les produits (« tradi », « tourage »…),
@@ -92,9 +93,19 @@ async def place_order(
                             f"demande combien de {(p.get('caliber') or 'unités').split()[0]}s il veut."}
         wanted.append((f["productId"], qty))
 
-    # 4. The write: a new draft, or the order in progress edited (one order per call)
+    # 4. The stock, BEFORE writing: short → nothing written, the substitute (or the return date) comes back with it,
+    #    so the caller hears the proposal in the same reply and accepts it first (S45; Daycem: « jamais sans accord »)
+    if accept_short is not True and (short := await shortages(ctx, client_id, wanted, order)):
+        return {"written": False, "short": short,
+                "next": "Stock insuffisant, rien n'est écrit (les autres produits non plus). Dis ce qui reste ; selon "
+                        "« substitution », propose le premier remplaçant (usage, prix, promo) et attends son oui, ou "
+                        "donne la date de retour sans remplaçant. Ensuite place_order avec le produit choisi ; s'il veut "
+                        "quand même la quantité dite ou ce qui reste, place_order avec accept_short=true ou la quantité dispo."}
+
+    # 5. The write: a new draft, or the order in progress edited (one order per call)
     if order:
-        by_product = {line["productId"]: line for line in order["lines"]}
+        # a free line (0 €, complaint redelivery: after_sales.py) is never the line the caller is changing
+        by_product = {line["productId"]: line for line in order["lines"] if line.get("unitPrice") != 0}
         writes = []
         for product_id, qty in wanted:
             line = by_product.get(product_id)
@@ -115,6 +126,35 @@ async def place_order(
             return {"written": False, "next": "Aucune quantité : demande ce qu'il veut commander."}
         order_id = (await ctx.erp.post("/api/orders", body))["id"]
 
-    # 5. The read-back, ready to say
+    # 6. The read-back, ready to say
     out = await review_for(ctx, order_id)
     return {"written": True, **({"daySay": say_day} if say_day else {}), **out}
+
+
+async def shortages(ctx: ToolContext, client_id: str, wanted: list[tuple[str, float]], order: dict | None) -> list[dict]:
+    """The products asked for beyond what is available (only what is added: a line already in the order counts for its
+    increase), with this client's substitutes from product_insight. [] when everything is in stock."""
+    from app.agent.orchestrator import _brief
+
+    from .insight import gather_insight
+
+    in_order = {line["productId"]: line.get("qty") or 0 for line in (order or {}).get("lines", []) if line.get("unitPrice") != 0}
+    extra = [(pid, qty - in_order.get(pid, 0)) for pid, qty in wanted if qty - in_order.get(pid, 0) > 0]
+    if not extra:
+        return []
+    products = await asyncio.gather(*(ctx.erp.get(f"/api/products/{enc(pid)}") for pid, _ in extra))
+    short = [(pid, more, p) for (pid, more), p in zip(extra, products, strict=True) if more > (p.get("available") or 0)]
+    if not short:
+        return []
+    insights = await asyncio.gather(*(gather_insight(ctx.erp, client_id, pid, more) for pid, more, _ in short),
+                                    return_exceptions=True)
+    out = []
+    for (pid, more, p), insight in zip(short, insights, strict=True):
+        item = {"productId": pid, "name": p.get("name"), "unit": p.get("unit"), "wanted": more,
+                "available": p.get("available") or 0}
+        if isinstance(insight, dict):
+            item.update({k: v for k, v in _brief(insight).items() if k != "product"})
+            if (incoming := (insight.get("product") or {}).get("incoming")) is not None:
+                item["incoming"] = incoming
+        out.append(item)
+    return out

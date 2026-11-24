@@ -10,3 +10,4 @@ def _waiting_mode_from_the_test(monkeypatch):
     monkeypatch.delenv("TEAM_FILLERS", raising=False)
     monkeypatch.delenv("TEAM_ROUTER", raising=False)
     monkeypatch.delenv("TEAM_SLIM_PROMPT", raising=False)
+    monkeypatch.delenv("TEAM_ORCHESTRATOR", raising=False)

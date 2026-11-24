@@ -3,29 +3,27 @@
  *  - Appel (conversation): two-track push-to-talk lab on WS /ai/voice (below).
  *  - Commande (un tour): single-turn voice commands on POST /ai/command, see ./command.tsx.
  *
- * Appel: two-track push-to-talk lab on WS /ai/voice.
+ * Appel: a messaging-app call view on WS /ai/voice (team 12: chat.tsx, WhatsApp-like).
  * Hold Space (or the big button) to speak as the caller; the agent answers with streamed text, tool calls and audio.
  * Per-turn latency chips + running average; live ERP writes of the voice agent on the right.
  */
-import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { useUrlState } from "@/lib/url-state";
-import { Ear, MicOff, Mic, RotateCcw, Send, VolumeX } from "lucide-react";
+import { MicOff } from "lucide-react";
 import { useHandsFree } from "@/features/assistant/useHandsFree";
 import { cn } from "@/lib/cn";
-import { Button, Dot, IconButton, Input, Kbd, Page, PageHeader, Spinner, Tabs } from "@/ui";
-import { useVoiceSession, type Activity, type Conn } from "@/features/assistant/useVoiceSession";
-import { CallerBar, CallerForm } from "./caller";
+import { Dot, Page, PageHeader, Tabs } from "@/ui";
+import { useVoiceSession, type Conn } from "@/features/assistant/useVoiceSession";
+import { CallerForm } from "./caller";
+import { ChatHeader, ChatMessages, Composer, QuickReplies, WALLPAPER } from "./chat";
 import { CommandMode } from "./command";
 import { LiveActivity } from "./live-activity";
 import { MetricsBar } from "./metrics";
-import { LevelBars, Timeline } from "./timeline";
 
 const isTypingTarget = (t: EventTarget | null) => {
   const el = t as HTMLElement | null;
   return !!el && (el.isContentEditable || ["INPUT", "TEXTAREA", "SELECT"].includes(el.tagName));
 };
-
-const STATE_LABEL: Record<Activity, string> = { idle: "Prêt", recording: "Enregistrement", thinking: "L'agent réfléchit", speaking: "L'agent parle" };
 
 type Mode = "call" | "command";
 const MODES: { id: Mode; label: string }[] = [
@@ -46,12 +44,17 @@ function CallMode({ modeSwitch }: { modeSwitch: ReactNode }) {
   const v = useVoiceSession();
   const vRef = useRef(v);
   vRef.current = v;
-  const [text, setText] = useState("");
   const spaceDown = useRef(false);
   // team 12 (Youssef): hands-free = talk like on the phone (no key); OFF by default (Space) to save credits while testing, turn it on for the demo; remembered per browser
   const [handsFree, setHandsFree] = useState(() => { try { return localStorage.getItem("voice.handsFree") === "1"; } catch { return false; } });
   const toggleHandsFree = () => setHandsFree((on) => { try { localStorage.setItem("voice.handsFree", on ? "0" : "1"); } catch { /* private mode */ } return !on; });
   const listening = useHandsFree(v, handsFree && v.conn === "ready" && !!v.caller, spaceDown);
+  // team 12 (Youssef): call timer of the chat header (from the moment the caller is identified)
+  const [callStart, setCallStart] = useState<number>();
+  useEffect(() => {
+    if (!v.caller) setCallStart(undefined);
+    else setCallStart((s) => s ?? Date.now());
+  }, [v.caller]);
 
   // Space = push-to-talk (outside text fields), Esc = stop playback.
   useEffect(() => {
@@ -84,13 +87,6 @@ function CallMode({ modeSwitch }: { modeSwitch: ReactNode }) {
     };
   }, []);
 
-  const submit = (e: FormEvent) => {
-    e.preventDefault();
-    if (!text.trim()) return;
-    v.sendText(text);
-    setText("");
-  };
-
   const connected = v.conn === "ready";
   const ready = connected && !!v.caller; // team 12: no talking before the caller is identified
 
@@ -101,34 +97,47 @@ function CallMode({ modeSwitch }: { modeSwitch: ReactNode }) {
         meta={<ConnState conn={v.conn} />}
         tabs={modeSwitch}
         actions={
-          <>
-            {/* Active providers (not filters): informative chips, only where there is room. */}
-            {v.providers ? (
-              <div className="hidden items-center gap-1 xl:flex">
-                <Provider k="llm" v={v.providers.llm} />
-                <Provider k="stt" v={v.providers.stt} />
-                <Provider k="tts" v={v.providers.tts} />
-              </div>
-            ) : null}
-            {v.activity === "speaking" ? <Button size="sm" variant="ghost" icon={VolumeX} kbd="Échap" onClick={v.stopPlayback}>Couper</Button> : null}
-            <Button size="sm" variant={handsFree ? "primary" : "default"} icon={Ear} onClick={toggleHandsFree} aria-pressed={handsFree}>
-              Mains libres
-            </Button>
-            <Button size="sm" icon={RotateCcw} onClick={v.reset} disabled={!ready}>Recommencer l'appel</Button>
-          </>
+          v.providers ? (
+            /* Active providers (not filters): informative chips, only where there is room. */
+            <div className="hidden items-center gap-1 xl:flex">
+              <Provider k="llm" v={v.providers.llm} />
+              <Provider k="stt" v={v.providers.stt} />
+              <Provider k="tts" v={v.providers.tts} />
+            </div>
+          ) : null
         }
       />
       <div className="flex min-h-0 flex-1">
         <section className="flex min-w-0 flex-1 flex-col">
           {v.caller ? (
             <>
-              <CallerBar caller={v.caller} onHangUp={v.endCall} />
+              <ChatHeader
+                caller={v.caller}
+                since={callStart}
+                activity={v.activity}
+                listening={listening}
+                handsFree={handsFree}
+                onToggleHandsFree={toggleHandsFree}
+                onStopPlayback={v.stopPlayback}
+                onRestart={v.reset}
+                onHangUp={v.endCall}
+              />
               <MetricsBar turns={v.turns} />
-              <Timeline turns={v.turns} activity={v.activity} level={v.level} />
+              <ChatMessages turns={v.turns} activity={v.activity} level={v.level} caller={v.caller} />
+              <QuickReplies turns={v.turns} disabled={!ready} onPick={v.sendText} />
             </>
           ) : (
-            <div className="flex min-h-0 flex-1 overflow-y-auto px-5 py-6">
-              <CallerForm disabled={!connected} pending={v.callerPending} onStart={v.identifyCaller} />
+            <div className={cn("flex min-h-0 flex-1 flex-col items-center overflow-y-auto px-5 py-8", WALLPAPER)}>
+              <div className="flex w-full max-w-[560px] flex-col items-center gap-4">
+                <img src="/brand/fournil-occitan.svg" alt="Le Fournil Occitan" className="h-20 w-20 rounded-full shadow-md" />
+                <div className="text-center">
+                  <div className="text-[18px] font-semibold text-[#111b21] dark:text-[#e9edef]">Le Fournil Occitan</div>
+                  <div className="text-[13px] text-[#667781] dark:text-[#8696a0]">Standard téléphonique · Lucie, assistante vocale</div>
+                </div>
+                <div className="w-full">
+                  <CallerForm disabled={!connected} pending={v.callerPending} onStart={v.identifyCaller} />
+                </div>
+              </div>
             </div>
           )}
 
@@ -143,33 +152,15 @@ function CallMode({ modeSwitch }: { modeSwitch: ReactNode }) {
             </div>
           ) : null}
 
-          <div className="flex shrink-0 items-center gap-4 border-t border-border px-5 py-3">
-            <TalkButton activity={v.activity} disabled={!ready} onDown={() => void v.startTalking()} onUp={v.stopTalking} />
-            <div className="flex shrink-0 flex-col gap-1 xl:w-[180px]">
-              <span className={cn("flex items-center gap-1.5 text-[13px] font-medium", v.activity !== "idle" && "text-violet")}>
-                {v.activity === "thinking" ? <Spinner size={12} /> : v.activity !== "idle" ? <Dot tone="violet" pulse /> : null}
-                {ready ? (listening && v.activity === "idle" ? "À l'écoute, parlez" : STATE_LABEL[v.activity]) : connected ? "Identifiez l'appelant" : v.conn === "connecting" ? "Connexion…" : "Hors ligne"}
-              </span>
-              {v.activity === "recording" ? (
-                <LevelBars level={v.level} />
-              ) : listening ? (
-                <span className="hidden items-center gap-1 text-[11.5px] text-muted-foreground xl:flex">Mains libres · parlez pour couper l'agent</span>
-              ) : (
-                <span className="hidden items-center gap-1 text-[11.5px] text-muted-foreground xl:flex"><Kbd>Espace</Kbd> maintenir pour parler</span>
-              )}
-            </div>
-            <form onSubmit={submit} className="flex min-w-0 flex-1 items-center gap-2">
-              <Input
-                value={text}
-                onChange={(e) => setText(e.target.value)}
-                onKeyDown={(e) => { if (e.key === "Escape") (e.target as HTMLInputElement).blur(); }}
-                placeholder="Ou tapez la phrase de l'appelant…"
-                disabled={!ready}
-                className="min-w-0 flex-1"
-              />
-              <IconButton type="submit" icon={Send} label="Envoyer" variant="default" disabled={!ready || !text.trim()} />
-            </form>
-          </div>
+          <Composer
+            ready={ready}
+            activity={v.activity}
+            listening={listening}
+            level={v.level}
+            onSend={v.sendText}
+            onTalkDown={() => void v.startTalking()}
+            onTalkUp={v.stopTalking}
+          />
         </section>
         <aside className="w-[280px] shrink-0 border-l border-border bg-card xl:w-[320px] 2xl:w-[380px]">
           <LiveActivity />
@@ -194,39 +185,5 @@ function Provider({ k, v }: { k: string; v: string }) {
       <span className="text-muted-foreground">{k}</span>
       <span className="truncate text-secondary-foreground">{v}</span>
     </span>
-  );
-}
-
-function TalkButton({ activity, disabled, onDown, onUp }: { activity: Activity; disabled: boolean; onDown: () => void; onUp: () => void }) {
-  const rec = activity === "recording";
-  const held = useRef(false);
-  return (
-    <button
-      type="button"
-      disabled={disabled}
-      aria-label="Maintenir pour parler"
-      aria-pressed={rec}
-      onPointerDown={(e) => {
-        if (e.button !== 0) return;
-        e.currentTarget.setPointerCapture(e.pointerId);
-        held.current = true;
-        onDown();
-      }}
-      onPointerUp={() => { if (held.current) { held.current = false; onUp(); } }}
-      onPointerCancel={() => { if (held.current) { held.current = false; onUp(); } }}
-      onKeyDown={(e) => { if (e.key === "Enter") e.preventDefault(); }}
-      onContextMenu={(e) => e.preventDefault()}
-      className={cn(
-        "relative flex h-14 w-14 shrink-0 select-none items-center justify-center rounded-full border transition-[transform,background-color,border-color] duration-100",
-        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet/70 disabled:opacity-40",
-        rec
-          ? "scale-95 border-violet bg-violet text-primary-foreground"
-          : "border-violet/40 bg-violet/10 text-violet hover:border-violet hover:bg-violet/15",
-      )}
-      style={{ touchAction: "none" }}
-    >
-      {rec ? <span className="absolute inset-0 animate-ping rounded-full bg-violet/30" aria-hidden /> : null}
-      <Mic size={22} strokeWidth={1.75} className="relative" />
-    </button>
   );
 }

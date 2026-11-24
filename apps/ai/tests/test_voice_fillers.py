@@ -192,8 +192,8 @@ async def test_warm_up_retries_only_missing_clips():
     assert len(bank.audio["thinking"]) == 1
     await bank.warm_up(tts)
     await bank.warm_up(tts)
-    first, second = fillers.PHRASES["thinking"]
-    assert tts.phrases == [first, second, second, *fillers.PHRASES["follow_up"]]
+    first, second, *rest = fillers.PHRASES["thinking"]  # team 12: the bank grew (natural voice); same retry logic
+    assert tts.phrases == [first, second, second, *rest, *fillers.PHRASES["follow_up"]]
 
 
 async def test_bakery_terms_remain_available_when_erp_is_down(monkeypatch):

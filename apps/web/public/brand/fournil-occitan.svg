@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" role="img" aria-label="Le Fournil Occitan">
+  <!-- Team 12 · logo de démo du Fournil Occitan : épi de blé doré sur fond pain brûlé -->
+  <defs>
+    <radialGradient id="crust" cx="35%" cy="30%" r="80%">
+      <stop offset="0" stop-color="#b8743a"/>
+      <stop offset="1" stop-color="#6e3f17"/>
+    </radialGradient>
+  </defs>
+  <circle cx="48" cy="48" r="46" fill="url(#crust)"/>
+  <circle cx="48" cy="48" r="40" fill="none" stroke="#f3d27a" stroke-opacity=".55" stroke-width="1.5"/>
+  <g fill="#f3d27a" stroke="#f3d27a" stroke-linecap="round">
+    <path d="M48 76 V30" stroke-width="3" fill="none"/>
+    <ellipse cx="48" cy="25" rx="4.2" ry="7"/>
+    <ellipse cx="41" cy="35" rx="4" ry="6.5" transform="rotate(-35 41 35)"/>
+    <ellipse cx="55" cy="35" rx="4" ry="6.5" transform="rotate(35 55 35)"/>
+    <ellipse cx="41" cy="46" rx="4" ry="6.5" transform="rotate(-35 41 46)"/>
+    <ellipse cx="55" cy="46" rx="4" ry="6.5" transform="rotate(35 55 46)"/>
+    <ellipse cx="41" cy="57" rx="4" ry="6.5" transform="rotate(-35 41 57)"/>
+    <ellipse cx="55" cy="57" rx="4" ry="6.5" transform="rotate(35 55 57)"/>
+  </g>
+</svg>

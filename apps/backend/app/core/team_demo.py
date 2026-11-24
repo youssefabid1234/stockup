@@ -27,6 +27,9 @@ DISCOUNT_PCT = 8.0
 # 12 months that accept a substitute (scripts/promo_target.py).
 TARGET_CLIENT_IDS = ["cli_0020", "cli_0033", "cli_0060", "cli_0070", "cli_0085", "cli_0102"]
 RULE_ID = "prl_0900"  # far from the seed's ids; new rules created in the ERP continue after it
+# Epiphany articles the data pack ships inactive while the company docs (01-entreprise.md) say pre-orders are open
+# until 15/12 and clients have pre-orders in their cards: the agent refused them in 3 of 150 test calls (24/11).
+ACTIVATE = ("prd_0068", "prd_0069")  # couronnes des rois, fèves des rois
 
 
 def english() -> bool:
@@ -67,14 +70,18 @@ def demo_price_rule(today: date) -> Doc:
 
 def add_team_demo_data(pack: Doc) -> list[str]:
     """Add the demo rows to a pack read from DATA_DIR/seed (in place). Returns what was added (for the log)."""
+    added: list[str] = []
+    for p in pack.get("products") or []:
+        if p.get("id") in ACTIVATE and not p.get("active", True):
+            p["active"] = True
+            added.append(f"{p['id']} actif")
     today_raw = (pack.get("meta") or {}).get("today")
     if not today_raw:
-        return []
+        return added
     products = {p.get("id") for p in pack.get("products") or []}
     targets = [c for c in pack.get("clients") or [] if c.get("id") in TARGET_CLIENT_IDS]
     if PRODUCT_ID not in products or not targets:
-        return []
-    added = []
+        return added
     tags = pack.setdefault("tags", [])
     if not any(t.get("id") == PROMO_TAG and t.get("scope", "client") == "client" for t in tags if isinstance(t, dict)):
         tags.append(demo_tag())

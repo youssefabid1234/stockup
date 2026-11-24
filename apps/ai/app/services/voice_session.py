@@ -47,6 +47,8 @@ from app.schemas import (
     AudioStartMessage,
     CallerMessage,
     CallerReadyMessage,
+    NudgeMessage,
+    NudgeSaidMessage,
     ChatMessage,
     DoneEvent,
     ErrorEvent,
@@ -68,7 +70,7 @@ from app.tools import ErpClient, all_tools
 from . import fillers
 from .utterance import Utterance
 from .vocabulary import stt_hint
-from .voice_reply import spoken_reply, without_repeated_greeting
+from .voice_reply import one_question, spoken_reply, vary_closing, vary_opening, without_repeated_greeting
 
 client_message = TypeAdapter(VoiceClientMessage)
 
@@ -87,6 +89,8 @@ class Conversation:
     # team 12 (Youssef): what the caller said that the agent has not answered yet (pieces, oldest first): merged
     # into one message so a new piece never makes the agent forget the previous ones (agent/listening.py)
     pending: list[str] = field(default_factory=list)
+    last_spoken: str | None = None  # team 12 (Youssef): the previous reply, so the next one opens differently
+    used_closings: list[str] = field(default_factory=list)  # team 12: validation questions already asked
 
 
 # In memory: a reconnect with the same sessionId continues the conversation.
@@ -173,11 +177,26 @@ class VoiceConnection:
                 await self.interrupt()
                 self.conversation.history = []
                 self.conversation.pending = []
+                self.conversation.used_closings = []
                 self.conversation.opening_greeting = None
                 await self.open(self.conversation.id)
             case CallerMessage():  # team 12 (Youssef): caller ID form, before the call
                 await self.interrupt()
                 await self.set_caller(msg)
+            case NudgeMessage():  # team 12 (Youssef): hands-free, the caller has been silent for a while
+                await self.nudge()
+
+    async def nudge(self) -> None:
+        """One short, varied line after a silence (« Vous êtes toujours là ? »): no model, no history, never while
+        the caller speaks or the agent works. The page sends it once per silence (hands-free only)."""
+        if self.recording or (self.turn and not self.turn.done()):
+            return
+        self.nudges = getattr(self, "nudges", None) or fillers.PhraseRotation(fillers.NUDGES)
+        line = self.nudges.next()
+        await self.send(NudgeSaidMessage(text=line))
+        speaker = Speaker(get_tts_client(), self.send, self.send_bytes, self.bank)
+        speaker.push(line)
+        await speaker.finish()
 
     async def send_partial(self, update: STTUpdate) -> None:
         await self.send(TranscriptMessage(text=update.text, final=False, stable=update.stable))
@@ -191,6 +210,7 @@ class VoiceConnection:
         if not msg.resume:
             conv.history = []
             conv.pending = []  # team 12 (Youssef): a new call starts with nothing pending
+            conv.used_closings = []
             conv.agent_opened = False
             greetings = fillers.OPENING_LINES if team_flags.no_silence() else CALL_GREETINGS  # mode 4: the agent opens
             conv.opening_greeting = greetings[msg.contact_title] if opening_enabled else None
@@ -372,6 +392,8 @@ class VoiceConnection:
                         if greeted:
                             contact = conv.call_context.caller_contact if conv.call_context else None
                             spoken = without_repeated_greeting(spoken, contact)
+                        spoken = vary_opening(spoken, conv.last_spoken)  # team 12 (Youssef): no « Parfait, » twice in a row
+                        spoken = vary_closing(one_question(spoken), conv.used_closings)  # one question, varied closing
                     case ErrorEvent(message=message):
                         await speaker.stop_waiting()
                         await self.send(VoiceErrorMessage(message=message))
@@ -379,6 +401,7 @@ class VoiceConnection:
             conv.history = trim_voice_turn(working, history_size, spoken)
             committed = True
             conv.pending = []  # team 12: answered
+            conv.last_spoken = spoken or conv.last_spoken
 
             # Only the completed reply goes to the caller. Text emitted before a tool call may be internal notes.
             if spoken:

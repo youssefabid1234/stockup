@@ -32,6 +32,8 @@ from .voice import (
     AudioStartMessage,
     CallerMessage,
     CallerReadyMessage,
+    NudgeMessage,
+    NudgeSaidMessage,
     ReadyMessage,
     ResetMessage,
     StartMessage,

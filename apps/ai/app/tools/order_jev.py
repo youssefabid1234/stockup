@@ -50,6 +50,18 @@ async def confirm_order(
             "next": "Ne confirme pas : appelle review_order et dis au client ses « alerts » simplement.",
         }
 
+    # team 12 (Youssef): a reply without any word of agreement (« Pour jeudi », « Vendredi », a question) is never a
+    # yes, whatever the model or Jev think: 8 of 150 test calls were confirmed on a bare day name (24/11).
+    from app.agent.listening import explicit_yes
+
+    if not client_answer:
+        return {"confirmed": False, "decision": "unsure",
+                "next": "Redonne confirm_order avec client_answer = la réponse exacte du client à ta relecture."}
+    if not explicit_yes(client_answer):
+        return {"confirmed": False, "decision": "unsure",
+                "next": "Pas de oui clair : le client a seulement précisé quelque chose (un jour, une question…). Tiens-en "
+                        "compte (réponds, ou modifie la commande), puis redemande simplement « Je vous la valide ? »."}
+
     check: dict = {"decidedBy": "agent"}
     jev = get_jev_client()
     if jev and client_answer:
