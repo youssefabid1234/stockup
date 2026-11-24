@@ -5,6 +5,7 @@ import type { OutboundAttempt } from "@kit/shared";
 import { api } from "@/lib/api";
 import { UNIT_LABEL } from "@/lib/format";
 import { Button, DateLabel, Dot, Money, SECTION_LABEL } from "@/ui";
+import { VoiceMessage } from "./planned";
 
 const STATUS: Record<OutboundAttempt["status"], string> = {
   ringing: "Sonnerie en cours",
@@ -76,6 +77,15 @@ export function OutboundCalls({
   }, [ringing, pending]);
 
   useEffect(() => () => { void audio.current?.close().catch(() => undefined); }, []);
+  useEffect(() => {  // team 12 (Youssef): a planned call starts without a click: unlock the ring at the first one
+    const unlock = () => {
+      if (typeof AudioContext === "undefined") return;
+      audio.current ??= new AudioContext();
+      void audio.current.resume().catch(() => undefined);
+    };
+    window.addEventListener("pointerdown", unlock, { once: true });
+    return () => window.removeEventListener("pointerdown", unlock);
+  }, []);
 
   if (!enabled) return null;
   const active = ringing || latest?.status === "answered";
@@ -121,7 +131,7 @@ export function OutboundCalls({
       {latest ? (
         <div aria-live="polite" className="space-y-2">
           <p className="text-[12px] text-muted-foreground">{STATUS[latest.status]} · {latest.clientName}</p>
-          {latest.sms ? (
+          {latest.status === "missed" && latest.sms ? <VoiceMessage attempt={latest} /> : latest.sms ? (
             <div className="rounded-[4px] border border-border bg-muted px-3 py-2 text-[12px]">
               <p className="mb-1 flex items-center gap-1.5 font-medium"><MessageSquare size={13} /> SMS simulé</p>
               <p className="leading-relaxed">{latest.sms}</p>

@@ -24,6 +24,7 @@ import type { ListParams, Page } from "@kit/shared";
 import { toast } from "@/ui/toast";
 
 import type { OutboundAttempt, OutboundTarget } from "@kit/shared";
+import type { PlannedCall } from "@/pages/voice/planned";
 
 export const API_BASE = "/api";
 export const AI_BASE = "/ai";
@@ -148,6 +149,12 @@ export const api = {
     attempts: () => get<OutboundAttempt[]>("/outbound-demo/attempts", undefined, { silent: true }),
     start: (requestId: string) => post<OutboundAttempt>("/outbound-demo/attempts", { requestId }),
     dismiss: (id: string) => post<{ ok: boolean }>("/outbound-demo/attempts/" + encodeURIComponent(id) + "/dismiss"),
+  },
+  // team 12 (Youssef): Lucie's planned outbound calls
+  outboundPlan: {
+    list: () => get<PlannedCall[]>("/outbound-plan", undefined, { silent: true }),
+    refresh: () => post<PlannedCall[]>("/outbound-plan/refresh"),
+    call: (id: string) => post<OutboundAttempt>("/outbound-plan/" + encodeURIComponent(id) + "/call"),
   },
 
   products: {

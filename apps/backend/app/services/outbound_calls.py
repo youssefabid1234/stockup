@@ -39,12 +39,14 @@ def list_attempts() -> list[Doc]:
 
 
 @transactional
-def start(request_id: str) -> Doc:
+def start(request_id: str, client_id: str | None = None, offer_id: str | None = None) -> Doc:
     if previous := crud.outbound_attempts.get(request_id):
         return previous
     if any(a["status"] in {"ringing", "answered"} for a in crud.outbound_attempts.rows.values()):
         raise conflict("call_in_progress", "Un appel sortant est déjà en cours.")
-    if not (eligible := candidates()):
+    eligible = [c for c in candidates() if (not client_id or c["clientId"] == client_id)
+                and (not offer_id or c["offer"]["id"] == offer_id)]  # team 12 (Youssef): a planned call
+    if not eligible:
         raise conflict("no_offer", "Aucune offre disponible pour un client joignable.")
     now = time.time()
     try:
