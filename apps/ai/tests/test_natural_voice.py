@@ -94,3 +94,37 @@ def test_a_validation_question_is_never_asked_twice_in_a_call():
 
 def test_the_doubtful_word_rule_asks_explicitly():
     assert "ne le devine pas" in STYLE_RULES and "quelle farine" in STYLE_RULES
+
+
+# ── French voice (24/11): what the TTS reads, fallback voice ──
+
+from app.clients.french_speech import tts_text  # noqa: E402
+
+
+def test_codes_and_symbols_are_read_as_words():
+    assert tts_text("2 cartons de T55 à 8,46 € HT, 82 % AOP.") == "2 cartons de T 55 à 8 euros 46 hors taxes, 82 pour cent A O P."
+    assert tts_text("10 kg, 500 g et 6 L.") == "10 kilos, 500 grammes et 6 litres."
+    assert tts_text("Carton 10 × 1 kg, commande n° 12.") == "Carton 10 fois 1 kilos, commande numéro 12."
+    assert tts_text("Bonjour Nadine, je vous écoute.") == "Bonjour Nadine, je vous écoute."  # plain French untouched
+    assert tts_text("le prix est de 18,50 euros.") == "le prix est de 18 euros 50."
+
+
+async def test_a_voice_missing_from_the_key_falls_back_to_a_premade_one():
+    from app.clients.elevenlabs import ElevenLabsTTS
+
+    tts = ElevenLabsTTS("k", voice="not-in-this-library")
+    asked = []
+
+    async def stream(text, voice):
+        asked.append(voice)
+        if voice != ElevenLabsTTS.FALLBACK_VOICE:
+            raise RuntimeError("voice_not_found")
+        return None
+
+    tts._stream = stream
+    import app.clients.elevenlabs as el
+
+    el.body_chunks = lambda res: iter(())
+    await tts.synthesize("Bonjour")
+    await tts.synthesize("Encore")
+    assert asked == ["not-in-this-library", ElevenLabsTTS.FALLBACK_VOICE, ElevenLabsTTS.FALLBACK_VOICE]

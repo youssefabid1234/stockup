@@ -355,7 +355,16 @@ prend que 9 à 48 ms (les 300 ms mesurés plus tôt étaient le premier appel, �
 du tourage », aucun mot figé) : Soniox a ~1 s de retard sur l'audio. Démarrer le modèle sur le partiel ne servirait donc à
 rien ici. C'est le plus gros délai d'un tour (le modèle met 1,0-1,5 s). **À vérifier au micro du navigateur**
 (WebM/Opus, pas MP3) : si `sttMs` y est aussi > 1 s, c'est la piste n°1 de vitesse (format audio, réglages de Soniox,
-ou fin de parole détectée plus tôt en mains libres).
+ou fin de parole détectée plus tôt en mains libres). **Vérifié au micro le jour même** : 1,24 à 1,52 s ; l'accusé part
+maintenant sur la transcription partielle (premier son 0,00-0,26 s, voir §3).
+
+**Plus de blanc, voix française (Youssef, 24/11 midi).** (1) Blancs de 1,8 à 4,5 s : un `.env` créé avant `TEAM_FILLERS=4`
+n'avait pas la ligne → phrases d'attente éteintes ; docker-compose lit maintenant `.env.example` puis `.env` (une ligne
+absente prend la valeur d'équipe) → premier son immédiat. (2) Mauvais français : la voix par défaut était « George »
+(anglaise) sur `eleven_flash_v2_5` ; nouvelle voix par défaut « Lucie » (française, service client) sur
+`eleven_v4_turbo` (1er octet mesuré ~200-370 ms contre ~210 ms), voix de secours si la clé n'a pas la voix, et
+`clients/french_speech.tts_text` lit les codes en mots (T55 → T 55, 82 % → 82 pour cent, 8,46 € → 8 euros 46, kg,
+HT, AOP épelé). Extraits comparatifs (4 voix × 3 modèles) générés pour choisir à l'oreille.
 
 ### Commande juste (Amine Khalil)
 
