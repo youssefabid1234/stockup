@@ -376,6 +376,15 @@ retirée du formulaire), bulles « Transcription… » qui restaient bloquées, 
 « ne pas revenir sur ce que l'ERP a dit », « comme d'habitude = quantités habituelles », « réclamation : ne rien
 inventer ».
 
+**Nouveau client : une vraie fiche prospect dans l'ERP (Youssef, 24/11).** Avant, un nouveau client au téléphone ne
+laissait aucune trace. Maintenant Lucie prend ses coordonnées et sa demande (une question à la fois, sans redemander ce
+que le formulaire dit) et l'outil `register_new_client` crée la fiche (statut prospect, type et étiquette de prix selon
+l'activité, zone et jours de tournée trouvés dans les fiches de zones de l'ERP, hors zone dit honnêtement) et y note la
+demande (événement « onboarding ») pour l'équipe. Jamais de doublon : même téléphone ou même nom = même fiche, complétée ;
+un numéro déjà client gagne sur la case « nouveau client ». Aucune commande : les outils de commande sont retirés pour un
+nouveau client ou un prospect, et l'équipe rappelle pour ouvrir le compte. Testé en vrai (scripts/new_client_test.py :
+7 appels variés, vérification de l'ERP après chaque appel, juge indépendant) : 7/7.
+
 ### Commande juste (Amine Khalil)
 
 **Mission** : ce qui finit dans l'ERP est exactement ce que le client voulait (bon produit, bonne quantité, bon jour,
