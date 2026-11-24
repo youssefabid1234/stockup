@@ -1,4 +1,5 @@
 /** All routes. One page = one folder in src/pages/<name>/index.tsx (default export). */
+import TodayPage from "@/pages/today";
 import { createBrowserRouter } from "react-router-dom";
 import { AppShell } from "./AppShell";
 import { NotFound } from "./NotFound";
@@ -31,7 +32,8 @@ export const router = createBrowserRouter([
     path: "/",
     element: <AppShell />,
     children: [
-      { index: true, element: <DashboardPage /> },
+      { index: true, element: <TodayPage /> },  // team 12 (Youssef): today first, the rest behind one button
+      { path: "dashboard", element: <DashboardPage /> },
       { path: "orders", element: <OrdersPage /> },
       { path: "orders/:id", element: <OrderDetailPage /> },
       { path: "clients", element: <ClientsPage /> },
