@@ -72,10 +72,4 @@ async def test_filler_bank_warms_up_every_phrase():
     assert all(clip.data for clips in bank.audio.values() for clip in clips)
 
 
-# ── Youssef · product_insight / call_context ───────────────────────────────────────────────────────────────────
-
-
-@TODO
-async def test_product_insight_returns_stock_price_and_ranked_alternatives():
-    """Fake ERP with an out-of-stock product and two substitutes; check the output shape of interfaces.md §2."""
-    raise NotImplementedError
+# ── Youssef · product_insight: done, see test_product_insight.py ─────────────────────────────────────────────────

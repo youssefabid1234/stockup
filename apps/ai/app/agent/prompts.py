@@ -57,6 +57,8 @@ async def build_system_prompt(mode: ChatMode, actor_name: str | None = None, cal
     # long static prefix stays cacheable; the caller's sheet (dynamic) comes LAST. See docs/team/interfaces.md.
     from .call_context import render_for_prompt
     from .rules_order import order_rules_section
+    from app.tools.insight import product_insight_section
+
     from .rules_sales import sales_rules_section
 
     meta = await get_meta()
@@ -70,6 +72,7 @@ async def build_system_prompt(mode: ChatMode, actor_name: str | None = None, cal
         MODE_RULES[mode],
         order_rules_section() if team_rules else "",  # Amine K.
         sales_rules_section() if team_rules else "",  # Daycem
+        product_insight_section() if team_rules else "",  # Youssef (one tool: stock + price + substitutes)
         f"Entreprise : {meta.get('company') or '(ERP injoignable)'}. Aujourd'hui : {french_date(today)} ({today}).",
         f"Interlocuteur : {actor_name}." if actor_name else "",
         f"# Contexte entreprise\n\n{context}" if (context := read_context_files()) else "",

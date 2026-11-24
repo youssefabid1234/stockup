@@ -95,10 +95,18 @@ async def test_fillers_do_nothing_when_off():
     await fillers.on_tool_call(NoSpeaker(), "search")
 
 
-def test_product_insight_not_registered_when_off():
-    from app.tools import TOOLS
+@pytest.mark.parametrize("value, registered", [("0", False), ("1", True)])
+def test_product_insight_registered_only_when_on(value, registered):
+    # tools are registered at import time: check it in a fresh interpreter (the .env never overrides a set variable)
+    import os
+    import subprocess
+    import sys
+    from pathlib import Path
 
-    assert "product_insight" not in TOOLS
+    code = "from app.tools import TOOLS; print('product_insight' in TOOLS)"
+    out = subprocess.run([sys.executable, "-c", code], capture_output=True, text=True, cwd=Path(__file__).parents[1],
+                         env={**os.environ, "TEAM_PRODUCT_INSIGHT": value}, check=True)  # fmt: skip
+    assert out.stdout.strip() == str(registered)
 
 
 async def test_load_call_context_reads_client_and_context_in_parallel():
