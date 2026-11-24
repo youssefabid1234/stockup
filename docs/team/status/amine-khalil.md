@@ -156,3 +156,10 @@ Au Fournil de Didier, Au Pain de Guilhem, Au Fournil de Philippe, La Mie d'Arnau
 de Muret : 12 livraisons le mercredi depuis septembre ; Au Fournil de Philippe n'est livré **que** le mercredi).
 L'agent d'origine croit la note et refuse à tort (vu en S03 et dans un test S1 du kit).
 → À décider : faire foi aux **jours de livraison de l'ERP** (confirmés par l'historique) et ignorer la note.
+
+## T4 de Youssef · l'orchestrateur allumé (mar. 24/11, matin)
+- `TEAM_ORCHESTRATOR=1` (défaut dans `.env.example`) : pendant « je regarde » + clavier, le « collègue » lit dans l'ERP
+  en parallèle stock, prix, promo et remplaçants des produits cités ; Sonnet répond à une question de stock ou de prix
+  sans outil. Questions : 1,8-2,0 s → 1,0-1,5 s ; le reste est inchangé. Mesures et échec de la v1 : DECISIONS.md.
+- Tests : `test_orchestrator.py` (7), suite complète 358 verts.
+- ⚠️ Tout le monde : si votre `.env` contient `TEAM_ORCHESTRATOR=0`, mettez `1` puis `docker compose up -d --force-recreate ai`.
