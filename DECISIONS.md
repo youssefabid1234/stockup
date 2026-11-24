@@ -32,6 +32,26 @@ de la touche Espace (push-to-talk).
 | Kit d'origine | | | | | | | |
 | + … | | | | | | | |
 
+**Silence entendu par l'appelant** (mar. 24/11 02h00, Maison Sarrailh, 4 répliques : commande, « oui mais mettez-en
+douze », prix, « c'est bon, validez » ; vraies clés, WS `/voice` en texte (ajouter ~0,3-0,5 s de transcription au
+micro) ; le flux MP3 reçu est rejoué comme le navigateur, durées lues dans les en-têtes MP3 et vérifiées avec ffprobe) :
+
+| Réglage | L'agent ouvre l'appel | 1er son après la phrase (médiane / pire) | Réponse utile prête | Silence entendu avant la fin de la réponse |
+|---|---|---|---|---|
+| `TEAM_FILLERS=0` (kit) | non | 3,0 s / 5,0 s | 2,2–4,8 s | tout ce temps (2,3–5,0 s) |
+| `TEAM_FILLERS=3` | non (« Bonjour » joué après la 1re phrase) | 0,0 s / 0,8 s | 2,1–4,3 s | jusqu'à 1,4–1,9 s d'un bloc |
+| **`TEAM_FILLERS=4` (défaut)** · configuration du jury | **oui, 0,3 s** après le formulaire | **0,0 s / 0,0 s** | 2,8–6,3 s | **0,0 s** |
+| **+ `TEAM_ROUTER=1` (défaut)** · accusé ciblé + Haiku pour les répliques simples | oui, 0,4 s | 0,0 s / 0,4 s | « c'est bon, validez » **2,2 s** (2,6–3,3 s sur Sonnet) ; « merci, au revoir » **0,7 s** | **0,0 s** |
+
+**Routage du modèle** (`agent/router.py`, `TEAM_ROUTER`) : une réplique faite uniquement de confirmation ou de politesse
+(« c'est bon, validez », « oui », « parfait », « merci, au revoir ») part sur le modèle rapide (Haiku, `TEAM_FAST_MODEL`),
+tout le reste (produit, quantité, prix, changement d'avis, réclamation) sur Sonnet. Mesuré avec nos réglages : premier mot
+0,45–0,57 s (Haiku) contre 1,19–1,33 s (Sonnet). La confirmation reste vérifiée par Jev (accord 0,94 en 190 ms sur
+Haiku). Ces répliques ne déclenchent plus « Très bien, je vérifie » (inutile et lent) : l'accusé n'est dit que si l'agent
+doit chercher quelque chose. Les codes ERP (« CMD-2026-007543 », `prd_…`) sont retirés du texte prononcé, quel que soit le
+modèle (Haiku en avait lu un). Rejeu `--voice` : S01, S30, S31, S32, S33 PASS ; S02 PASS 2 fois sur 3 (la 3e, le modèle
+rapide demande la quantité de gruau restée floue au tour 1 au lieu de confirmer : il n'invente pas).
+
 Premier relevé (23/11, via /chat, sans audio) : S03 (client bloqué) PASS, 6 099 ms, premier mot à 4 092 ms ; défaut
 noté : l'agent prononce son raisonnement (« Le compte est bloqué ; je ne prends pas de commande… »).
 
@@ -44,8 +64,65 @@ noté : l'agent prononce son raisonnement (« Le compte est bloqué ; je ne pren
 - L'orchestrateur actuel délègue à l'agent ERP. Les annonces restent actives selon `TEAM_FILLERS` et la réponse finale annule l'attente. Le mode 3 ajoute le clavier pendant la préparation de la reprise rapide. Le ton et la consigne contre les doublons sont proposés à Daycem dans le [suivi](docs/team/status/mohamed-amine.md).
 - Rejeu local via WebSocket, données de démonstration et trois fournisseurs simulés, avec et sans `TEAM_FILLERS` : **3 répliques sur 10** passent dans les deux configurations. S06 et les deux répliques de S10 passent. S01 et S05 échouent sur leurs attentes métier. Sur S11, le modèle simulé lance une recherche sur « merci ». Un test d'intégration vérifie que même dans ce cas la voix ne joue ni annonce ni clavier. Les mesures de référence au micro, le délai perçu et le premier tour ElevenLabs restent à relever sur le pack du Fournil.
 - T7 facultatif est reporté. Espace fournit un point de départ reproductible pour mesurer le délai et interrompre l'agent pendant la démo.
+- **Mode 4 « zéro silence » (repris par Amine Khalil, mar. 24/11 02h00), défaut de l'équipe.** Mesure de départ : en mode 3
+  l'agent ne parlait pas en premier et laissait des blancs de 1,4 à 1,9 s (le clavier attendait 1,4 s puis revenait
+  toutes les 2,2 s). Ce qui change : (1) **l'agent ouvre l'appel** dès le formulaire « Qui appelle ? » (« Bonjour
+  Madame, que puis-je faire pour vous ? », synthétisé pendant le chargement de la fiche, joué dès qu'il est prêt :
+  0,2–0,3 s), et sa première réponse ne redit pas « Bonjour » ; (2) **accusé immédiat** à chaque demande (« D'accord,
+  je regarde ça », « Ok, je vois ça », « Très bien, je vérifie », préparés à l'ouverture) — rien sur « oui » / « merci » ;
+  (3) **clavier continu** : clips de 0,45 s (6 rythmes différents) envoyés juste avant que l'audio déjà envoyé ne
+  s'épuise (le navigateur joue un seul flux et ne cale jamais), arrêtés au premier octet audio de la réponse (pas à son
+  texte : le temps de synthèse est couvert aussi) ; au plus 0,6 s de clavier encore en file à ce moment. Résultat :
+  0,0 s de silence entendu sur les 4 répliques (tableau §3). Les modes 1-3 sont inchangés.
+- Tests : `tests/test_no_silence.py` (8 tests) ; `tests/conftest.py` remet `TEAM_FILLERS` à zéro pour chaque test (la
+  suite donnait des résultats différents selon le `.env` de chacun) : 232 tests passent avec `TEAM_FILLERS` 0, 1, 3 et 4.
 
 ### Plusieurs agents, fiche préchargée, super-outil (Youssef)
+
+**T3 / T4 · Prompt allégé (`TEAM_SLIM_PROMPT=1`, défaut ; repris par Amine Khalil, mar. 24/11 03h00).** Chaque appel au
+modèle relisait ≈ 34 400 tokens (le cache Anthropic marche : presque tout est « cache lu »). Décomposition : contexte
+entreprise 55 % (les 6 `data/context/*.md`, surtout les tableaux du catalogue), schémas des 25 outils ≈ 24 %, règles et
+fiche client le reste. Le catalogue (alias, prix, DLC) est déjà donné à la demande par les outils (`search`,
+`resolve_product`, `product_insight`, `quote_line`) et la fiche client couvre statut, habitudes et encours.
+`agent/context_digest.py` garde, extraites des mêmes fichiers à chaque tour : règles de la maison, situation du jour,
+équipe, heures limites, facturation, alias ambigus, substitutions habituelles, saisonnalité, prise de commande, clients
+bloqués, réclamations, prix / règles de prix / crédit, tournées. Contexte 39 016 → 13 996 caractères (−64 %).
+
+| Mesure (`/chat`, Sarrailh, 4 répliques, 3 appels, médianes) | Prompt complet | Allégé |
+|---|---|---|
+| Tokens relus par appel modèle | ≈ 34 400 | **≈ 21 600 (−37 %)** |
+| Commande · « mettez-en douze » · prix · « validez » | 7,2 · 4,6 · 3,5 · 4,0 s | **6,4 · 4,1 · 3,1 · 3,5 s** |
+| Somme des 4 répliques | 19,3 s | **17,1 s (−11 %)** |
+| Commande juste dans l'ERP | 3/3 | 3/3 |
+
+Le gain de temps est modeste parce que le cache rend la relecture rapide : le temps vient surtout des tokens écrits
+(200 à 430 par réplique : appels d'outils + phrase) et du nombre d'allers-retours. Le gain de **coût** est net (−37 % de
+tokens lus). Scénarios (`/chat`) : S01, S05 (3/4, attente `get_price`), S30, S31, S32, S33 PASS ; S03 PASS après mise à
+jour de l'attente (la fiche préchargée rend `search` inutile) ; S02 instable **avec les deux prompts** (1 réussite
+complète sur 3 dans les deux cas : « comme d'hab » + rupture AOP) — avec le prompt allégé l'agent ouvre 2 fois sur 3 par
+la rupture plutôt que par le panier habituel. Règle ajoutée : nommer le produit comme le client (« tradi »), jamais le nom
+catalogue (sans le glossaire, l'agent disait « farine T cinquante-cinq tradition française »).
+
+**T4 · Un seul aller-retour pour une commande (`place_order`, mar. 24/11 03h40).** Le temps ne venait plus de la relecture
+du prompt (cache) mais du nombre d'allers-retours modèle ↔ outils : « dix sacs de tradi pour jeudi » coûtait 3 à 4 appels
+au modèle (jour + produit, puis brouillon, puis relecture, puis la phrase). `tools/order_place.py` fait cette chaîne
+déterministe dans le code : jour (`delivery_answer`), produits (alias du catalogue, sinon Jev avec les habitudes du
+client), unités (« 3 cartons » de tourage → 30 kg ; 1,6 sac → on demande, jamais d'arrondi), écriture (nouveau
+brouillon, ou commande en cours modifiée : quantité, ligne à 0 retirée, autre jour), relecture (`review`). Rien n'est
+écrit si le jour est impossible, le produit ambigu ou le compte bloqué : « next » dit quoi demander.
+
+| Mesure (`/chat`, Sarrailh, 3 appels, médianes) | Prompt complet | Prompt allégé | **+ `place_order`** |
+|---|---|---|---|
+| Commande · « mettez-en douze » · prix · « validez » | 7,2 · 4,6 · 3,5 · 4,0 s | 6,4 · 4,1 · 3,1 · 3,5 s | **3,6 · 3,4 · 3,2 · 3,6 s** |
+| Somme des 4 répliques | 19,3 s | 17,1 s | **13,8 s (−29 %)** |
+| Tokens lus pour la commande (1re réplique) | 137 416 | 86 488 | **43 934 (−68 %)** |
+| Commande juste dans l'ERP | 3/3 | 3/3 | 3/3 |
+
+En vocal (configuration du jury, mode 4, routage) : réponse à la commande prête en 3,7 s (6,1–6,3 s avant), validation
+2,0 s, au revoir 0,6 s, 0,0 s de silence. Scénarios (`/chat`, `--reset`) : S01 S02 S03 S04 S05 S30 S31 S32 S33 S40 tous
+PASS, une seule commande ouverte à chaque fois (S05 4/4 pour la première fois). Les attentes des scénarios acceptent
+maintenant `place_order` là où elles demandaient `create_draft_order` / `update_order_line` / `review_order`, et
+`quote_line` là où elles demandaient `get_price` ; S05/S40 acceptent « quatre-vingt-deux ».
 
 **Mesure de départ (T0, lun. 23/11 23h, `TEAM_ORDER_RULES=1`, autres briques éteintes).**
 `totalMs` = fin de parole du client → premier octet audio de l'agent (`--voice`, phrase tapée donc sans STT) ; c'est la

@@ -316,6 +316,7 @@ def test_command_ws_streams_partials_then_the_command_events(app):
 
 async def test_company_terms_from_the_erp(monkeypatch):
     monkeypatch.undo()  # the real company_terms
+    monkeypatch.delenv("TEAM_FILLERS", raising=False)  # the plain list (no bakery jargon first), whatever .env says
     vocabulary.reset_cache()
     seen = []
 

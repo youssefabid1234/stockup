@@ -8,23 +8,44 @@
     {
       "say": "Bonjour, c'est Nadine de chez Sarrailh. Juste deux pains de levure pour jeudi s'il vous plaît.",
       "expect": {
-        "tools_any": ["review_order"],
-        "tools_none": ["confirm_order"],
-        "says_any": ["12 euros", "douze euros", "frais de livraison", "franco", "150"]
+        "tools_any": [
+          "review_order",
+          "place_order"
+        ],
+        "tools_none": [
+          "confirm_order"
+        ],
+        "says_any": [
+          "12 euros",
+          "douze euros",
+          "frais de livraison",
+          "franco",
+          "150"
+        ]
       }
     },
     {
       "say": "Ah d'accord. Alors rajoutez huit sacs de tradi.",
       "expect": {
-        "tools_none": ["confirm_order"],
-        "says_any": ["8", "huit"],
-        "says_none": ["12 euros de livraison", "douze euros de livraison"]
+        "tools_none": [
+          "confirm_order"
+        ],
+        "says_any": [
+          "8",
+          "huit"
+        ],
+        "says_none": [
+          "12 euros de livraison",
+          "douze euros de livraison"
+        ]
       }
     },
     {
       "say": "C'est bon, validez.",
       "expect": {
-        "tools_any": ["confirm_order"]
+        "tools_any": [
+          "confirm_order"
+        ]
       }
     }
   ]

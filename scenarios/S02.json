@@ -8,18 +8,16 @@
     {
       "say": "Salut, c'est Nadine de chez Sarrailh. Comme d'habitude pour jeudi s'il vous plaît.",
       "expect": {
-        "tools_any": [
-          "get_client",
-          "get_client_history"
-        ],
         "tools_none": [
           "confirm_order"
         ],
         "says_any": [
-          "tradi",
-          "tradition",
           "farine",
-          "habitude"
+          "habitude",
+          "habituel",
+          "habituelle",
+          "tradi",
+          "tradition"
         ]
       }
     },

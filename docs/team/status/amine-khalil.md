@@ -1,4 +1,34 @@
-# Amine Khalil – 🧠 « La commande juste »  ·  mis à jour mar. 24/11 01h00
+# Amine Khalil – 🧠 « La commande juste » + ⚡ voix et T3/T4 (repris de Mohamed Amine et Youssef)  ·  mar. 24/11 03h00
+
+- Fait (03h00) – **prompt allégé** (`agent/context_digest.py`, `TEAM_SLIM_PROMPT=1` par défaut) : contexte −64 %, tokens
+  relus par appel modèle 34 400 → 21 600 (−37 %), somme des 4 répliques 19,3 → 17,1 s, commande juste 3/3. S03 et S02 :
+  attentes mises à jour (fiche préchargée ; « habituel »). S02 reste instable avec les deux prompts. Détail : DECISIONS.md
+  (section Youssef, « T3 / T4 »).
+- **Pour tous** : ajouter `TEAM_SLIM_PROMPT=1` dans votre `.env`.
+- Fait (03h40) – **`place_order`** (T4) : jour + produits + unités + écriture + relecture en UN appel d'outil. Commande
+  7,2 → 3,6 s, somme des 4 répliques 19,3 → 13,8 s (−29 %), tokens de la 1re réplique −68 %. En vocal : 3,7 s (au lieu
+  de 6,1–6,3). 10 scénarios PASS (dont S05 4/4), une seule commande à chaque fois. 283 tests passent.
+- T4 reste (facultatif) : démarrage anticipé sur la transcription partielle (à valider au micro) ; T6 / S08 réclamation.
+
+- Fait (02h40) – **routage Haiku / Sonnet** (`agent/router.py`, `TEAM_ROUTER=1` par défaut) : « c'est bon, validez »,
+  « oui », « merci » → Haiku (premier mot 0,5 s au lieu de 1,2-1,3 s) ; le reste → Sonnet. Plus de « Très bien, je
+  vérifie » sur une simple confirmation (accusé seulement s'il y a quelque chose à chercher). Codes ERP jamais lus à voix
+  haute. Mesuré : validation 2,2 s (2,6-3,3 s avant), « merci, au revoir » 0,7 s. 272 tests passent. S02 : attente
+  `get_client` retirée (la fiche est préchargée).
+- **Pour tous** : ajouter `TEAM_ROUTER=1` dans votre `.env`.
+
+- Fait (02h10) – **mode 4 « zéro silence »** (`TEAM_FILLERS=4`, défaut dans `.env.example`), tâches voix reprises de
+  Mohamed Amine : l'agent **ouvre l'appel** (« Bonjour Madame, que puis-je faire pour vous ? », 0,3 s après le
+  formulaire), **accusé immédiat** à chaque demande (« D'accord, je regarde ça »…), **clavier continu** jusqu'au premier
+  son de la réponse. Mesuré en configuration jury : 1er son 0,0 s, **0,0 s de silence entendu** (avant : 3,0 s médiane
+  sans attente, blancs de 1,4–1,9 s en mode 3). Détail et tableau : DECISIONS.md §3 et « Vitesse et voix ».
+- Corrigé : seuil Jev (« C'est bon, validez » après une question de prix : accord 0,95 / change 0,55 → n'était pas
+  confirmé). Désormais accord ≥ 0,9 = oui.
+- Tests : `conftest.py` rend la suite indépendante du `.env` de chacun ; 232 passent (modes 0, 1, 3, 4).
+- **Pour tous** : mettre `TEAM_FILLERS=4` et `TEAM_PRODUCT_INSIGHT=1` dans votre `.env`, redémarrer l'IA, passer par
+  « Qui appelle ? » : l'agent parle le premier.
+- Reste côté voix : la réponse utile met 2,8–6,3 s (comblée, mais longue) → orchestrateur de Youssef (T4) ou modèle
+  plus rapide ; essai au micro réel (transcription + son dans le navigateur).
 
 - Fait (01h00) – **Jev branché** (recommandation du CTO), `tools/order_jev.py`, derrière `TEAM_ORDER_RULES` :
   - `confirm_order` **remplacé** par une version gardée par Jev (même nom → les scénarios de tous marchent tels quels ;

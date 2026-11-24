@@ -20,6 +20,18 @@ from app.config import settings
 from .fast_restatement import fast_restatement
 
 PHRASES = {"thinking": ["Je regarde.", "Je vérifie."], "follow_up": ["Un instant, je vérifie."]}
+# Mode 4 · « zéro silence » (TEAM_FILLERS=4): the agent opens the call, says one of these at once after each request,
+# then types on the keyboard without a gap until the first word of the real answer.
+ACK_PHRASES = ["D'accord, je regarde ça.", "Ok, je vois ça.", "Très bien, je vérifie."]
+OPENING_LINES = {
+    None: "Bonjour, que puis-je faire pour vous ?",
+    "madame": "Bonjour Madame, que puis-je faire pour vous ?",
+    "monsieur": "Bonjour Monsieur, que puis-je faire pour vous ?",
+}
+TYPING_LEAD = 0.15  # send the next typing clip this long before the queued audio runs out (no stall, no backlog)
+TYPING_MAX = 30.0  # never type for longer than this (a turn that hangs)
+SOCIAL_TYPING_DELAY = 0.3  # « oui », « merci » : no phrase, typing only if the answer takes a moment
+TTS_KBPS = 128  # ElevenLabs mp3_44100_128: duration of a clip ≈ bytes × 8 / 128 000
 FAST_INTRO = "Je vais voir."
 FAST_INTRO_DELAY = 0.75
 FAST_RESTATEMENT_DELAY = 1.05
@@ -72,7 +84,9 @@ class FillerBank:
 
     async def warm_up(self, tts: TTSClient, voice: str | None = None) -> None:
         phrases_by_situation = PHRASES
-        if team_flags.fillers_mode() == 2:
+        if team_flags.no_silence():
+            phrases_by_situation = {"ack": ACK_PHRASES}
+        elif team_flags.fillers_mode() == 2:
             phrases_by_situation = {"fast_intro": [FAST_INTRO], "follow_up": PHRASES["follow_up"]}
         for situation, phrases in phrases_by_situation.items():
             clips = self.audio.setdefault(situation, [])
@@ -112,6 +126,72 @@ def keyboard_click() -> bytes:
         pcm.extend(struct.pack("<h", int(sample)))
     encoder = Mp3Encoder(rate)
     return encoder.encode(bytes(pcm)) + encoder.flush()
+
+
+TYPING_RATE = 44100
+TYPING_SECONDS = 0.45  # short clips: when the answer arrives, at most one is still queued ahead of it
+
+
+@cache
+def typing_clip(variant: int) -> tuple[bytes, float]:
+    """0.45 s of someone typing (2 to 4 keystrokes at an irregular rhythm, real silence in between), MP3.
+    Several variants so the loop does not sound like a loop. Returns (mp3, seconds)."""
+    rnd = random.Random(100 + variant)
+    noise = random.Random(7 + variant)
+    keys, t = [], rnd.uniform(0.0, 0.08)
+    while t < TYPING_SECONDS - 0.07:
+        keys.append((t, rnd.uniform(700, 1150), rnd.uniform(2400, 4200)))
+        t += rnd.uniform(0.11, 0.24)
+    pcm = bytearray()
+    for i in range(int(TYPING_RATE * TYPING_SECONDS)):
+        sample = 0.0
+        for start, pitch, volume in keys:
+            dt = i / TYPING_RATE - start
+            if 0 <= dt < 0.065:
+                envelope = math.exp(-150 * dt) + (0.35 * math.exp(-220 * (dt - 0.038)) if dt >= 0.038 else 0)
+                sample += volume * envelope * (0.65 * noise.uniform(-1, 1) + 0.35 * math.sin(2 * math.pi * pitch * dt))
+        pcm.extend(struct.pack("<h", max(-32768, min(32767, int(sample)))))
+    encoder = Mp3Encoder(TYPING_RATE)
+    return encoder.encode(bytes(pcm)) + encoder.flush(), TYPING_SECONDS
+
+
+LOOKUP_MORE = re.compile(
+    r"\b(?:faudrait|faut|besoin|livr\w*|commande\w*|habitude|reste|dispo\w*|quand|combien|prix|tarif|"
+    r"finalement|plutôt|plutot|enlev\w*|retir\w*|annul\w*|rajout\w*|ajout\w*|change\w*|modifi\w*|"
+    r"\d+|un|une|deux|trois|quatre|cinq|six|sept|huit|neuf|dix|onze|douze|quinze|vingt|trente|quarante|cinquante|cent)\b",
+    re.I,
+)
+
+
+def needs_lookup(words: str) -> bool:
+    """Will the agent have to search the ERP (worth « D'accord, je regarde ça »)? Not for a plain confirmation."""
+    from app.agent.router import is_simple_turn
+
+    if is_simple_turn(words):
+        return False
+    return bool(LOOKUP.search(words) or QUANTITY.search(words) or LOOKUP_MORE.search(words))
+
+
+def mp3_seconds(data: bytes, kbps: int = TTS_KBPS) -> float:
+    """Playing time of a constant-bitrate MP3 chunk (enough to pace the audio we queue)."""
+    return len(data) * 8 / (kbps * 1000)
+
+
+async def keep_typing(speaker, delay: float = 0.0) -> None:
+    """Mode 4: type without a gap until the speaker cancels us (first sentence of the answer, or barge-in).
+    Each clip is sent just before the audio already queued runs out: the caller never hears a stall, and at most one
+    short clip is still queued when the answer arrives."""
+    if delay:
+        await asyncio.sleep(delay)
+    loop = asyncio.get_running_loop()
+    stop_at = loop.time() + TYPING_MAX
+    variant = 0
+    while loop.time() < stop_at:
+        if (wait := speaker.audio_until - loop.time() - TYPING_LEAD) > 0:
+            await asyncio.sleep(wait)
+        data, seconds = typing_clip(variant % 6)
+        variant += 1
+        await speaker.play_audio("audio/mpeg", data, seconds=seconds)
 
 
 def quantity_restatement(heard: str) -> str | None:
@@ -191,6 +271,16 @@ async def on_turn_start(speaker, heard: str) -> None:
         return
     words = heard.replace("’", "'")
     speaker.social_turn = bool(SOCIAL_TURN.fullmatch(words))
+    if team_flags.no_silence():
+        if speaker.tts.name == "mock":
+            return
+        # The acknowledgement only when the agent really has to look something up (an order, a quantity, a price, a
+        # change). « C'est bon, validez », « oui », « merci » get no phrase (it slowed the talk down for nothing): only
+        # typing, and only if the answer lags.
+        if needs_lookup(words):
+            await play_waiting_line(speaker)
+        speaker.waiting_task = asyncio.create_task(keep_typing(speaker, 0.0 if speaker.acknowledged else SOCIAL_TYPING_DELAY))
+        return
     if speaker.social_turn or speaker.tts.name == "mock":
         return
     if team_flags.fillers_mode() != 2:
@@ -208,6 +298,8 @@ async def on_turn_start(speaker, heard: str) -> None:
 async def on_tool_call(speaker, tool_name: str) -> None:
     if not team_flags.fillers() or tool_name not in SEARCH_TOOLS:
         return
+    if team_flags.no_silence():  # already typing since the start of the turn
+        return
     if speaker.social_turn or speaker.tts.name == "mock" or not speaker.first_phrase:
         return
     if speaker.buffer.strip() and not WAITING_LINE.fullmatch(speaker.buffer):
@@ -219,7 +311,8 @@ async def on_tool_call(speaker, tool_name: str) -> None:
 
 
 async def play_waiting_line(speaker) -> bool:
-    clip = speaker.bank.pick("fast_intro" if team_flags.fillers_mode() == 2 else "thinking")
+    situation = "ack" if team_flags.no_silence() else "fast_intro" if team_flags.fillers_mode() == 2 else "thinking"
+    clip = speaker.bank.pick(situation)
     if clip is None or clip.mime != "audio/mpeg":
         return False
     await speaker.play_audio(clip.mime, clip.data)

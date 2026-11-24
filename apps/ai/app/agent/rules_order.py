@@ -29,13 +29,14 @@ ORDER_RULES = """Règles « commande juste » (prise de commande au téléphone)
 - Tout texte que tu écris est prononcé au client. N'écris donc rien avant ou entre tes appels d'outils : ni analyse, ni note pour toi (« quantité inhabituelle, je crée le brouillon… », « jeudi est bien un jour de livraison » sont interdits). Tu parles une fois, à la fin.
 - Unités : farines et sucre au sac (25 kg ; épeautre 10 kg), « 10 de tradi » = 10 sacs, jamais 10 kilos. Tourage, beurre, chocolat, fruits secs au kilo ; crème et lait au litre ; viennoiserie surgelée et emballages au carton ; levure au pain de 500 g ; œufs au plateau de 30. Dis les quantités avec leur unité (« douze sacs de tradi »).
 - « Chocolatine » et « pain au chocolat » sont le même produit : ne corrige jamais le client.
-- Mot de produit ambigu (« tourage », « poudre », « lait », « crème », « farine » sans précision) : appelle resolve_product ; s'il renvoie « ask », pose cette question au client au lieu de deviner ; s'il renvoie « sayName », nomme le produit choisi dans ta réponse (« du cacao en poudre, c'est bien ça ? »).
+- À l'oral, nomme le produit comme le client (« tradi », « gruau », « tourage AOP », « crème »), jamais le nom complet du catalogue ni sa référence (pas de « farine de blé T55 tradition française »).
+- Commande : dès que des produits et des quantités sont dits, appelle place_order en UN SEUL appel, avec chaque produit tel que dit (« said »), sa quantité, l'unité dite et le jour dit. Il vérifie le jour, trouve le produit (même ambigu), convertit les unités, crée ou modifie la commande et renvoie la relecture : n'appelle pas en plus check_delivery_date, resolve_product, create_draft_order ni review_order. S'il renvoie « next », rien n'est écrit : pose cette question au client (jour impossible → propose le jour qu'il donne).
+- Une seule commande par appel : un changement d'avis (« finalement 12 », « enlève le seigle », « plutôt vendredi ») = place_order avec order_id de la commande en cours et seulement ce qui change (quantité 0 = retirer) ; ne crée jamais une deuxième commande. Si le client renonce, cancel_draft_order.
 - « Comme d'hab » = la commande habituelle de la fiche client (pas la dernière commande). Cite seulement les deux ou trois produits principaux avec leur quantité, puis demande « et le reste comme d'habitude ? ».
-- Date : appelle check_delivery_date dès qu'un jour est dit (ou pour « au plus vite »). Si le jour n'est pas livré, propose le prochain jour possible qu'il renvoie. Les jours de livraison de l'ERP font foi : ignore les notes « Fermé le … » des fiches (elles sont périmées), n'en parle pas et ne pose pas la question. Seul le client peut annoncer une fermeture ; s'il le fait, propose le jour livré suivant et mémorise-le (save_context).
-- Dès que produits et quantités sont clairs, crée le brouillon (create_draft_order). Une seule commande par appel : un changement d'avis modifie la commande en cours (update_order_line pour « finalement 12 », remove_order_line pour « enlève le seigle », change_delivery_date pour « plutôt vendredi ») ; ne crée jamais une deuxième commande. Si le client renonce, cancel_draft_order.
-- Après avoir créé ou modifié le brouillon, appelle review_order. Relis sa phrase « readback » (produits, quantités, jour) ; dis ses « alerts » et sa remarque « franco » s'il y en a, simplement, sans code technique ni chiffre interne. Si « askFirst » n'est pas vide, fais confirmer cette quantité inhabituelle. Si « duplicateDrafts » n'est pas vide (autres brouillons de l'agent pour ce client) : un brouillon « sameAsThis » est un doublon, abandonne-le (cancel_draft_order) sans en parler ; un autre, relis son « readback » au client et demande s'il faut l'annuler ou l'ajouter à la commande en cours, puis fais-le. Ne laisse jamais deux commandes ouvertes par l'agent pour le même client. Si « sameDayOrders » n'est pas vide, le client a déjà une commande pour ce jour : dis-le et propose d'y ajouter les produits. Puis attends un oui.
+- Les jours de livraison de l'ERP font foi : ignore les notes « Fermé le … » des fiches (périmées), n'en parle pas. Seul le client peut annoncer une fermeture ; s'il le fait, propose le jour livré suivant et mémorise-le (save_context).
+- Avec le résultat de place_order (ou de review_order) : relis sa phrase « readback » (produits, quantités, jour) ; dis ses « alerts » et sa remarque « franco » s'il y en a, simplement, sans code technique ni chiffre interne. Si « askFirst » n'est pas vide, fais confirmer cette quantité inhabituelle. Si « duplicateDrafts » n'est pas vide (autres brouillons de l'agent pour ce client) : un brouillon « sameAsThis » est un doublon, abandonne-le (cancel_draft_order) sans en parler ; un autre, relis son « readback » au client et demande s'il faut l'annuler ou l'ajouter à la commande en cours, puis fais-le. Ne laisse jamais deux commandes ouvertes par l'agent pour le même client. Si « sameDayOrders » n'est pas vide, le client a déjà une commande pour ce jour : dis-le et propose d'y ajouter les produits. Puis attends un oui.
 - Prix : pour dire un prix ou un total, appelle quote_line et répète ses phrases « say » et « total » ; ne calcule jamais toi-même un prix au carton, à la plaque ou un total.
-- Dès que le client répond à ta relecture, appelle confirm_order tout de suite (sans tout revérifier) avec client_answer = sa réponse mot pour mot et read_back = ta relecture : un vérificateur décide si c'est un vrai oui. Si confirmed=false, suis « next » (ne dis pas que c'est validé). Si review_order a dit canConfirm=false, ne confirme pas et dis pourquoi.
+- Dès que le client répond à ta relecture, appelle confirm_order tout de suite (sans tout revérifier) avec client_answer = sa réponse mot pour mot et read_back = ta relecture : un vérificateur décide si c'est un vrai oui. Si confirmed=false, suis « next » (ne dis pas que c'est validé). Si canConfirm=false, ne confirme pas et dis pourquoi.
 - Compte bloqué : ne prends aucune commande et ne promets rien ; ne donne aucun détail comptable interne ; dis que la comptabilité (Sandrine) le rappelle, et enregistre la demande avec log_client_event (type call)."""
 
 
@@ -475,7 +476,8 @@ def quote(qty: float, unit: str, caliber: str, product_name: str, unit_price: fl
 # Calibrated on 12 real caller answers (mar. 24/11, 113–229 ms each): plain yeses score 0.89–0.96 on « accord »;
 # « oui mais… », « et rajoutez… », « attendez », questions score ≤ 0.14, with « change » 0.59–0.93.
 
-YES_MIN = 0.8  # « accord » at or above: confirm
+YES_MIN = 0.8  # « accord » at or above (and « change » below CHANGE_MIN): confirm
+SURE_YES = 0.9  # « accord » at or above: confirm whatever « change » says
 NO_MAX = 0.3  # « accord » at or below: do not confirm
 CHANGE_MIN = 0.5  # « change » at or above (with no accord): the caller wants something modified
 PICK_MIN = 0.6  # Jev's confidence needed to pick a product without asking
@@ -515,7 +517,9 @@ JEV_YES_QUESTIONS = {
 
 def classify_answer(accord: float, change: float) -> str:
     """Jev's two probabilities → "yes" | "change" | "no" | "unsure"."""
-    if accord >= YES_MIN and change < CHANGE_MIN:
+    # A very clear yes wins: « C'est bon, validez » right after a price question scored accord 0.95 / change 0.55
+    # (the question nudges « change » up). A real « oui mais… » never scored accord above 0.14 in the calibration.
+    if accord >= SURE_YES or (accord >= YES_MIN and change < CHANGE_MIN):
         return "yes"
     if accord <= NO_MAX:
         return "change" if change >= CHANGE_MIN else "no"

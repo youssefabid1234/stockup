@@ -77,7 +77,7 @@ async def build_system_prompt(mode: ChatMode, actor_name: str | None = None, cal
         product_insight_section() if team_rules else "",  # Youssef (one tool: stock + price + substitutes)
         f"Entreprise : {meta.get('company') or '(ERP injoignable)'}. Aujourd'hui : {french_date(today)} ({today}).",
         f"Interlocuteur : {actor_name}." if actor_name else "",
-        f"# Contexte entreprise\n\n{context}" if (context := read_context_files()) else "",
+        f"# Contexte entreprise\n\n{context}" if (context := company_context()) else "",
         render_for_prompt(call_context),  # Youssef (preloaded caller sheet)
     ]
     return "\n\n".join(p for p in parts if p)
@@ -100,6 +100,17 @@ async def get_meta() -> dict:
         return _meta_cache[1]
     except (httpx.HTTPError, ValueError):
         return {}
+
+
+def company_context() -> str:
+    """Team 12 (Amine K.): the essential sections only when TEAM_SLIM_PROMPT is on (agent/context_digest.py), else all."""
+    from app import team_flags
+
+    if team_flags.slim_prompt():
+        from .context_digest import read_context_digest
+
+        return read_context_digest()
+    return read_context_files()
 
 
 def read_context_files() -> str:
