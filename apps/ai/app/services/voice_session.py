@@ -66,9 +66,12 @@ from app.tools import ErpClient, all_tools
 from . import fillers
 from .utterance import Utterance
 from .vocabulary import stt_hint
-from .voice_reply import spoken_reply
+from .voice_reply import spoken_reply, without_repeated_greeting
 
 client_message = TypeAdapter(VoiceClientMessage)
+
+CALL_GREETINGS = {None: "Bonjour.", "madame": "Bonjour Madame.", "monsieur": "Bonjour Monsieur."}
+GREETING_PREPARE_TIMEOUT = 1.5
 
 
 @dataclass
@@ -77,6 +80,7 @@ class Conversation:
     actor_name: str | None = None
     history: list[ChatMessage] = field(default_factory=list)
     call_context: CallContext | None = None  # team 12 (Youssef): the caller's sheet, once known (TEAM_PRELOAD)
+    opening_greeting: str | None = None
 
 
 # In memory: a reconnect with the same sessionId continues the conversation.
@@ -93,6 +97,7 @@ class VoiceConnection:
         self.turn: asyncio.Task | None = None
         self.warm_up: asyncio.Task | None = None
         self.bank = fillers.FillerBank()
+        self.greetings: dict[str, fillers.CachedAudio] = {}
         self.audio_warm_up: asyncio.Task | None = None
         self._send_lock = asyncio.Lock()
 
@@ -161,6 +166,7 @@ class VoiceConnection:
             case ResetMessage():
                 await self.interrupt()
                 self.conversation.history = []
+                self.conversation.opening_greeting = None
                 await self.open(self.conversation.id)
             case CallerMessage():  # team 12 (Youssef): caller ID form, before the call
                 await self.interrupt()
@@ -174,20 +180,25 @@ class VoiceConnection:
         agent (the caller was chosen explicitly). A new call starts a fresh history; `resume` (sent again by the page
         after a reconnect, e.g. the AI service reloaded) only restores the caller and keeps the conversation."""
         conv = self.conversation
+        opening_enabled = team_flags.fillers() and not team_flags.orchestrator()
         if not msg.resume:
             conv.history = []
-        try:
-            sheet = await preload.caller_context(
-                ErpClient("voice_agent"),
-                client_id=msg.client_id,
-                phone=msg.phone,
-                contact_name=msg.contact_name,
-                company_name=msg.company_name,
-                is_new=msg.is_new,
-            )
-        except Exception as e:  # ERP down…: the call still works, the agent will look the client up itself
-            await self.send(VoiceErrorMessage(message=f"Fiche client indisponible : {e}"))
-            sheet = None
+            conv.opening_greeting = CALL_GREETINGS[msg.contact_title] if opening_enabled else None
+        async with asyncio.TaskGroup() as preparation:
+            if opening_enabled and (greeting := conv.opening_greeting) and greeting not in self.greetings:
+                preparation.create_task(self.prepare_greeting(greeting))
+            try:
+                sheet = await preload.caller_context(
+                    ErpClient("voice_agent"),
+                    client_id=msg.client_id,
+                    phone=msg.phone,
+                    contact_name=msg.contact_name,
+                    company_name=msg.company_name,
+                    is_new=msg.is_new,
+                )
+            except Exception as e:  # ERP down…: the call still works, the agent will look the client up itself
+                await self.send(VoiceErrorMessage(message=f"Fiche client indisponible : {e}"))
+                sheet = None
         used = sheet is not None
         conv.call_context = sheet
         await self.send(
@@ -226,6 +237,18 @@ class VoiceConnection:
             logging.getLogger(__name__).warning("Waiting audio unavailable (%s)", type(exc).__name__)
             self.audio_warm_up = None
 
+    async def prepare_greeting(self, greeting: str) -> None:
+        try:
+            tts = get_tts_client()
+            if tts.name == "mock":
+                return
+            async with asyncio.timeout(GREETING_PREPARE_TIMEOUT):
+                clip = await fillers.synthesize_clip(tts, greeting, settings.tts.voice or None)
+            if clip.mime == "audio/mpeg":
+                self.greetings[greeting] = clip
+        except Exception as exc:
+            logging.getLogger(__name__).debug("Opening greeting unavailable (%s)", type(exc).__name__)
+
     def start_turn(self, **turn_input) -> None:
         self.turn = asyncio.create_task(self.run_turn(self.conversation, **turn_input))
 
@@ -255,20 +278,33 @@ class VoiceConnection:
         working: list[ChatMessage] | None = None
         committed = False
         speaker: Speaker | None = None
+        greeted = False
         try:
+            # The caller form prepared this clip. Play it before waiting for the final transcript.
+            if conv.opening_greeting and team_flags.fillers() and not team_flags.orchestrator():
+                clip = self.greetings.get(conv.opening_greeting)
+                if clip and (utterance.frames if utterance is not None else (text or "").strip()):
+                    speaker = Speaker(get_tts_client(), self.send, self.send_bytes, self.bank)
+                    await speaker.play_audio(clip.mime, clip.data)
+                    greeted = True
+                    conv.opening_greeting = None
+
             # 1. Speech → text: with a streaming STT only the last words are left to finalize
             if utterance is not None:
                 text = await utterance.text()
                 timings.stt_ms = ms_since(t0)  # end of speech → final transcript
             heard = (text or "").strip()
             if not heard:
+                if speaker:
+                    await speaker.stop()
                 await self.send(VoiceErrorMessage(message="Rien entendu — réessayez."))
                 return
+            conv.opening_greeting = None
             await self.send(TranscriptMessage(text=heard, final=True))
 
             # 2. Agent, on a working copy of the history (committed at the end)
             working = [*conv.history, ChatMessage(role="user", content=heard)]
-            speaker = Speaker(get_tts_client(), self.send, self.send_bytes, self.bank)
+            speaker = speaker or Speaker(get_tts_client(), self.send, self.send_bytes, self.bank)
             await fillers.on_turn_start(speaker, heard)  # team 12 (Mohamed Amine): no-op while TEAM_FILLERS is off
             llm_start = time.perf_counter()
             # team 12 (Youssef): the orchestrator when TEAM_ORCHESTRATOR is on, else the kit's agent loop
@@ -286,6 +322,9 @@ class VoiceConnection:
                         await self.send(AgentToolMessage(name=name, ok=ok, ms=ms))
                     case DoneEvent(message=message):
                         spoken = spoken_reply(message.content) or "Je n’ai pas de réponse à vous donner pour le moment."
+                        if greeted:
+                            contact = conv.call_context.caller_contact if conv.call_context else None
+                            spoken = without_repeated_greeting(spoken, contact)
                     case ErrorEvent(message=message):
                         await speaker.stop_waiting()
                         await self.send(VoiceErrorMessage(message=message))

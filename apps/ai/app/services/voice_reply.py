@@ -31,3 +31,18 @@ def spoken_reply(text: str) -> str:
             segments.pop(0)
         text = " ".join(segments).strip()
     return _REPLY_LABEL.sub("", text)
+
+
+def without_repeated_greeting(reply: str, contact: str | None) -> str:
+    """Drop just the greeting when the caller has already heard our prepared clip."""
+    address = r"(?:madame|monsieur)"
+    if contact:
+        name = " ".join(contact.split())
+        if name:
+            names = "|".join(re.escape(part) for part in dict.fromkeys((name, *name.split())))
+            address = rf"(?:{address})(?:\s+(?:{names}))?|{names}"
+    prefix = rf"^(?:bonjour|bonsoir)(?:[ ,]+(?:{address}))?(?:[.!?,…]+\s*|\s*$)"
+    remaining = re.sub(prefix, "", reply, count=1, flags=re.I)
+    if remaining != reply and remaining:
+        return remaining[0].upper() + remaining[1:]
+    return remaining

@@ -19,6 +19,7 @@ export function CallerForm({ disabled, pending, onStart }: { disabled: boolean; 
   const clients = useClients();
   const [clientId, setClientId] = useState("");
   const [contactIdx, setContactIdx] = useState("");
+  const [contactTitle, setContactTitle] = useState<CallerInput["contactTitle"]>();
   const [company, setCompany] = useState("");
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
@@ -41,8 +42,8 @@ export function CallerForm({ disabled, pending, onStart }: { disabled: boolean; 
   const submit = (e: FormEvent) => {
     e.preventDefault();
     if (!canStart) return;
-    if (kind === "known") onStart({ clientId, contactName: contact?.name, phone: contact?.phone });
-    else onStart({ isNew: true, companyName: company.trim() || undefined, contactName: name.trim() || undefined, phone: phone.trim() });
+    if (kind === "known") onStart({ clientId, contactName: contact?.name, phone: contact?.phone, contactTitle });
+    else onStart({ isNew: true, companyName: company.trim() || undefined, contactName: name.trim() || undefined, phone: phone.trim(), contactTitle });
   };
 
   return (
@@ -54,7 +55,7 @@ export function CallerForm({ disabled, pending, onStart }: { disabled: boolean; 
             Comme le numéro qui s'affiche sur le standard : l'agent connaîtra le client avant même de décrocher.
           </p>
         </div>
-        <Segmented<Kind> value={kind} onChange={setKind} options={[{ id: "known", label: "Client" }, { id: "new", label: "Nouveau client" }]} />
+        <Segmented<Kind> value={kind} onChange={(value) => { setKind(value); setContactTitle(undefined); }} options={[{ id: "known", label: "Client" }, { id: "new", label: "Nouveau client" }]} />
       </div>
 
       {kind === "known" ? (
@@ -62,7 +63,7 @@ export function CallerForm({ disabled, pending, onStart }: { disabled: boolean; 
           <Field label="Client" hint="Tapez un nom, une ville ou un numéro de téléphone">
             <Select
               value={clientId}
-              onChange={(v) => { setClientId(v); setContactIdx(""); }}
+              onChange={(v) => { setClientId(v); setContactIdx(""); setContactTitle(undefined); }}
               options={options}
               placeholder={clients.isLoading ? "Chargement des clients…" : "Choisir le client qui appelle"}
               filterable
@@ -72,7 +73,7 @@ export function CallerForm({ disabled, pending, onStart }: { disabled: boolean; 
             <Field label="Au téléphone">
               <Select
                 value={contactIdx === "" ? "0" : contactIdx}
-                onChange={setContactIdx}
+                onChange={(value) => { setContactIdx(value); setContactTitle(undefined); }}
                 options={contacts.map((x, i) => ({ value: String(i), label: x.name, hint: [x.role, x.phone].filter(Boolean).join(" · ") }))}
               />
             </Field>
@@ -91,6 +92,18 @@ export function CallerForm({ disabled, pending, onStart }: { disabled: boolean; 
           <Field label="Téléphone"><Input value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="ex. 06 12 34 56 78" /></Field>
         </>
       )}
+
+      <Field label="Civilité (facultatif)">
+        <Select
+          value={contactTitle ?? "neutral"}
+          onChange={(value) => setContactTitle(value === "madame" || value === "monsieur" ? value : undefined)}
+          options={[
+            { value: "neutral", label: "Aucune" },
+            { value: "madame", label: "Madame" },
+            { value: "monsieur", label: "Monsieur" },
+          ]}
+        />
+      </Field>
 
       <Button type="submit" variant="default" icon={pending ? undefined : PhoneCall} disabled={!canStart}>
         {pending ? <><Spinner size={12} /> Chargement de la fiche…</> : "Démarrer l'appel"}

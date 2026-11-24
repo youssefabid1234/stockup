@@ -6,9 +6,10 @@ from types import SimpleNamespace
 import pytest
 
 from app import team_flags
+from app.agent.call_context import CallContext
 from app.clients.base import LLMText, TTSResult
 from app.clients.mock_speech import MockSTT
-from app.schemas import ChatMessage, DoneEvent, TextEvent, ToolCall, ToolCallEvent
+from app.schemas import CallerMessage, ChatMessage, DoneEvent, TextEvent, ToolCall, ToolCallEvent
 from app.services import fast_restatement, fillers, vocabulary, voice_session
 from app.services.voice_reply import spoken_reply
 
@@ -48,7 +49,8 @@ async def call(monkeypatch, request):
     monkeypatch.setattr(voice_session, "get_stt_client", lambda: MockSTT("merci"))
     conn = voice_session.VoiceConnection(Socket())
     await conn.open()
-    await conn.audio_warm_up
+    if conn.audio_warm_up:
+        await conn.audio_warm_up
     return conn, tts
 
 
@@ -413,3 +415,74 @@ async def test_barge_in_cancels_fast_model_before_it_can_speak(call, monkeypatch
     assert [msg for msg in conn.ws.events if isinstance(msg, bytes)] == [b"Je vais voir."]
     assert conn.ws.events[-1]["type"] == "agent_audio_end"
     await conn.interrupt()
+
+
+@pytest.mark.parametrize("call", ["0", "1", "2"], indirect=True)
+async def test_caller_form_prepares_first_greeting_before_transcription(call, monkeypatch):
+    conn, tts = call
+    greeted = team_flags.fillers()
+    greeting = "Bonjour Madame."
+    call_message = CallerMessage.model_validate({
+        "type": "caller", "clientId": "cli_0001", "contactName": "Nadine Sarrailh", "contactTitle": "madame",
+    })
+    sheet = CallContext(client_id="cli_0001", name="Maison Sarrailh", caller_contact="Nadine Sarrailh")
+
+    async def load_sheet(erp, **kwargs):
+        assert kwargs["contact_name"] == sheet.caller_contact
+        return sheet
+
+    class FirstUtterance:
+        frames = [b"speech"]
+
+        async def text(self):
+            # Ordering guarantee, even when the provider's final transcript takes time.
+            assert (greeting.encode() in conn.ws.events) is greeted
+            return "Vous avez de la farine en stock ?"
+
+        def cancel(self):
+            pass
+
+    async def agent(messages, **kwargs):
+        assert kwargs["call_context"] is sheet
+        reply = "Bonjour Madame Sarrailh, il reste de la farine." if len(messages) == 1 else "Avec plaisir."
+        yield TextEvent(delta=reply)
+        yield DoneEvent(message=ChatMessage(role="assistant", content=reply), ms=1)
+
+    monkeypatch.setattr(voice_session.preload, "caller_context", load_sheet)
+    monkeypatch.setattr(voice_session, "run_agent", agent)
+    await conn.set_caller(call_message)
+    assert (greeting in tts.phrases) is greeted
+    assert conn.ws.events[-1]["type"] == "caller_ready"
+    await conn.run_turn(conn.conversation, utterance=FirstUtterance())
+
+    clips = [event for event in conn.ws.events if isinstance(event, bytes)]
+    if greeted:
+        assert clips[0] == greeting.encode()
+        assert clips[-1] == b"Il reste de la farine."
+        first_wait = [fillers.FAST_INTRO] if team_flags.fast_fillers() else fillers.PHRASES["thinking"]
+        assert clips[1].decode() in first_wait
+    else:
+        assert clips == [b"Bonjour Madame Sarrailh, il reste de la farine."]
+
+    await conn.set_caller(call_message.model_copy(update={"resume": True}))
+    await conn.run_turn(conn.conversation, text="Merci.")
+    assert conn.ws.events.count(greeting.encode()) == int(greeted)
+
+
+@pytest.mark.parametrize("call", ["1"], indirect=True)
+async def test_caller_form_without_title_uses_a_neutral_greeting(call, monkeypatch):
+    conn, tts = call
+
+    async def load_sheet(erp, **kwargs):
+        return CallContext(client_id="cli_0001", name="Maison Sarrailh", caller_contact="Nadine Sarrailh")
+
+    async def agent(messages, **kwargs):
+        reply = "Bonjour Nadine, je vous écoute."
+        yield DoneEvent(message=ChatMessage(role="assistant", content=reply), ms=1)
+
+    monkeypatch.setattr(voice_session.preload, "caller_context", load_sheet)
+    monkeypatch.setattr(voice_session, "run_agent", agent)
+    await conn.set_caller(CallerMessage(client_id="cli_0001"))
+    assert "Bonjour." in tts.phrases
+    await conn.run_turn(conn.conversation, text="Bonjour.")
+    assert [event for event in conn.ws.events if isinstance(event, bytes)] == [b"Bonjour.", "Je vous écoute.".encode()]
