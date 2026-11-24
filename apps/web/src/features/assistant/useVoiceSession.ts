@@ -20,7 +20,7 @@ export type MicState = "unknown" | "granted" | "denied" | "unsupported";
 export interface VoiceTurn {
   id: number;
   /** text: live while recording/transcribing (stable = its final words), definitive once status is "final". */
-  caller: { text: string; stable?: string; at: number; status: "recording" | "transcribing" | "final"; typed?: boolean };
+  caller: { text: string; stable?: string; at: number; status: "recording" | "transcribing" | "final"; typed?: boolean; silent?: boolean };
   agent: { text: string; at?: number; tools: ToolRun[]; done: boolean; error?: string; interrupted?: boolean };
   timings?: TurnTimings;
   /** Client-side: caller release → agent audio actually starts playing (or speech synthesis starts). */
@@ -157,6 +157,12 @@ export function useVoiceSession() {
         if (turn == null) newTurn({ text: m.text, at: Date.now(), status: "final" });
         else patchTurn(turn, (t) => ({ ...t, caller: { ...t.caller, text: m.text, status: "final" } }));
         setActivity((a) => (a === "recording" ? a : "thinking"));
+        break;
+      }
+      case "nudge_said": {
+        // team 12 (Youssef): hands-free, the caller was silent: the agent's short line (its audio follows)
+        const nid = newTurn({ text: "", at: Date.now(), status: "final", silent: true });
+        patchTurn(nid, (t) => ({ ...t, agent: { ...t.agent, text: m.text, at: Date.now(), done: true } }));
         break;
       }
       case "agent_text":
@@ -404,6 +410,7 @@ export function useVoiceSession() {
     conn, activity, mic, providers, turns, level, lastError,
     startTalking, stopTalking, sendText, stopPlayback, reset, reconnect: connect,
     ensureMic, readRms,
+    nudge: () => send({ type: "nudge" }), // team 12 (Youssef): hands-free silence → one short line from the agent
     caller, callerPending, identifyCaller, endCall,
   };
 }

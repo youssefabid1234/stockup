@@ -57,6 +57,7 @@ export type ChatStreamEvent =
 export type VoiceClientMessage =
   | { type: "start"; sessionId?: string; actorName?: string } // opens a conversation
   | { type: "audio_start"; mime: string; hint?: string } // caller pressed space (hint: optional STT vocabulary; mock STT returns it)
+  | { type: "nudge" } // team 12 (Youssef): hands-free, the caller is silent: the server says one short varied line
   | { type: "audio_end" } // caller released space; binary frames sent in between (every 100–250 ms) are the utterance, streamed to the STT as they arrive
   | { type: "text"; text: string } // typed instead of spoken (debug)
   | { type: "reset" }
@@ -86,6 +87,7 @@ export interface TurnTimings {
 }
 
 export type VoiceServerMessage =
+  | { type: "nudge_said"; text: string } // team 12 (Youssef): the line said after a silence, audio follows
   | { type: "ready"; sessionId: string; stt: string; tts: string; llm: string }
   | CallerReady
   // While the caller speaks (streaming STT): final=false, the whole text heard so far, resent as words are recognised;

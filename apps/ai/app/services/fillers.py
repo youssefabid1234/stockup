@@ -19,10 +19,19 @@ from app.config import settings
 
 from .fast_restatement import fast_restatement
 
-PHRASES = {"thinking": ["Je regarde.", "Je vérifie."], "follow_up": ["Un instant, je vérifie."]}
+# team 12 (Youssef, natural voice): many short variants, picked without repetition within a call (FillerBank.pick).
+# The voice-agent guides all say a filler repeated on every turn is the first thing that sounds robotic.
+PHRASES = {
+    "thinking": ["Je regarde.", "Voyons ça.", "Une seconde.", "Alors, voyons…", "Je jette un œil.", "Deux secondes.",
+                 "Ok, je regarde.", "Je vérifie."],
+    "follow_up": ["Un instant, je vérifie.", "Je suis dessus.", "Encore une petite seconde.", "Ça arrive.", "J'y suis presque."],
+}
 # Mode 4 · « zéro silence » (TEAM_FILLERS=4): the agent opens the call, says one of these at once after each request,
 # then types on the keyboard without a gap until the first word of the real answer.
-ACK_PHRASES = ["D'accord, je regarde ça.", "Ok, je vois ça.", "Très bien, je vérifie."]
+ACK_PHRASES = ["D'accord, je regarde ça.", "Ok, je vois ça.", "Très bien, je vérifie.", "Entendu, une seconde.",
+               "Ça marche, je regarde.", "Parfait, voyons ça."]
+# team 12 (Youssef): said once after a silence in hands-free mode (voice_session.nudge), never twice the same
+NUDGES = ["Vous êtes toujours là ?", "Allô, vous m'entendez ?", "Je vous écoute, prenez votre temps.", "Oui, je suis là, je vous écoute."]
 OPENING_LINES = {
     None: "Bonjour, que puis-je faire pour vous ?",
     "madame": "Bonjour Madame, que puis-je faire pour vous ?",
@@ -94,8 +103,38 @@ class FillerBank:
                 clips.append(await synthesize_clip(tts, phrase, voice))
 
     def pick(self, situation: str) -> CachedAudio | None:
+        """A clip for this situation, never the same one twice in a row and each one used before any repeats
+        (a shuffled round per situation): the caller does not hear « Je regarde » on every turn."""
         options = self.audio.get(situation)
-        return random.choice(options) if options else None
+        if not options:
+            return None
+        i = next_index(self.rounds.setdefault(situation, []), len(options), self.last.get(situation))
+        self.last[situation] = i
+        return options[i]
+
+    rounds: dict[str, list[int]] = field(default_factory=dict)
+    last: dict[str, int] = field(default_factory=dict)
+
+
+def next_index(round_: list[int], n: int, last: int | None) -> int:
+    """Next index of a shuffled round over n items; a new round never starts with the previous pick."""
+    if not round_:
+        round_.extend(random.sample(range(n), n))
+        if n > 1 and round_[-1] == last:  # popped from the end: avoid an immediate repeat across rounds
+            round_[0], round_[-1] = round_[-1], round_[0]
+    return round_.pop()
+
+
+class PhraseRotation:
+    """Text variant of FillerBank.pick (phrases synthesized on demand, e.g. the silence nudge)."""
+
+    def __init__(self, phrases: list[str]):
+        self.phrases, self.round, self.last = phrases, [], None
+
+    def next(self) -> str:
+        i = next_index(self.round, len(self.phrases), self.last)
+        self.last = i
+        return self.phrases[i]
 
 
 async def synthesize_clip(tts: TTSClient, phrase: str, voice: str | None) -> CachedAudio:

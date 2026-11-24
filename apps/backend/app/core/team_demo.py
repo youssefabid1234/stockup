@@ -25,7 +25,7 @@ DISCOUNT_PCT = 8.0
 RULE_ID = "prl_0900"
 # Epiphany articles the data pack ships inactive while the company docs (01-entreprise.md) say pre-orders are open
 # until 15/12 and clients have pre-orders in their cards: the agent refused them in 3 of 150 test calls (24/11).
-ACTIVATE = ("prd_0068", "prd_0069")  # couronnes des rois, fèves des rois  # far from the seed's ids; new rules created in the ERP continue after it
+ACTIVATE = ("prd_0068", "prd_0069")  # couronnes des rois, fèves des rois
 
 
 def english() -> bool:

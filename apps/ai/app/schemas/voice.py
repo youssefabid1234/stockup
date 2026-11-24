@@ -64,8 +64,15 @@ class CallerMessage(WireModel):
     resume: bool = False  # sent again after a reconnect: restore the caller, keep the conversation
 
 
+class NudgeMessage(WireModel):
+    """Team 12 (Youssef): hands-free, the caller has said nothing for a while after the agent's answer: the server says
+    one short, varied line (« Vous êtes toujours là ? »). No model call, nothing added to the history."""
+
+    type: Literal["nudge"] = "nudge"
+
+
 VoiceClientMessage = Annotated[
-    Union[StartMessage, AudioStartMessage, AudioEndMessage, TextMessage, ResetMessage, CallerMessage],
+    Union[StartMessage, AudioStartMessage, AudioEndMessage, TextMessage, ResetMessage, CallerMessage, NudgeMessage],
     Field(discriminator="type"),
 ]
 
@@ -143,10 +150,18 @@ class CallerReadyMessage(WireModel):
     resume: bool = False  # answer to a resumed caller (after a reconnect): the page keeps its turns
 
 
+class NudgeSaidMessage(WireModel):
+    """Team 12 (Youssef): the line said after a silence; its audio frames follow (agent_audio_start … end)."""
+
+    type: Literal["nudge_said"] = "nudge_said"
+    text: str
+
+
 VoiceServerMessage = Annotated[
     Union[
         ReadyMessage,
         CallerReadyMessage,
+        NudgeSaidMessage,
         TranscriptMessage,
         AgentTextMessage,
         AgentToolMessage,

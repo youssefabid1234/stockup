@@ -263,6 +263,17 @@ plus lentes (+1,2 à 1,5 s) et plus bavardes (le modèle revenait sur les produi
 tour. Le gain est réel mais modeste (0,3 à 0,8 s sur les questions de stock et de prix), parce que Sonnet décide
 vite d'appeler un outil : le gros du temps reste la génération de la réponse.
 
+**Voix naturelle + page d'appel façon messagerie (Youssef, 24/11 matin).** Consignes tirées des guides publics des
+agents vocaux (OpenAI, ElevenLabs, LiveKit, Vapi, Deepgram, Google) et vérifiées contre nos règles (pas de
+contradiction) : `listening.STYLE_RULES` (Lucie, info « sous les yeux », 1-2 phrases, écho des mots du client, variété,
+langue parlée, adaptation pressé/perdu/tutoiement, 3 options max, réparation ciblée, honnêteté « robot », franco une
+fois). Imposé dans le code : phrases d'attente variées sans répétition (`fillers`), jamais deux réponses de suite
+ouvertes par le même accusé (`voice_reply.vary_opening`), une relance après 10 s de silence en mains libres
+(`nudge`, hors historique). Test indépendant de chaque règle (`scripts/natural_rules_test.py`, session vocale réelle +
+juge séparé) : 14/19 respectées, 2 partielles, 3 non (deux questions dans une réplique, formule de validation répétée,
+mot douteux deviné par l'habitude). Page Appel : en-tête avec logo et chrono, fond « boulangerie », bulles, points
+« écrit… », détails ERP/latence repliés, réponses rapides selon la dernière question, micro rond ; clair et sombre.
+
 ### Commande juste (Amine Khalil)
 
 **Mission** : ce qui finit dans l'ERP est exactement ce que le client voulait (bon produit, bonne quantité, bon jour,
