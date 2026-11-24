@@ -22,6 +22,14 @@ fail() { printf '  \033[31m✗\033[0m %s\n' "$*"; exit 1; }
 bold "1. Configuration"
 if [[ ! -f .env ]]; then cp .env.example .env; ok ".env created from .env.example (mock providers — add your keys later)"
 else ok ".env already there (kept)"; fi
+# team 12: an existing .env (e.g. the jury's) may lack our switches → add the missing ones from .env.example,
+# never touching a line that is already there (TEAM_X=0 in .env stays off)
+added=""
+while IFS= read -r line; do
+  key="${line%%=*}"
+  grep -qE "^${key}=" .env || { printf '%s\n' "$line" >> .env; added="$added ${key#TEAM_}"; }
+done < <(grep -E '^TEAM_[A-Z_]+=' .env.example | sed 's/[[:space:]]*#.*$//')
+[[ -n "$added" ]] && ok "team 12 switches added to .env:$added" || ok "team 12 switches already in .env"
 envval() { grep -E "^$1=" .env | tail -1 | cut -d= -f2- | sed 's/[[:space:]]*$//'; }
 DATA_DIR="$(envval DATA_DIR)"; DATA_DIR="${DATA_DIR:-../hackathon-data}"
 WEB_PORT="$(envval WEB_PORT)"; WEB_PORT="${WEB_PORT:-5173}"

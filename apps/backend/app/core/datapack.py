@@ -28,7 +28,11 @@ def read_pack() -> tuple[Doc, str]:
     for key in crud.PACK:
         pack[key] = read(key)
     pack["contextEntries"] = [_context_entry(e) for e in pack["contextEntries"]]
-    return pack, str(SEED_DIR)
+    # team 12: demo promo re-added on every load, so no reset can erase it (core/team_demo.py)
+    from .team_demo import add_team_demo_data
+
+    added = add_team_demo_data(pack)
+    return pack, str(SEED_DIR) + (f" + démo équipe ({', '.join(added)})" if added else "")
 
 
 def _context_entry(e: Doc) -> Doc:
