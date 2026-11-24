@@ -59,6 +59,8 @@ export function useVoiceSession() {
   const audioCtx = useRef<AudioContext>();
   const analyser = useRef<AnalyserNode>();
   const raf = useRef<number>();
+  const levelBuf = useRef<Uint8Array<ArrayBuffer>>(); // team 12 (Youssef): hands-free reads the mic level (readRms)
+  const quietEmpty = useRef(false); // team 12: a hands-free noise heard as nothing: drop the turn, no error shown
   // playback
   const player = useRef<SegmentPlayer>();
   const audioMime = useRef<string>();
@@ -201,6 +203,14 @@ export function useVoiceSession() {
         currentTurn.current = undefined;
         break;
       case "error":
+        if (quietEmpty.current && m.message.startsWith("Rien entendu")) {
+          // team 12: hands-free picked up a noise, not a sentence: forget it silently
+          quietEmpty.current = false;
+          if (id != null) setTurns((ts) => ts.filter((t) => t.id !== id));
+          currentTurn.current = undefined;
+          setActivity((a) => (a === "thinking" ? "idle" : a));
+          break;
+        }
         setLastError(m.message);
         if (id != null) patchTurn(id, (t) => ({ ...t, caller: { ...t.caller, status: "final" }, agent: { ...t.agent, done: true, error: m.message } }));
         currentTurn.current = undefined;
@@ -303,9 +313,11 @@ export function useVoiceSession() {
     meter();
   }, [caller, conn, ensureMic, meter, newTurn, send, stopPlayback]);
 
-  const stopTalking = useCallback(() => {
+  /** `quiet`: hands-free ended it (an empty transcript is then a noise, dropped without an error). */
+  const stopTalking = useCallback((opts?: { quiet?: boolean }) => {
     if (!pressed.current) return;
     pressed.current = false;
+    quietEmpty.current = !!opts?.quiet;
     if (raf.current) cancelAnimationFrame(raf.current);
     setLevel(0);
     const rec = recorder.current;
@@ -359,9 +371,21 @@ export function useVoiceSession() {
     setLastError(undefined);
   }, [send, stopPlayback]);
 
+  /** Team 12 (Youssef): current mic loudness (RMS 0..1), for hands-free speech detection. undefined = no mic yet. */
+  const readRms = useCallback((): number | undefined => {
+    const an = analyser.current;
+    if (!an) return undefined;
+    const buf = (levelBuf.current ??= new Uint8Array(an.fftSize));
+    an.getByteTimeDomainData(buf);
+    let sum = 0;
+    for (const v of buf) { const x = (v - 128) / 128; sum += x * x; }
+    return Math.sqrt(sum / buf.length);
+  }, []);
+
   return {
     conn, activity, mic, providers, turns, level, lastError,
     startTalking, stopTalking, sendText, stopPlayback, reset, reconnect: connect,
+    ensureMic, readRms,
     caller, callerPending, identifyCaller, endCall,
   };
 }

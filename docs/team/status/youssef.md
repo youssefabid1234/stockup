@@ -12,6 +12,7 @@
   - **T1 super-outil produit (`product_insight`)** : stock + arrivages + prix du client + remplaçants classés (règles de
     Daycem) avec leur prix et leur promo, en un appel. 1re réplique : S05 6,2 → 3,9 s, S40 4,3 → 3,4 s, S04 4,1 → 3,5 s
     (médianes) ; l'agent cite la promo exacte. Allumé par défaut dans `.env.example`.
+  - **Mains libres (page Voix, idée 1 + 2)** : plus besoin de maintenir Espace : le micro reste ouvert, début et fin de parole détectés (pause ≈ 0,65 s), et parler pendant que l'agent parle le coupe. Bouton « Mains libres » (allumé par défaut), Espace marche toujours. ⚠️ Mohamed Amine : ça touche ta page Voix (useVoiceSession : readRms, stopTalking({quiet})), relis stp.
 - En cours : T4 (deux cerveaux + Jev).
 - Pour Daycem : S05·2 attend `get_price` mais `quote_line` (Amine K.) répond juste → ajouter `quote_line` à `tools_any` ;
   S05·1 « 82 » est dit en lettres (« quatre-vingt-deux ») → ajouter cette forme à `says_any`.
