@@ -53,6 +53,28 @@ def _items(readback_items: str, call) -> str:
     return ", ".join(out[:-1]) + (" et " if len(out) > 1 else "") + out[-1]
 
 
+# team 12 (Amine K.): a familiar, varied counter voice (« Alors, c'est noté… Pour vous ça sera… hmm, un total de… »).
+# The variant is chosen from the order itself (stable for the same order, different from one order to the next).
+OPENERS = ["C'est noté :", "Alors, c'est noté :", "Bon, c'est noté :", "Nickel, je vous note :", "Ça marche, je vous mets :"]
+OPENERS_TU = ["C'est noté :", "Alors, c'est noté :", "Bon, c'est noté :", "Nickel, je te note :", "Ça marche, je te mets :"]
+TOTALS = ["Pour vous ça sera… hmm, un total de {m} hors taxes.", "Ça vous fait {m} hors taxes en tout.",
+          "Et au total, ça fait {m} hors taxes."]
+TOTALS_TU = ["Pour toi ça sera… hmm, un total de {m} hors taxes.", "Ça te fait {m} hors taxes en tout.",
+             "Et au total, ça fait {m} hors taxes."]
+ASKS = ["Je vous la valide ?", "On part là-dessus ?", "Je vous la passe comme ça ?"]
+ASKS_TU = ["Je te la valide ?", "On part là-dessus ?", "Je te la passe comme ça ?"]
+DONE = ["C'est validé, merci ! Il vous faut autre chose ?", "Et voilà, c'est validé ! Autre chose pour vous ?",
+        "Ça roule, c'est validé ! Je peux faire autre chose pour vous ?", "Çaaa marche, c'est validé ! Il vous faut autre chose ?"]
+DONE_TU = ["C'est validé, merci ! Il te faut autre chose ?", "Et voilà, c'est validé ! Autre chose pour toi ?",
+           "Ça roule, c'est validé ! Je peux faire autre chose pour toi ?", "Çaaa marche, c'est validé ! Il te faut autre chose ?"]
+
+
+def _pick(options: list[str], key: str) -> str:
+    import zlib
+
+    return options[zlib.crc32(key.encode("utf-8")) % len(options)]
+
+
 def compose(mode: str, calls: list, results: list, messages: list | None = None) -> str | None:
     """The reply to say without a second model call, or None (the model writes it, as before)."""
     if not team_flags.fast_reply() or mode != "voice" or len(calls) != 1 or len(results) != 1:
@@ -73,16 +95,17 @@ def compose(mode: str, calls: list, results: list, messages: list | None = None)
         items, _, day = readback.partition(" ; livraison ")
         said = _items(items, calls[0])
         when = (f", et tu seras livré {day}" if tu else f", et vous serez livrés {day}") if day else ""
-        ask = "Je te la valide ?" if tu else "Je vous la valide ?"
+        opener = _pick(OPENERS_TU if tu else OPENERS, readback)
         total = res.get("totalHt")
         if res.get("franco") and total:
-            return (f"C'est noté : {said}{when}. Ça fait {fr_money(total)} hors taxes, donc il y aura 12 euros de frais "
-                    f"de livraison : c'est offert à partir de 150 euros. {ask[:-2]} quand même ?")
-        money = f" Ça fait {fr_money(total)} hors taxes." if total else ""
-        return f"C'est noté : {said}{when}.{money} {ask}"
+            ask = "Je te la valide quand même ?" if tu else "Je vous la valide quand même ?"
+            return (f"{opener} {said}{when}. Ça fait {fr_money(total)} hors taxes, donc bon, il y aura 12 euros de frais "
+                    f"de livraison : c'est offert à partir de 150 euros. {ask}")
+        money = (" " + _pick(TOTALS_TU if tu else TOTALS, readback + "t").format(m=fr_money(total))) if total else ""
+        return f"{opener} {said}{when}.{money} {_pick(ASKS_TU if tu else ASKS, readback + 'a')}"
     if r.name == "confirm_order" and res.get("confirmed") is True:
         other = "Il te faut autre chose ?" if tu else "Il vous faut autre chose ?"
         if res.get("alreadyConfirmed"):
             return f"C'est bon, elle était déjà validée et les changements y sont. {other}"
-        return f"C'est validé, merci ! {other}"
+        return _pick(DONE_TU if tu else DONE, str(res.get("id") or res.get("number") or res))
     return None

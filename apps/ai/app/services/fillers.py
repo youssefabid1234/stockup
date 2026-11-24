@@ -29,24 +29,26 @@ PHRASES = {
 # Mode 4 · « zéro silence » (TEAM_FILLERS=4): the agent opens the call, says one of these at once after each request,
 # then types on the keyboard without a gap until the first word of the real answer.
 # Default acknowledgement (no clear intent). No « Parfait » / « Ça marche »: they sound like a yes before the answer.
-ACK_PHRASES = ["Je regarde ça.", "Hmm, une seconde, je vérifie.", "Je vois ça tout de suite.", "Alors… voyons ça.",
-               "Hmm, je regarde."]  # team 12 (Amine K.): interjections, a person thinking out loud
+ACK_PHRASES = ["Je regarde ça.", "Hmm, une seconde, je vérifie.", "Okéééé, je regarde.", "Okéé, je vérifie ça.",
+               "Bon, je regarde.", "Oké chef, une seconde.", "Alors… voyons ça.", "Hm hm, je regarde."]
+# team 12 (Amine K.): interjections and a familiar tone, a person at the counter thinking out loud. Never a yes before
+# checking (Youssef's rule, test_smart_ack): « ça marche » / « ça roule » come after the order is confirmed (fast_reply.DONE).
 # a single « hmm » in the middle of a long wait (typing for HMM_AFTER s): Lucie thinking while she looks it up
-HMM_PHRASES = ["Hmm…", "Hmmm, voyons…", "Alors…"]
+HMM_PHRASES = ["Hmmm…", "Hm hm…", "Hmmmm, voyons voir…", "Alors alors…", "Bon…"]
 HMM_AFTER = 1.6
 # team 12 (Youssef): the first words match what the caller asked (tested 24/11: « Parfait, je vais voir ça » before
 # refusing a discount sounded like a yes, and the same phrase came back on every turn). Neutral: never a promise.
 ACK_BY_INTENT = {
     "discount": ["J'entends bien.", "Je comprends.", "Je vois."],
     "complaint": ["Ah, je suis désolée.", "Oh, désolée pour ça.", "Je suis navrée, je regarde."],
-    "readback": ["Je vous relis ça.", "Je reprends votre commande.", "Alors, votre commande…"],
-    "total": ["Je fais le compte.", "Je calcule ça.", "Je regarde le total."],
-    "usual": ["Je reprends votre habituel.", "Votre habituel, je regarde.", "Je regarde ce que vous prenez d'habitude."],
-    "change": ["Pas de souci, je change ça.", "Je corrige.", "D'accord, je modifie."],
-    "price": ["Je regarde votre prix.", "Je vous dis ça.", "Voyons votre tarif."],
-    "stock": ["Je regarde le stock.", "Voyons ce qu'il me reste.", "Je regarde ce que j'ai."],
-    "order": ["Je note ça.", "Je vous prépare ça.", "Je regarde ça pour vous."],
-    "delivery": ["Je regarde vos livraisons.", "Voyons les jours de livraison.", "Je regarde le calendrier."],
+    "readback": ["Je vous relis ça.", "Je reprends votre commande.", "Alors, votre commande…", "Okéé, je vous relis ça."],
+    "total": ["Je fais le compte.", "Je calcule ça.", "Je regarde le total.", "Hmm, je fais le compte."],
+    "usual": ["Je reprends votre habituel.", "Votre habituel, je regarde.", "Je regarde ce que vous prenez d'habitude.", "Ça roule, je reprends votre habituel."],
+    "change": ["Pas de souci, je change ça.", "Je corrige.", "D'accord, je modifie.", "Okéé, je change ça.", "Oké chef, je corrige."],
+    "price": ["Je regarde votre prix.", "Je vous dis ça.", "Voyons votre tarif.", "Okéé, je regarde votre prix."],
+    "stock": ["Je regarde le stock.", "Voyons ce qu'il me reste.", "Je regarde ce que j'ai.", "Hm hm, voyons ce qu'il me reste."],
+    "order": ["Je note ça.", "Je vous prépare ça.", "Je regarde ça pour vous.", "Okéé, je note ça.", "Oké chef, je vous prépare ça."],
+    "delivery": ["Je regarde vos livraisons.", "Voyons les jours de livraison.", "Je regarde le calendrier.", "Hmm, voyons le calendrier."],
 }
 # Checked in this order (the first match wins): « non, mettez-en 12 » is a change, « 10 % sur l'ensemble » a discount.
 INTENT_PATTERNS = [
@@ -215,28 +217,81 @@ TYPING_RATE = 44100
 TYPING_SECONDS = 0.45  # short clips: when the answer arrives, at most one is still queued ahead of it
 
 
-@cache
-def typing_clip(variant: int) -> tuple[bytes, float]:
-    """0.45 s of someone typing (2 to 4 keystrokes at an irregular rhythm, real silence in between), MP3.
-    Several variants so the loop does not sound like a loop. Returns (mp3, seconds)."""
-    rnd = random.Random(100 + variant)
-    noise = random.Random(7 + variant)
-    keys, t = [], rnd.uniform(0.0, 0.08)
-    while t < TYPING_SECONDS - 0.07:
-        keys.append((t, rnd.uniform(700, 1150), rnd.uniform(2400, 4200)))
-        t += rnd.uniform(0.11, 0.24)
+def _keystroke(out: list[float], at: float, rnd: random.Random, noise: random.Random, space: bool = False) -> None:
+    """One key of a mechanical keyboard (team 12, Amine K.: the old soft « shh » did not sound like a keyboard):
+    the switch's click (very short, bright), the keycap's clack, the bottom-out thock (low), then a lighter upstroke.
+    A space bar is deeper and louder, with a small rattle."""
+    rate = TYPING_RATE
+    clack = rnd.uniform(1700, 2600)
+    thock = rnd.uniform(140, 190) if space else rnd.uniform(230, 380)
+    level = rnd.uniform(0.75, 1.0) * (1.25 if space else 1.0)
+    up = at + rnd.uniform(0.07, 0.11)
+    previous = 0.0
+    for i in range(int(at * rate), min(len(out), int((up + 0.03) * rate))):
+        t = i / rate
+        dt, du = t - at, t - up
+        white = noise.uniform(-1, 1)
+        bright, previous = white - previous, white  # a crude high-pass: the switch's click
+        x = 0.0
+        if 0 <= dt < 0.06:
+            x += 0.55 * bright * math.exp(-dt / 0.0016)
+            x += 0.35 * math.sin(2 * math.pi * clack * dt) * math.exp(-dt / 0.010)
+            x += 0.50 * math.sin(2 * math.pi * thock * dt) * math.exp(-dt / (0.035 if space else 0.024))
+            if space and 0.008 <= dt < 0.02:
+                x += 0.25 * bright * math.exp(-(dt - 0.008) / 0.0012)  # stabilizer rattle
+        if 0 <= du < 0.03:
+            x += 0.22 * bright * math.exp(-du / 0.0012) + 0.12 * math.sin(2 * math.pi * clack * 1.1 * du) * math.exp(-du / 0.006)
+        out[i] += 9000 * level * x
+
+
+def _mouse_click(out: list[float], at: float, noise: random.Random) -> None:
+    """A mouse button: press, then release ~80 ms later (two small plastic clicks)."""
+    rate = TYPING_RATE
+    for start, level in ((at, 1.0), (at + random.Random(int(at * 1000)).uniform(0.07, 0.1), 0.7)):
+        previous = 0.0
+        for i in range(int(start * rate), min(len(out), int((start + 0.02) * rate))):
+            dt = i / rate - start
+            white = noise.uniform(-1, 1)
+            bright, previous = white - previous, white
+            x = 0.6 * bright * math.exp(-dt / 0.0008) + 0.35 * math.sin(2 * math.pi * 3400 * dt) * math.exp(-dt / 0.004)
+            x += 0.25 * math.sin(2 * math.pi * 1150 * dt) * math.exp(-dt / 0.006)
+            out[i] += 7000 * level * x
+
+
+def _mp3(out: list[float]) -> bytes:
     pcm = bytearray()
-    for i in range(int(TYPING_RATE * TYPING_SECONDS)):
-        sample = 0.0
-        for start, pitch, volume in keys:
-            dt = i / TYPING_RATE - start
-            if 0 <= dt < 0.065:
-                envelope = math.exp(-150 * dt) + (0.35 * math.exp(-220 * (dt - 0.038)) if dt >= 0.038 else 0)
-                sample += volume * envelope * (0.65 * noise.uniform(-1, 1) + 0.35 * math.sin(2 * math.pi * pitch * dt))
+    for sample in out:
         pcm.extend(struct.pack("<h", max(-32768, min(32767, int(sample)))))
     encoder = Mp3Encoder(TYPING_RATE)
-    return encoder.encode(bytes(pcm)) + encoder.flush(), TYPING_SECONDS
+    return encoder.encode(bytes(pcm)) + encoder.flush()
 
+
+@cache
+def typing_clip(variant: int) -> tuple[bytes, float]:
+    """0.45 s of someone typing on a mechanical keyboard (3 to 4 keys at an irregular rhythm, sometimes the space bar),
+    MP3. Several variants so the loop does not sound like a loop. Returns (mp3, seconds)."""
+    rnd = random.Random(100 + variant)
+    noise = random.Random(7 + variant)
+    out = [0.0] * int(TYPING_RATE * TYPING_SECONDS)
+    t = rnd.uniform(0.0, 0.05)
+    while t < TYPING_SECONDS - 0.12:
+        _keystroke(out, t, rnd, noise, space=rnd.random() < 0.15)
+        t += rnd.uniform(0.09, 0.17)
+    return _mp3(out), TYPING_SECONDS
+
+
+@cache
+def mouse_clip(variant: int) -> tuple[bytes, float]:
+    """0.45 s: a mouse click (press + release), sometimes a double click, then a key or two."""
+    rnd = random.Random(500 + variant)
+    noise = random.Random(900 + variant)
+    out = [0.0] * int(TYPING_RATE * TYPING_SECONDS)
+    _mouse_click(out, 0.02, noise)
+    if variant % 2:
+        _mouse_click(out, 0.2, noise)  # double click
+    else:
+        _keystroke(out, rnd.uniform(0.22, 0.28), rnd, noise)
+    return _mp3(out), TYPING_SECONDS
 
 LOOKUP_MORE = re.compile(
     r"\b(?:faudrait|faut|besoin|livr\w*|commande\w*|habitude|reste|dispo\w*|quand|combien|prix|tarif|"
@@ -279,7 +334,8 @@ async def keep_typing(speaker, delay: float = 0.0) -> None:
             if (clip := bank.pick("hmm")) and clip.mime == "audio/mpeg":
                 await speaker.play_audio(clip.mime, clip.data, seconds=mp3_seconds(clip.data))
                 continue
-        data, seconds = typing_clip(variant % 6)
+        # every 4th clip a mouse click (someone looking through the ERP), else typing
+        data, seconds = mouse_clip(variant // 4 % 2) if variant % 4 == 3 else typing_clip(variant % 6)
         variant += 1
         await speaker.play_audio("audio/mpeg", data, seconds=seconds)
 

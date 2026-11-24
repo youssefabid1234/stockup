@@ -438,6 +438,20 @@ Mohamed Amine.
 - Suggestions (`voice_offers`) : nom en minuscule et tournures parlées (« Au fait, d'habitude vous prenez aussi la
   farine de gruau avec. Je vous en mets ? »).
 
+#### Ton de comptoir, clavier mécanique (Amine Khalil, retour d'écoute du 24/11)
+
+- **Clavier** : l'ancien son (souffle + note) ne ressemblait pas à un clavier. Chaque touche est maintenant synthétisée
+  comme un clavier mécanique : clic du switch, clac de la touche, toc grave en fin de course, petit clic au relâchement ;
+  barre d'espace plus sourde ; et un clip sur quatre est un **clic de souris** (simple ou double). Toujours sans fichier
+  son (`fillers.typing_clip`, `mouse_clip`).
+- **Interjections** : « Okéééé, je regarde. », « Oké chef, une seconde. », « Hm hm, je regarde. » ; au milieu d'une
+  attente : « Hm hm… », « Hmmmm, voyons voir… », « Alors alors… ». « Çaaa marche » et « Ça roule » seulement **après** la
+  validation (« Çaaa marche, c'est validé ! ») : un accusé ne doit jamais sonner comme un oui avant vérification (règle
+  de Youssef, test `test_smart_ack`). Réclamations et remises gardent un ton sobre.
+- **Relecture familière et variée** : « Alors, c'est noté : 10 sacs de tradi, et vous serez livrés jeudi 26 novembre.
+  Pour vous ça sera… hmm, un total de 189 euros hors taxes. On part là-dessus ? » (5 débuts, 3 façons de dire le total,
+  3 questions ; même commande → mêmes mots). Même consigne pour Sonnet, un mot familier par phrase au plus.
+
 #### Idées 2 et 3 : l'heure du camion, la date courte (Amine Khalil)
 
 - **Heure de passage** (`tools/delivery_eta.py`) : « vous passez à quelle heure ? » → l'arrêt du client sur la tournée
