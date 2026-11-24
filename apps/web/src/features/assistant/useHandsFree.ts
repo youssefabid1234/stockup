@@ -14,7 +14,13 @@ export interface HandsFreeTarget {
   readRms: () => number | undefined;
   startTalking: () => Promise<void>;
   stopTalking: (opts?: { quiet?: boolean }) => void;
+  nudge?: () => void;
+  turns?: { length: number };
 }
+
+/** After the agent's answer, this long without a word from the caller → one short line (« Vous êtes toujours là ? »),
+ * once per silence (the voice-agent guides: ask once after 10-15 s, never nag). */
+export const NUDGE_AFTER_MS = 10_000
 
 const TICK_MS = 30;
 
@@ -30,6 +36,8 @@ export function useHandsFree(target: HandsFreeTarget, enabled: boolean, spaceDow
     let stopped = false;
     let timer: ReturnType<typeof setInterval> | undefined;
     const vad = new Vad(DEFAULT_VAD);
+    let idleSince: number | null = null;
+    let nudged = false;
     void (async () => {
       if (!(await ref.current.ensureMic()) || stopped) return;
       setListening(true);
@@ -38,7 +46,12 @@ export function useHandsFree(target: HandsFreeTarget, enabled: boolean, spaceDow
         if (spaceDown.current) { vad.reset(); return; } // push-to-talk has priority
         const rms = t.readRms();
         if (rms === undefined) return;
-        const ev = vad.feed(rms, performance.now(), t.activity === "speaking");
+        const now = performance.now();
+        const ev = vad.feed(rms, now, t.activity === "speaking");
+        // silence after the agent's answer: one nudge, then wait (reset as soon as anyone speaks)
+        if (t.activity !== "idle" || vad.isSpeaking) { idleSince = null; nudged = vad.isSpeaking ? false : nudged; }
+        else if (idleSince === null) idleSince = now;
+        else if (!nudged && (t.turns?.length ?? 0) > 0 && now - idleSince > NUDGE_AFTER_MS && t.nudge) { nudged = true; t.nudge(); }
         if (ev === "start" && !owns.current) {
           owns.current = true;
           void t.startTalking();

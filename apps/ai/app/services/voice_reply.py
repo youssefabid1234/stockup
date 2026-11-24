@@ -17,6 +17,20 @@ _INTERNAL_LEAD = re.compile(
     r")",
     re.I,
 )
+# team 12 (Youssef, natural voice): a leading acknowledgement word, and its variants for vary_opening
+_OPENER = re.compile(r"^\s*(parfait|très bien|tres bien|d['’]accord|entendu|ok|okay|alors|bon|super|ça marche|c['’]est noté|bien sûr)\s*[,.!…]+\s*", re.I)
+
+
+def vary_opening(reply: str, previous: str | None) -> str:
+    """Drop the leading « Parfait, » (or « Très bien, », « D'accord, »…) when the previous reply of the call began with
+    the same word: the guides' first sign of a robotic agent. The rest of the sentence is kept, capitalised."""
+    m, prev = _OPENER.match(reply or ""), _OPENER.match(previous or "")
+    if not m or not prev or m.group(1).lower().replace("’", "'") != prev.group(1).lower().replace("’", "'"):
+        return reply
+    rest = reply[m.end():]
+    return rest[:1].upper() + rest[1:] if rest else reply
+
+
 _REPLY_LABEL = re.compile(r"^\s*\*{0,2}réponse(?: au client| finale)?\s*:\*{0,2}\s*", re.I)
 _GREETING = re.compile(r"^\s*(?:bonjour|bonsoir)\b", re.I)
 _SENTENCE_BREAK = re.compile(r"(?<=[.!?…])\s+|\n+")
