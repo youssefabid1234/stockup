@@ -25,3 +25,28 @@ Le chantier voix se trouve sur `mohamed-amine/voice-latency`. `TEAM_FILLERS=1` a
 1. Charger le pack du Fournil en local et ouvrir la page Voix avec les fournisseurs de l'équipe. Avec les interrupteurs éteints, jouer S01 et S06. Relever par tour `sttMs`, `llmFirstTokenMs`, `ttsFirstByteMs`, `totalMs` et `perceivedMs`. Noter les fournisseurs et distinguer le premier tour des suivants.
 2. Activer `TEAM_FILLERS=1`, redémarrer le service IA et rejouer S01, S05 et S06 dans les mêmes conditions. Relever quel son arrive en premier et à quel moment commence la réponse utile. Reporter médiane et pire cas dans [DECISIONS.md](../../../DECISIONS.md).
 3. Sur S10, reprendre Espace **pendant** le premier son. Vérifier que l'ancien tour se coupe et que la nouvelle demande est transcrite. Sur S11, dire « C'est tout, merci. Au revoir. » et écouter la réponse directe. Le script rejoue les tours l'un après l'autre. Le test d'intégration exerce l'interruption et la fermeture du segment pendant un tour actif. [S10](../../../scenarios/S10.json) · [S11](../../../scenarios/S11.json) · [Tests voix](../../../apps/ai/tests/test_voice_fillers.py)
+
+
+## Réponse naturelle au téléphone
+
+Le modèle peut envoyer quelques lignes de texte avant d'appeler l'ERP. Le lecteur les recevait immédiatement, ce qui pouvait rendre audible une note interne avant la salutation.
+
+1. Attendre la réponse finale avant de l'envoyer au navigateur et à la synthèse. Les annonces et le clavier du service voix peuvent toujours jouer pendant la recherche.
+2. Filtrer les blocs d'analyse explicites et les amorces de raisonnement reconnaissables. Garder dans l'historique les appels ERP, leurs résultats et la réponse entendue.
+3. Donner au modèle vocal des consignes de français parlé avec des exemples. Saluer naturellement à l'ouverture, donner le résultat utile, poser une question à la fois et garder le raisonnement silencieux.
+4. Tester une note avant l'appel ERP et une autre avant « Bonjour » dans la réponse finale. Vérifier le texte affiché, les mots transmis à la synthèse et l'historique après une interruption.
+
+La synthèse de la réponse utile commence après la fin de la génération du modèle. La comparaison au micro devra vérifier l'effet sur le délai jusqu'à cette réponse.
+
+## Variante avec modèle rapide
+
+Avec `TEAM_FILLERS=2`, « Je vais voir » ouvre l'attente. Le modèle rapide sélectionne un court passage de la transcription en parallèle avec l'agent ERP. La reprise utilise les mots du client. Une demande courte et ambiguë est reprise en entier pour garder les options et les négations. Une demande longue dont on risquerait de changer le sens reçoit « Un instant, je vérifie ». Dans les trois modes, seule la réponse finale de l'agent ERP est lue. La reprise en préparation est annulée si la réponse arrive ou si le client reprend la parole.
+
+Pour comparer, garder les mêmes fournisseurs et `TEAM_ORCHESTRATOR=0`. Relancer l'IA entre `TEAM_FILLERS=1` et `TEAM_FILLERS=2`. Tester « Dix kilos de farine ou deux sacs ? » pendant une vérification assez longue, puis « Merci » pour vérifier la réponse directe. Le mode 2 utilise le modèle `TEAM_FAST_MODEL` du même fournisseur que l'agent principal, sans appel ERP supplémentaire.
+
+
+## Salutation du premier tour
+
+Le formulaire « Qui appelle ? » offre une civilité facultative. Avec les modes `1` et `2`, l'audio « Bonjour Madame », « Bonjour Monsieur » ou « Bonjour » est préparé pendant le chargement de la fiche. Le premier relâchement du micro déclenche cette salutation depuis le cache pendant la finalisation de la transcription. Pour une demande de stock ou de commande, l'annonce du mode sélectionné peut suivre. Une reconnexion ne rejoue pas la salutation déjà diffusée.
+
+Pour comparer `0`, `1` et `2`, démarrer un nouvel appel après chaque redémarrage de l'IA, choisir la même civilité et jouer la même demande. Regarder « Perçu » après le relâchement. Les tests vérifient que la salutation est envoyée avant la transcription finale. L'objectif de 0,5 s reste à mesurer dans le navigateur.

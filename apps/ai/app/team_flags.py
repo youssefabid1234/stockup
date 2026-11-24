@@ -7,7 +7,7 @@ TEAM_PRODUCT_INSIGHT, read when tools are registered (restart needed). See docs/
 
 | Switch                 | Owner          | Brick                                                        |
 |------------------------|----------------|--------------------------------------------------------------|
-| TEAM_FILLERS           | Mohamed Amine  | services/fillers.py: waiting phrases + keyboard sound        |
+| TEAM_FILLERS           | Mohamed Amine  | services/fillers.py: waiting phrases + keyboard sound, 2 = fast restatement        |
 | TEAM_ORCHESTRATOR      | Youssef        | agent/orchestrator.py: fast "speaker" agent + "brain" agent  |
 | TEAM_PRELOAD           | Youssef        | agent/call_context.py: client sheet loaded once, in parallel |
 | TEAM_PRODUCT_INSIGHT   | Youssef        | tools/product_insight.py: stock + price + substitutes + promo |
@@ -27,7 +27,11 @@ def _on(name: str) -> bool:
 
 
 def fillers() -> bool:
-    return _on("TEAM_FILLERS")
+    return fast_fillers() or _on("TEAM_FILLERS")
+
+
+def fast_fillers() -> bool:
+    return os.environ.get("TEAM_FILLERS", "").strip() == "2"
 
 
 def orchestrator() -> bool:

@@ -62,7 +62,7 @@ export type VoiceClientMessage =
   | { type: "reset" }
   // Team 12: who is calling (caller ID form, before the call): an ERP client (clientId or phone) or a new client
   // resume: sent again after a reconnect (e.g. the AI service reloaded): restore the caller, keep the conversation
-  | { type: "caller"; clientId?: string; contactName?: string; phone?: string; companyName?: string; isNew?: boolean; resume?: boolean };
+  | { type: "caller"; clientId?: string; contactName?: string; contactTitle?: "madame" | "monsieur"; phone?: string; companyName?: string; isNew?: boolean; resume?: boolean };
 
 /** Team 12: the caller is identified and their sheet loaded (usedByAgent=false while TEAM_PRELOAD is off). */
 export interface CallerReady {

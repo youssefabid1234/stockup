@@ -380,18 +380,18 @@ async def test_voice_barge_in_mid_tool_keeps_done_rounds_and_stays_valid(monkeyp
     assert_anthropic_valid([*h, ChatMessage(role="user", content="et alors ?")])
 
 
-async def test_voice_barge_in_mid_text_after_tools(monkeypatch):
+async def test_voice_barge_in_keeps_tools_without_unspoken_text(monkeypatch):
     session, conv, _ = voice_session_with(monkeypatch, [[call("a")], [LLMText("Voici le"), "SLEEP"]])
     await _barge_in(session, conv, "liste")
-    assert [m.role for m in conv.history] == ["user", "assistant", "tool", "assistant"]
-    assert conv.history[-1].content == "Voici le …"
+    assert [m.role for m in conv.history] == ["user", "assistant", "tool"]
+    assert not any(m["type"] == "agent_text" for m in session.ws.sent)
     assert_paired(conv.history)
 
 
 async def test_voice_barge_in_during_last_audio_does_not_duplicate_the_turn(monkeypatch):
     session, conv, _ = voice_session_with(monkeypatch, [[LLMText("Bonjour. Je suis là. ")]], tts_sleep=True)
     await _barge_in(session, conv, "allo", after=0.1)
-    assert [(m.role, m.content) for m in conv.history] == [("user", "allo"), ("assistant", "Bonjour. Je suis là. ")]
+    assert [(m.role, m.content) for m in conv.history] == [("user", "allo"), ("assistant", "Bonjour. Je suis là.")]
 
 
 async def test_voice_error_mid_turn_then_next_turn_valid(monkeypatch):
@@ -411,3 +411,33 @@ async def test_voice_error_mid_turn_then_next_turn_valid(monkeypatch):
     assert any(m.get("type") == "error" for m in session.ws.sent)
     assert_paired(conv.history)
     assert_anthropic_valid(conv.history)
+
+
+async def test_voice_sends_only_the_customer_facing_reply(monkeypatch):
+    from app.clients.mock_speech import MockTTS
+
+    spoken = []
+
+    class RecordingTTS(MockTTS):
+        async def synthesize(self, text, voice=None):
+            spoken.append(text)
+            return await super().synthesize(text, voice)
+
+    monkeypatch.setenv("TEAM_FILLERS", "0")
+    reply = "Bonjour. Oui, il nous reste de la farine T55."
+    session, conv, _ = voice_session_with(
+        monkeypatch,
+        [
+            [LLMText("Je dois consulter le stock. "), call("a")],
+            [LLMText("Analyse : le stock est disponible. Je vais le dire à Nadine. "), LLMText(reply)],
+        ],
+    )
+    monkeypatch.setattr(voice_session, "get_tts_client", RecordingTTS)
+    await session.run_turn(conv, text="Vous avez de la farine T55 ?")
+
+    text = [m["delta"] for m in session.ws.sent if m["type"] == "agent_text"]
+    assert text == [reply]
+    assert spoken == ["Bonjour.", "Oui, il nous reste de la farine T55."]
+    assert session.ws.sent[-1]["text"] == reply
+    assert [m.content for m in conv.history if m.role == "assistant"] == ["", reply]
+    assert_paired(conv.history)

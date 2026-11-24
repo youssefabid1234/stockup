@@ -57,6 +57,7 @@ class CallerMessage(WireModel):
     type: Literal["caller"] = "caller"
     client_id: str | None = None
     contact_name: str | None = None  # who is on the phone (e.g. "Nadine Sarrailh")
+    contact_title: Literal["madame", "monsieur"] | None = None
     phone: str | None = None
     company_name: str | None = None  # for a new client
     is_new: bool = False

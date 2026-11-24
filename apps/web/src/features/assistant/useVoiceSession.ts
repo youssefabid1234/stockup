@@ -294,7 +294,6 @@ export function useVoiceSession() {
     rec.onstop = () => {
       // The last dataavailable fires before stop, so every chunk has been queued on the socket.
       send({ type: "audio_end" });
-      releasedAt.current = performance.now();
     };
     void audioCtx.current?.resume();
     rec.start(100); // a chunk every 100 ms: the STT hears the words while they are spoken
@@ -312,6 +311,7 @@ export function useVoiceSession() {
     const rec = recorder.current;
     recorder.current = undefined;
     if (rec && rec.state !== "inactive") {
+      releasedAt.current = performance.now();
       rec.stop();
       patchTurn(currentTurn.current, (t) => ({ ...t, caller: { ...t.caller, status: "transcribing" } }));
       setActivity("thinking");
@@ -323,8 +323,8 @@ export function useVoiceSession() {
     if (!v || conn !== "ready" || !caller) return;
     stopPlayback();
     newTurn({ text: v, at: Date.now(), status: "final", typed: true });
-    send({ type: "text", text: v });
     releasedAt.current = performance.now();
+    send({ type: "text", text: v });
     setActivity("thinking");
     setLastError(undefined);
   }, [caller, conn, newTurn, send, stopPlayback]);
