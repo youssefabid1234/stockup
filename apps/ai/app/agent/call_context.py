@@ -58,6 +58,9 @@ class CallContext:
     caller_contact: str | None = None  # who is on the phone (caller ID form), e.g. "Nadine Sarrailh"
     caller_phone: str | None = None
     recent_orders: list[str] = field(default_factory=list)  # team 12: latest orders, newest first, ready to say
+    sales_rep: str | None = None  # team 12 (Daycem, T5): the client's sales rep from the ERP card (salesRep)
+    company_name: str | None = None  # team 12: a NEW client's business name typed in the form (None = to ask)
+    prospect_note: str = ""  # team 12: a prospect calling back: its card and the requests already noted
 
     @property
     def blocked(self) -> bool:
@@ -90,6 +93,7 @@ async def load_call_context(erp: ErpClient, client_id: str) -> CallContext:
         delivery_days=client.get("deliveryDays") or [],
         preferences=client.get("preferences") or "",
         contacts=client.get("contacts") or [],
+        sales_rep=client.get("salesRep") or None,
         usual=[
             UsualItem(
                 product_id=u.get("productId", ""),
@@ -292,11 +296,15 @@ async def caller_context(
     The sheet of the caller announced before the call: an ERP client (by id, else by phone) loaded now (cache),
     or a NEW client (not in the ERP: status "new"). None if nothing was given.
     """
-    if not is_new and not client_id and phone:
+    # A phone found in the ERP wins over the form's « nouveau client » box (ticked by mistake, or a colleague of a
+    # known bakery): no duplicate prospect, the agent gets the real sheet.
+    if not client_id and phone:
         if hit := await find_client_by_phone(erp, phone):
             client_id, contact_name = hit[0], contact_name or hit[1]
-    if not is_new and client_id:
+    if client_id:
         shared = _cached(client_id) or await _load_and_cache(erp, client_id)
+        if shared.status == "prospect":  # registered at a first call, account not opened yet: still a new client
+            return await _prospect_sheet(erp, shared, contact_name, phone)
         # A copy per call: the cached sheet is shared (Guy then Nadine calling for the same bakery must not mix).
         return replace(shared, caller_contact=contact_name, caller_phone=phone)
     if is_new or company_name or phone or contact_name:
@@ -308,15 +316,60 @@ async def caller_context(
             status="new",
             caller_contact=contact_name,
             caller_phone=phone,
+            company_name=company_name,
         )
     return None
 
 
+# Order tools a new client (or a prospect) never gets: the team opens the account first (voice_session removes them).
+NO_ORDER_FOR_NEW = frozenset({
+    "create_draft_order", "add_order_line", "confirm_order", "place_order", "review_order", "update_order_line",
+    "remove_order_line", "change_delivery_date", "cancel_draft_order",
+})  # fmt: skip
+
+
+async def _prospect_sheet(erp: ErpClient, shared: CallContext, contact_name: str | None, phone: str | None) -> CallContext:
+    """A prospect (card made by register_new_client at a first call) calls back: the new-client flow, on its card."""
+    from app.tools.erp import enc
+
+    try:
+        detail, events = await asyncio.gather(
+            erp.get(f"/api/clients/{enc(shared.client_id)}"), erp.get(f"/api/clients/{enc(shared.client_id)}/events")
+        )
+        events = events.get("items", events) if isinstance(events, dict) else events
+    except Exception:
+        detail, events = {}, []
+    asked = [(e.get("description") or "").split(" · contact")[0].split(" · tél.")[0] for e in events or [] if e.get("type") == "onboarding"]
+    where = ", ".join(x for x in (detail.get("address"), detail.get("city")) if x)
+    note = (f"Déjà enregistré comme prospect lors d'un premier appel (fiche {shared.client_id})" + (f" : {where}" if where else "")
+            + (f". Déjà noté : {' | '.join(a for a in asked[:5] if a)}" if asked else "") + ". Le compte n'est pas encore ouvert.")
+    return CallContext(
+        client_id=shared.client_id, name=shared.name, status="new", caller_contact=contact_name, caller_phone=phone,
+        company_name=shared.name, prospect_note=note,
+    )  # fmt: skip
+
+
 NEW_CLIENT_RULES = (
-    "NOUVEAU CLIENT, pas encore dans l'ERP. Accueille-le chaleureusement, demande ou confirme le nom de l'établissement, "
-    "l'adresse de livraison et ce qu'il veut commander. Ne crée et ne confirme AUCUNE commande : explique que l'équipe "
-    "ouvre son compte et le rappelle très vite pour valider sa première commande. Tu peux lui dire si un produit est "
-    "disponible et son prix catalogue."
+    "Premier appel : accueille-le chaleureusement. Ce qui est écrit ci-dessus est connu : ne le redemande jamais. Demande "
+    "ce qui manque, une seule question à la fois : le nom de l'établissement s'il n'est pas connu, son activité si elle "
+    "n'est pas claire (boulangerie, pâtisserie, restaurant…), la ville de livraison, puis ce qu'il voudrait (produits, "
+    "quantités, jour souhaité) ; l'adresse précise si elle vient naturellement.\n"
+    "- Dès que tu connais l'établissement et sa demande, appelle register_new_client (avec la ville si tu l'as, et le nom "
+    "et le téléphone ci-dessus) : sa fiche et sa demande sont alors enregistrées pour l'équipe. Ne dis « c'est noté » ou "
+    "« c'est enregistré » qu'après cet appel. Rappelle-le avec seulement le nouveau point s'il ajoute un produit, donne "
+    "la ville ou l'adresse ensuite (même fiche, jamais de doublon). S'il raccroche avant, appelle-le quand même avec ce "
+    "que tu sais.\n"
+    "- Un nouveau produit sans précision (« du beurre, deux kilos ») : enregistre-le TOUT DE SUITE avec "
+    "register_new_client (« beurre, 2 kg, type à préciser »), puis pose ta question de précision une seule fois. "
+    "S'il répond, rappelle l'outil avec la précision ; s'il répond « merci » ou parle d'autre chose, ne repose jamais "
+    "la question : c'est noté « à préciser », l'équipe verra avec lui.\n"
+    "- Ne crée et ne confirme AUCUNE commande (pas de create_draft_order, place_order ni confirm_order) : l'équipe ouvre son "
+    "compte et le rappelle très vite pour valider sa première commande et le jour de livraison. Ne promets aucune date.\n"
+    "- Tu peux dire si un produit est disponible et donner son prix catalogue, présenté comme indicatif (le tarif est fixé "
+    "à l'ouverture du compte). Conditions de paiement, franco, livraison : seulement ce que disent les documents de "
+    "l'entreprise et register_new_client (secteur et jours de tournée, ou hors zone).\n"
+    "- Si register_new_client répond qu'il existe déjà, ce n'est pas un nouveau client : traite-le comme un client connu "
+    "avec l'id donné."
 )
 
 
@@ -329,13 +382,17 @@ def render_for_prompt(cc: CallContext | None) -> str:
         return ""
     on_phone = f"- Au téléphone : {cc.caller_contact}" + (f" ({cc.caller_phone})" if cc.caller_phone else "") if cc.caller_contact or cc.caller_phone else ""
     if cc.is_new:
-        return "\n".join(p for p in [f"# Appelant identifié avant l'appel : {cc.name}", on_phone, NEW_CLIENT_RULES] if p)
+        known = (f"- Établissement (donné avant l'appel, ne le redemande pas) : {cc.company_name}" if cc.company_name
+                 else "- Établissement : pas encore connu, à demander")
+        prospect = f"- {cc.prospect_note}" if cc.prospect_note else ""
+        return "\n".join(p for p in ["# NOUVEAU CLIENT au téléphone (pas encore dans l'ERP)", known, on_phone, prospect, NEW_CLIENT_RULES] if p)
     lines = [
         f"# Client au téléphone : {cc.name} ({cc.client_id})",
         "Il est déjà identifié (numéro reconnu) et sa fiche est chargée ci-dessous (à jour) : ne le recherche pas (pas de"
         " search, get_client ni get_context pour ce client), sers-toi de cette fiche et de son id. Utilise toujours les"
         " outils pour le stock d'un autre produit, les prix et la commande.",
         on_phone,
+        f"- Commercial(e) : {cc.sales_rep}" if cc.sales_rep else "",
         f"- Statut : {cc.status}" + (" — COMPTE BLOQUÉ : ne rien promettre, prendre le message" if cc.blocked else ""),
         f"- Jours de livraison (ERP, ils font foi même si une note dit le contraire) : "
         f"{', '.join(DAYS_FR.get(d, d) for d in cc.delivery_days) or 'inconnus'}",

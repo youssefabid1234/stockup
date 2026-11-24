@@ -72,7 +72,14 @@ from . import fillers
 from .utterance import Utterance
 from .voice_offers import CallOffers
 from .vocabulary import stt_hint
-from .voice_reply import one_question, spoken_reply, vary_closing, vary_opening, without_repeated_greeting
+from .voice_reply import (
+    one_question,
+    spoken_reply,
+    vary_closing,
+    vary_opening,
+    without_repeated_greeting,
+    without_repeated_question,
+)
 
 client_message = TypeAdapter(VoiceClientMessage)
 
@@ -443,7 +450,8 @@ class VoiceConnection:
             conv.pending = [*conv.pending, getattr(utterance, "annotated", None) or heard]
             working = [*conv.history, ChatMessage(role="user", content=listening.merge_parts(conv.pending))]
             speaker = speaker or Speaker(get_tts_client(), self.send, self.send_bytes, self.bank)
-            offers = conv.offers if team_flags.recommendations() else None
+            new_client = bool(conv.call_context and conv.call_context.is_new)
+            offers = conv.offers if team_flags.recommendations() and not new_client else None
             offer_to_play = None
             review = None
             handled = await offers.respond(heard) if offers else None
@@ -462,10 +470,14 @@ class VoiceConnection:
                 # TEAM_ROUTER: « c'est bon, validez », « merci » → the fast model (2-3× faster); the rest → the main model
                 # team 12 (Youssef): several pieces pending → route on the whole request, not just the last « merci »
                 route_on = heard if len(conv.pending) == 1 else listening.merge_parts(conv.pending)
-                llm, model_used = pick_llm(route_on, get_llm_client(), get_fast_llm_client)
+                if new_client:  # a new client’s « merci » may still need to record the request
+                    llm, model_used = get_llm_client(), "principal"
+                else:
+                    llm, model_used = pick_llm(route_on, get_llm_client(), get_fast_llm_client)
+                tools = [t for t in all_tools() if not (new_client and t.name in preload.NO_ORDER_FOR_NEW)]
                 if model_used == "rapide":
                     print(f"[router] modèle rapide pour « {heard} »", flush=True)
-                async for ev in agent(working, llm=llm, tools=all_tools(), mode="voice", actor_name=conv.actor_name, **extra):
+                async for ev in agent(working, llm=llm, tools=tools, mode="voice", actor_name=conv.actor_name, **extra):
                     match ev:
                         case TextEvent(delta=delta) if delta.strip():
                             if timings.llm_first_token_ms is None:
@@ -486,6 +498,8 @@ class VoiceConnection:
                                 spoken = without_repeated_greeting(spoken, contact)
                             spoken = vary_opening(spoken, conv.last_spoken)  # team 12 (Youssef): no « Parfait, » twice in a row
                             spoken = vary_closing(one_question(spoken), conv.used_closings)  # one question, varied closing
+                            if new_client:
+                                spoken = without_repeated_question(spoken, conv.last_spoken)
                         case ErrorEvent(message=message):
                             await speaker.stop_waiting()
                             await self.send(VoiceErrorMessage(message=message))
