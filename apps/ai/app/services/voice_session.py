@@ -73,6 +73,7 @@ from .utterance import Utterance
 from .voice_offers import CallOffers
 from .vocabulary import stt_hint
 from .voice_reply import (
+    EarlySpeech,
     one_question,
     spoken_reply,
     vary_closing,
@@ -422,6 +423,7 @@ class VoiceConnection:
 
             # 1. Speech → text: with a streaming STT only the last words are left to finalize
             early = None
+            ahead = None  # team 12: EarlySpeech, set only when the agent writes the reply (not for an offer's reply)
             if utterance is not None and team_flags.no_silence():  # team 12: « je regarde » before the final transcript
                 speaker = speaker or Speaker(get_tts_client(), self.send, self.send_bytes, self.bank)
                 early = asyncio.create_task(fillers.early_acknowledgement(speaker, utterance))
@@ -482,12 +484,26 @@ class VoiceConnection:
                 tools = [t for t in all_tools() if not (new_client and t.name in preload.NO_ORDER_FOR_NEW)]
                 if model_used == "rapide":
                     print(f"[router] modèle rapide pour « {heard} »", flush=True)
+                ahead = None  # team 12 (Amine K., vitesse): the reply is spoken while the model writes it
+                if team_flags.early_speech() and team_flags.no_silence():
+                    contact = conv.call_context.caller_contact if conv.call_context else None
+
+                    def first_sentence(sentence: str, contact=contact, greeted=greeted) -> str:
+                        if greeted:
+                            sentence = without_repeated_greeting(sentence, contact)
+                        return vary_opening(sentence, conv.last_spoken)
+
+                    ahead = EarlySpeech(lambda sentence: speaker.push(sentence + " "), first_sentence)
                 async for ev in agent(working, llm=llm, tools=tools, mode="voice", actor_name=conv.actor_name, **extra):
                     match ev:
-                        case TextEvent(delta=delta) if delta.strip():
-                            if timings.llm_first_token_ms is None:
+                        case TextEvent(delta=delta):
+                            if delta.strip() and timings.llm_first_token_ms is None:
                                 timings.llm_first_token_ms = ms_since(llm_start)
+                            if ahead:
+                                ahead.text(delta)
                         case ToolCallEvent(call=call):
+                            if ahead:
+                                ahead.tool_call()
                             await self.send(AgentToolMessage(name=call.name, args=call.arguments))
                             await fillers.on_tool_call(speaker, call.name)  # team 12 (Mohamed Amine)
                         case ToolResultEvent(name=name, ok=ok, ms=ms, result=result):
@@ -526,7 +542,7 @@ class VoiceConnection:
                 if not team_flags.no_silence():  # mode 4 types on until the answer's first audio byte
                     await speaker.stop_waiting()
                 await self.send(AgentTextMessage(delta=spoken))
-                speaker.push(spoken)
+                speaker.push(ahead.rest(spoken) if ahead else spoken)  # early: only what was not said yet
             await speaker.finish()
             if offers and offer_to_play and speaker.tts_first_byte_ms is not None:
                 offers.pending = offer_to_play
@@ -535,7 +551,9 @@ class VoiceConnection:
             timings.tts_first_byte_ms = speaker.tts_first_byte_ms
             if speaker.first_byte_at:
                 timings.total_ms = int((speaker.first_byte_at - t0) * 1000 + 0.5)
+            answer_ms = int((speaker.answer_audio_at - t0) * 1000) if speaker.answer_audio_at else None
             print(f"[tour] transcription {timings.stt_ms} ms · modèle {timings.llm_total_ms} ms · 1er son {timings.total_ms} ms"
+                  f" · réponse entendue {answer_ms} ms"
                   f" · « {heard[:60]} »", flush=True)  # team 12: per-turn timings in the logs (micro tests)
             await self.send(AgentDoneMessage(text=spoken.strip(), timings=timings))
 
@@ -572,6 +590,7 @@ class Speaker:
         self.bank = bank if bank is not None else fillers.FillerBank()
         self.acknowledged = False
         self.transcript_ready = False  # team 12: early_acknowledgement stops once the final transcript is there
+        self.answer_audio_at: float | None = None  # team 12: first audio byte of the answer itself (not the fillers)
         self.restatement: str | None = None
         self.quick_transcript: str | None = None
         self.waiting_task: asyncio.Task | None = None
@@ -663,6 +682,8 @@ class Speaker:
                     async for chunk in chunks:
                         if chunk and self.tts_first_byte_ms is None:
                             self.tts_first_byte_ms = ms_since(tts_start)
+                        if chunk and self.answer_audio_at is None:
+                            self.answer_audio_at = time.perf_counter()  # team 12: the real answer starts being heard
                         if chunk and self.waiting_task and not self.waiting_task.done():
                             await self.stop_waiting()  # mode 4: the answer is here, stop typing
                         await self.play_audio(result.mime, chunk)

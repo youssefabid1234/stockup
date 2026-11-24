@@ -38,6 +38,7 @@ ORDER_RULES = """Règles « commande juste » (prise de commande au téléphone)
 - Prix : pour dire un prix ou un total, appelle quote_line et répète ses phrases « say » et « total » ; ne calcule jamais toi-même un prix au carton, à la plaque ou un total.
 - Dès que le client répond à ta relecture, appelle confirm_order tout de suite (sans tout revérifier) avec client_answer = sa réponse mot pour mot et read_back = ta relecture : un vérificateur décide si c'est un vrai oui. Si confirmed=false, suis « next » (ne dis pas que c'est validé). Si canConfirm=false, ne confirme pas et dis pourquoi.
 - Compte bloqué : ne prends aucune commande et ne promets rien ; ne donne aucun détail comptable interne ; dis que la comptabilité (Sandrine) le rappelle, et enregistre la demande avec log_client_event (type call).
+- « À quelle heure vous passez ? », « quand arrive le camion ? » : delivery_eta, puis dis sa phrase « say » telle quelle, sans rien promettre de plus.
 - Réclamation sur une livraison (manquant, abîmé, erreur, qualité) : report_delivery_issue d'abord (il retrouve la vraie livraison, le montant, et l'enregistre) ; s'il renvoie « next » sans l'avoir enregistrée, pose sa question. Excuse-toi en une phrase, propose ses options, puis settle_delivery_issue avec le choix du client (order_id = la commande en cours s'il y en a une). Ne fais jamais payer un manquant : jamais de commande payante pour le remplacer, jamais de geste au-delà de ce que l'outil propose."""
 
 
@@ -224,7 +225,7 @@ WARNINGS_FOR_CALLER: dict[str, tuple[str | None, bool]] = {
     "credit_limit": ("cette commande dépasse votre plafond de crédit : la comptabilité doit la valider avant", True),
     "no_route": ("aucune tournée ne passe chez vous ce jour-là", True),
     "insufficient_stock": (None, True),  # said per product below, with what is left
-    "expiring_soon": (None, False),  # a FEFO lot close to its date: the warehouse's business
+    "expiring_soon": (None, False),  # said per product below, with the date (idée 3, Amine K.)
     "price_below_cost": (None, False),  # margin: internal
 }
 
@@ -275,6 +276,31 @@ def unusual_lines(lines: list[dict], usual: list[dict], ratio: float = UNUSUAL_R
     return out
 
 
+_FR_MONTH_ABBR = ("janv", "févr", "mars", "avr", "mai", "juin", "juil", "août", "sept", "oct", "nov", "déc")
+
+
+def expiry_alert(warning: dict, order: dict) -> str | None:
+    """ERP « Levure fraîche… (pain de 500 g) : le lot lot_014289 expire le ven. 27 nov. » → « la levure fraîche… que je
+    vous livrerais est à utiliser avant le vendredi 27 novembre, juste après la livraison : ça vous va pour votre
+    production ? » (None if the message cannot be read: then nothing is said, as before)."""
+    m = re.search(r"expire le \S+ (\d{1,2}) (\S+?)\.?$", warning.get("message") or "")
+    line = next((li for li in order.get("lines", []) if li.get("productId") == warning.get("productId")), None)
+    if not m or not line or not order.get("deliveryDate"):
+        return None
+    month = next((i for i, a in enumerate(_FR_MONTH_ABBR, 1) if m.group(2).lower().startswith(a[:3])), None)
+    if not month:
+        return None
+    delivered = date.fromisoformat(order["deliveryDate"][:10])
+    year = delivered.year + (1 if month < delivered.month else 0)
+    try:
+        expires = date(year, month, int(m.group(1)))
+    except ValueError:
+        return None
+    name = short_name(line.get("productName", "")).lower()
+    return (f"le lot de {name} que je vous livrerais est à utiliser avant le {french_day(expires)}, juste après la "
+            "livraison : demande-lui si ça lui va pour sa production, ou s'il en veut moins")
+
+
 def review(order: dict, products: dict[str, dict], usual: list[dict], client_orders: list[dict] | None = None) -> dict:
     """
     Everything to read back before confirm_order, deterministic:
@@ -305,6 +331,8 @@ def review(order: dict, products: dict[str, dict], usual: list[dict], client_ord
                 said = (f"{short_name(line.get('productName', ''))} : il n'en reste que "
                         f"{say_quantity(left, line.get('unit') or p.get('unit'), p.get('caliber'))}") if left > 0 else \
                     f"{short_name(line.get('productName', ''))} : en rupture"
+        if w.get("code") == "expiring_soon":  # idée 3: a short date is the caller's business too (FEFO lot served)
+            said = expiry_alert(w, order)
         if said and said not in alerts:
             alerts.append(said)
         if blocks:

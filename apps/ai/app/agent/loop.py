@@ -37,6 +37,7 @@ from app.tools import ErpClient, Tool, ToolContext
 from app import team_flags
 
 from . import call_context as preload
+from . import fast_reply
 from .prompts import build_system_prompt
 
 GIVE_UP = "Désolé, je n'ai pas réussi à aller au bout. Pouvez-vous reformuler ?"
@@ -104,6 +105,13 @@ async def run_agent(
             # team 12 (Youssef): caller just identified → load their sheet in the background for the next turns
             if team_flags.preload() and call_context is None and (client_id := preload.identify_client(messages)):
                 preload.prefetch(ctx.erp, client_id)
+            # team 12 (Amine K., vitesse): a clean order / confirmation result is said as is, no 2nd model call
+            if direct := fast_reply.compose(mode, calls, results):
+                message = ChatMessage(role="assistant", content=direct)
+                messages.append(message)
+                yield TextEvent(delta=f" {direct}" if said_something else direct)
+                yield DoneEvent(message=message, usage=usage, ms=ms_since(started))
+                return
 
         # Safety net: the model kept calling tools.
         message = ChatMessage(role="assistant", content=GIVE_UP)

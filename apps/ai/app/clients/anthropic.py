@@ -56,6 +56,10 @@ class AnthropicLLM(LLMClient):
             body["system"] = [{"type": "text", "text": req.system, "cache_control": CACHE}]
         if self.effort:
             body["output_config"] = {"effort": self.effort}
+        from app import team_flags  # team 12 (Amine K., vitesse): no thinking before answering (Sonnet 5.5 only)
+
+        if team_flags.no_thinking() and self.model.startswith("claude-sonnet-5-5"):
+            body["thinking"] = {"type": "between_tools"}
         if req.tools:
             body["tools"] = [{"name": t.name, "description": t.description, "input_schema": t.parameters} for t in req.tools]
             body["tools"][-1]["cache_control"] = CACHE

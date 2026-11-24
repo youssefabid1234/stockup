@@ -46,6 +46,26 @@ def slim_prompt() -> bool:
     return _on("TEAM_SLIM_PROMPT")
 
 
+def fast_reply() -> bool:
+    """TEAM_FAST_REPLY=1: a clean place_order / confirm_order result is said directly, no 2nd model call (agent/fast_reply.py)."""
+    return _on("TEAM_FAST_REPLY")
+
+
+def early_speech() -> bool:
+    """TEAM_EARLY_SPEECH=1: the reply is spoken while the model writes it (services/voice_reply.EarlySpeech)."""
+    return _on("TEAM_EARLY_SPEECH")
+
+
+def no_thinking() -> bool:
+    """TEAM_NO_THINKING=1: Sonnet 5.5 answers without internal thinking (thinking: between_tools), for speed."""
+    return _on("TEAM_NO_THINKING")
+
+
+def fast_stt() -> bool:
+    """TEAM_FAST_STT=1: Soniox low-latency endpointing, no speaker separation (clients/soniox.py), for speed."""
+    return _on("TEAM_FAST_STT")
+
+
 def router() -> bool:
     """TEAM_ROUTER=1: simple replies (« c'est bon, validez », « merci ») go to the fast model (agent/router.py)."""
     return _on("TEAM_ROUTER")

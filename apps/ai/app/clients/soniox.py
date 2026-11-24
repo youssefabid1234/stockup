@@ -48,6 +48,11 @@ class SonioxSTT(STTClient):
             "enable_endpoint_detection": True,  # final words at each pause, not only at the end
             "enable_speaker_diarization": True,  # team 12 (Youssef): who said what (caller vs. background voice)
         }
+        from app import team_flags
+
+        if team_flags.fast_stt():  # team 12 (Amine K., vitesse): Soniox's documented low-latency endpoint profile
+            req.update({"endpoint_latency_adjustment_level": 2, "endpoint_sensitivity": 0.3, "max_endpoint_delay_ms": 1500,
+                        "enable_speaker_diarization": False})
         terms, size = [], 0
         for t in (t.strip() for t in (hint or "").split(",")):
             if t and size + len(t) <= MAX_TERMS_CHARS:

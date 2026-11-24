@@ -57,7 +57,22 @@ def test_nothing_early_for_a_simple_reply_or_an_empty_partial(monkeypatch):
 
     for partial in ("", "Oui c'est bon", "Merci, au revoir"):
         s = asyncio.run(scenario(partial))
-        assert not s.played and s.waiting_task is None
+        assert not s.played and s.waiting_task is None  # final transcript within 0.4 s: nothing early
+
+
+def test_typing_without_phrase_when_the_transcript_lags(monkeypatch):
+    _mode4(monkeypatch)
+
+    async def scenario():
+        speaker = FakeSpeaker()
+        task = asyncio.create_task(fillers.early_acknowledgement(speaker, SimpleNamespace(partial="C'est bon, validé")))
+        await asyncio.sleep(0.6)  # the final transcript is late (1.2-1.6 s at the mic)
+        speaker.transcript_ready = True
+        await task
+        return speaker
+
+    s = asyncio.run(scenario())
+    assert not s.played and s.waiting_task is not None  # typing, no « je regarde » for a simple reply
 
 
 def test_off_outside_mode_4(monkeypatch):

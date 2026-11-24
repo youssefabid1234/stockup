@@ -16,7 +16,7 @@ Skipped if the pack lacks the product or every target client (another company's 
 from __future__ import annotations
 
 import calendar
-from datetime import date
+from datetime import date, timedelta
 
 from .db import Doc
 
@@ -30,6 +30,26 @@ RULE_ID = "prl_0900"  # far from the seed's ids; new rules created in the ERP co
 # Epiphany articles the data pack ships inactive while the company docs (01-entreprise.md) say pre-orders are open
 # until 15/12 and clients have pre-orders in their cards: the agent refused them in 3 of 150 test calls (24/11).
 ACTIVATE = ("prd_0068", "prd_0069")  # couronnes des rois, fèves des rois
+
+
+# Team 12 (Amine K., idée 3): one short-dated lot so the « date courte » alert can be heard in the demo. FICTIONAL
+# (DECISIONS §5): 12 buckets (60 L) of crème fraîche épaisse 30 % received earlier, to be used before Thursday (today + 2), the
+# lot FEFO serves first for a Thursday delivery → the ERP's expiring_soon warning → the agent tells the caller.
+SHORT_LOT_ID = "lot_090001"
+SHORT_LOT_PRODUCT = "prd_0032"  # Crème fraîche épaisse 30 % (seau 5 L)
+SHORT_LOT_QTY = 60.0  # litres = 12 buckets of 5 L
+SHORT_LOT_DAYS_LEFT = 2  # Thursday: a Wednesday or Thursday delivery gets the warning
+
+
+def demo_short_lot(pack: Doc, today: date) -> Doc | None:
+    product = next((p for p in pack.get("products") or [] if p.get("id") == SHORT_LOT_PRODUCT), None)
+    model = next((lot for lot in pack.get("lots") or [] if lot.get("productId") == SHORT_LOT_PRODUCT), None)
+    if not product or not model:
+        return None
+    expires = today + timedelta(days=SHORT_LOT_DAYS_LEFT)
+    received = expires - timedelta(days=int(product.get("shelfLifeDays") or 20))
+    return {**model, "id": SHORT_LOT_ID, "qtyReceived": SHORT_LOT_QTY, "qtyRemaining": SHORT_LOT_QTY,
+            "receivedAt": received.isoformat(), "expiresAt": expires.isoformat()}
 
 
 def english() -> bool:
@@ -78,6 +98,11 @@ def add_team_demo_data(pack: Doc) -> list[str]:
     today_raw = (pack.get("meta") or {}).get("today")
     if not today_raw:
         return added
+    lots = pack.get("lots")
+    if isinstance(lots, list) and not any(lot.get("id") == SHORT_LOT_ID for lot in lots):
+        if short := demo_short_lot(pack, date.fromisoformat(str(today_raw)[:10])):
+            lots.append(short)
+            added.append(f"lot court {SHORT_LOT_ID} ({SHORT_LOT_PRODUCT}, DLC {short['expiresAt']})")
     products = {p.get("id") for p in pack.get("products") or []}
     targets = [c for c in pack.get("clients") or [] if c.get("id") in TARGET_CLIENT_IDS]
     if PRODUCT_ID not in products or not targets:

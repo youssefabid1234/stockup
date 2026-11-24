@@ -1,0 +1,23 @@
+{
+  "id": "S35",
+  "owner": "amine-khalil",
+  "title": "« Vous passez à quelle heure ce matin ? » : l'heure prévue sur la tournée planifiée",
+  "why": "Idée 2 : l'heure d'arrivée vient de la tournée (départ + 12 min × rang), jamais inventée.",
+  "client": "cli_0003",
+  "turns": [
+    {
+      "say": "Bonjour, c'est Kevin des Chocolatines du Capitole. Vous passez à quelle heure ce matin ?",
+      "expect": {
+        "tools_any": [
+          "delivery_eta"
+        ],
+        "says_any": [
+          "7 h 05",
+          "7h05",
+          "sept heures cinq",
+          "7 heures 05"
+        ]
+      }
+    }
+  ]
+}
