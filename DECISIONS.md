@@ -37,6 +37,15 @@ aux prix Sonnet 5.5 : 2 $ / M en entrée, 10 $ / M en sortie, 2,50 $ / M en écr
 | Nos interrupteurs éteints (≈ kit d'origine) | 3,4 s / 6,7 s (silence jusque-là) | 3,3 s / 6,6 s | 0,1 s / 0,3 s | 32 / 43 (74 %) | 10 / 21 | 0,019 $ / 0,036 $ |
 | **Configuration du jury** (`.env.example`, 8 interrupteurs) | **0,0 s / 0,9 s** (« je regarde » + clavier) | 3,6 s / 6,8 s | 0,1 s / 0,2 s | **39 / 43 (91 %)** | **17 / 21** | 0,022 $ / 0,076 $ |
 
+**Au vrai micro (24/11, ~10h30), une correction importante.** Les chiffres ci-dessus passent par du texte, sans
+transcription. Au micro du navigateur, la transcription finale de Soniox arrive **1,24 à 1,52 s** après la fin de la
+phrase (9 répliques, médiane 1,34 s), et le « je regarde » + clavier l'attendait : le premier son arrivait **1,33 à
+1,86 s** après la phrase, pas 0,0 s. Corrigé : dès la fin de la parole, les mots déjà entendus (transcription partielle)
+sont regardés toutes les 50 ms ; s'ils annoncent une recherche (« vous avez encore du tourage… », « c'est combien… »),
+l'accusé et le clavier partent aussitôt (`fillers.early_acknowledgement`). Vrai audio (ElevenLabs → Soniox, 3 questions) :
+**premier son 0,00 à 0,26 s** après la phrase ; réponse utile 2,4 à 2,6 s, dont 1,2 à 1,4 s de transcription (le plus gros
+poste restant). Une réponse simple (« oui », « merci ») ne déclenche toujours rien.
+
 Lecture :
 - **Rapide** : l'appelant n'entend plus jamais de blanc (premier son à 0,0 s au lieu de 3,4 s en médiane). La réponse
   utile arrive en un temps comparable (3,3 → 3,6 s), alors que l'agent en fait plus : relecture, vérification Jev,
@@ -329,6 +338,44 @@ fausse), S21 (appelant non identifié : l'agent demande qui appelle), S22 (plusi
 n'est écrit avant l'accord sur le 82 %, puis la commande entière en une fois) ; 7 répliques sur 7. Tests : 6 dans
 `test_after_sales.py`, suite complète 391 verts.
 
+#### Préchargement anticipé (TODO 4 de l'orchestrateur, Amine Khalil) : fait, gain faible, et une découverte sur le STT
+
+**Fait** (`agent/orchestrator.py` `Anticipation`, branché dans `voice_session.py`) : pendant que le client parle, chaque
+transcription partielle est scannée (sans modèle, catalogue en cache) ; dès que des produits sont cités, leur stock, prix,
+promo et remplaçants sont lus en arrière-plan. À la fin de la phrase, mêmes produits → le résultat est repris tel quel ;
+sinon il est jeté et la vérification normale tourne. Lecture seule, annulé si le client coupe la parole. 6 tests.
+
+**Mesuré en vrai audio** (phrase lue par ElevenLabs, MP3 envoyé au rythme de la parole sur le WebSocket `/voice`, vraie
+transcription Soniox, 3 questions de Sarrailh, 2 appels) : la vérification était déjà prête à la fin de la phrase sur
+1 question sur 3 ; le gain est de **30 à 40 ms** seulement, car une fois le catalogue en cache la lecture de l'ERP ne
+prend que 9 à 48 ms (les 300 ms mesurés plus tôt étaient le premier appel, à froid).
+
+**Découverte** : sur ce même test, la transcription finale arrive **1,55-1,60 s** après la fin de la parole
+(`sttMs`), et au moment où le client s'arrête, Soniox n'a transcrit que le début de la phrase (« Bonjour, vous avez encore
+du tourage », aucun mot figé) : Soniox a ~1 s de retard sur l'audio. Démarrer le modèle sur le partiel ne servirait donc à
+rien ici. C'est le plus gros délai d'un tour (le modèle met 1,0-1,5 s). **À vérifier au micro du navigateur**
+(WebM/Opus, pas MP3) : si `sttMs` y est aussi > 1 s, c'est la piste n°1 de vitesse (format audio, réglages de Soniox,
+ou fin de parole détectée plus tôt en mains libres). **Vérifié au micro le jour même** : 1,24 à 1,52 s ; l'accusé part
+maintenant sur la transcription partielle (premier son 0,00-0,26 s, voir §3).
+
+**Plus de blanc, voix française (Youssef, 24/11 midi).** (1) Blancs de 1,8 à 4,5 s : un `.env` créé avant `TEAM_FILLERS=4`
+n'avait pas la ligne → phrases d'attente éteintes ; docker-compose lit maintenant `.env.example` puis `.env` (une ligne
+absente prend la valeur d'équipe) → premier son immédiat. (2) Mauvais français : la voix par défaut était « George »
+(anglaise) sur `eleven_flash_v2_5` ; nouvelle voix par défaut « Lucie » (française, service client) sur
+`eleven_v4_turbo` (1er octet mesuré ~200-370 ms contre ~210 ms), voix de secours si la clé n'a pas la voix, et
+`clients/french_speech.tts_text` lit les codes en mots (T55 → T 55, 82 % → 82 pour cent, 8,46 € → 8 euros 46, kg,
+HT, AOP épelé). Extraits comparatifs (4 voix × 3 modèles) générés pour choisir à l'oreille.
+
+**Première phrase adaptée à la demande (Youssef, 24/11 après-midi).** Au test réel, l'accusé du mode zéro silence
+était générique et parfois trompeur (« Parfait, je vais voir ça » avant de refuser une remise). Maintenant : 10 types
+de demande (remise, réclamation, relecture, total, habituel, correction, prix, stock, commande, livraison) reconnus par
+mots-clés en 0 ms, sinon Jev (≤ 0,3 s) ; chaque type a ses phrases neutres, préparées avec la voix (« J'entends bien »,
+« Je vous relis ça », « Je calcule ça »…), sans répétition ; aucune pour une simple confirmation. Contrôlé en vrai :
+10 demandes sur 10 avec la bonne phrase, premier son immédiat. Aussi : salutation par le prénom (la civilité est
+retirée du formulaire), bulles « Transcription… » qui restaient bloquées, faux temps sur la relance, règles
+« ne pas revenir sur ce que l'ERP a dit », « comme d'habitude = quantités habituelles », « réclamation : ne rien
+inventer ».
+
 ### Commande juste (Amine Khalil)
 
 **Mission** : ce qui finit dans l'ERP est exactement ce que le client voulait (bon produit, bonne quantité, bon jour,
@@ -387,20 +434,43 @@ suite complète de l'équipe passe (151 tests au mar. 24/11 01h00), interrupteur
 
 ## 5. Données modifiées pour la démo
 
-**Promo de démo sur le tourage 82 % (Daycem, T4), assumée et fictive.** Créée par l'API de l'ERP avec
-`scripts/setup_demo_data.py`, parce que `data/seed/` n'est pas dans git :
+**Promo de démo sur le tourage 82 % (Daycem, T4), assumée et fictive, ciblée depuis le 24/11.**
 
-- règle de prix `Promo tourage 82 % : −8 % jusqu'au 30/11` : groupe « Boulangeries » × Beurre de tourage 82 %
-  (`prd_0026`), −8 % sur le prix catalogue, du jour de l'ERP (24/11) à la fin du mois ; la note de la règle dit que
-  ce sont des données de démo ;
-- effet : 9,20 € → **8,46 €/kg** pour les boulangeries sans prix négocié (ex. Le Pétrin de Colomiers). Un prix négocié
-  gagne toujours (La Gerbe d'Or reste à 8,82 €) ; les autres clients restent à 9,20 € ;
-- pourquoi : la scène de démo « rupture du tourage AOP → remplaçant **en promo**, argumenté, avec accord ». L'agent ne
-  cite la promo que parce que `get_price` la renvoie (règle « jamais de promo inventée ») ;
-- **automatique depuis le 24/11 (Youssef)** : l'ERP l'ajoute lui-même à chaque chargement des données (1er démarrage,
-  `make reset`, bouton de remise à zéro, `run_scenarios.py --reset`) : `apps/backend/app/core/team_demo.py`, même
-  règle, id `prl_0900`. Avant, chaque remise à zéro l'effaçait et la scène de démo tombait (vu pendant les mesures T1).
-  Le script de Daycem reste utilisable (il répond « déjà là »).
+- **règle** `Promo tourage 82 % : −8 % jusqu'au 30/11` (id `prl_0900`) : tag client **`promo-tourage`** × Beurre de
+  tourage 82 % (`prd_0026`), −8 % sur le prix catalogue, sans quantité minimale, du jour de l'ERP (24/11) à la fin du
+  mois. La note de la règle et le libellé du tag disent que ce sont des données de démo ;
+- **cible (B)** : boulangeries **actives**, avec **au moins 2 commandes de tourage AOP** (`prd_0025`, le produit en
+  rupture) sur les 12 derniers mois, dont la fiche **ne refuse pas** les remplacements (`substitution_policy` ; les
+  « demander » sont gardés : l'agent demande toujours l'accord). Soit **6 clients** :
+
+  | Client | AOP sur 12 mois | 82 % sur 12 mois | Politique |
+  |---|---|---|---|
+  | `cli_0020` Boulangerie-Pâtisserie Rémy | 27 commandes · 2 180 kg | 26 · 1 678 kg | accepte |
+  | `cli_0033` Au Fournil de Sandrine | 53 · 5 246 kg | 39 · 3 064 kg | demander |
+  | `cli_0060` La Mie de Saint-Michel | 68 · 1 691 kg | 56 · 2 270 kg | accepte |
+  | `cli_0070` Au Pain de Guilhem | 54 · 2 658 kg | 0 | accepte |
+  | `cli_0085` La Mie d'Arnaud-Bernard | 45 · 3 935 kg | 56 · 4 748 kg | demander |
+  | `cli_0102` Au Fournil de Guillaume | 49 · 3 683 kg | 0 | demander |
+
+- **pourquoi** : la promo sert à écouler le remplaçant **pendant la rupture de l'AOP** ; elle doit aller à ceux qui
+  achetaient l'AOP et peuvent changer. Avant, elle visait les 36 « boulangeries » : 33 en profitaient (les 3 autres ont un
+  prix négocié), dont **29 acheteurs habituels du 82 %** (effet d'aubaine) et **13 clients qui refusent tout
+  remplacement** (ex. Maison Sarrailh). Cibler « les acheteurs habituels du 82 % » aurait gardé l'aubaine ;
+- **liste figée** : calculée par `scripts/promo_target.py` (générique, aucun nom ni identifiant dans le code) et
+  recopiée dans `scripts/setup_demo_data.py` et `apps/backend/app/core/team_demo.py`. `tests/test_promo_target.py`
+  échoue si les données s'en écartent ; `tests/test_setup_demo_data.py` vérifie que les deux fichiers construisent
+  exactement le même tag, la même cible et la même règle ;
+- **effet mesuré après `make reset`** : 8,46 €/kg pour les 6 clients ciblés ; **9,20 €** (prix catalogue) pour les 27
+  autres boulangeries sans prix négocié (ex. Le Pétrin de Colomiers, scénario S47) ; les prix négociés ne bougent pas
+  (Au Pain d'Audrey 8,58 €, Boulangerie du Marché 8,78 €, La Gerbe d'Or 8,82 €) ;
+- l'agent ne cite la promo que parce que l'ERP la renvoie (« jamais de promo inventée ») ; ce n'est pas une remise
+  qu'il accorde (aucune en standard, ≤ 5 % pour un commercial, au-delà Bernard Castagné) ;
+- **automatique depuis le 24/11 (Youssef)** : l'ERP ajoute le tag, la cible et la règle à chaque chargement des
+  données (1er démarrage, `make reset`, bouton de remise à zéro, `run_scenarios.py --reset`) : `team_demo.py`. Le script
+  de Daycem reste utilisable sur un ERP qui n'a pas été remis à zéro : il crée ou corrige ce qui manque, sans rien
+  dupliquer (vérifié : deux passages de suite, aucune modification ; une ancienne règle « boulangeries » est corrigée) ;
+- scènes : **S40** (Au Pain de Guilhem, dans la cible : promo citée, 8,46 €) et **S47** (Le Pétrin de Colomiers, hors
+  cible : aucune promo, 9,20 €).
 
 **Prêt pour le jury (Youssef, 24/11).** Testé sur un clone neuf avec seulement `data/seed/` remis en place et une base
 vide : `make setup` échouait (« Permission denied » : les scripts `.sh` étaient enregistrés non exécutables depuis

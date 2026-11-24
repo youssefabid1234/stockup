@@ -41,6 +41,9 @@ async def confirm_order(
     from app.clients import get_jev_client
 
     order = await ctx.erp.get(f"/api/orders/{enc(order_id)}")
+    if order.get("status") == "confirmed":  # lines added to a confirmed order are in it already (seen 24/11: 12.5 s of retries)
+        return {"confirmed": True, "alreadyConfirmed": True,
+                "next": "Elle était déjà validée et les changements y sont : dis-le simplement, sans la relire en entier."}
     blocking = [w for w in order.get("warnings") or [] if WARNINGS_FOR_CALLER.get(w.get("code"), (None, False))[1]]
     if blocking:
         return {

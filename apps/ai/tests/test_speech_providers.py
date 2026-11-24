@@ -317,7 +317,7 @@ def test_factory_builds_the_four_speech_providers_with_french_defaults():
     assert (type(stt("soniox")).__name__, stt("soniox").model) == ("SonioxSTT", "stt-rt-v6")
     assert (type(stt("gradium")).__name__, stt("gradium").model) == ("GradiumSTT", "default")
     assert stt("soniox", model="stt-rt-v5").model == "stt-rt-v5"
-    assert (type(tts("elevenlabs")).__name__, tts("elevenlabs").model) == ("ElevenLabsTTS", "eleven_flash_v2_5")
+    assert (type(tts("elevenlabs")).__name__, tts("elevenlabs").model) == ("ElevenLabsTTS", "eleven_v4_turbo")
     assert (type(tts("gradium")).__name__, tts("gradium").voice) == ("GradiumTTS", "F7Iib4MAyHIRed0x")
     assert tts("gradium", voice="0fvH6XAKvA748v2v").voice == "0fvH6XAKvA748v2v"
     with pytest.raises(ConfigError, match="STT_API_KEY"):

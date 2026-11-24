@@ -33,7 +33,7 @@ from app.agent import listening
 from app.agent import run_agent, sanitize_history
 from app.agent.call_context import CallContext
 from app.agent.loop import ms_since
-from app.agent.orchestrator import get_fast_llm_client, run_voice_turn
+from app.agent.orchestrator import Anticipation, get_fast_llm_client, run_voice_turn
 from app.agent.router import pick_llm
 from app.clients import STTUpdate, TTSClient, get_llm_client, get_stt_client, get_tts_client
 from app.config import settings
@@ -105,6 +105,7 @@ class VoiceConnection:
         self.conversation: Conversation | None = None
         self.recording: Utterance | None = None  # while the key is down
         self.turn: asyncio.Task | None = None
+        self.anticipation: Anticipation | None = None  # team 12 (TEAM_ORCHESTRATOR): ERP checked while the caller speaks
         self.warm_up: asyncio.Task | None = None
         self.bank = fillers.FillerBank()
         self.greetings: dict[str, fillers.CachedAudio] = {}
@@ -166,10 +167,13 @@ class VoiceConnection:
             case AudioStartMessage(mime=mime, hint=hint):
                 await self.interrupt()  # barge-in
                 self.recording = Utterance(get_stt_client(), mime, hint, on_partial=self.send_partial)
+                if team_flags.orchestrator():
+                    self.anticipation = Anticipation(self.conversation.call_context, self.conversation.actor_name)
             case AudioEndMessage():
                 if self.recording:
                     utterance, self.recording = self.recording, None
-                    self.start_turn(utterance=utterance)
+                    anticipated, self.anticipation = self.anticipation, None
+                    self.start_turn(utterance=utterance, anticipated=anticipated)
             case TextMessage(text=text):
                 await self.interrupt()
                 self.start_turn(text=text)
@@ -199,6 +203,8 @@ class VoiceConnection:
         await speaker.finish()
 
     async def send_partial(self, update: STTUpdate) -> None:
+        if self.anticipation:  # team 12: the colleague starts on the words heard so far (never blocks)
+            self.anticipation.heard(update.text)
         await self.send(TranscriptMessage(text=update.text, final=False, stable=update.stable))
 
     async def set_caller(self, msg: CallerMessage) -> None:
@@ -213,7 +219,15 @@ class VoiceConnection:
             conv.used_closings = []
             conv.agent_opened = False
             greetings = fillers.OPENING_LINES if team_flags.no_silence() else CALL_GREETINGS  # mode 4: the agent opens
-            conv.opening_greeting = greetings[msg.contact_title] if opening_enabled else None
+            # team 12 (Youssef): greet the person on the phone by first name (prepared while the sheet loads, no delay)
+            first = (msg.contact_name or "").split()[0] if (msg.contact_name or "").strip() else ""
+            if msg.contact_title or not first:  # a civility sent by an older page: kept
+                personal = greetings[msg.contact_title]
+            elif team_flags.no_silence():
+                personal = f"Bonjour {first}, que puis-je faire pour vous ?"
+            else:
+                personal = f"Bonjour {first}."
+            conv.opening_greeting = personal if opening_enabled else None
         async with asyncio.TaskGroup() as preparation:
             if team_flags.no_silence() and not msg.resume and conv.opening_greeting:
                 # mode 4: say « Bonjour…, que puis-je faire pour vous ? » as soon as the clip is ready, while the
@@ -309,6 +323,9 @@ class VoiceConnection:
         if self.recording:
             self.recording.cancel()
             self.recording = None
+        if self.anticipation:
+            self.anticipation.cancel()
+            self.anticipation = None
         if self.turn and not self.turn.done():
             self.turn.cancel()
             with suppress(asyncio.CancelledError):
@@ -322,6 +339,7 @@ class VoiceConnection:
         conv: Conversation,
         text: str | None = None,
         utterance: Utterance | None = None,  # spoken: already being transcribed since audio_start
+        anticipated: Anticipation | None = None,  # team 12: ERP facts fetched while the caller was speaking
     ) -> None:
         t0 = time.perf_counter()  # end of caller speech
         timings = TurnTimings()
@@ -343,6 +361,10 @@ class VoiceConnection:
                     conv.opening_greeting = None
 
             # 1. Speech → text: with a streaming STT only the last words are left to finalize
+            early = None
+            if utterance is not None and team_flags.no_silence():  # team 12: « je regarde » before the final transcript
+                speaker = speaker or Speaker(get_tts_client(), self.send, self.send_bytes, self.bank)
+                early = asyncio.create_task(fillers.early_acknowledgement(speaker, utterance))
             if utterance is not None:
                 try:
                     text = await utterance.text()
@@ -350,7 +372,14 @@ class VoiceConnection:
                     # team 12 (Youssef): the caller spoke again before this piece was final: keep what was heard
                     if partial := (getattr(utterance, "partial", "") or "").strip():
                         conv.pending.append(partial)
+                    if early is not None:
+                        early.cancel()
                     raise
+                finally:
+                    if early is not None:
+                        speaker.transcript_ready = True
+                        if not early.done():
+                            await asyncio.wait({early}, timeout=1.0)
                 timings.stt_ms = ms_since(t0)  # end of speech → final transcript
             heard = (text or "").strip()
             if not heard:
@@ -371,6 +400,8 @@ class VoiceConnection:
             # team 12 (Youssef): the orchestrator when TEAM_ORCHESTRATOR is on, else the kit's agent loop
             agent = run_voice_turn if team_flags.orchestrator() else run_agent
             extra = {"call_context": conv.call_context} if conv.call_context is not None else {}
+            if anticipated is not None and agent is run_voice_turn:
+                extra["anticipated"] = anticipated
             # TEAM_ROUTER: « c'est bon, validez », « merci » → the fast model (2-3× faster); the rest → the main model
             # team 12 (Youssef): several pieces pending → route on the whole request, not just the last « merci »
             route_on = heard if len(conv.pending) == 1 else listening.merge_parts(conv.pending)
@@ -413,6 +444,8 @@ class VoiceConnection:
             timings.tts_first_byte_ms = speaker.tts_first_byte_ms
             if speaker.first_byte_at:
                 timings.total_ms = int((speaker.first_byte_at - t0) * 1000 + 0.5)
+            print(f"[tour] transcription {timings.stt_ms} ms · modèle {timings.llm_total_ms} ms · 1er son {timings.total_ms} ms"
+                  f" · « {heard[:60]} »", flush=True)  # team 12: per-turn timings in the logs (micro tests)
             await self.send(AgentDoneMessage(text=spoken.strip(), timings=timings))
 
         except asyncio.CancelledError:
@@ -447,6 +480,7 @@ class Speaker:
         self.tts, self.send, self.send_bytes = tts, send, send_bytes
         self.bank = bank if bank is not None else fillers.FillerBank()
         self.acknowledged = False
+        self.transcript_ready = False  # team 12: early_acknowledgement stops once the final transcript is there
         self.restatement: str | None = None
         self.quick_transcript: str | None = None
         self.waiting_task: asyncio.Task | None = None

@@ -319,9 +319,9 @@ async def test_elevenlabs_request_and_error():
     result = await ElevenLabsTTS("xi", http=http).synthesize("Bonjour")
     assert b"".join([c async for c in result.chunks]) == b"mp3"
     req = seen[0]
-    assert req.url.path == "/v1/text-to-speech/JBFqnCBsd6RMkjVDRZzb/stream" and req.url.params["output_format"] == "mp3_44100_128"
+    assert req.url.path == "/v1/text-to-speech/YxrwjAKoUKULGd0g8K9Y/stream" and req.url.params["output_format"] == "mp3_44100_128"
     assert req.headers["xi-api-key"] == "xi"
-    assert json.loads(req.content) == {"text": "Bonjour", "model_id": "eleven_flash_v2_5", "language_code": "fr"}
+    assert json.loads(req.content) == {"text": "Bonjour", "model_id": "eleven_v4_turbo", "language_code": "fr"}  # team 12: new default model
 
     http, _ = recorder(lambda _: httpx.Response(429, text="quota"))
     try:
