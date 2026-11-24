@@ -77,7 +77,6 @@ export function CallerForm({ disabled, pending, onStart }: { disabled: boolean; 
   const [query, setQuery] = useState("");
   const [clientId, setClientId] = useState("");
   const [contactIdx, setContactIdx] = useState(0);
-  const [contactTitle, setContactTitle] = useState<CallerInput["contactTitle"]>();
   const [company, setCompany] = useState("");
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
@@ -96,14 +95,14 @@ export function CallerForm({ disabled, pending, onStart }: { disabled: boolean; 
   const contact = contacts[contactIdx] ?? contacts[0];
 
   const canStart = !disabled && !pending && (kind === "known" ? !!clientId : !!(company.trim() || name.trim()) && !!phone.trim());
-  const choose = (k: Kind) => { setKind(k); setContactTitle(undefined); };
-  const pick = (id: string) => { setClientId(id); setContactIdx(0); setContactTitle(undefined); };
+  const choose = (k: Kind) => setKind(k);
+  const pick = (id: string) => { setClientId(id); setContactIdx(0); };
 
   const submit = (e: FormEvent) => {
     e.preventDefault();
     if (!canStart) return;
-    if (kind === "known") onStart({ clientId, contactName: contact?.name, phone: contact?.phone, contactTitle });
-    else onStart({ isNew: true, companyName: company.trim() || undefined, contactName: name.trim() || undefined, phone: phone.trim(), contactTitle });
+    if (kind === "known") onStart({ clientId, contactName: contact?.name, phone: contact?.phone });
+    else onStart({ isNew: true, companyName: company.trim() || undefined, contactName: name.trim() || undefined, phone: phone.trim() });
   };
 
   return (
@@ -164,7 +163,7 @@ export function CallerForm({ disabled, pending, onStart }: { disabled: boolean; 
                     key={`${x.name}-${i}`}
                     type="button"
                     aria-pressed={i === contactIdx}
-                    onClick={() => { setContactIdx(i); setContactTitle(undefined); }}
+                    onClick={() => setContactIdx(i)}
                     title={[x.role, x.phone].filter(Boolean).join(" · ")}
                     className={cn("flex items-center gap-2 py-1 pl-1 pr-3", PILL, i === contactIdx ? PILL_ON : PILL_OFF)}
                   >
@@ -187,20 +186,6 @@ export function CallerForm({ disabled, pending, onStart }: { disabled: boolean; 
           <p className="px-1 text-[12px] text-[#667781] dark:text-[#8696a0]">L'agent prend la demande sans rien confirmer ; l'équipe valide le compte ensuite.</p>
         </div>
       )}
-
-      <div className="flex flex-col gap-2">
-        <span className="text-[12px] font-medium uppercase tracking-[.06em] text-[#667781] dark:text-[#8696a0]">Civilité (pour la salutation)</span>
-        <div className="flex flex-wrap gap-2">
-          {([["neutral", "Aucune"], ["madame", "Madame"], ["monsieur", "Monsieur"]] as const).map(([v, label]) => {
-            const on = (contactTitle ?? "neutral") === v;
-            return (
-              <button key={v} type="button" aria-pressed={on} onClick={() => setContactTitle(v === "neutral" ? undefined : v)} className={cn(PILL, on ? PILL_ON : PILL_OFF)}>
-                {label}
-              </button>
-            );
-          })}
-        </div>
-      </div>
 
       <button
         type="submit"

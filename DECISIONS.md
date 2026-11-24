@@ -366,6 +366,16 @@ absente prend la valeur d'équipe) → premier son immédiat. (2) Mauvais franç
 `clients/french_speech.tts_text` lit les codes en mots (T55 → T 55, 82 % → 82 pour cent, 8,46 € → 8 euros 46, kg,
 HT, AOP épelé). Extraits comparatifs (4 voix × 3 modèles) générés pour choisir à l'oreille.
 
+**Première phrase adaptée à la demande (Youssef, 24/11 après-midi).** Au test réel, l'accusé du mode zéro silence
+était générique et parfois trompeur (« Parfait, je vais voir ça » avant de refuser une remise). Maintenant : 10 types
+de demande (remise, réclamation, relecture, total, habituel, correction, prix, stock, commande, livraison) reconnus par
+mots-clés en 0 ms, sinon Jev (≤ 0,3 s) ; chaque type a ses phrases neutres, préparées avec la voix (« J'entends bien »,
+« Je vous relis ça », « Je calcule ça »…), sans répétition ; aucune pour une simple confirmation. Contrôlé en vrai :
+10 demandes sur 10 avec la bonne phrase, premier son immédiat. Aussi : salutation par le prénom (la civilité est
+retirée du formulaire), bulles « Transcription… » qui restaient bloquées, faux temps sur la relance, règles
+« ne pas revenir sur ce que l'ERP a dit », « comme d'habitude = quantités habituelles », « réclamation : ne rien
+inventer ».
+
 ### Commande juste (Amine Khalil)
 
 **Mission** : ce qui finit dans l'ERP est exactement ce que le client voulait (bon produit, bonne quantité, bon jour,
