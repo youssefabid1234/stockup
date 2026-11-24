@@ -1,0 +1,31 @@
+{
+  "id": "S43",
+  "owner": "daycem",
+  "title": "Pâtisserie Les Carmes : tourage AOP en rupture, fiche muette sur les remplacements → demander d'abord, sans nommer",
+  "why": "Intelligent : sans préférence connue, on demande au client s'il accepte un équivalent avant d'en nommer un ; rien n'est ajouté à la commande sans son accord.",
+  "client": "cli_0012",
+  "turns": [
+    {
+      "say": "Bonjour, Pâtisserie Les Carmes. Il me faudrait 20 kilos de tourage AOP.",
+      "expect": {
+        "tools_none": [
+          "create_draft_order",
+          "add_order_line",
+          "confirm_order"
+        ],
+        "says_any": [
+          "équivalent",
+          "autre produit",
+          "remplac",
+          "à la place"
+        ],
+        "says_none": [
+          "82",
+          "quatre-vingt-deux",
+          "inconnu",
+          "substitution"
+        ]
+      }
+    }
+  ]
+}
