@@ -21,6 +21,39 @@ Lucie répond en français au téléphone pour Le Fournil Occitan, directement b
 - Parcours nouveaux clients, appels sortants planifiés et message vocal.
 - Mémoire entre les appels, carnet de notes, accueil « Aujourd'hui » et interface StockUp.
 
+## Essayer le projet
+
+Il n'y a pas de version en ligne : le projet se lance sur votre machine. Prérequis : Git et Docker (sous Windows, via WSL).
+
+```bash
+git clone https://github.com/youssefabid1234/stockup.git
+cd stockup
+cp .env.example .env
+echo "SEED_DIR_NAME=seed_en" >> .env
+docker compose up -d --build
+```
+
+Ouvrez ensuite <http://localhost:5173> (le premier démarrage prend quelques minutes). Pour arrêter : `docker compose down`.
+
+Ce dépôt contient le jeu de données **en anglais** (`data/seed_en`) ; les données françaises du hackathon ne sont pas publiées. N'utilisez donc pas `make setup`, qui les attend.
+
+**Sans clé API** (réglage par défaut, modèles simulés) : l'ERP, l'accueil et les appels planifiés fonctionnent, mais la conversation avec Lucie n'est pas représentative (réponses incohérentes ou mauvais produit) et le micro entend toujours la même phrase.
+
+**Avec vos propres clés**, renseignez dans `.env` puis relancez `docker compose up -d --force-recreate` :
+
+```dotenv
+LLM_PROVIDER=anthropic
+LLM_MODEL=claude-sonnet-5-5
+LLM_API_KEY=
+STT_PROVIDER=soniox
+STT_API_KEY=
+TTS_PROVIDER=elevenlabs
+TTS_API_KEY=
+JEV_API_KEY=
+```
+
+La conversation a été développée et mesurée avec les données françaises ; elle n'a pas été vérifiée avec les données anglaises.
+
 Développement assisté par IA (Claude Code). Projet construit sur le *Voice ERP kit* fourni par Stockline pour le hackathon ; sa documentation d'origine suit.
 
 ---
