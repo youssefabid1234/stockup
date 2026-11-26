@@ -1,3 +1,30 @@
+# StockUp — Lucie, l'agent vocal d'un grossiste en boulangerie
+
+**Hackathon X-Forum × Stockline, novembre 2026 · Équipe 12 :** Youssef Abid (chef d'équipe), Mohamed Amine, Amine Khalil, Daycem Yakoubi.
+
+Lucie répond en français au téléphone pour Le Fournil Occitan, directement branchée sur son ERP.
+
+- **Commandes à la voix** : produits, quantités, corrections, prix négociés, stock et livraisons ; validation seulement après un « oui » clair.
+- **Conversation naturelle** : première phrase immédiate et adaptée à la demande, mains libres avec interruption.
+- **Nouveaux clients** : fiche prospect créée dans l'ERP, sans doublon et sans commande hâtive.
+- **Appels sortants (simulés sur la plateforme)** : Lucie choisit qui appeler, pourquoi et quand, et laisse un message vocal sans réponse.
+- **Mémoire et transparence** : résumé de chaque appel dans l'historique client, « carnet » de notes en direct.
+- **Accueil « Aujourd'hui »** : commandes en cours, impayés, ruptures et appels du jour.
+
+**Technologies :** Python (FastAPI), React et TypeScript, WebSocket, Docker, Claude, Soniox (reconnaissance vocale), ElevenLabs (synthèse vocale), Jev. Plus de 500 tests automatiques.
+
+## Mes contributions (Youssef Abid)
+
+- Organisation du travail d'équipe : interrupteurs par chantier, contrats entre modules, scénarios rejouables.
+- Identification et préchargement de la fiche client : premier tour ramené de 7,7 s à 3,5 s sur nos mesures.
+- Écoute mains libres avec interruption, règles de conversation naturelle.
+- Parcours nouveaux clients, appels sortants planifiés et message vocal.
+- Mémoire entre les appels, carnet de notes, accueil « Aujourd'hui » et interface StockUp.
+
+Développement assisté par IA (Claude Code). Projet construit sur le *Voice ERP kit* fourni par Stockline pour le hackathon ; sa documentation d'origine suit.
+
+---
+
 # Voice ERP kit
 
 > **Pour le jury · Équipe 12 · Le Fournil Occitan (le standard téléphonique)**
